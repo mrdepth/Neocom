@@ -104,14 +104,24 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 	}
 	
 	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
-		dataManager.assets { result in
-			self.assets = result
-			completionHandler([result.cacheRecord].flatMap {$0})
+		var assets: [NCCachedResult<[ESI.Assets.Asset]>] = []
+		func load(page: Int) {
+			dataManager.assets(page: page) { result in
+				assets.append(result)
+				if result.value?.isEmpty == false {
+					load(page: page + 1)
+				}
+				else {
+					self.assets = assets
+					completionHandler(assets.flatMap {$0.cacheRecord})
+				}
+			}
 		}
+		load(page: 1)
 	}
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
-		if let value = assets?.value {
+		if let value = assets?.flatMap({ $0.value }).joined() {
 			tableView.backgroundView = nil
 			
 			var locationIDs = Set(value.map {$0.locationID})
@@ -180,12 +190,12 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 			}
 		}
 		else {
-			tableView.backgroundView =  treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: assets?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+			tableView.backgroundView =  treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: assets?.first?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 			completionHandler()
 		}
 	}
 	
-	private var assets: NCCachedResult<[ESI.Assets.Asset]>?
+	private var assets: [NCCachedResult<[ESI.Assets.Asset]>]?
 	var contents: [Int64: [ESI.Assets.Asset]]?
 	
 	//MARK: - NCSearchableViewController

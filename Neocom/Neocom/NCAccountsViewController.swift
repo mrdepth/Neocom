@@ -119,11 +119,12 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCAccountTableViewCell else {return}
 		
+		
+		cell.object = object
 		if character == nil {
 			reload()
 		}
 		
-		cell.object = object
 		configureImage(cell: cell)
 		configureSkills(cell: cell)
 		configureWallets(cell: cell)
@@ -132,147 +133,183 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 		configureSkillQueue(cell: cell)
 		configureCorporation(cell: cell)
 		
-		if let scopes = object.scopes?.flatMap({($0 as? NCScope)?.name}), Set(ESI.Scope.default.map{$0.rawValue}) != Set(scopes) {
-			cell.alertLabel.isHidden = false
+		if object.isInvalid {
+			cell.alertLabel.isHidden = true
 		}
 		else {
-			cell.alertLabel.isHidden = true
+			if let scopes = object.scopes?.flatMap({($0 as? NCScope)?.name}), Set(ESI.Scope.default.map{$0.rawValue}) != Set(scopes) {
+				cell.alertLabel.isHidden = false
+			}
+			else {
+				cell.alertLabel.isHidden = true
+			}
 		}
 	}
 	
 	func configureCharacter(cell: NCAccountTableViewCell) {
-		if let value = character?.value {
-//			if let scopes = object.scopes?.flatMap({($0 as? NCScope)?.name}), Set(ESI.Scope.default.map{$0.rawValue}) != Set(scopes) {
-//				cell.characterNameLabel.attributedText = value.name + " (!)" * [NSForegroundColorAttributeName: UIColor.caption, NSFontAttributeName: UIFont.preferredFont(forTextStyle: .subheadline)]
-//			}
-//			else {
-//				cell.characterNameLabel.text = value.name
-//			}
-			cell.characterNameLabel.text = value.name
+		if object.isInvalid {
+			cell.characterNameLabel.text = object.characterName
 		}
 		else {
-			cell.characterNameLabel.text = character?.error?.localizedDescription ?? " "
+			if let value = character?.value {
+				cell.characterNameLabel.text = value.name
+			}
+			else {
+				cell.characterNameLabel.text = character?.error?.localizedDescription ?? " "
+			}
 		}
 	}
 	
 	func configureCorporation(cell: NCAccountTableViewCell) {
-		if let value = corporation?.value {
-			cell.corporationLabel.text = value.name
+		if object.isInvalid {
+			cell.corporationLabel.text = NSLocalizedString("Access Token did become invalid", comment: "")
+			cell.corporationLabel.textColor = .red
 		}
 		else {
-			cell.corporationLabel.text = corporation?.error?.localizedDescription ?? " "
+			cell.corporationLabel.textColor = .white
+			if let value = corporation?.value {
+				cell.corporationLabel.text = value.name
+			}
+			else {
+				cell.corporationLabel.text = corporation?.error?.localizedDescription ?? " "
+			}
 		}
 	}
 	
 	func configureSkillQueue(cell: NCAccountTableViewCell) {
-		if let value = skillQueue?.value {
-			let date = Date()
-			
-			let skillQueue = value.filter {
-				guard let finishDate = $0.finishDate else {return false}
-				return finishDate >= date
-			}
-			
-			let firstSkill = skillQueue.first { $0.finishDate! > date }
-			
-			let trainingTime: String
-			let trainingProgress: Float
-			let title: NSAttributedString
-			
-			if let skill = firstSkill {
-				guard let type = NCDatabase.sharedDatabase?.invTypes[skill.skillID] else {return}
-				guard let firstTrainingSkill = NCSkill(type: type, skill: skill) else {return}
-				
-				if !firstTrainingSkill.typeName.isEmpty {
-					title = NSAttributedString(skillName: firstTrainingSkill.typeName, level: 1 + (firstTrainingSkill.level ?? 0))
-				}
-				else {
-					title = NSAttributedString(string: String(format: NSLocalizedString("Unknown skill %d", comment: ""), firstTrainingSkill.typeID))
-				}
-				
-				trainingProgress = firstTrainingSkill.trainingProgress
-				if let endTime = firstTrainingSkill.trainingEndDate {
-					trainingTime = NCTimeIntervalFormatter.localizedString(from: endTime.timeIntervalSinceNow, precision: .minutes)
-				}
-				else {
-					trainingTime = " "
-				}
-			}
-			else {
-				title = NSAttributedString(string: NSLocalizedString("No skills in training", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightText])
-				trainingProgress = 0
-				trainingTime = " "
-			}
-			
-			let skillQueueText: String
-			
-			if let skill = skillQueue.last, let endTime = skill.finishDate {
-				skillQueueText = String(format: NSLocalizedString("%d skills in queue (%@)", comment: ""), skillQueue.count, NCTimeIntervalFormatter.localizedString(from: endTime.timeIntervalSinceNow, precision: .minutes))
-			}
-			else {
-				skillQueueText = " "
-			}
-			
-			
-			cell.skillLabel.attributedText = title
-			cell.trainingTimeLabel.text = trainingTime
-			cell.trainingProgressView.progress = trainingProgress
-			cell.skillQueueLabel.text = skillQueueText
-		}
-		else {
-			cell.skillLabel.text = skillQueue?.error?.localizedDescription ?? " "
+		if object.isInvalid {
+			cell.skillLabel.text = " "
 			cell.skillQueueLabel.text = " "
 			cell.trainingTimeLabel.text = " "
 			cell.trainingProgressView.progress = 0
+
+		}
+		else {
+			if let value = skillQueue?.value {
+				let date = Date()
+				
+				let skillQueue = value.filter {
+					guard let finishDate = $0.finishDate else {return false}
+					return finishDate >= date
+				}
+				
+				let firstSkill = skillQueue.first { $0.finishDate! > date }
+				
+				let trainingTime: String
+				let trainingProgress: Float
+				let title: NSAttributedString
+				
+				if let skill = firstSkill {
+					guard let type = NCDatabase.sharedDatabase?.invTypes[skill.skillID] else {return}
+					guard let firstTrainingSkill = NCSkill(type: type, skill: skill) else {return}
+					
+					if !firstTrainingSkill.typeName.isEmpty {
+						title = NSAttributedString(skillName: firstTrainingSkill.typeName, level: 1 + (firstTrainingSkill.level ?? 0))
+					}
+					else {
+						title = NSAttributedString(string: String(format: NSLocalizedString("Unknown skill %d", comment: ""), firstTrainingSkill.typeID))
+					}
+					
+					trainingProgress = firstTrainingSkill.trainingProgress
+					if let endTime = firstTrainingSkill.trainingEndDate {
+						trainingTime = NCTimeIntervalFormatter.localizedString(from: endTime.timeIntervalSinceNow, precision: .minutes)
+					}
+					else {
+						trainingTime = " "
+					}
+				}
+				else {
+					title = NSAttributedString(string: NSLocalizedString("No skills in training", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightText])
+					trainingProgress = 0
+					trainingTime = " "
+				}
+				
+				let skillQueueText: String
+				
+				if let skill = skillQueue.last, let endTime = skill.finishDate {
+					skillQueueText = String(format: NSLocalizedString("%d skills in queue (%@)", comment: ""), skillQueue.count, NCTimeIntervalFormatter.localizedString(from: endTime.timeIntervalSinceNow, precision: .minutes))
+				}
+				else {
+					skillQueueText = " "
+				}
+				
+				
+				cell.skillLabel.attributedText = title
+				cell.trainingTimeLabel.text = trainingTime
+				cell.trainingProgressView.progress = trainingProgress
+				cell.skillQueueLabel.text = skillQueueText
+			}
+			else {
+				cell.skillLabel.text = skillQueue?.error?.localizedDescription ?? " "
+				cell.skillQueueLabel.text = " "
+				cell.trainingTimeLabel.text = " "
+				cell.trainingProgressView.progress = 0
+			}
 		}
 	}
 	
 	func configureWallets(cell: NCAccountTableViewCell) {
-		if let value = walletBalance?.value {
-			let wealth = Double(value)
-			cell.wealthLabel.text = NCUnitFormatter.localizedString(from: wealth, unit: .none, style: .short)
+		if object.isInvalid {
+			cell.wealthLabel.text = " "
 		}
 		else {
-			cell.wealthLabel.text = walletBalance?.error?.localizedDescription ?? " "
+			if let value = walletBalance?.value {
+				let wealth = Double(value)
+				cell.wealthLabel.text = NCUnitFormatter.localizedString(from: wealth, unit: .none, style: .short)
+			}
+			else {
+				cell.wealthLabel.text = walletBalance?.error?.localizedDescription ?? " "
+			}
 		}
 	}
 	
 	func configureSkills(cell: NCAccountTableViewCell) {
-		if let value = skills?.value {
-			cell.spLabel.text = NCUnitFormatter.localizedString(from: Double(value.totalSP), unit: .none, style: .short)
+		if object.isInvalid {
+			cell.spLabel.text = " "
 		}
 		else {
-			cell.spLabel.text = skills?.error?.localizedDescription ?? " "
+			if let value = skills?.value {
+				cell.spLabel.text = NCUnitFormatter.localizedString(from: Double(value.totalSP), unit: .none, style: .short)
+			}
+			else {
+				cell.spLabel.text = skills?.error?.localizedDescription ?? " "
+			}
 		}
 	}
 	
 	func configureLocation(cell: NCAccountTableViewCell) {
-		let location: String? = {
-			guard let value = self.location?.value, let solarSystem = NCDatabase.sharedDatabase?.mapSolarSystems[value.solarSystemID] else {return nil}
-			return "\(solarSystem.solarSystemName!) / \(solarSystem.constellation!.region!.regionName!)"
-		}()
-		
-		let ship: String? = {
-			guard let value = self.ship?.value, let type = NCDatabase.sharedDatabase?.invTypes[value.shipTypeID] else {return nil}
-			return type.typeName
-		}()
-		
-		if let ship = ship, let location = location {
-			let s = NSMutableAttributedString()
-			s.append(NSAttributedString(string: ship, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white]))
-			s.append(NSAttributedString(string: ", \(location)", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightText]))
-			cell.locationLabel.attributedText = s
-		}
-		else if let location = location {
-			let s = NSAttributedString(string: location, attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightText])
-			cell.locationLabel.attributedText = s
-		}
-		else if let ship = ship {
-			let s = NSAttributedString(string: ship, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
-			cell.locationLabel.attributedText = s
+		if object.isInvalid {
+			cell.locationLabel.text = " "
 		}
 		else {
-			cell.locationLabel.text = self.location?.error?.localizedDescription ?? self.ship?.error?.localizedDescription ?? " "
+
+			let location: String? = {
+				guard let value = self.location?.value, let solarSystem = NCDatabase.sharedDatabase?.mapSolarSystems[value.solarSystemID] else {return nil}
+				return "\(solarSystem.solarSystemName!) / \(solarSystem.constellation!.region!.regionName!)"
+			}()
+			
+			let ship: String? = {
+				guard let value = self.ship?.value, let type = NCDatabase.sharedDatabase?.invTypes[value.shipTypeID] else {return nil}
+				return type.typeName
+			}()
+			
+			if let ship = ship, let location = location {
+				let s = NSMutableAttributedString()
+				s.append(NSAttributedString(string: ship, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white]))
+				s.append(NSAttributedString(string: ", \(location)", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightText]))
+				cell.locationLabel.attributedText = s
+			}
+			else if let location = location {
+				let s = NSAttributedString(string: location, attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightText])
+				cell.locationLabel.attributedText = s
+			}
+			else if let ship = ship {
+				let s = NSAttributedString(string: ship, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+				cell.locationLabel.attributedText = s
+			}
+			else {
+				cell.locationLabel.text = self.location?.error?.localizedDescription ?? self.ship?.error?.localizedDescription ?? " "
+			}
 		}
 	}
 	
@@ -297,200 +334,205 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 		
 		isLoading = true
 
-		observer = NCManagedObjectObserver() { [weak self] (updated, deleted) in
-			guard let strongSelf = self else {return}
-			guard let cell = strongSelf.treeController?.cell(for: strongSelf) as? NCAccountTableViewCell else {return}
-			
-			if case let .success(_, record)? = strongSelf.character, updated?.contains(record!) == true {
-				strongSelf.configureCharacter(cell: cell)
-			}
-			if case let .success(_, record)? = strongSelf.corporation, updated?.contains(record!) == true {
-				strongSelf.configureCorporation(cell: cell)
-			}
-			if case let .success(_, record)? = strongSelf.skillQueue, updated?.contains(record!) == true {
-				strongSelf.configureSkillQueue(cell: cell)
-			}
-			if case let .success(_, record)? = strongSelf.walletBalance, updated?.contains(record!) == true {
-				strongSelf.configureWallets(cell: cell)
-			}
-			if case let .success(_, record)? = strongSelf.skills, updated?.contains(record!) == true {
-				strongSelf.configureSkills(cell: cell)
-			}
-			if case let .success(_, record)? = strongSelf.location, updated?.contains(record!) == true {
-				strongSelf.configureLocation(cell: cell)
-			}
-			else if case let .success(_, record)? = strongSelf.ship, updated?.contains(record!) == true {
-				strongSelf.configureLocation(cell: cell)
-			}
-			if case let .success(_, record)? = strongSelf.image, updated?.contains(record!) == true {
-				strongSelf.configureImage(cell: cell)
-			}
-		}
-		
-		let dataManager = self.dataManager
-		
-		let cell = treeController?.cell(for: self)
-		let progress = cell != nil ? NCProgressHandler(view: cell!, totalUnitCount: 4) : nil
-		let dispatchGroup = DispatchGroup()
-		
-		progress?.progress.becomeCurrent(withPendingUnitCount: 1)
-		dispatchGroup.enter()
-		
-		
-		dataManager.character { result in
-			self.character = result
-			
-			switch result {
-			case let .success(value, record):
-				if let record = record {
+		if object.isInvalid {
+			dataManager.image(characterID: object.characterID, dimension: 64) { result in
+				self.image = result
+				
+				if let record = result.cacheRecord {
 					self.observer?.add(managedObject: record)
 				}
 				
-				progress?.progress.becomeCurrent(withPendingUnitCount: 1)
-				dispatchGroup.enter()
-				dataManager.corporation(corporationID: Int64(value.corporationID)) { result in
-					self.corporation = result
-					dispatchGroup.leave()
-					
-					if let record = result.cacheRecord {
+				if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
+					self.configureImage(cell: cell)
+				}
+				self.isLoading = false
+				completionHandler?()
+			}
+		}
+		else {
+		
+			observer = NCManagedObjectObserver() { [weak self] (updated, deleted) in
+				guard let strongSelf = self else {return}
+				guard let cell = strongSelf.treeController?.cell(for: strongSelf) as? NCAccountTableViewCell else {return}
+				
+				if case let .success(_, record)? = strongSelf.character, updated?.contains(record!) == true {
+					strongSelf.configureCharacter(cell: cell)
+				}
+				if case let .success(_, record)? = strongSelf.corporation, updated?.contains(record!) == true {
+					strongSelf.configureCorporation(cell: cell)
+				}
+				if case let .success(_, record)? = strongSelf.skillQueue, updated?.contains(record!) == true {
+					strongSelf.configureSkillQueue(cell: cell)
+				}
+				if case let .success(_, record)? = strongSelf.walletBalance, updated?.contains(record!) == true {
+					strongSelf.configureWallets(cell: cell)
+				}
+				if case let .success(_, record)? = strongSelf.skills, updated?.contains(record!) == true {
+					strongSelf.configureSkills(cell: cell)
+				}
+				if case let .success(_, record)? = strongSelf.location, updated?.contains(record!) == true {
+					strongSelf.configureLocation(cell: cell)
+				}
+				else if case let .success(_, record)? = strongSelf.ship, updated?.contains(record!) == true {
+					strongSelf.configureLocation(cell: cell)
+				}
+				if case let .success(_, record)? = strongSelf.image, updated?.contains(record!) == true {
+					strongSelf.configureImage(cell: cell)
+				}
+			}
+			
+			let dataManager = self.dataManager
+			
+			let cell = treeController?.cell(for: self)
+			let progress = cell != nil ? NCProgressHandler(view: cell!, totalUnitCount: 4) : nil
+			let dispatchGroup = DispatchGroup()
+			
+			progress?.progress.becomeCurrent(withPendingUnitCount: 1)
+			dispatchGroup.enter()
+			
+			
+			dataManager.character { result in
+				self.character = result
+				
+				switch result {
+				case let .success(value, record):
+					if let record = record {
 						self.observer?.add(managedObject: record)
 					}
-
 					
-					if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
-						self.configureCorporation(cell: cell)
+					progress?.progress.becomeCurrent(withPendingUnitCount: 1)
+					dispatchGroup.enter()
+					dataManager.corporation(corporationID: Int64(value.corporationID)) { result in
+						self.corporation = result
+						dispatchGroup.leave()
+						
+						if let record = result.cacheRecord {
+							self.observer?.add(managedObject: record)
+						}
+						
+						
+						if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
+							self.configureCorporation(cell: cell)
+						}
+						
 					}
-
+					progress?.progress.resignCurrent()
+				case .failure:
+					break
 				}
-				progress?.progress.resignCurrent()
-			case .failure:
-				break
+				
+				dispatchGroup.leave()
+				
+				if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
+					self.configureCharacter(cell: cell)
+				}
+				
 			}
-
-			dispatchGroup.leave()
+			progress?.progress.resignCurrent()
 			
-			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
-				self.configureCharacter(cell: cell)
+			progress?.progress.becomeCurrent(withPendingUnitCount: 1)
+			dispatchGroup.enter()
+			dataManager.skillQueue { result in
+				self.skillQueue = result
+				dispatchGroup.leave()
+				
+				if let record = result.cacheRecord {
+					self.observer?.add(managedObject: record)
+				}
+				
+				if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
+					self.configureSkillQueue(cell: cell)
+				}
 			}
+			progress?.progress.resignCurrent()
 			
-		}
-		progress?.progress.resignCurrent()
-
-		progress?.progress.becomeCurrent(withPendingUnitCount: 1)
-		dispatchGroup.enter()
-		dataManager.skillQueue { result in
-			self.skillQueue = result
-			dispatchGroup.leave()
+			progress?.progress.becomeCurrent(withPendingUnitCount: 1)
+			dispatchGroup.enter()
+			dataManager.skills { result in
+				self.skills = result
+				dispatchGroup.leave()
+				
+				if let record = result.cacheRecord {
+					self.observer?.add(managedObject: record)
+				}
+				
+				if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
+					self.configureSkills(cell: cell)
+				}
+			}
+			progress?.progress.resignCurrent()
 			
-			if let record = result.cacheRecord {
-				self.observer?.add(managedObject: record)
+			progress?.progress.becomeCurrent(withPendingUnitCount: 1)
+			dispatchGroup.enter()
+			dataManager.walletBalance { result in
+				self.walletBalance = result
+				dispatchGroup.leave()
+				
+				if let record = result.cacheRecord {
+					self.observer?.add(managedObject: record)
+				}
+				
+				if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
+					self.configureWallets(cell: cell)
+				}
 			}
-
-			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
-				self.configureSkillQueue(cell: cell)
-			}
-		}
-		progress?.progress.resignCurrent()
-
-		progress?.progress.becomeCurrent(withPendingUnitCount: 1)
-		dispatchGroup.enter()
-		dataManager.skills { result in
-			self.skills = result
-			dispatchGroup.leave()
+			progress?.progress.resignCurrent()
 			
-			if let record = result.cacheRecord {
-				self.observer?.add(managedObject: record)
-			}
-
-			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
-				self.configureSkills(cell: cell)
-			}
-		}
-		progress?.progress.resignCurrent()
-
-		progress?.progress.becomeCurrent(withPendingUnitCount: 1)
-		dispatchGroup.enter()
-		dataManager.walletBalance { result in
-			self.walletBalance = result
-			dispatchGroup.leave()
 			
-			if let record = result.cacheRecord {
-				self.observer?.add(managedObject: record)
+			progress?.progress.becomeCurrent(withPendingUnitCount: 1)
+			dispatchGroup.enter()
+			dataManager.characterLocation { result in
+				self.location = result
+				dispatchGroup.leave()
+				
+				if let record = result.cacheRecord {
+					self.observer?.add(managedObject: record)
+				}
+				
+				if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
+					self.configureLocation(cell: cell)
+				}
 			}
-
-			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
-				self.configureWallets(cell: cell)
-			}
-		}
-		progress?.progress.resignCurrent()
-		
-		
-		progress?.progress.becomeCurrent(withPendingUnitCount: 1)
-		dispatchGroup.enter()
-		dataManager.characterLocation { result in
-			self.location = result
-			dispatchGroup.leave()
+			progress?.progress.resignCurrent()
 			
-			if let record = result.cacheRecord {
-				self.observer?.add(managedObject: record)
+			progress?.progress.becomeCurrent(withPendingUnitCount: 1)
+			dispatchGroup.enter()
+			dataManager.characterShip { result in
+				self.ship = result
+				dispatchGroup.leave()
+				
+				if let record = result.cacheRecord {
+					self.observer?.add(managedObject: record)
+				}
+				
+				if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
+					self.configureLocation(cell: cell)
+				}
 			}
-
-			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
-				self.configureLocation(cell: cell)
-			}
-		}
-		progress?.progress.resignCurrent()
-
-		progress?.progress.becomeCurrent(withPendingUnitCount: 1)
-		dispatchGroup.enter()
-		dataManager.characterShip { result in
-			self.ship = result
-			dispatchGroup.leave()
+			progress?.progress.resignCurrent()
 			
-			if let record = result.cacheRecord {
-				self.observer?.add(managedObject: record)
+			progress?.progress.becomeCurrent(withPendingUnitCount: 1)
+			dispatchGroup.enter()
+			dataManager.image(characterID: object.characterID, dimension: 64) { result in
+				self.image = result
+				dispatchGroup.leave()
+				
+				if let record = result.cacheRecord {
+					self.observer?.add(managedObject: record)
+				}
+				
+				if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
+					self.configureImage(cell: cell)
+				}
 			}
-
-			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
-				self.configureLocation(cell: cell)
-			}
-		}
-		progress?.progress.resignCurrent()
-
-		progress?.progress.becomeCurrent(withPendingUnitCount: 1)
-		dispatchGroup.enter()
-		dataManager.image(characterID: object.characterID, dimension: 64) { result in
-			self.image = result
-			dispatchGroup.leave()
+			progress?.progress.resignCurrent()
 			
-			if let record = result.cacheRecord {
-				self.observer?.add(managedObject: record)
-			}
-
-			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
-				self.configureImage(cell: cell)
-			}
-		}
-		progress?.progress.resignCurrent()
-
-		/*progress?.progress.becomeCurrent(withPendingUnitCount: 1)
-		dispatchGroup.enter()
-		dataManager.accountStatus { result in
-			self.accountStatus = result
-			dispatchGroup.leave()
-			
-			if let cell = self.treeController?.cell(for: self) as? NCAccountTableViewCell, cell.object as? NCAccount == self.object {
-				self.configureAccountStatus(cell: cell)
+			dispatchGroup.notify(queue: .main) {
+				progress?.finish()
+				self.isLoading = false
+				completionHandler?()
 			}
 		}
-		progress?.progress.resignCurrent()*/
-
-		dispatchGroup.notify(queue: .main) {
-			progress?.finish()
-			self.isLoading = false
-			completionHandler?()
-		}
-		
 	}
 	
 }
@@ -506,7 +548,8 @@ class NCAccountsViewController: NCTreeViewController {
 		tableView.register([Prototype.NCActionTableViewCell.default,
 		                    Prototype.NCAccountTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.default,
-		                    Prototype.NCHeaderTableViewCell.empty])
+		                    Prototype.NCHeaderTableViewCell.empty,
+							Prototype.NCDefaultTableViewCell.noImage])
 		
 		
 	}

@@ -33,9 +33,7 @@ class NCInGameFittingRow: TreeRow {
 		cell.accessoryType = .disclosureIndicator
 	}
 	
-	override var hashValue: Int {
-		return fitting.hashValue
-	}
+	override lazy var hashValue: Int = fitting.hashValue
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCInGameFittingRow)?.hashValue == hashValue

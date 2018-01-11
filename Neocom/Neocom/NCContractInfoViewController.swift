@@ -46,9 +46,7 @@ class NCContractItem: TreeRow {
 		cell.accessoryType = .disclosureIndicator
 	}
 	
-	override var hashValue: Int {
-		return item.hashValue
-	}
+	override lazy var hashValue: Int = item.hashValue
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCContractItem)?.hashValue == hashValue

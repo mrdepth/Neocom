@@ -81,9 +81,7 @@ class NCIncursionRow: TreeRow {
 		}
 	}
 	
-	override var hashValue: Int {
-		return incursion.hashValue
-	}
+	override lazy var hashValue: Int = incursion.hashValue
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCIncursionRow)?.hashValue == hashValue

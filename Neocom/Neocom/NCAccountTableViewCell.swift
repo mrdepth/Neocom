@@ -15,7 +15,7 @@ class NCAccountTableViewCell: NCTableViewCell {
 	@IBOutlet weak var spLabel: UILabel!
 	@IBOutlet weak var wealthLabel: UILabel!
 	@IBOutlet weak var locationLabel: UILabel!
-	@IBOutlet weak var subscriptionLabel: UILabel!
+//	@IBOutlet weak var subscriptionLabel: UILabel!
 	@IBOutlet weak var skillLabel: UILabel!
 	@IBOutlet weak var trainingTimeLabel: UILabel!
 	@IBOutlet weak var skillQueueLabel: UILabel!

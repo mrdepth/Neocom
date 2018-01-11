@@ -100,7 +100,7 @@ class NCFleetMemberRow: TreeRow {
 	}
 	
 	override var hashValue: Int {
-		return [pilot.hashValue].hashValue
+		return pilot.hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {

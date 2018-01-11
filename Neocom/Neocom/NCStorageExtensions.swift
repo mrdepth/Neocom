@@ -27,6 +27,10 @@ extension NCAccount {
 			}
 		}
 	}
+	
+	var isInvalid: Bool {
+		return refreshToken?.isEmpty != false
+	}
 
 	var token: OAuth2Token {
 		get {

@@ -52,6 +52,7 @@ class NCStorage: NSObject {
 	override init() {
 		super.init()
 		NotificationCenter.default.addObserver(self, selector: #selector(oauth2TokenDidRefresh(_:)), name: .OAuth2TokenDidRefresh, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(oauth2TokenDidBecomeInvalid(_:)), name: .OAuth2TokenDidBecomeInvalid, object: nil)
 	}
 	
 	deinit {
@@ -131,6 +132,18 @@ class NCStorage: NSObject {
 			request.predicate = NSPredicate(format: "refreshToken == %@", token.refreshToken)
 			guard let account = (try? managedObjectContext.fetch(request))?.last else {return}
 			account.token = token
+		}
+	}
+	
+	@objc func oauth2TokenDidBecomeInvalid(_ notification: Notification) {
+		guard let token = notification.object as? OAuth2Token else {return}
+		performBackgroundTask { managedObjectContext in
+			let request = NSFetchRequest<NCAccount>(entityName: "Account")
+			request.predicate = NSPredicate(format: "refreshToken == %@", token.refreshToken)
+			guard let account = (try? managedObjectContext.fetch(request))?.last else {return}
+			account.refreshToken = ""
+			account.accessToken = ""
+			(account.scopes as? Set<NCScope>)?.forEach { $0.managedObjectContext?.delete($0)}
 		}
 	}
 }

@@ -104,9 +104,7 @@ class NCDataManager {
 		return ZKillboard(cachePolicy: self.cachePolicy)
 	}()
 
-	var characterID: Int64 {
-		return token?.characterID ?? 0
-	}
+	let characterID: Int64
 	
 	init(account: NCAccount? = nil, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) {
 		self.cachePolicy = cachePolicy
@@ -114,12 +112,19 @@ class NCDataManager {
 			/*observer = NCManagedObjectObserver(managedObjectID: acc.objectID) {[weak self] (_, _) in
 				self?.token = acc.token
 			}*/
+			if acc.isInvalid {
+				token = nil
+			}
+			else {
+				token = acc.token
+			}
 			self.account = String(acc.characterID)
-			token = acc.token
+			characterID = acc.characterID
 		}
 		else {
 			self.account = nil
-			self.token = nil
+			token = nil
+			characterID = 0
 		}
 	}
 	
@@ -821,9 +826,9 @@ class NCDataManager {
 		})
 	}
 	
-	func assets(completionHandler: @escaping (NCCachedResult<[ESI.Assets.Asset]>) -> Void) {
-		loadFromCache(forKey: "ESI.Assets.Asset", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.esi.assets.getCharacterAssets(characterID: Int(self.characterID)) { result in
+	func assets(page: Int? = nil, completionHandler: @escaping (NCCachedResult<[ESI.Assets.Asset]>) -> Void) {
+		loadFromCache(forKey: "ESI.Assets.Asset.\(page ?? 0)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
+			self.esi.assets.getCharacterAssets(characterID: Int(self.characterID), page: page) { result in
 				completion(result, 3600.0 * 1)
 			}
 		})

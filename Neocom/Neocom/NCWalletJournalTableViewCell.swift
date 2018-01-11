@@ -59,9 +59,7 @@ class NCWalletJournalRow: TreeRow {
 		}
 	}
 	
-	override var hashValue: Int {
-		return transaction.hashValue
-	}
+	override lazy var hashValue: Int = transaction.hashValue
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCWalletJournalRow)?.hashValue == hashValue

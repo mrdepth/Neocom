@@ -74,9 +74,7 @@ class NCFeedItemRow: TreeRow {
 		cell.titleLabel.textColor = isVisited ? .lightText : .white
 	}
 	
-	override var hashValue: Int {
-		return item.hashValue
-	}
+	override lazy var hashValue: Int = item.hashValue
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCFeedItemRow)?.hashValue == hashValue

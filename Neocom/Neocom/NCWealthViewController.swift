@@ -40,7 +40,7 @@ class NCWealthViewController: NCTreeViewController {
 		let clones = self.clones?.value
 		let activeImplants = self.implants?.value
 		let walletBalance = self.walletBalance?.value
-		let assets = self.assets?.value
+		let assets = self.assets?.flatMap{$0.value}.joined()
 		let blueprints = self.blueprints?.value
 		let marketOrders = self.marketOrders?.value
 		let industryJobs = self.industryJobs?.value
@@ -187,8 +187,8 @@ class NCWealthViewController: NCTreeViewController {
 						strongSelf.pieChartRow?.add(segment: strongSelf.assetsSegment!)
 					}
 					let route: Route? = {
-						guard let prices = strongSelf.prices, let assets = strongSelf.assets?.value else {return nil}
-						return Router.Wealth.Assets(assets: assets, prices: prices)
+						guard let prices = strongSelf.prices, let assets = strongSelf.assets?.flatMap({$0.value}).joined() else {return nil}
+						return Router.Wealth.Assets(assets: Array(assets), prices: prices)
 					}()
 					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
 					                           nodeIdentifier: "Assets",
@@ -289,7 +289,7 @@ class NCWealthViewController: NCTreeViewController {
 	private var clones: NCCachedResult<ESI.Clones.JumpClones>?
 	private var implants: NCCachedResult<[Int]>?
 	private var walletBalance: NCCachedResult<Double>?
-	private var assets: NCCachedResult<[ESI.Assets.Asset]>?
+	private var assets: [NCCachedResult<[ESI.Assets.Asset]>]?
 	private var blueprints: NCCachedResult<[ESI.Character.Blueprint]>?
 	private var marketOrders: NCCachedResult<[ESI.Market.CharacterOrder]>?
 	private var industryJobs: NCCachedResult<[ESI.Industry.Job]>?
@@ -330,11 +330,21 @@ class NCWealthViewController: NCTreeViewController {
 		
 		progress.perform {
 			dispatchGroup.enter()
-			dataManager.assets { result in
-				self.assets = result
-				self.update()
-				dispatchGroup.leave()
+			var assets: [NCCachedResult<[ESI.Assets.Asset]>] = []
+			func load(page: Int) {
+				dataManager.assets(page: page) { result in
+					assets.append(result)
+					if result.value?.isEmpty == false {
+						load(page: page + 1)
+					}
+					else {
+						self.assets = assets
+						self.update()
+						dispatchGroup.leave()
+					}
+				}
 			}
+			load(page: 1)
 		}
 
 		progress.perform {
@@ -374,14 +384,14 @@ class NCWealthViewController: NCTreeViewController {
 		}
 
 		dispatchGroup.notify(queue: .main) {
-			let records = [self.clones?.cacheRecord,
+			var records = [self.clones?.cacheRecord,
 			               self.implants?.cacheRecord,
 			               self.walletBalance?.cacheRecord,
-			               self.assets?.cacheRecord,
 			               self.blueprints?.cacheRecord,
 			               self.marketOrders?.cacheRecord,
 			               self.industryJobs?.cacheRecord,
 			               self.contracts?.cacheRecord].flatMap {$0}
+			records.append(contentsOf: self.assets?.flatMap {$0.cacheRecord} ?? [])
 			completionHandler(records)
 		}
 	}

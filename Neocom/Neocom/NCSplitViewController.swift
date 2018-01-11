@@ -18,7 +18,8 @@ class NCSplitViewController: UISplitViewController, UISplitViewControllerDelegat
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		preferredDisplayMode = .allVisible
+//		preferredDisplayMode = .allVisible
+		preferredDisplayMode = .automatic
 		maximumPrimaryColumnWidth = 375
 	}
 	

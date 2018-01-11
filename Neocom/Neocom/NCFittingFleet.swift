@@ -34,7 +34,16 @@ class NCFittingFleet {
 	
 	init(typeID: Int) throws {
 		let pilot = try DGMCharacter()
-		try pilot.ship = DGMShip(typeID: typeID)
+		let isStructure = NCDatabase.sharedDatabase?.performTaskAndWait { (context) -> Bool in
+			return (NCDBInvType.invTypes(managedObjectContext: context)[typeID]?.dgmppItem?.groups?.anyObject() as? NCDBDgmppItemGroup)?.category?.category == Int32(NCDBDgmppItemCategoryID.structure.rawValue)
+		} ?? false
+		if isStructure {
+			pilot.structure = try DGMStructure(typeID: typeID)
+		}
+		else {
+			pilot.ship = try DGMShip(typeID: typeID)
+		}
+
 		gang.add(pilot)
 		pilots.append((pilot, nil))
 		active = pilot
@@ -184,9 +193,21 @@ class NCFittingFleet {
 	func append(loadout: NCLoadout) throws -> DGMCharacter {
 		
 		let pilot = try DGMCharacter()
-		let ship = try DGMShip(typeID: Int(loadout.typeID))
-		pilot.ship = ship
-		ship.name = loadout.name ?? ""
+		let typeID = Int(loadout.typeID)
+		let isStructure = NCDatabase.sharedDatabase?.performTaskAndWait { (context) -> Bool in
+			return (NCDBInvType.invTypes(managedObjectContext: context)[typeID]?.dgmppItem?.groups?.anyObject() as? NCDBDgmppItemGroup)?.category?.category == Int32(NCDBDgmppItemCategoryID.structure.rawValue)
+			} ?? false
+		
+		if isStructure {
+			pilot.structure = try DGMStructure(typeID: typeID)
+			pilot.structure?.name = loadout.name ?? ""
+		}
+		else {
+			pilot.ship = try DGMShip(typeID: typeID)
+			pilot.ship?.name = loadout.name ?? ""
+		}
+
+		
 
 		if let data = loadout.data?.data {
 			pilot.loadout = data
@@ -204,7 +225,17 @@ class NCFittingFleet {
 	@discardableResult
 	func append(typeID: Int) throws -> DGMCharacter {
 		let pilot = try DGMCharacter()
-		pilot.ship = try DGMShip(typeID: typeID)
+		let isStructure = NCDatabase.sharedDatabase?.performTaskAndWait { (context) -> Bool in
+			return (NCDBInvType.invTypes(managedObjectContext: context)[typeID]?.dgmppItem?.groups?.anyObject() as? NCDBDgmppItemGroup)?.category?.category == Int32(NCDBDgmppItemCategoryID.structure.rawValue)
+			} ?? false
+		
+		if isStructure {
+			pilot.structure = try DGMStructure(typeID: typeID)
+		}
+		else {
+			pilot.ship = try DGMShip(typeID: typeID)
+		}
+
 		gang.add(pilot)
 		pilots.append((pilot, nil))
 		if active == nil {

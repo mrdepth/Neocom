@@ -249,7 +249,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 		treeController.deselectCell(for: node, animated: true)
 		guard let item = node as? NCFittingModuleRow else {return}
 		guard let pilot = fleet?.active else {return}
-		guard let ship = pilot.ship else {return}
+		guard let ship = pilot.structure ?? pilot.ship else {return}
 		guard let typePickerViewController = typePickerViewController else {return}
 		let socket = (node.parent as? NCFittingModuleSection)?.grouped == true ? -1 : node.parent?.children.index(of: item) ?? -1
 		let isStructure = ship is DGMStructure

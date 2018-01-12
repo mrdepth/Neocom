@@ -18,8 +18,8 @@ class NCSplitViewController: UISplitViewController, UISplitViewControllerDelegat
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-//		preferredDisplayMode = .allVisible
-		preferredDisplayMode = .automatic
+		preferredDisplayMode = .allVisible
+//		preferredDisplayMode = .automatic
 		maximumPrimaryColumnWidth = 375
 	}
 	
@@ -51,23 +51,25 @@ class NCSplitViewController: UISplitViewController, UISplitViewControllerDelegat
 		(viewControllers[0] as? UINavigationController)?.isNavigationBarHidden = true
 		(detailViewController as? UINavigationController)?.viewControllers.first?.navigationItem.leftBarButtonItem = displayModeButtonItem
 		return nil
-	}
+	}*/
 	
 	func splitViewController(_ splitViewController: UISplitViewController, showDetail vc: UIViewController, sender: Any?) -> Bool {
-		detailViewController = vc
-		
-		if traitCollection.userInterfaceIdiom == .phone {
-			setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: .compact), forChildViewController: vc)
+//		detailViewController = vc
+//
+//		if traitCollection.userInterfaceIdiom == .phone {
+//			setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: .compact), forChildViewController: vc)
+//		}
+		UIView.animate(withDuration: 0.25) {
+			self.preferredDisplayMode = vc is NCSplashScreenViewController ? .allVisible : .automatic
 		}
-		preferredDisplayMode = vc is NCSplashScreenViewController ? .allVisible : .automatic
-		if traitCollection.horizontalSizeClass == .regular {
-			(vc as? UINavigationController)?.viewControllers.first?.navigationItem.leftBarButtonItem = displayModeButtonItem
-		}
+//		if traitCollection.horizontalSizeClass == .regular {
+//			(vc as? UINavigationController)?.viewControllers.first?.navigationItem.leftBarButtonItem = displayModeButtonItem
+//		}
 		
 		return false
 	}
 	
-	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+	/*override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		super.traitCollectionDidChange(previousTraitCollection)
 		guard viewControllers.count == 2 else {return}
 		if traitCollection.userInterfaceIdiom == .phone {

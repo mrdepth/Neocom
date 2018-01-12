@@ -11,7 +11,7 @@
       location = "group:ThirdParty/EVEOnlineAPI/ThirdParty/Alamofire/Alamofire.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:ThirdParty/dgmpp/dgmpp.xcodeproj">
+      location = "group:ThirdParty/dgmpp/XCode/dgmpp.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:ThirdParty/CloudData/CloudData/CloudData.xcodeproj">

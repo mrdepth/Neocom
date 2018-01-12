@@ -268,6 +268,10 @@
 		12C967051F96111900B141CC /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FC1F9610DE00B141CC /* nanopb.framework */; };
 		12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F61F9610DE00B141CC /* FirebaseAnalytics.framework */; };
 		12C967101F9614B200B141CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12C9670F1F96149F00B141CC /* GoogleService-Info.plist */; };
+		12CACFE52008C36B000B76C3 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12CACFE42008C36B000B76C3 /* NotificationCenter.framework */; };
+		12CACFE82008C36B000B76C3 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CACFE72008C36B000B76C3 /* TodayViewController.swift */; };
+		12CACFEB2008C36B000B76C3 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12CACFE92008C36B000B76C3 /* MainInterface.storyboard */; };
+		12CACFEF2008C36B000B76C3 /* Widget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 12CACFE32008C36B000B76C3 /* Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		12CD2CAC1F581B6600367606 /* NCNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CD2CAB1F581B6600367606 /* NCNotificationManager.swift */; };
 		12CFDACB1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CFDACA1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib */; };
 		12CFDACE1F023BDD00CC0762 /* NCZKillboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDACD1F023BDD00CC0762 /* NCZKillboardViewController.swift */; };
@@ -369,6 +373,13 @@
 			remoteGlobalIDString = 127BB8D91DDC3EC500F07E6C;
 			remoteInfo = clrconvert;
 		};
+		12CACFED2008C36B000B76C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 12AC8D881DEF58A100561A7A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 12CACFE22008C36B000B76C3;
+			remoteInfo = Widget;
+		};
 		12E745551E830922004AA646 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 12E745511E830922004AA646 /* clrconvert.xcodeproj */;
@@ -399,6 +410,17 @@
 				12DBEAAE1E1D3B710088A486 /* Dgmpp.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		12CACFF42008C36B000B76C3 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				12CACFEF2008C36B000B76C3 /* Widget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -682,6 +704,11 @@
 		12C966FD1F9610DE00B141CC /* Firebase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
 		12C966FE1F9610DE00B141CC /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		12C9670F1F96149F00B141CC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		12CACFE32008C36B000B76C3 /* Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Widget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		12CACFE42008C36B000B76C3 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		12CACFE72008C36B000B76C3 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		12CACFEA2008C36B000B76C3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		12CACFEC2008C36B000B76C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12CD2CAB1F581B6600367606 /* NCNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCNotificationManager.swift; sourceTree = "<group>"; };
 		12CFDACA1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCImageHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		12CFDACD1F023BDD00CC0762 /* NCZKillboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCZKillboardViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -833,6 +860,14 @@
 				129DE43B1FF628AD00A2C1CD /* FBSDKCoreKit.framework in Frameworks */,
 				12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */,
 				12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		12CACFE02008C36B000B76C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12CACFE52008C36B000B76C3 /* NotificationCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1218,6 +1253,7 @@
 				12E745511E830922004AA646 /* clrconvert.xcodeproj */,
 				12AC8D921DEF58A100561A7A /* Neocom */,
 				12C966ED1F9610CC00B141CC /* ThirdParty */,
+				12CACFE62008C36B000B76C3 /* Widget */,
 				12AC8D911DEF58A100561A7A /* Products */,
 				12DBEAAF1E1D3B860088A486 /* Frameworks */,
 			);
@@ -1227,6 +1263,7 @@
 			isa = PBXGroup;
 			children = (
 				12AC8D901DEF58A100561A7A /* Neocom.app */,
+				12CACFE32008C36B000B76C3 /* Widget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1409,6 +1446,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		12CACFE62008C36B000B76C3 /* Widget */ = {
+			isa = PBXGroup;
+			children = (
+				12CACFE72008C36B000B76C3 /* TodayViewController.swift */,
+				12CACFE92008C36B000B76C3 /* MainInterface.storyboard */,
+				12CACFEC2008C36B000B76C3 /* Info.plist */,
+			);
+			path = Widget;
+			sourceTree = "<group>";
+		};
 		12D930F41E658E8400CBAE1C /* Prototypes */ = {
 			isa = PBXGroup;
 			children = (
@@ -1485,6 +1532,7 @@
 				122DB9AE1E806DB000E8E2C4 /* libz.tbd */,
 				122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */,
 				12DBEAB01E1D3B860088A486 /* libsqlite3.tbd */,
+				12CACFE42008C36B000B76C3 /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1598,17 +1646,36 @@
 				12AC8D8D1DEF58A100561A7A /* Frameworks */,
 				12AC8D8E1DEF58A100561A7A /* Resources */,
 				12AC8DA81DEF597400561A7A /* Embed Frameworks */,
+				12CACFF42008C36B000B76C3 /* Embed App Extensions */,
 			);
 			buildRules = (
 				12AC8DD71DF0AF7900561A7A /* PBXBuildRule */,
 			);
 			dependencies = (
 				12E745581E83092C004AA646 /* PBXTargetDependency */,
+				12CACFEE2008C36B000B76C3 /* PBXTargetDependency */,
 			);
 			name = Neocom;
 			productName = Neocom;
 			productReference = 12AC8D901DEF58A100561A7A /* Neocom.app */;
 			productType = "com.apple.product-type.application";
+		};
+		12CACFE22008C36B000B76C3 /* Widget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 12CACFF32008C36B000B76C3 /* Build configuration list for PBXNativeTarget "Widget" */;
+			buildPhases = (
+				12CACFDF2008C36B000B76C3 /* Sources */,
+				12CACFE02008C36B000B76C3 /* Frameworks */,
+				12CACFE12008C36B000B76C3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Widget;
+			productName = Widget;
+			productReference = 12CACFE32008C36B000B76C3 /* Widget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -1617,7 +1684,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = NC;
-				LastSwiftUpdateCheck = 0810;
+				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Artem Shimanski";
 				TargetAttributes = {
@@ -1643,6 +1710,11 @@
 								enabled = 1;
 							};
 						};
+					};
+					12CACFE22008C36B000B76C3 = {
+						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = YB4RLQ4M9A;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -1670,6 +1742,7 @@
 			projectRoot = "";
 			targets = (
 				12AC8D8F1DEF58A100561A7A /* Neocom */,
+				12CACFE22008C36B000B76C3 /* Widget */,
 			);
 		};
 /* End PBXProject section */
@@ -1759,6 +1832,14 @@
 				12CFDAE61F03D8E800CC0762 /* NCDatePickerTableViewCell.xib in Resources */,
 				12D404471F31C010007F1715 /* NCSwitchTableViewCell.xib in Resources */,
 				12C37D2C1EFA9CDC0070F055 /* NCContactTableViewCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		12CACFE12008C36B000B76C3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12CACFEB2008C36B000B76C3 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2024,9 +2105,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		12CACFDF2008C36B000B76C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12CACFE82008C36B000B76C3 /* TodayViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		12CACFEE2008C36B000B76C3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 12CACFE22008C36B000B76C3 /* Widget */;
+			targetProxy = 12CACFED2008C36B000B76C3 /* PBXContainerItemProxy */;
+		};
 		12E745581E83092C004AA646 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = clrconvert;
@@ -2041,6 +2135,14 @@
 				12AC8D9D1DEF58A100561A7A /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		12CACFE92008C36B000B76C3 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				12CACFEA2008C36B000B76C3 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -2156,9 +2258,11 @@
 		12AC8DA31DEF58A100561A7A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				FRAMEWORK_SEARCH_PATHS = (
 					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
@@ -2181,9 +2285,11 @@
 		12AC8DA41DEF58A100561A7A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				FRAMEWORK_SEARCH_PATHS = (
 					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
@@ -2199,6 +2305,48 @@
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../ThirdParty/Firebase";
+			};
+			name = Release;
+		};
+		12CACFF02008C36B000B76C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom.Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		12CACFF12008C36B000B76C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom.Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -2219,6 +2367,15 @@
 			buildConfigurations = (
 				12AC8DA31DEF58A100561A7A /* Debug */,
 				12AC8DA41DEF58A100561A7A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		12CACFF32008C36B000B76C3 /* Build configuration list for PBXNativeTarget "Widget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				12CACFF02008C36B000B76C3 /* Debug */,
+				12CACFF12008C36B000B76C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

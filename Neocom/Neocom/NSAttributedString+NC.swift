@@ -14,7 +14,7 @@ extension NSAttributedStringKey {
 }
 
 extension NSAttributedString {
-	@nonobjc private static var roman = ["0","I","II","III","IV","V"]
+	@nonobjc private static let roman = ["0","I","II","III","IV","V"]
 	
 	convenience init(skillName: String, level: Int) {
 		let s = NSMutableAttributedString(string: skillName, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])

@@ -157,6 +157,16 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 				return showTypeInfo(typeID: typeID)
 			case .fitting?:
 				return showFitting(dna: components.path)
+			case .nc?:
+				switch components.host {
+				case "account"?:
+					guard let uuid = components.queryItems?.first(where: {$0.name == "uuid"})?.value else {return false}
+					guard let account = NCStorage.sharedStorage?.accounts[uuid] else {return false}
+					NCAccount.current = account
+					return true
+				default:
+					return false
+				}
 			default:
 				return false
 			}

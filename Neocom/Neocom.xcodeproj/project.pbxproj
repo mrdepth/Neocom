@@ -272,6 +272,12 @@
 		12CACFE82008C36B000B76C3 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CACFE72008C36B000B76C3 /* TodayViewController.swift */; };
 		12CACFEB2008C36B000B76C3 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12CACFE92008C36B000B76C3 /* MainInterface.storyboard */; };
 		12CACFEF2008C36B000B76C3 /* Widget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 12CACFE32008C36B000B76C3 /* Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		12CACFF92008DA1A000B76C3 /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CACFF82008DA1A000B76C3 /* WidgetData.swift */; };
+		12CACFFA2008DA1A000B76C3 /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CACFF82008DA1A000B76C3 /* WidgetData.swift */; };
+		12CACFFB2008E67D000B76C3 /* NCRoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157031E008E770041B817 /* NCRoundedImageView.swift */; };
+		12CACFFC2008E69F000B76C3 /* NCImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285FB321EB8DBFA0025331A /* NCImageView.swift */; };
+		12CAD0042008ED82000B76C3 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3111DFFE2CF00627D92 /* Math.swift */; };
+		12CAD0052008EE0C000B76C3 /* NCTimeIntervalFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE4A1DF210C500A2A24B /* NCTimeIntervalFormatter.swift */; };
 		12CD2CAC1F581B6600367606 /* NCNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CD2CAB1F581B6600367606 /* NCNotificationManager.swift */; };
 		12CFDACB1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CFDACA1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib */; };
 		12CFDACE1F023BDD00CC0762 /* NCZKillboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CFDACD1F023BDD00CC0762 /* NCZKillboardViewController.swift */; };
@@ -709,6 +715,9 @@
 		12CACFE72008C36B000B76C3 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		12CACFEA2008C36B000B76C3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		12CACFEC2008C36B000B76C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		12CACFF52008D9D7000B76C3 /* Widget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Widget.entitlements; sourceTree = "<group>"; };
+		12CACFF72008D9FD000B76C3 /* EVEAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EVEAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		12CACFF82008DA1A000B76C3 /* WidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetData.swift; sourceTree = "<group>"; };
 		12CD2CAB1F581B6600367606 /* NCNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCNotificationManager.swift; sourceTree = "<group>"; };
 		12CFDACA1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCImageHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		12CFDACD1F023BDD00CC0762 /* NCZKillboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCZKillboardViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -1449,7 +1458,9 @@
 		12CACFE62008C36B000B76C3 /* Widget */ = {
 			isa = PBXGroup;
 			children = (
+				12CACFF52008D9D7000B76C3 /* Widget.entitlements */,
 				12CACFE72008C36B000B76C3 /* TodayViewController.swift */,
+				12CACFF82008DA1A000B76C3 /* WidgetData.swift */,
 				12CACFE92008C36B000B76C3 /* MainInterface.storyboard */,
 				12CACFEC2008C36B000B76C3 /* Info.plist */,
 			);
@@ -1528,6 +1539,7 @@
 		12DBEAAF1E1D3B860088A486 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				12CACFF72008D9FD000B76C3 /* EVEAPI.framework */,
 				120A59EE1F10ABEC0053F94B /* StoreKit.framework */,
 				122DB9AE1E806DB000E8E2C4 /* libz.tbd */,
 				122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */,
@@ -1715,6 +1727,11 @@
 						CreatedOnToolsVersion = 9.2;
 						DevelopmentTeam = YB4RLQ4M9A;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -2013,6 +2030,7 @@
 				12AC8DD21DF090A600561A7A /* NCCache.swift in Sources */,
 				12DC567D1EFBE8520088F45E /* NCIncursionsViewController.swift in Sources */,
 				12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */,
+				12CACFF92008DA1A000B76C3 /* WidgetData.swift in Sources */,
 				129200461FEBFB4A00124EE0 /* NCFittingActionsViewController.swift in Sources */,
 				12CFDAD41F02997200CC0762 /* NCZKillboardGroupsViewController.swift in Sources */,
 				122B55611EB73E3500E46536 /* NCAccountsViewController.swift in Sources */,
@@ -2110,6 +2128,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				12CACFE82008C36B000B76C3 /* TodayViewController.swift in Sources */,
+				12CACFFB2008E67D000B76C3 /* NCRoundedImageView.swift in Sources */,
+				12CACFFA2008DA1A000B76C3 /* WidgetData.swift in Sources */,
+				12CACFFC2008E69F000B76C3 /* NCImageView.swift in Sources */,
+				12CAD0042008ED82000B76C3 /* Math.swift in Sources */,
+				12CAD0052008EE0C000B76C3 /* NCTimeIntervalFormatter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2314,6 +2337,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = Widget/Widget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
@@ -2335,6 +2359,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = Widget/Widget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;

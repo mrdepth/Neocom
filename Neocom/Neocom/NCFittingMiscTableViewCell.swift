@@ -63,7 +63,7 @@ class NCFittingMiscRow: TreeRow {
 		let alignTime = ship.alignTime
 		let signatureRadius = ship.signatureRadius
 		let capacity = ship.cargoCapacity
-		let oreHoldCapacity = ship.oreHoldCapacity
+		let specialHoldCapacity = ship.specialHoldCapacity
 		let warpSpeed = ship.warpSpeed * DGMSeconds(1)
 		
 		cell.targetsLabel?.text = String(maxTargets)
@@ -77,7 +77,7 @@ class NCFittingMiscRow: TreeRow {
 		cell.alignTimeLabel?.text = NCTimeIntervalFormatter.localizedString(from: alignTime, precision: .seconds)
 		cell.signatureLabel?.text = String(Int(signatureRadius))
 		cell.cargoLabel?.text = NCUnitFormatter.localizedString(from: capacity, unit: .cubicMeter, style: .short)
-		cell.oreHoldLabel?.text = NCUnitFormatter.localizedString(from: oreHoldCapacity, unit: .cubicMeter, style: .short)
+		cell.oreHoldLabel?.text = NCUnitFormatter.localizedString(from: specialHoldCapacity, unit: .cubicMeter, style: .short)
 		cell.warpSpeedLabel?.text = NCUnitFormatter.localizedString(from: warpSpeed, unit: .auPerSecond, style: .short)
 	}
 	

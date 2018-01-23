@@ -249,6 +249,7 @@
 		12BE2DC11F53F42500BA43A6 /* NCSkillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BE2DC01F53F42500BA43A6 /* NCSkillsViewController.swift */; };
 		12BFC45D1E3F7CD2000ED8D6 /* TreeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BFC45C1E3F7CD2000ED8D6 /* TreeRow.swift */; };
 		12BFC46E1E409AC2000ED8D6 /* NCThinLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BFC46D1E409AC2000ED8D6 /* NCThinLineView.swift */; };
+		12BFE4212017BF6F0083AC2F /* ASReceipt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BFE4222017BF6F0083AC2F /* ASReceipt.framework */; };
 		12C37D281EFA7E9B0070F055 /* NCEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C37D271EFA7E9B0070F055 /* NCEventViewController.swift */; };
 		12C37D2A1EFA866C0070F055 /* NCMarketGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C37D291EFA866C0070F055 /* NCMarketGroupsViewController.swift */; };
 		12C37D2C1EFA9CDC0070F055 /* NCContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C37D2B1EFA9CDC0070F055 /* NCContactTableViewCell.xib */; };
@@ -688,6 +689,7 @@
 		12BE2DC01F53F42500BA43A6 /* NCSkillsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillsViewController.swift; sourceTree = "<group>"; };
 		12BFC45C1E3F7CD2000ED8D6 /* TreeRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeRow.swift; sourceTree = "<group>"; };
 		12BFC46D1E409AC2000ED8D6 /* NCThinLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCThinLineView.swift; sourceTree = "<group>"; };
+		12BFE4222017BF6F0083AC2F /* ASReceipt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ASReceipt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12C37D271EFA7E9B0070F055 /* NCEventViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCEventViewController.swift; sourceTree = "<group>"; };
 		12C37D291EFA866C0070F055 /* NCMarketGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCMarketGroupsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12C37D2B1EFA9CDC0070F055 /* NCContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCContactTableViewCell.xib; sourceTree = "<group>"; };
@@ -852,6 +854,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12BFE4212017BF6F0083AC2F /* ASReceipt.framework in Frameworks */,
 				122DB9AF1E806DB000E8E2C4 /* libz.tbd in Frameworks */,
 				1235F3D51F39B9F1000E0FD9 /* Swifter.framework in Frameworks */,
 				120A59EF1F10ABEC0053F94B /* StoreKit.framework in Frameworks */,
@@ -1539,6 +1542,7 @@
 		12DBEAAF1E1D3B860088A486 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				12BFE4222017BF6F0083AC2F /* ASReceipt.framework */,
 				12CACFF72008D9FD000B76C3 /* EVEAPI.framework */,
 				120A59EE1F10ABEC0053F94B /* StoreKit.framework */,
 				122DB9AE1E806DB000E8E2C4 /* libz.tbd */,

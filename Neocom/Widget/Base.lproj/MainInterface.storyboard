@@ -14,7 +14,6 @@
         <!--View Controller-->
         <scene sceneID="cwh-vc-ff4">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="M4Y-Lb-cyx" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="37"/>
@@ -39,6 +38,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="37"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
         </scene>
         <!--Today View Controller-->
@@ -79,7 +79,6 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Character Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9GM-3X-L7P">
                                                             <rect key="frame" x="0.0" y="0.0" width="248.5" height="19"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="eI9-zO-hRb">
@@ -91,13 +90,13 @@
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="1000" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T7h-Bj-1yj">
                                                                             <rect key="frame" x="0.0" y="0.0" width="209.5" height="14.5"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vNT-cI-ixn">
                                                                             <rect key="frame" x="217.5" y="0.0" width="31" height="14.5"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                     </subviews>
@@ -116,7 +115,6 @@
                                         <constraint firstAttribute="bottom" secondItem="Mcq-vI-yMU" secondAttribute="bottom" constant="8" id="kZ5-vC-Rld"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="characterImageView" destination="aob-m1-Wvg" id="7i5-W8-iMD"/>
                                     <outlet property="characterNameLabel" destination="9GM-3X-L7P" id="s46-L5-0L8"/>

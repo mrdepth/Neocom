@@ -148,7 +148,7 @@ class NCCache: NSObject {
 
 
 extension NCCacheRecord {
-	@nonobjc class func fetchRequest(forKey key: String?, account: String?) -> NSFetchRequest<NCCacheRecord> {
+	class func fetchRequest(forKey key: String?, account: String?) -> NSFetchRequest<NCCacheRecord> {
 		let request = NSFetchRequest<NCCacheRecord>(entityName: "Record");
 		var predicates = [NSPredicate]()
 		if let key = key {

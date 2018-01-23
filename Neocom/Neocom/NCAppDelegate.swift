@@ -14,6 +14,7 @@ import SafariServices
 import StoreKit
 import Firebase
 import FBSDKCoreKit
+import Appodeal
 
 @UIApplicationMain
 class NCAppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,9 +23,6 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
 		[UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-		
-//		ESI.initialize()
-//		EVE.initialize()
 		
 		application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert], categories: nil))
 		application.registerForRemoteNotifications()
@@ -39,6 +37,9 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		
 		FirebaseApp.configure()
 		FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+		Appodeal.setTestingEnabled(true)
+		Appodeal.setLocationTracking(false)
+		Appodeal.initialize(withApiKey: NCApoodealKey, types: [.banner])
 		return true
 	}
 
@@ -218,10 +219,6 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		toolbar.isTranslucent = false
 	}
 
-}
-
-
-extension NCAppDelegate: UISplitViewControllerDelegate {
 }
 
 extension NCAppDelegate {

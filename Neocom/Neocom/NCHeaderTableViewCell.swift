@@ -94,8 +94,8 @@ extension Prototype {
 
 class NCActionTreeSection: DefaultTreeSection {
 	
-	override init(prototype: Prototype = Prototype.NCActionHeaderTableViewCell.default, nodeIdentifier: String? = nil, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [TreeNode]? = nil) {
-		super.init(prototype: prototype, nodeIdentifier: nodeIdentifier, image: image, title: title, attributedTitle: attributedTitle, children: children)
+	override init(prototype: Prototype = Prototype.NCActionHeaderTableViewCell.default, nodeIdentifier: String? = nil, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, isExpandable: Bool = true, children: [TreeNode]? = nil) {
+		super.init(prototype: prototype, nodeIdentifier: nodeIdentifier, image: image, title: title, attributedTitle: attributedTitle, isExpandable: isExpandable, children: children)
 	}
 	
 	override func configure(cell: UITableViewCell) {

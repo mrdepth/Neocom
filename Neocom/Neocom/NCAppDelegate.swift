@@ -40,6 +40,8 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		Appodeal.setTestingEnabled(true)
 		Appodeal.setLocationTracking(false)
 		Appodeal.initialize(withApiKey: NCApoodealKey, types: [.banner])
+		
+		SKPaymentQueue.default().add(self)
 		return true
 	}
 
@@ -240,5 +242,18 @@ extension NCAppDelegate {
 		
 		Router.Fitting.Editor(representation: loadout).perform(source: controller, sender: nil)
 		return true
+	}
+}
+
+extension NCAppDelegate: SKPaymentTransactionObserver {
+	func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+		transactions.forEach { transaction in
+			switch transaction.transactionState {
+			case .failed, .purchased, .restored:
+				queue.finishTransaction(transaction)
+			default:
+				break
+			}
+		}
 	}
 }

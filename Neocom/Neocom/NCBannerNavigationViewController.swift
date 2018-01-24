@@ -8,6 +8,8 @@
 
 import UIKit
 import Appodeal
+import ASReceipt
+import StoreKit
 
 class NCBannerNavigationViewController: NCNavigationController {
 	
@@ -34,7 +36,16 @@ class NCBannerNavigationViewController: NCNavigationController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		bannerView?.loadAd()
+		Receipt.fetchValidReceipt { [weak self] (result) in
+			guard let strongSelf = self else {return}
+			if case let .success(receipt) = result, receipt.inAppPurchases?.contains(where: {$0.isSubscription && !$0.isExpired}) == true {
+				return
+			}
+			else {
+				strongSelf.bannerView?.loadAd()
+				SKPaymentQueue.default().add(strongSelf)
+			}
+		}
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -75,6 +86,13 @@ class NCBannerNavigationViewController: NCNavigationController {
 		}
 		bannerContainerView.removeFromSuperview()
 	}
+	
+	private func removeBanner() {
+		bannerContainerView?.removeFromSuperview()
+		bannerContainerView = nil
+		bannerView = nil
+		SKPaymentQueue.default().remove(self)
+	}
 }
 
 extension NCBannerNavigationViewController: AppodealBannerViewDelegate {
@@ -87,4 +105,20 @@ extension NCBannerNavigationViewController: AppodealBannerViewDelegate {
 		hideBanner()
 	}
 	
+}
+
+extension NCBannerNavigationViewController: SKPaymentTransactionObserver {
+	
+	func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+		guard bannerContainerView != nil else {return}
+		
+		if transactions.contains(where: {$0.transactionState == .purchased || $0.transactionState == .restored}) {
+			Receipt.fetchValidReceipt { [weak self] (result) in
+				if case let .success(receipt) = result, receipt.inAppPurchases?.contains(where: {$0.isSubscription && !$0.isExpired}) == true {
+					self?.removeBanner()
+				}
+			}
+		}
+	}
+
 }

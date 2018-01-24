@@ -129,7 +129,7 @@ class NCAccountsFoldersViewController: NCTreeViewController {
 
 		let row = NCActionRow(title: NSLocalizedString("New Folder", comment: "").uppercased())
 		
-		sections.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, children: [row]))
+		sections.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [row]))
 		self.treeController?.content = RootNode(sections)
 		completionHandler()
 	}

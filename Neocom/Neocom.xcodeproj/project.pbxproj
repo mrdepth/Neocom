@@ -86,6 +86,7 @@
 		1248DB611F2093D4009625EC /* NCActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1248DB601F2093D4009625EC /* NCActionHandler.swift */; };
 		12498B041EFD63D800FEEE36 /* NCKillmailsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12498B031EFD63D800FEEE36 /* NCKillmailsPageViewController.swift */; };
 		12498B061EFD680200FEEE36 /* NCKillmailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12498B051EFD680200FEEE36 /* NCKillmailTableViewCell.swift */; };
+		124BD4B22018978E00816946 /* NCSubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124BD4B12018978E00816946 /* NCSubscriptionViewController.swift */; };
 		1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE331DF1C38200A2A24B /* NCStorage.swift */; };
 		1256BE361DF1ED3F00A2A24B /* NCStorageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */; };
 		1256BE391DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE381DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift */; };
@@ -103,7 +104,6 @@
 		1256BE551DF4728800A2A24B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE541DF4728800A2A24B /* Main.storyboard */; };
 		1256BE5A1DF4742F00A2A24B /* NCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE591DF4742F00A2A24B /* NCTableViewCell.swift */; };
 		1256BE5C1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256BE5B1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift */; };
-		1256BE5E1DF476C000A2A24B /* mainMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE5D1DF476C000A2A24B /* mainMenu.plist */; };
 		1256BEC81DF4770A00A2A24B /* charisma.png in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE611DF4770A00A2A24B /* charisma.png */; };
 		1256BEC91DF4770A00A2A24B /* intelligence.png in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE621DF4770A00A2A24B /* intelligence.png */; };
 		1256BECA1DF4770A00A2A24B /* memory.png in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE631DF4770A00A2A24B /* memory.png */; };
@@ -550,6 +550,7 @@
 		1248DB601F2093D4009625EC /* NCActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCActionHandler.swift; sourceTree = "<group>"; };
 		12498B031EFD63D800FEEE36 /* NCKillmailsPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailsPageViewController.swift; sourceTree = "<group>"; };
 		12498B051EFD680200FEEE36 /* NCKillmailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailTableViewCell.swift; sourceTree = "<group>"; };
+		124BD4B12018978E00816946 /* NCSubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSubscriptionViewController.swift; sourceTree = "<group>"; };
 		1256BE331DF1C38200A2A24B /* NCStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorage.swift; sourceTree = "<group>"; };
 		1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorageExtensions.swift; sourceTree = "<group>"; };
 		1256BE381DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCBannerNavigationViewController.swift; sourceTree = "<group>"; };
@@ -942,6 +943,7 @@
 				1203E88B1F093B7E009ADF8D /* NCFeedItemViewController.swift */,
 				126E183A1F6133710008C081 /* NCSettingsViewController.swift */,
 				12C966DC1F95F56700B141CC /* NCAboutViewController.swift */,
+				124BD4B12018978E00816946 /* NCSubscriptionViewController.swift */,
 			);
 			name = Misc;
 			sourceTree = "<group>";
@@ -1924,7 +1926,6 @@
 				12BFE44C2017C8E80083AC2F /* MPUnmutedBtn@2x.png in Resources */,
 				12D930EF1E656FCC00CBAE1C /* NCTextFieldTableViewCell.xib in Resources */,
 				12BFE4542017C8E80083AC2F /* MPPlayBtn.png in Resources */,
-				1256BE5E1DF476C000A2A24B /* mainMenu.plist in Resources */,
 				128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */,
 				12E9321C1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib in Resources */,
 				12DA88261EB8696F00FB1922 /* NCPlaceholderTableViewCell.xib in Resources */,
@@ -2021,6 +2022,7 @@
 				12D404531F331BDE007F1715 /* NCMarketPageViewController.swift in Sources */,
 				1226D9631F223A690049FA0C /* NCNPCPickerGroupsViewController.swift in Sources */,
 				1230A32D1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift in Sources */,
+				124BD4B22018978E00816946 /* NCSubscriptionViewController.swift in Sources */,
 				129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */,
 				1256BE3B1DF1EFA600A2A24B /* NCSplitViewController.swift in Sources */,
 				1285FB3A1EB9C5700025331A /* NCWealthViewController.swift in Sources */,
@@ -2406,9 +2408,11 @@
 					"${PROJECT_DIR}/../ThirdParty/Facebook",
 					"${PROJECT_DIR}/../ThirdParty/Appodeal",
 				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../ThirdParty/ASReceipt/ASReceipt/ThirdParty/OpenSSL/include";
 				INFOPLIST_FILE = Neocom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../ThirdParty/ASReceipt/ASReceipt/ThirdParty/OpenSSL/lib";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -2433,9 +2437,11 @@
 					"${PROJECT_DIR}/../ThirdParty/Facebook",
 					"${PROJECT_DIR}/../ThirdParty/Appodeal",
 				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../ThirdParty/ASReceipt/ASReceipt/ThirdParty/OpenSSL/include";
 				INFOPLIST_FILE = Neocom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../ThirdParty/ASReceipt/ASReceipt/ThirdParty/OpenSSL/lib";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "${TARGET_NAME}";

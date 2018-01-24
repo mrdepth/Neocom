@@ -1519,6 +1519,13 @@ enum Router {
 				super.init(kind: .detail, storyboard: .character, identifier: "NCLoyaltyPointsViewController")
 			}
 		}
+		
+		class Subscription: Route {
+			init() {
+				super.init(kind: .detail, storyboard: .main, identifier: "NCSubscriptionViewController")
+			}
+		}
+
 	}
 	
 	enum Utility {

@@ -37,11 +37,6 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		
 		FirebaseApp.configure()
 		FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-#if DEBUG
-		Appodeal.setTestingEnabled(true)
-#endif
-		Appodeal.setLocationTracking(false)
-		Appodeal.initialize(withApiKey: NCApoodealKey, types: [.banner])
 		
 		SKPaymentQueue.default().add(self)
 		return true

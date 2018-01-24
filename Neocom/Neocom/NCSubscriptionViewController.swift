@@ -16,6 +16,7 @@ class NCSubscriptionViewController: NCTreeViewController {
 		super.viewDidLoad()
 		
 		tableView.register([Prototype.NCDefaultTableViewCell.noImage,
+							Prototype.NCDefaultTableViewCell.attributeNoImage,
 							Prototype.NCHeaderTableViewCell.empty,
 							Prototype.NCActionTableViewCell.default])
 		
@@ -68,14 +69,14 @@ class NCSubscriptionViewController: NCTreeViewController {
 						title = NSLocalizedString("Subscription ACTIVE", comment: "") + ": \(formatter.string(from: product.price) ?? "") / \(inApp.period)"
 					}
 					else {
-						title = NSLocalizedString("Subscription ACTIVE", comment: "")
+						title = NSLocalizedString("Subscription Active", comment: "")
 					}
 					let formatter = DateFormatter()
 					formatter.dateStyle = .medium
 					formatter.timeStyle = .none
 					let subtitle = NSLocalizedString("Renews", comment: "") + " " + formatter.string(from: purchase.expiresDate!)
 					rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
-						DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage, nodeIdentifier: "Subscription", title: title, subtitle: subtitle)
+						DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "Subscription", title: title?.uppercased(), subtitle: subtitle)
 						]))
 				}
 			}
@@ -91,7 +92,7 @@ class NCSubscriptionViewController: NCTreeViewController {
 				}
 				
 				rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
-					NCActionRow(title: NSLocalizedString("Restore Purchase", comment: "").uppercased())
+					NCActionRow(title: NSLocalizedString("Restore Purchases", comment: "").uppercased())
 					]))
 				//					rows.append()
 				
@@ -167,9 +168,9 @@ extension NCSubscriptionViewController: SKPaymentTransactionObserver {
 		progressHandler?.finish()
 		progressHandler = nil
 		tableView.isUserInteractionEnabled = true
-		let controller = UIAlertController(title: NSLocalizedString("Restore Purchase", comment: ""), message: NSLocalizedString("Done", comment: ""), preferredStyle: .alert)
+		let controller = UIAlertController(title: NSLocalizedString("Purchases Restored", comment: ""), message: NSLocalizedString("Your previous purchases are being restored. Thank you!", comment: ""), preferredStyle: .alert)
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .default, handler: nil))
 		present(controller, animated: true, completion: nil)
-		updateContent { }
+//		updateContent { }
 	}
 }

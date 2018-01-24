@@ -454,8 +454,8 @@ class NCMainMenuViewController: NCTreeViewController {
 			                   children: [
 								NCMainMenuRow(nodeIdentifier: "News", image: #imageLiteral(resourceName: "newspost"), title: NSLocalizedString("News", comment: ""), route: Router.MainMenu.News()),
 								NCMainMenuRow(nodeIdentifier: "Settings", image: #imageLiteral(resourceName: "settings"), title: NSLocalizedString("Settings", comment: ""), route: Router.MainMenu.Settings()),
-								NCMainMenuRow(nodeIdentifier: "About", image: #imageLiteral(resourceName: "info"), title: NSLocalizedString("About", comment: ""), route: Router.MainMenu.About()),
-								NCMainMenuRow(nodeIdentifier: "Subscription", image: #imageLiteral(resourceName: "votes"), title: NSLocalizedString("Remove Ads", comment: ""), route: Router.MainMenu.Subscription())
+								NCMainMenuRow(nodeIdentifier: "Subscription", image: #imageLiteral(resourceName: "votes"), title: NSLocalizedString("Remove Ads", comment: ""), route: Router.MainMenu.Subscription()),
+								NCMainMenuRow(nodeIdentifier: "About", image: #imageLiteral(resourceName: "info"), title: NSLocalizedString("About", comment: ""), route: Router.MainMenu.About())
 				])
 
 

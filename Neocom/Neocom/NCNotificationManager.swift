@@ -88,6 +88,8 @@ class NCNotificationManager: NSObject {
 			
 			dispatchGroup.enter()
 			var pending = requests
+			var queue: [(Int64, String, [ESI.Skills.SkillQueueItem], Date, String)] = []
+			
 			storage.performBackgroundTask { managedObjectContext in
 				defer {dispatchGroup.leave()}
 				guard let accounts: [NCAccount] = managedObjectContext.fetch("Account") else {
@@ -102,6 +104,7 @@ class NCNotificationManager: NSObject {
 					
 					let dataManager = NCDataManager(account: account)
 					let characterID = account.characterID
+					let characterName = account.characterName ?? ""
 
 					let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(characterID)_64.png")
 					
@@ -112,6 +115,10 @@ class NCNotificationManager: NSObject {
 					dataManager.skillQueue { result in
 						switch result {
 						case let .success(value, _):
+							if let uuid = uuid {
+								queue.append((characterID, characterName, value, value.flatMap{$0.finishDate}.max() ?? Date.distantFuture, uuid))
+							}
+							dispatchGroup.enter()
 							dataManager.image(characterID: characterID, dimension: 64) { result in
 								if let image = result.value {
 									try? UIImagePNGRepresentation(image)?.write(to: url)
@@ -122,9 +129,9 @@ class NCNotificationManager: NSObject {
 								}
 							}
 						case .failure:
-							dispatchGroup.leave()
 							lifeTime.finalize()
 						}
+						dispatchGroup.leave()
 					}
 				}
 				
@@ -132,8 +139,62 @@ class NCNotificationManager: NSObject {
 			}
 			
 			dispatchGroup.notify(queue: .main) { [weak self] in
-				self?.lastScheduleDate = Date()
-				completionHandler?(true)
+				NCDatabase.sharedDatabase?.performBackgroundTask { (context) in
+					if let url = WidgetData.url {
+						let date = Date()
+						let invTypes = NCDBInvType.invTypes(managedObjectContext: context)
+						let accounts = Array(queue.filter{!$0.2.isEmpty}.sorted{$0.3 < $1.3}.prefix(4))
+							.map { i -> WidgetData.Account in
+								let skills = i.2.flatMap { j-> WidgetData.Account.SkillQueueItem? in
+									guard let type = invTypes[j.skillID],
+										let skill = NCSkill(type: type, skill: j),
+										let startDate = j.startDate,
+										let finishDate = j.finishDate,
+										let skillName = type.typeName,
+										finishDate > date else {return nil}
+									
+									return WidgetData.Account.SkillQueueItem(skillName: skillName, startDate: startDate, finishDate: finishDate, level: j.finishedLevel - 1, rank: skill.rank, startSP: j.levelStartSP, endSP: j.levelEndSP)
+								}
+								return WidgetData.Account(characterID: i.0, characterName: i.1, uuid: i.4, skillQueue: skills)
+						}
+						
+						let dispatchGroup = DispatchGroup()
+
+						let widgetData = WidgetData(accounts: accounts)
+						
+						let fileManager = FileManager.default
+						let baseURL = url.deletingLastPathComponent()
+						try? fileManager.contentsOfDirectory(at: baseURL, includingPropertiesForKeys: nil, options: []).forEach {
+							if $0.pathExtension == "png" {
+								try? fileManager.removeItem(at: $0)
+							}
+						}
+						try? fileManager.removeItem(at: url)
+						
+						do {
+							let data = try JSONEncoder().encode(widgetData)
+							try data.write(to: url)
+							let dataManager = NCDataManager()
+							
+							accounts.forEach { account in
+								dispatchGroup.enter()
+								dataManager.image(characterID: account.characterID, dimension: 64) { result in
+									if let image = result.value, let data = UIImagePNGRepresentation(image) {
+										try? data.write(to: baseURL.appendingPathComponent("\(account.characterID).png"))
+									}
+									dispatchGroup.leave()
+								}
+							}
+						}
+						catch {
+							
+						}
+						dispatchGroup.notify(queue: .main) {
+							self?.lastScheduleDate = Date()
+							completionHandler?(true)
+						}
+					}
+				}
 			}
 		}
 	}

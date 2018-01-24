@@ -42,15 +42,15 @@ class NCRangeFormatter: Formatter {
 	}
 
 	
-	@nonobjc func string(for value: Double, maximum: Double) -> String {
+	func string(for value: Double, maximum: Double) -> String {
 		return "\(formatter1.string(for: value)!)/\(formatter2.string(for: maximum)!)"
 	}
 
-	@nonobjc func string(for value: Float, maximum: Float) -> String {
+	func string(for value: Float, maximum: Float) -> String {
 		return "\(formatter1.string(for: value)!)/\(formatter2.string(for: maximum)!)"
 	}
 
-	@nonobjc func string(for value: Int, maximum: Int) -> String {
+	func string(for value: Int, maximum: Int) -> String {
 		return "\(formatter1.string(for: value)!)/\(formatter2.string(for: maximum)!)"
 	}
 

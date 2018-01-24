@@ -204,7 +204,7 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 							self?.update()
 						})]
 		
-		moreSection = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, nodeIdentifier: "More",
+		moreSection = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, nodeIdentifier: "More", isExpandable: false,
 		                                 children: moreRows)
 		
 		rows.append(moreSection!)
@@ -212,7 +212,7 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 		killsRow = NCActionRow(title: NSLocalizedString("Search Kills", comment: "").uppercased(), route: kills)
 		lossesRow = NCActionRow(title: NSLocalizedString("Search Losses", comment: "").uppercased(), route: losses)
 		
-		actionsSection = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, nodeIdentifier: "Actions",
+		actionsSection = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, nodeIdentifier: "Actions", isExpandable: false,
 		                                    children: /*[NCActionRow(title: NSLocalizedString("Search Kills", comment: "").uppercased(), route: kills),
 		                                               NCActionRow(title: NSLocalizedString("Search Losses", comment: "").uppercased(), route: losses)]*/ nil)
 		rows.append(actionsSection!)

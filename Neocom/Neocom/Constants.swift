@@ -199,6 +199,24 @@ enum NCURLScheme: String {
 let NCSupportEmail = "support@eveuniverseiphone.com"
 let NCHomepage = "https://facebook.com/groups/Neocom"
 let NCSources = "https://github.com/mrdepth/Neocom"
+let NCApoodealKey = "94f0ed36388a0a458bdf528df128c4427c4d4fb50130f981"
+
+enum InAppProductID: String {
+	case removeAdsMonth = "com.shimanski.neocom.removeads.month"
+	
+	/*var period: (unit: NSCalendar.Unit, numberOfUnits: Int) {
+		switch self {
+		case .removeAdsMonth:
+			return (.month, 1)
+		}
+	}*/
+	var period: String {
+		switch self {
+		case .removeAdsMonth:
+			return NSLocalizedString("Month", comment: "")
+		}
+	}
+}
 
 let NCSpecialThanks = ["Ilya Gepp aka Kane Gepp",
                        "Dick Starmans aka Enrique d'Ancourt",

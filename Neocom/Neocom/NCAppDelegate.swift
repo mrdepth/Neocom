@@ -14,6 +14,7 @@ import SafariServices
 import StoreKit
 import Firebase
 import FBSDKCoreKit
+import Appodeal
 
 @UIApplicationMain
 class NCAppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,9 +23,6 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
 		[UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-		
-//		ESI.initialize()
-//		EVE.initialize()
 		
 		application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert], categories: nil))
 		application.registerForRemoteNotifications()
@@ -39,6 +37,11 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		
 		FirebaseApp.configure()
 		FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+		Appodeal.setTestingEnabled(true)
+		Appodeal.setLocationTracking(false)
+		Appodeal.initialize(withApiKey: NCApoodealKey, types: [.banner])
+		
+		SKPaymentQueue.default().add(self)
 		return true
 	}
 
@@ -157,6 +160,16 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 				return showTypeInfo(typeID: typeID)
 			case .fitting?:
 				return showFitting(dna: components.path)
+			case .nc?:
+				switch components.host {
+				case "account"?:
+					guard let uuid = components.queryItems?.first(where: {$0.name == "uuid"})?.value else {return false}
+					guard let account = NCStorage.sharedStorage?.accounts[uuid] else {return false}
+					NCAccount.current = account
+					return true
+				default:
+					return false
+				}
 			default:
 				return false
 			}
@@ -210,10 +223,6 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
-
-extension NCAppDelegate: UISplitViewControllerDelegate {
-}
-
 extension NCAppDelegate {
 	
 	fileprivate func showTypeInfo(typeID: Int) -> Bool {
@@ -233,5 +242,18 @@ extension NCAppDelegate {
 		
 		Router.Fitting.Editor(representation: loadout).perform(source: controller, sender: nil)
 		return true
+	}
+}
+
+extension NCAppDelegate: SKPaymentTransactionObserver {
+	func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+		transactions.forEach { transaction in
+			switch transaction.transactionState {
+			case .failed, .purchased, .restored:
+				queue.finishTransaction(transaction)
+			default:
+				break
+			}
+		}
 	}
 }

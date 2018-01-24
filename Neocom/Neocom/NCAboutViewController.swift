@@ -34,7 +34,7 @@ class NCAboutViewController: NCTreeViewController {
 			sections.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("SDE Version", comment: "").uppercased(), subtitle: s))
 		}
 		
-		sections.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, children: [
+		sections.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
 			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Support", comment: "").uppercased(), subtitle: NCSupportEmail, route: Router.Custom({ (_, _) in
 				UIApplication.shared.openURL(URL(string: "mailto:\(NCSupportEmail)")!)
 			})),

@@ -25,4 +25,7 @@
    <FileRef
       location = "group:ThirdParty/swifter/XCode/Swifter.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:ThirdParty/ASReceipt/ASReceipt/ASReceipt.xcodeproj">
+   </FileRef>
 </Workspace>

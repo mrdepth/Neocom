@@ -22,3 +22,6 @@
 [submodule "ThirdParty/swifter"]
 	path = ThirdParty/swifter
 	url = https://github.com/httpswift/swifter.git
+[submodule "ThirdParty/ASReceipt"]
+	path = ThirdParty/ASReceipt
+	url = ../ASReceipt.git

@@ -38,6 +38,12 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		FirebaseApp.configure()
 		FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
 		
+		#if DEBUG
+			Appodeal.setTestingEnabled(true)
+		#endif
+		Appodeal.setLocationTracking(false)
+		Appodeal.initialize(withApiKey: NCApoodealKey, types: [.banner])
+
 		SKPaymentQueue.default().add(self)
 		return true
 	}
@@ -64,6 +70,12 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
+		if products == nil && productsRequest == nil {
+			let request = SKProductsRequest(productIdentifiers: Set([InAppProductID.removeAdsMonth.rawValue]))
+			request.delegate = self
+			request.start()
+			productsRequest = request
+		}
 		FBSDKAppEvents.activateApp()
 		NCDataManager().updateMarketPrices()
 
@@ -187,6 +199,9 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	}
 	
 	//MARK: Private
+	
+	var products: [SKProduct]?
+	private var productsRequest: SKProductsRequest?
 
 	private func setupAppearance() {
 		CSScheme.currentScheme = CSScheme.Dark
@@ -246,11 +261,25 @@ extension NCAppDelegate: SKPaymentTransactionObserver {
 	func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
 		transactions.forEach { transaction in
 			switch transaction.transactionState {
-			case .failed, .purchased, .restored:
+			case .purchased:
+				if let product = products?.first(where: {$0.productIdentifier == transaction.payment.productIdentifier}) {
+					APDSdk.shared().track(inAppPurchase: product.price, currency: product.priceLocale.currencyCode ?? "USD")
+				}
+				else if let price = InAppProductID(rawValue: transaction.payment.productIdentifier)?.price {
+					APDSdk.shared().track(inAppPurchase: NSNumber(value: price.0), currency: price.1)
+				}
+				queue.finishTransaction(transaction)
+			case .failed, .restored:
 				queue.finishTransaction(transaction)
 			default:
 				break
 			}
 		}
+	}
+}
+
+extension NCAppDelegate: SKProductsRequestDelegate {
+	public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+		products = response.products
 	}
 }

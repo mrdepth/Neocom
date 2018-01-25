@@ -38,16 +38,10 @@ class NCBannerNavigationViewController: NCNavigationController {
 		super.viewDidLoad()
 		Receipt.fetchValidReceipt { [weak self] (result) in
 			guard let strongSelf = self else {return}
-			if case let .success(receipt) = result, receipt.inAppPurchases?.contains(where: {$0.isSubscription && !$0.isExpired}) == true {
+			if case let .success(receipt) = result, receipt.inAppPurchases?.contains(where: {$0.inAppType == .autoRenewableSubscription && !$0.isExpired}) == true {
 				return
 			}
 			else {
-				#if DEBUG
-					Appodeal.setTestingEnabled(true)
-				#endif
-				Appodeal.setLocationTracking(false)
-				Appodeal.initialize(withApiKey: NCApoodealKey, types: [.banner])
-
 				strongSelf.bannerView?.loadAd()
 				SKPaymentQueue.default().add(strongSelf)
 			}
@@ -132,7 +126,7 @@ extension NCBannerNavigationViewController: SKPaymentTransactionObserver {
 		
 		if transactions.contains(where: {$0.transactionState == .purchased || $0.transactionState == .restored}) {
 			Receipt.fetchValidReceipt { [weak self] (result) in
-				if case let .success(receipt) = result, receipt.inAppPurchases?.contains(where: {$0.isSubscription && !$0.isExpired}) == true {
+				if case let .success(receipt) = result, receipt.inAppPurchases?.contains(where: {$0.inAppType == .autoRenewableSubscription && !$0.isExpired}) == true {
 					self?.removeBanner()
 				}
 			}

@@ -200,6 +200,7 @@ let NCSupportEmail = "support@eveuniverseiphone.com"
 let NCHomepage = "https://facebook.com/groups/Neocom"
 let NCSources = "https://github.com/mrdepth/Neocom"
 let NCApoodealKey = "94f0ed36388a0a458bdf528df128c4427c4d4fb50130f981"
+let NCManageSubscriptionsURL = URL(string: "https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions")!
 
 enum InAppProductID: String {
 	case removeAdsMonth = "com.shimanski.neocom.removeads.month"
@@ -214,6 +215,13 @@ enum InAppProductID: String {
 		switch self {
 		case .removeAdsMonth:
 			return NSLocalizedString("Month", comment: "")
+		}
+	}
+	
+	var price: (Double, String) {
+		switch self {
+		case .removeAdsMonth:
+			return (0.99, "USD")
 		}
 	}
 }

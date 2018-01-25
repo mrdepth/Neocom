@@ -59,12 +59,14 @@ class NCSubscriptionViewController: NCTreeViewController {
 			let formatter = NumberFormatter()
 			formatter.numberStyle = .currency
 
+			let products = self.products ?? (UIApplication.shared.delegate as? NCAppDelegate)?.products
+
 			if case let .success(receipt) = result,
-				let purchase = receipt.inAppPurchases?.filter ({$0.isSubscription && !$0.isExpired}).max(by: {$0.expiresDate! < $1.expiresDate!}) {
+				let purchase = receipt.inAppPurchases?.filter ({$0.inAppType == .autoRenewableSubscription && !$0.isExpired}).max(by: {$0.expiresDate! < $1.expiresDate!}) {
 				
 				if let inApp = InAppProductID(rawValue: purchase.productID) {
 					let title: String?
-					if let product = self.products?.first(where: {$0.productIdentifier == purchase.productID}) {
+					if let product = products?.first(where: {$0.productIdentifier == purchase.productID}) {
 						formatter.locale = product.priceLocale
 						title = NSLocalizedString("Subscription ACTIVE", comment: "") + ": \(formatter.string(from: product.price) ?? "") / \(inApp.period)"
 					}
@@ -75,24 +77,39 @@ class NCSubscriptionViewController: NCTreeViewController {
 					formatter.dateStyle = .medium
 					formatter.timeStyle = .none
 					let subtitle = NSLocalizedString("Renews", comment: "") + " " + formatter.string(from: purchase.expiresDate!)
+					
+					
+					let route = Router.Custom { (_, _) in
+						UIApplication.shared.openURL(NCManageSubscriptionsURL)
+					}
+
 					rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
-						DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "Subscription", title: title?.uppercased(), subtitle: subtitle)
+						DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "Subscription", title: title?.uppercased(), subtitle: subtitle),
+						NCActionRow(title: NSLocalizedString("Cancel Subscription", comment: "").uppercased(), route: route)
 						]))
 				}
 			}
 			else {
-				
-				if let plans = self.products?.flatMap ({ i -> TreeNode? in
+				if let plans = products?.flatMap ({ i -> TreeNode? in
 					guard let inApp = InAppProductID(rawValue: i.productIdentifier) else {return nil}
 					formatter.locale = i.priceLocale
 					let title = NSLocalizedString("Subscribe for ", comment: "").uppercased() + "\(formatter.string(from: i.price) ?? "")" * [NSAttributedStringKey.foregroundColor: UIColor.white] + " / \(inApp.period.uppercased())"
-					return NCActionRow(attributedTitle: title, object: i)
+					
+					let route = Router.Custom { [weak self] (_, sender) in
+						self?.purchase(product: i, sender: sender)
+					}
+					
+					return NCActionRow(attributedTitle: title, route: route)
 				}), !plans.isEmpty {
 					rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: plans))
 				}
 				
+				let route = Router.Custom { [weak self] (_, sender) in
+					self?.restorePurchases(sender: sender)
+				}
+
 				rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
-					NCActionRow(title: NSLocalizedString("Restore Purchases", comment: "").uppercased())
+					NCActionRow(title: NSLocalizedString("Restore Purchases", comment: "").uppercased(), route: route)
 					]))
 				//					rows.append()
 				
@@ -108,9 +125,7 @@ class NCSubscriptionViewController: NCTreeViewController {
 		}
 	}
 	
-	private var progressHandler: NCProgressHandler?
-	
-	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
+	/*override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		super.treeController(treeController, didSelectCellWithNode: node)
 		guard let row = node as? NCActionRow else {return}
 		if let product = row.object as? SKProduct {
@@ -128,9 +143,26 @@ class NCSubscriptionViewController: NCTreeViewController {
 			}
 
 		}
-	}
+	}*/
 	
 	private var products: [SKProduct]?
+	
+	private var progressHandler: NCProgressHandler?
+
+	private func purchase(product: SKProduct, sender: Any?) {
+		guard let cell = sender as? UITableViewCell else {return}
+		tableView.isUserInteractionEnabled = false
+		progressHandler = NCProgressHandler(view: cell, totalUnitCount: 1, activityIndicatorStyle: .white)
+		SKPaymentQueue.default().add(SKPayment(product: product))
+
+	}
+	
+	private func restorePurchases(sender: Any?) {
+		guard let cell = sender as? UITableViewCell else {return}
+		tableView.isUserInteractionEnabled = false
+		progressHandler = NCProgressHandler(view: cell, totalUnitCount: 1, activityIndicatorStyle: .white)
+		SKPaymentQueue.default().restoreCompletedTransactions()
+	}
 }
 
 extension NCSubscriptionViewController: SKProductsRequestDelegate {

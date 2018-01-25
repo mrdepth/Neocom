@@ -38,11 +38,17 @@ class NCAboutViewController: NCTreeViewController {
 			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Support", comment: "").uppercased(), subtitle: NCSupportEmail, route: Router.Custom({ (_, _) in
 				UIApplication.shared.openURL(URL(string: "mailto:\(NCSupportEmail)")!)
 			})),
-			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Homepage", comment: "").uppercased(), subtitle: NCHomepage, route: Router.Custom({ (_, _) in
-				UIApplication.shared.openURL(URL(string: NCHomepage)!)
+			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Homepage", comment: "").uppercased(), subtitle: NCHomepage.absoluteString, route: Router.Custom({ (_, _) in
+				UIApplication.shared.openURL(NCHomepage)
 			})),
-			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Sources", comment: "").uppercased(), subtitle: NCSources, route: Router.Custom({ (_, _) in
-				UIApplication.shared.openURL(URL(string: NCSources)!)
+			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Sources", comment: "").uppercased(), subtitle: NCSources.absoluteString, route: Router.Custom({ (_, _) in
+				UIApplication.shared.openURL(NCSources)
+			})),
+			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Privacy Policy", comment: "").uppercased(), subtitle: NCPrivacy.absoluteString, route: Router.Custom({ (_, _) in
+				UIApplication.shared.openURL(NCPrivacy)
+			})),
+			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Terms of Use", comment: "").uppercased(), subtitle: NCTerms.absoluteString, route: Router.Custom({ (_, _) in
+				UIApplication.shared.openURL(NCTerms)
 			})),
 
 			]))
@@ -52,3 +58,5 @@ class NCAboutViewController: NCTreeViewController {
 		treeController?.content = RootNode(sections)
 	}
 }
+
+

@@ -12,7 +12,7 @@ import CoreData
 
 extension NCAccount {
 	
-	@nonobjc static var current: NCAccount? = {
+	static var current: NCAccount? = {
 		guard let url = UserDefaults.standard.url(forKey: UserDefaults.Key.NCCurrentAccount) else {return nil}
 		guard let objectID = NCStorage.sharedStorage?.persistentStoreCoordinator.managedObjectID(forURIRepresentation: url) else {return nil}
 		return (try? NCStorage.sharedStorage?.viewContext.existingObject(with: objectID)) as? NCAccount

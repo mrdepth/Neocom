@@ -197,8 +197,36 @@ enum NCURLScheme: String {
 }
 
 let NCSupportEmail = "support@eveuniverseiphone.com"
-let NCHomepage = "https://facebook.com/groups/Neocom"
-let NCSources = "https://github.com/mrdepth/Neocom"
+let NCHomepage = URL(string: "https://facebook.com/groups/Neocom")!
+let NCSources = URL(string: "https://github.com/mrdepth/Neocom")!
+let NCTerms = URL(string: "http://mrdepth.github.io/Neocom/terms.html")!
+let NCPrivacy = URL(string: "http://mrdepth.github.io/Neocom/privacy.html")!
+let NCApoodealKey = "94f0ed36388a0a458bdf528df128c4427c4d4fb50130f981"
+let NCManageSubscriptionsURL = URL(string: "https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions")!
+
+enum InAppProductID: String {
+	case removeAdsMonth = "com.shimanski.neocom.removeads.month"
+	
+	/*var period: (unit: NSCalendar.Unit, numberOfUnits: Int) {
+		switch self {
+		case .removeAdsMonth:
+			return (.month, 1)
+		}
+	}*/
+	var period: String {
+		switch self {
+		case .removeAdsMonth:
+			return NSLocalizedString("Month", comment: "")
+		}
+	}
+	
+	var price: (Double, String) {
+		switch self {
+		case .removeAdsMonth:
+			return (0.99, "USD")
+		}
+	}
+}
 
 let NCSpecialThanks = ["Ilya Gepp aka Kane Gepp",
                        "Dick Starmans aka Enrique d'Ancourt",

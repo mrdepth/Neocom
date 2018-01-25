@@ -93,7 +93,7 @@ class NCColonySection: TreeSection {
 				
 				rows.sort(by: {$0.sortDescriptor < $1.sortDescriptor})
 				
-				self.children = rows.map{DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, children: [$0])}
+				self.children = rows.map{DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [$0])}
 				
 				isHalted = planet.facilities.lazy.flatMap{$0 as? DGMExtractorControlUnit}.first {$0.expiryTime < currentTime} != nil
 				isExpanded = isHalted

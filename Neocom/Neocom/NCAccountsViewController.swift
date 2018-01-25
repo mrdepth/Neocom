@@ -137,11 +137,11 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 			cell.alertLabel.isHidden = true
 		}
 		else {
-			if let scopes = object.scopes?.flatMap({($0 as? NCScope)?.name}), Set(ESI.Scope.default.map{$0.rawValue}) != Set(scopes) {
-				cell.alertLabel.isHidden = false
+			if let scopes = object.scopes?.flatMap({($0 as? NCScope)?.name}), Set(ESI.Scope.default.map{$0.rawValue}).isSubset(of: Set(scopes)) {
+				cell.alertLabel.isHidden = true
 			}
 			else {
-				cell.alertLabel.isHidden = true
+				cell.alertLabel.isHidden = false
 			}
 		}
 	}

@@ -117,10 +117,10 @@ class TreeSection: TreeNode, CollapseSerializable {
 	var collapseState: NCCacheSectionCollapse?
 	let collapseIdentifier: String?
 	
-	init(prototype: Prototype? = nil, collapseIdentifier: String? = nil) {
+	init(prototype: Prototype? = nil, collapseIdentifier: String? = nil, isExpandable: Bool = true) {
 		self.collapseIdentifier = collapseIdentifier
 		super.init(cellIdentifier: prototype?.reuseIdentifier)
-		isExpandable = true
+		self.isExpandable = isExpandable
 	}
 	
 	override var separatorInset: UIEdgeInsets {
@@ -155,11 +155,11 @@ class DefaultTreeSection: TreeSection {
 	}
 
 
-	init(prototype: Prototype = Prototype.NCHeaderTableViewCell.default, nodeIdentifier: String? = nil, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [TreeNode]? = nil) {
+	init(prototype: Prototype = Prototype.NCHeaderTableViewCell.default, nodeIdentifier: String? = nil, image: UIImage? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, isExpandable: Bool = true, children: [TreeNode]? = nil) {
 		self.image = image
 		self.title = title
 		self.attributedTitle = attributedTitle
-		super.init(prototype: prototype, collapseIdentifier: nodeIdentifier)
+		super.init(prototype: prototype, collapseIdentifier: nodeIdentifier, isExpandable: isExpandable)
 		self.children = children ?? []
 	}
 	
@@ -287,7 +287,7 @@ class NCActionRow: TreeRow {
 	
 	override var hashValue: Int {
 		let h = route != nil ? Unmanaged.passUnretained(route!).toOpaque().hashValue : 0
-		return [h, title?.hashValue ?? 0].hashValue
+		return [h, title?.hashValue ?? attributedTitle?.hashValue ?? 0].hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {

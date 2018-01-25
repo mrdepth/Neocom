@@ -70,6 +70,7 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
 		scrollView.canCancelContentTouches = false
 //		scrollView.delaysContentTouches = false
 		
@@ -80,7 +81,14 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 		view.addSubview(pageControl)
 		view.addSubview(scrollView)
 		pageControl.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor)
-		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[top]-0-[page]-0-[scrollView]-0-[bottom]", options: [], metrics: nil, views: ["top": topLayoutGuide, "bottom": bottomLayoutGuide, "page": pageControl, "scrollView": scrollView]))
+		
+		if #available(iOS 11.0, *) {
+			NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[top]-0-[page]-0-[scrollView]", options: [], metrics: nil, views: ["top": topLayoutGuide, "page": pageControl, "scrollView": scrollView]))
+			scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+		}
+		else {
+			NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[top]-0-[page]-0-[scrollView]-0-[bottom]", options: [], metrics: nil, views: ["top": topLayoutGuide, "bottom": bottomLayoutGuide, "page": pageControl, "scrollView": scrollView]))
+		}
 		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[page]-0-|", options: [], metrics: nil, views: ["page": pageControl]))
 		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[scrollView]-0-|", options: [], metrics: nil, views: ["scrollView": scrollView]))
 		pageControl.scrollView = scrollView

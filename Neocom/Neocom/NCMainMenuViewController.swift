@@ -188,8 +188,9 @@ class NCServerStatusRow: NCAccountDataMenuRow<ESI.Status.ServerStatus> {
 	lazy var dateFormatter: DateFormatter = {
 		let dateFormatter = DateFormatter()
 		dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-		dateFormatter.timeStyle = .medium
-		dateFormatter.dateStyle = .none
+		dateFormatter.dateFormat = "HH:mm:ss"
+//		dateFormatter.timeStyle = .medium
+//		dateFormatter.dateStyle = .none
 		return dateFormatter
 	}()
 	
@@ -427,13 +428,13 @@ class NCMainMenuViewController: NCTreeViewController {
 								              image: #imageLiteral(resourceName: "journal"),
 								              title: NSLocalizedString("Wallet Transactions", comment: ""),
 								              route: Router.MainMenu.WalletTransactions(),
-								              scopes: [.characterWalletRead],
+								              scopes: [.esiWalletReadCharacterWalletV1],
 								              account: account),
 								NCMainMenuRow(nodeIdentifier: "WalletJournal",
 								              image: #imageLiteral(resourceName: "wallet"),
 								              title: NSLocalizedString("Wallet Journal", comment: ""),
 								              route: Router.MainMenu.WalletJournal(),
-								              scopes: [.characterWalletRead],
+								              scopes: [.esiWalletReadCharacterWalletV1],
 								              account: account),
 								NCMainMenuRow(nodeIdentifier: "IndustryJobs",
 								              image: #imageLiteral(resourceName: "industry"),
@@ -453,6 +454,7 @@ class NCMainMenuViewController: NCTreeViewController {
 			                   children: [
 								NCMainMenuRow(nodeIdentifier: "News", image: #imageLiteral(resourceName: "newspost"), title: NSLocalizedString("News", comment: ""), route: Router.MainMenu.News()),
 								NCMainMenuRow(nodeIdentifier: "Settings", image: #imageLiteral(resourceName: "settings"), title: NSLocalizedString("Settings", comment: ""), route: Router.MainMenu.Settings()),
+								NCMainMenuRow(nodeIdentifier: "Subscription", image: #imageLiteral(resourceName: "votes"), title: NSLocalizedString("Remove Ads", comment: ""), route: Router.MainMenu.Subscription()),
 								NCMainMenuRow(nodeIdentifier: "About", image: #imageLiteral(resourceName: "info"), title: NSLocalizedString("About", comment: ""), route: Router.MainMenu.About())
 				])
 

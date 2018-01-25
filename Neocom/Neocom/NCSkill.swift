@@ -18,38 +18,34 @@ class NCSkill: Hashable {
 	let startSkillPoints: Int?
 	
 	var skillPoints: Int {
-		get {
-			if let trainingStartDate = trainingStartDate,
-				let trainingEndDate = trainingEndDate,
-				let startSkillPoints = startSkillPoints,
-				let level = level,
-				trainingEndDate > Date() {
-				let endSP = skillPoints(at: level + 1)
-				let t = trainingEndDate.timeIntervalSince(trainingStartDate)
-				if t > 0 {
-					let spps = Double(endSP - startSkillPoints) / t
-					let t = trainingEndDate.timeIntervalSinceNow
-					let sp = Int(t > 0 ? Double(endSP) - t * spps : Double(endSP))
-					return max(sp, startSkillPoints);
-				}
-				else {
-					return endSP
-				}
+		if let trainingStartDate = trainingStartDate,
+			let trainingEndDate = trainingEndDate,
+			let startSkillPoints = startSkillPoints,
+			let level = level,
+			trainingEndDate > Date() {
+			let endSP = skillPoints(at: level + 1)
+			let t = trainingEndDate.timeIntervalSince(trainingStartDate)
+			if t > 0 {
+				let spps = Double(endSP - startSkillPoints) / t
+				let t = trainingEndDate.timeIntervalSinceNow
+				let sp = Int(t > 0 ? Double(endSP) - t * spps : Double(endSP))
+				return max(sp, startSkillPoints);
 			}
-			//return startSkillPoints ?? 0
-			return skillPoints(at: level ?? 0)
+			else {
+				return endSP
+			}
 		}
+		//return startSkillPoints ?? 0
+		return skillPoints(at: level ?? 0)
 	}
 	
 	var trainingProgress: Float {
-		get {
-			guard let level = self.level else {return 0}
-			let start = Double(skillPoints(at: level))
-			let end = Double(skillPoints(at: level + 1))
-			let sp = Double(skillPoints)
-			let progress = (sp - start) / (end - start);
-			return Float(progress)
-		}
+		guard let level = self.level else {return 0}
+		let start = Double(skillPoints(at: level))
+		let end = Double(skillPoints(at: level + 1))
+		let sp = Double(skillPoints)
+		let progress = (sp - start) / (end - start);
+		return Float(progress)
 	}
 	
 	let level: Int?

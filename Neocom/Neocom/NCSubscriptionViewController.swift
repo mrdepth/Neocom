@@ -65,42 +65,23 @@ class NCSubscriptionViewController: NCTreeViewController {
 			if case let .success(receipt) = result,
 				let purchase = receipt.inAppPurchases?.filter ({$0.inAppType == .autoRenewableSubscription && !$0.isExpired}).max(by: {$0.expiresDate! < $1.expiresDate!}) {
 				
-				if let inApp = InAppProductID(rawValue: purchase.productID) {
-					let title: String?
-					if let product = products?.first(where: {$0.productIdentifier == purchase.productID}) {
-						formatter.locale = product.priceLocale
-						title = NSLocalizedString("Subscription ACTIVE", comment: "") + ": \(formatter.string(from: product.price) ?? "") / \(inApp.period)"
-					}
-					else {
-						title = NSLocalizedString("Subscription Active", comment: "")
-					}
-					let formatter = DateFormatter()
-					formatter.dateStyle = .medium
-					formatter.timeStyle = .none
-					let subtitle = NSLocalizedString("Renews", comment: "") + " " + formatter.string(from: purchase.expiresDate!)
-					
-					
+				if let product = products?.first(where: {$0.productIdentifier == purchase.productID}) {
 					let route = Router.Custom { (_, _) in
 						UIApplication.shared.openURL(NCManageSubscriptionsURL)
 					}
-
 					rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
-						DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, nodeIdentifier: "Subscription", title: title?.uppercased(), subtitle: subtitle),
+						NCSubscriptionStatusRow(product: product, purchase: purchase),
 						NCActionRow(title: NSLocalizedString("Cancel Subscription", comment: "").uppercased(), route: route)
 						]))
 				}
+
 			}
 			else {
 				if let plans = products?.flatMap ({ i -> TreeNode? in
-					/*guard let inApp = InAppProductID(rawValue: i.productIdentifier) else {return nil}
-					formatter.locale = i.priceLocale
-					let title = NSLocalizedString("Subscribe for ", comment: "").uppercased() + "\(formatter.string(from: i.price) ?? "")" * [NSAttributedStringKey.foregroundColor: UIColor.white] + " / \(inApp.period.uppercased())"*/
-					
 					let route = Router.Custom { [weak self] (_, sender) in
 						self?.purchase(product: i, sender: sender)
 					}
 					return NCSubscriptionRow(product: i, route: route)
-//					return NCActionRow(attributedTitle: title, route: route)
 				}), !plans.isEmpty {
 					rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: plans))
 				}
@@ -124,10 +105,10 @@ class NCSubscriptionViewController: NCTreeViewController {
 				]))
 
 			rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
-				DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Privacy Policy", comment: "").uppercased(), subtitle: NCPrivacy.absoluteString, route: Router.Custom({ (_, _) in
+				NCActionRow(/*prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, */title: NSLocalizedString("Privacy Policy", comment: "").uppercased()/*, subtitle: NCPrivacy.absoluteString*/, route: Router.Custom({ (_, _) in
 					UIApplication.shared.openURL(NCPrivacy)
 				})),
-				DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Terms of Use", comment: "").uppercased(), subtitle: NCTerms.absoluteString, route: Router.Custom({ (_, _) in
+				NCActionRow(/*prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, */title: NSLocalizedString("Terms of Use", comment: "").uppercased()/*, subtitle: NCTerms.absoluteString*/, route: Router.Custom({ (_, _) in
 					UIApplication.shared.openURL(NCTerms)
 				})),
 				

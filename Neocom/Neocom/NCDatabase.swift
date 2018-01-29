@@ -262,7 +262,7 @@ extension NCDBRamActivity {
 
 extension NCDBWhType {
 	
-	var targetSystemClassDisplayName: String? {
+	@objc var targetSystemClassDisplayName: String? {
 		switch targetSystemClass {
 		case 0:
 			return NSLocalizedString("Exit WH", comment: "")
@@ -285,7 +285,7 @@ extension NCDBWhType {
 }
 
 extension NCDBMapRegion {
-	var securityClassDisplayName: String {
+	@objc var securityClassDisplayName: String {
 		switch securityClass {
 		case 1:
 			return NSLocalizedString("High-Sec", comment: "")

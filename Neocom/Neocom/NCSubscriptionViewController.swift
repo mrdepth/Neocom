@@ -42,6 +42,9 @@ class NCSubscriptionViewController: NCTreeViewController {
 		return;*/
 		
 		Receipt.fetchValidReceipt { result in
+			defer {completionHandler()}
+			guard let products = self.products ?? (UIApplication.shared.delegate as? NCAppDelegate)?.products, !products.isEmpty else {return}
+
 			var rows: [TreeNode] = []
 			
 			let title = NSLocalizedString("Ad Free Subscription", comment: "")
@@ -60,29 +63,30 @@ class NCSubscriptionViewController: NCTreeViewController {
 			let formatter = NumberFormatter()
 			formatter.numberStyle = .currency
 
-			let products = self.products ?? (UIApplication.shared.delegate as? NCAppDelegate)?.products
 
 			if case let .success(receipt) = result,
 				let purchase = receipt.inAppPurchases?.filter ({$0.inAppType == .autoRenewableSubscription && !$0.isExpired}).max(by: {$0.expiresDate! < $1.expiresDate!}) {
 				
-				if let product = products?.first(where: {$0.productIdentifier == purchase.productID}) {
+				if let product = products.first(where: {$0.productIdentifier == purchase.productID}) {
 					let route = Router.Custom { (_, _) in
 						UIApplication.shared.openURL(NCManageSubscriptionsURL)
 					}
+					
 					rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
 						NCSubscriptionStatusRow(product: product, purchase: purchase),
 						NCActionRow(title: NSLocalizedString("Cancel Subscription", comment: "").uppercased(), route: route)
 						]))
 				}
-
 			}
 			else {
-				if let plans = products?.flatMap ({ i -> TreeNode? in
+				let plans = products.flatMap ({ i -> TreeNode? in
 					let route = Router.Custom { [weak self] (_, sender) in
 						self?.purchase(product: i, sender: sender)
 					}
 					return NCSubscriptionRow(product: i, route: route)
-				}), !plans.isEmpty {
+				})
+				
+				if !plans.isEmpty {
 					rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: plans))
 				}
 				
@@ -98,24 +102,26 @@ class NCSubscriptionViewController: NCTreeViewController {
 			}
 			
 //			let footer = NSLocalizedString("Subscription will be automatically renewed within 1 day before the current subscription ends. Auto-renew option can be turned off in iTunes Account Settings.", comment: "")
-			let footer = NSLocalizedString("Payment will be charged to iTunes Account at confirmation of purchase. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period. Auto-renew option can be turned off in iTunes Account Settings.", comment: "")
+			formatter.locale = products[0].priceLocale
+			let footer = String(format: NSLocalizedString("Payment will be charged to your credit card through your iTunes Account at confirmation purchase. 1 Month Subscription will be charged as %@ per month. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period. Auto-renew option can be turned off in iTunes Account Settings.", comment: ""), formatter.string(from: products[0].price) ?? "")
+			
+//			let footer = NSLocalizedString("Subscription will be charged to your credit card through your iTunes Account. Subscription will be automatically renewed within 1 day before the current subscription ends. Auto-renew option can be turned off in iTunes Account Settings.", comment: "")
 			rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
 				DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage, nodeIdentifier: "Footer", subtitle: footer),
 
 				]))
 
 			rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
-				NCActionRow(/*prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, */title: NSLocalizedString("Privacy Policy", comment: "").uppercased()/*, subtitle: NCPrivacy.absoluteString*/, route: Router.Custom({ (_, _) in
+				NCActionRow(title: NSLocalizedString("Privacy Policy", comment: "").uppercased(), route: Router.Custom({ (_, _) in
 					UIApplication.shared.openURL(NCPrivacy)
 				})),
-				NCActionRow(/*prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, */title: NSLocalizedString("Terms of Use", comment: "").uppercased()/*, subtitle: NCTerms.absoluteString*/, route: Router.Custom({ (_, _) in
+				NCActionRow(title: NSLocalizedString("Terms of Use", comment: "").uppercased(), route: Router.Custom({ (_, _) in
 					UIApplication.shared.openURL(NCTerms)
 				})),
 				
 				]))
 			
 			self.treeController?.content = RootNode(rows)
-			completionHandler()
 		}
 	}
 	

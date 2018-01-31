@@ -185,7 +185,7 @@ extension NCCacheLocationPickerRecent {
 		case solarSystem = 1
 	}
 	
-	var locationTypeDisplayName: String? {
+	@objc var locationTypeDisplayName: String? {
 		switch LocationType(rawValue: self.locationType) {
 		case .region?:
 			return NSLocalizedString("Regions", comment: "")

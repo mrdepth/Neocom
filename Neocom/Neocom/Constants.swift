@@ -218,11 +218,11 @@ enum InAppProductID: String {
 	var period: String {
 		switch self {
 		case .removeAdsMonth:
-			return NSLocalizedString("1 Month", comment: "")
+			return NSLocalizedString("per month", comment: "")
 		case .removeAdsMonth6:
-			return NSLocalizedString("6 Months", comment: "")
+			return NSLocalizedString("per 6 months", comment: "")
 		case .removeAdsYear:
-			return NSLocalizedString("1 Year", comment: "")
+			return NSLocalizedString("per year", comment: "")
 		}
 	}
 	

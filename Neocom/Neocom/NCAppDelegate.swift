@@ -71,7 +71,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
 		if products == nil && productsRequest == nil {
-			let request = SKProductsRequest(productIdentifiers: Set([InAppProductID.removeAdsMonth.rawValue]))
+			let request = SKProductsRequest(productIdentifiers: Set(InAppProductID.all.map{$0.rawValue}))
 			request.delegate = self
 			request.start()
 			productsRequest = request

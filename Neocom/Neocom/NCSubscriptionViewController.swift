@@ -21,7 +21,7 @@ class NCSubscriptionViewController: NCTreeViewController {
 							Prototype.NCSubscriptionTableViewCell.default,
 							Prototype.NCActionTableViewCell.default])
 		
-		let request = SKProductsRequest(productIdentifiers: Set([InAppProductID.removeAdsMonth.rawValue]))
+		let request = SKProductsRequest(productIdentifiers: Set(InAppProductID.all.map{$0.rawValue}))
 		request.delegate = self
 		request.start()
 	}

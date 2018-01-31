@@ -206,6 +206,8 @@ let NCManageSubscriptionsURL = URL(string: "https://buy.itunes.apple.com/WebObje
 
 enum InAppProductID: String {
 	case removeAdsMonth = "com.shimanski.neocom.removeads.month"
+	case removeAdsMonth6 = "com.shimanski.neocom.removeads.months6"
+	case removeAdsYear = "com.shimanski.neocom.removeads.year"
 	
 	/*var period: (unit: NSCalendar.Unit, numberOfUnits: Int) {
 		switch self {
@@ -217,6 +219,10 @@ enum InAppProductID: String {
 		switch self {
 		case .removeAdsMonth:
 			return NSLocalizedString("1 Month", comment: "")
+		case .removeAdsMonth6:
+			return NSLocalizedString("6 Months", comment: "")
+		case .removeAdsYear:
+			return NSLocalizedString("1 Year", comment: "")
 		}
 	}
 	
@@ -224,8 +230,14 @@ enum InAppProductID: String {
 		switch self {
 		case .removeAdsMonth:
 			return (0.99, "USD")
+		case .removeAdsMonth6:
+			return (4.99, "USD")
+		case .removeAdsYear:
+			return (8.99, "USD")
 		}
 	}
+	
+	static var all: [InAppProductID] = [.removeAdsMonth, .removeAdsMonth6, .removeAdsYear]
 }
 
 let NCSpecialThanks = ["Ilya Gepp aka Kane Gepp",

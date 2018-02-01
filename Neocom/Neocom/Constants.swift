@@ -203,6 +203,9 @@ let NCTerms = URL(string: "http://mrdepth.github.io/Neocom/terms.html")!
 let NCPrivacy = URL(string: "http://mrdepth.github.io/Neocom/privacy.html")!
 let NCApoodealKey = "94f0ed36388a0a458bdf528df128c4427c4d4fb50130f981"
 let NCManageSubscriptionsURL = URL(string: "https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions")!
+let NCManageAPIKeysURL = URL(string: "https://community.eveonline.com/support/third-party-applications/")!
+let NCBugReportEmail = "bugreport@neocom.by"
+
 
 enum InAppProductID: String {
 	case removeAdsMonth = "com.shimanski.neocom.removeads.month"

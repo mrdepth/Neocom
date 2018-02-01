@@ -140,6 +140,8 @@
 		127332E11E71D01D00DE46C9 /* TreeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127332E01E71D01D00DE46C9 /* TreeController.swift */; };
 		1279A2F12023193300DD7A46 /* NCStaticHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1279A2F02023193300DD7A46 /* NCStaticHeaderTableViewCell.xib */; };
 		1279A2F32023332500DD7A46 /* NCFooterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1279A2F22023332500DD7A46 /* NCFooterTableViewCell.xib */; };
+		1279A2F520233CBA00DD7A46 /* NCBugreportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279A2F420233CBA00DD7A46 /* NCBugreportViewController.swift */; };
+		1279A2F720234DD300DD7A46 /* NCBugreportFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279A2F620234DD300DD7A46 /* NCBugreportFinishViewController.swift */; };
 		1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */; };
 		127BE3901E5AFC2900FA7F9F /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127BE38F1E5AFC2900FA7F9F /* Router.swift */; };
 		127DE7D81E9513B4008D4873 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127DE7D71E9513B4008D4873 /* ChartView.swift */; };
@@ -613,6 +615,8 @@
 		127332E01E71D01D00DE46C9 /* TreeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TreeController.swift; path = ../../ThirdParty/TreeController/TreeController/TreeController/TreeController.swift; sourceTree = "<group>"; };
 		1279A2F02023193300DD7A46 /* NCStaticHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCStaticHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		1279A2F22023332500DD7A46 /* NCFooterTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFooterTableViewCell.xib; sourceTree = "<group>"; };
+		1279A2F420233CBA00DD7A46 /* NCBugreportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCBugreportViewController.swift; sourceTree = "<group>"; };
+		1279A2F620234DD300DD7A46 /* NCBugreportFinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCBugreportFinishViewController.swift; sourceTree = "<group>"; };
 		1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
 		127BE38F1E5AFC2900FA7F9F /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		127DE7D71E9513B4008D4873 /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
@@ -952,6 +956,8 @@
 				126E183A1F6133710008C081 /* NCSettingsViewController.swift */,
 				12C966DC1F95F56700B141CC /* NCAboutViewController.swift */,
 				124BD4B12018978E00816946 /* NCSubscriptionViewController.swift */,
+				1279A2F420233CBA00DD7A46 /* NCBugreportViewController.swift */,
+				1279A2F620234DD300DD7A46 /* NCBugreportFinishViewController.swift */,
 			);
 			name = Misc;
 			sourceTree = "<group>";
@@ -2055,6 +2061,7 @@
 				1248DB611F2093D4009625EC /* NCActionHandler.swift in Sources */,
 				12AC8DB01DEF5B0500561A7A /* NCDatabase.xcdatamodeld in Sources */,
 				12FF4D3E1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift in Sources */,
+				1279A2F720234DD300DD7A46 /* NCBugreportFinishViewController.swift in Sources */,
 				12E2674D1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift in Sources */,
 				129200451FEBFAEC00124EE0 /* NCFittingDamagePatternsViewController.swift in Sources */,
 				1230A3351DFFE2CF00627D92 /* UIImage+NC.swift in Sources */,
@@ -2129,6 +2136,7 @@
 				12CD2CAC1F581B6600367606 /* NCNotificationManager.swift in Sources */,
 				128C5F9E1F4AD7C60038FE7D /* NCImplantSetData.swift in Sources */,
 				12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */,
+				1279A2F520233CBA00DD7A46 /* NCBugreportViewController.swift in Sources */,
 				12D20EB41EBCBD3C00BEC926 /* EVEAPI+NC.swift in Sources */,
 				1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */,
 				12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */,

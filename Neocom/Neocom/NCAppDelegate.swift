@@ -265,7 +265,7 @@ extension NCAppDelegate: SKPaymentTransactionObserver {
 				if let product = products?.first(where: {$0.productIdentifier == transaction.payment.productIdentifier}) {
 					APDSdk.shared().track(inAppPurchase: product.price, currency: product.priceLocale.currencyCode ?? "USD")
 				}
-				else if let price = InAppProductID(rawValue: transaction.payment.productIdentifier)?.price {
+				else if let price = InAppProductID(rawValue: transaction.payment.productIdentifier)?.localizedPrice {
 					APDSdk.shared().track(inAppPurchase: NSNumber(value: price.0), currency: price.1)
 				}
 				queue.finishTransaction(transaction)
@@ -280,6 +280,6 @@ extension NCAppDelegate: SKPaymentTransactionObserver {
 
 extension NCAppDelegate: SKProductsRequestDelegate {
 	public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-		products = response.products
+		products = response.products.sorted {$0.price.doubleValue < $1.price.doubleValue}
 	}
 }

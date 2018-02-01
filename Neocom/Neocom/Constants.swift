@@ -215,7 +215,7 @@ enum InAppProductID: String {
 			return (.month, 1)
 		}
 	}*/
-	var period: String {
+	var localizedPeriod: String {
 		switch self {
 		case .removeAdsMonth:
 			return NSLocalizedString("per month", comment: "")
@@ -226,7 +226,18 @@ enum InAppProductID: String {
 		}
 	}
 	
-	var price: (Double, String) {
+	var periodInMonths: Int {
+		switch self {
+		case .removeAdsMonth:
+			return 1
+		case .removeAdsMonth6:
+			return 6
+		case .removeAdsYear:
+			return 12
+		}
+	}
+	
+	var localizedPrice: (Double, String) {
 		switch self {
 		case .removeAdsMonth:
 			return (0.99, "USD")

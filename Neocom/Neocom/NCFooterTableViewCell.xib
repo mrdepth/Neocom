@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCFooterTableViewCell" rowHeight="40" id="21V-jL-T80" customClass="NCHeaderTableViewCell" customModule="Neocom" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="21V-jL-T80" id="uYc-Mr-E0r">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="39.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h4h-hS-tod">
+                        <rect key="frame" x="15" y="8" width="290" height="16.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="h4h-hS-tod" secondAttribute="bottom" constant="15" id="F0d-bA-Rms"/>
+                    <constraint firstItem="h4h-hS-tod" firstAttribute="leading" secondItem="uYc-Mr-E0r" secondAttribute="leading" constant="15" id="crX-cH-KzC"/>
+                    <constraint firstAttribute="trailing" secondItem="h4h-hS-tod" secondAttribute="trailing" constant="15" id="hke-pn-2Ev"/>
+                    <constraint firstItem="h4h-hS-tod" firstAttribute="top" secondItem="uYc-Mr-E0r" secondAttribute="top" constant="8" id="xvq-iZ-jf5"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <viewLayoutGuide key="safeArea" id="ece-gC-V8E"/>
+            <connections>
+                <outlet property="titleLabel" destination="h4h-hS-tod" id="Fvu-B9-UsX"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

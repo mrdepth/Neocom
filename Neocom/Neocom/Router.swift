@@ -1535,10 +1535,10 @@ enum Router {
 				let attachments: [String: Data]
 				let subject: String
 				
-				init(attachments: [String: Data], subject: String) {
+				init(attachments: [String: Data], subject: String, kind: RouteKind = .push) {
 					self.attachments = attachments
 					self.subject = subject
-					super.init(kind: .push, storyboard: .main, identifier: "NCBugreportFinishViewController")
+					super.init(kind: kind, storyboard: .main, identifier: "NCBugreportFinishViewController")
 				}
 				
 				override func prepareForSegue(destination: UIViewController) {

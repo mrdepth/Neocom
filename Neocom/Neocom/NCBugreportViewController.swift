@@ -82,7 +82,14 @@ class NCBugreportViewController: NCTreeViewController {
 						   title: NSLocalizedString("Spelling Error", comment: ""),
 						   accessoryType: .disclosureIndicator,
 						   route: Router.Custom { [weak self] _,_ in self?.reportSpelling()}),
-			
+
+			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.compact,
+						   nodeIdentifier: "Ads",
+						   image: #imageLiteral(resourceName: "votes"),
+						   title: NSLocalizedString("Ads/Subscription", comment: ""),
+						   accessoryType: .disclosureIndicator,
+						   route: Router.Custom { [weak self] _,_ in self?.reportAds()}),
+
 			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.compact,
 						   nodeIdentifier: "Other",
 						   image: #imageLiteral(resourceName: "other"),
@@ -332,6 +339,7 @@ class NCBugreportViewController: NCTreeViewController {
 			Router.MainMenu.BugReport.Finish(attachments: [:], subject: "Planetaries").perform(source: self, sender: nil)
 		}
 	}
+	
 	private func reportFitting() {
 		Router.Mail.Attachments { [weak self] (controller, loadout) in
 			controller.dismiss(animated: true, completion: nil)
@@ -343,15 +351,24 @@ class NCBugreportViewController: NCTreeViewController {
 			guard let eftData = eft.data(using: .utf8) else {return}
 			Router.MainMenu.BugReport.Finish(attachments: ["\(typeName).cfg": eftData], subject: "Fitting").perform(source: strongSelf, sender: nil)
 			
-		}.perform(source: self, sender: nil)
+			}.perform(source: self, sender: nil)
 	}
-//	private func reportDatabase() {}
 	
 	private func reportSpelling() {
 		Router.MainMenu.BugReport.Finish(attachments: [:], subject: "Spelling Error").perform(source: self, sender: nil)
 	}
 	
+	private func reportAds() {
+		if let url = Bundle.main.appStoreReceiptURL, let data = try? Data(contentsOf: url) {
+			Router.MainMenu.BugReport.Finish(attachments: [url.lastPathComponent: data], subject: "Ads/Subscription").perform(source: self, sender: nil)
+		}
+		else {
+			Router.MainMenu.BugReport.Finish(attachments: [:], subject: "Ads/Subscription").perform(source: self, sender: nil)
+		}
+	}
+	
 	private func reportOther() {
 		Router.MainMenu.BugReport.Finish(attachments: [:], subject: "Other").perform(source: self, sender: nil)
 	}
+
 }

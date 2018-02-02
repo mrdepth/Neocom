@@ -1216,7 +1216,7 @@ for type in try! context.fetch(request) {
 				request.predicate = NSPredicate(format: "group.groupID IN %@ AND published = 1 AND SUBQUERY(attributes, $attribute, $attribute.attributeType.attributeID == 128 AND $attribute.value == %d).@count > 0", chargeGroups, Int(chargeSize))
 			}
 			else {
-				request.predicate = NSPredicate(format: "group.groupID IN %@ AND published = 1 AND volume < %f", chargeGroups, type.capacity)
+				request.predicate = NSPredicate(format: "group.groupID IN %@ AND published = 1 AND volume <= %f", chargeGroups, type.capacity)
 			}
 			for charge in try! context.fetch(request) {
 				if charge.dgmppItem == nil {

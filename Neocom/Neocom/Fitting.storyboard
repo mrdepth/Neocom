@@ -769,6 +769,27 @@
                                 <constraint firstItem="Mye-9g-WLs" firstAttribute="centerY" secondItem="PZS-eD-HKc" secondAttribute="centerY" id="xo4-5g-ctD"/>
                             </constraints>
                         </view>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="bSH-Cx-Ym2">
+                            <rect key="frame" x="0.0" y="974.5" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ICu-N6-e3y">
+                                    <rect key="frame" x="103" y="7" width="202" height="30"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <state key="normal" title="Found a Bug? Please report it">
+                                        <color key="titleColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="onBugReport:" destination="7UB-bn-4pa" eventType="touchUpInside" id="fce-Ih-k5X"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="ICu-N6-e3y" firstAttribute="centerY" secondItem="bSH-Cx-Ym2" secondAttribute="centerY" id="HRS-hs-taZ"/>
+                                <constraint firstAttribute="trailing" secondItem="ICu-N6-e3y" secondAttribute="trailing" constant="15" id="h3I-ug-hi2"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCFittingResourcesTableViewCell" rowHeight="100" id="Mnh-sF-pFB" customClass="NCFittingResourcesTableViewCell" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="109.5" width="320" height="100"/>
@@ -2972,11 +2993,11 @@
                                     <outlet property="warpSpeedLabel" destination="fWM-m6-fLH" id="W2z-cA-Rb0"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCFittingMiscStructureTableViewCell" rowHeight="132" id="jqg-MT-4TT" customClass="NCFittingMiscTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="885.5" width="320" height="132"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NCFittingMiscStructureTableViewCell" rowHeight="71" id="jqg-MT-4TT" customClass="NCFittingMiscTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="885.5" width="320" height="71"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jqg-MT-4TT" id="kLO-hy-3Vi">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="131.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="70.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="dQs-M5-Fov">
@@ -3165,7 +3186,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Rb-e6-chW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3328" y="4687"/>
+            <point key="canvasLocation" x="3328" y="4624.5877061469273"/>
         </scene>
         <!--Implants-->
         <scene sceneID="yet-Pn-GaB">

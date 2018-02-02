@@ -22,6 +22,9 @@ class NCBugreportFinishViewController: NCTreeViewController {
 							Prototype.NCActionTableViewCell.default,
 							Prototype.NCSwitchTableViewCell.default,
 							Prototype.NCDefaultTableViewCell.placeholder])
+		if navigationItem.leftBarButtonItem != nil {
+			navigationItem.rightBarButtonItem = nil
+		}
 	}
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {

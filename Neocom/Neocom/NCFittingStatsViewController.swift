@@ -367,6 +367,22 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 		NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
 	}
 	
+	@IBAction func onBugReport(_ sender: Any) {
+		var attachments = [String: Data]()
+		fleet?.pilots.forEach { (pilot, _) in
+			guard let ship = pilot.ship ?? pilot.structure else {return}
+			guard let typeName = ship.type?.typeName else {return}
+			let typeID = ship.typeID
+			let loadout = pilot.loadout
+			
+			guard let eft = (NCLoadoutRepresentation.eft([(typeID: typeID, data: loadout, name: typeName)]).value as? [String])?.first else {return}
+			guard let eftData = eft.data(using: .utf8) else {return}
+			attachments["\(typeName).cfg"] = eftData
+		}
+		Router.MainMenu.BugReport.Finish(attachments: attachments, subject: "Fitting", kind: .adaptiveModal).perform(source: self, sender: nil)
+
+		
+	}
 	//MARK: - Private
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {

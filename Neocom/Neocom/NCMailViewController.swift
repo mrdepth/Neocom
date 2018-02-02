@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 import EVEAPI
 
-
 class NCMailViewController: NCTreeViewController {
 	
 	var label: ESI.Mail.MailLabelsAndUnreadCounts.Label? {

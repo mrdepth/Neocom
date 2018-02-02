@@ -10,14 +10,27 @@ import UIKit
 import EVEAPI
 import CloudData
 
+class NCMailContainerViewController: UIViewController {
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		navigationItem.rightBarButtonItem = childViewControllers.first?.editButtonItem
+	}
+	
+	@IBAction func onCompose(_ sender: Any) {
+		Router.Mail.NewMessage().perform(source: self, sender: sender)
+	}
+}
+
+
 class NCMailPageViewController: NCPageViewController {
 	
 	private var accountChangeObserver: NotificationObserver?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		navigationController?.isToolbarHidden = false
-		navigationItem.rightBarButtonItem = editButtonItem
+//		navigationController?.isToolbarHidden = false
+//		navigationItem.rightBarButtonItem = editButtonItem
 		reload()
 		
 		accountChangeObserver = NotificationCenter.default.addNotificationObserver(forName: .NCCurrentAccountChanged, object: nil, queue: nil) { [weak self] _ in
@@ -64,9 +77,6 @@ class NCMailPageViewController: NCPageViewController {
 		}
 	}
 	
-	@IBAction func onCompose(_ sender: Any) {
-		Router.Mail.NewMessage().perform(source: self, sender: sender)
-	}
 	
 	func saveUnreadCount() {
 		switch mailLabels {

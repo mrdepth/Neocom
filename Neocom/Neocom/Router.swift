@@ -1379,7 +1379,7 @@ enum Router {
 
 		class Mail: Route {
 			init() {
-				super.init(kind: .detail, storyboard: .character, identifier: "NCMailPageViewController")
+				super.init(kind: .detail, storyboard: .character, identifier: "NCMailContainerViewController")
 			}
 		}
 

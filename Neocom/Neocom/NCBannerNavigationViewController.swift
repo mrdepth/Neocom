@@ -36,6 +36,8 @@ class NCBannerNavigationViewController: NCNavigationController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		#if TARGET_OS_SIMULATOR
+		#else
 		Receipt.fetchValidReceipt { [weak self] (result) in
 			guard let strongSelf = self else {return}
 			if case let .success(receipt) = result, receipt.inAppPurchases?.contains(where: {$0.inAppType == .autoRenewableSubscription && !$0.isExpired}) == true {
@@ -46,6 +48,7 @@ class NCBannerNavigationViewController: NCNavigationController {
 				SKPaymentQueue.default().add(strongSelf)
 			}
 		}
+		#endif
 	}
 	
 	override func viewDidLayoutSubviews() {

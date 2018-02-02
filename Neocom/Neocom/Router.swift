@@ -1526,6 +1526,30 @@ enum Router {
 			}
 		}
 
+		class BugReport: Route {
+			init() {
+				super.init(kind: .adaptiveModal, storyboard: .main, identifier: "NCBugreportViewController")
+			}
+			
+			class Finish: Route {
+				let attachments: [String: Data]
+				let subject: String
+				
+				init(attachments: [String: Data], subject: String, kind: RouteKind = .push) {
+					self.attachments = attachments
+					self.subject = subject
+					super.init(kind: kind, storyboard: .main, identifier: "NCBugreportFinishViewController")
+				}
+				
+				override func prepareForSegue(destination: UIViewController) {
+					let destination = destination as! NCBugreportFinishViewController
+					destination.attachments = attachments
+					destination.subject = subject
+				}
+
+			}
+		}
+
 	}
 	
 	enum Utility {
@@ -1543,6 +1567,7 @@ enum Router {
 				destination.loadouts = loadouts
 			}
 		}
+		
 	}
 }
 

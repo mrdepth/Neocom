@@ -18,10 +18,12 @@ class NCSubscriptionViewController: NCTreeViewController {
 		tableView.register([Prototype.NCDefaultTableViewCell.noImage,
 							Prototype.NCDefaultTableViewCell.attributeNoImage,
 							Prototype.NCHeaderTableViewCell.empty,
+							Prototype.NCHeaderTableViewCell.static,
 							Prototype.NCSubscriptionTableViewCell.default,
-							Prototype.NCActionTableViewCell.default])
+							Prototype.NCActionTableViewCell.default,
+							Prototype.NCFooterTableViewCell.default])
 		
-		let request = SKProductsRequest(productIdentifiers: Set([InAppProductID.removeAdsMonth.rawValue]))
+		let request = SKProductsRequest(productIdentifiers: Set(InAppProductID.all.map{$0.rawValue}))
 		request.delegate = self
 		request.start()
 	}
@@ -51,43 +53,55 @@ class NCSubscriptionViewController: NCTreeViewController {
 			let subtitle = NSLocalizedString("Tired of seeing those pesky ads? Why not upgrade to an Ad Free Subscription!", comment: "")
 			let features = NSLocalizedString("- Remove ads from every screen\n- Remove ads across all devices with the same Apple ID", comment: "")
 			
-			rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
+			rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, nodeIdentifier: "IntroductionSection", isExpandable: false, children: [
 				DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage, nodeIdentifier: "Introduction", title: title, subtitle: [subtitle, features].joined(separator: "\n"))
 				]))
-//			rows.append()
-//			rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
-//				DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage, nodeIdentifier: "Features", title: NSLocalizedString("Ad Free Subscriptions will", comment: ""), subtitle: features)
-//				]))
-//			rows.append()
-
-			let formatter = NumberFormatter()
-			formatter.numberStyle = .currency
 
 
 			if case let .success(receipt) = result,
 				let purchase = receipt.inAppPurchases?.filter ({$0.inAppType == .autoRenewableSubscription && !$0.isExpired}).max(by: {$0.expiresDate! < $1.expiresDate!}) {
 				
-				if let product = products.first(where: {$0.productIdentifier == purchase.productID}) {
+				if let product = products.first(where: {$0.productIdentifier == purchase.productID}), let inApp = InAppProductID(rawValue: product.productIdentifier) {
 					let route = Router.Custom { (_, _) in
 						UIApplication.shared.openURL(NCManageSubscriptionsURL)
 					}
 					
-					rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
-						NCSubscriptionStatusRow(product: product, purchase: purchase),
-						NCActionRow(title: NSLocalizedString("Cancel Subscription", comment: "").uppercased(), route: route)
+					rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.static, title: NSLocalizedString("Active Subscription", comment: "").uppercased(), isExpandable: false, children: [
+						NCSubscriptionStatusRow(product: product, inApp: inApp, purchase: purchase),
 						]))
+					
+					let plans = products.filter {$0 != product}.flatMap ({ i -> TreeNode? in
+						guard let inApp = InAppProductID(rawValue: i.productIdentifier) else {return nil}
+						let route = Router.Custom { [weak self] (_, sender) in
+							self?.purchase(product: i, sender: sender)
+						}
+						return NCSubscriptionRow(product: i, inApp: inApp, route: route)
+					})
+					let dateFormatter = DateFormatter()
+					dateFormatter.dateStyle = .medium
+					dateFormatter.timeStyle = .none
+					let footer = String(format: NSLocalizedString("Your new subscription plan will begin and you'll be charged when your current subscription expires on %@", comment: ""), dateFormatter.string(from: purchase.expiresDate!))
+					rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.static, title: NSLocalizedString("Change Subscription Plan", comment: "").uppercased(), isExpandable: false, children: plans))
+					rows.append(NCFooterRow(nodeIdentifier: "PlansFooter", title: footer))
+
+					rows.append(//DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
+						NCActionRow(title: NSLocalizedString("Manage Subscriptions", comment: "").uppercased(), route: route)
+						//])
+					)
+
 				}
 			}
 			else {
 				let plans = products.flatMap ({ i -> TreeNode? in
+					guard let inApp = InAppProductID(rawValue: i.productIdentifier) else {return nil}
 					let route = Router.Custom { [weak self] (_, sender) in
 						self?.purchase(product: i, sender: sender)
 					}
-					return NCSubscriptionRow(product: i, route: route)
+					return NCSubscriptionRow(product: i, inApp: inApp, route: route)
 				})
 				
 				if !plans.isEmpty {
-					rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: plans))
+					rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.static, title: NSLocalizedString("SUBSCRIPTION PLANS", comment: "").uppercased(), isExpandable: false, children: plans))
 				}
 				
 				let route = Router.Custom { [weak self] (_, sender) in
@@ -97,20 +111,22 @@ class NCSubscriptionViewController: NCTreeViewController {
 				rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
 					DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Restore Purchases", comment: "").uppercased(), subtitle: NSLocalizedString("Already subscribed? Try to restore your purchases.", comment: ""), route: route)
 					]))
-				//					rows.append()
 				
 			}
 			
-//			let footer = NSLocalizedString("Subscription will be automatically renewed within 1 day before the current subscription ends. Auto-renew option can be turned off in iTunes Account Settings.", comment: "")
-			formatter.locale = products[0].priceLocale
-			let footer = String(format: NSLocalizedString("Payment will be charged to your credit card through your iTunes Account at confirmation purchase. 1 Month Subscription will be charged as %@ per month. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period. Auto-renew option can be turned off in iTunes Account Settings.", comment: ""), formatter.string(from: products[0].price) ?? "")
+			let priceFormatter = NumberFormatter()
+			priceFormatter.numberStyle = .currency
+			priceFormatter.locale = products[0].priceLocale
+//			let footer = String(format: NSLocalizedString("Payment will be charged to your credit card through your iTunes Account at confirmation purchase. 1 Month Subscription will be charged as %@ per month. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period. Auto-renew option can be turned off in iTunes Account Settings.", comment: ""), priceFormatter.string(from: products[0].price) ?? "")
 			
-//			let footer = NSLocalizedString("Subscription will be charged to your credit card through your iTunes Account. Subscription will be automatically renewed within 1 day before the current subscription ends. Auto-renew option can be turned off in iTunes Account Settings.", comment: "")
-			rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
-				DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage, nodeIdentifier: "Footer", subtitle: footer),
+			let footer = NSLocalizedString("Payment will be charged to your credit card through your iTunes Account at confirmation purchase. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period. Auto-renew option can be turned off in iTunes Account Settings.", comment: "")
 
+			rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
+				NCFooterRow(nodeIdentifier: "Footer", title: footer),
+				
 				]))
 
+			
 			rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
 				NCActionRow(title: NSLocalizedString("Privacy Policy", comment: "").uppercased(), route: Router.Custom({ (_, _) in
 					UIApplication.shared.openURL(NCPrivacy)
@@ -124,26 +140,6 @@ class NCSubscriptionViewController: NCTreeViewController {
 			self.treeController?.content = RootNode(rows)
 		}
 	}
-	
-	/*override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
-		super.treeController(treeController, didSelectCellWithNode: node)
-		guard let row = node as? NCActionRow else {return}
-		if let product = row.object as? SKProduct {
-			if let cell = treeController.cell(for: node) {
-				tableView.isUserInteractionEnabled = false
-				progressHandler = NCProgressHandler(view: cell, totalUnitCount: 1, activityIndicatorStyle: .white)
-				SKPaymentQueue.default().add(SKPayment(product: product))
-			}
-		}
-		else {
-			if let cell = treeController.cell(for: node) {
-				tableView.isUserInteractionEnabled = false
-				progressHandler = NCProgressHandler(view: cell, totalUnitCount: 1, activityIndicatorStyle: .white)
-				SKPaymentQueue.default().restoreCompletedTransactions()
-			}
-
-		}
-	}*/
 	
 	private var products: [SKProduct]?
 	
@@ -167,7 +163,7 @@ class NCSubscriptionViewController: NCTreeViewController {
 
 extension NCSubscriptionViewController: SKProductsRequestDelegate {
 	public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-		products = response.products
+		products = response.products.sorted {$0.price.doubleValue < $1.price.doubleValue}
 		updateContent {}
 	}
 }

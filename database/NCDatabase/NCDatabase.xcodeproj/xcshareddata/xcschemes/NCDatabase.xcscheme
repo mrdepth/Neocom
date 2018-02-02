@@ -105,7 +105,7 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-expansion &quot;YC119.9&quot;"
+            argument = "-expansion &quot;ArmsRace_1.0&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

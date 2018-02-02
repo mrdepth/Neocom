@@ -69,6 +69,8 @@ class NCHeaderTableViewCell: UITableViewCell, Expandable {
 	}
 }
 
+typealias NCFooterTableViewCell = NCHeaderTableViewCell
+
 class NCActionHeaderTableViewCell: NCHeaderTableViewCell {
 	@IBOutlet weak var button: UIButton?
 	
@@ -86,9 +88,13 @@ extension Prototype {
 		static let action = Prototype(nib: UINib(nibName: "NCActionHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCActionHeaderTableViewCell")
 		static let image = Prototype(nib: UINib(nibName: "NCImageHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCImageHeaderTableViewCell")
 		static let empty = Prototype(nib: UINib(nibName: "NCEmptyHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCEmptyHeaderTableViewCell")
+		static let `static` = Prototype(nib: UINib(nibName: "NCStaticHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCStaticHeaderTableViewCell")
 	}
 	enum NCActionHeaderTableViewCell {
 		static let `default` = Prototype(nib: UINib(nibName: "NCActionHeaderTableViewCell", bundle: nil), reuseIdentifier: "NCActionHeaderTableViewCell")
+	}
+	enum NCFooterTableViewCell {
+		static let `default` = Prototype(nib: UINib(nibName: "NCFooterTableViewCell", bundle: nil), reuseIdentifier: "NCFooterTableViewCell")
 	}
 }
 
@@ -113,5 +119,40 @@ class NCSkillsHeaderTableViewCell: NCHeaderTableViewCell {
 	var trainingQueue: NCTrainingQueue?
 	var character: NCCharacter?
 	@IBOutlet weak var trainButton: UIButton?
+
+}
+
+class NCFooterRow: TreeRow {
+	var title: String?
+	var attributedTitle: NSAttributedString?
+	let nodeIdentifier: String?
+	
+	init(prototype: Prototype = Prototype.NCFooterTableViewCell.default, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, route: Route? = nil, object: Any? = nil) {
+		self.title = title
+		self.attributedTitle = attributedTitle
+		self.nodeIdentifier = nodeIdentifier
+		super.init(prototype: prototype, route: route, accessoryButtonRoute: nil, object: object)
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		if let cell = cell as? NCFooterTableViewCell {
+			cell.object = self
+			if title != nil {
+				cell.titleLabel?.text = title
+			}
+			else if attributedTitle != nil {
+				cell.titleLabel?.attributedText = attributedTitle
+			}
+		}
+	}
+	
+	override var hashValue: Int {
+		return nodeIdentifier?.hashValue ?? super.hashValue
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		guard let nodeIdentifier = nodeIdentifier else {return super.isEqual(object)}
+		return nodeIdentifier.hashValue == (object as? NCFooterRow)?.nodeIdentifier?.hashValue
+	}
 
 }

@@ -71,7 +71,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 
 	func applicationDidBecomeActive(_ application: UIApplication) {
 		if products == nil && productsRequest == nil {
-			let request = SKProductsRequest(productIdentifiers: Set([InAppProductID.removeAdsMonth.rawValue]))
+			let request = SKProductsRequest(productIdentifiers: Set(InAppProductID.all.map{$0.rawValue}))
 			request.delegate = self
 			request.start()
 			productsRequest = request
@@ -265,7 +265,7 @@ extension NCAppDelegate: SKPaymentTransactionObserver {
 				if let product = products?.first(where: {$0.productIdentifier == transaction.payment.productIdentifier}) {
 					APDSdk.shared().track(inAppPurchase: product.price, currency: product.priceLocale.currencyCode ?? "USD")
 				}
-				else if let price = InAppProductID(rawValue: transaction.payment.productIdentifier)?.price {
+				else if let price = InAppProductID(rawValue: transaction.payment.productIdentifier)?.localizedPrice {
 					APDSdk.shared().track(inAppPurchase: NSNumber(value: price.0), currency: price.1)
 				}
 				queue.finishTransaction(transaction)
@@ -280,6 +280,6 @@ extension NCAppDelegate: SKPaymentTransactionObserver {
 
 extension NCAppDelegate: SKProductsRequestDelegate {
 	public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-		products = response.products
+		products = response.products.sorted {$0.price.doubleValue < $1.price.doubleValue}
 	}
 }

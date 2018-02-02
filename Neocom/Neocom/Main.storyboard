@@ -895,6 +895,44 @@
             </objects>
             <point key="canvasLocation" x="1986" y="2622"/>
         </scene>
+        <!--Bug Report-->
+        <scene sceneID="xfw-5v-KZh">
+            <objects>
+                <tableViewController storyboardIdentifier="NCBugreportViewController" id="Qhd-eW-2Uu" customClass="NCBugreportViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="tfZ-tu-FtP" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Bug Report" id="CxX-lb-eaQ"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="trZ-Cy-Eq2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2708" y="2622"/>
+        </scene>
+        <!--Bug Report-->
+        <scene sceneID="flI-v3-4Mi">
+            <objects>
+                <tableViewController storyboardIdentifier="NCBugreportFinishViewController" id="UmP-dr-JAG" customClass="NCBugreportFinishViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="112" sectionHeaderHeight="18" sectionFooterHeight="18" id="nZf-C2-A2t" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Bug Report" id="SJi-6f-Neq">
+                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="7o4-Rh-q9E">
+                            <connections>
+                                <action selector="dismissAnimated:" destination="UmP-dr-JAG" id="c0K-iM-Kpf"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w9d-Jq-XiQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3390" y="2622"/>
+        </scene>
     </scenes>
     <resources>
         <image name="addAccount" width="100" height="100"/>

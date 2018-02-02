@@ -203,9 +203,14 @@ let NCTerms = URL(string: "http://mrdepth.github.io/Neocom/terms.html")!
 let NCPrivacy = URL(string: "http://mrdepth.github.io/Neocom/privacy.html")!
 let NCApoodealKey = "94f0ed36388a0a458bdf528df128c4427c4d4fb50130f981"
 let NCManageSubscriptionsURL = URL(string: "https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions")!
+let NCManageAPIKeysURL = URL(string: "https://community.eveonline.com/support/third-party-applications/")!
+let NCBugReportEmail = "bugreport@neocom.by"
+
 
 enum InAppProductID: String {
 	case removeAdsMonth = "com.shimanski.neocom.removeads.month"
+	case removeAdsMonth6 = "com.shimanski.neocom.removeads.months6"
+	case removeAdsYear = "com.shimanski.neocom.removeads.year"
 	
 	/*var period: (unit: NSCalendar.Unit, numberOfUnits: Int) {
 		switch self {
@@ -213,19 +218,40 @@ enum InAppProductID: String {
 			return (.month, 1)
 		}
 	}*/
-	var period: String {
+	var localizedPeriod: String {
 		switch self {
 		case .removeAdsMonth:
 			return NSLocalizedString("per month", comment: "")
+		case .removeAdsMonth6:
+			return NSLocalizedString("per 6 months", comment: "")
+		case .removeAdsYear:
+			return NSLocalizedString("per year", comment: "")
 		}
 	}
 	
-	var price: (Double, String) {
+	var periodInMonths: Int {
+		switch self {
+		case .removeAdsMonth:
+			return 1
+		case .removeAdsMonth6:
+			return 6
+		case .removeAdsYear:
+			return 12
+		}
+	}
+	
+	var localizedPrice: (Double, String) {
 		switch self {
 		case .removeAdsMonth:
 			return (0.99, "USD")
+		case .removeAdsMonth6:
+			return (4.99, "USD")
+		case .removeAdsYear:
+			return (8.99, "USD")
 		}
 	}
+	
+	static var all: [InAppProductID] = [.removeAdsMonth, .removeAdsMonth6, .removeAdsYear]
 }
 
 let NCSpecialThanks = ["Ilya Gepp aka Kane Gepp",

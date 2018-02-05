@@ -4,6 +4,25 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>cfg</string>
+			</array>
+			<key>CFBundleTypeIconFiles</key>
+			<array/>
+			<key>CFBundleTypeName</key>
+			<string>EFT File</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.shimanski.neocom.eft</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +34,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3.1</string>
+	<string>1.3.2</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -66,7 +85,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>31</string>
+	<string>32</string>
 	<key>FacebookAppID</key>
 	<string>1401008410021465</string>
 	<key>FacebookDisplayName</key>
@@ -127,6 +146,27 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.plain-text</string>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>EFT File</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.shimanski.neocom.eft</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>cfg</string>
+				</array>
+			</dict>
+		</dict>
 	</array>
 </dict>
 </plist>

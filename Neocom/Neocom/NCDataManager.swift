@@ -852,7 +852,7 @@ class NCDataManager {
 
 	func marketOrders(completionHandler: @escaping (NCCachedResult<[ESI.Market.CharacterOrder]>) -> Void) {
 		loadFromCache(forKey: "ESI.Market.CharacterOrder", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-			self.esi.market.listOrdersFromCharacter(characterID: Int(self.characterID)) { result in
+			self.esi.market.listOpenOrdersFromCharacter(characterID: Int(self.characterID)) { result in
 				completion(result, 3600.0 * 1)
 			}
 		})

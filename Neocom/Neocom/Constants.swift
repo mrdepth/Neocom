@@ -194,6 +194,11 @@ enum NCURLScheme: String {
 	case nc = "nc"
 	case showinfo = "showinfo"
 	case fitting = "fitting"
+	case file = "file"
+}
+
+enum NCURLFileTypeExtension: String {
+	case eft = "cfg"
 }
 
 let NCSupportEmail = "support@eveuniverseiphone.com"

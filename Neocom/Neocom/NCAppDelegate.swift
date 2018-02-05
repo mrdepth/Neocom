@@ -179,6 +179,19 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 				default:
 					return false
 				}
+			case .file?:
+				switch NCURLFileTypeExtension(rawValue: url.pathExtension.lowercased()) {
+				case .eft?:
+					guard let data = try? Data(contentsOf: url) else {return false}
+					guard let representation = NCLoadoutRepresentation(value: data) else {return false}
+					guard let navigationController = (window?.rootViewController as? UISplitViewController)?.viewControllers.last as? UINavigationController else {return false}
+					guard let controller = navigationController.viewControllers.last else {return false}
+//					guard let loadout = NCLoadoutRepresentation(value: data)?.loadouts.first else {return false}
+					Router.Fitting.Editor(representation: representation).perform(source: controller, sender: nil)
+					return true
+				default:
+					return false
+				}
 			default:
 				return false
 			}

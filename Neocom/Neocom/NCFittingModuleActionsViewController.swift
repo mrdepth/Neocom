@@ -128,9 +128,9 @@ class NCFittingModuleInfoRow: TreeRow {
 
 class NCFittingChargeRow: NCChargeRow {
 	let charges: Int
-	init(type: NCDBInvType, charges: Int, route: Route? = nil) {
+	init(charge: DGMCharge, type: NCDBInvType, charges: Int, route: Route? = nil) {
 		self.charges = charges
-		super.init(prototype: Prototype.NCChargeTableViewCell.compact, type: type, route: route, accessoryButtonRoute: Router.Database.TypeInfo(type))
+		super.init(prototype: Prototype.NCChargeTableViewCell.compact, type: type, route: route, accessoryButtonRoute: Router.Database.TypeInfo(charge))
 	}
 	
 	override func configure(cell: UITableViewCell) {
@@ -344,7 +344,7 @@ class NCFittingModuleActionsViewController: NCTreeViewController {
 			let charge = module.charge
 			let row: TreeNode
 			if let charge = charge, let type = NCDatabase.sharedDatabase?.invTypes[charge.typeID] {
-				row = NCFittingChargeRow(type: type, charges: charges, route: ammoRoute)
+				row = NCFittingChargeRow(charge: charge, type: type, charges: charges, route: ammoRoute)
 			}
 			else {
 				row = NCActionRow(title: NSLocalizedString("Select Ammo", comment: "").uppercased(),  route: ammoRoute)

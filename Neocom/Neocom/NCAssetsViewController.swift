@@ -124,7 +124,7 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 		if let value = assets?.flatMap({ $0.value }).joined() {
 			tableView.backgroundView = nil
 			
-			var locationIDs = Set(value.map {$0.locationID})
+			var locationIDs = Set(value.filter{$0.locationType == .station || $0.locationType == .solarSystem}.map {$0.locationID})
 			let itemIDs = Set(value.map {$0.itemID})
 			locationIDs.subtract(itemIDs)
 			

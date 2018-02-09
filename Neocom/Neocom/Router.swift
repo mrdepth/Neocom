@@ -1567,7 +1567,14 @@ enum Router {
 				destination.loadouts = loadouts
 			}
 		}
-		
+	}
+	
+	enum Settings {
+		class SkillQueueNotifications: Route {
+			init() {
+				super.init(kind: .push, storyboard: .main, identifier: "NCSkillQueueNotificationSettingsViewController")
+			}
+		}
 	}
 }
 

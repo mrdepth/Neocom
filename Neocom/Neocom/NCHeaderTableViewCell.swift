@@ -74,7 +74,7 @@ typealias NCFooterTableViewCell = NCHeaderTableViewCell
 class NCActionHeaderTableViewCell: NCHeaderTableViewCell {
 	@IBOutlet weak var button: UIButton?
 	
-	var actionHandler: NCActionHandler?
+	var actionHandler: NCActionHandler<UIButton>?
 	
 	override func prepareForReuse() {
 		super.prepareForReuse()

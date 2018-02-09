@@ -12,7 +12,7 @@ class NCSkillEditTableViewCell: NCTableViewCell {
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var levelSegmentedControl: UISegmentedControl!
 	
-	var actionHandler: NCActionHandler?
+	var actionHandler: NCActionHandler<UISegmentedControl>?
 	
 	override func prepareForReuse() {
 		super.prepareForReuse()

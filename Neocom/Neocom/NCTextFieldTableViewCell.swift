@@ -13,7 +13,7 @@ class NCTextFieldTableViewCell: NCTableViewCell {
 	@IBOutlet weak var textField: UITextField!
 	@IBOutlet weak var doneButton: UIButton?
 	
-	var handlers: [UIControlEvents: NCActionHandler] = [:]
+	var handlers: [UIControlEvents: NCActionHandler<UITextField>] = [:]
 	
 	override func prepareForReuse() {
 		super.prepareForReuse()

@@ -224,6 +224,7 @@
 		129E61061E0291FD00B56EB8 /* NCSkillsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61051E0291FD00B56EB8 /* NCSkillsPageViewController.swift */; };
 		129E61081E029BCB00B56EB8 /* Array+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61071E029BCB00B56EB8 /* Array+NC.swift */; };
 		12A2374B1EFFB39900BE7404 /* NCKillmailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A2374A1EFFB39800BE7404 /* NCKillmailInfoViewController.swift */; };
+		12A2DE50202C312A00ADF0D6 /* NCSkillQueueNotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A2DE4F202C312A00ADF0D6 /* NCSkillQueueNotificationSettingsViewController.swift */; };
 		12A3C4CE1F6BC115007FD291 /* NCMainMenuContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A3C4CD1F6BC115007FD291 /* NCMainMenuContainerViewController.swift */; };
 		12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */; };
 		12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D951DEF58A100561A7A /* ViewController.swift */; };
@@ -690,6 +691,7 @@
 		129E61051E0291FD00B56EB8 /* NCSkillsPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillsPageViewController.swift; sourceTree = "<group>"; };
 		129E61071E029BCB00B56EB8 /* Array+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+NC.swift"; sourceTree = "<group>"; };
 		12A2374A1EFFB39800BE7404 /* NCKillmailInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCKillmailInfoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		12A2DE4F202C312A00ADF0D6 /* NCSkillQueueNotificationSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSkillQueueNotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		12A3C4CD1F6BC115007FD291 /* NCMainMenuContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMainMenuContainerViewController.swift; sourceTree = "<group>"; };
 		12AC8D901DEF58A100561A7A /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCAppDelegate.swift; sourceTree = "<group>"; };
@@ -954,6 +956,7 @@
 				1203E8891F093AEA009ADF8D /* NCFeedChannelViewController.swift */,
 				1203E88B1F093B7E009ADF8D /* NCFeedItemViewController.swift */,
 				126E183A1F6133710008C081 /* NCSettingsViewController.swift */,
+				12A2DE4F202C312A00ADF0D6 /* NCSkillQueueNotificationSettingsViewController.swift */,
 				12C966DC1F95F56700B141CC /* NCAboutViewController.swift */,
 				124BD4B12018978E00816946 /* NCSubscriptionViewController.swift */,
 				1279A2F420233CBA00DD7A46 /* NCBugreportViewController.swift */,
@@ -2184,6 +2187,7 @@
 				1230A33A1E001D7300627D92 /* NCAccountTableViewCell.swift in Sources */,
 				12CFDAE41F03D71F00CC0762 /* NCDatePickerTableViewCell.swift in Sources */,
 				1211A4791EF1843D00364744 /* NCSkillsContentViewController.swift in Sources */,
+				12A2DE50202C312A00ADF0D6 /* NCSkillQueueNotificationSettingsViewController.swift in Sources */,
 				1230A3301DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift in Sources */,
 				1293BC1A1E4B4E7C0099FD75 /* NCFirepowerTableViewCell.swift in Sources */,
 				12AC8DC61DF0894400561A7A /* NCDataManager.swift in Sources */,

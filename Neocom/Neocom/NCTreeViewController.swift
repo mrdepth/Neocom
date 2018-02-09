@@ -31,7 +31,7 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate, NCAPI
 	
 	var accountChangeObserver: NotificationObserver?
 	var becomeActiveObserver: NotificationObserver?
-	var refreshHandler: NCActionHandler?
+	var refreshHandler: NCActionHandler<UIRefreshControl>?
 
 	var treeController: TreeController?
 

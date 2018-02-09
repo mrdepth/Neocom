@@ -12,7 +12,7 @@ class NCSwitchTableViewCell: NCTableViewCell {
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var switchControl: UISwitch!
 	
-	var actionHandler: NCActionHandler?
+	var actionHandler: NCActionHandler<UISwitch>?
 	
 	override func prepareForReuse() {
 		super.prepareForReuse()
@@ -46,9 +46,8 @@ class NCSwitchRow: TreeRow {
 		
 		cell.actionHandler = NCActionHandler(cell.switchControl, for: .valueChanged) { [weak self] control in
 			guard let strongSelf = self else {return}
-			let picker = control as! UISwitch
-			strongSelf.value = picker.isOn
-			strongSelf.handler?(picker.isOn)
+			strongSelf.value = control.isOn
+			strongSelf.handler?(control.isOn)
 		}
 	}
 }

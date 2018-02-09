@@ -11,7 +11,7 @@ import UIKit
 class NCDatePickerTableViewCell: NCTableViewCell {
 	@IBOutlet weak var datePicker: UIDatePicker!
 	
-	var actionHandler: NCActionHandler?
+	var actionHandler: NCActionHandler<UIDatePicker>?
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()

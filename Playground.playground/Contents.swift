@@ -4,7 +4,46 @@ import UIKit
 import PlaygroundSupport
 import CoreData
 
-let url = URL(string: "nc://account?uuid=sdfsdfsdf")!
+protocol P {
+//	associatedtype T
+//	var i: T {get set}
+	func f1()
+	func f2()
+	func some() -> Self
+}
 
-let components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
-components.host
+class A: P {
+	var i: Int = 1
+	func some() -> Self {
+		print("some")
+		return self
+	}
+	
+	func f1() {
+		print("A:f1")
+	}
+}
+
+
+extension P {
+	func f1() {
+		print("P:f1")
+	}
+	func f2() {
+		print("P:f2")
+	}
+//	func some() -> Self {
+//		return self
+//	}
+}
+
+
+A().f1()
+A().f2()
+
+func f(arg: P) {
+	print("\(type(of: arg.some()))")
+}
+
+
+f(arg: A())

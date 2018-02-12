@@ -196,7 +196,11 @@ extension NCSubscriptionViewController: SKPaymentTransactionObserver {
 		progressHandler?.finish()
 		progressHandler = nil
 		tableView.isUserInteractionEnabled = true
-		let controller = UIAlertController(title: NSLocalizedString("Purchases Restored", comment: ""), message: NSLocalizedString("Your previous purchases are being restored. Thank you!", comment: ""), preferredStyle: .alert)
+		
+		let (title, message) = Receipt.local?.inAppPurchases?.isEmpty == false
+			? (NSLocalizedString("Purchases Restored", comment: ""), NSLocalizedString("Your previous purchases are being restored. Thank you!", comment: ""))
+			: (NSLocalizedString("No Purchases to Restore", comment: ""), NSLocalizedString("No purchases have been made under this Apple ID. Use the Apple ID that is linked to the purchase made.", comment: ""))
+		let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .default, handler: nil))
 		present(controller, animated: true, completion: nil)
 //		updateContent { }

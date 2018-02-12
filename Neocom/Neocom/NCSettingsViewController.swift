@@ -83,9 +83,9 @@ class NCSettingsViewController: NCTreeViewController {
 	override func updateContent(completionHandler: @escaping () -> Void) {
 		var sections = [TreeNode]()
 		
-		sections.append(DefaultTreeSection(title: NSLocalizedString("Notifications", comment: "").uppercased(), children: [
-			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage, title: NSLocalizedString("Skill Queue", comment: ""), route: Router.Settings.SkillQueueNotifications())
-			]))
+//		sections.append(DefaultTreeSection(title: NSLocalizedString("Notifications", comment: "").uppercased(), children: [
+//			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage, title: NSLocalizedString("Skill Queue", comment: ""), route: Router.Settings.SkillQueueNotifications())
+//			]))
 		
 		if let setting = NCSetting.setting(key: NCSetting.Key.skillQueueNotifications) {
 			sections.append(NCSkillQueueNotificationOptionsSection(setting: setting))
@@ -106,7 +106,7 @@ class NCSettingsViewController: NCTreeViewController {
 		
 		sections.append(DefaultTreeSection(title: NSLocalizedString("Cache", comment: "").uppercased(), children: [NCActionRow(title: NSLocalizedString("Clear Cache", comment: "").uppercased(), route: clearCache, object: nil)]))
 
-		treeController?.content = RootNode(sections, collapseIdentifier: "NCFeedsViewController")
+		treeController?.content = RootNode(sections, collapseIdentifier: "NCSettingsViewController")
 		completionHandler()
 	}
 }

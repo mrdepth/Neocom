@@ -44,8 +44,11 @@ class NCBannerNavigationViewController: NCNavigationController {
 				return
 			}
 			else {
-				strongSelf.bannerView?.loadAd()
-				SKPaymentQueue.default().add(strongSelf)
+				let firstLaunchDate = UserDefaults.standard.object(forKey: UserDefaults.Key.NCFirstLaunchDate) as? Date ?? Date()
+				if firstLaunchDate.timeIntervalSinceNow < -TimeInterval.NCBannerStartTime {
+					strongSelf.bannerView?.loadAd()
+					SKPaymentQueue.default().add(strongSelf)
+				}
 			}
 		}
 		#endif

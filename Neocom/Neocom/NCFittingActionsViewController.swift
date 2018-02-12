@@ -201,13 +201,13 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 	private func reload() {
 		guard let fleet = fleet else {return}
 		guard let pilot = fleet.active else {return}
-		
+		guard let ship = pilot.structure ?? pilot.ship else {return}
 		var sections = [TreeNode]()
 
 		let invTypes = NCDatabase.sharedDatabase?.invTypes
 
-		let title = (pilot.ship ?? pilot.structure)?.name
-		sections.append(NCLoadoutNameRow(text: title?.isEmpty == false ? title : nil, placeholder: NSLocalizedString("Ship Name", comment: "")))
+		let title = ship.name
+		sections.append(NCLoadoutNameRow(text: !title.isEmpty ? title : nil, placeholder: ship is DGMStructure ? NSLocalizedString("Structure Name", comment: "") : NSLocalizedString("Ship Name", comment: "")))
 		if let ship = pilot.ship ?? pilot.structure, let type = invTypes?[ship.typeID] {
 			let row = NCTypeInfoRow(type: type, accessoryType: .detailButton, route: Router.Database.TypeInfo(ship), accessoryButtonRoute: Router.Database.TypeInfo(ship))
 			sections.append(DefaultTreeSection(nodeIdentifier: "Ship", title: NSLocalizedString("Ship", comment: "").uppercased(), children: [row]))

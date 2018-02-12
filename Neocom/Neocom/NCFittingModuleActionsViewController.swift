@@ -290,7 +290,9 @@ class NCFittingModuleActionsViewController: NCTreeViewController {
 		
 		let route: Route?
 		
-		if (type.variations?.count ?? 0) > 0 || (type.parentType?.variations?.count ?? 0) > 0 {
+		let hasVariations = (type.variations?.allObjects as? [NCDBInvType])?.filter({$0.dgmppItem != nil}).isEmpty == false || (type.parentType?.variations?.allObjects as? [NCDBInvType])?.filter({$0.dgmppItem != nil}).isEmpty == false
+		
+		if hasVariations {
 			route = Router.Fitting.Variations(type: type) { [weak self] (controller, type) in
 				let typeID = Int(type.typeID)
 				controller.dismiss(animated: true) {

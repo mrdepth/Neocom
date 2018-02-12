@@ -40,7 +40,7 @@ class NCFittingVariationsViewController: NCTreeViewController {
 
 		let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
 		let what = type.parentType ?? type
-		request.predicate = NSPredicate(format: "parentType == %@ OR self == %@", what, what)
+		request.predicate = NSPredicate(format: "(parentType == %@ OR self == %@) && dgmppItem <> nil", what, what)
 		request.sortDescriptors = [
 			NSSortDescriptor(key: "metaGroup.metaGroupID", ascending: true),
 			NSSortDescriptor(key: "metaLevel", ascending: true),

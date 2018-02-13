@@ -4287,6 +4287,23 @@
             </objects>
             <point key="canvasLocation" x="3329" y="3074"/>
         </scene>
+        <!--Fitting Loadouts Search Results View Controller-->
+        <scene sceneID="0YG-F8-gf8">
+            <objects>
+                <tableViewController storyboardIdentifier="NCFittingLoadoutsSearchResultsViewController" id="89P-js-nyw" customClass="NCFittingLoadoutsSearchResultsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="HP7-Ri-K38" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </tableView>
+                    <toolbarItems/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5wd-Iu-pa1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1609" y="3816"/>
+        </scene>
     </scenes>
     <resources>
         <image name="actionsItem" width="24" height="24"/>

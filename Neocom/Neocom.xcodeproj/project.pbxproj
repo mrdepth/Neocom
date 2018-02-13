@@ -33,6 +33,7 @@
 		1220710C1EF2C6B8007D86CE /* NCDatabaseCertificateMasteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1220710B1EF2C6B8007D86CE /* NCDatabaseCertificateMasteryViewController.swift */; };
 		1220710E1EF2C6E1007D86CE /* NCDatabaseCertificateRequirementsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1220710D1EF2C6E1007D86CE /* NCDatabaseCertificateRequirementsViewController.swift */; };
 		122242461E5C3A0000269A01 /* NCPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122242451E5C3A0000269A01 /* NCPageViewController.swift */; };
+		122332722032CCCD007DEA33 /* NCFittingLoadoutsSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122332712032CCCD007DEA33 /* NCFittingLoadoutsSearchResultsViewController.swift */; };
 		1224AF641E6D92240043F96C /* NCSkillEditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */; };
 		1226D9611F223A4C0049FA0C /* NCNPCPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226D9601F223A4C0049FA0C /* NCNPCPickerViewController.swift */; };
 		1226D9631F223A690049FA0C /* NCNPCPickerGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226D9621F223A690049FA0C /* NCNPCPickerGroupsViewController.swift */; };
@@ -497,6 +498,7 @@
 		1220710B1EF2C6B8007D86CE /* NCDatabaseCertificateMasteryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateMasteryViewController.swift; sourceTree = "<group>"; };
 		1220710D1EF2C6E1007D86CE /* NCDatabaseCertificateRequirementsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDatabaseCertificateRequirementsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		122242451E5C3A0000269A01 /* NCPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCPageViewController.swift; sourceTree = "<group>"; };
+		122332712032CCCD007DEA33 /* NCFittingLoadoutsSearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCFittingLoadoutsSearchResultsViewController.swift; sourceTree = "<group>"; };
 		12236C1A1F27974400A1A27D /* NCFittingInGameFittingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingInGameFittingsViewController.swift; sourceTree = "<group>"; };
 		1223E1B71F3C5F0F0044C225 /* NCFittingLoadoutsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingLoadoutsViewController.swift; sourceTree = "<group>"; };
 		1224AF611E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingCharacterEditorViewController.swift; sourceTree = "<group>"; };
@@ -1165,6 +1167,7 @@
 			children = (
 				12DBEAE81E1E8FEC0088A486 /* NCFittingMenuViewController.swift */,
 				1223E1B71F3C5F0F0044C225 /* NCFittingLoadoutsViewController.swift */,
+				122332712032CCCD007DEA33 /* NCFittingLoadoutsSearchResultsViewController.swift */,
 				12F8FF9E1E5DBC58008F79D5 /* NCFittingShipsViewController.swift */,
 				121314C31F14B79700DAFD12 /* NCFittingStructuresViewController.swift */,
 				1263C5081E64A7D0003D002D /* NCFittingFleetsViewController.swift */,
@@ -2183,6 +2186,7 @@
 				1263EE311F0F8EE0005128E6 /* NCTreeViewController.swift in Sources */,
 				1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */,
 				12B4FAE91E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift in Sources */,
+				122332722032CCCD007DEA33 /* NCFittingLoadoutsSearchResultsViewController.swift in Sources */,
 				122A1C431F8DFCC2005DE351 /* NCNavigationItemTitleLabel.swift in Sources */,
 				1230A33A1E001D7300627D92 /* NCAccountTableViewCell.swift in Sources */,
 				12CFDAE41F03D71F00CC0762 /* NCDatePickerTableViewCell.swift in Sources */,

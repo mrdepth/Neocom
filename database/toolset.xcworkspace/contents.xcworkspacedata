@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:sde-tool/sde-tool.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:NCDatabase/NCDatabase.xcodeproj">
    </FileRef>
 </Workspace>

@@ -61,15 +61,20 @@ class NCColonySection: TreeSection {
 						break
 					}
 					pin.contents?.filter {$0.amount > 0}.forEach {
-						facility.add(DGMCommodity(typeID: $0.typeID, quantity: Int($0.amount)))
+						try? facility.add(DGMCommodity(typeID: $0.typeID, quantity: Int($0.amount)))
 					}
 				}
 				
 				for route in layout.routes {
-					guard let source = planet[route.sourcePinID],
-						let destination = planet[route.destinationPinID] else {throw NCColonyError.invalidLayout}
-					let route = DGMRoute(from: source, to: destination, commodity: DGMCommodity(typeID: route.contentTypeID, quantity: Int(route.quantity)))
-					planet.add(route: route)
+					do {
+						guard let source = planet[route.sourcePinID],
+							let destination = planet[route.destinationPinID] else {throw NCColonyError.invalidLayout}
+						let route = try DGMRoute(from: source, to: destination, commodity: DGMCommodity(typeID: route.contentTypeID, quantity: Int(route.quantity)))
+						planet.add(route: route)
+					}
+					catch {
+						
+					}
 				}
 				
 				let lastUpdate = colony.lastUpdate

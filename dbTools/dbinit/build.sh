@@ -1,3 +1,3 @@
 #!/bin/sh
 make clean
-make EXPANSION="ArmsRace_1.0"
+make EXPANSION="February2018Release_1.0"

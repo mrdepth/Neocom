@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		1278552A20331AC900E7CD7E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1278552920331AC900E7CD7E /* main.swift */; };
 		127855312033269A00E7CD7E /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127855302033269A00E7CD7E /* Schema.swift */; };
+		127855512034675800E7CD7E /* api.c in Sources */ = {isa = PBXBuildFile; fileRef = 127855482034675700E7CD7E /* api.c */; };
+		127855522034675800E7CD7E /* loader.c in Sources */ = {isa = PBXBuildFile; fileRef = 1278554A2034675700E7CD7E /* loader.c */; };
+		127855532034675800E7CD7E /* parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 1278554B2034675700E7CD7E /* parser.c */; };
+		127855542034675800E7CD7E /* scanner.c in Sources */ = {isa = PBXBuildFile; fileRef = 1278554C2034675700E7CD7E /* scanner.c */; };
+		127855552034675800E7CD7E /* writer.c in Sources */ = {isa = PBXBuildFile; fileRef = 1278554D2034675700E7CD7E /* writer.c */; };
+		127855562034675800E7CD7E /* reader.c in Sources */ = {isa = PBXBuildFile; fileRef = 1278554E2034675800E7CD7E /* reader.c */; };
+		127855572034675800E7CD7E /* dumper.c in Sources */ = {isa = PBXBuildFile; fileRef = 1278554F2034675800E7CD7E /* dumper.c */; };
+		127855582034675800E7CD7E /* emitter.c in Sources */ = {isa = PBXBuildFile; fileRef = 127855502034675800E7CD7E /* emitter.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,6 +35,18 @@
 		1278552620331AC900E7CD7E /* sde-tool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "sde-tool"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1278552920331AC900E7CD7E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		127855302033269A00E7CD7E /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
+		1278553E2034188B00E7CD7E /* sde-tool-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "sde-tool-Bridging-Header.h"; sourceTree = "<group>"; };
+		127855482034675700E7CD7E /* api.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = api.c; sourceTree = "<group>"; };
+		127855492034675700E7CD7E /* yaml_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yaml_private.h; sourceTree = "<group>"; };
+		1278554A2034675700E7CD7E /* loader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = loader.c; sourceTree = "<group>"; };
+		1278554B2034675700E7CD7E /* parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = parser.c; sourceTree = "<group>"; };
+		1278554C2034675700E7CD7E /* scanner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scanner.c; sourceTree = "<group>"; };
+		1278554D2034675700E7CD7E /* writer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = writer.c; sourceTree = "<group>"; };
+		1278554E2034675800E7CD7E /* reader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reader.c; sourceTree = "<group>"; };
+		1278554F2034675800E7CD7E /* dumper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dumper.c; sourceTree = "<group>"; };
+		127855502034675800E7CD7E /* emitter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = emitter.c; sourceTree = "<group>"; };
+		1278555A2034677500E7CD7E /* yaml.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = yaml.h; path = "../../../../../../../Downloads/libyaml-master/include/yaml.h"; sourceTree = "<group>"; };
+		1278555B203467E600E7CD7E /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = config.h; path = "../../../../../../../Downloads/libyaml-master/config.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,10 +79,30 @@
 		1278552820331AC900E7CD7E /* sde-tool */ = {
 			isa = PBXGroup;
 			children = (
+				127855592034675B00E7CD7E /* yaml */,
 				1278552920331AC900E7CD7E /* main.swift */,
 				127855302033269A00E7CD7E /* Schema.swift */,
+				1278553E2034188B00E7CD7E /* sde-tool-Bridging-Header.h */,
 			);
 			path = "sde-tool";
+			sourceTree = "<group>";
+		};
+		127855592034675B00E7CD7E /* yaml */ = {
+			isa = PBXGroup;
+			children = (
+				1278555B203467E600E7CD7E /* config.h */,
+				1278555A2034677500E7CD7E /* yaml.h */,
+				127855482034675700E7CD7E /* api.c */,
+				1278554F2034675800E7CD7E /* dumper.c */,
+				127855502034675800E7CD7E /* emitter.c */,
+				1278554A2034675700E7CD7E /* loader.c */,
+				1278554B2034675700E7CD7E /* parser.c */,
+				1278554E2034675800E7CD7E /* reader.c */,
+				1278554C2034675700E7CD7E /* scanner.c */,
+				1278554D2034675700E7CD7E /* writer.c */,
+				127855492034675700E7CD7E /* yaml_private.h */,
+			);
+			path = yaml;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -97,6 +137,7 @@
 				TargetAttributes = {
 					1278552520331AC900E7CD7E = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -123,7 +164,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				127855582034675800E7CD7E /* emitter.c in Sources */,
+				127855522034675800E7CD7E /* loader.c in Sources */,
+				127855512034675800E7CD7E /* api.c in Sources */,
 				127855312033269A00E7CD7E /* Schema.swift in Sources */,
+				127855532034675800E7CD7E /* parser.c in Sources */,
+				127855572034675800E7CD7E /* dumper.c in Sources */,
+				127855562034675800E7CD7E /* reader.c in Sources */,
+				127855542034675800E7CD7E /* scanner.c in Sources */,
+				127855552034675800E7CD7E /* writer.c in Sources */,
 				1278552A20331AC900E7CD7E /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -240,9 +289,14 @@
 		1278552E20331AC900E7CD7E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				HEADER_SEARCH_PATHS = "/Users/shimanski/Downloads/libyaml-master/include/";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "sde-tool/sde-tool-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -250,9 +304,13 @@
 		1278552F20331AC900E7CD7E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				HEADER_SEARCH_PATHS = "/Users/shimanski/Downloads/libyaml-master/include/";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "sde-tool/sde-tool-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;

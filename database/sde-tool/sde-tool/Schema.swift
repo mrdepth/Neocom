@@ -335,6 +335,158 @@ struct Station: Codable {
 	var z: Double
 }
 
+struct Region: Codable {
+	var center: [Double]
+	var descriptionID: Int?
+	var factionID: Int?
+	var max: [Double]
+	var min: [Double]
+	var nameID: Int
+	var nebula: Int
+	var regionID: Int
+	var wormholeClassID: Int?
+}
+
+struct Constellation: Codable {
+	var center: [Double]
+	var max: [Double]
+	var min: [Double]
+	var nameID: Int
+	var constellationID: Int
+	var radius: Double
+	var wormholeClassID: Int?
+	var factionID: Int?
+}
+
+struct SolarSystem: Codable {
+	struct Planet: Codable {
+		struct Statistics: Codable {
+			var density: Double
+			var eccentricity: Double
+			var escapeVelocity: Double
+			var fragmented: Bool
+			var life: Double
+			var locked: Bool
+			var massDust: Double
+			var massGas: Double
+			var orbitPeriod: Double
+			var orbitRadius: Double
+			var pressure: Double
+			var radius: Double
+			var rotationRate: Double
+			var spectralClass: String
+			var surfaceGravity: Double
+			var temperature: Double
+		}
+		
+		struct Attributes: Codable {
+			var heightMap1: Double
+			var heightMap2: Double
+			var population: Bool
+			var shaderPreset: Double
+		}
+		
+		struct Moon: Codable {
+			var position: [Double]
+			var planetAttributes: Attributes
+			var radius: Double
+			var typeID: Int
+			var statistics: Statistics?
+			var npcStations: [Int: Station]?
+			var moonNameID: Int?
+		}
+		
+		struct AsteroidBelt: Codable {
+			var asteroidBeltNameID: Int?
+			var position: [Double]
+			var statistics: Statistics?
+			var typeID: Int?
+		}
+		
+		struct Station: Codable {
+			var graphicID: Int
+			var isConquerable: Bool
+			var operationID: Int
+			var ownerID: Int
+			var position: [Double]
+			var reprocessingEfficiency: Double
+			var reprocessingHangarFlag: Int
+			var reprocessingStationsTake: Double
+			var typeID: Int
+			var useOperationName: Bool
+		}
+
+		var celestialIndex: Int
+		var planetAttributes: Attributes
+		var position: [Double]
+		var radius: Double
+		var typeID: Int
+		var statistics: Statistics
+		var moons: [Int: Moon]?
+		var asteroidBelts: [Int: AsteroidBelt]?
+		var npcStations: [Int: Station]?
+		var planetNameID: Int?
+
+	}
+	
+	struct Star: Codable {
+		struct Statistics: Codable {
+			var age: Double
+			var life: Double
+			var locked: Bool
+			var luminosity: Double
+			var radius: Double
+			var spectralClass: String
+			var temperature: Double
+		}
+		
+		var id: Int
+		var radius: Double
+		var statistics: Statistics
+		var typeID: Int
+	}
+	
+	struct Stargate: Codable {
+		var destination: Int
+		var position: [Double]
+		var typeID: Int
+	}
+	
+	struct SecondarySun: Codable {
+		var effectBeaconTypeID: Int
+		var itemID: Int
+		var position: [Double]
+		var typeID: Int
+	}
+	
+	var center: [Double]
+	var max: [Double]
+	var min: [Double]
+	var corridor: Bool
+	var fringe: Bool
+	var hub: Bool
+	var international: Bool
+	var luminosity: Double
+	var border: Bool
+	var planets: [Int: Planet]
+	var radius: Double
+	var regional: Bool
+	var security: Double
+	var securityClass: String?
+	var solarSystemID: Int
+	var solarSystemNameID: Int
+	var star: Star
+	var secondarySun: SecondarySun?
+	var stargates: [Int: Stargate]
+	var sunTypeID: Int
+	var wormholeClassID: Int?
+	var visualEffect: String?
+	var disallowedAnchorCategories: [Int]?
+	var disallowedAnchorGroups: [Int]?
+	var descriptionID: Int?
+	var factionID: Int?
+}
+
 enum Schema {
 	typealias CategoryIDs = [Int: CategoryID]
 	typealias GroupIDs = [Int: GroupID]

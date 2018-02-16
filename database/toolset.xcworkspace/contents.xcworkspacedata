@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:yaml2json/yaml2json.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:sde-tool/sde-tool.xcodeproj">
    </FileRef>
    <FileRef

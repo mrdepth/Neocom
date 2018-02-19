@@ -1131,7 +1131,7 @@ importItems(category: NCDBDgmppItemCategory(categoryID: .ship), categoryName: "S
 importItems(category: NCDBDgmppItemCategory(categoryID: .drone), categoryName: "Drones", predicate: NSPredicate(format: "group.category.categoryID == 18"))
 importItems(category: NCDBDgmppItemCategory(categoryID: .fighter), categoryName: "Fighters", predicate: NSPredicate(format: "group.category.categoryID == 87 AND ANY attributes.attributeType.attributeID IN (%@)", [2212, 2213, 2214]))
 importItems(category: NCDBDgmppItemCategory(categoryID: .structureFighter), categoryName: "Fighters", predicate: NSPredicate(format: "group.category.categoryID == 87 AND ANY attributes.attributeType.attributeID IN (%@)", [2740, 2741, 2742]))
-importItems(category: NCDBDgmppItemCategory(categoryID: .structure), categoryName: "Structures", predicate: NSPredicate(format: "marketGroup.parentGroup.marketGroupID == 2199 OR marketGroup.marketGroupID == 2324"))
+importItems(category: NCDBDgmppItemCategory(categoryID: .structure), categoryName: "Structures", predicate: NSPredicate(format: "marketGroup.parentGroup.marketGroupID == 2199 OR marketGroup.marketGroupID == 2324 OR marketGroup.marketGroupID == 2327"))
 
 for subcategory in [7, 66] as [Int32] {
 	importItems(category: NCDBDgmppItemCategory(categoryID: .hi, subcategory: subcategory), categoryName: "Hi Slot", predicate: NSPredicate(format: "group.category.categoryID == %d AND ANY effects.effectID == 12", subcategory))

@@ -36,7 +36,7 @@ class NCBannerNavigationViewController: NCNavigationController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		#if TARGET_OS_SIMULATOR1
+		#if TARGET_OS_SIMULATOR
 		#else
 		Receipt.fetchValidReceipt { [weak self] (result) in
 			guard let strongSelf = self else {return}

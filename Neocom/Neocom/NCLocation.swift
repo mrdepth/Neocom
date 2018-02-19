@@ -67,7 +67,7 @@ class NCLocation {
 			self.solarSystemID = name.id
 			self.solarSystemName = name.name
 		default:
-			return nil
+			self.itemName = name.name
 		}
 	}
 

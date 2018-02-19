@@ -733,65 +733,73 @@ enum Router {
 			}
 			
 			override func perform(source: UIViewController, sender: Any?) {
-				let progress = NCProgressHandler(viewController: source, totalUnitCount: 1)
-				UIApplication.shared.beginIgnoringInteractionEvents()
+//				let progress = NCProgressHandler(viewController: source, totalUnitCount: 1)
+//				UIApplication.shared.beginIgnoringInteractionEvents()
 //				engine.perform {
-					var fleet: NCFittingFleet?
+				do {
+					let fleet: NCFittingFleet?
 					if let typeID = self.typeID {
-						fleet = try? NCFittingFleet(typeID: typeID)
+						fleet = try NCFittingFleet(typeID: typeID)
 					}
 					else if let loadoutID = self.loadoutID {
-						NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
-							guard let loadout = (try? managedObjectContext.existingObject(with: loadoutID)) as? NCLoadout else {return}
-							fleet = NCFittingFleet(loadouts: [loadout])
+						fleet = NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
+							guard let loadout = (try? managedObjectContext.existingObject(with: loadoutID)) as? NCLoadout else {return nil}
+							return NCFittingFleet(loadouts: [loadout])
 						}
 					}
 					else if let fleetID = self.fleetID {
-						NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
-							guard let fleetObject = (try? managedObjectContext.existingObject(with: fleetID)) as? NCFleet else {return}
-							fleet = NCFittingFleet(fleet: fleetObject)
+						fleet = NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
+							guard let fleetObject = (try? managedObjectContext.existingObject(with: fleetID)) as? NCFleet else {return nil}
+							return NCFittingFleet(fleet: fleetObject)
 						}
 					}
 					else if let asset = self.asset, let contents = self.contents {
-						fleet = try? NCFittingFleet(asset: asset, contents: contents)
+						fleet = try NCFittingFleet(asset: asset, contents: contents)
 					}
 					else if let killmail = self.killmail {
-						fleet = try? NCFittingFleet(killmail: killmail)
+						fleet = try NCFittingFleet(killmail: killmail)
 					}
 					else if let fitting = self.fitting {
-						fleet = try? NCFittingFleet(fitting: fitting)
+						fleet = try NCFittingFleet(fitting: fitting)
 					}
 					else if let loadout = self.representation?.loadouts.first {
-						fleet = try? NCFittingFleet(typeID: loadout.typeID)
+						fleet = try NCFittingFleet(typeID: loadout.typeID)
 						let pilot = fleet?.active
 						pilot?.loadout = loadout.data
 						pilot?.ship?.name = loadout.name
 					}
-					
-					DispatchQueue.main.async {
-						guard let fleet = fleet else {
-							progress.finish()
-							UIApplication.shared.endIgnoringInteractionEvents()
-							return
-						}
-						if let account = NCAccount.current {
-							fleet.active?.setSkills(from: account) {  _ in
-								self.fleet = fleet
-								super.perform(source: source, sender: sender)
-								progress.finish()
-								UIApplication.shared.endIgnoringInteractionEvents()
+					else {
+						return
+					}
+					if let fleet = fleet {
+						if let pilot = fleet.active {
+							let progress = NCProgressHandler(viewController: source, totalUnitCount: 1)
+							UIApplication.shared.beginIgnoringInteractionEvents()
+							if let account = NCAccount.current {
+								pilot.setSkills(from: account) {  _ in
+									self.fleet = fleet
+									super.perform(source: source, sender: sender)
+									UIApplication.shared.endIgnoringInteractionEvents()
+									progress.finish()
+								}
+							}
+							else {
+								pilot.setSkills(level: 5) { _ in
+									self.fleet = fleet
+									super.perform(source: source, sender: sender)
+									UIApplication.shared.endIgnoringInteractionEvents()
+									progress.finish()
+								}
 							}
 						}
 						else {
-							fleet.active?.setSkills(level: 5) { _ in
-								self.fleet = fleet
-								super.perform(source: source, sender: sender)
-								progress.finish()
-								UIApplication.shared.endIgnoringInteractionEvents()
-							}
+							self.fleet = fleet
+							super.perform(source: source, sender: sender)
 						}
 					}
-				//}
+				}
+				catch {
+				}
 			}
 		}
 		
@@ -1379,7 +1387,7 @@ enum Router {
 
 		class Mail: Route {
 			init() {
-				super.init(kind: .detail, storyboard: .character, identifier: "NCMailContainerViewController")
+				super.init(kind: .detail, storyboard: .character, identifier: "NCMailPageViewController")
 			}
 		}
 

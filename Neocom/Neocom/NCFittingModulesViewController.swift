@@ -250,8 +250,8 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		treeController.deselectCell(for: node, animated: true)
 		guard let item = node as? NCFittingModuleRow else {return}
-		guard let pilot = fleet?.active else {return}
-		guard let ship = pilot.structure ?? pilot.ship else {return}
+//		guard let pilot = fleet?.active else {return}
+		guard let ship = fleet?.active?.ship ?? fleet?.structure?.0 else {return}
 		guard let typePickerViewController = typePickerViewController else {return}
 		let socket = (node.parent as? NCFittingModuleSection)?.grouped == true ? -1 : item.socket ?? -1
 		let isStructure = ship is DGMStructure
@@ -268,7 +268,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 			case .rig:
 				category = NCDBDgmppItemCategory.category(categoryID: isStructure ? .structureRig : .rig, subcategory: ship.rigSize.rawValue)
 			case .subsystem:
-				guard let raceID = pilot.ship?.raceID, let race = NCDatabase.sharedDatabase?.chrRaces[raceID.rawValue] else {return}
+				guard let race = NCDatabase.sharedDatabase?.chrRaces[ship.raceID.rawValue] else {return}
 				category = NCDBDgmppItemCategory.category(categoryID: .subsystem, subcategory: nil, race: race)
 			case .service:
 				category = NCDBDgmppItemCategory.category(categoryID: .service, subcategory: NCDBCategoryID.structureModule.rawValue)
@@ -354,8 +354,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 	//MARK: - Private
 	
 	private func update() {
-		guard let pilot = self.fleet?.active else {return}
-		guard let ship = pilot.ship else {return}
+		guard let ship = fleet?.active?.ship ?? fleet?.structure?.0 else {return}
 		
 		powerGridLabel.value = ship.usedPowerGrid
 		powerGridLabel.maximumValue = ship.totalPowerGrid
@@ -375,8 +374,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 	
 	private func reload() {
 		let grouping = self.grouping
-		guard let pilot = fleet?.active else {return}
-		guard let ship = pilot.ship else {return}
+		guard let ship = fleet?.active?.ship ?? fleet?.structure?.0 else {return}
 		
 		var sections = [NCFittingModuleSection]()
 		for slot in [DGMModule.Slot.hi, DGMModule.Slot.med, DGMModule.Slot.low, DGMModule.Slot.rig, DGMModule.Slot.subsystem, DGMModule.Slot.service, DGMModule.Slot.mode] {

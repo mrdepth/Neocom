@@ -363,13 +363,13 @@
                 <splitViewController id="jOF-Zr-V9H" customClass="NCSplitViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <segue destination="aKc-6p-ULR" kind="relationship" relationship="masterViewController" id="zsx-Pr-xSn"/>
                         <segue destination="jzY-fj-lmf" kind="relationship" relationship="detailViewController" id="r6L-FF-iza"/>
+                        <segue destination="aKc-6p-ULR" kind="relationship" relationship="masterViewController" id="yKN-9Y-J0x"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bb8-GB-8B6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1031" y="-83"/>
+            <point key="canvasLocation" x="-1211" y="-83"/>
         </scene>
         <!--Main Menu Header View Controller-->
         <scene sceneID="iZ5-Vc-nMS">

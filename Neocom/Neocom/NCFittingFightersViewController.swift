@@ -70,11 +70,10 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 			Router.Fitting.DroneActions(node.drones, fleet: fleet).perform(source: self, sender: treeController.cell(for: node))
 		}
 		else if node is NCActionRow {
-			guard let pilot = fleet?.active else {return}
-			guard let ship = pilot.ship else {return}
+			guard let ship = fleet?.active?.ship ?? fleet?.structure?.0 else {return}
 			guard let typePickerViewController = typePickerViewController else {return}
 
-			let category = NCDBDgmppItemCategory.category(categoryID: .drone, subcategory:  NCDBCategoryID.fighter.rawValue)
+			let category = NCDBDgmppItemCategory.category(categoryID: ship is DGMStructure ? .structureFighter : .fighter)
 			
 			typePickerViewController.category = category
 			typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
@@ -120,8 +119,7 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 	//MARK: - Private
 	
 	private func update() {
-		guard let pilot = self.fleet?.active else {return}
-		guard let ship = pilot.ship ?? pilot.structure else {return}
+		guard let ship = fleet?.active?.ship ?? fleet?.structure?.0 else {return}
 		let droneSquadron = (ship.usedFighterLaunchTubes, ship.totalFighterLaunchTubes)
 		
 		self.droneBayLabel.value = ship.usedFighterHangar
@@ -131,20 +129,28 @@ class NCFittingFightersViewController: UIViewController, TreeControllerDelegate,
 	}
 	
 	private func reload() {
-		guard let pilot = self.fleet?.active else {return}
-		guard let ship = pilot.ship ?? pilot.structure else {return}
-		
-		var sections: [TreeNode] = ship.drones.map { i -> (Int, Int, String, Int, DGMDrone) in
+		guard let ship = fleet?.active?.ship ?? fleet?.structure?.0 else {return}
+
+		var drones = Dictionary(uniqueKeysWithValues: ship.drones.map { i -> (Int, Int, String, Int, DGMDrone) in
 				return (i.squadron.rawValue, i.squadronTag, i.type?.typeName ?? "", i.isActive ? 0 : 1, i)
 			}
-			.sorted {$0 < $1}
+//			.sorted {$0 < $1}
 			.group { $0.0 == $1.0 }
-			.map { i -> NCFittingDroneSection in
+			.map { i -> (DGMDrone.Squadron, NCFittingDroneSection) in
 				let rows = Array(i).group { ($0.1, $0.2, $0.3) == ($1.1, $1.2, $1.3) }
 					.map {NCFittingDroneRow(drones: $0.map{$0.4})}
-				return NCFittingDroneSection(squadron: DGMDrone.Squadron(rawValue: i.first!.0)!, ship: ship, children: rows)
-			}
+				let squadron = DGMDrone.Squadron(rawValue: i.first!.0)!
+				return (squadron, NCFittingDroneSection(squadron: squadron, ship: ship, children: rows))
+			})
 		
+		let squadrons: [DGMDrone.Squadron] = ship is DGMStructure ? [.standupHeavy, .standupLight, .standupSupport] : [.heavy, .light, .support]
+		squadrons.forEach { i in
+			if drones[i] == nil {
+				drones[i] = NCFittingDroneSection(squadron: i, ship: ship, children: [])
+			}
+		}
+		
+		var sections: [TreeNode] = drones.sorted {$0.key.rawValue < $1.key.rawValue}.map{$0.value}
 		
 		sections.append(NCActionRow(title: NSLocalizedString("Add Drone", comment: "").uppercased()))
 		treeController.content?.children = sections

@@ -37,6 +37,11 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate, NCAPI
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		if #available(iOS 11.0, *) {
+//			tableView.contentInsetAdjustmentBehavior = .never
+		} else {
+			// Fallback on earlier versions
+		}
 		tableView.backgroundColor = UIColor.background
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension

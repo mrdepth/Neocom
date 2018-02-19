@@ -10,6 +10,7 @@ import UIKit
 import CloudData
 import EVEAPI
 import Dgmpp
+import CoreData
 
 class NCFittingDamagePatternRow: TreeRow {
 	let damagePattern: DGMDamageVector
@@ -134,11 +135,8 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 
 	@IBAction func onDuplicate(_ sender: Any) {
 		guard let fleet = fleet else {return}
-		guard let pilot = fleet.active else {return}
-		guard let ship = pilot.ship else {return}
-		let copyPilot = DGMCharacter(pilot)
-		guard let copyShip = copyPilot.ship else {return}
-		fleet.add(pilot: copyPilot)
+		guard let ship = fleet.active?.ship ?? fleet.structure?.0 else {return}
+
 		var name = ship.name
 		if let r = name.range(of: "Copy", options: [String.CompareOptions.backwards]) {
 			if name.endIndex == r.upperBound {
@@ -158,11 +156,42 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 		else {
 			name += " " + NSLocalizedString("Copy", comment: "")
 		}
+
 		
-		copyShip.name = name
-		
-		
-		fleet.active = copyPilot
+		if let pilot = fleet.active {
+			let copyPilot = DGMCharacter(pilot)
+			guard let copyShip = copyPilot.ship else {return}
+			copyShip.name = name
+			fleet.add(pilot: copyPilot)
+			fleet.active = copyPilot
+		}
+		else if let structure = fleet.structure {
+			guard let managedObjectContext = NCStorage.sharedStorage?.viewContext else {return}
+			
+			if let objectID = structure.1, let loadout = (try? managedObjectContext.existingObject(with: objectID)) as? NCLoadout {
+				loadout.name = structure.0.name
+				loadout.data?.data = structure.0.loadout
+			}
+			else {
+				let loadout = NCLoadout(entity: NSEntityDescription.entity(forEntityName: "Loadout", in: managedObjectContext)!, insertInto: managedObjectContext)
+				loadout.data = NCLoadoutData(entity: NSEntityDescription.entity(forEntityName: "LoadoutData", in: managedObjectContext)!, insertInto: managedObjectContext)
+				loadout.typeID = Int32(structure.0.typeID)
+				loadout.name = structure.0.name
+				loadout.data?.data = structure.0.loadout
+				loadout.uuid = UUID().uuidString
+			}
+			if managedObjectContext.hasChanges {
+				try? managedObjectContext.save()
+			}
+			let copyStructure = DGMStructure(structure.0)
+			copyStructure.name = name
+			fleet.structure = (copyStructure, nil)
+			NotificationCenter.default.post(name: .NCFittingFleetDidUpdate, object: fleet)
+			
+		}
+		else {
+			return
+		}
 	}
 
 	//MARK: - TreeControllerDelegate
@@ -190,9 +219,9 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 	}
 
 	@IBAction func onEndEditing(_ sender: UITextField) {
-		guard let pilot = fleet?.active else {return}
+		guard let ship = fleet?.active?.ship ?? fleet?.structure?.0 else {return}
 		let text = sender.text
-		pilot.ship?.name = text ?? ""
+		ship.name = text ?? ""
 		NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
 	}
 	
@@ -200,44 +229,49 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 	
 	private func reload() {
 		guard let fleet = fleet else {return}
-		guard let pilot = fleet.active else {return}
-		guard let ship = pilot.structure ?? pilot.ship else {return}
+		guard let ship = fleet.active?.ship ?? fleet.structure?.0 else {return}
 		var sections = [TreeNode]()
 
 		let invTypes = NCDatabase.sharedDatabase?.invTypes
 
 		let title = ship.name
 		sections.append(NCLoadoutNameRow(text: !title.isEmpty ? title : nil, placeholder: ship is DGMStructure ? NSLocalizedString("Structure Name", comment: "") : NSLocalizedString("Ship Name", comment: "")))
-		if let ship = pilot.ship ?? pilot.structure, let type = invTypes?[ship.typeID] {
+		if let type = invTypes?[ship.typeID] {
 			let row = NCTypeInfoRow(type: type, accessoryType: .detailButton, route: Router.Database.TypeInfo(ship), accessoryButtonRoute: Router.Database.TypeInfo(ship))
 			sections.append(DefaultTreeSection(nodeIdentifier: "Ship", title: NSLocalizedString("Ship", comment: "").uppercased(), children: [row]))
 		}
 		
-		let characterRow: TreeNode
-		let characterRoute = Router.Fitting.Characters(pilot: pilot) { (controller, url) in
-			controller.dismiss(animated: true) {
-				pilot.setSkills(from: url, completionHandler: { _ in
-					NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
-				})
+		if let pilot = fleet.active {
+			let characterRow: TreeNode
+			let characterRoute = Router.Fitting.Characters(pilot: pilot) { (controller, url) in
+				controller.dismiss(animated: true) {
+					pilot.setSkills(from: url, completionHandler: { _ in
+						NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: fleet)
+					})
+				}
 			}
+			if let account = pilot.account {
+				characterRow = NCAccountCharacterRow(account: account, route: characterRoute)
+			}
+			else if let character = pilot.fitCharacter {
+				characterRow = NCCustomCharacterRow(character: character, route: characterRoute)
+			}
+			else {
+				characterRow = NCPredefinedCharacterRow(level: pilot.level ?? 0, route: characterRoute)
+			}
+			sections.append(DefaultTreeSection(nodeIdentifier: "Character", title: NSLocalizedString("Character", comment: "").uppercased(), children: [characterRow]))
 		}
 		
-		if let account = pilot.account {
-			characterRow = NCAccountCharacterRow(account: account, route: characterRoute)
-		}
-		else if let character = pilot.fitCharacter {
-			characterRow = NCCustomCharacterRow(character: character, route: characterRoute)
-		}
-		else {
-			characterRow = NCPredefinedCharacterRow(level: pilot.level ?? 0, route: characterRoute)
-		}
-		
-		sections.append(DefaultTreeSection(nodeIdentifier: "Character", title: NSLocalizedString("Character", comment: "").uppercased(), children: [characterRow]))
 		
 		let areaEffectsRoute = Router.Fitting.AreaEffects { [weak self] (controller, type) in
 			let typeID = type != nil ? Int(type!.typeID) : nil
 			controller.dismiss(animated: true) {
-				self?.fleet?.gang.area = typeID != nil ? try? DGMArea(typeID: typeID!) : nil
+				if let (structure, _) = self?.fleet?.structure {
+					structure.area = typeID != nil ? try? DGMArea(typeID: typeID!) : nil
+				}
+				else {
+					self?.fleet?.gang.area = typeID != nil ? try? DGMArea(typeID: typeID!) : nil
+				}
 				NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
 			}
 		}
@@ -246,7 +280,7 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 			self.navigationItem.rightBarButtonItem = nil
 		}
 		
-		if let area = fleet.gang.area, let type = invTypes?[area.typeID] {
+		if let area =  fleet.structure?.0.area ?? fleet.gang.area, let type = invTypes?[area.typeID] {
 			let row = NCFittingAreaEffectRow(type: type, accessoryType: .detailButton, route: areaEffectsRoute, accessoryButtonRoute: Router.Database.TypeInfo(type))
 			sections.append(DefaultTreeSection(nodeIdentifier: "Area", title: NSLocalizedString("Area Effects", comment: "").uppercased(), children: [row]))
 		}
@@ -264,7 +298,7 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 			}
 		}
 		
-		let damagePattern = pilot.ship?.damagePattern ?? .omni
+		let damagePattern = ship.damagePattern
 		sections.append(DefaultTreeSection(nodeIdentifier: "DamagePattern", title: NSLocalizedString("Damage Pattern", comment: "").uppercased(), children: [NCFittingDamagePatternRow(damagePattern: damagePattern, route: damagePatternsRoute)]))
 		
 		if treeController?.content == nil {
@@ -276,11 +310,10 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 	}
 	
 	private func performShare(sender: UIBarButtonItem) {
-		guard let pilot = fleet?.active else {return}
-		guard let ship = pilot.ship ?? pilot.structure else {return}
+		guard let ship = fleet?.active?.ship ?? fleet?.structure?.0 else {return}
 		let typeID = ship.typeID
 		let name = ship.name
-		let loadout = pilot.loadout
+		let loadout = ship.loadout
 		
 		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		

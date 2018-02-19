@@ -159,12 +159,13 @@ enum NCDBDgmppItemCategoryID: Int {
 	case mode
 	case charge
 	case drone
+	case fighter
 	case implant
 	case booster
 	case ship
 	case structure
 	case service
-	case structureDrone
+	case structureFighter
 	case structureRig
 }
 

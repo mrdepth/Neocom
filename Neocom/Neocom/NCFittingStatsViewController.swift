@@ -370,7 +370,7 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 	@IBAction func onBugReport(_ sender: Any) {
 		var attachments = [String: Data]()
 		fleet?.pilots.forEach { (pilot, _) in
-			guard let ship = pilot.ship ?? pilot.structure else {return}
+			guard let ship = pilot.ship else {return}
 			guard let typeName = ship.type?.typeName else {return}
 			let typeID = ship.typeID
 			let loadout = pilot.loadout
@@ -379,6 +379,15 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 			guard let eftData = eft.data(using: .utf8) else {return}
 			attachments["\(typeName).cfg"] = eftData
 		}
+		if let structure = fleet?.structure?.0, let typeName = structure.type?.typeName {
+			let typeID = structure.typeID
+			let loadout = structure.loadout
+			
+			if let eft = (NCLoadoutRepresentation.eft([(typeID: typeID, data: loadout, name: typeName)]).value as? [String])?.first, let eftData = eft.data(using: .utf8) {
+				attachments["\(typeName).cfg"] = eftData
+			}
+		}
+		
 		Router.MainMenu.BugReport.Finish(attachments: attachments, subject: "Fitting", kind: .adaptiveModal).perform(source: self, sender: nil)
 
 		
@@ -394,8 +403,7 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 			self.treeController?.content = TreeNode()
 		}
 		guard let fleet = fleet else {return}
-		guard let pilot = fleet.active else {return}
-		guard let ship = pilot.ship ?? pilot.structure else {return}
+		guard let ship = fleet.active?.ship ?? fleet.structure?.0 else {return}
 		var sections = [TreeNode]()
 		
 		sections.append(DefaultTreeSection(nodeIdentifier: "Resources", title: NSLocalizedString("Resources", comment: "").uppercased(), children: [NCFittingResourcesRow(ship: ship)]))
@@ -406,7 +414,7 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 		if ship.minerYield.value > 0 || ship.droneYield.value > 0 {
 			sections.append(DefaultTreeSection(nodeIdentifier: "Mining", title: NSLocalizedString("Mining", comment: "").uppercased(), children: [NCMiningYieldRow(ship: ship)]))
 		}
-		if let structure = pilot.structure {
+		if let structure = ship as? DGMStructure {
 			sections.append(DefaultTreeSection(nodeIdentifier: "Misc", title: NSLocalizedString("Misc", comment: "").uppercased(), children: [NCFittingMiscRow(structure: structure)]))
 			sections.append(DefaultTreeSection(nodeIdentifier: "Fuel", title: NSLocalizedString("Fuel", comment: "").uppercased(), children: [NCFittingFuelRow(structure: structure)]))
 		}
@@ -419,7 +427,9 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 		var typeIDs = Set(ship.modules.map {[$0.typeID, $0.charge?.typeID]}.joined().flatMap{$0})
 		typeIDs.formUnion(Set(ship.drones.map{$0.typeID}))
 		typeIDs.insert(ship.typeID)
-		typeIDs.formUnion(Set(pilot.implants.map{$0.typeID}))
+		if let pilot = fleet.active {
+			typeIDs.formUnion(Set(pilot.implants.map{$0.typeID}))
+		}
 		
 		treeController?.content?.children = sections
 		NCDataManager(account: NCAccount.current).prices(typeIDs: typeIDs) { result in

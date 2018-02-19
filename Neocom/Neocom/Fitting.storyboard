@@ -474,7 +474,37 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="isn-BU-fZY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-821" y="3075"/>
+            <point key="canvasLocation" x="-1610" y="3074"/>
+        </scene>
+        <!--Fitting-->
+        <scene sceneID="IkA-8I-gH7">
+            <objects>
+                <viewController storyboardIdentifier="NCFittingMenuContainerViewController" id="XYz-Y5-qTx" customClass="NCFittingMenuContainerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hZO-Tp-QND">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dqF-6e-ZZu">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <connections>
+                                    <segue destination="quB-aO-oIE" kind="embed" id="mZA-nQ-hvJ"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="dqF-6e-ZZu" firstAttribute="top" secondItem="hZO-Tp-QND" secondAttribute="top" id="5hP-h9-WrD"/>
+                            <constraint firstItem="dqF-6e-ZZu" firstAttribute="trailing" secondItem="5th-tz-tGw" secondAttribute="trailing" id="Qv3-Tm-mlF"/>
+                            <constraint firstItem="dqF-6e-ZZu" firstAttribute="bottom" secondItem="5th-tz-tGw" secondAttribute="bottom" id="mri-bj-Iw5"/>
+                            <constraint firstItem="dqF-6e-ZZu" firstAttribute="leading" secondItem="5th-tz-tGw" secondAttribute="leading" id="nc2-YQ-655"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="5th-tz-tGw"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Fitting" id="T0L-wM-IBh"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QVd-X2-yfP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-871.20000000000005" y="3073.313343328336"/>
         </scene>
         <!--Fitting-->
         <scene sceneID="tGo-h3-A7Z">
@@ -4344,4 +4374,7 @@
         <image name="velocity" width="32" height="32"/>
         <image name="warpSpeed" width="32" height="32"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="kZB-6Y-V76"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -261,13 +261,21 @@
             <objects>
                 <viewController storyboardIdentifier="NCMailPageViewController" automaticallyAdjustsScrollViewInsets="NO" id="cRP-gC-plC" customClass="NCMailPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="UJp-GE-qMw" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="579"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="6aG-Lh-9mP"/>
                     </view>
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="LGZ-H3-IWf"/>
+                        <barButtonItem systemItem="compose" id="JEA-zc-LB9">
+                            <connections>
+                                <action selector="onCompose:" destination="cRP-gC-plC" id="wff-fd-gqV"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Mail" id="fiF-6f-evF"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="black" translucent="NO"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2fD-AQ-ewe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

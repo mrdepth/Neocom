@@ -291,7 +291,7 @@
 			);
 			currentVersion = 129E61201E03CC6E00B56EB8 /* NCDatabase.xcdatamodel */;
 			name = NCDatabase.xcdatamodeld;
-			path = ../../../Neocom/Neocom/NCDatabase.xcdatamodeld;
+			path = "../../sde-tool/sde-tool/NCDatabase.xcdatamodeld";
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

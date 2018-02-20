@@ -10,6 +10,8 @@
 		12483A9B203C082F00AEE950 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12483A9A203C082F00AEE950 /* Utils.swift */; };
 		1278552A20331AC900E7CD7E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1278552920331AC900E7CD7E /* main.swift */; };
 		127855312033269A00E7CD7E /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127855302033269A00E7CD7E /* Schema.swift */; };
+		12C26151203C8F2200A588A2 /* CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C26150203C8F2200A588A2 /* CoreData.swift */; };
+		12C26157203C927F00A588A2 /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12C26155203C927F00A588A2 /* NCDatabase.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +31,8 @@
 		1278552620331AC900E7CD7E /* sde-tool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "sde-tool"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1278552920331AC900E7CD7E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		127855302033269A00E7CD7E /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
+		12C26150203C8F2200A588A2 /* CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreData.swift; sourceTree = "<group>"; };
+		12C26156203C927F00A588A2 /* NCDatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCDatabase.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,8 +65,10 @@
 		1278552820331AC900E7CD7E /* sde-tool */ = {
 			isa = PBXGroup;
 			children = (
+				12C26155203C927F00A588A2 /* NCDatabase.xcdatamodeld */,
 				1278552920331AC900E7CD7E /* main.swift */,
 				12483A9A203C082F00AEE950 /* Utils.swift */,
+				12C26150203C8F2200A588A2 /* CoreData.swift */,
 				127855302033269A00E7CD7E /* Schema.swift */,
 			);
 			path = "sde-tool";
@@ -127,7 +133,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12C26151203C8F2200A588A2 /* CoreData.swift in Sources */,
 				127855312033269A00E7CD7E /* Schema.swift in Sources */,
+				12C26157203C927F00A588A2 /* NCDatabase.xcdatamodeld in Sources */,
 				12483A9B203C082F00AEE950 /* Utils.swift in Sources */,
 				1278552A20331AC900E7CD7E /* main.swift in Sources */,
 			);
@@ -291,6 +299,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		12C26155203C927F00A588A2 /* NCDatabase.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				12C26156203C927F00A588A2 /* NCDatabase.xcdatamodel */,
+			);
+			currentVersion = 12C26156203C927F00A588A2 /* NCDatabase.xcdatamodel */;
+			name = NCDatabase.xcdatamodeld;
+			path = ../../../Neocom/Neocom/NCDatabase.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 1278551E20331AC900E7CD7E /* Project object */;
 }

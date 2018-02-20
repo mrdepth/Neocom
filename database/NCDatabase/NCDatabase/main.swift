@@ -17,6 +17,8 @@ class NCDBImageValueTransformer: ValueTransformer {
 	}
 }
 
+ValueTransformer.setValueTransformer(NCDBImageValueTransformer(), forName: NSValueTransformerName("NCDBImageValueTransformer"))
+
 enum NCDBDgmppItemCategoryID: Int32 {
 	case none = 0
 	case hi
@@ -40,8 +42,6 @@ enum NCDBDgmppItemCategoryID: Int32 {
 enum NCDBRegionID: Int {
 	case whSpace = 11000000
 }
-
-ValueTransformer.setValueTransformer(NCDBImageValueTransformer(), forName: NSValueTransformerName("NCDBImageValueTransformer"))
 
 extension NSColor {
 	

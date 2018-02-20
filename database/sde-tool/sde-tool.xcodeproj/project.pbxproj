@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12483A9B203C082F00AEE950 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12483A9A203C082F00AEE950 /* Utils.swift */; };
 		1278552A20331AC900E7CD7E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1278552920331AC900E7CD7E /* main.swift */; };
 		127855312033269A00E7CD7E /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127855302033269A00E7CD7E /* Schema.swift */; };
 /* End PBXBuildFile section */
@@ -24,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		12483A9A203C082F00AEE950 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		1278552620331AC900E7CD7E /* sde-tool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "sde-tool"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1278552920331AC900E7CD7E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		127855302033269A00E7CD7E /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				1278552920331AC900E7CD7E /* main.swift */,
+				12483A9A203C082F00AEE950 /* Utils.swift */,
 				127855302033269A00E7CD7E /* Schema.swift */,
 			);
 			path = "sde-tool";
@@ -125,6 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				127855312033269A00E7CD7E /* Schema.swift in Sources */,
+				12483A9B203C082F00AEE950 /* Utils.swift in Sources */,
 				1278552A20331AC900E7CD7E /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

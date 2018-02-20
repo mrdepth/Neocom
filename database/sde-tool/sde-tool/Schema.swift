@@ -487,6 +487,69 @@ struct SolarSystem: Codable {
 	var factionID: Int?
 }
 
+struct AttributeCategory: Codable {
+	var categoryDescription: String?
+	var categoryID: Int
+	var categoryName: String?
+}
+
+struct AttributeType: Codable {
+	var attributeID: Int
+	var attributeName: String
+	var categoryID: Int?
+	var defaultValue: Double
+	var description: String
+	var highIsGood: Bool
+	var published: Bool
+	var stackable: Bool
+	var iconID: Int?
+	var unitID: Int?
+	var displayName: String?
+}
+
+struct TypeAttribute: Codable {
+	var attributeID: Int
+	var typeID: Int
+	var valueInt: Int?
+	var valueFloat: Double?
+}
+
+struct Effect: Codable {
+	var description: String?
+	var disallowAutoRepeat: Bool
+	var dischargeAttributeID: Int?
+	var displayName: String
+	var distribution: Int?
+	var durationAttributeID: Int?
+	var effectCategory: Int
+	var effectID: Int
+	var effectName: String
+	var electronicChance: Bool
+	var guid: String?
+	var isAssistance: Bool
+	var isOffensive: Bool
+	var isWarpSafe: Bool
+	var postExpression: Int
+	var preExpression: Int
+	var propulsionChance: Bool
+	var published: Bool
+	var rangeChance: Bool
+	var rangeAttributeID: Int?
+	var sfxName: String?
+	var iconID: Int?
+	var falloffAttributeID: Int?
+	var fittingUsageChanceAttributeID: Int?
+	var modifierInfo: String?
+	var npcActivationChanceAttributeID: Int?
+}
+
+struct TypeEffect: Codable {
+	var effectID: Int
+	var isDefault: Bool
+	var typeID: Int
+
+}
+
 enum Schema {
 	typealias CategoryIDs = [Int: CategoryID]
 	typealias GroupIDs = [Int: GroupID]
@@ -517,4 +580,9 @@ enum Schema {
 	typealias AssemblyLineTypes = [AssemblyLineType]
 	typealias InstallationTypeContents = [InstallationTypeContent]
 	typealias Stations = [Station]
+	typealias AttributeCategories = [AttributeCategory]
+	typealias AttributeTypes = [AttributeType]
+	typealias TypeAttributes = [TypeAttribute]
+	typealias Effects = [Effect]
+	typealias TypeEffects = [TypeEffect]
 }

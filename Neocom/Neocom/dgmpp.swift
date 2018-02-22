@@ -333,7 +333,8 @@ extension DGMShip {
 					catch {
 					}
 				}
-			}		}
+			}
+		}
 	}
 }
 

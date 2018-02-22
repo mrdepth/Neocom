@@ -496,7 +496,7 @@ try! database.exec("SELECT * FROM invTypes") { row in
 	type.basePrice = Float(row["basePrice"] as! NSNumber)
 	type.capacity = Float(row["capacity"] as! NSNumber)
 	type.mass = Float(row["mass"] as! NSNumber)
-	type.portionSize = Float(row["portionSize"] as! NSNumber)
+	type.portionSize = Int32(row["portionSize"] as! NSNumber)
 	type.group = invGroups[row["groupID"] as! NSNumber]
 	type.published = (row["published"] as! Int64) == 1 && type.group!.published
 	type.radius = row["radius"] != nil ? Float(row["radius"] as! NSNumber) : 0

@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1229AE75203EABD4003EE80A /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1229AE73203EABD4003EE80A /* NCDatabase.xcdatamodeld */; };
 		129E61191E03CC5F00B56EB8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61181E03CC5F00B56EB8 /* main.swift */; };
-		129E61211E03CC6E00B56EB8 /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 129E611F1E03CC6E00B56EB8 /* NCDatabase.xcdatamodeld */; };
 		129E61281E03CCC600B56EB8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 129E61271E03CCC600B56EB8 /* libsqlite3.tbd */; };
 /* End PBXBuildFile section */
 
@@ -25,9 +25,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1229AE74203EABD4003EE80A /* NCDatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCDatabase.xcdatamodel; sourceTree = "<group>"; };
 		129E61151E03CC5F00B56EB8 /* NCDatabase */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NCDatabase; sourceTree = BUILT_PRODUCTS_DIR; };
 		129E61181E03CC5F00B56EB8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		129E61201E03CC6E00B56EB8 /* NCDatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCDatabase.xcdatamodel; sourceTree = "<group>"; };
 		129E61221E03CCAC00B56EB8 /* NCDatabase-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NCDatabase-Bridging-Header.h"; sourceTree = "<group>"; };
 		129E61271E03CCC600B56EB8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -64,8 +64,8 @@
 		129E61171E03CC5F00B56EB8 /* NCDatabase */ = {
 			isa = PBXGroup;
 			children = (
-				129E611F1E03CC6E00B56EB8 /* NCDatabase.xcdatamodeld */,
 				129E61181E03CC5F00B56EB8 /* main.swift */,
+				1229AE73203EABD4003EE80A /* NCDatabase.xcdatamodeld */,
 				129E61221E03CCAC00B56EB8 /* NCDatabase-Bridging-Header.h */,
 			);
 			path = NCDatabase;
@@ -139,8 +139,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				129E61211E03CC6E00B56EB8 /* NCDatabase.xcdatamodeld in Sources */,
 				129E61191E03CC5F00B56EB8 /* main.swift in Sources */,
+				1229AE75203EABD4003EE80A /* NCDatabase.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,14 +284,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		129E611F1E03CC6E00B56EB8 /* NCDatabase.xcdatamodeld */ = {
+		1229AE73203EABD4003EE80A /* NCDatabase.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				129E61201E03CC6E00B56EB8 /* NCDatabase.xcdatamodel */,
+				1229AE74203EABD4003EE80A /* NCDatabase.xcdatamodel */,
 			);
-			currentVersion = 129E61201E03CC6E00B56EB8 /* NCDatabase.xcdatamodel */;
+			currentVersion = 1229AE74203EABD4003EE80A /* NCDatabase.xcdatamodel */;
 			name = NCDatabase.xcdatamodeld;
-			path = "../../sde-tool/sde-tool/NCDatabase.xcdatamodeld";
+			path = ../../../Neocom/Neocom/NCDatabase.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

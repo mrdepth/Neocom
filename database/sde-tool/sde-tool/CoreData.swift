@@ -111,6 +111,13 @@ extension NCDBInvType {
 		portionSize = Int32(type.value.portionSize)
 		metaLevel = Int16(typeAttributes[type.key]?[NCDBDgmAttributeID.metaLevel.rawValue]?.value ?? 0)
 		icon = .icon(typeID: type.key)
+		
+		if published {
+			metaGroup = invMetaGroups[metaTypes[type.key]?.metaGroupID ?? defaultMetaGroupID]
+		}
+		else {
+			metaGroup = unpublishedMetaGroup
+		}
 //		groupID = Int32(group.key)
 //		groupName = group.value.name.en
 //		published = group.value.published
@@ -124,7 +131,7 @@ extension NCDBInvType {
 extension NCDBInvMetaGroup {
 	convenience init(_ metaGroup: MetaGroup) {
 		self.init(context: context)
-		metaGroupID = metaGroup.metaGroupID
+		metaGroupID = Int32(metaGroup.metaGroupID)
 		metaGroupName = metaGroup.metaGroupName
 	}
 }

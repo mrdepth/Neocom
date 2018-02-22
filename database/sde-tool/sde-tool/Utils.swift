@@ -55,7 +55,7 @@ enum DumpError: Error {
 	case parserError(URL, Error)
 }
 
-func load<T: Codable>(_ url: URL) -> Future<T> {
+func load<T: Codable>(_ url: URL, type: T.Type = T.self) -> Future<T> {
 	let future = Future<T>()
 	future.work = DispatchWorkItem { [weak future] in
 		do {
@@ -241,4 +241,6 @@ extension String {
 		return String(s)
 	}
 }
+
+
 

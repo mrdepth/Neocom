@@ -55,44 +55,89 @@ enum DumpError: Error {
 	case parserError(URL, Error)
 }
 
-func load<T: Codable>(_ url: URL, type: T.Type = T.self) -> Future<T> {
-	let future = Future<T>()
-	future.work = DispatchWorkItem { [weak future] in
-		do {
-//			print("\(url.path)")
-			let data = try Data(contentsOf: url)
-			let json = try JSONDecoder().decode(T.self, from: data)
-			let inverse = try JSONEncoder().encode(json)
-			let obj1 = try JSONSerialization.jsonObject(with: data, options: [])
-			let obj2 = try JSONSerialization.jsonObject(with: inverse, options: [])
-			
-			if let dic1 = obj1 as? NSDictionary, let dic2 = obj2 as? NSDictionary {
-				try dic1.validate(keyPath: "", with: dic2)
-			}
-			else if let arr1 = obj1 as? NSArray, let arr2 = obj2 as? NSArray {
-				try arr1.validate(keyPath: "", with: arr2)
-			}
-			future?.value = json
-		}
-		catch {
-			future?.error = DumpError.parserError(url, error)
-		}
+func load<T: Codable>(_ url: URL, type: T.Type = T.self) throws -> T {
+	let data = try Data(contentsOf: url)
+	let json = try JSONDecoder().decode(T.self, from: data)
+	let inverse = try JSONEncoder().encode(json)
+	let obj1 = try JSONSerialization.jsonObject(with: data, options: [])
+	let obj2 = try JSONSerialization.jsonObject(with: inverse, options: [])
+	
+	if let dic1 = obj1 as? NSDictionary, let dic2 = obj2 as? NSDictionary {
+		try dic1.validate(keyPath: "", with: dic2)
 	}
-	DispatchQueue.global(qos: .utility).async(execute: future.work!)
-	return future
+	else if let arr1 = obj1 as? NSArray, let arr2 = obj2 as? NSArray {
+		try arr1.validate(keyPath: "", with: arr2)
+	}
+	return json
+}
+
+extension OperationQueue {
+	func detach<T>(_ block: @escaping () throws -> T) -> Future<T> {
+		let promise = Promise<T>()
+		let operation = BlockOperation {
+			do {
+				try promise.set(.success(block()))
+			}
+			catch {
+				print("\(error)")
+				exit(EXIT_FAILURE)
+//				promise.set(.failure(error))
+			}
+		}
+		promise.future = Future<T>(operation: operation)
+		addOperation(operation)
+		return promise.future
+	}
+}
+
+class Promise<T> {
+	var future: Future<T>! = nil
+	fileprivate func set(_ result: Result<T>) {
+		future.result = result
+	}
+}
+
+fileprivate enum Result<T> {
+	case success(T)
+	case failure(Error)
 }
 
 class Future<T> {
-	fileprivate var work: DispatchWorkItem?
-	fileprivate var value: T!
-	fileprivate var error: Error?
+	
+	init(operation: Operation) {
+		self.operation = operation
+	}
+	
+	fileprivate var result: Result<T>!
+	fileprivate weak var operation: Operation?
+
+	var value: T? {
+		operation?.waitUntilFinished()
+		switch result {
+		case let .success(value)?:
+			return value
+		default:
+			return nil
+		}
+	}
+	var error: Error? {
+		operation?.waitUntilFinished()
+		switch result {
+		case let .failure(error)?:
+			return error
+		default:
+			return nil
+		}
+	}
 	
 	func get() throws -> T {
-		work?.wait()
-		if let error = error {
+		operation?.waitUntilFinished()
+		switch result! {
+		case let .success(value):
+			return value
+		case let .failure(error):
 			throw error
 		}
-		return value
 	}
 }
 
@@ -160,8 +205,8 @@ extension NSColor {
 }
 
 extension NSAttributedString {
-	convenience init(html: String?) {
-		var html = html ?? ""
+	convenience init(html: String) {
+		var html = html
 		html = html.replacingOccurrences(of: "<br>", with: "\n", options: [.caseInsensitive], range: nil)
 		html = html.replacingOccurrences(of: "<p>", with: "\n", options: [.caseInsensitive], range: nil)
 		

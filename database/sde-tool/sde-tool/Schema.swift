@@ -38,16 +38,16 @@ struct GroupID: Codable {
 
 struct TypeID: Codable {
 	struct Traits: Codable {
-		struct RoleBonus: Codable {
+		struct Bonus: Codable {
 			var bonus: Double?
 			var bonusText: LocalizedString?
 			var nameID: Int?
 			var importance: Int
 			var unitID: Int?
 		}
-		var roleBonuses: [RoleBonus]?
-		var types: [Int: [RoleBonus]]?
-		var miscBonuses: [RoleBonus]?
+		var roleBonuses: [Bonus]?
+		var types: [Int: [Bonus]]?
+		var miscBonuses: [Bonus]?
 	}
 	var description: LocalizedString?
 	var groupID: Int

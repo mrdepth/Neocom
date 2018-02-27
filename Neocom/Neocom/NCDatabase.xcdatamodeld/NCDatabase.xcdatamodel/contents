@@ -19,7 +19,7 @@
     <entity name="CertMasteryLevel" representedClassName="NCDBCertMasteryLevel" syncable="YES" codeGenerationType="class">
         <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="level" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="masteryLevels" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
         <relationship name="masteries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMastery" inverseName="level" inverseEntity="CertMastery" syncable="YES"/>
         <fetchIndex name="byLevelIndex">
             <fetchIndexElement property="level" type="Binary" order="ascending"/>
@@ -34,20 +34,20 @@
         <attribute name="ancestryID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="ancestryName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="bloodline" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrBloodline" inverseName="ancestries" inverseEntity="ChrBloodline" syncable="YES"/>
-        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="ancestries" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
     </entity>
     <entity name="ChrBloodline" representedClassName="NCDBChrBloodline" syncable="YES" codeGenerationType="class">
         <attribute name="bloodlineID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="bloodlineName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="ancestries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrAncestry" inverseName="bloodline" inverseEntity="ChrAncestry" syncable="YES"/>
-        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="bloodlines" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
         <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="bloodlines" inverseEntity="ChrRace" syncable="YES"/>
     </entity>
     <entity name="ChrFaction" representedClassName="NCDBChrFaction" syncable="YES" codeGenerationType="class">
         <attribute name="factionID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="factionName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="constellations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapConstellation" inverseName="faction" inverseEntity="MapConstellation" syncable="YES"/>
-        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="factions" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
         <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="factions" inverseEntity="ChrRace" syncable="YES"/>
         <relationship name="regions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapRegion" inverseName="faction" inverseEntity="MapRegion" syncable="YES"/>
         <relationship name="solarSystems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="faction" inverseEntity="MapSolarSystem" syncable="YES"/>
@@ -58,7 +58,7 @@
         <relationship name="bloodlines" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrBloodline" inverseName="race" inverseEntity="ChrBloodline" syncable="YES"/>
         <relationship name="dgmppCategories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemCategory" inverseName="race" inverseEntity="DgmppItemCategory" syncable="YES"/>
         <relationship name="factions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="race" inverseEntity="ChrFaction" syncable="YES"/>
-        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="races" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
         <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="race" inverseEntity="InvType" syncable="YES"/>
         <fetchIndex name="byRaceIDIndex">
             <fetchIndexElement property="raceID" type="Binary" order="ascending"/>
@@ -78,7 +78,7 @@
         <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="published" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="attributeCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmAttributeCategory" inverseName="attributeTypes" inverseEntity="DgmAttributeCategory" syncable="YES"/>
-        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="attributeTypes" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
         <relationship name="typeAttributes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmTypeAttribute" inverseName="attributeType" inverseEntity="DgmTypeAttribute" syncable="YES"/>
         <relationship name="unit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveUnit" inverseName="attributeTypes" inverseEntity="EveUnit" syncable="YES"/>
         <fetchIndex name="byAttributeIDIndex">
@@ -132,7 +132,7 @@
     <entity name="DgmppItemGroup" representedClassName="NCDBDgmppItemGroup" syncable="YES" codeGenerationType="class">
         <attribute name="groupName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItemCategory" inverseName="itemGroups" inverseEntity="DgmppItemCategory" syncable="YES"/>
-        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="itemGroups" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="groups" inverseEntity="DgmppItem" syncable="YES"/>
         <relationship name="parentGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="subGroups" inverseEntity="DgmppItemGroup" syncable="YES"/>
         <relationship name="subGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="parentGroup" inverseEntity="DgmppItemGroup" syncable="YES"/>
@@ -169,21 +169,7 @@
     </entity>
     <entity name="EveIcon" representedClassName="NCDBEveIcon" syncable="YES" codeGenerationType="class">
         <attribute name="iconFile" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="activities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamActivity" inverseName="icon" inverseEntity="RamActivity" syncable="YES"/>
-        <relationship name="ancestries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrAncestry" inverseName="icon" inverseEntity="ChrAncestry" syncable="YES"/>
-        <relationship name="attributeTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="icon" inverseEntity="DgmAttributeType" syncable="YES"/>
-        <relationship name="bloodlines" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrBloodline" inverseName="icon" inverseEntity="ChrBloodline" syncable="YES"/>
-        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvCategory" inverseName="icon" inverseEntity="InvCategory" syncable="YES"/>
-        <relationship name="factions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="icon" inverseEntity="ChrFaction" syncable="YES"/>
-        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="icon" inverseEntity="InvGroup" syncable="YES"/>
         <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIconImage" inverseName="icon" inverseEntity="EveIconImage" syncable="YES"/>
-        <relationship name="itemGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="icon" inverseEntity="DgmppItemGroup" syncable="YES"/>
-        <relationship name="marketGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="icon" inverseEntity="InvMarketGroup" syncable="YES"/>
-        <relationship name="masteryLevels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMasteryLevel" inverseName="icon" inverseEntity="CertMasteryLevel" syncable="YES"/>
-        <relationship name="metaGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMetaGroup" inverseName="icon" inverseEntity="InvMetaGroup" syncable="YES"/>
-        <relationship name="npcGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NpcGroup" inverseName="icon" inverseEntity="NpcGroup" syncable="YES"/>
-        <relationship name="races" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="icon" inverseEntity="ChrRace" syncable="YES"/>
-        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="icon" inverseEntity="InvType" syncable="YES"/>
         <fetchIndex name="byIconFileIndex">
             <fetchIndexElement property="iconFile" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -234,7 +220,7 @@
         <attribute name="categoryName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="published" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="category" inverseEntity="InvGroup" syncable="YES"/>
-        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="categories" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
         <fetchIndex name="byCategoryIDIndex">
             <fetchIndexElement property="categoryID" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -272,7 +258,7 @@
         <attribute name="published" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvCategory" inverseName="groups" inverseEntity="InvCategory" syncable="YES"/>
         <relationship name="certificates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="group" inverseEntity="CertCertificate" syncable="YES"/>
-        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="groups" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
         <relationship name="npcGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NpcGroup" inverseName="group" inverseEntity="NpcGroup" syncable="YES"/>
         <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="group" inverseEntity="InvType" syncable="YES"/>
         <fetchIndex name="byGroupIDIndex">
@@ -285,7 +271,7 @@
     <entity name="InvMarketGroup" representedClassName="NCDBInvMarketGroup" syncable="YES" codeGenerationType="class">
         <attribute name="marketGroupID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="marketGroupName" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="marketGroups" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
         <relationship name="parentGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="subGroups" inverseEntity="InvMarketGroup" syncable="YES"/>
         <relationship name="subGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="parentGroup" inverseEntity="InvMarketGroup" syncable="YES"/>
         <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="marketGroup" inverseEntity="InvType" syncable="YES"/>
@@ -296,7 +282,7 @@
     <entity name="InvMetaGroup" representedClassName="NCDBInvMetaGroup" syncable="YES" codeGenerationType="class">
         <attribute name="metaGroupID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="metaGroupName" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="metaGroups" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
         <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="metaGroup" inverseEntity="InvType" syncable="YES"/>
         <fetchIndex name="byMetaGroupIDIndex">
             <fetchIndexElement property="metaGroupID" type="Binary" order="ascending"/>
@@ -323,7 +309,7 @@
         <relationship name="effects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmEffect" inverseName="types" inverseEntity="DgmEffect" syncable="YES"/>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="types" inverseEntity="InvGroup" syncable="YES"/>
         <relationship name="hullType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppHullType" inverseName="types" inverseEntity="DgmppHullType" syncable="YES"/>
-        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="types" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
         <relationship name="indRequiredSkills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndRequiredSkill" inverseName="skillType" inverseEntity="IndRequiredSkill" syncable="YES"/>
         <relationship name="installationTypeContents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamInstallationTypeContent" inverseName="installationType" inverseEntity="RamInstallationTypeContent" syncable="YES"/>
         <relationship name="marketGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="types" inverseEntity="InvMarketGroup" syncable="YES"/>
@@ -422,7 +408,7 @@
     <entity name="NpcGroup" representedClassName="NCDBNpcGroup" syncable="YES" codeGenerationType="class">
         <attribute name="npcGroupName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="npcGroups" inverseEntity="InvGroup" syncable="YES"/>
-        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="npcGroups" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
         <relationship name="parentNpcGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NpcGroup" inverseName="supNpcGroups" inverseEntity="NpcGroup" syncable="YES"/>
         <relationship name="supNpcGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NpcGroup" inverseName="parentNpcGroup" inverseEntity="NpcGroup" syncable="YES"/>
     </entity>
@@ -431,7 +417,7 @@
         <attribute name="activityName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="published" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="assemblyLineTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamAssemblyLineType" inverseName="activity" inverseEntity="RamAssemblyLineType" syncable="YES"/>
-        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="activities" inverseEntity="EveIcon" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
         <relationship name="indActivities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="activity" inverseEntity="IndActivity" syncable="YES"/>
         <fetchIndex name="byActivityIDIndex">
             <fetchIndexElement property="activityID" type="Binary" order="ascending"/>
@@ -497,7 +483,7 @@
         <element name="CertSkill" positionX="-171" positionY="189" width="128" height="90"/>
         <element name="ChrAncestry" positionX="-180" positionY="189" width="128" height="105"/>
         <element name="ChrBloodline" positionX="-171" positionY="198" width="128" height="120"/>
-        <element name="ChrFaction" positionX="-189" positionY="180" width="128" height="30"/>
+        <element name="ChrFaction" positionX="-189" positionY="180" width="128" height="150"/>
         <element name="ChrRace" positionX="9" positionY="54" width="128" height="150"/>
         <element name="DgmAttributeCategory" positionX="18" positionY="63" width="128" height="90"/>
         <element name="DgmAttributeType" positionX="0" positionY="54" width="128" height="165"/>
@@ -511,7 +497,7 @@
         <element name="DgmppItemShipResources" positionX="160" positionY="192" width="128" height="150"/>
         <element name="DgmppItemStructureResources" positionX="-189" positionY="180" width="128" height="165"/>
         <element name="DgmTypeAttribute" positionX="-36" positionY="27" width="128" height="90"/>
-        <element name="EveIcon" positionX="18" positionY="63" width="128" height="285"/>
+        <element name="EveIcon" positionX="18" positionY="63" width="128" height="75"/>
         <element name="EveIconImage" positionX="-189" positionY="180" width="128" height="75"/>
         <element name="EveUnit" positionX="0" positionY="153" width="128" height="90"/>
         <element name="IndActivity" positionX="-171" positionY="198" width="128" height="135"/>
@@ -532,6 +518,7 @@
         <element name="MapDenormalize" positionX="90" positionY="234" width="128" height="120"/>
         <element name="MapRegion" positionX="99" positionY="243" width="128" height="150"/>
         <element name="MapSolarSystem" positionX="108" positionY="252" width="128" height="30"/>
+        <element name="MapUniverse" positionX="-189" positionY="180" width="128" height="90"/>
         <element name="NpcGroup" positionX="117" positionY="261" width="128" height="120"/>
         <element name="RamActivity" positionX="63" positionY="207" width="128" height="135"/>
         <element name="RamAssemblyLineType" positionX="72" positionY="216" width="128" height="180"/>
@@ -540,6 +527,5 @@
         <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="90"/>
         <element name="Version" positionX="-153" positionY="216" width="128" height="90"/>
         <element name="WhType" positionX="-189" positionY="180" width="128" height="135"/>
-        <element name="MapUniverse" positionX="-189" positionY="180" width="128" height="90"/>
     </elements>
 </model>

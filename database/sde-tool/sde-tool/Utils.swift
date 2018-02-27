@@ -77,14 +77,32 @@ extension OperationQueue {
 	func detach<T>(_ block: @escaping () throws -> T) -> Future<T> {
 		let promise = Promise<T>()
 		let operation = BlockOperation {
-			do {
-				try promise.set(.success(block()))
+			let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+			context.parent = mainContext
+			let observer = NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: nil, queue: nil) { note in
+				if note.object as? NSManagedObjectContext != context {
+					context.perform {
+						context.mergeChanges(fromContextDidSave: note)
+					}
+				}
 			}
-			catch {
-				print("\(error)")
-				exit(EXIT_FAILURE)
-//				promise.set(.failure(error))
+			
+			NSManagedObjectContext.current = context
+			context.performAndWait {
+				do {
+					try promise.set(.success(block()))
+					if context.hasChanges {
+						try context.save()
+					}
+				}
+				catch {
+					print("\(error)")
+					exit(EXIT_FAILURE)
+					//				promise.set(.failure(error))
+				}
 			}
+			NotificationCenter.default.removeObserver(observer)
+			NSManagedObjectContext.current = nil
 		}
 		promise.future = Future<T>(operation: operation)
 		addOperation(operation)

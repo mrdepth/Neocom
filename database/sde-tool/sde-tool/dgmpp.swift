@@ -36,7 +36,7 @@ extension NCDBDgmppItemGroup {
 			}
 		}
 		
-		self.init(context: context)
+		self.init(context: .current)
 		groupName = marketGroup.marketGroupName
 		icon = marketGroup.icon
 		self.parentGroup = parentGroup
@@ -46,7 +46,7 @@ extension NCDBDgmppItemGroup {
 
 extension NCDBDgmppItemCategory {
 	convenience init(categoryID: NCDBDgmppItemCategoryID, subcategory: Int32 = 0, race: NCDBChrRace? = nil) {
-		self.init(context: context)
+		self.init(context: .current)
 		self.category = categoryID.rawValue
 		self.subcategory = subcategory
 		self.race = race
@@ -66,6 +66,9 @@ func dgmpp() throws {
 			child?.category = nil
 			child?.parentGroup = nil
 			itemGroup.managedObjectContext?.delete(child!)
+			if let i = dgmppItemGroups.index(where: {$0.value == child}) {
+				dgmppItemGroups.remove(at: i)
+			}
 		}
 		guard let parent = itemGroup.parentGroup else {return itemGroup}
 		return compress(itemGroup: parent)
@@ -87,7 +90,9 @@ func dgmpp() throws {
 				leaf?.parentGroup = nil
 				leaf?.removeFromItems(leaf!.items!)
 				leaf?.managedObjectContext?.delete(leaf!)
-				
+				if let i = dgmppItemGroups.index(where: {$0.value == leaf}) {
+					dgmppItemGroups.remove(at: i)
+				}
 			}
 		}
 		//print ("\(Array(leaves!).flatMap {$0.groupName} )")
@@ -98,14 +103,14 @@ func dgmpp() throws {
 		let groups = Set(types.flatMap { type -> NCDBDgmppItemGroup? in
 			guard let marketGroup = type.marketGroup else {return nil}
 			guard let group = NCDBDgmppItemGroup.itemGroup(marketGroup: marketGroup, category: category) else {return nil}
-			type.dgmppItem = NCDBDgmppItem(context: context)
+			type.dgmppItem = NCDBDgmppItem(context: .current)
 			group.addToItems(type.dgmppItem!)
 			return group
 		})
 		
 		let leaves = Set(groups.map { compress(itemGroup: $0) })
 		
-		let root = NCDBDgmppItemGroup(context: context)
+		let root = NCDBDgmppItemGroup(context: .current)
 		root.groupName = categoryName
 		root.category = category
 		let trimmed = trim(leaves)
@@ -122,7 +127,7 @@ func dgmpp() throws {
 	func importItems(category: NCDBDgmppItemCategory, categoryName: String, predicate: NSPredicate) throws {
 		let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
 		request.predicate = predicate
-		let types = try context.fetch(request)
+		let types = try NSManagedObjectContext.current.fetch(request)
 		try importItems(types: types, category: category, categoryName: categoryName)
 	}
 	
@@ -156,7 +161,7 @@ func dgmpp() throws {
 		request.propertiesToGroupBy = ["value"]
 		request.propertiesToFetch = ["value"]
 		request.resultType = .dictionaryResultType
-		let value = try context.fetch(request).first!["value"] as! NSNumber
+		let value = try NSManagedObjectContext.current.fetch(request).first!["value"] as! NSNumber
 		try importItems(category: NCDBDgmppItemCategory(categoryID: subcategory == 7 ? .rig : .structureRig, subcategory: value.int32Value), categoryName: "Rig Slot", predicate: NSPredicate(format: "group.category.categoryID == %d AND ANY effects.effectID == 2663 AND SUBQUERY(attributes, $attribute, $attribute.attributeType.attributeID == 1547 AND $attribute.value == %f).@count > 0", subcategory, value.floatValue))
 
 //		try database.exec("select value from dgmTypeAttributes as a, dgmTypeEffects as b, invTypes as c, invGroups as d where b.effectID = 2663 AND attributeID=1547 AND a.typeID=b.typeID AND b.typeID=c.typeID AND c.groupID = d.groupID AND d.categoryID = \(subcategory) group by value;") { row in
@@ -169,8 +174,8 @@ func dgmpp() throws {
 		request.propertiesToGroupBy = ["race"]
 		request.propertiesToFetch = ["race"]
 		request.resultType = .dictionaryResultType
-		try context.fetch(request).forEach { i in
-			let race = try context.existingObject(with: i["race"] as! NSManagedObjectID) as! NCDBChrRace
+		try NSManagedObjectContext.current.fetch(request).forEach { i in
+			let race = try NSManagedObjectContext.current.existingObject(with: i["race"] as! NSManagedObjectID) as! NCDBChrRace
 			try importItems(category: NCDBDgmppItemCategory(categoryID: .subsystem, subcategory: 7, race: race), categoryName: "Subsystems", predicate: NSPredicate(format: "ANY effects.effectID == 3772 AND race == %@", race))
 		}
 	}
@@ -185,15 +190,17 @@ func dgmpp() throws {
 	try importItems(category: NCDBDgmppItemCategory(categoryID: .service, subcategory: 66), categoryName: "Service Slot", predicate: NSPredicate(format: "group.category.categoryID == 66 AND ANY effects.effectID == 6306"))
 	
 	do {
-		let request = NSFetchRequest<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute")
+		let request = NSFetchRequest<NSDictionary>(entityName: "DgmTypeAttribute")
 		request.predicate = NSPredicate(format: "attributeType.attributeID == 331 AND type.marketGroup != nil")
 		request.propertiesToGroupBy = ["value"]
 		request.propertiesToFetch = ["value"]
-		try context.fetch(request).forEach { attribute in
+		request.resultType = .dictionaryResultType
+		try NSManagedObjectContext.current.fetch(request).forEach { attribute in
+			let value = attribute["value"] as! Float
 			let request = NSFetchRequest<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute")
-			request.predicate = NSPredicate(format: "attributeType.attributeID == 331 AND value == %f", attribute.value)
-			let attributes = (try context.fetch(request))
-			try importItems(types: attributes.map{$0.type!}, category: NCDBDgmppItemCategory(categoryID: .implant, subcategory: Int32(attribute.value)), categoryName: "Implants")
+			request.predicate = NSPredicate(format: "attributeType.attributeID == 331 AND value == %f", value)
+			let attributes = (try NSManagedObjectContext.current.fetch(request))
+			try importItems(types: attributes.map{$0.type!}, category: NCDBDgmppItemCategory(categoryID: .implant, subcategory: Int32(value)), categoryName: "Implants")
 		}
 	}
 	
@@ -201,20 +208,22 @@ func dgmpp() throws {
 //		let value = row["value"] as! NSNumber
 //		let request = NSFetchRequest<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute")
 //		request.predicate = NSPredicate(format: "attributeType.attributeID == 331 AND value == %@", value)
-//		let attributes = (try context.fetch(request))
+//		let attributes = (try NSManagedObjectContext.current.fetch(request))
 //		importItems(types: attributes.map{$0.type!}, category: NCDBDgmppItemCategory(categoryID: .implant, subcategory: value.int32Value), categoryName: "Implants")
 //	}
 	
 	do {
-		let request = NSFetchRequest<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute")
+		let request = NSFetchRequest<NSDictionary>(entityName: "DgmTypeAttribute")
 		request.predicate = NSPredicate(format: "attributeType.attributeID == 1087 AND type.marketGroup != nil")
 		request.propertiesToGroupBy = ["value"]
 		request.propertiesToFetch = ["value"]
-		try context.fetch(request).forEach { attribute in
+		request.resultType = .dictionaryResultType
+		try NSManagedObjectContext.current.fetch(request).forEach { attribute in
+			let value = attribute["value"] as! Float
 			let request = NSFetchRequest<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute")
-			request.predicate = NSPredicate(format: "attributeType.attributeID == 1087 AND value == %f", attribute.value)
-			let attributes = (try context.fetch(request))
-			try importItems(types: attributes.map{$0.type!}, category: NCDBDgmppItemCategory(categoryID: .implant, subcategory: Int32(attribute.value)), categoryName: "Implants")
+			request.predicate = NSPredicate(format: "attributeType.attributeID == 1087 AND value == %f", value)
+			let attributes = (try NSManagedObjectContext.current.fetch(request))
+			try importItems(types: attributes.map{$0.type!}, category: NCDBDgmppItemCategory(categoryID: .booster, subcategory: Int32(value)), categoryName: "Implants")
 		}
 	}
 
@@ -222,7 +231,7 @@ func dgmpp() throws {
 //		let value = row["value"] as! NSNumber
 //		let request = NSFetchRequest<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute")
 //		request.predicate = NSPredicate(format: "attributeType.attributeID == 1087 AND value == %@", value)
-//		let attributes = (try context.fetch(request))
+//		let attributes = (try NSManagedObjectContext.current.fetch(request))
 //		importItems(types: attributes.map{$0.type!}, category: NCDBDgmppItemCategory(categoryID: .booster, subcategory: value.int32Value), categoryName: "Boosters")
 //	}
 	
@@ -234,16 +243,16 @@ func dgmpp() throws {
 			 ["Hecate Defense Mode", "Hecate Sharpshooter Mode", "Hecate Propulsion Mode"]]).forEach { i in
 				let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
 				request.predicate = NSPredicate(format: "typeName == %@", i.0)
-				let ship = try context.fetch(request).first!
+				let ship = try NSManagedObjectContext.current.fetch(request).first!
 				
-				let root = NCDBDgmppItemGroup(context: context)
+				let root = NCDBDgmppItemGroup(context: .current)
 				root.category = NCDBDgmppItemCategory(categoryID: .mode, subcategory: ship.typeID)
 				root.groupName = "Tactical Mode"
 
 				for mode in i.1 {
 					request.predicate = NSPredicate(format: "typeName == %@", mode)
-					let type = try context.fetch(request).first!
-					type.dgmppItem = NCDBDgmppItem(context: context)
+					let type = try NSManagedObjectContext.current.fetch(request).first!
+					type.dgmppItem = NCDBDgmppItem(context: .current)
 					root.addToItems(type.dgmppItem!)
 				}
 		}
@@ -253,11 +262,11 @@ func dgmpp() throws {
 		let typeID = row["typeID"] as! NSNumber
 		let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
 		request.predicate = NSPredicate(format: "ANY effects.effectID == 10002 AND SUBQUERY(attributes, $attribute, $attribute.attributeType.attributeID == 1302 AND $attribute.value == %@).@count > 0", typeID)
-		let root = NCDBDgmppItemGroup(context: context)
+		let root = NCDBDgmppItemGroup(context: .current)
 		root.category = NCDBDgmppItemCategory(categoryID: .mode, subcategory: typeID.int32Value)
 		root.groupName = "Tactical Mode"
-		for type in try context.fetch(request) {
-			type.dgmppItem = NCDBDgmppItem(context: context)
+		for type in try NSManagedObjectContext.current.fetch(request) {
+			type.dgmppItem = NCDBDgmppItem(context: .current)
 			root.addToItems(type.dgmppItem!)
 		}
 	}*/
@@ -267,7 +276,7 @@ func dgmpp() throws {
 	let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
 	let attributeIDs = Set<Int32>([604, 605, 606, 609, 610])
 	request.predicate = NSPredicate(format: "ANY attributes.attributeType.attributeID IN (%@)", attributeIDs)
-	for type in try context.fetch(request) {
+	for type in try NSManagedObjectContext.current.fetch(request) {
 		let attributes = type.attributes?.allObjects as? [NCDBDgmTypeAttribute]
 		let chargeSize = attributes?.first(where: {$0.attributeType?.attributeID == 128})?.value
 		var chargeGroups: Set<Int> = Set()
@@ -288,7 +297,7 @@ func dgmpp() throws {
 				type.dgmppItem?.charge = category
 			}
 			else {
-				let root = NCDBDgmppItemGroup(context: context)
+				let root = NCDBDgmppItemGroup(context: .current)
 				root.groupName = "Ammo"
 				root.category = NCDBDgmppItemCategory(categoryID: .charge, subcategory: Int32(chargeSize ?? 0), race: nil)
 				type.dgmppItem?.charge = root.category
@@ -301,9 +310,9 @@ func dgmpp() throws {
 				else {
 					request.predicate = NSPredicate(format: "group.groupID IN %@ AND published = 1 AND volume <= %f", chargeGroups, type.capacity)
 				}
-				for charge in try context.fetch(request) {
+				for charge in try NSManagedObjectContext.current.fetch(request) {
 					if charge.dgmppItem == nil {
-						charge.dgmppItem = NCDBDgmppItem(context: context)
+						charge.dgmppItem = NCDBDgmppItem(context: .current)
 					}
 					root.addToItems(charge.dgmppItem!)
 					//charge.dgmppItem?.addToGroups(root)
@@ -315,11 +324,11 @@ func dgmpp() throws {
 	
 	print ("dgmppItems info")
 	request.predicate = NSPredicate(format: "dgmppItem <> NULL")
-	for type in try context.fetch(request) {
+	for type in try NSManagedObjectContext.current.fetch(request) {
 		let attributes = try typeAttributes.get()[Int(type.typeID)]
 		switch NCDBDgmppItemCategoryID(rawValue: (type.dgmppItem!.groups!.anyObject() as! NCDBDgmppItemGroup).category!.category)! {
 		case .hi, .med, .low, .rig, .structureRig:
-			type.dgmppItem?.requirements = NCDBDgmppItemRequirements(context: context)
+			type.dgmppItem?.requirements = NCDBDgmppItemRequirements(context: .current)
 			type.dgmppItem?.requirements?.powerGrid = attributes?[30]?.value ?? 0
 			type.dgmppItem?.requirements?.cpu = attributes?[50]?.value ?? 0
 			type.dgmppItem?.requirements?.calibration = attributes?[1153]?.value ?? 0
@@ -333,14 +342,14 @@ func dgmpp() throws {
 			let thermal = (attributes?[118]?.value ?? 0) * multiplier
 			let explosive = (attributes?[116]?.value ?? 0) * multiplier
 			if em + kinetic + thermal + explosive > 0 {
-				type.dgmppItem?.damage = NCDBDgmppItemDamage(context: context)
+				type.dgmppItem?.damage = NCDBDgmppItemDamage(context: .current)
 				type.dgmppItem?.damage?.emAmount = em
 				type.dgmppItem?.damage?.kineticAmount = kinetic
 				type.dgmppItem?.damage?.thermalAmount = thermal
 				type.dgmppItem?.damage?.explosiveAmount = explosive
 			}
 		case .ship:
-			type.dgmppItem?.shipResources = NCDBDgmppItemShipResources(context: context)
+			type.dgmppItem?.shipResources = NCDBDgmppItemShipResources(context: .current)
 			type.dgmppItem?.shipResources?.hiSlots = Int16(attributes?[14]?.value ?? 0)
 			type.dgmppItem?.shipResources?.medSlots = Int16(attributes?[13]?.value ?? 0)
 			type.dgmppItem?.shipResources?.lowSlots = Int16(attributes?[12]?.value ?? 0)
@@ -348,7 +357,7 @@ func dgmpp() throws {
 			type.dgmppItem?.shipResources?.turrets = Int16(attributes?[102]?.value ?? 0)
 			type.dgmppItem?.shipResources?.launchers = Int16(attributes?[101]?.value ?? 0)
 		case .structure:
-			type.dgmppItem?.structureResources = NCDBDgmppItemStructureResources(context: context)
+			type.dgmppItem?.structureResources = NCDBDgmppItemStructureResources(context: .current)
 			type.dgmppItem?.structureResources?.hiSlots = Int16(attributes?[14]?.value ?? 0)
 			type.dgmppItem?.structureResources?.medSlots = Int16(attributes?[13]?.value ?? 0)
 			type.dgmppItem?.structureResources?.lowSlots = Int16(attributes?[12]?.value ?? 0)
@@ -372,9 +381,9 @@ func dgmpp() throws {
 			return array
 		}
 		
-		for marketGroup in try invMarketGroups.get()[4]?.subGroups ?? [] {
+		for marketGroup in try invMarketGroups.get()[4]!.object().subGroups! {
 			let marketGroup = marketGroup as! NCDBInvMarketGroup
-			let hullType = NCDBDgmppHullType(context: context)
+			let hullType = NCDBDgmppHullType(context: .current)
 			hullType.hullTypeName = marketGroup.marketGroupName
 			
 			let ships = Set(types(marketGroup))
@@ -391,7 +400,7 @@ func dgmpp() throws {
 	}
 	
 //	try database.exec("SELECT * FROM version") { row in
-//		let version = NCDBVersion(context: context)
+//		let version = NCDBVersion(context: .current)
 //		version.expansion = expansion
 //		version.build = Int32(row["build"] as! NSNumber)
 //		version.version = row["version"] as? String

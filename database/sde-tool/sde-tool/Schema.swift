@@ -335,6 +335,21 @@ struct Station: Codable {
 	var z: Double
 }
 
+struct Universe: Codable {
+	var radius: Double
+	var universeID: Int
+	var universeName: String
+	var x: Double
+	var xMax: Double
+	var xMin: Double
+	var y: Double
+	var yMax: Double
+	var yMin: Double
+	var z: Double
+	var zMax: Double
+	var zMin: Double
+}
+
 struct Region: Codable {
 	var center: [Double]
 	var descriptionID: Int?
@@ -550,6 +565,13 @@ struct TypeEffect: Codable {
 
 }
 
+struct NPCGroup: Codable {
+	var groupName: String
+	var iconName: String?
+	var groupID: Int?
+	var groups: [NPCGroup]?
+}
+
 enum Schema {
 	typealias CategoryIDs = [Int: CategoryID]
 	typealias GroupIDs = [Int: GroupID]
@@ -585,4 +607,6 @@ enum Schema {
 	typealias TypeAttributes = [TypeAttribute]
 	typealias Effects = [Effect]
 	typealias TypeEffects = [TypeEffect]
+	typealias Universes = [Universe]
 }
+

@@ -367,7 +367,6 @@
         <attribute name="constellationID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="constellationName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="constellation" inverseEntity="MapDenormalize" syncable="YES"/>
         <relationship name="faction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="constellations" inverseEntity="ChrFaction" syncable="YES"/>
         <relationship name="region" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapRegion" inverseName="constellations" inverseEntity="MapRegion" syncable="YES"/>
         <relationship name="solarSystems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="constellation" inverseEntity="MapSolarSystem" syncable="YES"/>
@@ -379,8 +378,6 @@
         <attribute name="itemID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="itemName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="constellation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapConstellation" inverseName="denormalize" inverseEntity="MapConstellation" syncable="YES"/>
-        <relationship name="region" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapRegion" inverseName="denormalize" inverseEntity="MapRegion" syncable="YES"/>
         <relationship name="solarSystem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="denormalize" inverseEntity="MapSolarSystem" syncable="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="denormalize" inverseEntity="InvType" syncable="YES"/>
         <fetchIndex name="byItemIDIndex">
@@ -393,8 +390,8 @@
         <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="securityClass" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="constellations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapConstellation" inverseName="region" inverseEntity="MapConstellation" syncable="YES"/>
-        <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="region" inverseEntity="MapDenormalize" syncable="YES"/>
         <relationship name="faction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="regions" inverseEntity="ChrFaction" syncable="YES"/>
+        <relationship name="universe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapUniverse" inverseName="regions" inverseEntity="MapUniverse" syncable="YES"/>
         <fetchIndex name="byRegionIDIndex">
             <fetchIndexElement property="regionID" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -416,6 +413,11 @@
         <fetchIndex name="bySolarSystemNameIndex">
             <fetchIndexElement property="solarSystemName" type="Binary" order="ascending"/>
         </fetchIndex>
+    </entity>
+    <entity name="MapUniverse" representedClassName="NCDBMapUniverse" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="universeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="regions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapRegion" inverseName="universe" inverseEntity="MapRegion" syncable="YES"/>
     </entity>
     <entity name="NpcGroup" representedClassName="NCDBNpcGroup" syncable="YES" codeGenerationType="class">
         <attribute name="npcGroupName" optional="YES" attributeType="String" syncable="YES"/>
@@ -526,8 +528,8 @@
         <element name="InvMetaGroup" positionX="18" positionY="63" width="128" height="105"/>
         <element name="InvType" positionX="-396" positionY="85" width="128" height="585"/>
         <element name="InvTypeRequiredSkill" positionX="-189" positionY="180" width="128" height="90"/>
-        <element name="MapConstellation" positionX="81" positionY="225" width="128" height="150"/>
-        <element name="MapDenormalize" positionX="90" positionY="234" width="128" height="150"/>
+        <element name="MapConstellation" positionX="81" positionY="225" width="128" height="135"/>
+        <element name="MapDenormalize" positionX="90" positionY="234" width="128" height="120"/>
         <element name="MapRegion" positionX="99" positionY="243" width="128" height="150"/>
         <element name="MapSolarSystem" positionX="108" positionY="252" width="128" height="30"/>
         <element name="NpcGroup" positionX="117" positionY="261" width="128" height="120"/>
@@ -538,5 +540,6 @@
         <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="90"/>
         <element name="Version" positionX="-153" positionY="216" width="128" height="90"/>
         <element name="WhType" positionX="-189" positionY="180" width="128" height="135"/>
+        <element name="MapUniverse" positionX="-189" positionY="180" width="128" height="90"/>
     </elements>
 </model>

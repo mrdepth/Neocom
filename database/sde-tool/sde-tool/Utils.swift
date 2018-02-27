@@ -53,6 +53,8 @@ enum DumpError: Error {
 	case fileNotFound
 	case schemaIsInvalid(String)
 	case parserError(URL, Error)
+	case invalidUniverse(String)
+	case npcStationsConflict
 }
 
 func load<T: Codable>(_ url: URL, type: T.Type = T.self) throws -> T {

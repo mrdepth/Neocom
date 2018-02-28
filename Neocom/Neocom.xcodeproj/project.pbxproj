@@ -121,7 +121,6 @@
 		125CE1381E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */; };
 		125CE13C1EA1275C007B8B6B /* NCMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */; };
 		125CE13E1EA12DCB007B8B6B /* NCMailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE13D1EA12DCB007B8B6B /* NCMailTableViewCell.swift */; };
-		126157011E008AF60041B817 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 126156FF1E008AE00041B817 /* NCDatabase.sqlite */; };
 		126157041E008E770041B817 /* NCRoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157031E008E770041B817 /* NCRoundedImageView.swift */; };
 		126157061E0095380041B817 /* NCProgressHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157051E0095380041B817 /* NCProgressHandler.swift */; };
 		1261570A1E01D2250041B817 /* NCCharacterSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157091E01D2250041B817 /* NCCharacterSheetViewController.swift */; };
@@ -299,6 +298,8 @@
 		12C967051F96111900B141CC /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FC1F9610DE00B141CC /* nanopb.framework */; };
 		12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F61F9610DE00B141CC /* FirebaseAnalytics.framework */; };
 		12C967101F9614B200B141CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12C9670F1F96149F00B141CC /* GoogleService-Info.plist */; };
+		12CA8F752046ED32000360DE /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 12CA8F732046ED32000360DE /* NCDatabase.sqlite */; };
+		12CA8F762046ED32000360DE /* NCDatabaseVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CA8F742046ED32000360DE /* NCDatabaseVersion.swift */; };
 		12CACFE52008C36B000B76C3 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12CACFE42008C36B000B76C3 /* NotificationCenter.framework */; };
 		12CACFE82008C36B000B76C3 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CACFE72008C36B000B76C3 /* TodayViewController.swift */; };
 		12CACFEB2008C36B000B76C3 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12CACFE92008C36B000B76C3 /* MainInterface.storyboard */; };
@@ -596,7 +597,6 @@
 		125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailViewController.swift; sourceTree = "<group>"; };
 		125CE13D1EA12DCB007B8B6B /* NCMailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailTableViewCell.swift; sourceTree = "<group>"; };
 		126156FE1E008AE00041B817 /* dgm.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = dgm.sqlite; path = ../../dbTools/dbinit/dgm.sqlite; sourceTree = "<group>"; };
-		126156FF1E008AE00041B817 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = ../../dbTools/dbinit/NCDatabase.sqlite; sourceTree = "<group>"; };
 		126157031E008E770041B817 /* NCRoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRoundedImageView.swift; sourceTree = "<group>"; };
 		126157051E0095380041B817 /* NCProgressHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCProgressHandler.swift; sourceTree = "<group>"; };
 		126157091E01D2250041B817 /* NCCharacterSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCCharacterSheetViewController.swift; sourceTree = "<group>"; };
@@ -774,6 +774,8 @@
 		12C966FD1F9610DE00B141CC /* Firebase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
 		12C966FE1F9610DE00B141CC /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		12C9670F1F96149F00B141CC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		12CA8F732046ED32000360DE /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = NCDatabase.sqlite; sourceTree = SOURCE_ROOT; };
+		12CA8F742046ED32000360DE /* NCDatabaseVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseVersion.swift; sourceTree = SOURCE_ROOT; };
 		12CACFE32008C36B000B76C3 /* Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Widget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		12CACFE42008C36B000B76C3 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		12CACFE72008C36B000B76C3 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -1386,7 +1388,8 @@
 				12AC8DBA1DF01BF000561A7A /* Neocom-Bridging-Header.h */,
 				12AC8DD51DF0AF6900561A7A /* Dark.clr */,
 				126156FE1E008AE00041B817 /* dgm.sqlite */,
-				126156FF1E008AE00041B817 /* NCDatabase.sqlite */,
+				12CA8F732046ED32000360DE /* NCDatabase.sqlite */,
+				12CA8F742046ED32000360DE /* NCDatabaseVersion.swift */,
 				1281303E1F3B01230039D46B /* dropzone.css */,
 				1281303F1F3B01230039D46B /* dropzone.js */,
 				128130441F3B08600039D46B /* main.js */,
@@ -1925,7 +1928,6 @@
 				1256BEC81DF4770A00A2A24B /* charisma.png in Resources */,
 				12D930E71E656B0C00CBAE1C /* NCChargeTableViewCell.xib in Resources */,
 				12BFE44D2017C8E80083AC2F /* MPCloseButtonX@2x.png in Resources */,
-				126157011E008AF60041B817 /* NCDatabase.sqlite in Resources */,
 				1256BECB1DF4770A00A2A24B /* perception.png in Resources */,
 				12CFDACB1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib in Resources */,
 				12BFE44F2017C8E80083AC2F /* MPCloseButtonX@3x.png in Resources */,
@@ -1975,6 +1977,7 @@
 				12D930F31E6584AF00CBAE1C /* NCDefaultCompactTableViewCell.xib in Resources */,
 				12BFE44B2017C8E80083AC2F /* MPAdBrowserController.xib in Resources */,
 				12BFE4532017C8E80083AC2F /* StartApp.bundle in Resources */,
+				12CA8F752046ED32000360DE /* NCDatabase.sqlite in Resources */,
 				122A7CA21F4B49D100537467 /* Database.storyboard in Resources */,
 				12CFDAE81F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib in Resources */,
 				12C967101F9614B200B141CC /* GoogleService-Info.plist in Resources */,
@@ -2095,6 +2098,7 @@
 				1256BE4D1DF4193000A2A24B /* NCUnitFormatter.swift in Sources */,
 				1230A3281DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift in Sources */,
 				121D10B01E26345D00DD671B /* NSManagedObjectContext+NC.swift in Sources */,
+				12CA8F762046ED32000360DE /* NCDatabaseVersion.swift in Sources */,
 				12AC8DCE1DF08D9B00561A7A /* NCCache.xcdatamodeld in Sources */,
 				12BE2DC11F53F42500BA43A6 /* NCSkillsViewController.swift in Sources */,
 				129200331FEBEF2500124EE0 /* NCFittingLoadoutsViewController.swift in Sources */,

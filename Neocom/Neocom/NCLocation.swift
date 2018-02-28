@@ -41,13 +41,6 @@ class NCLocation {
 		security = solarSystem.security
 	}
 	
-	convenience init(_ mapDenormalize: NCDBMapDenormalize) {
-		self.init(mapDenormalize.solarSystem!)
-		if mapDenormalize.itemID != mapDenormalize.solarSystem?.solarSystemID {
-			itemName = mapDenormalize.itemName
-		}
-	}
-
 	convenience init(_ structure: ESI.Universe.StructureInformation) {
 		if let solarSystem = NCDatabase.sharedDatabase?.mapSolarSystems[structure.solarSystemID] {
 			self.init(solarSystem)

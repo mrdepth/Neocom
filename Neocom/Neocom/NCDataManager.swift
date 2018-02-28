@@ -363,17 +363,6 @@ class NCDataManager {
 					missing.insert(id)
 				}
 			}
-			else if let int = Int(exactly: id) { //mapDenormalize
-				
-				if let mapDenormalize = NCDatabase.sharedDatabase?.mapDenormalize[int] {
-					let location = NCLocation(mapDenormalize)
-					locations[id] = location
-					cachedLocations[id] = location
-				}
-				else {
-					missing.insert(id)
-				}
-			}
 			else {
 				missing.insert(id)
 			}

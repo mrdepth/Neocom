@@ -83,14 +83,14 @@ class NCDatabase {
 		return NCDBMapRegion.mapRegions(managedObjectContext: self.viewContext)
 	}()
 
+	private(set) lazy var mapPlanets: NCFetchedCollection<NCDBMapPlanet> = {
+		return NCDBMapPlanet.mapPlanets(managedObjectContext: self.viewContext)
+	}()
+
 	private(set) lazy var staStations: NCFetchedCollection<NCDBStaStation> = {
 		return NCDBStaStation.staStations(managedObjectContext: self.viewContext)
 	}()
 
-	private(set) lazy var mapDenormalize: NCFetchedCollection<NCDBMapDenormalize> = {
-		return NCDBMapDenormalize.mapDenormalize(managedObjectContext: self.viewContext)
-	}()
-	
 	private(set) lazy var invMetaGroups: NCFetchedCollection<NCDBInvMetaGroup> = {
 		return NCDBInvMetaGroup.invMetaGroups(managedObjectContext: self.viewContext)
 	}()
@@ -156,17 +156,17 @@ extension NCDBEveIcon {
 	}
 
 	class var defaultGroup: NCDBEveIcon {
-		return icon(file: "38_174")!
+		return icon(file: "38_16_174")!
 	}
 
 	class var defaultType: NCDBEveIcon {
-		return icon(file: "07_15")!
+		return icon(file: "7_64_15")!
 	}
 	
 	class func icon(masteryLevel: Int?) -> NCDBEveIcon? {
-		guard let masteryLevel = masteryLevel else {return icon(file: "79_01")}
+		guard let masteryLevel = masteryLevel else {return icon(file: "79_64_1")}
 		guard (0...4).contains(masteryLevel) else {return nil}
-		return icon(file: "07_\(masteryLevel + 2)")
+		return icon(file: "79_64_\(masteryLevel + 2)")
 	}
 }
 
@@ -195,15 +195,15 @@ extension NCDBMapRegion {
 	}
 }
 
-extension NCDBStaStation {
-	class func staStations(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBStaStation> {
-		return NCFetchedCollection<NCDBStaStation>(entityName: "StaStation", predicateFormat: "stationID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+extension NCDBMapPlanet {
+	class func mapPlanets(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBMapPlanet> {
+		return NCFetchedCollection<NCDBMapPlanet>(entityName: "MapPlanet", predicateFormat: "planetID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }
 
-extension NCDBMapDenormalize {
-	class func mapDenormalize(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBMapDenormalize> {
-		return NCFetchedCollection<NCDBMapDenormalize>(entityName: "MapDenormalize", predicateFormat: "itemID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
+extension NCDBStaStation {
+	class func staStations(managedObjectContext: NSManagedObjectContext) -> NCFetchedCollection<NCDBStaStation> {
+		return NCFetchedCollection<NCDBStaStation>(entityName: "StaStation", predicateFormat: "stationID == %@", argumentArray: [], managedObjectContext: managedObjectContext)
 	}
 }
 

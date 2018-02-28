@@ -20,8 +20,8 @@ class NCColonySection: TreeSection {
 	var isHalted: Bool = false
 	let planet = DGMPlanet()
 	
-	lazy var planetInfo: NCDBMapDenormalize? = {
-		return NCDatabase.sharedDatabase?.mapDenormalize[self.colony.planetID]
+	lazy var planetInfo: NCDBMapPlanet? = {
+		return NCDatabase.sharedDatabase?.mapPlanets[self.colony.planetID]
 	}()
 	
 	init(colony: ESI.PlanetaryInteraction.Colony, layout: NCResult<ESI.PlanetaryInteraction.ColonyLayout>) {
@@ -122,7 +122,7 @@ class NCColonySection: TreeSection {
 	
 	lazy var title: NSAttributedString? = {
 		let solarSystem = NCDatabase.sharedDatabase?.mapSolarSystems[self.colony.solarSystemID]
-		let location = NCDatabase.sharedDatabase?.mapDenormalize[self.colony.planetID]?.itemName ?? solarSystem?.solarSystemName ?? NSLocalizedString("Unknown", comment: "")
+		let location = planetInfo?.planetName ?? solarSystem?.solarSystemName ?? NSLocalizedString("Unknown", comment: "")
 		let title: NSAttributedString
 		
 		if let solarSystem = solarSystem {

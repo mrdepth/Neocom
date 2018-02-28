@@ -73,7 +73,7 @@ let universe: Future<[(String, [(Region, [(Constellation, [Future<SolarSystem>])
 let mapUniverses: Future<[ObjectID<NCDBMapUniverse>]>
 let mapSolarSystems: Future<[Int: ObjectID<NCDBMapSolarSystem>]>
 let staStations: Future<[Int: ObjectID<NCDBStaStation>]>
-let mapDenormalize: Future<[Int: ObjectID<NCDBMapDenormalize>]>
+//let mapDenormalize: Future<[Int: ObjectID<NCDBMapDenormalize>]>
 
 let ramActivities: Future<[Int:ObjectID<NCDBRamActivity>]>
 let ramAssemblyLineTypes: Future<[Int:ObjectID<NCDBRamAssemblyLineType>]>
@@ -234,7 +234,8 @@ do {
 	typeAttributes = operationQueue.detach {
 		let from = Date(); defer {print("typeAttributes\t\(Date().timeIntervalSince(from))s")}
 		var typeAttributes: [Int: [Int: TypeAttribute]] = [:]
-		try load(root.appendingPathComponent("/sde/bsd/dgmTypeAttributes.json"), type: Schema.TypeAttributes.self).forEach { typeAttributes[$0.typeID, default: [:]][$0.attributeID] = $0 }
+//		try load(root.appendingPathComponent("/sde/bsd/dgmTypeAttributes.json"), type: Schema.TypeAttributes.self).forEach { typeAttributes[$0.typeID, default: [:]][$0.attributeID] = $0 }
+		try load(root.appendingPathComponent("/dgmTypeAttributes.json"), type: Schema.TypeAttributes.self).forEach { typeAttributes[$0.typeID, default: [:]][$0.attributeID] = $0 }
 		return typeAttributes
 	}
 
@@ -243,7 +244,10 @@ do {
 		let from = Date(); defer {print("typeEffects\t\(Date().timeIntervalSince(from))s")}
 		let types = try invTypes.get()
 		let effects = try dgmEffects.get()
-		try load(root.appendingPathComponent("/sde/bsd/dgmTypeEffects.json"), type: Schema.TypeEffects.self).forEach { try types[$0.typeID]?.object().addToEffects(effects[$0.effectID]!.object()) }
+		try load(root.appendingPathComponent("/dgmTypeEffects.json"), type: Schema.TypeEffects.self).forEach {
+			guard let effect = try effects[$0.effectID]?.object() else {return}
+			try types[$0.typeID]?.object().addToEffects(effect)
+		}
 	}
 	
 	certMasteryLevels = operationQueue.detach {

@@ -248,7 +248,7 @@ enum Router {
 			var typeID: Int?
 			var objectID: NSManagedObjectID?
 			var fittingType: DGMType?
-			var attributeValues: [Int: Float]?
+			var attributeValues: [Int: Double]?
 			
 			private init(type: NCDBInvType?, typeID: Int?, objectID: NSManagedObjectID?, fittingType: DGMType?, kind: RouteKind) {
 				self.type = type
@@ -292,14 +292,14 @@ enum Router {
 				if let fittingType = fittingType {
 					NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 						let typeID = fittingType.typeID
-						var attributes = [Int: Float]()
+						var attributes = [Int: Double]()
 //						fittingItem.engine?.performBlockAndWait {
 							guard let type = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)[typeID] else {return}
 							type.attributes?.forEach {
 								guard let attribute = $0 as? NCDBDgmTypeAttribute else {return}
 								guard let attributeType = attribute.attributeType else {return}
 								if let value = fittingType[DGMAttributeID(attributeType.attributeID)]?.value {
-									attributes[Int(attributeType.attributeID)] = Float(value)
+									attributes[Int(attributeType.attributeID)] = value
 								}
 							}
 //						}

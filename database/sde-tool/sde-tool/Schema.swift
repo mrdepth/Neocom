@@ -525,8 +525,9 @@ struct AttributeType: Codable {
 struct TypeAttribute: Codable {
 	var attributeID: Int
 	var typeID: Int
-	var valueInt: Int?
-	var valueFloat: Double?
+	var value: Double?
+//	var valueInt: Int?
+//	var valueFloat: Double?
 }
 
 struct Effect: Codable {

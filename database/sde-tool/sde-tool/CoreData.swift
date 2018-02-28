@@ -37,19 +37,19 @@ extension NSManagedObjectContext {
 }
 
 
-extension TypeAttribute {
-	var value: Float? {
-		if let value = valueFloat {
-			return Float(value)
-		}
-		else if let value = valueInt {
-			return Float(value)
-		}
-		else {
-			return nil
-		}
-	}
-}
+//extension TypeAttribute {
+//	var value: Double? {
+//		if let value = valueFloat {
+//			return value
+//		}
+//		else if let value = valueInt {
+//			return Double(value)
+//		}
+//		else {
+//			return nil
+//		}
+//	}
+//}
 
 extension NCDBEveIcon {
 	static let lock = NSRecursiveLock()
@@ -79,6 +79,7 @@ extension NCDBEveIcon {
 			guard let data = try? Data(contentsOf: url) else {return nil}
 			let icon = NCDBEveIcon(context: .current)
 			icon.image = NCDBEveIconImage(context: .current)
+			icon.iconFile = iconName
 			icon.image?.image = data
 //			try NSManagedObjectContext.current.save()
 			nameIcons[iconName] = .init(icon)
@@ -150,11 +151,11 @@ extension NCDBInvType {
 		typeID = Int32(type.key)
 		typeName = (type.value.name.en ?? "").replacingEscapes()
 		try group = invGroups.get()[type.value.groupID]?.object()
-		basePrice = Float(type.value.basePrice ?? 0)
-		capacity = Float(type.value.capacity ?? 0)
-		mass = Float(type.value.mass ?? 0)
-		radius = Float(type.value.radius ?? 0)
-		volume = Float(type.value.volume ?? 0)
+		basePrice = type.value.basePrice ?? 0
+		capacity = type.value.capacity ?? 0
+		mass = type.value.mass ?? 0
+		radius = type.value.radius ?? 0
+		volume = type.value.volume ?? 0
 		published = type.value.published
 		portionSize = Int32(type.value.portionSize)
 		try metaLevel = Int16(typeAttributes.get()[type.key]?[NCDBDgmAttributeID.metaLevel.rawValue]?.value ?? 0)
@@ -396,6 +397,19 @@ extension NCDBMapSolarSystem {
 		if let factionID = solarSystem.factionID {
 			faction = try chrFactions.get()[factionID]!.object()
 		}
+		
+		try solarSystem.planets.forEach {
+			try NCDBMapPlanet($0).solarSystem = self
+		}
+	}
+}
+
+extension NCDBMapPlanet {
+	convenience init(_ planet: (Int, SolarSystem.Planet)) throws {
+		self.init(context: .current)
+		planetID = Int32(planet.0)
+		try planetName = invNames.get()[planet.0]!
+		try type = invTypes.get()[planet.1.typeID]!.object()
 	}
 }
 
@@ -410,17 +424,17 @@ extension NCDBStaStation {
 	}
 }
 
-extension NCDBMapDenormalize {
-	convenience init(station: (key: Int, value: SolarSystem.Planet.Station), solarSystem: SolarSystem) throws {
-		self.init(context: .current)
-		itemID = Int32(station.key)
-		try itemName = invNames.get()[station.key]!
-		security = Float(solarSystem.security)
-		try self.solarSystem = mapSolarSystems.get()[solarSystem.solarSystemID]!.object()
-		try type = invTypes.get()[station.value.typeID]!.object()
-
-	}
-}
+//extension NCDBMapDenormalize {
+//	convenience init(station: (key: Int, value: SolarSystem.Planet.Station), solarSystem: SolarSystem) throws {
+//		self.init(context: .current)
+//		itemID = Int32(station.key)
+//		try itemName = invNames.get()[station.key]!
+//		security = Float(solarSystem.security)
+//		try self.solarSystem = mapSolarSystems.get()[solarSystem.solarSystemID]!.object()
+//		try type = invTypes.get()[station.value.typeID]!.object()
+//
+//	}
+//}
 
 extension NCDBRamActivity {
 	convenience init(_ activity: Activity) throws {
@@ -538,12 +552,12 @@ extension NCDBIndProduct {
 extension NCDBWhType {
 	convenience init (_ type: NCDBInvType) throws {
 		self.init(context: .current)
-		let attributes = try typeAttributes.get()[Int(type.typeID)]!
+		let attributes = try typeAttributes.get()[Int(type.typeID)]
 		self.type = type
-		targetSystemClass = Int32(attributes[1381]?.value ?? 0)
-		maxStableTime = attributes[1382]?.value ?? 0
-		maxStableMass = attributes[1383]?.value ?? 0
-		maxRegeneration = attributes[1384]?.value ?? 0
-		maxJumpMass = attributes[1385]?.value ?? 0
+		targetSystemClass = Int32(attributes?[1381]?.value ?? 0)
+		maxStableTime = attributes?[1382]?.value ?? 0
+		maxStableMass = attributes?[1383]?.value ?? 0
+		maxRegeneration = attributes?[1384]?.value ?? 0
+		maxJumpMass = attributes?[1385]?.value ?? 0
 	}
 }

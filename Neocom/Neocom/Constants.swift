@@ -175,7 +175,7 @@ enum NCDBEffectID: Int {
 
 extension NCDBEveIcon {
 	enum File: String {
-		case certificateUnclaimed = "79_01"
+		case certificateUnclaimed = "79_64_1"
 	}
 }
 

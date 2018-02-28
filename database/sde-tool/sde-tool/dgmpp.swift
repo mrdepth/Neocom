@@ -161,8 +161,10 @@ func dgmpp() throws {
 		request.propertiesToGroupBy = ["value"]
 		request.propertiesToFetch = ["value"]
 		request.resultType = .dictionaryResultType
-		let value = try NSManagedObjectContext.current.fetch(request).first!["value"] as! NSNumber
-		try importItems(category: NCDBDgmppItemCategory(categoryID: subcategory == 7 ? .rig : .structureRig, subcategory: value.int32Value), categoryName: "Rig Slot", predicate: NSPredicate(format: "group.category.categoryID == %d AND ANY effects.effectID == 2663 AND SUBQUERY(attributes, $attribute, $attribute.attributeType.attributeID == 1547 AND $attribute.value == %f).@count > 0", subcategory, value.floatValue))
+		try NSManagedObjectContext.current.fetch(request).forEach { i in
+			let value = i["value"] as! NSNumber
+			try importItems(category: NCDBDgmppItemCategory(categoryID: subcategory == 7 ? .rig : .structureRig, subcategory: value.int32Value), categoryName: "Rig Slot", predicate: NSPredicate(format: "group.category.categoryID == %d AND ANY effects.effectID == 2663 AND SUBQUERY(attributes, $attribute, $attribute.attributeType.attributeID == 1547 AND $attribute.value == %f).@count > 0", subcategory, value.floatValue))
+		}
 
 //		try database.exec("select value from dgmTypeAttributes as a, dgmTypeEffects as b, invTypes as c, invGroups as d where b.effectID = 2663 AND attributeID=1547 AND a.typeID=b.typeID AND b.typeID=c.typeID AND c.groupID = d.groupID AND d.categoryID = \(subcategory) group by value;") { row in
 //		}
@@ -329,9 +331,9 @@ func dgmpp() throws {
 		switch NCDBDgmppItemCategoryID(rawValue: (type.dgmppItem!.groups!.anyObject() as! NCDBDgmppItemGroup).category!.category)! {
 		case .hi, .med, .low, .rig, .structureRig:
 			type.dgmppItem?.requirements = NCDBDgmppItemRequirements(context: .current)
-			type.dgmppItem?.requirements?.powerGrid = attributes?[30]?.value ?? 0
-			type.dgmppItem?.requirements?.cpu = attributes?[50]?.value ?? 0
-			type.dgmppItem?.requirements?.calibration = attributes?[1153]?.value ?? 0
+			type.dgmppItem?.requirements?.powerGrid = Float(attributes?[30]?.value ?? 0)
+			type.dgmppItem?.requirements?.cpu = Float(attributes?[50]?.value ?? 0)
+			type.dgmppItem?.requirements?.calibration = Float(attributes?[1153]?.value ?? 0)
 		case .charge, .drone, .fighter, .structureFighter:
 			var multiplier = max(attributes?[64]?.value ?? 0, attributes?[212]?.value ?? 0)
 			if multiplier == 0 {
@@ -343,10 +345,10 @@ func dgmpp() throws {
 			let explosive = (attributes?[116]?.value ?? 0) * multiplier
 			if em + kinetic + thermal + explosive > 0 {
 				type.dgmppItem?.damage = NCDBDgmppItemDamage(context: .current)
-				type.dgmppItem?.damage?.emAmount = em
-				type.dgmppItem?.damage?.kineticAmount = kinetic
-				type.dgmppItem?.damage?.thermalAmount = thermal
-				type.dgmppItem?.damage?.explosiveAmount = explosive
+				type.dgmppItem?.damage?.emAmount = Float(em)
+				type.dgmppItem?.damage?.kineticAmount = Float(kinetic)
+				type.dgmppItem?.damage?.thermalAmount = Float(thermal)
+				type.dgmppItem?.damage?.explosiveAmount = Float(explosive)
 			}
 		case .ship:
 			type.dgmppItem?.shipResources = NCDBDgmppItemShipResources(context: .current)

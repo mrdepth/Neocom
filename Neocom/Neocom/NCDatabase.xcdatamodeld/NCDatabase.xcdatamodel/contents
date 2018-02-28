@@ -163,7 +163,7 @@
         <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="structureResources" inverseEntity="DgmppItem" syncable="YES"/>
     </entity>
     <entity name="DgmTypeAttribute" representedClassName="NCDBDgmTypeAttribute" syncable="YES" codeGenerationType="class">
-        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="attributeType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="typeAttributes" inverseEntity="DgmAttributeType" syncable="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="attributes" inverseEntity="InvType" syncable="YES"/>
     </entity>
@@ -213,7 +213,7 @@
     <entity name="IndRequiredSkill" representedClassName="NCDBIndRequiredSkill" syncable="YES" codeGenerationType="class">
         <attribute name="skillLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="requiredSkills" inverseEntity="IndActivity" syncable="YES"/>
-        <relationship name="skillType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="indRequiredSkills" inverseEntity="InvType" syncable="YES"/>
+        <relationship name="skillType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="InvCategory" representedClassName="NCDBInvCategory" syncable="YES" codeGenerationType="class">
         <attribute name="categoryID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -226,30 +226,6 @@
         </fetchIndex>
         <fetchIndex name="byPublishedIndex">
             <fetchIndexElement property="published" type="Binary" order="ascending"/>
-        </fetchIndex>
-    </entity>
-    <entity name="InvControlTower" representedClassName="NCDBInvControlTower" syncable="YES" codeGenerationType="class">
-        <relationship name="resources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvControlTowerResource" inverseName="controlTower" inverseEntity="InvControlTowerResource" syncable="YES"/>
-        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="controlTower" inverseEntity="InvType" syncable="YES"/>
-    </entity>
-    <entity name="InvControlTowerResource" representedClassName="NCDBInvControlTowerResource" syncable="YES" codeGenerationType="class">
-        <attribute name="factionID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="minSecurityLevel" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="wormholeClassID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="controlTower" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvControlTower" inverseName="resources" inverseEntity="InvControlTower" syncable="YES"/>
-        <relationship name="purpose" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvControlTowerResourcePurpose" inverseName="controlTowerResources" inverseEntity="InvControlTowerResourcePurpose" syncable="YES"/>
-        <relationship name="resourceType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="controlTowerResources" inverseEntity="InvType" syncable="YES"/>
-        <fetchIndex name="byFactionIDIndex">
-            <fetchIndexElement property="factionID" type="Binary" order="ascending"/>
-        </fetchIndex>
-    </entity>
-    <entity name="InvControlTowerResourcePurpose" representedClassName="NCDBInvControlTowerResourcePurpose" syncable="YES" codeGenerationType="class">
-        <attribute name="purposeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="purposeText" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="controlTowerResources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvControlTowerResource" inverseName="purpose" inverseEntity="InvControlTowerResource" syncable="YES"/>
-        <fetchIndex name="byPurposeIDIndex">
-            <fetchIndexElement property="purposeID" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
     <entity name="InvGroup" representedClassName="NCDBInvGroup" syncable="YES" codeGenerationType="class">
@@ -289,29 +265,24 @@
         </fetchIndex>
     </entity>
     <entity name="InvType" representedClassName="NCDBInvType" syncable="YES" codeGenerationType="class">
-        <attribute name="basePrice" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="capacity" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="mass" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="basePrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="capacity" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mass" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="metaLevel" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="portionSize" optional="YES" attributeType="Integer 32" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="published" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="radius" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="radius" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="typeName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="volume" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="volume" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="attributes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmTypeAttribute" inverseName="type" inverseEntity="DgmTypeAttribute" syncable="YES"/>
         <relationship name="blueprintType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IndBlueprintType" inverseName="type" inverseEntity="IndBlueprintType" syncable="YES"/>
         <relationship name="certificates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="types" inverseEntity="CertCertificate" syncable="YES"/>
-        <relationship name="controlTower" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvControlTower" inverseName="type" inverseEntity="InvControlTower" syncable="YES"/>
-        <relationship name="controlTowerResources" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvControlTowerResource" inverseName="resourceType" inverseEntity="InvControlTowerResource" syncable="YES"/>
-        <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="type" inverseEntity="MapDenormalize" syncable="YES"/>
         <relationship name="dgmppItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="type" inverseEntity="DgmppItem" syncable="YES"/>
         <relationship name="effects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmEffect" inverseName="types" inverseEntity="DgmEffect" syncable="YES"/>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="types" inverseEntity="InvGroup" syncable="YES"/>
         <relationship name="hullType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppHullType" inverseName="types" inverseEntity="DgmppHullType" syncable="YES"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
-        <relationship name="indRequiredSkills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndRequiredSkill" inverseName="skillType" inverseEntity="IndRequiredSkill" syncable="YES"/>
-        <relationship name="installationTypeContents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamInstallationTypeContent" inverseName="installationType" inverseEntity="RamInstallationTypeContent" syncable="YES"/>
         <relationship name="marketGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="types" inverseEntity="InvMarketGroup" syncable="YES"/>
         <relationship name="masterySkills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertSkill" inverseName="type" inverseEntity="CertSkill" syncable="YES"/>
         <relationship name="materials" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndRequiredMaterial" inverseName="materialType" inverseEntity="IndRequiredMaterial" syncable="YES"/>
@@ -321,7 +292,6 @@
         <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="types" inverseEntity="ChrRace" syncable="YES"/>
         <relationship name="requiredForSkill" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvTypeRequiredSkill" inverseName="skillType" inverseEntity="InvTypeRequiredSkill" syncable="YES"/>
         <relationship name="requiredSkills" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="InvTypeRequiredSkill" inverseName="type" inverseEntity="InvTypeRequiredSkill" syncable="YES"/>
-        <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StaStation" inverseName="stationType" inverseEntity="StaStation" syncable="YES"/>
         <relationship name="typeDescription" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TxtDescription" inverseName="type" inverseEntity="TxtDescription" syncable="YES"/>
         <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="parentType" inverseEntity="InvType" syncable="YES"/>
         <relationship name="wormhole" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="WhType" inverseName="type" inverseEntity="WhType" syncable="YES"/>
@@ -360,15 +330,11 @@
             <fetchIndexElement property="constellationID" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="MapDenormalize" representedClassName="NCDBMapDenormalize" syncable="YES" codeGenerationType="class">
-        <attribute name="itemID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="itemName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="solarSystem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="denormalize" inverseEntity="MapSolarSystem" syncable="YES"/>
-        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="denormalize" inverseEntity="InvType" syncable="YES"/>
-        <fetchIndex name="byItemIDIndex">
-            <fetchIndexElement property="itemID" type="Binary" order="ascending"/>
-        </fetchIndex>
+    <entity name="MapPlanet" representedClassName="NCDBMapPlanet" syncable="YES" codeGenerationType="class">
+        <attribute name="planetID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="planetName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="solarSystem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="planets" inverseEntity="MapSolarSystem" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="MapRegion" representedClassName="NCDBMapRegion" syncable="YES" codeGenerationType="class">
         <attribute name="regionID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -390,8 +356,8 @@
         <attribute name="solarSystemID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="solarSystemName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="constellation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapConstellation" inverseName="solarSystems" inverseEntity="MapConstellation" syncable="YES"/>
-        <relationship name="denormalize" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapDenormalize" inverseName="solarSystem" inverseEntity="MapDenormalize" syncable="YES"/>
         <relationship name="faction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="solarSystems" inverseEntity="ChrFaction" syncable="YES"/>
+        <relationship name="planets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapPlanet" inverseName="solarSystem" inverseEntity="MapPlanet" syncable="YES"/>
         <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StaStation" inverseName="solarSystem" inverseEntity="StaStation" syncable="YES"/>
         <fetchIndex name="bySolarSystemIDIndex">
             <fetchIndexElement property="solarSystemID" type="Binary" order="ascending"/>
@@ -443,14 +409,14 @@
     <entity name="RamInstallationTypeContent" representedClassName="NCDBRamInstallationTypeContent" syncable="YES" codeGenerationType="class">
         <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="assemblyLineType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RamAssemblyLineType" inverseName="installationTypeContents" inverseEntity="RamAssemblyLineType" syncable="YES"/>
-        <relationship name="installationType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="installationTypeContents" inverseEntity="InvType" syncable="YES"/>
+        <relationship name="installationType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" syncable="YES"/>
     </entity>
     <entity name="StaStation" representedClassName="NCDBStaStation" syncable="YES" codeGenerationType="class">
         <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="stationID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="stationName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="solarSystem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="stations" inverseEntity="MapSolarSystem" syncable="YES"/>
-        <relationship name="stationType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="stations" inverseEntity="InvType" syncable="YES"/>
+        <relationship name="stationType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" syncable="YES"/>
         <fetchIndex name="byStationIDIndex">
             <fetchIndexElement property="stationID" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -469,10 +435,10 @@
         <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="WhType" representedClassName="NCDBWhType" syncable="YES" codeGenerationType="class">
-        <attribute name="maxJumpMass" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="maxRegeneration" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="maxStableMass" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="maxStableTime" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="maxJumpMass" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="maxRegeneration" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="maxStableMass" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="maxStableTime" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="targetSystemClass" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="wormhole" inverseEntity="InvType" syncable="YES"/>
     </entity>
@@ -506,18 +472,14 @@
         <element name="IndRequiredMaterial" positionX="-153" positionY="216" width="128" height="90"/>
         <element name="IndRequiredSkill" positionX="-144" positionY="225" width="128" height="90"/>
         <element name="InvCategory" positionX="9" positionY="54" width="128" height="120"/>
-        <element name="InvControlTower" positionX="-135" positionY="234" width="128" height="75"/>
-        <element name="InvControlTowerResource" positionX="72" positionY="216" width="128" height="150"/>
-        <element name="InvControlTowerResourcePurpose" positionX="63" positionY="207" width="128" height="90"/>
         <element name="InvGroup" positionX="0" positionY="45" width="128" height="165"/>
         <element name="InvMarketGroup" positionX="-18" positionY="36" width="128" height="135"/>
         <element name="InvMetaGroup" positionX="18" positionY="63" width="128" height="105"/>
-        <element name="InvType" positionX="-396" positionY="85" width="128" height="585"/>
+        <element name="InvType" positionX="-396" positionY="85" width="128" height="495"/>
         <element name="InvTypeRequiredSkill" positionX="-189" positionY="180" width="128" height="90"/>
         <element name="MapConstellation" positionX="81" positionY="225" width="128" height="135"/>
-        <element name="MapDenormalize" positionX="90" positionY="234" width="128" height="120"/>
         <element name="MapRegion" positionX="99" positionY="243" width="128" height="150"/>
-        <element name="MapSolarSystem" positionX="108" positionY="252" width="128" height="30"/>
+        <element name="MapSolarSystem" positionX="108" positionY="252" width="128" height="150"/>
         <element name="MapUniverse" positionX="-189" positionY="180" width="128" height="90"/>
         <element name="NpcGroup" positionX="117" positionY="261" width="128" height="120"/>
         <element name="RamActivity" positionX="63" positionY="207" width="128" height="135"/>
@@ -527,5 +489,6 @@
         <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="90"/>
         <element name="Version" positionX="-153" positionY="216" width="128" height="90"/>
         <element name="WhType" positionX="-189" positionY="180" width="128" height="135"/>
+        <element name="MapPlanet" positionX="-189" positionY="180" width="128" height="105"/>
     </elements>
 </model>

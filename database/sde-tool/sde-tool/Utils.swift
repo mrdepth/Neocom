@@ -58,19 +58,24 @@ enum DumpError: Error {
 }
 
 func load<T: Codable>(_ url: URL, type: T.Type = T.self) throws -> T {
-	let data = try Data(contentsOf: url)
-	let json = try JSONDecoder().decode(T.self, from: data)
-	let inverse = try JSONEncoder().encode(json)
-	let obj1 = try JSONSerialization.jsonObject(with: data, options: [])
-	let obj2 = try JSONSerialization.jsonObject(with: inverse, options: [])
+	do {
+		let data = try Data(contentsOf: url)
+		let json = try JSONDecoder().decode(T.self, from: data)
+		let inverse = try JSONEncoder().encode(json)
+		let obj1 = try JSONSerialization.jsonObject(with: data, options: [])
+		let obj2 = try JSONSerialization.jsonObject(with: inverse, options: [])
+		if let dic1 = obj1 as? NSDictionary, let dic2 = obj2 as? NSDictionary {
+			try dic1.validate(keyPath: "", with: dic2)
+		}
+		else if let arr1 = obj1 as? NSArray, let arr2 = obj2 as? NSArray {
+			try arr1.validate(keyPath: "", with: arr2)
+		}
+		return json
+	}
+	catch {
+		throw DumpError.parserError(url, error)
+	}
 	
-	if let dic1 = obj1 as? NSDictionary, let dic2 = obj2 as? NSDictionary {
-		try dic1.validate(keyPath: "", with: dic2)
-	}
-	else if let arr1 = obj1 as? NSArray, let arr2 = obj2 as? NSArray {
-		try arr1.validate(keyPath: "", with: arr2)
-	}
-	return json
 }
 
 extension OperationQueue {

@@ -429,11 +429,6 @@
         <relationship name="certificate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="certificateDescription" inverseEntity="CertCertificate" syncable="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="typeDescription" inverseEntity="InvType" syncable="YES"/>
     </entity>
-    <entity name="Version" representedClassName="NCDBVersion" syncable="YES" codeGenerationType="class">
-        <attribute name="build" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="expansion" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
-    </entity>
     <entity name="WhType" representedClassName="NCDBWhType" syncable="YES" codeGenerationType="class">
         <attribute name="maxJumpMass" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="maxRegeneration" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -478,6 +473,7 @@
         <element name="InvType" positionX="-396" positionY="85" width="128" height="495"/>
         <element name="InvTypeRequiredSkill" positionX="-189" positionY="180" width="128" height="90"/>
         <element name="MapConstellation" positionX="81" positionY="225" width="128" height="135"/>
+        <element name="MapPlanet" positionX="-189" positionY="180" width="128" height="105"/>
         <element name="MapRegion" positionX="99" positionY="243" width="128" height="150"/>
         <element name="MapSolarSystem" positionX="108" positionY="252" width="128" height="150"/>
         <element name="MapUniverse" positionX="-189" positionY="180" width="128" height="90"/>
@@ -487,8 +483,6 @@
         <element name="RamInstallationTypeContent" positionX="81" positionY="225" width="128" height="90"/>
         <element name="StaStation" positionX="99" positionY="243" width="128" height="120"/>
         <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="90"/>
-        <element name="Version" positionX="-153" positionY="216" width="128" height="90"/>
         <element name="WhType" positionX="-189" positionY="180" width="128" height="135"/>
-        <element name="MapPlanet" positionX="-189" positionY="180" width="128" height="105"/>
     </elements>
 </model>

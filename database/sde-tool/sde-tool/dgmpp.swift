@@ -15,7 +15,7 @@ var dgmppItemGroups = [IndexPath: NCDBDgmppItemGroup]()
 extension NCDBDgmppItemGroup {
 	
 	class func itemGroup(marketGroup: NCDBInvMarketGroup, category: NCDBDgmppItemCategory) -> NCDBDgmppItemGroup? {
-		guard marketGroup.marketGroupID != 1659 else {return nil}
+//		guard marketGroup.marketGroupID != 1659 else {return nil}
 		let key = IndexPath(indexes: [Int(marketGroup.marketGroupID), Int(category.category), Int(category.subcategory), Int(category.race?.raceID ?? 0)])
 		if let group = dgmppItemGroups[key] {
 			return group
@@ -116,6 +116,9 @@ func dgmpp() throws {
 		let trimmed = trim(leaves)
 		if trimmed.count == 0 {
 			for type in types {
+				if type.dgmppItem == nil {
+					type.dgmppItem = NCDBDgmppItem(context: .current)
+				}
 				type.dgmppItem?.addToGroups(root)
 			}
 		}
@@ -277,10 +280,10 @@ func dgmpp() throws {
 	var chargeCategories = [IndexPath: NCDBDgmppItemCategory]()
 	let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
 	let attributeIDs = Set<Int32>([604, 605, 606, 609, 610])
-	request.predicate = NSPredicate(format: "ANY attributes.attributeType.attributeID IN (%@)", attributeIDs)
+	request.predicate = NSPredicate(format: "ANY attributes.attributeType.attributeID IN (%@) AND dgmppItem <> NULL", attributeIDs)
 	for type in try NSManagedObjectContext.current.fetch(request) {
 		let attributes = type.attributes?.allObjects as? [NCDBDgmTypeAttribute]
-		let chargeSize = attributes?.first(where: {$0.attributeType?.attributeID == 128})?.value
+		let chargeSize = attributes?.first(where: {$0.attributeType?.attributeID == 128 && $0.value > 0})?.value
 		var chargeGroups: Set<Int> = Set()
 		for attribute in attributes?.filter({attributeIDs.contains($0.attributeType!.attributeID)}) ?? [] {
 			chargeGroups.insert(Int(attribute.value))

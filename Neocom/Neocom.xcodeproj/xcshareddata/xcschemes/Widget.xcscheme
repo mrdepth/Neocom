@@ -44,6 +44,16 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "12CA8F7E2047DED1000360DE"
+               BuildableName = "Neocom II Tests.xctest"
+               BlueprintName = "Neocom II Tests"
+               ReferencedContainer = "container:Neocom.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

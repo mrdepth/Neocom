@@ -300,6 +300,7 @@
 		12C967101F9614B200B141CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12C9670F1F96149F00B141CC /* GoogleService-Info.plist */; };
 		12CA8F752046ED32000360DE /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 12CA8F732046ED32000360DE /* NCDatabase.sqlite */; };
 		12CA8F762046ED32000360DE /* NCDatabaseVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CA8F742046ED32000360DE /* NCDatabaseVersion.swift */; };
+		12CA8F822047DED1000360DE /* Neocom_II_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CA8F812047DED1000360DE /* Neocom_II_Tests.swift */; };
 		12CACFE52008C36B000B76C3 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12CACFE42008C36B000B76C3 /* NotificationCenter.framework */; };
 		12CACFE82008C36B000B76C3 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CACFE72008C36B000B76C3 /* TodayViewController.swift */; };
 		12CACFEB2008C36B000B76C3 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12CACFE92008C36B000B76C3 /* MainInterface.storyboard */; };
@@ -412,6 +413,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 127BB8D91DDC3EC500F07E6C;
 			remoteInfo = clrconvert;
+		};
+		12CA8F842047DED1000360DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 12AC8D881DEF58A100561A7A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 12AC8D8F1DEF58A100561A7A;
+			remoteInfo = Neocom;
 		};
 		12CACFED2008C36B000B76C3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -776,6 +784,10 @@
 		12C9670F1F96149F00B141CC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		12CA8F732046ED32000360DE /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = NCDatabase.sqlite; sourceTree = SOURCE_ROOT; };
 		12CA8F742046ED32000360DE /* NCDatabaseVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseVersion.swift; sourceTree = SOURCE_ROOT; };
+		12CA8F7F2047DED1000360DE /* Neocom II Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Neocom II Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		12CA8F812047DED1000360DE /* Neocom_II_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Neocom_II_Tests.swift; sourceTree = "<group>"; };
+		12CA8F832047DED1000360DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		12CA8F902047E22C000360DE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		12CACFE32008C36B000B76C3 /* Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Widget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		12CACFE42008C36B000B76C3 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		12CACFE72008C36B000B76C3 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -939,6 +951,13 @@
 				129DE43B1FF628AD00A2C1CD /* FBSDKCoreKit.framework in Frameworks */,
 				12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */,
 				12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		12CA8F7C2047DED1000360DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1339,6 +1358,7 @@
 				12AC8D921DEF58A100561A7A /* Neocom */,
 				12C966ED1F9610CC00B141CC /* ThirdParty */,
 				12CACFE62008C36B000B76C3 /* Widget */,
+				12CA8F802047DED1000360DE /* Neocom II Tests */,
 				12AC8D911DEF58A100561A7A /* Products */,
 				12DBEAAF1E1D3B860088A486 /* Frameworks */,
 			);
@@ -1349,6 +1369,7 @@
 			children = (
 				12AC8D901DEF58A100561A7A /* Neocom.app */,
 				12CACFE32008C36B000B76C3 /* Widget.appex */,
+				12CA8F7F2047DED1000360DE /* Neocom II Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1571,6 +1592,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		12CA8F802047DED1000360DE /* Neocom II Tests */ = {
+			isa = PBXGroup;
+			children = (
+				12CA8F812047DED1000360DE /* Neocom_II_Tests.swift */,
+				12CA8F832047DED1000360DE /* Info.plist */,
+			);
+			path = "Neocom II Tests";
+			sourceTree = "<group>";
+		};
 		12CACFE62008C36B000B76C3 /* Widget */ = {
 			isa = PBXGroup;
 			children = (
@@ -1658,6 +1688,7 @@
 		12DBEAAF1E1D3B860088A486 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				12CA8F902047E22C000360DE /* UIKit.framework */,
 				12BFE4222017BF6F0083AC2F /* ASReceipt.framework */,
 				12CACFF72008D9FD000B76C3 /* EVEAPI.framework */,
 				120A59EE1F10ABEC0053F94B /* StoreKit.framework */,
@@ -1792,6 +1823,24 @@
 			productReference = 12AC8D901DEF58A100561A7A /* Neocom.app */;
 			productType = "com.apple.product-type.application";
 		};
+		12CA8F7E2047DED1000360DE /* Neocom II Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 12CA8F862047DED1000360DE /* Build configuration list for PBXNativeTarget "Neocom II Tests" */;
+			buildPhases = (
+				12CA8F7B2047DED1000360DE /* Sources */,
+				12CA8F7C2047DED1000360DE /* Frameworks */,
+				12CA8F7D2047DED1000360DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				12CA8F852047DED1000360DE /* PBXTargetDependency */,
+			);
+			name = "Neocom II Tests";
+			productName = "Neocom II Tests";
+			productReference = 12CA8F7F2047DED1000360DE /* Neocom II Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		12CACFE22008C36B000B76C3 /* Widget */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 12CACFF32008C36B000B76C3 /* Build configuration list for PBXNativeTarget "Widget" */;
@@ -1843,6 +1892,12 @@
 							};
 						};
 					};
+					12CA8F7E2047DED1000360DE = {
+						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = YB4RLQ4M9A;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 12AC8D8F1DEF58A100561A7A;
+					};
 					12CACFE22008C36B000B76C3 = {
 						CreatedOnToolsVersion = 9.2;
 						DevelopmentTeam = YB4RLQ4M9A;
@@ -1880,6 +1935,7 @@
 			targets = (
 				12AC8D8F1DEF58A100561A7A /* Neocom */,
 				12CACFE22008C36B000B76C3 /* Widget */,
+				12CA8F7E2047DED1000360DE /* Neocom II Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -1994,6 +2050,13 @@
 				12CFDAE61F03D8E800CC0762 /* NCDatePickerTableViewCell.xib in Resources */,
 				12D404471F31C010007F1715 /* NCSwitchTableViewCell.xib in Resources */,
 				12C37D2C1EFA9CDC0070F055 /* NCContactTableViewCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		12CA8F7D2047DED1000360DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2275,6 +2338,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		12CA8F7B2047DED1000360DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12CA8F822047DED1000360DE /* Neocom_II_Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		12CACFDF2008C36B000B76C3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2291,6 +2362,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		12CA8F852047DED1000360DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 12AC8D8F1DEF58A100561A7A /* Neocom */;
+			targetProxy = 12CA8F842047DED1000360DE /* PBXContainerItemProxy */;
+		};
 		12CACFEE2008C36B000B76C3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 12CACFE22008C36B000B76C3 /* Widget */;
@@ -2488,6 +2564,64 @@
 			};
 			name = Release;
 		};
+		12CA8F872047DED1000360DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				FRAMEWORK_SEARCH_PATHS = (
+					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
+					"${PROJECT_DIR}/../ThirdParty/Facebook",
+					"${PROJECT_DIR}/../ThirdParty/Appodeal",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../ThirdParty/ASReceipt/ASReceipt/ThirdParty/OpenSSL/include";
+				INFOPLIST_FILE = "Neocom II Tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shimanski.Neocom-II-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Neocom.app/Neocom";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../ThirdParty/Firebase";
+			};
+			name = Debug;
+		};
+		12CA8F882047DED1000360DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				FRAMEWORK_SEARCH_PATHS = (
+					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
+					"${PROJECT_DIR}/../ThirdParty/Facebook",
+					"${PROJECT_DIR}/../ThirdParty/Appodeal",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../ThirdParty/ASReceipt/ASReceipt/ThirdParty/OpenSSL/include";
+				INFOPLIST_FILE = "Neocom II Tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shimanski.Neocom-II-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Neocom.app/Neocom";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../ThirdParty/Firebase";
+			};
+			name = Release;
+		};
 		12CACFF02008C36B000B76C3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2549,6 +2683,15 @@
 			buildConfigurations = (
 				12AC8DA31DEF58A100561A7A /* Debug */,
 				12AC8DA41DEF58A100561A7A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		12CA8F862047DED1000360DE /* Build configuration list for PBXNativeTarget "Neocom II Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				12CA8F872047DED1000360DE /* Debug */,
+				12CA8F882047DED1000360DE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

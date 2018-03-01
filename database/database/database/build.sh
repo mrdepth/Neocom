@@ -1,5 +1,10 @@
 out=${TEMP_DIR}
 
+if [[ $ACTION = "clean" ]]; then
+	find "$out" -name "*.sqlite" -type f -delete
+	exit
+fi
+
 html=`curl https://developers.eveonline.com/resource/resources`
 sde=`[[ "$html" =~ (http[^\"]*data\/sde\/tranquility\/[^\"]*zip) ]] && echo ${BASH_REMATCH[1]}`
 icons=`[[ "$html" =~ (http[^\"]*data\/([^\"]*)_Icons.zip) ]] && echo ${BASH_REMATCH[1]}`

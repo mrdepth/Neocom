@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum NCDBAttributeID: Int {
+public enum NCDBAttributeID: Int {
 	case none = 0
 	case charismaBonus = 175
 	case intelligenceBonus = 176
@@ -94,7 +94,7 @@ enum NCDBAttributeID: Int {
 	case entityArmorRepairDelayChanceLarge = 1011
 }
 
-enum NCDBAttributeCategoryID: Int {
+public enum NCDBAttributeCategoryID: Int {
 	case none = 0
 	case fitting = 1
 	case shield = 2
@@ -107,7 +107,7 @@ enum NCDBAttributeCategoryID: Int {
 	case entityRewards = 32
 }
 
-enum NCDBUnitID: Int {
+public enum NCDBUnitID: Int {
 	case none = 0
 	case milliseconds = 101
 	case inverseAbsolutePercent = 108
@@ -123,7 +123,7 @@ enum NCDBUnitID: Int {
 	case bonus = 139
 }
 
-enum NCDBCategoryID: Int {
+public enum NCDBCategoryID: Int {
 	case ship = 6
 	case module = 7
 	case charge = 8
@@ -144,12 +144,12 @@ enum NCDBCategoryID: Int {
 
 }
 
-enum NCDBRegionID: Int {
+public enum NCDBRegionID: Int {
 	case theForge = 10000002
 	case whSpace = 11000000
 }
 
-enum NCDBDgmppItemCategoryID: Int {
+public enum NCDBDgmppItemCategoryID: Int {
 	case none = 0
 	case hi
 	case med
@@ -169,12 +169,12 @@ enum NCDBDgmppItemCategoryID: Int {
 	case structureRig
 }
 
-enum NCDBEffectID: Int {
+public enum NCDBEffectID: Int {
 	case missileLaunchingForEntity = 569
 }
 
 extension NCDBEveIcon {
-	enum File: String {
+	public enum File: String {
 		case certificateUnclaimed = "79_64_1"
 	}
 }

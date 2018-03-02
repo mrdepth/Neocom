@@ -1132,6 +1132,43 @@ enum Router {
 				destination.prices = prices
 			}
 		}
+
+		class AssetsDetails: Route {
+			let assets: [ESI.Assets.Asset]
+			let prices: [Int: Double]
+			let title: String
+			
+			init(assets: [ESI.Assets.Asset], prices: [Int: Double], title: String) {
+				self.assets = assets
+				self.prices = prices
+				self.title = title
+				super.init(kind: .push, storyboard: UIStoryboard.character, identifier: "NCWealthAssetsDetailsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCWealthAssetsDetailsViewController
+				destination.assets = assets
+				destination.prices = prices
+				destination.title = title
+			}
+		}
+
+		class Blueprints: Route {
+			let blueprints: [ESI.Character.Blueprint]
+			let prices: [Int: Double]
+			
+			init(blueprints: [ESI.Character.Blueprint], prices: [Int: Double]) {
+				self.blueprints = blueprints
+				self.prices = prices
+				super.init(kind: .push, storyboard: UIStoryboard.character, identifier: "NCWealthBlueprintsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCWealthBlueprintsViewController
+				destination.blueprints = blueprints
+				destination.prices = prices
+			}
+		}
 	}
 	
 	enum Contract {

@@ -173,6 +173,19 @@ public enum NCDBEffectID: Int {
 	case missileLaunchingForEntity = 569
 }
 
+public enum NCDBIndActivityID: Int {
+	case none = 0
+	case manufacturing = 1
+	case researchingTechnology = 2
+	case researchingTimeEfficiency = 3
+	case researchingMaterialEfficiency = 4
+	case copying = 5
+	case duplicating = 6
+	case reverseEngineering = 7
+	case invention = 8
+	case reactions = 11
+}
+
 extension NCDBEveIcon {
 	public enum File: String {
 		case certificateUnclaimed = "79_64_1"

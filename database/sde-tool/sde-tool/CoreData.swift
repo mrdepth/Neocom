@@ -510,6 +510,7 @@ extension NCDBIndActivity {
 	convenience init (_ activity: Blueprint.Activities.Activity, ramActivity: NCDBRamActivity) throws {
 		self.init(context: .current)
 		self.activity = ramActivity
+		self.time = Int32(activity.time)
 		try activity.materials?.forEach {
 			try NCDBIndRequiredMaterial($0)?.activity = self
 		}

@@ -50,7 +50,7 @@ ValueTransformer.setValueTransformer(NCDBImageValueTransformer(), forName: NSVal
 
 let root = URL(fileURLWithPath: CommandLine.input)
 
-let availableCategoryIDs = [2,3,4,5,6,7,8,9,11,16,17,18,20,22,23,24,25,30,32,34,35,39,40,41,42,43,46,63,65,66,87,350001]
+let availableCategoryIDs = [2,3,4,5,6,7,8,9,11,16,17,18,20,22,23,24,25,30,32,34,35,39,40,41,42,43,46,63,65,66,87,91,350001]
 
 let iconIDs: Future<[Int: IconID]>
 let invMetaGroups: Future<[Int: ObjectID<NCDBInvMetaGroup>]>

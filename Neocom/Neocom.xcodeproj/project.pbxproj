@@ -207,6 +207,9 @@
 		1293BC1C1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293BC1B1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift */; };
 		1293BC1E1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293BC1D1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift */; };
 		1293BC221E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293BC211E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift */; };
+		1293D7C62049807E00A1F453 /* openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1293D7C72049807E00A1F453 /* openssl.framework */; };
+		1293D7C92049813200A1F453 /* NCWealthBlueprintsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293D7C82049813200A1F453 /* NCWealthBlueprintsViewController.swift */; };
+		1293D7CD20499B2900A1F453 /* NCWealthAssetsDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293D7CC20499B2900A1F453 /* NCWealthAssetsDetailsViewController.swift */; };
 		12961DB81E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DB71E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift */; };
 		12961DBA1E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */; };
 		12961DBD1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DBC1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift */; };
@@ -495,8 +498,6 @@
 		121314BE1F13881700DAFD12 /* NCMailAttachmentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailAttachmentsViewController.swift; sourceTree = "<group>"; };
 		121314C01F13A68B00DAFD12 /* NCMailAttachmentsShipsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailAttachmentsShipsViewController.swift; sourceTree = "<group>"; };
 		121314C31F14B79700DAFD12 /* NCFittingStructuresViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingStructuresViewController.swift; sourceTree = "<group>"; };
-		121314C51F14BAB600DAFD12 /* NCFittingStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingStructure.h; sourceTree = "<group>"; };
-		121314C61F14BAB600DAFD12 /* NCFittingStructure.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingStructure.mm; sourceTree = "<group>"; };
 		1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCMailBodyViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+NC.swift"; sourceTree = "<group>"; };
 		121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerViewController.swift; sourceTree = "<group>"; };
@@ -664,25 +665,14 @@
 		1293BC1B1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingMiscTableViewCell.swift; sourceTree = "<group>"; };
 		1293BC1D1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingResourcesTableViewCell.swift; sourceTree = "<group>"; };
 		1293BC211E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingCapacitorTableViewCell.swift; sourceTree = "<group>"; };
+		1293D7C72049807E00A1F453 /* openssl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = openssl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1293D7C82049813200A1F453 /* NCWealthBlueprintsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCWealthBlueprintsViewController.swift; sourceTree = "<group>"; };
+		1293D7CC20499B2900A1F453 /* NCWealthAssetsDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCWealthAssetsDetailsViewController.swift; sourceTree = "<group>"; };
 		1294AB311F161A15002B9BA8 /* NCMailAttachmentsStructuresViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailAttachmentsStructuresViewController.swift; sourceTree = "<group>"; };
 		12961DB71E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseMarketInfoViewController.swift; sourceTree = "<group>"; };
 		12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketInfoTableViewCell.swift; sourceTree = "<group>"; };
 		12961DBC1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateInfoViewController.swift; sourceTree = "<group>"; };
 		12961DBE1E118EAD008A3F4D /* NCDatabaseCertificateInfoHeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateInfoHeaderViewController.swift; sourceTree = "<group>"; };
-		12961DC81E1D6486008A3F4D /* NCFittingSkill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSkill.h; sourceTree = "<group>"; };
-		12961DC91E1D6486008A3F4D /* NCFittingSkill.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingSkill.mm; sourceTree = "<group>"; };
-		12961DCB1E1D649A008A3F4D /* NCFittingBooster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingBooster.h; sourceTree = "<group>"; };
-		12961DCC1E1D649A008A3F4D /* NCFittingBooster.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingBooster.mm; sourceTree = "<group>"; };
-		12961DCE1E1D64A6008A3F4D /* NCFittingImplant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingImplant.h; sourceTree = "<group>"; };
-		12961DCF1E1D64A6008A3F4D /* NCFittingImplant.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingImplant.mm; sourceTree = "<group>"; };
-		12961DD11E1D64B8008A3F4D /* NCFittingShip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShip.h; sourceTree = "<group>"; };
-		12961DD21E1D64B8008A3F4D /* NCFittingShip.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShip.mm; sourceTree = "<group>"; };
-		12961DD41E1D64C9008A3F4D /* NCFittingModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingModule.h; sourceTree = "<group>"; };
-		12961DD51E1D64C9008A3F4D /* NCFittingModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingModule.mm; sourceTree = "<group>"; };
-		12961DD71E1D64D4008A3F4D /* NCFittingCharge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharge.h; sourceTree = "<group>"; };
-		12961DD81E1D64D4008A3F4D /* NCFittingCharge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCharge.mm; sourceTree = "<group>"; };
-		12961DDA1E1D64E4008A3F4D /* NCFittingDrone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDrone.h; sourceTree = "<group>"; };
-		12961DDB1E1D64E4008A3F4D /* NCFittingDrone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingDrone.mm; sourceTree = "<group>"; };
 		129B31681E53114A00B9A88D /* NCFittingAreaEffectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCFittingAreaEffectsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		129B316B1E534B7300B9A88D /* NCFittingDamagePatternsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingDamagePatternsViewController.swift; sourceTree = "<group>"; };
 		129B316D1E53527C00B9A88D /* damagePatterns.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = damagePatterns.plist; sourceTree = "<group>"; };
@@ -727,8 +717,6 @@
 		12B1B82E1E87F187007CCE40 /* NCTypePickerContainerViewContrller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerContainerViewContrller.swift; sourceTree = "<group>"; };
 		12B1B8341E884E44007CCE40 /* NCFittingAmmoDamageChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCFittingAmmoDamageChartViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12B4FAE81E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketHistoryTableViewCell.swift; sourceTree = "<group>"; };
-		12B563F81E51B24500F1BED0 /* NCFittingArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingArea.h; sourceTree = "<group>"; };
-		12B563F91E51B24500F1BED0 /* NCFittingArea.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingArea.mm; sourceTree = "<group>"; };
 		12B563FB1E51E0A200F1BED0 /* NCFittingCharacterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingCharacterTableViewCell.swift; sourceTree = "<group>"; };
 		12B68F281E802958006462B7 /* CloudData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CloudData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12BC40A11DFF1EBB00657D40 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -859,49 +847,9 @@
 		12DACE5A1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingImplantsViewController.swift; sourceTree = "<group>"; };
 		12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dgmpp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12DBEAB01E1D3B860088A486 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		12DBEAB51E1D3BD80088A486 /* NCFittingEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingEngine.h; sourceTree = "<group>"; };
-		12DBEAB61E1D3BD80088A486 /* NCFittingEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingEngine.mm; sourceTree = "<group>"; };
-		12DBEAB81E1D3F3D0088A486 /* NCFittingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingItem.h; sourceTree = "<group>"; };
-		12DBEAB91E1D3F3D0088A486 /* NCFittingItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingItem.mm; sourceTree = "<group>"; };
-		12DBEABB1E1D40280088A486 /* NCFittingAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingAttribute.h; sourceTree = "<group>"; };
-		12DBEABC1E1D40280088A486 /* NCFittingAttribute.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingAttribute.mm; sourceTree = "<group>"; };
-		12DBEABE1E1D42420088A486 /* NCFittingProtected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCFittingProtected.h; sourceTree = "<group>"; };
-		12DBEABF1E1D48A80088A486 /* NCFittingGang.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingGang.h; sourceTree = "<group>"; };
-		12DBEAC01E1D48A80088A486 /* NCFittingGang.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingGang.mm; sourceTree = "<group>"; };
-		12DBEAC21E1D49C70088A486 /* NCFittingCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacter.h; sourceTree = "<group>"; };
-		12DBEAC31E1D49C70088A486 /* NCFittingCharacter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCharacter.mm; sourceTree = "<group>"; };
-		12DBEAE71E1E6DF50088A486 /* NCFittingTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCFittingTypes.h; sourceTree = "<group>"; };
 		12DBEAE81E1E8FEC0088A486 /* NCFittingMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingMenuViewController.swift; sourceTree = "<group>"; };
 		12DC567C1EFBE8520088F45E /* NCIncursionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCIncursionsViewController.swift; sourceTree = "<group>"; };
 		12DC567E1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCIncursionTableViewCell.swift; sourceTree = "<group>"; };
-		12DC56831EFC09DC0088F45E /* NCFittingPlanet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPlanet.h; sourceTree = "<group>"; };
-		12DC56841EFC09DC0088F45E /* NCFittingPlanet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingPlanet.mm; sourceTree = "<group>"; };
-		12DC56861EFC0A040088F45E /* NCFittingFacility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingFacility.h; sourceTree = "<group>"; };
-		12DC56871EFC0A040088F45E /* NCFittingFacility.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingFacility.mm; sourceTree = "<group>"; };
-		12DC56891EFC0A150088F45E /* NCFittingRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingRoute.h; sourceTree = "<group>"; };
-		12DC568A1EFC0A150088F45E /* NCFittingRoute.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingRoute.mm; sourceTree = "<group>"; };
-		12DC568C1EFC0A230088F45E /* NCFittingCommodity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCommodity.h; sourceTree = "<group>"; };
-		12DC568D1EFC0A230088F45E /* NCFittingCommodity.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCommodity.mm; sourceTree = "<group>"; };
-		12DC568F1EFC0A400088F45E /* NCFittingCommandCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCommandCenter.h; sourceTree = "<group>"; };
-		12DC56901EFC0A400088F45E /* NCFittingCommandCenter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCommandCenter.mm; sourceTree = "<group>"; };
-		12DC56921EFC0A4E0088F45E /* NCFittingStorageFacility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingStorageFacility.h; sourceTree = "<group>"; };
-		12DC56931EFC0A4E0088F45E /* NCFittingStorageFacility.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingStorageFacility.mm; sourceTree = "<group>"; };
-		12DC56951EFC0A620088F45E /* NCFittingExtractorControlUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingExtractorControlUnit.h; sourceTree = "<group>"; };
-		12DC56961EFC0A620088F45E /* NCFittingExtractorControlUnit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingExtractorControlUnit.mm; sourceTree = "<group>"; };
-		12DC56981EFC0A740088F45E /* NCFittingIndustryFacility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingIndustryFacility.h; sourceTree = "<group>"; };
-		12DC56991EFC0A740088F45E /* NCFittingIndustryFacility.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingIndustryFacility.mm; sourceTree = "<group>"; };
-		12DC569B1EFC0A8A0088F45E /* NCFittingSpaceport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSpaceport.h; sourceTree = "<group>"; };
-		12DC569C1EFC0A8A0088F45E /* NCFittingSpaceport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingSpaceport.mm; sourceTree = "<group>"; };
-		12DC569E1EFC0A9E0088F45E /* NCFittingSchematic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSchematic.h; sourceTree = "<group>"; };
-		12DC569F1EFC0A9E0088F45E /* NCFittingSchematic.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingSchematic.mm; sourceTree = "<group>"; };
-		12DC56A11EFC0ADC0088F45E /* NCFittingCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCycle.h; sourceTree = "<group>"; };
-		12DC56A21EFC0ADC0088F45E /* NCFittingCycle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCycle.mm; sourceTree = "<group>"; };
-		12DC56A41EFC0AED0088F45E /* NCFittingProductionCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingProductionCycle.h; sourceTree = "<group>"; };
-		12DC56A51EFC0AED0088F45E /* NCFittingProductionCycle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingProductionCycle.mm; sourceTree = "<group>"; };
-		12DC56A71EFC0AFD0088F45E /* NCFittingState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingState.h; sourceTree = "<group>"; };
-		12DC56A81EFC0AFD0088F45E /* NCFittingState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingState.mm; sourceTree = "<group>"; };
-		12DC56AA1EFC0B0F0088F45E /* NCFittingProductionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingProductionState.h; sourceTree = "<group>"; };
-		12DC56AB1EFC0B0F0088F45E /* NCFittingProductionState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingProductionState.mm; sourceTree = "<group>"; };
 		12DE67201E715D46005CA44C /* NCSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSegmentedControl.swift; sourceTree = "<group>"; };
 		12E2674C1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDatabaseCertificateGroupsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDatabaseCertificatesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -932,6 +880,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1293D7C62049807E00A1F453 /* openssl.framework in Frameworks */,
 				12BFE4212017BF6F0083AC2F /* ASReceipt.framework in Frameworks */,
 				122DB9AF1E806DB000E8E2C4 /* libz.tbd in Frameworks */,
 				1235F3D51F39B9F1000E0FD9 /* Swifter.framework in Frameworks */,
@@ -1164,6 +1113,8 @@
 				125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */,
 				1285FB391EB9C5700025331A /* NCWealthViewController.swift */,
 				12D20EAD1EBC867E00BEC926 /* NCWealthAssetsViewController.swift */,
+				1293D7CC20499B2900A1F453 /* NCWealthAssetsDetailsViewController.swift */,
+				1293D7C82049813200A1F453 /* NCWealthBlueprintsViewController.swift */,
 				12D20EAF1EBCB10E00BEC926 /* NCCalendarViewController.swift */,
 				12C37D271EFA7E9B0070F055 /* NCEventViewController.swift */,
 				12FE20FC1F8F9F25004C021E /* NCLoyaltyPointsViewController.swift */,
@@ -1663,31 +1614,16 @@
 		12DBEA311E1D36580088A486 /* Fitting */ = {
 			isa = PBXGroup;
 			children = (
-				12DBEA321E1D36D40088A486 /* Engine */,
 				121D10B31E265D4600DD671B /* Loadouts */,
 				128C5F9D1F4AD7C60038FE7D /* NCImplantSetData.swift */,
 			);
 			name = Fitting;
 			sourceTree = "<group>";
 		};
-		12DBEA321E1D36D40088A486 /* Engine */ = {
-			isa = PBXGroup;
-			children = (
-				12DC56821EFC09AC0088F45E /* Ship */,
-				12DC56811EFC099A0088F45E /* PlanetaryInteraction */,
-				12DBEABE1E1D42420088A486 /* NCFittingProtected.h */,
-				12DBEAB51E1D3BD80088A486 /* NCFittingEngine.h */,
-				12DBEAB61E1D3BD80088A486 /* NCFittingEngine.mm */,
-				121314C51F14BAB600DAFD12 /* NCFittingStructure.h */,
-				121314C61F14BAB600DAFD12 /* NCFittingStructure.mm */,
-				12DBEAE71E1E6DF50088A486 /* NCFittingTypes.h */,
-			);
-			name = Engine;
-			sourceTree = "<group>";
-		};
 		12DBEAAF1E1D3B860088A486 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1293D7C72049807E00A1F453 /* openssl.framework */,
 				12CA8F902047E22C000360DE /* UIKit.framework */,
 				12BFE4222017BF6F0083AC2F /* ASReceipt.framework */,
 				12CACFF72008D9FD000B76C3 /* EVEAPI.framework */,
@@ -1698,72 +1634,6 @@
 				12CACFE42008C36B000B76C3 /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		12DC56811EFC099A0088F45E /* PlanetaryInteraction */ = {
-			isa = PBXGroup;
-			children = (
-				12DC56831EFC09DC0088F45E /* NCFittingPlanet.h */,
-				12DC56841EFC09DC0088F45E /* NCFittingPlanet.mm */,
-				12DC56861EFC0A040088F45E /* NCFittingFacility.h */,
-				12DC56871EFC0A040088F45E /* NCFittingFacility.mm */,
-				12DC56891EFC0A150088F45E /* NCFittingRoute.h */,
-				12DC568A1EFC0A150088F45E /* NCFittingRoute.mm */,
-				12DC568C1EFC0A230088F45E /* NCFittingCommodity.h */,
-				12DC568D1EFC0A230088F45E /* NCFittingCommodity.mm */,
-				12DC568F1EFC0A400088F45E /* NCFittingCommandCenter.h */,
-				12DC56901EFC0A400088F45E /* NCFittingCommandCenter.mm */,
-				12DC56921EFC0A4E0088F45E /* NCFittingStorageFacility.h */,
-				12DC56931EFC0A4E0088F45E /* NCFittingStorageFacility.mm */,
-				12DC56951EFC0A620088F45E /* NCFittingExtractorControlUnit.h */,
-				12DC56961EFC0A620088F45E /* NCFittingExtractorControlUnit.mm */,
-				12DC56981EFC0A740088F45E /* NCFittingIndustryFacility.h */,
-				12DC56991EFC0A740088F45E /* NCFittingIndustryFacility.mm */,
-				12DC569B1EFC0A8A0088F45E /* NCFittingSpaceport.h */,
-				12DC569C1EFC0A8A0088F45E /* NCFittingSpaceport.mm */,
-				12DC569E1EFC0A9E0088F45E /* NCFittingSchematic.h */,
-				12DC569F1EFC0A9E0088F45E /* NCFittingSchematic.mm */,
-				12DC56A11EFC0ADC0088F45E /* NCFittingCycle.h */,
-				12DC56A21EFC0ADC0088F45E /* NCFittingCycle.mm */,
-				12DC56A41EFC0AED0088F45E /* NCFittingProductionCycle.h */,
-				12DC56A51EFC0AED0088F45E /* NCFittingProductionCycle.mm */,
-				12DC56A71EFC0AFD0088F45E /* NCFittingState.h */,
-				12DC56A81EFC0AFD0088F45E /* NCFittingState.mm */,
-				12DC56AA1EFC0B0F0088F45E /* NCFittingProductionState.h */,
-				12DC56AB1EFC0B0F0088F45E /* NCFittingProductionState.mm */,
-			);
-			name = PlanetaryInteraction;
-			sourceTree = "<group>";
-		};
-		12DC56821EFC09AC0088F45E /* Ship */ = {
-			isa = PBXGroup;
-			children = (
-				12DBEAB81E1D3F3D0088A486 /* NCFittingItem.h */,
-				12DBEAB91E1D3F3D0088A486 /* NCFittingItem.mm */,
-				12DBEABF1E1D48A80088A486 /* NCFittingGang.h */,
-				12DBEAC01E1D48A80088A486 /* NCFittingGang.mm */,
-				12DBEAC21E1D49C70088A486 /* NCFittingCharacter.h */,
-				12DBEAC31E1D49C70088A486 /* NCFittingCharacter.mm */,
-				12961DC81E1D6486008A3F4D /* NCFittingSkill.h */,
-				12961DC91E1D6486008A3F4D /* NCFittingSkill.mm */,
-				12961DCB1E1D649A008A3F4D /* NCFittingBooster.h */,
-				12961DCC1E1D649A008A3F4D /* NCFittingBooster.mm */,
-				12961DCE1E1D64A6008A3F4D /* NCFittingImplant.h */,
-				12961DCF1E1D64A6008A3F4D /* NCFittingImplant.mm */,
-				12961DD11E1D64B8008A3F4D /* NCFittingShip.h */,
-				12961DD21E1D64B8008A3F4D /* NCFittingShip.mm */,
-				12961DD41E1D64C9008A3F4D /* NCFittingModule.h */,
-				12961DD51E1D64C9008A3F4D /* NCFittingModule.mm */,
-				12961DD71E1D64D4008A3F4D /* NCFittingCharge.h */,
-				12961DD81E1D64D4008A3F4D /* NCFittingCharge.mm */,
-				12961DDA1E1D64E4008A3F4D /* NCFittingDrone.h */,
-				12961DDB1E1D64E4008A3F4D /* NCFittingDrone.mm */,
-				12DBEABB1E1D40280088A486 /* NCFittingAttribute.h */,
-				12DBEABC1E1D40280088A486 /* NCFittingAttribute.mm */,
-				12B563F81E51B24500F1BED0 /* NCFittingArea.h */,
-				12B563F91E51B24500F1BED0 /* NCFittingArea.mm */,
-			);
-			name = Ship;
 			sourceTree = "<group>";
 		};
 		12E745521E830922004AA646 /* Products */ = {
@@ -2217,6 +2087,7 @@
 				1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */,
 				129E61081E029BCB00B56EB8 /* Array+NC.swift in Sources */,
 				12D404511F331BCB007F1715 /* NCMarketQuickbarViewController.swift in Sources */,
+				1293D7C92049813200A1F453 /* NCWealthBlueprintsViewController.swift in Sources */,
 				12C37D371EFBA4C80070F055 /* NCWHViewController.swift in Sources */,
 				125CE13C1EA1275C007B8B6B /* NCMailViewController.swift in Sources */,
 				128CA3DB1FED0C6D006E0989 /* NCMailAttachmentsShipsViewController.swift in Sources */,
@@ -2254,6 +2125,7 @@
 				1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */,
 				12B4FAE91E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift in Sources */,
 				122332722032CCCD007DEA33 /* NCFittingLoadoutsSearchResultsViewController.swift in Sources */,
+				1293D7CD20499B2900A1F453 /* NCWealthAssetsDetailsViewController.swift in Sources */,
 				122A1C431F8DFCC2005DE351 /* NCNavigationItemTitleLabel.swift in Sources */,
 				1230A33A1E001D7300627D92 /* NCAccountTableViewCell.swift in Sources */,
 				12CFDAE41F03D71F00CC0762 /* NCDatePickerTableViewCell.swift in Sources */,
@@ -2520,11 +2392,9 @@
 					"${PROJECT_DIR}/../ThirdParty/Facebook",
 					"${PROJECT_DIR}/../ThirdParty/Appodeal",
 				);
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../ThirdParty/ASReceipt/ASReceipt/ThirdParty/OpenSSL/include";
 				INFOPLIST_FILE = Neocom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../ThirdParty/ASReceipt/ASReceipt/ThirdParty/OpenSSL/lib";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -2550,11 +2420,9 @@
 					"${PROJECT_DIR}/../ThirdParty/Facebook",
 					"${PROJECT_DIR}/../ThirdParty/Appodeal",
 				);
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../ThirdParty/ASReceipt/ASReceipt/ThirdParty/OpenSSL/include";
 				INFOPLIST_FILE = Neocom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../ThirdParty/ASReceipt/ASReceipt/ThirdParty/OpenSSL/lib";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "${TARGET_NAME}";

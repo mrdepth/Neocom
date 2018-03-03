@@ -15,7 +15,7 @@ var dgmppItemGroups = [IndexPath: NCDBDgmppItemGroup]()
 extension NCDBDgmppItemGroup {
 	
 	class func itemGroup(marketGroup: NCDBInvMarketGroup, category: NCDBDgmppItemCategory) -> NCDBDgmppItemGroup? {
-//		guard marketGroup.marketGroupID != 1659 else {return nil}
+		guard marketGroup.marketGroupID != 1659 else {return nil}
 		let key = IndexPath(indexes: [Int(marketGroup.marketGroupID), Int(category.category), Int(category.subcategory), Int(category.race?.raceID ?? 0)])
 		if let group = dgmppItemGroups[key] {
 			return group
@@ -100,6 +100,12 @@ func dgmpp() throws {
 	}
 	
 	func importItems(types: [NCDBInvType], category: NCDBDgmppItemCategory, categoryName: String) throws {
+		let types = types.filter { !sequence(first: $0.marketGroup, next: {$0?.parentGroup}).contains(where: {$0?.marketGroupID == 1659}) }
+		guard !types.isEmpty else {
+			category.managedObjectContext?.delete(category)
+			return
+		}
+		
 		let groups = Set(types.flatMap { type -> NCDBDgmppItemGroup? in
 			guard let marketGroup = type.marketGroup else {return nil}
 			guard let group = NCDBDgmppItemGroup.itemGroup(marketGroup: marketGroup, category: category) else {return nil}

@@ -84,13 +84,13 @@ extension OperationQueue {
 		let operation = BlockOperation {
 			let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
 			context.parent = mainContext
-			let observer = NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: nil, queue: nil) { note in
-				if note.object as? NSManagedObjectContext != context {
-					context.perform {
-						context.mergeChanges(fromContextDidSave: note)
-					}
-				}
-			}
+//			let observer = NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: nil, queue: nil) { note in
+//				if note.object as? NSManagedObjectContext != context {
+//					context.perform {
+//						context.mergeChanges(fromContextDidSave: note)
+//					}
+//				}
+//			}
 			
 			NSManagedObjectContext.current = context
 			context.performAndWait {
@@ -106,7 +106,7 @@ extension OperationQueue {
 					//				promise.set(.failure(error))
 				}
 			}
-			NotificationCenter.default.removeObserver(observer)
+//			NotificationCenter.default.removeObserver(observer)
 			NSManagedObjectContext.current = nil
 		}
 		promise.future = Future<T>(operation: operation)

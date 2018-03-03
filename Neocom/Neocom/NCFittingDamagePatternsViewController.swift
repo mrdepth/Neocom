@@ -358,8 +358,8 @@ class NCFittingDamagePatternsViewController: NCTreeViewController, UITextFieldDe
 	private func select(npc: NCDBInvType) {
 		let attributes = npc.allAttributes
 		
-		let turrets: (Float, Float, Float, Float) = {
-			let damage: (Float, Float, Float, Float) =
+		let turrets: (Double, Double, Double, Double) = {
+			let damage: (Double, Double, Double, Double) =
 				(attributes[NCDBAttributeID.emDamage.rawValue]?.value ?? 0,
 				 attributes[NCDBAttributeID.thermalDamage.rawValue]?.value ?? 0,
 				 attributes[NCDBAttributeID.kineticDamage.rawValue]?.value ?? 0,
@@ -370,10 +370,10 @@ class NCFittingDamagePatternsViewController: NCTreeViewController, UITextFieldDe
 			return (damage.0 * multiplier / rof, damage.1 * multiplier / rof, damage.2 * multiplier / rof, damage.3 * multiplier / rof)
 		}()
 		
-		let launchers: (Float, Float, Float, Float) = {
+		let launchers: (Double, Double, Double, Double) = {
 			guard let missileID = attributes[NCDBAttributeID.entityMissileTypeID.rawValue]?.value, let missile = NCDatabase.sharedDatabase?.invTypes[Int(missileID)] else {return (0,0,0,0)}
 			let attributes = missile.allAttributes
-			let damage: (Float, Float, Float, Float) =
+			let damage: (Double, Double, Double, Double) =
 				(attributes[NCDBAttributeID.emDamage.rawValue]?.value ?? 0,
 				 attributes[NCDBAttributeID.thermalDamage.rawValue]?.value ?? 0,
 				 attributes[NCDBAttributeID.kineticDamage.rawValue]?.value ?? 0,

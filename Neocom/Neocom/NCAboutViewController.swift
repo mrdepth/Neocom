@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Dgmpp
 
 class NCAboutViewController: NCTreeViewController {
 	
@@ -29,10 +30,14 @@ class NCAboutViewController: NCTreeViewController {
 			sections.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Application Version", comment: "").uppercased(), subtitle: s))
 		}
 		
-		if let version: NCDBVersion =  NCDatabase.sharedDatabase?.viewContext.fetch("Version") {
-			let s = "\(version.expansion ?? "") (\(version.version ?? ""))"
-			sections.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("SDE Version", comment: "").uppercased(), subtitle: s))
-		}
+		sections.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("SDE Version", comment: "").uppercased(), subtitle: NCDatabase.version))
+		let dgmVersion = DGMVersion.current
+		sections.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("DGMPP Version", comment: "").uppercased(), subtitle: "\(dgmVersion.major).\(dgmVersion.minor).\(dgmVersion.sde.build) (\(dgmVersion.sde.version))"))
+		
+
+//		if let version: NCDBVersion =  NCDatabase.sharedDatabase?.viewContext.fetch("Version") {
+//			let s = "\(version.expansion ?? "") (\(version.version ?? ""))"
+//		}
 		
 		sections.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
 			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage, title: NSLocalizedString("Support", comment: "").uppercased(), subtitle: NCSupportEmail, route: Router.Custom({ (_, _) in

@@ -9,14 +9,14 @@
 import Foundation
 import CoreData
 
-class NCFetchedCollection<Element : NSFetchRequestResult> {
-	let entityName: String
-	let predicateFormat: String
-	let argumentArray:[Any]
-	let managedObjectContext: NSManagedObjectContext
-	let request: NSFetchRequest<Element>
+public class NCFetchedCollection<Element : NSFetchRequestResult> {
+	public let entityName: String
+	public let predicateFormat: String
+	public let argumentArray:[Any]
+	public let managedObjectContext: NSManagedObjectContext
+	public let request: NSFetchRequest<Element>
 	
-	init(entityName: String, predicateFormat: String, argumentArray:[Any], managedObjectContext: NSManagedObjectContext) {
+	public init(entityName: String, predicateFormat: String, argumentArray:[Any], managedObjectContext: NSManagedObjectContext) {
 		self.entityName = entityName
 		self.predicateFormat = predicateFormat
 		self.argumentArray = argumentArray
@@ -24,14 +24,14 @@ class NCFetchedCollection<Element : NSFetchRequestResult> {
 		self.request = NSFetchRequest<Element>(entityName: entityName)
 	}
 	
-	subscript(index: Int) -> Element? {
+	public subscript(index: Int) -> Element? {
 		var argumentArray = self.argumentArray
 		argumentArray.append(index)
 		request.predicate = NSPredicate(format: self.predicateFormat, argumentArray: argumentArray)
 		return (try? managedObjectContext.fetch(request))?.last
 	}
 	
-	subscript(key: String) -> Element? {
+	public subscript(key: String) -> Element? {
 		var argumentArray = self.argumentArray
 		argumentArray.append(key)
 		request.predicate = NSPredicate(format: self.predicateFormat, argumentArray: argumentArray)

@@ -124,7 +124,7 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 		if let value = assets?.flatMap({ $0.value }).joined() {
 			tableView.backgroundView = nil
 			
-			var locationIDs = Set(value.map {$0.locationID})
+			var locationIDs = Set(value/*.filter{$0.locationType == .station || $0.locationType == .solarSystem}*/.map {$0.locationID})
 			let itemIDs = Set(value.map {$0.itemID})
 			locationIDs.subtract(itemIDs)
 			
@@ -147,16 +147,28 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 					}
 					
 					var sections = [DefaultTreeSection]()
-					for locationID in Set(locations.keys).subtracting(Set(items.keys)) {
+					var unknown = [NCAssetRow]()
+					for locationID in locationIDs {
 						guard var rows = contents[locationID]?.map ({NCAssetRow(asset: $0, contents: contents, types: types)}) else {continue}
 						
-						rows.sort { ($0.attributedTitle?.string ?? "") < ($1.attributedTitle?.string ?? "") }
 						
-						let location = locations[locationID]
-						let title = location?.displayName ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: ""))
-						let nodeIdentifier = "\(location?.solarSystemName ?? "")\(locationID)"
-						
-						let section = DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title.uppercased(), children: rows)
+						if let location = locations[locationID] {
+							rows.sort { ($0.attributedTitle?.string ?? "") < ($1.attributedTitle?.string ?? "") }
+							let title = location.displayName
+							let nodeIdentifier = "\(location.solarSystemName ?? "")\(locationID)"
+							
+							let section = DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title.uppercased(), children: rows)
+							section.isExpanded = false
+							sections.append(section)
+						}
+						else {
+							unknown.append(contentsOf: rows)
+						}
+					}
+					if !unknown.isEmpty {
+						unknown.sort { ($0.attributedTitle?.string ?? "") < ($1.attributedTitle?.string ?? "") }
+
+						let section = DefaultTreeSection(nodeIdentifier: "-1", title: NSLocalizedString("Unknown Location", comment: "").uppercased(), children: unknown)
 						section.isExpanded = false
 						sections.append(section)
 					}

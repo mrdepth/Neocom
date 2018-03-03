@@ -248,7 +248,7 @@ enum Router {
 			var typeID: Int?
 			var objectID: NSManagedObjectID?
 			var fittingType: DGMType?
-			var attributeValues: [Int: Float]?
+			var attributeValues: [Int: Double]?
 			
 			private init(type: NCDBInvType?, typeID: Int?, objectID: NSManagedObjectID?, fittingType: DGMType?, kind: RouteKind) {
 				self.type = type
@@ -292,14 +292,14 @@ enum Router {
 				if let fittingType = fittingType {
 					NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 						let typeID = fittingType.typeID
-						var attributes = [Int: Float]()
+						var attributes = [Int: Double]()
 //						fittingItem.engine?.performBlockAndWait {
 							guard let type = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)[typeID] else {return}
 							type.attributes?.forEach {
 								guard let attribute = $0 as? NCDBDgmTypeAttribute else {return}
 								guard let attributeType = attribute.attributeType else {return}
 								if let value = fittingType[DGMAttributeID(attributeType.attributeID)]?.value {
-									attributes[Int(attributeType.attributeID)] = Float(value)
+									attributes[Int(attributeType.attributeID)] = value
 								}
 							}
 //						}
@@ -733,65 +733,73 @@ enum Router {
 			}
 			
 			override func perform(source: UIViewController, sender: Any?) {
-				let progress = NCProgressHandler(viewController: source, totalUnitCount: 1)
-				UIApplication.shared.beginIgnoringInteractionEvents()
+//				let progress = NCProgressHandler(viewController: source, totalUnitCount: 1)
+//				UIApplication.shared.beginIgnoringInteractionEvents()
 //				engine.perform {
-					var fleet: NCFittingFleet?
+				do {
+					let fleet: NCFittingFleet?
 					if let typeID = self.typeID {
-						fleet = try? NCFittingFleet(typeID: typeID)
+						fleet = try NCFittingFleet(typeID: typeID)
 					}
 					else if let loadoutID = self.loadoutID {
-						NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
-							guard let loadout = (try? managedObjectContext.existingObject(with: loadoutID)) as? NCLoadout else {return}
-							fleet = NCFittingFleet(loadouts: [loadout])
+						fleet = NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
+							guard let loadout = (try? managedObjectContext.existingObject(with: loadoutID)) as? NCLoadout else {return nil}
+							return NCFittingFleet(loadouts: [loadout])
 						}
 					}
 					else if let fleetID = self.fleetID {
-						NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
-							guard let fleetObject = (try? managedObjectContext.existingObject(with: fleetID)) as? NCFleet else {return}
-							fleet = NCFittingFleet(fleet: fleetObject)
+						fleet = NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext in
+							guard let fleetObject = (try? managedObjectContext.existingObject(with: fleetID)) as? NCFleet else {return nil}
+							return NCFittingFleet(fleet: fleetObject)
 						}
 					}
 					else if let asset = self.asset, let contents = self.contents {
-						fleet = try? NCFittingFleet(asset: asset, contents: contents)
+						fleet = try NCFittingFleet(asset: asset, contents: contents)
 					}
 					else if let killmail = self.killmail {
-						fleet = try? NCFittingFleet(killmail: killmail)
+						fleet = try NCFittingFleet(killmail: killmail)
 					}
 					else if let fitting = self.fitting {
-						fleet = try? NCFittingFleet(fitting: fitting)
+						fleet = try NCFittingFleet(fitting: fitting)
 					}
 					else if let loadout = self.representation?.loadouts.first {
-						fleet = try? NCFittingFleet(typeID: loadout.typeID)
+						fleet = try NCFittingFleet(typeID: loadout.typeID)
 						let pilot = fleet?.active
 						pilot?.loadout = loadout.data
 						pilot?.ship?.name = loadout.name
 					}
-					
-					DispatchQueue.main.async {
-						guard let fleet = fleet else {
-							progress.finish()
-							UIApplication.shared.endIgnoringInteractionEvents()
-							return
-						}
-						if let account = NCAccount.current {
-							fleet.active?.setSkills(from: account) {  _ in
-								self.fleet = fleet
-								super.perform(source: source, sender: sender)
-								progress.finish()
-								UIApplication.shared.endIgnoringInteractionEvents()
+					else {
+						return
+					}
+					if let fleet = fleet {
+						if let pilot = fleet.active {
+							let progress = NCProgressHandler(viewController: source, totalUnitCount: 1)
+							UIApplication.shared.beginIgnoringInteractionEvents()
+							if let account = NCAccount.current {
+								pilot.setSkills(from: account) {  _ in
+									self.fleet = fleet
+									super.perform(source: source, sender: sender)
+									UIApplication.shared.endIgnoringInteractionEvents()
+									progress.finish()
+								}
+							}
+							else {
+								pilot.setSkills(level: 5) { _ in
+									self.fleet = fleet
+									super.perform(source: source, sender: sender)
+									UIApplication.shared.endIgnoringInteractionEvents()
+									progress.finish()
+								}
 							}
 						}
 						else {
-							fleet.active?.setSkills(level: 5) { _ in
-								self.fleet = fleet
-								super.perform(source: source, sender: sender)
-								progress.finish()
-								UIApplication.shared.endIgnoringInteractionEvents()
-							}
+							self.fleet = fleet
+							super.perform(source: source, sender: sender)
 						}
 					}
-				//}
+				}
+				catch {
+				}
 			}
 		}
 		
@@ -1124,6 +1132,43 @@ enum Router {
 				destination.prices = prices
 			}
 		}
+
+		class AssetsDetails: Route {
+			let assets: [ESI.Assets.Asset]
+			let prices: [Int: Double]
+			let title: String
+			
+			init(assets: [ESI.Assets.Asset], prices: [Int: Double], title: String) {
+				self.assets = assets
+				self.prices = prices
+				self.title = title
+				super.init(kind: .push, storyboard: UIStoryboard.character, identifier: "NCWealthAssetsDetailsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCWealthAssetsDetailsViewController
+				destination.assets = assets
+				destination.prices = prices
+				destination.title = title
+			}
+		}
+
+		class Blueprints: Route {
+			let blueprints: [ESI.Character.Blueprint]
+			let prices: [Int: Double]
+			
+			init(blueprints: [ESI.Character.Blueprint], prices: [Int: Double]) {
+				self.blueprints = blueprints
+				self.prices = prices
+				super.init(kind: .push, storyboard: UIStoryboard.character, identifier: "NCWealthBlueprintsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCWealthBlueprintsViewController
+				destination.blueprints = blueprints
+				destination.prices = prices
+			}
+		}
 	}
 	
 	enum Contract {
@@ -1379,7 +1424,7 @@ enum Router {
 
 		class Mail: Route {
 			init() {
-				super.init(kind: .detail, storyboard: .character, identifier: "NCMailContainerViewController")
+				super.init(kind: .detail, storyboard: .character, identifier: "NCMailPageViewController")
 			}
 		}
 
@@ -1567,7 +1612,14 @@ enum Router {
 				destination.loadouts = loadouts
 			}
 		}
-		
+	}
+	
+	enum Settings {
+		class SkillQueueNotifications: Route {
+			init() {
+				super.init(kind: .push, storyboard: .main, identifier: "NCSkillQueueNotificationSettingsViewController")
+			}
+		}
 	}
 }
 

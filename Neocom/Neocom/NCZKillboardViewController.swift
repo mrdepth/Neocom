@@ -52,7 +52,7 @@ fileprivate class NCZKillboardShipRow: TreeRow, NCZKillboardFilterRow {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}
 		if let group = ship as? NCDBInvGroup {
 			cell.titleLabel?.text = group.groupName
-			cell.iconView?.image = group.category?.categoryID == Int32(NCDBCategoryID.structure.rawValue) ? NCDatabase.sharedDatabase?.eveIcons["40_14"]?.image?.image : #imageLiteral(resourceName: "priceShip")
+			cell.iconView?.image = group.category?.categoryID == Int32(NCDBCategoryID.structure.rawValue) ? NCDatabase.sharedDatabase?.eveIcons["40_64_14"]?.image?.image : #imageLiteral(resourceName: "priceShip")
 		}
 		else if let type = ship as? NCDBInvType {
 			cell.titleLabel?.text = type.typeName

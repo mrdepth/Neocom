@@ -126,7 +126,7 @@ class NCBugreportViewController: NCTreeViewController {
 			}
 		}
 		catch {
-			guard let data = error.localizedDescription.data(using: .utf8) else {return "Unknown Error".data(using: .utf8)!}
+			guard let data = (error as CustomDebugStringConvertible).debugDescription.data(using: .utf8) ?? error.localizedDescription.data(using: .utf8) else {return "Unknown Error".data(using: .utf8)!}
 			return data
 		}
 	}

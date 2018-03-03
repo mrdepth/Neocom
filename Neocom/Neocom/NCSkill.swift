@@ -68,7 +68,7 @@ class NCSkill: Hashable {
 		self.typeName = typeName
 		self.primaryAttributeID = NCDBAttributeID(rawValue: Int(primaryAttributeID)) ?? .none
 		self.secondaryAttributeID = NCDBAttributeID(rawValue: Int(secondaryAttributeID)) ?? .none
-		self.rank = rank
+		self.rank = Float(rank)
 		self.level = level
 		self.startSkillPoints = startSkillPoints
 		self.trainingStartDate = trainingStartDate

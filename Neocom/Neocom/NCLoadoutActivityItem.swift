@@ -367,7 +367,7 @@ enum NCLoadoutRepresentation {
 					var array = modules[slot] ?? []
 					array.append(NCFittingLoadoutModule(typeID: Int(type.typeID), count: qty, identifier: nil, charge: charge))
 					modules[slot] = array
-				case .drone, .structureDrone:
+				case .drone, .fighter, .structureFighter:
 					drones.append(NCFittingLoadoutDrone(typeID: Int(type.typeID), count: qty, identifier: nil))
 				default:
 					return

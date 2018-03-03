@@ -209,7 +209,7 @@ class DefaultTreeRow: TreeRow {
 		super.init(prototype: prototype, route: route, accessoryButtonRoute: accessoryButtonRoute, object: object)
 	}
 	
-    private var buttonHandler: NCActionHandler?
+    private var buttonHandler: NCActionHandler<UIButton>?
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDefaultTableViewCell else {return}

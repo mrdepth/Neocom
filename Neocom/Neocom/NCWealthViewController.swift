@@ -68,6 +68,7 @@ class NCWealthViewController: NCTreeViewController {
 			
 			if let value = assets {
 				for asset in value {
+					guard asset.locationFlag != .skill && asset.locationFlag != .implant else {continue}
 					guard let type = invTypes[asset.typeID], type.group?.category?.categoryID != Int32(NCDBCategoryID.blueprint.rawValue) else {continue}
 					_ = (assetsIDs[asset.typeID]? += Int64(asset.quantity)) ?? (assetsIDs[asset.typeID] = Int64(asset.quantity))
 				}
@@ -80,11 +81,12 @@ class NCWealthViewController: NCTreeViewController {
 					guard let type = invTypes[blueprint.typeID] else {continue}
 					var (products, materials) = blueprintsIDs[blueprint.typeID] ?? ([:], [:])
 					if blueprint.runs > 0 {
-						if let manufacturing = type.blueprintType?.activities?.first (where: {($0 as? NCDBIndActivity)?.activity?.activityID == 1}) as? NCDBIndActivity {
+						if let manufacturing = type.blueprintType?.activities?.first (where: {($0 as? NCDBIndActivity)?.activity?.activityID == Int32(NCDBIndActivityID.manufacturing.rawValue)}) as? NCDBIndActivity {
 							for material in manufacturing.requiredMaterials?.allObjects as? [NCDBIndRequiredMaterial] ?? [] {
 								guard let typeID = material.materialType?.typeID else {continue}
 								
-								let count = Int64((Double(material.quantity) * (1.0 - Double(blueprint.materialEfficiency)) * 0.85).rounded(.up)) * Int64(blueprint.runs)
+//								let count = Int64((Double(material.quantity) * (1.0 - Double(blueprint.materialEfficiency) / 100.0) * 0.85).rounded(.up)) * Int64(blueprint.runs)
+								let count = Int64((Double(material.quantity) * (1.0 - Double(blueprint.materialEfficiency) / 100.0) * 1.0).rounded(.up)) * Int64(blueprint.runs)
 								_ = (materials[Int(typeID)]? += count) ?? (materials[Int(typeID)] = count)
 							}
 							
@@ -151,7 +153,7 @@ class NCWealthViewController: NCTreeViewController {
 			var implants: Double = 0
 			var assets: Double = 0
 			var orders: Double = 0
-			var blueprints: Double = 0
+			var blueprintsCost: Double = 0
 			var industryJobs: Double = 0
 			
 			let updateChart = {[weak self] in
@@ -201,12 +203,14 @@ class NCWealthViewController: NCTreeViewController {
 					strongSelf.pieChartRow?.remove(segment: segment)
 				}
 				
-				if blueprints > 0 {
-					if (strongSelf.blueprintsSegment?.value = blueprints) == nil {
-						strongSelf.blueprintsSegment = PieSegment(value: blueprints, color: UIColor(red: 0, green: 0.5, blue: 1.0, alpha: 1.0), title: NSLocalizedString("Blueprints", comment: ""))
+				if blueprintsCost > 0 {
+					if (strongSelf.blueprintsSegment?.value = blueprintsCost) == nil {
+						strongSelf.blueprintsSegment = PieSegment(value: blueprintsCost, color: UIColor(red: 0, green: 0.5, blue: 1.0, alpha: 1.0), title: NSLocalizedString("Blueprints", comment: ""))
 						strongSelf.pieChartRow?.add(segment: strongSelf.blueprintsSegment!)
 					}
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Blueprints", title: NSLocalizedString("Blueprints", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: blueprints, unit: .isk, style: .full)))
+					let route = Router.Wealth.Blueprints(blueprints: blueprints ?? [], prices: strongSelf.prices ?? [:])
+					
+					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Blueprints", title: NSLocalizedString("Blueprints", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: blueprintsCost, unit: .isk, style: .full), accessoryType: .disclosureIndicator, route: route))
 				}
 				else if let segment = strongSelf.blueprintsSegment {
 					strongSelf.pieChartRow?.remove(segment: segment)
@@ -267,7 +271,9 @@ class NCWealthViewController: NCTreeViewController {
 								guard let price = result[material.key] else {continue blueprintsIDs}
 								sum -= price * Double(material.value)
 							}
-							blueprints += sum
+							if sum > 0 {
+								blueprintsCost += sum
+							}
 						}
 						
 						industryJobsIDs.forEach({industryJobs += (result[$0.key] ?? 0) * Double($0.value)})

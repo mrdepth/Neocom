@@ -190,7 +190,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate, N
 			guard let ship = pilot.ship else {return}
 			guard let typePickerViewController = typePickerViewController else {return}
 
-			let category = NCDBDgmppItemCategory.category(categoryID: .drone, subcategory:  NCDBCategoryID.drone.rawValue)
+			let category = NCDBDgmppItemCategory.category(categoryID: .drone)
 			
 			typePickerViewController.category = category
 			typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
@@ -233,8 +233,8 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate, N
 	//MARK: - Private
 	
 	private func update() {
-		guard let pilot = self.fleet?.active else {return}
-		guard let ship = pilot.ship ?? pilot.structure else {return}
+		guard let pilot = fleet?.active else {return}
+		guard let ship = pilot.ship else {return}
 		
 		
 		self.droneBayLabel.value = ship.usedDroneBay

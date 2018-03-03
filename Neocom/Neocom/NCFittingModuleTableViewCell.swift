@@ -20,7 +20,7 @@ class NCFittingModuleTableViewCell: NCTableViewCell {
 class NCFittingModuleStateTableViewCell: NCTableViewCell {
 	@IBOutlet weak var segmentedControl: UISegmentedControl?
 	
-	var actionHandler: NCActionHandler?
+	var actionHandler: NCActionHandler<UISegmentedControl>?
 	
 	override func prepareForReuse() {
 		super.prepareForReuse()

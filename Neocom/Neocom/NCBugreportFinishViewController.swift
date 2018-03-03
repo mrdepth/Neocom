@@ -74,10 +74,12 @@ class NCBugreportFinishViewController: NCTreeViewController {
 					attachments["accessToken.json"] = data
 				}
 			}
-
+			let displayVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
+			let version = Bundle.main.infoDictionary![kCFBundleVersionKey as String] as! String
 			let controller = MFMailComposeViewController()
 			controller.setToRecipients([NCBugReportEmail])
-			controller.setSubject(subject ?? "Bug Report")
+			controller.setSubject("\(displayVersion): \(subject ?? "Bug Report")")
+			controller.setMessageBody("Version: \(displayVersion)(\(version))\nDevice: \(UIDevice.current.model)\n \(UIDevice.current.systemName): \(UIDevice.current.systemVersion)\n", isHTML: false)
 			attachments.forEach { (name, data) in
 				controller.addAttachmentData(data, mimeType: "application/json", fileName: name)
 			}

@@ -363,13 +363,13 @@
                 <splitViewController id="jOF-Zr-V9H" customClass="NCSplitViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <segue destination="aKc-6p-ULR" kind="relationship" relationship="masterViewController" id="zsx-Pr-xSn"/>
                         <segue destination="jzY-fj-lmf" kind="relationship" relationship="detailViewController" id="r6L-FF-iza"/>
+                        <segue destination="aKc-6p-ULR" kind="relationship" relationship="masterViewController" id="yKN-9Y-J0x"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bb8-GB-8B6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1031" y="-83"/>
+            <point key="canvasLocation" x="-1211" y="-83"/>
         </scene>
         <!--Main Menu Header View Controller-->
         <scene sceneID="iZ5-Vc-nMS">
@@ -932,6 +932,71 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w9d-Jq-XiQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3390" y="2622"/>
+        </scene>
+        <!--Skill Queue-->
+        <scene sceneID="E2s-nz-mc3">
+            <objects>
+                <tableViewController storyboardIdentifier="NCSkillQueueNotificationSettingsViewController" id="rEd-8E-fxn" customClass="NCSkillQueueNotificationSettingsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="jGQ-Xa-aJR" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCSettingsAccountSwitchTableViewCell" id="jBQ-1B-UXc" customClass="NCSettingsAccountSwitchTableViewCell" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="55.5" width="320" height="41"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jBQ-1B-UXc" id="toQ-kJ-IGw">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="40.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vGE-ax-crc">
+                                            <rect key="frame" x="15" y="4" width="290" height="32.5"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4cQ-A6-N0z" customClass="NCRoundedImageView" customModule="Neocom" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.5" width="32" height="32"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="32" id="EfY-HG-EDd"/>
+                                                        <constraint firstAttribute="width" secondItem="4cQ-A6-N0z" secondAttribute="height" multiplier="1:1" id="IkH-yP-LUR"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="G0x-1x-zup">
+                                                    <rect key="frame" x="40" y="7.5" width="193" height="18"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TGC-Rn-iQg">
+                                                    <rect key="frame" x="241" y="1" width="51" height="31"/>
+                                                </switch>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="vGE-ax-crc" firstAttribute="leading" secondItem="toQ-kJ-IGw" secondAttribute="leading" constant="15" id="Bit-mT-9LP"/>
+                                        <constraint firstAttribute="bottom" secondItem="vGE-ax-crc" secondAttribute="bottom" priority="999" constant="4" id="Hre-nb-u8l"/>
+                                        <constraint firstAttribute="trailing" secondItem="vGE-ax-crc" secondAttribute="trailing" priority="999" id="MWA-Yu-sJM"/>
+                                        <constraint firstItem="vGE-ax-crc" firstAttribute="top" secondItem="toQ-kJ-IGw" secondAttribute="top" constant="4" id="VTJ-2y-7S5"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="vGE-ax-crc" secondAttribute="trailing" constant="15" id="eVc-bf-JD5"/>
+                                </constraints>
+                                <viewLayoutGuide key="safeArea" id="7Av-bX-JfT"/>
+                                <connections>
+                                    <outlet property="characterImageView" destination="4cQ-A6-N0z" id="gDv-CU-blq"/>
+                                    <outlet property="characterNameLabel" destination="G0x-1x-zup" id="dvg-vr-uTV"/>
+                                    <outlet property="switchControl" destination="TGC-Rn-iQg" id="KTA-Vx-bJC"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Skill Queue" id="umx-bY-ZsZ"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kmL-rv-0k0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="474" y="3351"/>
         </scene>
     </scenes>
     <resources>

@@ -244,11 +244,11 @@ extension DGMShip.ScanType {
 extension DGMDrone.Squadron {
 	var title: String? {
 		switch self {
-		case .heavy:
+		case .heavy, .standupHeavy:
 			return NSLocalizedString("Heavy", comment: "")
-		case .light:
+		case .light, .standupLight:
 			return NSLocalizedString("Light", comment: "")
-		case .support:
+		case .support, .standupSupport:
 			return NSLocalizedString("Support", comment: "")
 		case .none:
 			return NSLocalizedString("Drone", comment: "")
@@ -267,39 +267,33 @@ extension DGMDamageVector: Hashable {
 	}
 }
 
-
-extension DGMCharacter {
-	
-	func setSkills(levels: [Int: Int]) {
-		skills.forEach {
-			$0.level = levels[$0.typeID] ?? 0
-		}
+extension DGMShip {
+	convenience init(typeID: DGMTypeID, loadout: NCFittingLoadout) throws {
+		try self.init(typeID: typeID)
+		
+		self.loadout = loadout
 	}
 	
 	var loadout: NCFittingLoadout {
 		get {
-			let ship = self.ship ?? self.structure
 			let loadout = NCFittingLoadout()
-			loadout.implants = implants.map{ NCFittingLoadoutItem(type: $0) }
-			loadout.boosters = boosters.map{ NCFittingLoadoutItem(type: $0) }
 			
 			var drones = [Int: NCFittingLoadoutDrone]()
-			for drone in ship?.drones ?? [] {
+			for drone in self.drones {
 				let identifier = drone.identifier
 				if let drone = drones[identifier] {
 					drone.count += 1
 				}
 				else {
-					 drones[identifier] = NCFittingLoadoutDrone(drone: drone)
+					drones[identifier] = NCFittingLoadoutDrone(drone: drone)
 				}
-//				drones[identifier, default: NCFittingLoadoutDrone(drone: drone)].count += 1
 			}
 			
 			loadout.drones = Array(drones.values)
 			
 			var modules = [DGMModule.Slot: [NCFittingLoadoutModule]]()
 			
-			for module in ship?.modules ?? [] {
+			for module in self.modules {
 				modules[module.slot, default: []].append(NCFittingLoadoutModule(module: module))
 			}
 			
@@ -308,19 +302,12 @@ extension DGMCharacter {
 			return loadout
 		}
 		set {
-			let ship = (self.ship ?? self.structure)!
-			for implant in newValue.implants ?? [] {
-				try? add(DGMImplant(typeID: implant.typeID))
-			}
-			for booster in newValue.boosters ?? [] {
-				try? add(DGMBooster(typeID: booster.typeID))
-			}
 			for drone in newValue.drones ?? [] {
 				do {
 					let identifier = drone.identifier ?? UUID().hashValue
 					for _ in 0..<drone.count {
 						let item = try DGMDrone(typeID: drone.typeID)
-						try ship.add(item, squadronTag: drone.squadronTag)
+						try add(item, squadronTag: drone.squadronTag)
 						item.isActive = drone.isActive
 						item.isKamikaze = drone.isKamikaze
 						item.identifier = identifier
@@ -335,7 +322,7 @@ extension DGMCharacter {
 						let identifier = module.identifier ?? UUID().hashValue
 						for _ in 0..<module.count {
 							let item = try DGMModule(typeID: module.typeID)
-							try ship.add(item, socket: module.socket, ignoringRequirements: true)
+							try add(item, socket: module.socket, ignoringRequirements: true)
 							item.identifier = identifier
 							item.state = module.state
 							if let charge = module.charge {
@@ -347,6 +334,33 @@ extension DGMCharacter {
 					}
 				}
 			}
+		}
+	}
+}
+
+extension DGMCharacter {
+	
+	func setSkills(levels: [Int: Int]) {
+		skills.forEach {
+			$0.level = levels[$0.typeID] ?? 0
+		}
+	}
+	
+	var loadout: NCFittingLoadout {
+		get {
+			let loadout = self.ship?.loadout ?? NCFittingLoadout()
+			loadout.implants = implants.map{ NCFittingLoadoutItem(type: $0) }
+			loadout.boosters = boosters.map{ NCFittingLoadoutItem(type: $0) }
+			return loadout
+		}
+		set {
+			for implant in newValue.implants ?? [] {
+				try? add(DGMImplant(typeID: implant.typeID))
+			}
+			for booster in newValue.boosters ?? [] {
+				try? add(DGMBooster(typeID: booster.typeID))
+			}
+			ship?.loadout = newValue
 		}
 	}
 	
@@ -483,7 +497,7 @@ extension DGMCharacter {
 	}
 	
 	var shoppingItem: NCShoppingItem? {
-		guard let context = NCStorage.sharedStorage?.viewContext else {return nil}
+		/*guard let context = NCStorage.sharedStorage?.viewContext else {return nil}
 		guard let ship = self.ship ?? self.structure else {return nil}
 		let loadout = self.loadout
 		let shipItem = NCShoppingItem(entity: NSEntityDescription.entity(forEntityName: "ShoppingItem", in: context)!, insertInto: nil)
@@ -548,7 +562,8 @@ extension DGMCharacter {
 			shipItem.addToContents(item)
 		}
 		
-		return shipItem
+		return shipItem*/
+		return nil
 	}
 	
 }

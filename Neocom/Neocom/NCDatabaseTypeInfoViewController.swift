@@ -11,7 +11,7 @@ import CoreData
 
 class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPreviewingDelegate {
 	var type: NCDBInvType?
-	var attributeValues: [Int: Float]?
+	var attributeValues: [Int: Double]?
 	
 	var headerViewController: NCDatabaseTypeInfoHeaderViewController?
 	

@@ -18,6 +18,7 @@ public extension Notification.Name {
 class NCFittingFleet {
 	
 	var pilots = [(DGMCharacter, NSManagedObjectID?)]()
+	var structure: (DGMStructure, NSManagedObjectID?)?
 	var active: DGMCharacter? {
 		didSet {
 			NotificationCenter.default.post(name: .NCFittingFleetDidUpdate, object: self)
@@ -33,20 +34,19 @@ class NCFittingFleet {
 	}
 	
 	init(typeID: Int) throws {
-		let pilot = try DGMCharacter()
 		let isStructure = NCDatabase.sharedDatabase?.performTaskAndWait { (context) -> Bool in
 			return (NCDBInvType.invTypes(managedObjectContext: context)[typeID]?.dgmppItem?.groups?.anyObject() as? NCDBDgmppItemGroup)?.category?.category == Int32(NCDBDgmppItemCategoryID.structure.rawValue)
 		} ?? false
 		if isStructure {
-			pilot.structure = try DGMStructure(typeID: typeID)
+			structure = (try DGMStructure(typeID: typeID), nil)
 		}
 		else {
+			let pilot = try DGMCharacter()
 			pilot.ship = try DGMShip(typeID: typeID)
+			gang.add(pilot)
+			pilots.append((pilot, nil))
+			active = pilot
 		}
-
-		gang.add(pilot)
-		pilots.append((pilot, nil))
-		active = pilot
 	}
 
 	convenience init(fleet: NCFleet) {
@@ -189,59 +189,54 @@ class NCFittingFleet {
 
 	}
 	
-	@discardableResult
-	func append(loadout: NCLoadout) throws -> DGMCharacter {
+	func append(loadout: NCLoadout) throws {
 		
-		let pilot = try DGMCharacter()
 		let typeID = Int(loadout.typeID)
 		let isStructure = NCDatabase.sharedDatabase?.performTaskAndWait { (context) -> Bool in
 			return (NCDBInvType.invTypes(managedObjectContext: context)[typeID]?.dgmppItem?.groups?.anyObject() as? NCDBDgmppItemGroup)?.category?.category == Int32(NCDBDgmppItemCategoryID.structure.rawValue)
 			} ?? false
 		
 		if isStructure {
-			pilot.structure = try DGMStructure(typeID: typeID)
-			pilot.structure?.name = loadout.name ?? ""
+			structure = (try DGMStructure(typeID: typeID), loadout.objectID)
+			structure?.0.name = loadout.name ?? ""
+			if let data = loadout.data?.data {
+				structure?.0.loadout = data
+			}
 		}
 		else {
+			let pilot = try DGMCharacter()
 			pilot.ship = try DGMShip(typeID: typeID)
 			pilot.ship?.name = loadout.name ?? ""
+			if let data = loadout.data?.data {
+				pilot.loadout = data
+			}
+			
+			gang.add(pilot)
+			pilots.append((pilot, loadout.objectID))
+			
+			if active == nil {
+				active = pilot
+			}
 		}
-
-		
-
-		if let data = loadout.data?.data {
-			pilot.loadout = data
-		}
-
-		gang.add(pilot)
-		pilots.append((pilot, loadout.objectID))
-		
-		if active == nil {
-			active = pilot
-		}
-		return pilot
 	}
 	
-	@discardableResult
-	func append(typeID: Int) throws -> DGMCharacter {
-		let pilot = try DGMCharacter()
+	func append(typeID: Int) throws {
 		let isStructure = NCDatabase.sharedDatabase?.performTaskAndWait { (context) -> Bool in
 			return (NCDBInvType.invTypes(managedObjectContext: context)[typeID]?.dgmppItem?.groups?.anyObject() as? NCDBDgmppItemGroup)?.category?.category == Int32(NCDBDgmppItemCategoryID.structure.rawValue)
 			} ?? false
 		
 		if isStructure {
-			pilot.structure = try DGMStructure(typeID: typeID)
+			structure = (try DGMStructure(typeID: typeID), nil)
 		}
 		else {
+			let pilot = try DGMCharacter()
 			pilot.ship = try DGMShip(typeID: typeID)
+			gang.add(pilot)
+			pilots.append((pilot, nil))
+			if active == nil {
+				active = pilot
+			}
 		}
-
-		gang.add(pilot)
-		pilots.append((pilot, nil))
-		if active == nil {
-			active = pilot
-		}
-		return pilot
 	}
 	
 	func add(pilot: DGMCharacter) {

@@ -22,10 +22,12 @@ class NCFittingModuleRow: TreeRow {
 	
 	let modules: [DGMModule]
 	let slot: DGMModule.Slot
+	let socket: Int?
 	
-	init(modules: [DGMModule], slot: DGMModule.Slot) {
+	init(modules: [DGMModule], slot: DGMModule.Slot, socket: Int?) {
 		self.modules = modules
 		self.slot = slot
+		self.socket = socket
 		super.init(prototype: modules.isEmpty ? Prototype.NCDefaultTableViewCell.compact : Prototype.NCFittingModuleTableViewCell.default)
 	}
 	
@@ -139,7 +141,7 @@ class NCFittingModuleRow: TreeRow {
 	}
 	
 	override var hashValue: Int {
-		return modules.first?.hashValue ?? 0
+		return modules.first?.hashValue ?? socket?.hashValue ?? -1
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
@@ -248,10 +250,10 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 	func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		treeController.deselectCell(for: node, animated: true)
 		guard let item = node as? NCFittingModuleRow else {return}
-		guard let pilot = fleet?.active else {return}
-		guard let ship = pilot.structure ?? pilot.ship else {return}
+//		guard let pilot = fleet?.active else {return}
+		guard let ship = fleet?.active?.ship ?? fleet?.structure?.0 else {return}
 		guard let typePickerViewController = typePickerViewController else {return}
-		let socket = (node.parent as? NCFittingModuleSection)?.grouped == true ? -1 : node.parent?.children.index(of: item) ?? -1
+		let socket = (node.parent as? NCFittingModuleSection)?.grouped == true ? -1 : item.socket ?? -1
 		let isStructure = ship is DGMStructure
 
 		if item.modules.isEmpty {
@@ -266,7 +268,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 			case .rig:
 				category = NCDBDgmppItemCategory.category(categoryID: isStructure ? .structureRig : .rig, subcategory: ship.rigSize.rawValue)
 			case .subsystem:
-				guard let raceID = pilot.ship?.raceID, let race = NCDatabase.sharedDatabase?.chrRaces[raceID.rawValue] else {return}
+				guard let race = NCDatabase.sharedDatabase?.chrRaces[ship.raceID.rawValue] else {return}
 				category = NCDBDgmppItemCategory.category(categoryID: .subsystem, subcategory: nil, race: race)
 			case .service:
 				category = NCDBDgmppItemCategory.category(categoryID: .service, subcategory: NCDBCategoryID.structureModule.rawValue)
@@ -352,8 +354,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 	//MARK: - Private
 	
 	private func update() {
-		guard let pilot = self.fleet?.active else {return}
-		guard let ship = pilot.ship else {return}
+		guard let ship = fleet?.active?.ship ?? fleet?.structure?.0 else {return}
 		
 		powerGridLabel.value = ship.usedPowerGrid
 		powerGridLabel.maximumValue = ship.totalPowerGrid
@@ -373,8 +374,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 	
 	private func reload() {
 		let grouping = self.grouping
-		guard let pilot = fleet?.active else {return}
-		guard let ship = pilot.ship else {return}
+		guard let ship = fleet?.active?.ship ?? fleet?.structure?.0 else {return}
 		
 		var sections = [NCFittingModuleSection]()
 		for slot in [DGMModule.Slot.hi, DGMModule.Slot.med, DGMModule.Slot.low, DGMModule.Slot.rig, DGMModule.Slot.subsystem, DGMModule.Slot.service, DGMModule.Slot.mode] {
@@ -401,21 +401,21 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 					groups.append([])
 				}
 				rows = groups.flatMap({ (modules) -> NCFittingModuleRow? in
-					return NCFittingModuleRow(modules: modules, slot: slot)
+					return NCFittingModuleRow(modules: modules, slot: slot, socket: nil)
 				})
 			}
 			else {
 				var socket = 0
 				var r = [NCFittingModuleRow]()
 				for module in ship.modules(slot: slot) {
-					r.append(contentsOf: (socket..<max(module.socket, socket)).map{ _ in
-						return NCFittingModuleRow(modules: [], slot: slot)
+					r.append(contentsOf: (socket..<max(module.socket, socket)).map{ i in
+						return NCFittingModuleRow(modules: [], slot: slot, socket: i)
 					})
-					r.append(NCFittingModuleRow(modules: [module], slot: slot))
+					r.append(NCFittingModuleRow(modules: [module], slot: slot, socket: module.socket))
 					socket = module.socket + 1
 				}
-				r.append(contentsOf: (socket..<max(ship.totalSlots(slot), socket)).map{ _ in
-					return NCFittingModuleRow(modules: [], slot: slot)
+				r.append(contentsOf: (socket..<max(ship.totalSlots(slot), socket)).map{ i in
+					return NCFittingModuleRow(modules: [], slot: slot, socket: i)
 				})
 				
 				rows = r

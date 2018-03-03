@@ -44,6 +44,27 @@ class NCLoadoutRow: TreeRow {
 	}
 }
 
+class NCLoadoutProxyRow: TreeRow {
+	let loadoutRow: NCLoadoutRow
+	init(loadoutRow: NCLoadoutRow) {
+		self.loadoutRow = loadoutRow
+		super.init(prototype: Prototype.NCDefaultTableViewCell.default, route: loadoutRow.route)
+	}
+	
+	override func configure(cell: UITableViewCell) {
+		loadoutRow.configure(cell: cell)
+	}
+	
+	override var hashValue: Int {
+		return loadoutRow.hashValue
+	}
+	
+	override func isEqual(_ object: Any?) -> Bool {
+		return (object as? NCLoadoutProxyRow)?.hashValue == hashValue
+	}
+
+}
+
 class NCLoadoutNoRouteRow: NCLoadoutRow {
 	
 	required init(loadout: NCLoadout, type: NCDBInvType) {
@@ -124,17 +145,31 @@ class NCLoadoutsSection<T: NCLoadoutRow>: TreeSection {
 	}
 }
 
-class NCFittingLoadoutsViewController: NCTreeViewController {
+class NCFittingLoadoutsViewController: NCTreeViewController, NCSearchableViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		tableView.register([Prototype.NCDefaultTableViewCell.default,
 		                    Prototype.NCHeaderTableViewCell.default])
+		
+		setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCFittingLoadoutsSearchResultsViewController"))
+		
+		if let searchBar = searchController?.searchBar {
+			DispatchQueue.main.async {
+				searchBar.sizeToFit()
+				self.tableView.contentOffset.y = searchBar.bounds.height
+			}
+		}
 	}
 	
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
+	}
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		searchController?.isActive = false
 	}
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
@@ -335,5 +370,24 @@ class NCFittingLoadoutsViewController: NCTreeViewController {
 		let isEnabled = treeController?.selectedNodes().isEmpty == false
 		toolbarItems?.last?.isEnabled = isEnabled
 		toolbarItems?.first?.isEnabled = isEnabled
+	}
+	
+	//MARK: NCSearchableViewController
+	
+	var searchController: UISearchController?
+	
+	func updateSearchResults(for searchController: UISearchController) {
+		guard let controller = searchController.searchResultsController as? NCFittingLoadoutsSearchResultsViewController else {return}
+		if let text = searchController.searchBar.text, !text.isEmpty {
+			guard let root = treeController?.content?.children.first(where: {$0 is NCLoadoutsSection}) as? NCLoadoutsSection else {return}
+			let loadouts = (root.children as? [DefaultTreeSection])?.map { ($0, ($0.children as? [NCLoadoutRow])?.filter { $0.typeName.localizedCaseInsensitiveContains(text) || $0.loadoutName.localizedCaseInsensitiveContains(text) } ?? []) }
+				.filter {!$1.isEmpty}
+			let sections = loadouts?.map { DefaultTreeSection(nodeIdentifier: $0.nodeIdentifier, title: $0.title, children: $1.map {NCLoadoutProxyRow(loadoutRow: $0)}) }
+
+			controller.treeController?.content = RootNode(sections ?? [])
+		}
+		else {
+			controller.treeController?.content?.children = []
+		}
 	}
 }

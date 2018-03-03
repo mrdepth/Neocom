@@ -18,25 +18,26 @@ extension UIControlEvents: Hashable {
 	}
 }
 
-class NCActionHandler {
+class NCActionHandler<Control: UIControl> {
 	private let handler: NCOpaqueHandler
-	private let control: UIControl
+	private let control: Control
 	private let controlEvents: UIControlEvents
 	
 	class NCOpaqueHandler: NSObject {
-		let handler: (UIControl) -> Void
+		let handler: (Control) -> Void
 		
-		init(_ handler: @escaping(UIControl) -> Void) {
+		init(_ handler: @escaping(Control) -> Void) {
 			self.handler = handler
 		}
 		
 		@objc func handle(_ sender: UIControl) {
-			handler(sender)
+			guard let control = sender as? Control else {return}
+			handler(control)
 		}
 		
 	}
 	
-	init(_ control: UIControl, for controlEvents: UIControlEvents, handler: @escaping(UIControl) -> Void) {
+	init(_ control: Control, for controlEvents: UIControlEvents, handler: @escaping(Control) -> Void) {
 		self.handler = NCOpaqueHandler(handler)
 		self.control = control
 		self.controlEvents = controlEvents

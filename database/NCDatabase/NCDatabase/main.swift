@@ -17,6 +17,8 @@ class NCDBImageValueTransformer: ValueTransformer {
 	}
 }
 
+ValueTransformer.setValueTransformer(NCDBImageValueTransformer(), forName: NSValueTransformerName("NCDBImageValueTransformer"))
+
 enum NCDBDgmppItemCategoryID: Int32 {
 	case none = 0
 	case hi
@@ -27,20 +29,19 @@ enum NCDBDgmppItemCategoryID: Int32 {
 	case mode
 	case charge
 	case drone
+	case fighter
 	case implant
 	case booster
 	case ship
 	case structure
 	case service
-	case structureDrone
+	case structureFighter
 	case structureRig
 }
 
 enum NCDBRegionID: Int {
 	case whSpace = 11000000
 }
-
-ValueTransformer.setValueTransformer(NCDBImageValueTransformer(), forName: NSValueTransformerName("NCDBImageValueTransformer"))
 
 extension NSColor {
 	
@@ -495,7 +496,7 @@ try! database.exec("SELECT * FROM invTypes") { row in
 	type.basePrice = Float(row["basePrice"] as! NSNumber)
 	type.capacity = Float(row["capacity"] as! NSNumber)
 	type.mass = Float(row["mass"] as! NSNumber)
-	type.portionSize = Float(row["portionSize"] as! NSNumber)
+	type.portionSize = Int32(row["portionSize"] as! NSNumber)
 	type.group = invGroups[row["groupID"] as! NSNumber]
 	type.published = (row["published"] as! Int64) == 1 && type.group!.published
 	type.radius = row["radius"] != nil ? Float(row["radius"] as! NSNumber) : 0
@@ -1127,9 +1128,10 @@ func tablesFrom(conditions: [String]) -> Set<String> {
 }
 
 importItems(category: NCDBDgmppItemCategory(categoryID: .ship), categoryName: "Ships", predicate: NSPredicate(format: "group.category.categoryID == 6"))
-importItems(category: NCDBDgmppItemCategory(categoryID: .drone, subcategory: 18), categoryName: "Drones", predicate: NSPredicate(format: "group.category.categoryID == 18"))
-importItems(category: NCDBDgmppItemCategory(categoryID: .drone, subcategory: 87), categoryName: "Fighters", predicate: NSPredicate(format: "group.category.categoryID == 87"))
-importItems(category: NCDBDgmppItemCategory(categoryID: .structure), categoryName: "Structures", predicate: NSPredicate(format: "marketGroup.parentGroup.marketGroupID == 2199 OR marketGroup.marketGroupID == 2324"))
+importItems(category: NCDBDgmppItemCategory(categoryID: .drone), categoryName: "Drones", predicate: NSPredicate(format: "group.category.categoryID == 18"))
+importItems(category: NCDBDgmppItemCategory(categoryID: .fighter), categoryName: "Fighters", predicate: NSPredicate(format: "group.category.categoryID == 87 AND ANY attributes.attributeType.attributeID IN (%@)", [2212, 2213, 2214]))
+importItems(category: NCDBDgmppItemCategory(categoryID: .structureFighter), categoryName: "Fighters", predicate: NSPredicate(format: "group.category.categoryID == 87 AND ANY attributes.attributeType.attributeID IN (%@)", [2740, 2741, 2742]))
+importItems(category: NCDBDgmppItemCategory(categoryID: .structure), categoryName: "Structures", predicate: NSPredicate(format: "marketGroup.parentGroup.marketGroupID == 2199 OR marketGroup.marketGroupID == 2324 OR marketGroup.marketGroupID == 2327"))
 
 for subcategory in [7, 66] as [Int32] {
 	importItems(category: NCDBDgmppItemCategory(categoryID: .hi, subcategory: subcategory), categoryName: "Hi Slot", predicate: NSPredicate(format: "group.category.categoryID == %d AND ANY effects.effectID == 12", subcategory))
@@ -1239,7 +1241,7 @@ for type in try! context.fetch(request) {
 		type.dgmppItem?.requirements?.powerGrid = type.getAttribute(30)?.value ?? 0
 		type.dgmppItem?.requirements?.cpu = type.getAttribute(50)?.value ?? 0
 		type.dgmppItem?.requirements?.calibration = type.getAttribute(1153)?.value ?? 0
-	case .charge, .drone, .structureDrone:
+	case .charge, .drone, .fighter, .structureFighter:
 		var multiplier = max(type.getAttribute(64)?.value ?? 0, type.getAttribute(212)?.value ?? 0)
 		if multiplier == 0 {
 			multiplier = 1

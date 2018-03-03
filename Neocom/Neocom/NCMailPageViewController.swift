@@ -29,8 +29,8 @@ class NCMailPageViewController: NCPageViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-//		navigationController?.isToolbarHidden = false
-//		navigationItem.rightBarButtonItem = editButtonItem
+		navigationController?.isToolbarHidden = false
+		navigationItem.rightBarButtonItem = editButtonItem
 		reload()
 		
 		accountChangeObserver = NotificationCenter.default.addNotificationObserver(forName: .NCCurrentAccountChanged, object: nil, queue: nil) { [weak self] _ in
@@ -49,6 +49,10 @@ class NCMailPageViewController: NCPageViewController {
 		}
 	}
 	
+	@IBAction func onCompose(_ sender: Any) {
+		Router.Mail.NewMessage().perform(source: self, sender: sender)
+	}
+
 	private var mailLabels: NCCachedResult<ESI.Mail.MailLabelsAndUnreadCounts>?
 	
 	func reload(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: (() -> Void)? = nil ) {

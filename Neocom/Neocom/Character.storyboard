@@ -261,13 +261,21 @@
             <objects>
                 <viewController storyboardIdentifier="NCMailPageViewController" automaticallyAdjustsScrollViewInsets="NO" id="cRP-gC-plC" customClass="NCMailPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="UJp-GE-qMw" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="579"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="6aG-Lh-9mP"/>
                     </view>
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="LGZ-H3-IWf"/>
+                        <barButtonItem systemItem="compose" id="JEA-zc-LB9">
+                            <connections>
+                                <action selector="onCompose:" destination="cRP-gC-plC" id="wff-fd-gqV"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Mail" id="fiF-6f-evF"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="black" translucent="NO"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2fD-AQ-ewe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1048,6 +1056,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AzG-Wv-Oyr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1401" y="6733"/>
+        </scene>
+        <!--Blueprints-->
+        <scene sceneID="PEO-YD-Fp2">
+            <objects>
+                <tableViewController storyboardIdentifier="NCWealthBlueprintsViewController" modalPresentationStyle="overCurrentContext" id="Tpu-hU-awv" customClass="NCWealthBlueprintsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="4Tv-8w-fjg" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Blueprints" id="jKv-M8-8vd"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qd8-dL-q4j" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2127" y="6051"/>
+        </scene>
+        <!--Assets-->
+        <scene sceneID="2Gj-R9-oeb">
+            <objects>
+                <tableViewController storyboardIdentifier="NCWealthAssetsDetailsViewController" modalPresentationStyle="overCurrentContext" id="IwB-2s-PKy" customClass="NCWealthAssetsDetailsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="e2L-vq-mim" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Assets" id="EbI-EW-TyF"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mLB-65-OSA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2847" y="6051"/>
         </scene>
     </scenes>
     <resources>

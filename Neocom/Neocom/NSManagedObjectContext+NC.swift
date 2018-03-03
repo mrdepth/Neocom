@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 extension NSManagedObjectContext {
-	func fetch<Type:NSFetchRequestResult>(_ entityName:String, limit: Int = 0, sortedBy:[NSSortDescriptor] = [], `where`: String? = nil, _ args: CVarArg...) -> Type? {
+	public func fetch<Type:NSFetchRequestResult>(_ entityName:String, limit: Int = 0, sortedBy:[NSSortDescriptor] = [], `where`: String? = nil, _ args: CVarArg...) -> Type? {
 		let request = NSFetchRequest<Type>(entityName: entityName)
 		request.sortDescriptors = sortedBy
 		request.fetchLimit = limit
@@ -23,7 +23,7 @@ extension NSManagedObjectContext {
 		return (try? self.fetch(request))?.first
 	}
 	
-	func fetch<Type:NSFetchRequestResult>(_ entityName:String, limit: Int = 0, sortedBy:[NSSortDescriptor] = [], `where`: String? = nil, _ args: CVarArg...) -> [Type]? {
+	public func fetch<Type:NSFetchRequestResult>(_ entityName:String, limit: Int = 0, sortedBy:[NSSortDescriptor] = [], `where`: String? = nil, _ args: CVarArg...) -> [Type]? {
 		let request = NSFetchRequest<Type>(entityName: entityName)
 		request.sortDescriptors = sortedBy
 		request.fetchLimit = limit

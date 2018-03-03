@@ -29,6 +29,26 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "12CA8F7E2047DED1000360DE"
+               BuildableName = "Neocom II Tests.xctest"
+               BlueprintName = "Neocom II Tests"
+               ReferencedContainer = "container:Neocom.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1293D7D1204A89AE00A1F453"
+               BuildableName = "Neocom II UITests.xctest"
+               BlueprintName = "Neocom II UITests"
+               ReferencedContainer = "container:Neocom.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

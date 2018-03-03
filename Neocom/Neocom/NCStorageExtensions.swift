@@ -119,6 +119,7 @@ extension NCSetting {
 		}
 		
 		static let skillQueueNotifications = Key("NCNotificationManager.skillQueue")
+		static let skillQueueNotificationsAccounts = Key("NCNotificationManager.skillQueueAccounts")
 //
 	}
 	

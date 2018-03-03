@@ -20,8 +20,8 @@ class NCColonySection: TreeSection {
 	var isHalted: Bool = false
 	let planet = DGMPlanet()
 	
-	lazy var planetInfo: NCDBMapDenormalize? = {
-		return NCDatabase.sharedDatabase?.mapDenormalize[self.colony.planetID]
+	lazy var planetInfo: NCDBMapPlanet? = {
+		return NCDatabase.sharedDatabase?.mapPlanets[self.colony.planetID]
 	}()
 	
 	init(colony: ESI.PlanetaryInteraction.Colony, layout: NCResult<ESI.PlanetaryInteraction.ColonyLayout>) {
@@ -61,15 +61,20 @@ class NCColonySection: TreeSection {
 						break
 					}
 					pin.contents?.filter {$0.amount > 0}.forEach {
-						facility.add(DGMCommodity(typeID: $0.typeID, quantity: Int($0.amount)))
+						try? facility.add(DGMCommodity(typeID: $0.typeID, quantity: Int($0.amount)))
 					}
 				}
 				
 				for route in layout.routes {
-					guard let source = planet[route.sourcePinID],
-						let destination = planet[route.destinationPinID] else {throw NCColonyError.invalidLayout}
-					let route = DGMRoute(from: source, to: destination, commodity: DGMCommodity(typeID: route.contentTypeID, quantity: Int(route.quantity)))
-					planet.add(route: route)
+					do {
+						guard let source = planet[route.sourcePinID],
+							let destination = planet[route.destinationPinID] else {throw NCColonyError.invalidLayout}
+						let route = try DGMRoute(from: source, to: destination, commodity: DGMCommodity(typeID: route.contentTypeID, quantity: Int(route.quantity)))
+						planet.add(route: route)
+					}
+					catch {
+						
+					}
 				}
 				
 				let lastUpdate = colony.lastUpdate
@@ -117,7 +122,7 @@ class NCColonySection: TreeSection {
 	
 	lazy var title: NSAttributedString? = {
 		let solarSystem = NCDatabase.sharedDatabase?.mapSolarSystems[self.colony.solarSystemID]
-		let location = NCDatabase.sharedDatabase?.mapDenormalize[self.colony.planetID]?.itemName ?? solarSystem?.solarSystemName ?? NSLocalizedString("Unknown", comment: "")
+		let location = planetInfo?.planetName ?? solarSystem?.solarSystemName ?? NSLocalizedString("Unknown", comment: "")
 		let title: NSAttributedString
 		
 		if let solarSystem = solarSystem {

@@ -12,9 +12,9 @@ import EVEAPI
 
 class NCDatabaseTypeInfoRow: DefaultTreeRow {
 	
-	convenience init?(attribute: NCDBDgmTypeAttribute, value: Float?) {
-		func toString(_ value: Float, _ unit: String?) -> String {
-			var s = NCUnitFormatter.localizedString(from: Double(value), unit: .none, style: .full)
+	convenience init?(attribute: NCDBDgmTypeAttribute, value: Double?) {
+		func toString(_ value: Double, _ unit: String?) -> String {
+			var s = NCUnitFormatter.localizedString(from: value, unit: .none, style: .full)
 			if let unit = unit {
 				s += " " + unit
 			}
@@ -333,10 +333,10 @@ class NCDatabaseTypeMarketRow: TreeRow {
 }
 
 class NCDatabaseTypeResistanceRow: TreeRow {
-	var em: Float = 0
-	var thermal: Float = 0
-	var kinetic: Float = 0
-	var explosive: Float = 0
+	var em: Double = 0
+	var thermal: Double = 0
+	var kinetic: Double = 0
+	var explosive: Double = 0
 	
 	init() {
 		super.init(prototype: Prototype.NCDamageTypeTableViewCell.compact)
@@ -344,22 +344,22 @@ class NCDatabaseTypeResistanceRow: TreeRow {
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCDamageTypeTableViewCell else {return}
-		cell.emLabel.progress = em
+		cell.emLabel.progress = Float(em)
 		cell.emLabel.text = "\(Int(em * 100))%"
-		cell.thermalLabel.progress = thermal
+		cell.thermalLabel.progress = Float(thermal)
 		cell.thermalLabel.text = "\(Int(thermal * 100))%"
-		cell.kineticLabel.progress = kinetic
+		cell.kineticLabel.progress = Float(kinetic)
 		cell.kineticLabel.text = "\(Int(kinetic * 100))%"
-		cell.explosiveLabel.progress = explosive
+		cell.explosiveLabel.progress = Float(explosive)
 		cell.explosiveLabel.text = "\(Int(explosive * 100))%"
 	}
 }
 
 class NCDatabaseTypeDamageRow: TreeRow {
-	var em: Float = 0
-	var thermal: Float = 0
-	var kinetic: Float = 0
-	var explosive: Float = 0
+	var em: Double = 0
+	var thermal: Double = 0
+	var kinetic: Double = 0
+	var explosive: Double = 0
 	
 	init() {
 		super.init(prototype: Prototype.NCDamageTypeTableViewCell.compact)
@@ -372,13 +372,13 @@ class NCDatabaseTypeDamageRow: TreeRow {
 			total = 1
 		}
 		
-		cell.emLabel.progress = em / total
+		cell.emLabel.progress = Float(em / total)
 		cell.emLabel.text = NCUnitFormatter.localizedString(from: em, unit: .none, style: .short)
-		cell.thermalLabel.progress = thermal / total
+		cell.thermalLabel.progress = Float(thermal / total)
 		cell.thermalLabel.text = NCUnitFormatter.localizedString(from: thermal, unit: .none, style: .short)
-		cell.kineticLabel.progress = kinetic / total
+		cell.kineticLabel.progress = Float(kinetic / total)
 		cell.kineticLabel.text = NCUnitFormatter.localizedString(from: kinetic, unit: .none, style: .short)
-		cell.explosiveLabel.progress = explosive / total
+		cell.explosiveLabel.progress = Float(explosive / total)
 		cell.explosiveLabel.text = NCUnitFormatter.localizedString(from: explosive, unit: .none, style: .short)
 	}
 }
@@ -411,7 +411,7 @@ class NCDatabaseSkillsSection: NCActionTreeSection {
 
 struct NCDatabaseTypeInfo {
 	
-	static func typeInfo(type: NCDBInvType, attributeValues: [Int: Float]?, completionHandler: @escaping ([TreeNode]) -> Void) {
+	static func typeInfo(type: NCDBInvType, attributeValues: [Int: Double]?, completionHandler: @escaping ([TreeNode]) -> Void) {
 
 		var marketSection: DefaultTreeSection?
 		if type.marketGroup != nil {
@@ -472,7 +472,7 @@ struct NCDatabaseTypeInfo {
 
 	}
 	
-	static func itemInfo(type: NCDBInvType, attributeValues: [Int: Float]?, completionHandler: @escaping ([TreeSection]) -> Void) {
+	static func itemInfo(type: NCDBInvType, attributeValues: [Int: Double]?, completionHandler: @escaping ([TreeSection]) -> Void) {
 		
 		NCCharacter.load(account: NCAccount.current) { result in
 			let character: NCCharacter
@@ -994,7 +994,7 @@ struct NCDatabaseTypeInfo {
 			if wh.maxStableTime > 0 {
 				rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
 				                                  nodeIdentifier: "MaximumStableTime",
-				                                  image: eveIcons["22_16"]?.image?.image,
+				                                  image: eveIcons["22_32_16"]?.image?.image,
 				                                  title: NSLocalizedString("Maximum Stable Time", comment: "").uppercased(),
 				                                  subtitle: NCTimeIntervalFormatter.localizedString(from: TimeInterval(wh.maxStableTime) * 60, precision: .hours)))
 				
@@ -1002,7 +1002,7 @@ struct NCDatabaseTypeInfo {
 			if wh.maxStableMass > 0 {
 				rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
 				                                  nodeIdentifier: "MaximumStableMass",
-				                                  image: eveIcons["02_10"]?.image?.image,
+				                                  image: eveIcons["2_64_10"]?.image?.image,
 				                                  title: NSLocalizedString("Maximum Stable Mass", comment: "").uppercased(),
 				                                  subtitle: NCUnitFormatter.localizedString(from: wh.maxStableMass, unit: .kilogram, style: .full)))
 				
@@ -1010,7 +1010,7 @@ struct NCDatabaseTypeInfo {
 			if wh.maxJumpMass > 0 {
 				let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
 				                                nodeIdentifier: "MaximumJumpMass",
-				                                image: eveIcons["36_13"]?.image?.image,
+				                                image: eveIcons["36_64_13"]?.image?.image,
 				                                title: NSLocalizedString("Maximum Jump Mass", comment: "").uppercased(),
 				                                subtitle: NCUnitFormatter.localizedString(from: wh.maxJumpMass, unit: .kilogram, style: .full))
 				let request = NSFetchRequest<NSDictionary>(entityName: "InvType")
@@ -1046,7 +1046,7 @@ struct NCDatabaseTypeInfo {
 			if wh.maxRegeneration > 0 {
 				rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
 				                                  nodeIdentifier: "MaximumMassRegeneration",
-				                                  image: eveIcons["23_03"]?.image?.image,
+				                                  image: eveIcons["23_64_3"]?.image?.image,
 				                                  title: NSLocalizedString("Maximum Mass Regeneration", comment: "").uppercased(),
 				                                  subtitle: NCUnitFormatter.localizedString(from: wh.maxRegeneration, unit: .kilogram, style: .full)))
 				

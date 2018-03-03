@@ -44,8 +44,11 @@ class NCBannerNavigationViewController: NCNavigationController {
 				return
 			}
 			else {
-				strongSelf.bannerView?.loadAd()
-				SKPaymentQueue.default().add(strongSelf)
+				let firstLaunchDate = UserDefaults.standard.object(forKey: UserDefaults.Key.NCFirstLaunchDate) as? Date ?? Date()
+				if firstLaunchDate.timeIntervalSinceNow < -TimeInterval.NCBannerStartTime {
+					strongSelf.bannerView?.loadAd()
+					SKPaymentQueue.default().add(strongSelf)
+				}
 			}
 		}
 		#endif
@@ -54,11 +57,13 @@ class NCBannerNavigationViewController: NCNavigationController {
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		if let bannerContainerView = self.bannerContainerView, bannerContainerView.superview != nil {
-			if #available(iOS 11.0, *) {
-			}
-			else {
-				view.subviews.first?.frame = view.bounds.insetBy(UIEdgeInsets(top: 0, left: 0, bottom: bannerContainerView.bounds.height, right: 0))
-			}
+//			if #available(iOS 11.0, *) {
+//			}
+//			else {
+//				view.subviews.first?.frame = view.bounds.insetBy(UIEdgeInsets(top: 0, left: 0, bottom: bannerContainerView.bounds.height, right: 0))
+//			}
+			view.subviews.first?.frame = view.bounds.insetBy(UIEdgeInsets(top: 0, left: 0, bottom: bannerContainerView.bounds.height, right: 0))
+
 		}
 		else {
 			view.subviews.first?.frame = view.bounds
@@ -71,24 +76,22 @@ class NCBannerNavigationViewController: NCNavigationController {
 		guard let bannerContainerView = bannerContainerView,
 			let bannerView = bannerView,
 			bannerContainerView.superview == nil else {return}
-		if #available(iOS 11.0, *) {
-//			view.insetsLayoutMarginsFromSafeArea = false
-		}
 		
 		view.addSubview(bannerContainerView)
 		
 		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: [], metrics: nil, views: ["view": bannerContainerView]))
 		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[view]-0-|", options: [], metrics: nil, views: ["view": bannerContainerView]))
 		
-		if #available(iOS 11.0, *) {
-			bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: kAppodealUnitSize_320x50.height).isActive = true
-			
-			additionalSafeAreaInsets.bottom = kAppodealUnitSize_320x50.height
+//		if #available(iOS 11.0, *) {
+////			bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: kAppodealUnitSize_320x50.height).isActive = true
+//
+////			additionalSafeAreaInsets.bottom = kAppodealUnitSize_320x50.height
+//
+//		} else {
+//			bannerView.bottomAnchor.constraint(equalTo: self.bottomLayoutGuide.topAnchor).isActive = true
+//		}
+		bannerView.bottomAnchor.constraint(equalTo: self.bottomLayoutGuide.topAnchor).isActive = true
 
-		} else {
-			bannerView.bottomAnchor.constraint(equalTo: self.bottomLayoutGuide.topAnchor).isActive = true
-		}
-		
 	}
 	
 	private func hideBanner() {
@@ -97,7 +100,6 @@ class NCBannerNavigationViewController: NCNavigationController {
 
 		if #available(iOS 11.0, *) {
 			additionalSafeAreaInsets.bottom = 0
-//			view.insetsLayoutMarginsFromSafeArea = true
 		}
 		bannerContainerView.removeFromSuperview()
 	}

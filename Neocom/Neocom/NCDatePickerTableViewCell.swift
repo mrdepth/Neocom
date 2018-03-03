@@ -11,7 +11,7 @@ import UIKit
 class NCDatePickerTableViewCell: NCTableViewCell {
 	@IBOutlet weak var datePicker: UIDatePicker!
 	
-	var actionHandler: NCActionHandler?
+	var actionHandler: NCActionHandler<UIDatePicker>?
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
@@ -50,9 +50,8 @@ class NCDatePickerRow: TreeRow {
 		cell.datePicker.date = value
 		cell.actionHandler = NCActionHandler(cell.datePicker, for: .valueChanged) { [weak self] control in
 			guard let strongSelf = self else {return}
-			let picker = control as! UIDatePicker
-			strongSelf.value = picker.date
-			strongSelf.handler?(picker.date)
+			strongSelf.value = control.date
+			strongSelf.handler?(control.date)
 		}
 	}
 	

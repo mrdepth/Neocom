@@ -34,28 +34,34 @@ class NCWealthAssetsViewController: NCTreeViewController {
 		
 		NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
-			var ships = 0.0
-			var modules = 0.0
-			var charges = 0.0
-			var drones = 0.0
-			var materials = 0.0
-			var other = 0.0
+			var ships: (Double, [ESI.Assets.Asset]) = (0.0, [])
+			var modules: (Double, [ESI.Assets.Asset]) = (0.0, [])
+			var charges: (Double, [ESI.Assets.Asset]) = (0.0, [])
+			var drones: (Double, [ESI.Assets.Asset]) = (0.0, [])
+			var materials: (Double, [ESI.Assets.Asset]) = (0.0, [])
+			var other: (Double, [ESI.Assets.Asset]) = (0.0, [])
 			
 			for asset in self.assets ?? [] {
 				guard let category = invTypes[asset.typeID]?.group?.category, let price = self.prices?[asset.typeID] else {continue}
 				switch NCDBCategoryID(rawValue: Int(category.categoryID)) {
 				case .ship?:
-					ships += Double(asset.quantity) * price
+					ships.0 += Double(asset.quantity) * price
+					ships.1.append(asset)
 				case .module?, .subsystem?:
-					modules += Double(asset.quantity) * price
+					modules.0 += Double(asset.quantity) * price
+					modules.1.append(asset)
 				case .charge?:
-					charges += Double(asset.quantity) * price
+					charges.0 += Double(asset.quantity) * price
+					charges.1.append(asset)
 				case .drone?:
-					drones += Double(asset.quantity) * price
+					drones.0 += Double(asset.quantity) * price
+					drones.1.append(asset)
 				case .asteroid?, .ancientRelic?, .material?, .planetaryResource?, .reaction?:
-					materials += Double(asset.quantity) * price
+					materials.0 += Double(asset.quantity) * price
+					materials.1.append(asset)
 				default:
-					other += Double(asset.quantity) * price
+					other.0 += Double(asset.quantity) * price
+					other.1.append(asset)
 				}
 			}
 			DispatchQueue.main.async {
@@ -69,10 +75,11 @@ class NCWealthAssetsViewController: NCTreeViewController {
 					(other, NSLocalizedString("Other", comment: ""), UIColor(white: 0.9, alpha: 1.0))
 				]
 				for (value, title, color) in list {
-					if value > 0 {
-						let segment = PieSegment(value: value, color: color, title: title)
+					if value.0 > 0 {
+						let segment = PieSegment(value: value.0, color: color, title: title)
 						self.pieChartRow?.add(segment: segment)
-						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: title, title: title.uppercased(), subtitle: NCUnitFormatter.localizedString(from: value, unit: .isk, style: .full)))
+						let route = Router.Wealth.AssetsDetails(assets: value.1, prices: self.prices ?? [:], title: title)
+						rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: title, title: title.uppercased(), subtitle: NCUnitFormatter.localizedString(from: value.0, unit: .isk, style: .full), accessoryType: .disclosureIndicator, route: route))
 					}
 				}
 				

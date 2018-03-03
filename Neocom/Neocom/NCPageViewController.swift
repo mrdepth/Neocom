@@ -28,23 +28,24 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 					? viewControllers![Int((scrollView.contentOffset.x / scrollView.bounds.size.width).rounded()).clamped(to: 0...(viewControllers!.count - 1))]
 					: viewControllers?.first
 				
-//				let isVisible = isViewLoaded && view.window != nil
-				
 				let noParent = currentPage?.parent == nil
 				if noParent {
 					addChild(viewController: currentPage!)
 				}
 
 				
-				let appearance: Appearance? = isViewLoaded ? Appearance(true, controller: currentPage!) : nil
+				let appearance: Appearance? = isViewLoaded && transitionCoordinator == nil ? Appearance(true, controller: currentPage!) : nil
 				
 				if currentPage?.view.superview == nil {
-					scrollView.addSubview(currentPage!.view)
+					let view = UIView(frame: currentPage!.view.bounds)
+					view.backgroundColor = .clear
+					view.addSubview(currentPage!.view)
+					scrollView.addSubview(view)
 				}
 				
 				appearance?.finish()
 				if noParent {
-					didMove(toParentViewController: self)
+					currentPage?.didMove(toParentViewController: self)
 				}
 			}
 			
@@ -119,7 +120,10 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 		if scrollView.contentSize != contentSize {
 			scrollView.contentSize = CGSize(width: scrollView.bounds.size.width * CGFloat(viewControllers?.count ?? 0), height: scrollView.bounds.size.height)
 			for (i, controller) in (viewControllers ?? []).enumerated() {
-				controller.view.frame = frameForPage(at: i)
+				if let view = controller.view.superview {
+					view.frame = frameForPage(at: i)
+					controller.view.frame = view.bounds
+				}
 			}
 			if let currentPage = currentPage, let i = viewControllers?.index(of: currentPage) {
 				self.scrollView.contentOffset.x = CGFloat(i) * scrollView.bounds.size.width
@@ -201,7 +205,12 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 
 						if controller.view.superview == nil {
 							controller.view.translatesAutoresizingMaskIntoConstraints = true
-							scrollView.addSubview(controller.view)
+							
+							let view = UIView(frame: frame)
+							controller.view.frame = view.bounds
+							view.backgroundColor = .clear
+							view.addSubview(controller.view)
+							scrollView.addSubview(view)
 						}
 					}
 				}
@@ -238,15 +247,14 @@ class NCPageViewController: UIViewController, UIScrollViewDelegate {
 			if frameForPage(at: i).intersects(scrollView.bounds) {
 				if !appearance.isAppearing {
 					controller.beginAppearanceTransition(true, animated: false)
-					//					appearances.append(Appearance(true, controller: controller))
 				}
 				currentPage = controller
 			}
 			else {
 				if appearance.isAppearing {
 					controller.beginAppearanceTransition(false, animated: false)
-					//					appearances.append(Appearance(false, controller: controller))
 				}
+				controller.view.superview?.removeFromSuperview()
 				controller.view.removeFromSuperview()
 			}
 		}

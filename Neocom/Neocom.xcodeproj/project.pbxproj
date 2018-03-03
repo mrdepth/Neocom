@@ -33,6 +33,7 @@
 		1220710C1EF2C6B8007D86CE /* NCDatabaseCertificateMasteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1220710B1EF2C6B8007D86CE /* NCDatabaseCertificateMasteryViewController.swift */; };
 		1220710E1EF2C6E1007D86CE /* NCDatabaseCertificateRequirementsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1220710D1EF2C6E1007D86CE /* NCDatabaseCertificateRequirementsViewController.swift */; };
 		122242461E5C3A0000269A01 /* NCPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122242451E5C3A0000269A01 /* NCPageViewController.swift */; };
+		122332722032CCCD007DEA33 /* NCFittingLoadoutsSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122332712032CCCD007DEA33 /* NCFittingLoadoutsSearchResultsViewController.swift */; };
 		1224AF641E6D92240043F96C /* NCSkillEditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1224AF631E6D92240043F96C /* NCSkillEditTableViewCell.swift */; };
 		1226D9611F223A4C0049FA0C /* NCNPCPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226D9601F223A4C0049FA0C /* NCNPCPickerViewController.swift */; };
 		1226D9631F223A690049FA0C /* NCNPCPickerGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1226D9621F223A690049FA0C /* NCNPCPickerGroupsViewController.swift */; };
@@ -120,7 +121,6 @@
 		125CE1381E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */; };
 		125CE13C1EA1275C007B8B6B /* NCMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */; };
 		125CE13E1EA12DCB007B8B6B /* NCMailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125CE13D1EA12DCB007B8B6B /* NCMailTableViewCell.swift */; };
-		126157011E008AF60041B817 /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 126156FF1E008AE00041B817 /* NCDatabase.sqlite */; };
 		126157041E008E770041B817 /* NCRoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157031E008E770041B817 /* NCRoundedImageView.swift */; };
 		126157061E0095380041B817 /* NCProgressHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157051E0095380041B817 /* NCProgressHandler.swift */; };
 		1261570A1E01D2250041B817 /* NCCharacterSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157091E01D2250041B817 /* NCCharacterSheetViewController.swift */; };
@@ -207,6 +207,10 @@
 		1293BC1C1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293BC1B1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift */; };
 		1293BC1E1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293BC1D1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift */; };
 		1293BC221E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293BC211E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift */; };
+		1293D7C62049807E00A1F453 /* openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1293D7C72049807E00A1F453 /* openssl.framework */; };
+		1293D7C92049813200A1F453 /* NCWealthBlueprintsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293D7C82049813200A1F453 /* NCWealthBlueprintsViewController.swift */; };
+		1293D7CD20499B2900A1F453 /* NCWealthAssetsDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293D7CC20499B2900A1F453 /* NCWealthAssetsDetailsViewController.swift */; };
+		1293D7D5204A89AE00A1F453 /* Neocom_II_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293D7D4204A89AE00A1F453 /* Neocom_II_UITests.swift */; };
 		12961DB81E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DB71E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift */; };
 		12961DBA1E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */; };
 		12961DBD1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DBC1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift */; };
@@ -224,6 +228,7 @@
 		129E61061E0291FD00B56EB8 /* NCSkillsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61051E0291FD00B56EB8 /* NCSkillsPageViewController.swift */; };
 		129E61081E029BCB00B56EB8 /* Array+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61071E029BCB00B56EB8 /* Array+NC.swift */; };
 		12A2374B1EFFB39900BE7404 /* NCKillmailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A2374A1EFFB39800BE7404 /* NCKillmailInfoViewController.swift */; };
+		12A2DE50202C312A00ADF0D6 /* NCSkillQueueNotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A2DE4F202C312A00ADF0D6 /* NCSkillQueueNotificationSettingsViewController.swift */; };
 		12A3C4CE1F6BC115007FD291 /* NCMainMenuContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A3C4CD1F6BC115007FD291 /* NCMainMenuContainerViewController.swift */; };
 		12AC8D941DEF58A100561A7A /* NCAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */; };
 		12AC8D961DEF58A100561A7A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D951DEF58A100561A7A /* ViewController.swift */; };
@@ -297,6 +302,9 @@
 		12C967051F96111900B141CC /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FC1F9610DE00B141CC /* nanopb.framework */; };
 		12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F61F9610DE00B141CC /* FirebaseAnalytics.framework */; };
 		12C967101F9614B200B141CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12C9670F1F96149F00B141CC /* GoogleService-Info.plist */; };
+		12CA8F752046ED32000360DE /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 12CA8F732046ED32000360DE /* NCDatabase.sqlite */; };
+		12CA8F762046ED32000360DE /* NCDatabaseVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CA8F742046ED32000360DE /* NCDatabaseVersion.swift */; };
+		12CA8F822047DED1000360DE /* Neocom_II_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CA8F812047DED1000360DE /* Neocom_II_Tests.swift */; };
 		12CACFE52008C36B000B76C3 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12CACFE42008C36B000B76C3 /* NotificationCenter.framework */; };
 		12CACFE82008C36B000B76C3 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CACFE72008C36B000B76C3 /* TodayViewController.swift */; };
 		12CACFEB2008C36B000B76C3 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12CACFE92008C36B000B76C3 /* MainInterface.storyboard */; };
@@ -403,12 +411,26 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		1293D7D7204A89AE00A1F453 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 12AC8D881DEF58A100561A7A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 12AC8D8F1DEF58A100561A7A;
+			remoteInfo = Neocom;
+		};
 		12C9670D1F96132200B141CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 12C966EE1F9610D800B141CC /* clrconvert.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 127BB8D91DDC3EC500F07E6C;
 			remoteInfo = clrconvert;
+		};
+		12CA8F842047DED1000360DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 12AC8D881DEF58A100561A7A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 12AC8D8F1DEF58A100561A7A;
+			remoteInfo = Neocom;
 		};
 		12CACFED2008C36B000B76C3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -484,8 +506,6 @@
 		121314BE1F13881700DAFD12 /* NCMailAttachmentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailAttachmentsViewController.swift; sourceTree = "<group>"; };
 		121314C01F13A68B00DAFD12 /* NCMailAttachmentsShipsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailAttachmentsShipsViewController.swift; sourceTree = "<group>"; };
 		121314C31F14B79700DAFD12 /* NCFittingStructuresViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingStructuresViewController.swift; sourceTree = "<group>"; };
-		121314C51F14BAB600DAFD12 /* NCFittingStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingStructure.h; sourceTree = "<group>"; };
-		121314C61F14BAB600DAFD12 /* NCFittingStructure.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingStructure.mm; sourceTree = "<group>"; };
 		1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCMailBodyViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+NC.swift"; sourceTree = "<group>"; };
 		121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerViewController.swift; sourceTree = "<group>"; };
@@ -496,6 +516,7 @@
 		1220710B1EF2C6B8007D86CE /* NCDatabaseCertificateMasteryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateMasteryViewController.swift; sourceTree = "<group>"; };
 		1220710D1EF2C6E1007D86CE /* NCDatabaseCertificateRequirementsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDatabaseCertificateRequirementsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		122242451E5C3A0000269A01 /* NCPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCPageViewController.swift; sourceTree = "<group>"; };
+		122332712032CCCD007DEA33 /* NCFittingLoadoutsSearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCFittingLoadoutsSearchResultsViewController.swift; sourceTree = "<group>"; };
 		12236C1A1F27974400A1A27D /* NCFittingInGameFittingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingInGameFittingsViewController.swift; sourceTree = "<group>"; };
 		1223E1B71F3C5F0F0044C225 /* NCFittingLoadoutsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingLoadoutsViewController.swift; sourceTree = "<group>"; };
 		1224AF611E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingCharacterEditorViewController.swift; sourceTree = "<group>"; };
@@ -593,7 +614,6 @@
 		125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailViewController.swift; sourceTree = "<group>"; };
 		125CE13D1EA12DCB007B8B6B /* NCMailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailTableViewCell.swift; sourceTree = "<group>"; };
 		126156FE1E008AE00041B817 /* dgm.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = dgm.sqlite; path = ../../dbTools/dbinit/dgm.sqlite; sourceTree = "<group>"; };
-		126156FF1E008AE00041B817 /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = NCDatabase.sqlite; path = ../../dbTools/dbinit/NCDatabase.sqlite; sourceTree = "<group>"; };
 		126157031E008E770041B817 /* NCRoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRoundedImageView.swift; sourceTree = "<group>"; };
 		126157051E0095380041B817 /* NCProgressHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCProgressHandler.swift; sourceTree = "<group>"; };
 		126157091E01D2250041B817 /* NCCharacterSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCCharacterSheetViewController.swift; sourceTree = "<group>"; };
@@ -653,25 +673,17 @@
 		1293BC1B1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingMiscTableViewCell.swift; sourceTree = "<group>"; };
 		1293BC1D1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingResourcesTableViewCell.swift; sourceTree = "<group>"; };
 		1293BC211E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingCapacitorTableViewCell.swift; sourceTree = "<group>"; };
+		1293D7C72049807E00A1F453 /* openssl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = openssl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1293D7C82049813200A1F453 /* NCWealthBlueprintsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCWealthBlueprintsViewController.swift; sourceTree = "<group>"; };
+		1293D7CC20499B2900A1F453 /* NCWealthAssetsDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCWealthAssetsDetailsViewController.swift; sourceTree = "<group>"; };
+		1293D7D2204A89AE00A1F453 /* Neocom II UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Neocom II UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1293D7D4204A89AE00A1F453 /* Neocom_II_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Neocom_II_UITests.swift; sourceTree = "<group>"; };
+		1293D7D6204A89AE00A1F453 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1294AB311F161A15002B9BA8 /* NCMailAttachmentsStructuresViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailAttachmentsStructuresViewController.swift; sourceTree = "<group>"; };
 		12961DB71E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseMarketInfoViewController.swift; sourceTree = "<group>"; };
 		12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketInfoTableViewCell.swift; sourceTree = "<group>"; };
 		12961DBC1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateInfoViewController.swift; sourceTree = "<group>"; };
 		12961DBE1E118EAD008A3F4D /* NCDatabaseCertificateInfoHeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateInfoHeaderViewController.swift; sourceTree = "<group>"; };
-		12961DC81E1D6486008A3F4D /* NCFittingSkill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSkill.h; sourceTree = "<group>"; };
-		12961DC91E1D6486008A3F4D /* NCFittingSkill.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingSkill.mm; sourceTree = "<group>"; };
-		12961DCB1E1D649A008A3F4D /* NCFittingBooster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingBooster.h; sourceTree = "<group>"; };
-		12961DCC1E1D649A008A3F4D /* NCFittingBooster.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingBooster.mm; sourceTree = "<group>"; };
-		12961DCE1E1D64A6008A3F4D /* NCFittingImplant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingImplant.h; sourceTree = "<group>"; };
-		12961DCF1E1D64A6008A3F4D /* NCFittingImplant.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingImplant.mm; sourceTree = "<group>"; };
-		12961DD11E1D64B8008A3F4D /* NCFittingShip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingShip.h; sourceTree = "<group>"; };
-		12961DD21E1D64B8008A3F4D /* NCFittingShip.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingShip.mm; sourceTree = "<group>"; };
-		12961DD41E1D64C9008A3F4D /* NCFittingModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingModule.h; sourceTree = "<group>"; };
-		12961DD51E1D64C9008A3F4D /* NCFittingModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingModule.mm; sourceTree = "<group>"; };
-		12961DD71E1D64D4008A3F4D /* NCFittingCharge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharge.h; sourceTree = "<group>"; };
-		12961DD81E1D64D4008A3F4D /* NCFittingCharge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCharge.mm; sourceTree = "<group>"; };
-		12961DDA1E1D64E4008A3F4D /* NCFittingDrone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingDrone.h; sourceTree = "<group>"; };
-		12961DDB1E1D64E4008A3F4D /* NCFittingDrone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingDrone.mm; sourceTree = "<group>"; };
 		129B31681E53114A00B9A88D /* NCFittingAreaEffectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCFittingAreaEffectsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		129B316B1E534B7300B9A88D /* NCFittingDamagePatternsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingDamagePatternsViewController.swift; sourceTree = "<group>"; };
 		129B316D1E53527C00B9A88D /* damagePatterns.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = damagePatterns.plist; sourceTree = "<group>"; };
@@ -690,6 +702,7 @@
 		129E61051E0291FD00B56EB8 /* NCSkillsPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillsPageViewController.swift; sourceTree = "<group>"; };
 		129E61071E029BCB00B56EB8 /* Array+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+NC.swift"; sourceTree = "<group>"; };
 		12A2374A1EFFB39800BE7404 /* NCKillmailInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCKillmailInfoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		12A2DE4F202C312A00ADF0D6 /* NCSkillQueueNotificationSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSkillQueueNotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		12A3C4CD1F6BC115007FD291 /* NCMainMenuContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMainMenuContainerViewController.swift; sourceTree = "<group>"; };
 		12AC8D901DEF58A100561A7A /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCAppDelegate.swift; sourceTree = "<group>"; };
@@ -715,8 +728,6 @@
 		12B1B82E1E87F187007CCE40 /* NCTypePickerContainerViewContrller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerContainerViewContrller.swift; sourceTree = "<group>"; };
 		12B1B8341E884E44007CCE40 /* NCFittingAmmoDamageChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCFittingAmmoDamageChartViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12B4FAE81E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketHistoryTableViewCell.swift; sourceTree = "<group>"; };
-		12B563F81E51B24500F1BED0 /* NCFittingArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingArea.h; sourceTree = "<group>"; };
-		12B563F91E51B24500F1BED0 /* NCFittingArea.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingArea.mm; sourceTree = "<group>"; };
 		12B563FB1E51E0A200F1BED0 /* NCFittingCharacterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingCharacterTableViewCell.swift; sourceTree = "<group>"; };
 		12B68F281E802958006462B7 /* CloudData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CloudData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12BC40A11DFF1EBB00657D40 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -770,6 +781,12 @@
 		12C966FD1F9610DE00B141CC /* Firebase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
 		12C966FE1F9610DE00B141CC /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		12C9670F1F96149F00B141CC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		12CA8F732046ED32000360DE /* NCDatabase.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = NCDatabase.sqlite; sourceTree = SOURCE_ROOT; };
+		12CA8F742046ED32000360DE /* NCDatabaseVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseVersion.swift; sourceTree = SOURCE_ROOT; };
+		12CA8F7F2047DED1000360DE /* Neocom II Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Neocom II Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		12CA8F812047DED1000360DE /* Neocom_II_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Neocom_II_Tests.swift; sourceTree = "<group>"; };
+		12CA8F832047DED1000360DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		12CA8F902047E22C000360DE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		12CACFE32008C36B000B76C3 /* Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Widget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		12CACFE42008C36B000B76C3 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		12CACFE72008C36B000B76C3 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -841,49 +858,9 @@
 		12DACE5A1E4CAE81007A1E07 /* NCFittingImplantsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingImplantsViewController.swift; sourceTree = "<group>"; };
 		12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dgmpp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12DBEAB01E1D3B860088A486 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		12DBEAB51E1D3BD80088A486 /* NCFittingEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingEngine.h; sourceTree = "<group>"; };
-		12DBEAB61E1D3BD80088A486 /* NCFittingEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingEngine.mm; sourceTree = "<group>"; };
-		12DBEAB81E1D3F3D0088A486 /* NCFittingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingItem.h; sourceTree = "<group>"; };
-		12DBEAB91E1D3F3D0088A486 /* NCFittingItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingItem.mm; sourceTree = "<group>"; };
-		12DBEABB1E1D40280088A486 /* NCFittingAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingAttribute.h; sourceTree = "<group>"; };
-		12DBEABC1E1D40280088A486 /* NCFittingAttribute.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingAttribute.mm; sourceTree = "<group>"; };
-		12DBEABE1E1D42420088A486 /* NCFittingProtected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCFittingProtected.h; sourceTree = "<group>"; };
-		12DBEABF1E1D48A80088A486 /* NCFittingGang.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingGang.h; sourceTree = "<group>"; };
-		12DBEAC01E1D48A80088A486 /* NCFittingGang.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingGang.mm; sourceTree = "<group>"; };
-		12DBEAC21E1D49C70088A486 /* NCFittingCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCharacter.h; sourceTree = "<group>"; };
-		12DBEAC31E1D49C70088A486 /* NCFittingCharacter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCharacter.mm; sourceTree = "<group>"; };
-		12DBEAE71E1E6DF50088A486 /* NCFittingTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCFittingTypes.h; sourceTree = "<group>"; };
 		12DBEAE81E1E8FEC0088A486 /* NCFittingMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingMenuViewController.swift; sourceTree = "<group>"; };
 		12DC567C1EFBE8520088F45E /* NCIncursionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCIncursionsViewController.swift; sourceTree = "<group>"; };
 		12DC567E1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCIncursionTableViewCell.swift; sourceTree = "<group>"; };
-		12DC56831EFC09DC0088F45E /* NCFittingPlanet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingPlanet.h; sourceTree = "<group>"; };
-		12DC56841EFC09DC0088F45E /* NCFittingPlanet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingPlanet.mm; sourceTree = "<group>"; };
-		12DC56861EFC0A040088F45E /* NCFittingFacility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingFacility.h; sourceTree = "<group>"; };
-		12DC56871EFC0A040088F45E /* NCFittingFacility.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingFacility.mm; sourceTree = "<group>"; };
-		12DC56891EFC0A150088F45E /* NCFittingRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingRoute.h; sourceTree = "<group>"; };
-		12DC568A1EFC0A150088F45E /* NCFittingRoute.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingRoute.mm; sourceTree = "<group>"; };
-		12DC568C1EFC0A230088F45E /* NCFittingCommodity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCommodity.h; sourceTree = "<group>"; };
-		12DC568D1EFC0A230088F45E /* NCFittingCommodity.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCommodity.mm; sourceTree = "<group>"; };
-		12DC568F1EFC0A400088F45E /* NCFittingCommandCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCommandCenter.h; sourceTree = "<group>"; };
-		12DC56901EFC0A400088F45E /* NCFittingCommandCenter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCommandCenter.mm; sourceTree = "<group>"; };
-		12DC56921EFC0A4E0088F45E /* NCFittingStorageFacility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingStorageFacility.h; sourceTree = "<group>"; };
-		12DC56931EFC0A4E0088F45E /* NCFittingStorageFacility.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingStorageFacility.mm; sourceTree = "<group>"; };
-		12DC56951EFC0A620088F45E /* NCFittingExtractorControlUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingExtractorControlUnit.h; sourceTree = "<group>"; };
-		12DC56961EFC0A620088F45E /* NCFittingExtractorControlUnit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingExtractorControlUnit.mm; sourceTree = "<group>"; };
-		12DC56981EFC0A740088F45E /* NCFittingIndustryFacility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingIndustryFacility.h; sourceTree = "<group>"; };
-		12DC56991EFC0A740088F45E /* NCFittingIndustryFacility.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingIndustryFacility.mm; sourceTree = "<group>"; };
-		12DC569B1EFC0A8A0088F45E /* NCFittingSpaceport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSpaceport.h; sourceTree = "<group>"; };
-		12DC569C1EFC0A8A0088F45E /* NCFittingSpaceport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingSpaceport.mm; sourceTree = "<group>"; };
-		12DC569E1EFC0A9E0088F45E /* NCFittingSchematic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingSchematic.h; sourceTree = "<group>"; };
-		12DC569F1EFC0A9E0088F45E /* NCFittingSchematic.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingSchematic.mm; sourceTree = "<group>"; };
-		12DC56A11EFC0ADC0088F45E /* NCFittingCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingCycle.h; sourceTree = "<group>"; };
-		12DC56A21EFC0ADC0088F45E /* NCFittingCycle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingCycle.mm; sourceTree = "<group>"; };
-		12DC56A41EFC0AED0088F45E /* NCFittingProductionCycle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingProductionCycle.h; sourceTree = "<group>"; };
-		12DC56A51EFC0AED0088F45E /* NCFittingProductionCycle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingProductionCycle.mm; sourceTree = "<group>"; };
-		12DC56A71EFC0AFD0088F45E /* NCFittingState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingState.h; sourceTree = "<group>"; };
-		12DC56A81EFC0AFD0088F45E /* NCFittingState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingState.mm; sourceTree = "<group>"; };
-		12DC56AA1EFC0B0F0088F45E /* NCFittingProductionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCFittingProductionState.h; sourceTree = "<group>"; };
-		12DC56AB1EFC0B0F0088F45E /* NCFittingProductionState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NCFittingProductionState.mm; sourceTree = "<group>"; };
 		12DE67201E715D46005CA44C /* NCSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSegmentedControl.swift; sourceTree = "<group>"; };
 		12E2674C1E115DDF00A13442 /* NCDatabaseCertificateGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDatabaseCertificateGroupsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12E2674E1E115F5F00A13442 /* NCDatabaseCertificatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDatabaseCertificatesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -910,10 +887,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1293D7CF204A89AE00A1F453 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		12AC8D8D1DEF58A100561A7A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1293D7C62049807E00A1F453 /* openssl.framework in Frameworks */,
 				12BFE4212017BF6F0083AC2F /* ASReceipt.framework in Frameworks */,
 				122DB9AF1E806DB000E8E2C4 /* libz.tbd in Frameworks */,
 				1235F3D51F39B9F1000E0FD9 /* Swifter.framework in Frameworks */,
@@ -936,6 +921,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		12CA8F7C2047DED1000360DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		12CACFE02008C36B000B76C3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -954,6 +946,7 @@
 				1203E8891F093AEA009ADF8D /* NCFeedChannelViewController.swift */,
 				1203E88B1F093B7E009ADF8D /* NCFeedItemViewController.swift */,
 				126E183A1F6133710008C081 /* NCSettingsViewController.swift */,
+				12A2DE4F202C312A00ADF0D6 /* NCSkillQueueNotificationSettingsViewController.swift */,
 				12C966DC1F95F56700B141CC /* NCAboutViewController.swift */,
 				124BD4B12018978E00816946 /* NCSubscriptionViewController.swift */,
 				1279A2F420233CBA00DD7A46 /* NCBugreportViewController.swift */,
@@ -1138,6 +1131,8 @@
 				125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */,
 				1285FB391EB9C5700025331A /* NCWealthViewController.swift */,
 				12D20EAD1EBC867E00BEC926 /* NCWealthAssetsViewController.swift */,
+				1293D7CC20499B2900A1F453 /* NCWealthAssetsDetailsViewController.swift */,
+				1293D7C82049813200A1F453 /* NCWealthBlueprintsViewController.swift */,
 				12D20EAF1EBCB10E00BEC926 /* NCCalendarViewController.swift */,
 				12C37D271EFA7E9B0070F055 /* NCEventViewController.swift */,
 				12FE20FC1F8F9F25004C021E /* NCLoyaltyPointsViewController.swift */,
@@ -1162,6 +1157,7 @@
 			children = (
 				12DBEAE81E1E8FEC0088A486 /* NCFittingMenuViewController.swift */,
 				1223E1B71F3C5F0F0044C225 /* NCFittingLoadoutsViewController.swift */,
+				122332712032CCCD007DEA33 /* NCFittingLoadoutsSearchResultsViewController.swift */,
 				12F8FF9E1E5DBC58008F79D5 /* NCFittingShipsViewController.swift */,
 				121314C31F14B79700DAFD12 /* NCFittingStructuresViewController.swift */,
 				1263C5081E64A7D0003D002D /* NCFittingFleetsViewController.swift */,
@@ -1253,6 +1249,15 @@
 			name = KillReports;
 			sourceTree = "<group>";
 		};
+		1293D7D3204A89AE00A1F453 /* Neocom II UITests */ = {
+			isa = PBXGroup;
+			children = (
+				1293D7D4204A89AE00A1F453 /* Neocom_II_UITests.swift */,
+				1293D7D6204A89AE00A1F453 /* Info.plist */,
+			);
+			path = "Neocom II UITests";
+			sourceTree = "<group>";
+		};
 		129DE4371FF628AD00A2C1CD /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
@@ -1331,6 +1336,8 @@
 				12AC8D921DEF58A100561A7A /* Neocom */,
 				12C966ED1F9610CC00B141CC /* ThirdParty */,
 				12CACFE62008C36B000B76C3 /* Widget */,
+				12CA8F802047DED1000360DE /* Neocom II Tests */,
+				1293D7D3204A89AE00A1F453 /* Neocom II UITests */,
 				12AC8D911DEF58A100561A7A /* Products */,
 				12DBEAAF1E1D3B860088A486 /* Frameworks */,
 			);
@@ -1341,6 +1348,8 @@
 			children = (
 				12AC8D901DEF58A100561A7A /* Neocom.app */,
 				12CACFE32008C36B000B76C3 /* Widget.appex */,
+				12CA8F7F2047DED1000360DE /* Neocom II Tests.xctest */,
+				1293D7D2204A89AE00A1F453 /* Neocom II UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1367,8 +1376,8 @@
 				1256BE541DF4728800A2A24B /* Main.storyboard */,
 				122A7CA11F4B49D100537467 /* Database.storyboard */,
 				122A7CA31F4B589200537467 /* Character.storyboard */,
-				122A7CA51F4B5DD800537467 /* Business.storyboard */,
 				122A7CA71F4B601E00537467 /* KillReports.storyboard */,
+				122A7CA51F4B5DD800537467 /* Business.storyboard */,
 				122A7CA91F4B617E00537467 /* Fitting.storyboard */,
 				12AC8D9C1DEF58A100561A7A /* LaunchScreen.storyboard */,
 				1256BE5D1DF476C000A2A24B /* mainMenu.plist */,
@@ -1380,7 +1389,8 @@
 				12AC8DBA1DF01BF000561A7A /* Neocom-Bridging-Header.h */,
 				12AC8DD51DF0AF6900561A7A /* Dark.clr */,
 				126156FE1E008AE00041B817 /* dgm.sqlite */,
-				126156FF1E008AE00041B817 /* NCDatabase.sqlite */,
+				12CA8F732046ED32000360DE /* NCDatabase.sqlite */,
+				12CA8F742046ED32000360DE /* NCDatabaseVersion.swift */,
 				1281303E1F3B01230039D46B /* dropzone.css */,
 				1281303F1F3B01230039D46B /* dropzone.js */,
 				128130441F3B08600039D46B /* main.js */,
@@ -1562,6 +1572,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		12CA8F802047DED1000360DE /* Neocom II Tests */ = {
+			isa = PBXGroup;
+			children = (
+				12CA8F812047DED1000360DE /* Neocom_II_Tests.swift */,
+				12CA8F832047DED1000360DE /* Info.plist */,
+			);
+			path = "Neocom II Tests";
+			sourceTree = "<group>";
+		};
 		12CACFE62008C36B000B76C3 /* Widget */ = {
 			isa = PBXGroup;
 			children = (
@@ -1624,31 +1643,17 @@
 		12DBEA311E1D36580088A486 /* Fitting */ = {
 			isa = PBXGroup;
 			children = (
-				12DBEA321E1D36D40088A486 /* Engine */,
 				121D10B31E265D4600DD671B /* Loadouts */,
 				128C5F9D1F4AD7C60038FE7D /* NCImplantSetData.swift */,
 			);
 			name = Fitting;
 			sourceTree = "<group>";
 		};
-		12DBEA321E1D36D40088A486 /* Engine */ = {
-			isa = PBXGroup;
-			children = (
-				12DC56821EFC09AC0088F45E /* Ship */,
-				12DC56811EFC099A0088F45E /* PlanetaryInteraction */,
-				12DBEABE1E1D42420088A486 /* NCFittingProtected.h */,
-				12DBEAB51E1D3BD80088A486 /* NCFittingEngine.h */,
-				12DBEAB61E1D3BD80088A486 /* NCFittingEngine.mm */,
-				121314C51F14BAB600DAFD12 /* NCFittingStructure.h */,
-				121314C61F14BAB600DAFD12 /* NCFittingStructure.mm */,
-				12DBEAE71E1E6DF50088A486 /* NCFittingTypes.h */,
-			);
-			name = Engine;
-			sourceTree = "<group>";
-		};
 		12DBEAAF1E1D3B860088A486 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1293D7C72049807E00A1F453 /* openssl.framework */,
+				12CA8F902047E22C000360DE /* UIKit.framework */,
 				12BFE4222017BF6F0083AC2F /* ASReceipt.framework */,
 				12CACFF72008D9FD000B76C3 /* EVEAPI.framework */,
 				120A59EE1F10ABEC0053F94B /* StoreKit.framework */,
@@ -1658,72 +1663,6 @@
 				12CACFE42008C36B000B76C3 /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		12DC56811EFC099A0088F45E /* PlanetaryInteraction */ = {
-			isa = PBXGroup;
-			children = (
-				12DC56831EFC09DC0088F45E /* NCFittingPlanet.h */,
-				12DC56841EFC09DC0088F45E /* NCFittingPlanet.mm */,
-				12DC56861EFC0A040088F45E /* NCFittingFacility.h */,
-				12DC56871EFC0A040088F45E /* NCFittingFacility.mm */,
-				12DC56891EFC0A150088F45E /* NCFittingRoute.h */,
-				12DC568A1EFC0A150088F45E /* NCFittingRoute.mm */,
-				12DC568C1EFC0A230088F45E /* NCFittingCommodity.h */,
-				12DC568D1EFC0A230088F45E /* NCFittingCommodity.mm */,
-				12DC568F1EFC0A400088F45E /* NCFittingCommandCenter.h */,
-				12DC56901EFC0A400088F45E /* NCFittingCommandCenter.mm */,
-				12DC56921EFC0A4E0088F45E /* NCFittingStorageFacility.h */,
-				12DC56931EFC0A4E0088F45E /* NCFittingStorageFacility.mm */,
-				12DC56951EFC0A620088F45E /* NCFittingExtractorControlUnit.h */,
-				12DC56961EFC0A620088F45E /* NCFittingExtractorControlUnit.mm */,
-				12DC56981EFC0A740088F45E /* NCFittingIndustryFacility.h */,
-				12DC56991EFC0A740088F45E /* NCFittingIndustryFacility.mm */,
-				12DC569B1EFC0A8A0088F45E /* NCFittingSpaceport.h */,
-				12DC569C1EFC0A8A0088F45E /* NCFittingSpaceport.mm */,
-				12DC569E1EFC0A9E0088F45E /* NCFittingSchematic.h */,
-				12DC569F1EFC0A9E0088F45E /* NCFittingSchematic.mm */,
-				12DC56A11EFC0ADC0088F45E /* NCFittingCycle.h */,
-				12DC56A21EFC0ADC0088F45E /* NCFittingCycle.mm */,
-				12DC56A41EFC0AED0088F45E /* NCFittingProductionCycle.h */,
-				12DC56A51EFC0AED0088F45E /* NCFittingProductionCycle.mm */,
-				12DC56A71EFC0AFD0088F45E /* NCFittingState.h */,
-				12DC56A81EFC0AFD0088F45E /* NCFittingState.mm */,
-				12DC56AA1EFC0B0F0088F45E /* NCFittingProductionState.h */,
-				12DC56AB1EFC0B0F0088F45E /* NCFittingProductionState.mm */,
-			);
-			name = PlanetaryInteraction;
-			sourceTree = "<group>";
-		};
-		12DC56821EFC09AC0088F45E /* Ship */ = {
-			isa = PBXGroup;
-			children = (
-				12DBEAB81E1D3F3D0088A486 /* NCFittingItem.h */,
-				12DBEAB91E1D3F3D0088A486 /* NCFittingItem.mm */,
-				12DBEABF1E1D48A80088A486 /* NCFittingGang.h */,
-				12DBEAC01E1D48A80088A486 /* NCFittingGang.mm */,
-				12DBEAC21E1D49C70088A486 /* NCFittingCharacter.h */,
-				12DBEAC31E1D49C70088A486 /* NCFittingCharacter.mm */,
-				12961DC81E1D6486008A3F4D /* NCFittingSkill.h */,
-				12961DC91E1D6486008A3F4D /* NCFittingSkill.mm */,
-				12961DCB1E1D649A008A3F4D /* NCFittingBooster.h */,
-				12961DCC1E1D649A008A3F4D /* NCFittingBooster.mm */,
-				12961DCE1E1D64A6008A3F4D /* NCFittingImplant.h */,
-				12961DCF1E1D64A6008A3F4D /* NCFittingImplant.mm */,
-				12961DD11E1D64B8008A3F4D /* NCFittingShip.h */,
-				12961DD21E1D64B8008A3F4D /* NCFittingShip.mm */,
-				12961DD41E1D64C9008A3F4D /* NCFittingModule.h */,
-				12961DD51E1D64C9008A3F4D /* NCFittingModule.mm */,
-				12961DD71E1D64D4008A3F4D /* NCFittingCharge.h */,
-				12961DD81E1D64D4008A3F4D /* NCFittingCharge.mm */,
-				12961DDA1E1D64E4008A3F4D /* NCFittingDrone.h */,
-				12961DDB1E1D64E4008A3F4D /* NCFittingDrone.mm */,
-				12DBEABB1E1D40280088A486 /* NCFittingAttribute.h */,
-				12DBEABC1E1D40280088A486 /* NCFittingAttribute.mm */,
-				12B563F81E51B24500F1BED0 /* NCFittingArea.h */,
-				12B563F91E51B24500F1BED0 /* NCFittingArea.mm */,
-			);
-			name = Ship;
 			sourceTree = "<group>";
 		};
 		12E745521E830922004AA646 /* Products */ = {
@@ -1761,6 +1700,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1293D7D1204A89AE00A1F453 /* Neocom II UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1293D7D9204A89AE00A1F453 /* Build configuration list for PBXNativeTarget "Neocom II UITests" */;
+			buildPhases = (
+				1293D7CE204A89AE00A1F453 /* Sources */,
+				1293D7CF204A89AE00A1F453 /* Frameworks */,
+				1293D7D0204A89AE00A1F453 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1293D7D8204A89AE00A1F453 /* PBXTargetDependency */,
+			);
+			name = "Neocom II UITests";
+			productName = "Neocom II UITests";
+			productReference = 1293D7D2204A89AE00A1F453 /* Neocom II UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		12AC8D8F1DEF58A100561A7A /* Neocom */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 12AC8DA21DEF58A100561A7A /* Build configuration list for PBXNativeTarget "Neocom" */;
@@ -1782,6 +1739,24 @@
 			productName = Neocom;
 			productReference = 12AC8D901DEF58A100561A7A /* Neocom.app */;
 			productType = "com.apple.product-type.application";
+		};
+		12CA8F7E2047DED1000360DE /* Neocom II Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 12CA8F862047DED1000360DE /* Build configuration list for PBXNativeTarget "Neocom II Tests" */;
+			buildPhases = (
+				12CA8F7B2047DED1000360DE /* Sources */,
+				12CA8F7C2047DED1000360DE /* Frameworks */,
+				12CA8F7D2047DED1000360DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				12CA8F852047DED1000360DE /* PBXTargetDependency */,
+			);
+			name = "Neocom II Tests";
+			productName = "Neocom II Tests";
+			productReference = 12CA8F7F2047DED1000360DE /* Neocom II Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		12CACFE22008C36B000B76C3 /* Widget */ = {
 			isa = PBXNativeTarget;
@@ -1811,6 +1786,12 @@
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Artem Shimanski";
 				TargetAttributes = {
+					1293D7D1204A89AE00A1F453 = {
+						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = YB4RLQ4M9A;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 12AC8D8F1DEF58A100561A7A;
+					};
 					12AC8D8F1DEF58A100561A7A = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = YB4RLQ4M9A;
@@ -1833,6 +1814,12 @@
 								enabled = 1;
 							};
 						};
+					};
+					12CA8F7E2047DED1000360DE = {
+						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = YB4RLQ4M9A;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 12AC8D8F1DEF58A100561A7A;
 					};
 					12CACFE22008C36B000B76C3 = {
 						CreatedOnToolsVersion = 9.2;
@@ -1871,6 +1858,8 @@
 			targets = (
 				12AC8D8F1DEF58A100561A7A /* Neocom */,
 				12CACFE22008C36B000B76C3 /* Widget */,
+				12CA8F7E2047DED1000360DE /* Neocom II Tests */,
+				1293D7D1204A89AE00A1F453 /* Neocom II UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1893,6 +1882,13 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1293D7D0204A89AE00A1F453 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		12AC8D8E1DEF58A100561A7A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1919,7 +1915,6 @@
 				1256BEC81DF4770A00A2A24B /* charisma.png in Resources */,
 				12D930E71E656B0C00CBAE1C /* NCChargeTableViewCell.xib in Resources */,
 				12BFE44D2017C8E80083AC2F /* MPCloseButtonX@2x.png in Resources */,
-				126157011E008AF60041B817 /* NCDatabase.sqlite in Resources */,
 				1256BECB1DF4770A00A2A24B /* perception.png in Resources */,
 				12CFDACB1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib in Resources */,
 				12BFE44F2017C8E80083AC2F /* MPCloseButtonX@3x.png in Resources */,
@@ -1969,6 +1964,7 @@
 				12D930F31E6584AF00CBAE1C /* NCDefaultCompactTableViewCell.xib in Resources */,
 				12BFE44B2017C8E80083AC2F /* MPAdBrowserController.xib in Resources */,
 				12BFE4532017C8E80083AC2F /* StartApp.bundle in Resources */,
+				12CA8F752046ED32000360DE /* NCDatabase.sqlite in Resources */,
 				122A7CA21F4B49D100537467 /* Database.storyboard in Resources */,
 				12CFDAE81F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib in Resources */,
 				12C967101F9614B200B141CC /* GoogleService-Info.plist in Resources */,
@@ -1988,6 +1984,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		12CA8F7D2047DED1000360DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		12CACFE12008C36B000B76C3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1999,6 +2002,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1293D7CE204A89AE00A1F453 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1293D7D5204A89AE00A1F453 /* Neocom_II_UITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		12AC8D8C1DEF58A100561A7A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2089,6 +2100,7 @@
 				1256BE4D1DF4193000A2A24B /* NCUnitFormatter.swift in Sources */,
 				1230A3281DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift in Sources */,
 				121D10B01E26345D00DD671B /* NSManagedObjectContext+NC.swift in Sources */,
+				12CA8F762046ED32000360DE /* NCDatabaseVersion.swift in Sources */,
 				12AC8DCE1DF08D9B00561A7A /* NCCache.xcdatamodeld in Sources */,
 				12BE2DC11F53F42500BA43A6 /* NCSkillsViewController.swift in Sources */,
 				129200331FEBEF2500124EE0 /* NCFittingLoadoutsViewController.swift in Sources */,
@@ -2144,6 +2156,7 @@
 				1256BE341DF1C38200A2A24B /* NCStorage.swift in Sources */,
 				129E61081E029BCB00B56EB8 /* Array+NC.swift in Sources */,
 				12D404511F331BCB007F1715 /* NCMarketQuickbarViewController.swift in Sources */,
+				1293D7C92049813200A1F453 /* NCWealthBlueprintsViewController.swift in Sources */,
 				12C37D371EFBA4C80070F055 /* NCWHViewController.swift in Sources */,
 				125CE13C1EA1275C007B8B6B /* NCMailViewController.swift in Sources */,
 				128CA3DB1FED0C6D006E0989 /* NCMailAttachmentsShipsViewController.swift in Sources */,
@@ -2180,10 +2193,13 @@
 				1263EE311F0F8EE0005128E6 /* NCTreeViewController.swift in Sources */,
 				1261570D1E01D2F70041B817 /* NCSkillQueueViewController.swift in Sources */,
 				12B4FAE91E0C123100B70CA8 /* NCMarketHistoryTableViewCell.swift in Sources */,
+				122332722032CCCD007DEA33 /* NCFittingLoadoutsSearchResultsViewController.swift in Sources */,
+				1293D7CD20499B2900A1F453 /* NCWealthAssetsDetailsViewController.swift in Sources */,
 				122A1C431F8DFCC2005DE351 /* NCNavigationItemTitleLabel.swift in Sources */,
 				1230A33A1E001D7300627D92 /* NCAccountTableViewCell.swift in Sources */,
 				12CFDAE41F03D71F00CC0762 /* NCDatePickerTableViewCell.swift in Sources */,
 				1211A4791EF1843D00364744 /* NCSkillsContentViewController.swift in Sources */,
+				12A2DE50202C312A00ADF0D6 /* NCSkillQueueNotificationSettingsViewController.swift in Sources */,
 				1230A3301DFFE2CF00627D92 /* NCTableViewBackgroundLabel.swift in Sources */,
 				1293BC1A1E4B4E7C0099FD75 /* NCFirepowerTableViewCell.swift in Sources */,
 				12AC8DC61DF0894400561A7A /* NCDataManager.swift in Sources */,
@@ -2263,6 +2279,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		12CA8F7B2047DED1000360DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12CA8F822047DED1000360DE /* Neocom_II_Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		12CACFDF2008C36B000B76C3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2279,6 +2303,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1293D7D8204A89AE00A1F453 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 12AC8D8F1DEF58A100561A7A /* Neocom */;
+			targetProxy = 1293D7D7204A89AE00A1F453 /* PBXContainerItemProxy */;
+		};
+		12CA8F852047DED1000360DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 12AC8D8F1DEF58A100561A7A /* Neocom */;
+			targetProxy = 12CA8F842047DED1000360DE /* PBXContainerItemProxy */;
+		};
 		12CACFEE2008C36B000B76C3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 12CACFE22008C36B000B76C3 /* Widget */;
@@ -2311,6 +2345,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1293D7DA204A89AE00A1F453 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Neocom II UITests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shimanski.Neocom-II-UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Neocom;
+			};
+			name = Debug;
+		};
+		1293D7DB204A89AE00A1F453 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Neocom II UITests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shimanski.Neocom-II-UITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Neocom;
+			};
+			name = Release;
+		};
 		12AC8DA01DEF58A100561A7A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2432,11 +2508,9 @@
 					"${PROJECT_DIR}/../ThirdParty/Facebook",
 					"${PROJECT_DIR}/../ThirdParty/Appodeal",
 				);
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../ThirdParty/ASReceipt/ASReceipt/ThirdParty/OpenSSL/include";
 				INFOPLIST_FILE = Neocom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../ThirdParty/ASReceipt/ASReceipt/ThirdParty/OpenSSL/lib";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -2462,16 +2536,70 @@
 					"${PROJECT_DIR}/../ThirdParty/Facebook",
 					"${PROJECT_DIR}/../ThirdParty/Appodeal",
 				);
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../ThirdParty/ASReceipt/ASReceipt/ThirdParty/OpenSSL/include";
 				INFOPLIST_FILE = Neocom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../ThirdParty/ASReceipt/ASReceipt/ThirdParty/OpenSSL/lib";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SWIFT_OBJC_BRIDGING_HEADER = "Neocom/Neocom-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../ThirdParty/Firebase";
+			};
+			name = Release;
+		};
+		12CA8F872047DED1000360DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				FRAMEWORK_SEARCH_PATHS = (
+					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
+					"${PROJECT_DIR}/../ThirdParty/Facebook",
+					"${PROJECT_DIR}/../ThirdParty/Appodeal",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Neocom II Tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shimanski.Neocom-II-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Neocom.app/Neocom";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../ThirdParty/Firebase";
+			};
+			name = Debug;
+		};
+		12CA8F882047DED1000360DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				FRAMEWORK_SEARCH_PATHS = (
+					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
+					"${PROJECT_DIR}/../ThirdParty/Facebook",
+					"${PROJECT_DIR}/../ThirdParty/Appodeal",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Neocom II Tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.shimanski.Neocom-II-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Neocom.app/Neocom";
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../ThirdParty/Firebase";
 			};
 			name = Release;
@@ -2523,6 +2651,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1293D7D9204A89AE00A1F453 /* Build configuration list for PBXNativeTarget "Neocom II UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1293D7DA204A89AE00A1F453 /* Debug */,
+				1293D7DB204A89AE00A1F453 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		12AC8D8B1DEF58A100561A7A /* Build configuration list for PBXProject "Neocom" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2537,6 +2674,15 @@
 			buildConfigurations = (
 				12AC8DA31DEF58A100561A7A /* Debug */,
 				12AC8DA41DEF58A100561A7A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		12CA8F862047DED1000360DE /* Build configuration list for PBXNativeTarget "Neocom II Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				12CA8F872047DED1000360DE /* Debug */,
+				12CA8F882047DED1000360DE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

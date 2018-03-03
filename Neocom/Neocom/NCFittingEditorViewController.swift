@@ -60,7 +60,7 @@ class NCFittingEditorViewController: UIViewController {
 		navigationItem.titleView = NCNavigationItemTitleLabel(frame: CGRect(origin: .zero, size: .zero))
 		
 		let pilot = fleet?.active
-		let isShip = pilot?.structure == nil
+		let isShip = pilot?.ship != nil
 		let useFighters = !isShip || (pilot?.ship?.totalFighterLaunchTubes ?? 0) > 0
 		
 		var controllers = [
@@ -101,7 +101,7 @@ class NCFittingEditorViewController: UIViewController {
 				self?.updateTitle()
 			}
 		}
-		if fleet?.pilots.first(where: {$0.1 == nil}) != nil {
+		if fleet?.pilots.first(where: {$0.1 == nil}) != nil || (fleet?.structure?.0 != nil && fleet?.structure?.1 == nil) {
 			var items = [navigationItem.rightBarButtonItem!]
 			items.append(self.saveButtonItem)
 			navigationItem.setRightBarButtonItems(items, animated: true)
@@ -157,7 +157,7 @@ class NCFittingEditorViewController: UIViewController {
 				var pilots = [Int: NCLoadout] ()
 				for (character, objectID) in fleet.pilots {
 					
-					guard let ship = character.ship ?? character.structure else {continue}
+					guard let ship = character.ship else {continue}
 					if let objectID = objectID, let loadout = (try? managedObjectContext.existingObject(with: objectID)) as? NCLoadout {
 //						loadout.uuid = character.identifier
 						loadout.name = ship.name
@@ -174,6 +174,20 @@ class NCFittingEditorViewController: UIViewController {
 						pilots[character.identifier] = loadout
 					}
 				}
+			if let structure = fleet.structure {
+				if let objectID = structure.1, let loadout = (try? managedObjectContext.existingObject(with: objectID)) as? NCLoadout {
+					loadout.name = structure.0.name
+					loadout.data?.data = structure.0.loadout
+				}
+				else {
+					let loadout = NCLoadout(entity: NSEntityDescription.entity(forEntityName: "Loadout", in: managedObjectContext)!, insertInto: managedObjectContext)
+					loadout.data = NCLoadoutData(entity: NSEntityDescription.entity(forEntityName: "LoadoutData", in: managedObjectContext)!, insertInto: managedObjectContext)
+					loadout.typeID = Int32(structure.0.typeID)
+					loadout.name = structure.0.name
+					loadout.data?.data = structure.0.loadout
+					loadout.uuid = UUID().uuidString
+				}
+			}
 				
 				var opaqueFleet: NCFleet?
 				
@@ -247,9 +261,7 @@ class NCFittingEditorViewController: UIViewController {
 	
 	private func updateTitle() {
 		guard let titleLabel = navigationItem.titleView as? NCNavigationItemTitleLabel else {return}
-		let pilot = fleet?.active
-		
-		guard let ship = pilot?.ship ?? pilot?.structure else {return}
+		guard let ship = fleet?.active?.ship ?? fleet?.structure?.0 else {return}
 		titleLabel.set(title: ship.type?.typeName, subtitle: ship.name)
 	}
 

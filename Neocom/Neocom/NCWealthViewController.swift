@@ -66,11 +66,14 @@ class NCWealthViewController: NCTreeViewController {
 			
 			var assetsIDs = [Int: Int64]()
 			
+			var assetsArray = [ESI.Assets.Asset]()
+			
 			if let value = assets {
 				for asset in value {
 					guard asset.locationFlag != .skill && asset.locationFlag != .implant else {continue}
 					guard let type = invTypes[asset.typeID], type.group?.category?.categoryID != Int32(NCDBCategoryID.blueprint.rawValue) else {continue}
 					_ = (assetsIDs[asset.typeID]? += Int64(asset.quantity)) ?? (assetsIDs[asset.typeID] = Int64(asset.quantity))
+					assetsArray.append(asset)
 				}
 			}
 			
@@ -177,7 +180,7 @@ class NCWealthViewController: NCTreeViewController {
 						strongSelf.implantsSegment = PieSegment(value: implants, color: UIColor(white: 0.9, alpha: 1.0), title: NSLocalizedString("Implants", comment: ""))
 						strongSelf.pieChartRow?.add(segment: strongSelf.implantsSegment!)
 					}
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Implants", title: NSLocalizedString("Implants", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: implants, unit: .isk, style: .full)))
+					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute, nodeIdentifier: "Implants", title: NSLocalizedString("Implants (clones)", comment: "").uppercased(), subtitle: NCUnitFormatter.localizedString(from: implants, unit: .isk, style: .full)))
 				}
 				else if let segment = strongSelf.implantsSegment {
 					strongSelf.pieChartRow?.remove(segment: segment)
@@ -189,8 +192,8 @@ class NCWealthViewController: NCTreeViewController {
 						strongSelf.pieChartRow?.add(segment: strongSelf.assetsSegment!)
 					}
 					let route: Route? = {
-						guard let prices = strongSelf.prices, let assets = strongSelf.assets?.flatMap({$0.value}).joined() else {return nil}
-						return Router.Wealth.Assets(assets: Array(assets), prices: prices)
+						guard let prices = strongSelf.prices, !assetsArray.isEmpty else {return nil}
+						return Router.Wealth.Assets(assets: assetsArray, prices: prices)
 					}()
 					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
 					                           nodeIdentifier: "Assets",

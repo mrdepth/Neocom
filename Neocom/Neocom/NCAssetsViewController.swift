@@ -121,7 +121,7 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 	}
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
-		if let value = assets?.flatMap({ $0.value }).joined() {
+		if let value = assets?.flatMap({ $0.value }).joined().filter({$0.locationFlag != .skill && $0.locationFlag != .implant}) {
 			tableView.backgroundView = nil
 			
 			var locationIDs = Set(value/*.filter{$0.locationType == .station || $0.locationType == .solarSystem}*/.map {$0.locationID})

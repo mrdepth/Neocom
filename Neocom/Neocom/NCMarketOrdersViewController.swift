@@ -33,15 +33,15 @@ class NCMarketOrdersViewController: NCTreeViewController {
 			dataManager.locations(ids: locationIDs) { locations in
 				NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 					
-					let open = value.filter {$0.state == .open}
+					let open = value
 					
-					var buy = open.filter {$0.isBuyOrder}.map {NCMarketOrderRow(order: $0, location: locations[$0.locationID])}
-					var sell = open.filter {!$0.isBuyOrder}.map {NCMarketOrderRow(order: $0, location: locations[$0.locationID])}
-					var closed = value.filter {$0.state != .open}.map {NCMarketOrderRow(order: $0, location: locations[$0.locationID])}
+					var buy = open.filter {$0.isBuyOrder == true}.map {NCMarketOrderRow(order: $0, location: locations[$0.locationID])}
+					var sell = open.filter {$0.isBuyOrder != true}.map {NCMarketOrderRow(order: $0, location: locations[$0.locationID])}
+//					var closed = value.filter {$0.state != .open}.map {NCMarketOrderRow(order: $0, location: locations[$0.locationID])}
 					
 					buy.sort {$0.expired < $1.expired}
 					sell.sort {$0.expired < $1.expired}
-					closed.sort {$0.expired > $1.expired}
+//					closed.sort {$0.expired > $1.expired}
 					
 					var sections = [TreeNode]()
 					
@@ -51,9 +51,9 @@ class NCMarketOrdersViewController: NCTreeViewController {
 					if !buy.isEmpty {
 						sections.append(DefaultTreeSection(nodeIdentifier: "Buy", title: NSLocalizedString("Buy", comment: "").uppercased(), children: buy))
 					}
-					if !closed.isEmpty {
-						sections.append(DefaultTreeSection(nodeIdentifier: "Closed", title: NSLocalizedString("Closed", comment: "").uppercased(), children: closed))
-					}
+//					if !closed.isEmpty {
+//						sections.append(DefaultTreeSection(nodeIdentifier: "Closed", title: NSLocalizedString("Closed", comment: "").uppercased(), children: closed))
+//					}
 					
 					
 					DispatchQueue.main.async {

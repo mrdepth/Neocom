@@ -52,14 +52,15 @@ class NCMarketOrderRow: TreeRow {
 		cell.qtyLabel.text = NCUnitFormatter.localizedString(from: order.volumeRemain, unit: .none, style: .full) + "/" + NCUnitFormatter.localizedString(from: order.volumeTotal, unit: .none, style: .full)
 		cell.issuedLabel.text = DateFormatter.localizedString(from: order.issued, dateStyle: .medium, timeStyle: .medium)
 		
-		let color = order.state == .open ? UIColor.white : UIColor.lightText
+//		let color = order.state == .open ? UIColor.white : UIColor.lightText
+		let color = UIColor.white
 		cell.titleLabel.textColor = color
 		cell.priceLabel.textColor = color
 		cell.qtyLabel.textColor = color
 		cell.issuedLabel.textColor = color
 		cell.timeLeftLabel.textColor = color
 		
-		switch order.state {
+		/*switch order.state {
 		case .open:
 			cell.stateLabel.text = NSLocalizedString("Open", comment: "") + ":"
 			let t = expired.timeIntervalSinceNow
@@ -79,7 +80,12 @@ class NCMarketOrderRow: TreeRow {
 		case .pending:
 			cell.stateLabel.text = NSLocalizedString("Pending", comment: "") + ":"
 			cell.timeLeftLabel.text = " "
-		}
+		}*/
+		
+		cell.stateLabel.text = NSLocalizedString("Open", comment: "") + ":"
+		let t = expired.timeIntervalSinceNow
+		cell.timeLeftLabel.text =  String(format: NSLocalizedString("Expires in %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes))
+
 	}
 	
 	override lazy var hashValue: Int = order.hashValue

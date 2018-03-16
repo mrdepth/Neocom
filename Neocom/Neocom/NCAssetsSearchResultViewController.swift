@@ -12,10 +12,10 @@ import CoreData
 
 class NCAssetsSearchResultViewController: NCTreeViewController, UISearchResultsUpdating {
     
-	var items: [Int64: ESI.Assets.Asset]?
+	var items: [Int64: NCAsset]?
 	var typeIDs: Set<Int>?
     var locations: [Int64: NCLocation]?
-    var contents: [Int64: [ESI.Assets.Asset]]?
+    var contents: [Int64: [NCAsset]]?
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +47,7 @@ class NCAssetsSearchResultViewController: NCTreeViewController, UISearchResultsU
 				
                 var types = [Int: NCDBInvType]()
 
-				var filtered: [ESI.Assets.Asset] = []
+				var filtered: [NCAsset] = []
                 
                 let filteredLocations = Set(locations.filter {$0.value.displayName.string.range(of: text, options: [.caseInsensitive], range: nil, locale: nil) != nil}.map {$0.key})
 				
@@ -76,8 +76,8 @@ class NCAssetsSearchResultViewController: NCTreeViewController, UISearchResultsU
 					
 				}
 				
-				var items: [Int64: ESI.Assets.Asset] = [:]
-				var filteredContents: [Int64: [ESI.Assets.Asset]] = [:]
+				var items: [Int64: NCAsset] = [:]
+				var filteredContents: [Int64: [NCAsset]] = [:]
 				var typeIDs = Set<Int>()
 				
 				filtered.forEach {

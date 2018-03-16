@@ -80,7 +80,7 @@ class NCCharacter {
 					let skillQueue = skillQueueResult?.value,
 					let attributes = attributesResult?.value,
 					let implants = implantsResult?.value else {
-						completionHandler(.failure(skillsResult?.error ?? skillQueueResult?.error ?? attributesResult?.error ?? implantsResult?.error ?? NCDataManager.NCDataManagerError.internalError))
+						completionHandler(.failure(skillsResult?.error ?? skillQueueResult?.error ?? attributesResult?.error ?? implantsResult?.error ?? NCDataManagerError.internalError))
 						return
 				}
 				

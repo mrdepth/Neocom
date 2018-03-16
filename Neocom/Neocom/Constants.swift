@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import EVEAPI
 
 public enum NCDBAttributeID: Int {
 	case none = 0
@@ -298,4 +299,14 @@ extension TimeInterval {
 	static let NCFirstReviewTime: TimeInterval = 3600 * 24
 	static let NCReviewTimeInterval: TimeInterval = 3600 * 24 * 20
 	static let NCBannerStartTime: TimeInterval = 3600 * 48
+}
+
+enum Owner {
+	case character
+	case corporation
+}
+
+enum Wallet {
+	case character
+	case corporation(ESI.Corporation.Divisions.Wallet)
 }

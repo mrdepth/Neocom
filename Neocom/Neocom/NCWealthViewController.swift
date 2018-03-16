@@ -114,8 +114,7 @@ class NCWealthViewController: NCTreeViewController {
 			
 			if let value = marketOrders {
 				for order in value {
-					guard order.state == .open else {continue}
-					if order.isBuyOrder {
+					if order.isBuyOrder == true {
 						orderBids += Double(order.price) * Double(order.volumeRemain)
 					}
 					else {

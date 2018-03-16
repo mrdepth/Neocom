@@ -42,12 +42,16 @@ class NCLocation {
 	}
 	
 	convenience init(_ structure: ESI.Universe.StructureInformation) {
-		if let solarSystem = NCDatabase.sharedDatabase?.mapSolarSystems[structure.solarSystemID] {
-			self.init(solarSystem)
+		self.init()
+		
+		NCDatabase.sharedDatabase?.performTaskAndWait { (managedObjectContext) in
+			if let solarSystem = NCDBMapSolarSystem.mapSolarSystems(managedObjectContext: managedObjectContext)[structure.solarSystemID] {
+				self.solarSystemID = Int(solarSystem.solarSystemID)
+				self.solarSystemName = solarSystem.solarSystemName
+				self.security = solarSystem.security
+			}
 		}
-		else {
-			self.init()
-		}
+		
 		self.itemName = structure.name
 	}
 

@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 public class NCDatabase {
 	public private(set) lazy var managedObjectModel: NSManagedObjectModel = {
@@ -35,15 +36,24 @@ public class NCDatabase {
 		ValueTransformer.setValueTransformer(NCDBImageValueTransformer(), forName: NSValueTransformerName("NCDBImageValueTransformer"))
 	}
 	
-	public func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+	@discardableResult
+	public func performBackgroundTask<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) -> Future<T> {
+		let promise = Promise<T>()
 		let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
 		context.persistentStoreCoordinator = persistentStoreCoordinator
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 		context.perform {
-			block(context)
+			do {
+				try promise.set(.success(block(context)))
+			}
+			catch {
+				try! promise.set(.failure(error))
+			}
 		}
+		return promise.future
 	}
 
+	@discardableResult
 	public func performTaskAndWait<T: Any>(_ block: @escaping (NSManagedObjectContext) -> T) -> T {
 		let context = NSManagedObjectContext(concurrencyType: Thread.isMainThread ? .mainQueueConcurrencyType : .privateQueueConcurrencyType)
 		context.persistentStoreCoordinator = persistentStoreCoordinator
@@ -51,6 +61,27 @@ public class NCDatabase {
 		var v: T?
 		context.performAndWait {
 			v = block(context)
+		}
+		return v!
+	}
+	
+	@discardableResult
+	public func performTaskAndWait<T: Any>(_ block: @escaping (NSManagedObjectContext) throws -> T) throws -> T {
+		let context = NSManagedObjectContext(concurrencyType: Thread.isMainThread ? .mainQueueConcurrencyType : .privateQueueConcurrencyType)
+		context.persistentStoreCoordinator = persistentStoreCoordinator
+		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+		var v: T?
+		var err: Error?
+		context.performAndWait {
+			do {
+				v = try block(context)
+			}
+			catch {
+				err = error
+			}
+		}
+		if let error = err {
+			throw error
 		}
 		return v!
 	}

@@ -149,6 +149,11 @@
 		128130421F3B01230039D46B /* dropzone.js in Resources */ = {isa = PBXBuildFile; fileRef = 1281303F1F3B01230039D46B /* dropzone.js */; };
 		128130431F3B01230039D46B /* main.css in Resources */ = {isa = PBXBuildFile; fileRef = 128130401F3B01230039D46B /* main.css */; };
 		128130451F3B08600039D46B /* main.js in Resources */ = {isa = PBXBuildFile; fileRef = 128130441F3B08600039D46B /* main.js */; };
+		12841BEC2059464D00B30582 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12841BEB2059464D00B30582 /* Atomic.swift */; };
+		12841C0D205BD42D00B30582 /* openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12841C0C205BD42D00B30582 /* openssl.framework */; };
+		12841C0E205BD42D00B30582 /* openssl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12841C0C205BD42D00B30582 /* openssl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		12841C10205BD9F900B30582 /* cwrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12841C11205BD9F900B30582 /* cwrapper.framework */; };
+		12841C13205BEA4900B30582 /* NCWalletJournalPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12841C12205BEA4900B30582 /* NCWalletJournalPageViewController.swift */; };
 		128442151EBCEECB00D87992 /* NCAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128442141EBCEECB00D87992 /* NCAssetsViewController.swift */; };
 		12851D801EFD3D5300C8DD42 /* NCKillmailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12851D7F1EFD3D5300C8DD42 /* NCKillmailsViewController.swift */; };
 		1285FB331EB8DBFA0025331A /* NCImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285FB321EB8DBFA0025331A /* NCImageView.swift */; };
@@ -207,7 +212,6 @@
 		1293BC1C1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293BC1B1E4B6C0E0099FD75 /* NCFittingMiscTableViewCell.swift */; };
 		1293BC1E1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293BC1D1E4B6D360099FD75 /* NCFittingResourcesTableViewCell.swift */; };
 		1293BC221E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293BC211E4B6DFB0099FD75 /* NCFittingCapacitorTableViewCell.swift */; };
-		1293D7C62049807E00A1F453 /* openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1293D7C72049807E00A1F453 /* openssl.framework */; };
 		1293D7C92049813200A1F453 /* NCWealthBlueprintsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293D7C82049813200A1F453 /* NCWealthBlueprintsViewController.swift */; };
 		1293D7CD20499B2900A1F453 /* NCWealthAssetsDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293D7CC20499B2900A1F453 /* NCWealthAssetsDetailsViewController.swift */; };
 		1293D7D5204A89AE00A1F453 /* Neocom_II_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1293D7D4204A89AE00A1F453 /* Neocom_II_UITests.swift */; };
@@ -465,6 +469,7 @@
 				12B68F2A1E802958006462B7 /* CloudData.framework in Embed Frameworks */,
 				12AC8DA71DEF597400561A7A /* EVEAPI.framework in Embed Frameworks */,
 				12BC40A31DFF1EBB00657D40 /* Alamofire.framework in Embed Frameworks */,
+				12841C0E205BD42D00B30582 /* openssl.framework in Embed Frameworks */,
 				1235F3D61F39B9F1000E0FD9 /* Swifter.framework in Embed Frameworks */,
 				12DBEAAE1E1D3B710088A486 /* Dgmpp.framework in Embed Frameworks */,
 			);
@@ -644,6 +649,10 @@
 		1281303F1F3B01230039D46B /* dropzone.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = dropzone.js; sourceTree = "<group>"; };
 		128130401F3B01230039D46B /* main.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = main.css; sourceTree = "<group>"; };
 		128130441F3B08600039D46B /* main.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = main.js; sourceTree = "<group>"; };
+		12841BEB2059464D00B30582 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
+		12841C0C205BD42D00B30582 /* openssl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = openssl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		12841C11205BD9F900B30582 /* cwrapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = cwrapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		12841C12205BEA4900B30582 /* NCWalletJournalPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCWalletJournalPageViewController.swift; sourceTree = "<group>"; };
 		128442141EBCEECB00D87992 /* NCAssetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAssetsViewController.swift; sourceTree = "<group>"; };
 		12851D7B1EFD1ADE00C8DD42 /* NCPlanetaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCPlanetaryViewController.swift; sourceTree = "<group>"; };
 		12851D7F1EFD3D5300C8DD42 /* NCKillmailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailsViewController.swift; sourceTree = "<group>"; };
@@ -898,7 +907,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1293D7C62049807E00A1F453 /* openssl.framework in Frameworks */,
+				12841C10205BD9F900B30582 /* cwrapper.framework in Frameworks */,
 				12BFE4212017BF6F0083AC2F /* ASReceipt.framework in Frameworks */,
 				122DB9AF1E806DB000E8E2C4 /* libz.tbd in Frameworks */,
 				1235F3D51F39B9F1000E0FD9 /* Swifter.framework in Frameworks */,
@@ -910,6 +919,7 @@
 				12C967051F96111900B141CC /* nanopb.framework in Frameworks */,
 				12C967041F96111900B141CC /* GoogleToolboxForMac.framework in Frameworks */,
 				12C967021F96111900B141CC /* FirebaseInstanceID.framework in Frameworks */,
+				12841C0D205BD42D00B30582 /* openssl.framework in Frameworks */,
 				12C967031F96111900B141CC /* FirebaseNanoPB.framework in Frameworks */,
 				12C967011F96111900B141CC /* FirebaseCoreDiagnostics.framework in Frameworks */,
 				12AC8DA61DEF597400561A7A /* EVEAPI.framework in Frameworks */,
@@ -1200,6 +1210,7 @@
 				12D39D011EF7DBFA0077BD17 /* NCMarketOrdersViewController.swift */,
 				12D39D031EF8046F0077BD17 /* NCIndustryViewController.swift */,
 				12D39D071EF91CA80077BD17 /* NCWalletJournalViewController.swift */,
+				12841C12205BEA4900B30582 /* NCWalletJournalPageViewController.swift */,
 				12D39D0F1EF936980077BD17 /* NCWalletTransactionsViewController.swift */,
 				12D39D151EF969DA0077BD17 /* NCContractsViewController.swift */,
 				120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */,
@@ -1327,6 +1338,7 @@
 		12AC8D871DEF58A100561A7A = {
 			isa = PBXGroup;
 			children = (
+				12841C0C205BD42D00B30582 /* openssl.framework */,
 				1235F3D41F39B9F1000E0FD9 /* Swifter.framework */,
 				12B68F281E802958006462B7 /* CloudData.framework */,
 				12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */,
@@ -1443,6 +1455,7 @@
 				12D20EB31EBCBD3C00BEC926 /* EVEAPI+NC.swift */,
 				1235F3DB1F39BC90000E0FD9 /* UIDevice+NC.swift */,
 				12CD2CAB1F581B6600367606 /* NCNotificationManager.swift */,
+				12841BEB2059464D00B30582 /* Atomic.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -1652,6 +1665,7 @@
 		12DBEAAF1E1D3B860088A486 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				12841C11205BD9F900B30582 /* cwrapper.framework */,
 				1293D7C72049807E00A1F453 /* openssl.framework */,
 				12CA8F902047E22C000360DE /* UIKit.framework */,
 				12BFE4222017BF6F0083AC2F /* ASReceipt.framework */,
@@ -2111,6 +2125,7 @@
 				124247C01E6605AD002E0460 /* NCFleetMemberTableViewCell.swift in Sources */,
 				1230A32E1DFFE2CF00627D92 /* NCLabel.swift in Sources */,
 				12DA882A1EB8707400FB1922 /* Progress+NC.swift in Sources */,
+				12841C13205BEA4900B30582 /* NCWalletJournalPageViewController.swift in Sources */,
 				1256BE441DF1F09900A2A24B /* NCSkill.swift in Sources */,
 				129E60EE1E0152A900B56EB8 /* NCAutoHeightLabel.swift in Sources */,
 				12D930F61E65A77300CBAE1C /* NCFleetTableViewCell.swift in Sources */,
@@ -2214,6 +2229,7 @@
 				122E11CE1FEBB8810057EB0D /* NCFittingFleet.swift in Sources */,
 				12C44CFA1E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift in Sources */,
 				1256BE361DF1ED3F00A2A24B /* NCStorageExtensions.swift in Sources */,
+				12841BEC2059464D00B30582 /* Atomic.swift in Sources */,
 				12DA88331EB8C93A00FB1922 /* NCExtendedLifeTime.swift in Sources */,
 				12D404491F31C0AF007F1715 /* NCSwitchTableViewCell.swift in Sources */,
 				1235F3DC1F39BC90000E0FD9 /* UIDevice+NC.swift in Sources */,

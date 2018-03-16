@@ -382,6 +382,41 @@ class NCMainMenuViewController: NCTreeViewController {
 
 								]),
 
+			DefaultTreeSection(nodeIdentifier: "Corporation", title: NSLocalizedString("Corporation", comment: "").uppercased(),
+							   children: [
+								NCMainMenuRow(nodeIdentifier: "Assets",
+											  image: #imageLiteral(resourceName: "assets"),
+											  title: NSLocalizedString("Assets", comment: ""),
+											  route: Router.MainMenu.Assets(owner: .corporation),
+											  scopes: [.esiAssetsReadCorporationAssetsV1],
+											  account: account),
+								NCMainMenuRow(nodeIdentifier: "MarketOrders",
+											  image: #imageLiteral(resourceName: "marketdeliveries"),
+											  title: NSLocalizedString("Market Orders", comment: ""),
+											  route: Router.MainMenu.MarketOrders(),
+											  scopes: [.esiMarketsReadCorporationOrdersV1],
+											  account: account),
+								NCMainMenuRow(nodeIdentifier: "WalletTransactions",
+											  image: #imageLiteral(resourceName: "journal"),
+											  title: NSLocalizedString("Wallet Transactions", comment: ""),
+											  route: Router.MainMenu.WalletTransactions(),
+											  scopes: [.esiWalletReadCorporationWalletsV1],
+											  account: account),
+								NCMainMenuRow(nodeIdentifier: "WalletJournal",
+											  image: #imageLiteral(resourceName: "wallet"),
+											  title: NSLocalizedString("Wallet Journal", comment: ""),
+											  route: Router.MainMenu.WalletJournal(owner: .corporation),
+											  scopes: [.esiWalletReadCorporationWalletsV1],
+											  account: account),
+								NCMainMenuRow(nodeIdentifier: "IndustryJobs",
+											  image: #imageLiteral(resourceName: "industry"),
+											  title: NSLocalizedString("Industry Jobs", comment: ""),
+											  route: Router.MainMenu.IndustryJobs(),
+											  scopes: [.esiIndustryReadCorporationJobsV1],
+											  account: account)
+				]),
+			
+			
 			DefaultTreeSection(nodeIdentifier: "Database", title: NSLocalizedString("Database", comment: "").uppercased(),
 		                                   children: [
 											NCMainMenuRow(nodeIdentifier: "Database", image: #imageLiteral(resourceName: "items"), title: NSLocalizedString("Database", comment: ""), route: Router.MainMenu.Database()),
@@ -409,7 +444,7 @@ class NCMainMenuViewController: NCTreeViewController {
 								NCMainMenuRow(nodeIdentifier: "Assets",
 								              image: #imageLiteral(resourceName: "assets"),
 								              title: NSLocalizedString("Assets", comment: ""),
-								              route: Router.MainMenu.Assets(),
+								              route: Router.MainMenu.Assets(owner: .character),
 								              scopes: [.esiAssetsReadAssetsV1],
 								              account: account),
 								NCMainMenuRow(nodeIdentifier: "MarketOrders",
@@ -433,7 +468,7 @@ class NCMainMenuViewController: NCTreeViewController {
 								NCMainMenuRow(nodeIdentifier: "WalletJournal",
 								              image: #imageLiteral(resourceName: "wallet"),
 								              title: NSLocalizedString("Wallet Journal", comment: ""),
-								              route: Router.MainMenu.WalletJournal(),
+								              route: Router.MainMenu.WalletJournal(owner: .character),
 								              scopes: [.esiWalletReadCharacterWalletV1],
 								              account: account),
 								NCMainMenuRow(nodeIdentifier: "IndustryJobs",
@@ -463,6 +498,13 @@ class NCMainMenuViewController: NCTreeViewController {
 		]
 		
 //		let currentScopes = Set((account?.scopes?.allObjects as? [NCScope])?.flatMap {return $0.name != nil ? ESI.Scope($0.name!) : nil} ?? [])
+		
+		if (account?.scopes as? Set<NCScope>)?.flatMap({$0.name}).contains(ESI.Scope.esiAssetsReadCorporationAssetsV1.rawValue) == true {
+			sections[1].isExpanded = true
+		}
+		else {
+			sections[1].isExpanded = false
+		}
 		
 		sections.forEach {$0.children = ($0.children as! [NCMainMenuRow]).filter({$0.scopes.isEmpty || account != nil})}
 		sections = sections.filter {!$0.children.isEmpty}

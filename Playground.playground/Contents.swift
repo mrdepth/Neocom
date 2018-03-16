@@ -4,46 +4,24 @@ import UIKit
 import PlaygroundSupport
 import CoreData
 
-protocol P {
-//	associatedtype T
-//	var i: T {get set}
-	func f1()
-	func f2()
-	func some() -> Self
+func f<T>(_ type: T) {
+	switch T.self {
+	case is String.Type:
+		print("String")
+	default:
+		print("Unknown")
+	}
 }
 
-class A: P {
-	var i: Int = 1
-	func some() -> Self {
-		print("some")
-		return self
-	}
+let d: String  = "10"
+f(d)
+
+do {
+	JSONSerialization.isValidJSONObject(d)
 	
-	func f1() {
-		print("A:f1")
-	}
+//	try JSONDecoder().decode(String.self, from: data)
+//	let data = try JSONEncoder().encode(d)
 }
-
-
-extension P {
-	func f1() {
-		print("P:f1")
-	}
-	func f2() {
-		print("P:f2")
-	}
-//	func some() -> Self {
-//		return self
-//	}
+catch {
+	print("\(error)")
 }
-
-
-A().f1()
-A().f2()
-
-func f(arg: P) {
-	print("\(type(of: arg.some()))")
-}
-
-
-f(arg: A())

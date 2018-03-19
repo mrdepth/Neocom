@@ -10,7 +10,8 @@ import UIKit
 import EVEAPI
 
 class NCMarketOrdersViewController: NCTreeViewController {
-	
+	var owner = Owner.character
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		accountChangeAction = .reload
@@ -18,65 +19,73 @@ class NCMarketOrdersViewController: NCTreeViewController {
 	}
 	
 	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
-		dataManager.marketOrders { result in
-			self.orders = result
-			completionHandler([result.cacheRecord].flatMap {$0})
+		switch owner {
+		case .character:
+			dataManager.marketOrders().then(queue: .main) { result in
+				self.orders = result
+				completionHandler([result.cacheRecord].flatMap {$0})
+			}.catch(queue: .main) { error in
+				self.error = error
+				completionHandler([])
+			}
+		case .corporation:
+			dataManager.corpMarketOrders().then(queue: .main) { result in
+				self.corpOrders = result
+				completionHandler([result.cacheRecord].flatMap {$0})
+			}.catch(queue: .main) { error in
+				self.error = error
+				completionHandler([])
+			}
 		}
 	}
 	
 	override func updateContent(completionHandler: @escaping () -> Void) {
-		if let value = orders?.value {
-			tableView.backgroundView = nil
-			
+		let orders = self.orders
+		let corpOrders = self.corpOrders
+		let progress = Progress(totalUnitCount: 3)
+		
+		OperationQueue(qos: .utility).async { () -> [TreeNode] in
+			guard let value: [NCMarketOrder] = orders?.value ?? corpOrders?.value else {return []}
 			let locationIDs = Set(value.map {$0.locationID})
+			let locations = try? progress.perform{ self.dataManager.locations(ids: locationIDs) }.get()
 			
-			dataManager.locations(ids: locationIDs) { locations in
-				NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
-					
-					let open = value
-					
-					var buy = open.filter {$0.isBuyOrder == true}.map {NCMarketOrderRow(order: $0, location: locations[$0.locationID])}
-					var sell = open.filter {$0.isBuyOrder != true}.map {NCMarketOrderRow(order: $0, location: locations[$0.locationID])}
-//					var closed = value.filter {$0.state != .open}.map {NCMarketOrderRow(order: $0, location: locations[$0.locationID])}
-					
-					buy.sort {$0.expired < $1.expired}
-					sell.sort {$0.expired < $1.expired}
-//					closed.sort {$0.expired > $1.expired}
-					
-					var sections = [TreeNode]()
-					
-					if !sell.isEmpty {
-						sections.append(DefaultTreeSection(nodeIdentifier: "Sell", title: NSLocalizedString("Sell", comment: "").uppercased(), children: sell))
-					}
-					if !buy.isEmpty {
-						sections.append(DefaultTreeSection(nodeIdentifier: "Buy", title: NSLocalizedString("Buy", comment: "").uppercased(), children: buy))
-					}
-//					if !closed.isEmpty {
-//						sections.append(DefaultTreeSection(nodeIdentifier: "Closed", title: NSLocalizedString("Closed", comment: "").uppercased(), children: closed))
-//					}
-					
-					
-					DispatchQueue.main.async {
-						
-						if self.treeController?.content == nil {
-							self.treeController?.content = RootNode(sections)
-						}
-						else {
-							self.treeController?.content?.children = sections
-						}
-						self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-						completionHandler()
-
-					}
+			return NCDatabase.sharedDatabase!.performTaskAndWait { managedObjectContext in
+				
+				let open = value
+				
+				var buy = open.filter {$0.isBuyOrder == true}.map {NCMarketOrderRow(order: $0, location: locations?[$0.locationID])}
+				var sell = open.filter {$0.isBuyOrder != true}.map {NCMarketOrderRow(order: $0, location: locations?[$0.locationID])}
+				
+				buy.sort {$0.expired < $1.expired}
+				sell.sort {$0.expired < $1.expired}
+				
+				var sections = [TreeNode]()
+				
+				if !sell.isEmpty {
+					sections.append(DefaultTreeSection(nodeIdentifier: "Sell", title: NSLocalizedString("Sell", comment: "").uppercased(), children: sell))
 				}
+				if !buy.isEmpty {
+					sections.append(DefaultTreeSection(nodeIdentifier: "Buy", title: NSLocalizedString("Buy", comment: "").uppercased(), children: buy))
+				}
+				return sections
 			}
-		}
-		else {
-			tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: orders?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+		}.then(queue: .main) { sections in
+			if self.treeController?.content == nil {
+				self.treeController?.content = RootNode(sections)
+			}
+			else {
+				self.treeController?.content?.children = sections
+			}
+		}.catch(queue: .main) {error in
+			self.error = error
+		}.finally(queue: .main) {
+			self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: self.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 			completionHandler()
 		}
 	}
 	
-	private var orders: NCCachedResult<[ESI.Market.CharacterOrder]>?
+	private var orders: CachedValue<[ESI.Market.CharacterOrder]>?
+	private var corpOrders: CachedValue<[ESI.Market.CorpOrder]>?
+	private var error: Error?
 	
 }

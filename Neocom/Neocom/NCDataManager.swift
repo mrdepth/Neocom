@@ -919,9 +919,30 @@ class NCDataManager {
 	func blueprints(completionHandler: @escaping (NCCachedResult<[ESI.Character.Blueprint]>) -> Void) {
 		loadFromCache(forKey: "ESI.Character.Blueprint", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.character.getBlueprints(characterID: Int(self.characterID)))
 	}
+	
+	func corpIndustryJobs() -> Future<CachedValue<[ESI.Industry.CorpJob]>> {
+		return corporationID.then { corporationID in
+			return self.loadFromCache(forKey: "ESI.Industry.Job", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.industry.listCorporationIndustryJobs(corporationID: Int(corporationID), includeCompleted: true))
+		}
+	}
+
+	
+	func industryJobs() -> Future<CachedValue<[ESI.Industry.Job]>> {
+		return loadFromCache(forKey: "ESI.Industry.Job", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.industry.listCharacterIndustryJobs(characterID: Int(self.characterID), includeCompleted: true))
+	}
 
 	func industryJobs(completionHandler: @escaping (NCCachedResult<[ESI.Industry.Job]>) -> Void) {
 		loadFromCache(forKey: "ESI.Industry.Job", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.industry.listCharacterIndustryJobs(characterID: Int(self.characterID), includeCompleted: true))
+	}
+
+	func corpMarketOrders() -> Future<CachedValue<[ESI.Market.CorpOrder]>> {
+		return corporationID.then { corporationID in
+			return self.loadFromCache(forKey: "ESI.Market.CorpOrder", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.market.listOpenOrdersFromCorporation(corporationID: Int(corporationID)))
+		}
+	}
+
+	func marketOrders() -> Future<CachedValue<[ESI.Market.CharacterOrder]>> {
+		return loadFromCache(forKey: "ESI.Market.CharacterOrder", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.market.listOpenOrdersFromCharacter(characterID: Int(self.characterID)))
 	}
 
 	func marketOrders(completionHandler: @escaping (NCCachedResult<[ESI.Market.CharacterOrder]>) -> Void) {

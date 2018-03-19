@@ -108,16 +108,16 @@ extension ESI.Contracts.Contract {
 	}
 }
 
-extension ESI.Industry.Job {
-	var currentStatus: ESI.Industry.JobStatus {
-		switch status {
-		case .active:
-			return endDate < Date() ? .ready : status
-		default:
-			return status
-		}
-	}
-}
+//extension ESI.Industry.Job {
+//	var currentStatus: ESI.Industry.JobStatus {
+//		switch status {
+//		case .active:
+//			return endDate < Date() ? .ready : status
+//		default:
+//			return status
+//		}
+//	}
+//}
 
 
 extension ESI.Incursions.Incursion.State {

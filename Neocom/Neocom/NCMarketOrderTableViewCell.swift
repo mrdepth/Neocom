@@ -26,8 +26,32 @@ extension Prototype {
 	}
 }
 
+protocol NCMarketOrder {
+	var duration: Int {get}
+//	public var escrow: Double?
+	var isBuyOrder: Bool? {get}
+//	public var isCorporation: Bool
+	var issued: Date {get}
+	var locationID: Int64 {get}
+//	public var minVolume: Int?
+//	public var orderID: Int64
+	var price: Double {get}
+//	public var range: Market.CharacterOrder.GetCharactersCharacterIDOrdersRange
+//	public var regionID: Int
+	var typeID: Int {get}
+	var volumeRemain: Int {get}
+	var volumeTotal: Int {get}
+	var hashValue: Int {get}
+}
+
+extension ESI.Market.CharacterOrder: NCMarketOrder {
+}
+
+extension ESI.Market.CorpOrder: NCMarketOrder {
+}
+
 class NCMarketOrderRow: TreeRow {
-	let order: ESI.Market.CharacterOrder
+	let order: NCMarketOrder
 	let location: NCLocation?
 	let expired: Date
 	
@@ -35,7 +59,7 @@ class NCMarketOrderRow: TreeRow {
 		return NCDatabase.sharedDatabase?.invTypes[self.order.typeID]
 	}()
 	
-	init(order: ESI.Market.CharacterOrder, location: NCLocation?) {
+	init(order: NCMarketOrder, location: NCLocation?) {
 		self.order = order
 		self.location = location
 		expired = order.issued + TimeInterval(order.duration * 3600 * 24)

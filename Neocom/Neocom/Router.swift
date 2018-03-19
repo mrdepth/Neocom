@@ -1514,8 +1514,15 @@ enum Router {
 		}
 
 		class MarketOrders: Route {
-			init() {
+			let owner: Owner
+			init(owner: Owner) {
+				self.owner = owner
 				super.init(kind: .detail, storyboard: .business, identifier: "NCMarketOrdersViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCMarketOrdersViewController
+				destination.owner = owner
 			}
 		}
 
@@ -1526,8 +1533,13 @@ enum Router {
 		}
 
 		class WalletTransactions: Route {
-			init() {
-				super.init(kind: .detail, storyboard: .business, identifier: "NCWalletTransactionsViewController")
+			init(owner: Owner) {
+				switch owner {
+				case .character:
+					super.init(kind: .detail, storyboard: .business, identifier: "NCWalletTransactionsViewController")
+				case .corporation:
+					super.init(kind: .detail, storyboard: .business, identifier: "NCWalletTransactionsPageViewController")
+				}
 			}
 		}
 
@@ -1539,13 +1551,19 @@ enum Router {
 				case .corporation:
 					super.init(kind: .detail, storyboard: .business, identifier: "NCWalletJournalPageViewController")
 				}
-				
 			}
 		}
 
 		class IndustryJobs: Route {
-			init() {
+			let owner: Owner
+			init(owner: Owner) {
+				self.owner = owner
 				super.init(kind: .detail, storyboard: .business, identifier: "NCIndustryViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCIndustryViewController
+				destination.owner = owner
 			}
 		}
 

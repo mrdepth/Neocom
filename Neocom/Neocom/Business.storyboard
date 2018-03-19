@@ -828,5 +828,23 @@
             </objects>
             <point key="canvasLocation" x="-2282" y="6012"/>
         </scene>
+        <!--Wallet Journal-->
+        <scene sceneID="Mt1-cs-pXE">
+            <objects>
+                <viewController storyboardIdentifier="NCWalletTransactionsPageViewController" automaticallyAdjustsScrollViewInsets="NO" id="Bio-nY-M2K" customClass="NCWalletTransactionsPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="q3q-xb-sGY" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="yTH-MC-5yC"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Wallet Journal" id="Ua1-0o-2ow"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="black" translucent="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wKN-5S-c28" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2282" y="6755"/>
+        </scene>
     </scenes>
 </document>

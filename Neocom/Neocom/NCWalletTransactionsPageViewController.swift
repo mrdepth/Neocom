@@ -44,7 +44,7 @@ class NCWalletTransactionsPageViewController: NCPageViewController {
 		let progress = NCProgressHandler(viewController: self, totalUnitCount: 2)
 		
 		progress.progress.perform {
-			dataManager.corpWalletBalance().then(queue: .main) { result -> Void in
+			dataManager.corpWalletBalance().then(on: .main) { result -> Void in
 				guard let balance = result.value?.reduce(0, { $0 + $1.balance }) else {return}
 				
 				let label = self.navigationItem.titleView as? NCNavigationItemTitleLabel
@@ -56,7 +56,7 @@ class NCWalletTransactionsPageViewController: NCPageViewController {
 						return result.value?.wallet?.filter {$0.division != nil}
 					}
 				}
-			}.then(queue: .main) { result in
+			}.then(on: .main) { result in
 				guard let result = result, !result.isEmpty else {throw NCDataManagerError.noResult}
 				self.viewControllers = result.map { division in
 					let controller = self.storyboard!.instantiateViewController(withIdentifier: "NCWalletTransactionsViewController") as! NCWalletTransactionsViewController
@@ -64,9 +64,9 @@ class NCWalletTransactionsPageViewController: NCPageViewController {
 					return controller
 				}
 				self.errorLabel = nil
-			}.catch(queue: .main) { error in
+			}.catch(on: .main) { error in
 				self.errorLabel = NCTableViewBackgroundLabel(text: error.localizedDescription)
-			}.finally(queue: .main) {
+			}.finally(on: .main) {
 				progress.finish()
 		}
 	}

@@ -21,18 +21,18 @@ class NCMarketOrdersViewController: NCTreeViewController {
 	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
 		switch owner {
 		case .character:
-			dataManager.marketOrders().then(queue: .main) { result in
+			dataManager.marketOrders().then(on: .main) { result in
 				self.orders = result
 				completionHandler([result.cacheRecord].flatMap {$0})
-			}.catch(queue: .main) { error in
+			}.catch(on: .main) { error in
 				self.error = error
 				completionHandler([])
 			}
 		case .corporation:
-			dataManager.corpMarketOrders().then(queue: .main) { result in
+			dataManager.corpMarketOrders().then(on: .main) { result in
 				self.corpOrders = result
 				completionHandler([result.cacheRecord].flatMap {$0})
-			}.catch(queue: .main) { error in
+			}.catch(on: .main) { error in
 				self.error = error
 				completionHandler([])
 			}
@@ -69,16 +69,16 @@ class NCMarketOrdersViewController: NCTreeViewController {
 				}
 				return sections
 			}
-		}.then(queue: .main) { sections in
+		}.then(on: .main) { sections in
 			if self.treeController?.content == nil {
 				self.treeController?.content = RootNode(sections)
 			}
 			else {
 				self.treeController?.content?.children = sections
 			}
-		}.catch(queue: .main) {error in
+		}.catch(on: .main) {error in
 			self.error = error
-		}.finally(queue: .main) {
+		}.finally(on: .main) {
 			self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: self.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 			completionHandler()
 		}

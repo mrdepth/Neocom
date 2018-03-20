@@ -20,18 +20,18 @@ class NCIndustryViewController: NCTreeViewController {
 	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
 		switch owner {
 		case .character:
-			dataManager.industryJobs().then(queue: .main) { result in
+			dataManager.industryJobs().then(on: .main) { result in
 				self.jobs = result
 				completionHandler([result.cacheRecord].flatMap {$0})
-			}.catch(queue: .main) { error in
+			}.catch(on: .main) { error in
 				self.error = error
 				completionHandler([])
 			}
 		case .corporation:
-			dataManager.corpIndustryJobs().then(queue: .main) { result in
+			dataManager.corpIndustryJobs().then(on: .main) { result in
 				self.corpJobs = result
 				completionHandler([result.cacheRecord].flatMap {$0})
-			}.catch(queue: .main) { error in
+			}.catch(on: .main) { error in
 				self.error = error
 				completionHandler([])
 			}
@@ -59,16 +59,16 @@ class NCIndustryViewController: NCTreeViewController {
 				rows.append(contentsOf: closed)
 				return rows
 			}
-		}.then(queue: .main) { sections in
+		}.then(on: .main) { sections in
 			if self.treeController?.content == nil {
 				self.treeController?.content = RootNode(sections)
 			}
 			else {
 				self.treeController?.content?.children = sections
 			}
-		}.catch(queue: .main) {error in
+		}.catch(on: .main) {error in
 			self.error = error
-		}.finally(queue: .main) {
+		}.finally(on: .main) {
 			self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: self.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 			completionHandler()
 		}

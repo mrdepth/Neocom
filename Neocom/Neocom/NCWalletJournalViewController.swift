@@ -36,22 +36,22 @@ class NCWalletJournalViewController: NCTreeViewController {
 				let walletJournal = progress.perform{self.dataManager.walletJournal()}
 				let walletBalance = progress.perform{self.dataManager.walletBalance()}
 				return try (walletJournal.get(), walletBalance.get())
-			}.then(queue: .main) { result in
+			}.then(on: .main) { result in
 				self.walletJournal = result.0
 				self.walletBalance = result.1
 				self.error = nil
 				completionHandler([self.walletJournal?.cacheRecord, self.walletBalance?.cacheRecord].flatMap {$0})
-			}.catch(queue: .main) { error in
+			}.catch(on: .main) { error in
 				self.error = error
 				completionHandler([])
 				self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: error.localizedDescription)
 			}
 		case let .corporation(wallet):
 			Progress(totalUnitCount: 1).perform {
-				self.dataManager.corpWalletJournal(division: wallet.division ?? 0).then(queue: .main) { result in
+				self.dataManager.corpWalletJournal(division: wallet.division ?? 0).then(on: .main) { result in
 					self.corpWalletJournal = result
 					completionHandler([self.corpWalletJournal?.cacheRecord].flatMap {$0})
-				}.catch(queue: .main) { error in
+				}.catch(on: .main) { error in
 					self.error = error
 					completionHandler([])
 					self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: error.localizedDescription)
@@ -105,7 +105,7 @@ class NCWalletJournalViewController: NCTreeViewController {
 				sections.append(DefaultTreeSection(nodeIdentifier: title, title: title.uppercased(), children: rows))
 			}
 			return sections
-		}.then(queue: .main) { sections in
+		}.then(on: .main) { sections in
 			if self.treeController?.content == nil {
 				self.treeController?.content = RootNode(sections)
 			}

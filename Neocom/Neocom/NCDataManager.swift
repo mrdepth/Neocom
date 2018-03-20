@@ -299,7 +299,7 @@ class NCDataManager {
 	func locations(ids: Set<Int64>) -> Future<[Int64: NCLocation]> {
 		let promise = Promise<[Int64: NCLocation]>()
 		guard !ids.isEmpty else {
-			try! promise.set(.success([:]))
+			try! promise.fulfill([:])
 			return promise.future
 		}
 		
@@ -345,7 +345,7 @@ class NCDataManager {
 					missing.insert(id)
 				}
 			}
-		}.then(queue: .global(qos: .utility)) { _ -> [Int64: NCLocation] in
+		}.then(on: .global(qos: .utility)) { _ -> [Int64: NCLocation] in
 			if !missing.isEmpty {
 				try? self.universeNames(ids: missing).get().value?.forEach { name in
 					guard let location = NCLocation(name) else {return}
@@ -1032,13 +1032,13 @@ class NCDataManager {
 				do {
 					switch response.result {
 					case let .success(value):
-						try promise.set(.success(.init(value: value, cached: 600)))
+						try promise.fulfill(.init(value: value, cached: 600))
 					case let .failure(error):
 						throw error
 					}
 				}
 				catch {
-					try! promise.set(.failure(error))
+					try! promise.fail(error)
 				}
 			}
 			return promise.future
@@ -1091,7 +1091,7 @@ class NCDataManager {
 		
 		let promise = Promise<CachedValue<T>>()
 		guard let cache = NCCache.sharedCache else {
-			try! promise.set(.failure(NCDataManagerError.internalError))
+			try! promise.fail(NCDataManagerError.internalError)
 			return promise.future
 		}
 		
@@ -1156,13 +1156,13 @@ class NCDataManager {
 		
 		let lifeTime = NCExtendedLifeTime(self)
 		future.then { result in
-			try promise.set(.success(.init(result)))
+			try promise.fulfill(.init(result))
 			}
 			.finally {
 				lifeTime.finalize()
 			}
 			.catch { error in
-				try! promise.set(.failure(error))
+				try! promise.fail(error)
 		}
 
 		

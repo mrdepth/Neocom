@@ -140,10 +140,10 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 						assets.append(page)
 					}
 					return Array(assets)
-				}.then(queue: .main) { assets in
+				}.then(on: .main) { assets in
 						self.assets = assets
 						completionHandler(assets.flatMap {$0.cacheRecord})
-				}.catch(queue: .main) { error in
+				}.catch(on: .main) { error in
 						completionHandler([])
 						self.tableView.backgroundView =  NCTableViewBackgroundLabel(text: error.localizedDescription)
 				}
@@ -157,10 +157,10 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 					assets.append(page)
 				}
 				return assets
-			}.then(queue: .main) { assets in
+			}.then(on: .main) { assets in
 					self.corpAssets = assets
 					completionHandler(assets.flatMap {$0.cacheRecord})
-			}.catch(queue: .main) { error in
+			}.catch(on: .main) { error in
 					completionHandler([])
 					self.error = error
 //					self.tableView.backgroundView =  NCTableViewBackgroundLabel(text: error.localizedDescription)
@@ -234,7 +234,7 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 					sections.sort {$0.nodeIdentifier! < $1.nodeIdentifier!}
 				}
 			}
-		}.then(queue: .main) { _ in
+		}.then(on: .main) { _ in
 			if self.treeController?.content == nil {
 				self.treeController?.content = RootNode(sections)
 			}

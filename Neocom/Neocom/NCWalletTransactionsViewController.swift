@@ -36,22 +36,22 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 				let walletTransactions = progress.perform{self.dataManager.walletTransactions()}
 				let walletBalance = progress.perform{self.dataManager.walletBalance()}
 				return try (walletTransactions.get(), walletBalance.get())
-			}.then(queue: .main) { result in
+			}.then(on: .main) { result in
 				self.walletTransactions = result.0
 				self.walletBalance = result.1
 				self.error = nil
 				completionHandler([self.walletTransactions?.cacheRecord, self.walletBalance?.cacheRecord].flatMap {$0})
-			}.catch(queue: .main) { error in
+			}.catch(on: .main) { error in
 				self.error = error
 				completionHandler([])
 				self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: error.localizedDescription)
 			}
 		case let .corporation(wallet):
 			Progress(totalUnitCount: 1).perform {
-				self.dataManager.corpWalletTransactions(division: wallet.division ?? 0).then(queue: .main) { result in
+				self.dataManager.corpWalletTransactions(division: wallet.division ?? 0).then(on: .main) { result in
 					self.corpWalletTransactions = result
 					completionHandler([self.corpWalletTransactions?.cacheRecord].flatMap {$0})
-				}.catch(queue: .main) { error in
+				}.catch(on: .main) { error in
 					self.error = error
 					completionHandler([])
 					self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: error.localizedDescription)
@@ -133,7 +133,7 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 				
 			}
 			return sections
-		}.then(queue: .main) { sections -> Void in
+		}.then(on: .main) { sections -> Void in
 			progress.completedUnitCount += 1
 			
 			if self.treeController?.content == nil {
@@ -144,9 +144,9 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 			}
 			
 			self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: self.error?.localizedDescription ?? NSLocalizedString("No Results", comment: "")) : nil
-		}.catch(queue: .main) {error in
+		}.catch(on: .main) {error in
 			self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: self.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-		}.finally(queue: .main) {
+		}.finally(on: .main) {
 			completionHandler()
 		}
 	}

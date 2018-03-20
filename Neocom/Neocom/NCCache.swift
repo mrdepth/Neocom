@@ -62,13 +62,13 @@ class NCCache: NSObject {
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 		context.perform {
 			do {
-				try promise.set(.success(block(context)))
+				try promise.fulfill(block(context))
 				if (context.hasChanges) {
 					try context.save()
 				}
 			}
 			catch {
-				try! promise.set(.failure(error))
+				try! promise.fail(error)
 			}
 		}
 		return promise.future

@@ -59,25 +59,27 @@ class NCStorage: NSObject {
 		NotificationCenter.default.removeObserver(self)
 	}
 	
-	func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+	@discardableResult
+	public func performBackgroundTask<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) -> Future<T> {
+		let promise = Promise<T>()
 		let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
 		context.persistentStoreCoordinator = persistentStoreCoordinator
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 		context.perform {
-			block(context)
-			if (context.hasChanges) {
-				do {
+			do {
+				try promise.fulfill(block(context))
+				if (context.hasChanges) {
 					try context.save()
 				}
-				catch {
-//					let e = error as NSError
-//					print("\(e.domain): \(e.code)")
-//					print ("\(error)")
-				}
+			}
+			catch {
+				try! promise.fail(error)
 			}
 		}
+		return promise.future
 	}
 	
+	@discardableResult
 	func performTaskAndWait<T: Any>(_ block: @escaping (NSManagedObjectContext) -> T) -> T {
 		let context = NSManagedObjectContext(concurrencyType: Thread.isMainThread ? .mainQueueConcurrencyType : .privateQueueConcurrencyType)
 		context.persistentStoreCoordinator = persistentStoreCoordinator
@@ -86,18 +88,38 @@ class NCStorage: NSObject {
 		context.performAndWait {
 			v = block(context)
 			if (context.hasChanges) {
-				do {
-					try context.save()
-				}
-				catch {
-					print ("\(error)")
-				}
+				try? context.save()
 			}
 
 		}
 		return v!
 	}
 
+	@discardableResult
+	func performTaskAndWait<T: Any>(_ block: @escaping (NSManagedObjectContext) throws -> T) throws -> T {
+		let context = NSManagedObjectContext(concurrencyType: Thread.isMainThread ? .mainQueueConcurrencyType : .privateQueueConcurrencyType)
+		context.persistentStoreCoordinator = persistentStoreCoordinator
+		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+		var v: T?
+		var err: Error?
+		context.performAndWait {
+			do {
+				try v = block(context)
+				if (context.hasChanges) {
+					try context.save()
+				}
+			}
+			catch {
+				err = error
+			}
+			
+		}
+		if let error = err {
+			throw error
+		}
+		return v!
+	}
+	
 	private(set) lazy var accounts: NCFetchedCollection<NCAccount> = {
 		return NCAccount.accounts(managedObjectContext: self.viewContext)
 	}()
@@ -158,6 +180,8 @@ enum NCItemFlag: Int32 {
 	case drone
 	case cargo
 	case hangar
+	case skill
+	case implant
 	
 	init?(flag: ESI.Assets.Asset.Flag) {
 		switch flag {
@@ -177,10 +201,40 @@ enum NCItemFlag: Int32 {
 			self = .hangar
 		case .cargo, .corpseBay, .specializedAmmoHold, .specializedCommandCenterHold, .specializedFuelBay, .specializedGasHold, .specializedMaterialBay, .specializedMineralHold, .specializedOreHold, .specializedPlanetaryCommoditiesHold, .specializedSalvageHold:
 			self = .cargo
+		case .skill:
+			self = .skill
+		case .implant:
+			self = .implant
 		default:
 			return nil
 		}
-
+	}
+	
+	init?(flag: ESI.Assets.CorpAsset.Flag) {
+		switch flag {
+		case .hiSlot0, .hiSlot1, .hiSlot2, .hiSlot3, .hiSlot4, .hiSlot5, .hiSlot6, .hiSlot7:
+			self = .hiSlot
+		case .medSlot0, .medSlot1, .medSlot2, .medSlot3, .medSlot4, .medSlot5, .medSlot6, .medSlot7:
+			self = .medSlot
+		case .loSlot0, .loSlot1, .loSlot2, .loSlot3, .loSlot4, .loSlot5, .loSlot6, .loSlot7:
+			self = .lowSlot
+		case .rigSlot0, .rigSlot1, .rigSlot2, .rigSlot3, .rigSlot4, .rigSlot5, .rigSlot6, .rigSlot7:
+			self = .rigSlot
+		case .subSystemSlot0, .subSystemSlot1, .subSystemSlot2, .subSystemSlot3, .subSystemSlot4, .subSystemSlot5, .subSystemSlot6, .subSystemSlot7:
+			self = .subsystemSlot
+		case .droneBay, .fighterBay, .fighterTube0, .fighterTube1, .fighterTube2, .fighterTube3, .fighterTube4:
+			self = .drone
+	case .hangar, .fleetHangar, .hangarAll, .shipHangar, .specializedLargeShipHold, .specializedIndustrialShipHold, .specializedMediumShipHold, .specializedShipHold, .specializedSmallShipHold :
+			self = .hangar
+	case .cargo, .specializedAmmoHold, .specializedCommandCenterHold, .specializedFuelBay, .specializedGasHold, .specializedMaterialBay, .specializedMineralHold, .specializedOreHold, .specializedPlanetaryCommoditiesHold, .specializedSalvageHold:
+			self = .cargo
+		case .skill:
+			self = .skill
+		case .implant:
+			self = .implant
+		default:
+			return nil
+		}
 	}
 	
 	var image: UIImage? {
@@ -203,6 +257,10 @@ enum NCItemFlag: Int32 {
 			return #imageLiteral(resourceName: "cargoBay")
 		case .hangar:
 			return #imageLiteral(resourceName: "ships")
+		case .implant:
+			return #imageLiteral(resourceName: "implant")
+		case .skill:
+			return #imageLiteral(resourceName: "skills")
 		}
 	}
 	
@@ -226,7 +284,11 @@ enum NCItemFlag: Int32 {
 			return NSLocalizedString("Cargo", comment: "")
 		case .hangar:
 			return NSLocalizedString("Hangar", comment: "")
+		case .implant:
+			return NSLocalizedString("Implant", comment: "")
+		case .skill:
+			return NSLocalizedString("Skill", comment: "")
 		}
 	}
-	
 }
+

@@ -108,16 +108,16 @@ extension ESI.Contracts.Contract {
 	}
 }
 
-extension ESI.Industry.Job {
-	var currentStatus: ESI.Industry.Job.Status {
-		switch status {
-		case .active:
-			return endDate < Date() ? .ready : status
-		default:
-			return status
-		}
-	}
-}
+//extension ESI.Industry.Job {
+//	var currentStatus: ESI.Industry.JobStatus {
+//		switch status {
+//		case .active:
+//			return endDate < Date() ? .ready : status
+//		default:
+//			return status
+//		}
+//	}
+//}
 
 
 extension ESI.Incursions.Incursion.State {
@@ -748,7 +748,7 @@ extension ESI.PlanetaryInteraction.Colony.PlanetType {
 	}
 }
 
-extension ESI.Wallet.WalletJournalItem.RefType {
+extension ESI.Wallet.RefType {
 	var title: String {
 		return rawValue.replacingOccurrences(of: "_", with: " ").capitalized
 	}

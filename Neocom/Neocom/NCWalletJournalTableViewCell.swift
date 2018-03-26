@@ -23,35 +23,43 @@ extension Prototype {
 	}
 }
 
+protocol NCWalletJournalItem {
+	var amount: Double? {get}
+	var balance: Double? {get}
+	var date: Date {get}
+	var refType: ESI.Wallet.RefType {get}
+	var hashValue: Int {get}
+}
+
+extension ESI.Wallet.WalletJournalItem: NCWalletJournalItem {
+}
+
+extension ESI.Wallet.CorpWalletsJournalItem: NCWalletJournalItem {
+}
+
+
 class NCWalletJournalRow: TreeRow {
-	let transaction: ESI.Wallet.WalletJournalItem
+	let item: NCWalletJournalItem
 	
-	init(transaction: ESI.Wallet.WalletJournalItem) {
-		self.transaction = transaction
+	init(item: NCWalletJournalItem) {
+		self.item = item
 		super.init(prototype: Prototype.NCWalletJournalTableViewCell.default)
 	}
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCWalletJournalTableViewCell else {return}
-		cell.titleLabel.text = transaction.refType.title
-		cell.dateLabel.text = DateFormatter.localizedString(from: transaction.date, dateStyle: .medium, timeStyle: .medium)
+		cell.titleLabel.text = item.refType.title
+		cell.dateLabel.text = DateFormatter.localizedString(from: item.date, dateStyle: .medium, timeStyle: .medium)
 		var s: NSAttributedString
-		if let amount = transaction.amount {
+		if let amount = item.amount {
 			s = "\(amount < 0 ? "-" : "")\(NCUnitFormatter.localizedString(from: abs(amount), unit: .isk, style: .full))" * [NSAttributedStringKey.foregroundColor: amount < 0 ? UIColor.red : UIColor.green]
 		}
 		else {
 			s = NSAttributedString()
 		}
 		
-//		if let to = transaction.ownerName2, transaction.amount < 0 && !to.isEmpty {
-//			s = s + " \(NSLocalizedString("to", comment: "")) \(to)"
-//		}
-//		else if let from = transaction.ownerName1, transaction.amount > 0 && !from.isEmpty {
-//			s = s + " \(NSLocalizedString("from", comment: "")) \(from)"
-//		}
-		
 		cell.amountLabel.attributedText = s
-		if let balance = transaction.balance {
+		if let balance = item.balance {
 			cell.balanceLabel.text = NCUnitFormatter.localizedString(from: balance, unit: .isk, style: .full)
 		}
 		else {
@@ -59,7 +67,7 @@ class NCWalletJournalRow: TreeRow {
 		}
 	}
 	
-	override lazy var hashValue: Int = transaction.hashValue
+	override lazy var hashValue: Int = item.hashValue
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCWalletJournalRow)?.hashValue == hashValue

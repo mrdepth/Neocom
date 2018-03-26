@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import CoreData
 
 class NCWalletTransactionTableViewCell: NCTableViewCell {
 	@IBOutlet weak var iconView: UIImageView!
@@ -25,19 +26,43 @@ extension Prototype {
 	}
 }
 
+protocol NCWalletTransaction {
+	var clientID: Int {get}
+	var date: Date {get}
+	var isBuy: Bool {get}
+//	public var isPersonal: Bool
+//	public var journalRefID: Int64
+	var locationID: Int64 {get}
+	var quantity: Int {get}
+//	public var transactionID: Int64
+	var typeID: Int {get}
+	var unitPrice: Double {get}
+	var hashValue: Int {get}
+}
+
+extension ESI.Wallet.Transaction: NCWalletTransaction {
+}
+
+extension ESI.Wallet.CorpTransaction: NCWalletTransaction {
+}
+
 class NCWalletTransactionRow: TreeRow {
-	let transaction: ESI.Wallet.Transaction
+	let transaction: NCWalletTransaction
 	let location: NCLocation?
-	let client: NCContact?
+	let clientID: NSManagedObjectID?
+	lazy var client: NCContact? = {
+		guard let clientID = clientID else {return nil}
+		return (try? NCCache.sharedCache?.viewContext.existingObject(with: clientID)) as? NCContact
+	}()
 	
 	lazy var type: NCDBInvType? = {
 		return NCDatabase.sharedDatabase?.invTypes[self.transaction.typeID]
 	}()
 	
-	init(transaction: ESI.Wallet.Transaction, location: NCLocation?, client: NCContact?) {
+	init(transaction: NCWalletTransaction, location: NCLocation?, clientID: NSManagedObjectID?) {
 		self.transaction = transaction
 		self.location = location
-		self.client = client
+		self.clientID = clientID
 		
 		super.init(prototype: Prototype.NCWalletTransactionTableViewCell.default, route: Router.Database.TypeInfo(transaction.typeID))
 	}

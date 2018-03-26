@@ -32,8 +32,56 @@ extension Prototype {
 	}
 }
 
+protocol NCIndustryJob {
+	var activityID: Int {get}
+//	public var blueprintID: Int64
+//	public var blueprintLocationID: Int64
+	var blueprintTypeID: Int {get}
+//	public var completedCharacterID: Int?
+//	public var completedDate: Date?
+//	public var cost: Double?
+	var duration: Int {get}
+	var endDate: Date {get}
+//	public var facilityID: Int64
+//	public var installerID: Int
+//	public var jobID: Int
+	var licensedRuns: Int? {get}
+//	public var outputLocationID: Int64
+//	public var pauseDate: Date?
+//	public var probability: Float?
+//	public var productTypeID: Int?
+	var runs: Int {get}
+	var hashValue: Int {get}
+//	public var startDate: Date
+//	var stationID: Int64 {get}
+	var status: ESI.Industry.JobStatus {get}
+	var locationID: Int64 {get}
+//	public var successfulRuns: Int?
+}
+
+extension NCIndustryJob {
+	var currentStatus: ESI.Industry.JobStatus {
+		switch status {
+		case .active:
+			return endDate < Date() ? .ready : status
+		default:
+			return status
+		}
+	}
+	
+}
+
+extension ESI.Industry.Job: NCIndustryJob {
+	var locationID: Int64 {
+		return stationID
+	}
+}
+
+extension ESI.Industry.CorpJob: NCIndustryJob {
+}
+
 class NCIndustryRow: TreeRow {
-	let job: ESI.Industry.Job
+	let job: NCIndustryJob
 	let location: NCLocation?
 	
 	lazy var type: NCDBInvType? = {
@@ -44,7 +92,7 @@ class NCIndustryRow: TreeRow {
 		return NCDatabase.sharedDatabase?.ramActivities[self.job.activityID]
 	}()
 	
-	init(job: ESI.Industry.Job, location: NCLocation?) {
+	init(job: NCIndustryJob, location: NCLocation?) {
 		self.job = job
 		self.location = location
 //		expired = order.issued + TimeInterval(order.duration * 3600 * 24)

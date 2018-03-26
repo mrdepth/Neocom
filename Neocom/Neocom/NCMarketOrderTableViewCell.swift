@@ -26,8 +26,32 @@ extension Prototype {
 	}
 }
 
+protocol NCMarketOrder {
+	var duration: Int {get}
+//	public var escrow: Double?
+	var isBuyOrder: Bool? {get}
+//	public var isCorporation: Bool
+	var issued: Date {get}
+	var locationID: Int64 {get}
+//	public var minVolume: Int?
+//	public var orderID: Int64
+	var price: Double {get}
+//	public var range: Market.CharacterOrder.GetCharactersCharacterIDOrdersRange
+//	public var regionID: Int
+	var typeID: Int {get}
+	var volumeRemain: Int {get}
+	var volumeTotal: Int {get}
+	var hashValue: Int {get}
+}
+
+extension ESI.Market.CharacterOrder: NCMarketOrder {
+}
+
+extension ESI.Market.CorpOrder: NCMarketOrder {
+}
+
 class NCMarketOrderRow: TreeRow {
-	let order: ESI.Market.CharacterOrder
+	let order: NCMarketOrder
 	let location: NCLocation?
 	let expired: Date
 	
@@ -35,7 +59,7 @@ class NCMarketOrderRow: TreeRow {
 		return NCDatabase.sharedDatabase?.invTypes[self.order.typeID]
 	}()
 	
-	init(order: ESI.Market.CharacterOrder, location: NCLocation?) {
+	init(order: NCMarketOrder, location: NCLocation?) {
 		self.order = order
 		self.location = location
 		expired = order.issued + TimeInterval(order.duration * 3600 * 24)
@@ -52,14 +76,15 @@ class NCMarketOrderRow: TreeRow {
 		cell.qtyLabel.text = NCUnitFormatter.localizedString(from: order.volumeRemain, unit: .none, style: .full) + "/" + NCUnitFormatter.localizedString(from: order.volumeTotal, unit: .none, style: .full)
 		cell.issuedLabel.text = DateFormatter.localizedString(from: order.issued, dateStyle: .medium, timeStyle: .medium)
 		
-		let color = order.state == .open ? UIColor.white : UIColor.lightText
+//		let color = order.state == .open ? UIColor.white : UIColor.lightText
+		let color = UIColor.white
 		cell.titleLabel.textColor = color
 		cell.priceLabel.textColor = color
 		cell.qtyLabel.textColor = color
 		cell.issuedLabel.textColor = color
 		cell.timeLeftLabel.textColor = color
 		
-		switch order.state {
+		/*switch order.state {
 		case .open:
 			cell.stateLabel.text = NSLocalizedString("Open", comment: "") + ":"
 			let t = expired.timeIntervalSinceNow
@@ -79,7 +104,12 @@ class NCMarketOrderRow: TreeRow {
 		case .pending:
 			cell.stateLabel.text = NSLocalizedString("Pending", comment: "") + ":"
 			cell.timeLeftLabel.text = " "
-		}
+		}*/
+		
+		cell.stateLabel.text = NSLocalizedString("Open", comment: "") + ":"
+		let t = expired.timeIntervalSinceNow
+		cell.timeLeftLabel.text =  String(format: NSLocalizedString("Expires in %@", comment: ""), NCTimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes))
+
 	}
 	
 	override lazy var hashValue: Int = order.hashValue

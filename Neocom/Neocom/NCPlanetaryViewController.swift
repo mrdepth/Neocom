@@ -163,13 +163,13 @@ class NCFacilityRow: TreeRow {
 			isExpanded = true
 		case is DGMStorage:
 			sortDescriptor = "1\(facility.typeName ?? "")\(facilityName)"
-			isExpanded = false
+			isExpanded = true
 		case is DGMFactory:
 			sortDescriptor = "2\(facility.typeName ?? "")\(facilityName)"
-			isExpanded = false
+			isExpanded = true
 		default:
 			sortDescriptor = "3\(facility.typeName ?? "")\(facilityName)"
-			isExpanded = false
+			isExpanded = true
 		}
 		super.init(prototype: prototype, accessoryButtonRoute: Router.Database.TypeInfo(facility.typeID))
 		isExpandable = true
@@ -576,6 +576,7 @@ class NCPlanetaryViewController: NCTreeViewController {
 			}
 			
 			dispatchGroup.notify(queue: .main) {
+				sections.sort {($0.planetInfo?.planetName ?? "") < ($1.planetInfo?.planetName ?? "")}
 				self.treeController?.content = RootNode(sections)
 				self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: self.colonies?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 				completionHandler()

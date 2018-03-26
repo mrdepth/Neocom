@@ -9,16 +9,24 @@
 import Foundation
 
 extension Progress {
-	func perform(pendingUnitCount: Int64 = 1, block: () -> Void) {
-		if Progress.current() == self {
-			resignCurrent()
-			becomeCurrent(withPendingUnitCount: pendingUnitCount)
-			block()
+	
+	@discardableResult
+	func perform<T>(pendingUnitCount: Int64 = 1, block: () throws -> T) rethrows -> T {
+		let left = min(pendingUnitCount, totalUnitCount - completedUnitCount)
+		if left > 0 {
+			if Progress.current() == self {
+				resignCurrent()
+				becomeCurrent(withPendingUnitCount: left)
+				return try block()
+			}
+			else {
+				becomeCurrent(withPendingUnitCount: left)
+				defer {resignCurrent()}
+				return try block()
+			}
 		}
 		else {
-			becomeCurrent(withPendingUnitCount: pendingUnitCount)
-			block()
-			resignCurrent()
+			return try block()
 		}
 	}
 }

@@ -57,7 +57,7 @@ class NCFittingFleet {
 		}
 	}
 
-    convenience init(asset: ESI.Assets.Asset, contents: [Int64: [ESI.Assets.Asset]]) throws {
+    convenience init(asset: NCAsset, contents: [Int64: [NCAsset]]) throws {
 		try self.init(typeID: asset.typeID)
 		let pilot = active!
 		let ship = pilot.ship!
@@ -67,12 +67,13 @@ class NCFittingFleet {
 		
 		contents[asset.itemID]?.forEach {
 			do {
-				switch $0.locationFlag {
-				case .droneBay, .fighterBay, .fighterTube0, .fighterTube1, .fighterTube2, .fighterTube3, .fighterTube4:
+				
+				switch $0.flag {
+				case .drone?:
 					for _ in 0..<$0.quantity {
 						try ship.add(DGMDrone(typeID: $0.typeID))
 					}
-				case .cargo:
+				case .cargo?:
 					cargo.insert($0.typeID)
 				default:
 					for _ in 0..<$0.quantity {

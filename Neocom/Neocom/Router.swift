@@ -708,13 +708,13 @@ enum Router {
 			let typeID: Int?
 			let loadoutID: NSManagedObjectID?
 			let fleetID: NSManagedObjectID?
-			let asset: ESI.Assets.Asset?
-			let contents: [Int64: [ESI.Assets.Asset]]?
+			let asset: NCAsset?
+			let contents: [Int64: [NCAsset]]?
 			let killmail: NCKillmail?
 			let fitting: ESI.Fittings.Fitting?
 			let representation: NCLoadoutRepresentation?
 			
-			init(typeID: Int? = nil, loadoutID: NSManagedObjectID? = nil, fleetID: NSManagedObjectID? = nil, asset: ESI.Assets.Asset? = nil, contents: [Int64: [ESI.Assets.Asset]]? = nil, killmail: NCKillmail? = nil, fitting: ESI.Fittings.Fitting? = nil, representation: NCLoadoutRepresentation? = nil) {
+			init(typeID: Int? = nil, loadoutID: NSManagedObjectID? = nil, fleetID: NSManagedObjectID? = nil, asset: NCAsset? = nil, contents: [Int64: [NCAsset]]? = nil, killmail: NCKillmail? = nil, fitting: ESI.Fittings.Fitting? = nil, representation: NCLoadoutRepresentation? = nil) {
 				self.typeID = typeID
 				self.loadoutID = loadoutID
 				self.fleetID = fleetID
@@ -1500,14 +1500,29 @@ enum Router {
 		}
 
 		class Assets: Route {
-			init() {
+			let owner: Owner
+			init(owner: Owner) {
+				self.owner = owner
 				super.init(kind: .detail, storyboard: .business, identifier: "NCAssetsViewController")
 			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCAssetsViewController
+				destination.owner = owner
+			}
+
 		}
 
 		class MarketOrders: Route {
-			init() {
+			let owner: Owner
+			init(owner: Owner) {
+				self.owner = owner
 				super.init(kind: .detail, storyboard: .business, identifier: "NCMarketOrdersViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCMarketOrdersViewController
+				destination.owner = owner
 			}
 		}
 
@@ -1518,20 +1533,37 @@ enum Router {
 		}
 
 		class WalletTransactions: Route {
-			init() {
-				super.init(kind: .detail, storyboard: .business, identifier: "NCWalletTransactionsViewController")
+			init(owner: Owner) {
+				switch owner {
+				case .character:
+					super.init(kind: .detail, storyboard: .business, identifier: "NCWalletTransactionsViewController")
+				case .corporation:
+					super.init(kind: .detail, storyboard: .business, identifier: "NCWalletTransactionsPageViewController")
+				}
 			}
 		}
 
 		class WalletJournal: Route {
-			init() {
-				super.init(kind: .detail, storyboard: .business, identifier: "NCWalletJournalViewController")
+			init(owner: Owner) {
+				switch owner {
+				case .character:
+					super.init(kind: .detail, storyboard: .business, identifier: "NCWalletJournalViewController")
+				case .corporation:
+					super.init(kind: .detail, storyboard: .business, identifier: "NCWalletJournalPageViewController")
+				}
 			}
 		}
 
 		class IndustryJobs: Route {
-			init() {
+			let owner: Owner
+			init(owner: Owner) {
+				self.owner = owner
 				super.init(kind: .detail, storyboard: .business, identifier: "NCIndustryViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCIndustryViewController
+				destination.owner = owner
 			}
 		}
 

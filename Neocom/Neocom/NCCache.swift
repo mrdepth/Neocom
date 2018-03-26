@@ -54,28 +54,65 @@ class NCCache: NSObject {
 		NotificationCenter.default.removeObserver(self)
 	}
 	
-	func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+	@discardableResult
+	public func performBackgroundTask<T>(_ block: @escaping (NSManagedObjectContext) throws -> T) -> Future<T> {
+		let promise = Promise<T>()
 		let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
 		context.persistentStoreCoordinator = persistentStoreCoordinator
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 		context.perform {
-			block(context)
-			if context.hasChanges {
-				try? context.save()
+			do {
+				try promise.fulfill(block(context))
+				if (context.hasChanges) {
+					try context.save()
+				}
+			}
+			catch {
+				try! promise.fail(error)
 			}
 		}
+		return promise.future
 	}
 	
-	func performTaskAndWait(_ block: @escaping (NSManagedObjectContext) -> Void) {
+	@discardableResult
+	func performTaskAndWait<T: Any>(_ block: @escaping (NSManagedObjectContext) -> T) -> T {
 		let context = NSManagedObjectContext(concurrencyType: Thread.isMainThread ? .mainQueueConcurrencyType : .privateQueueConcurrencyType)
 		context.persistentStoreCoordinator = persistentStoreCoordinator
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+		var v: T?
 		context.performAndWait {
-			block(context)
-			if context.hasChanges {
+			v = block(context)
+			if (context.hasChanges) {
 				try? context.save()
 			}
+			
 		}
+		return v!
+	}
+
+	@discardableResult
+	func performTaskAndWait<T: Any>(_ block: @escaping (NSManagedObjectContext) throws -> T) throws -> T {
+		let context = NSManagedObjectContext(concurrencyType: Thread.isMainThread ? .mainQueueConcurrencyType : .privateQueueConcurrencyType)
+		context.persistentStoreCoordinator = persistentStoreCoordinator
+		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+		var v: T?
+		var err: Error?
+		context.performAndWait {
+			do {
+				try v = block(context)
+				if (context.hasChanges) {
+					try context.save()
+				}
+			}
+			catch {
+				err = error
+			}
+			
+		}
+		if let error = err {
+			throw error
+		}
+		return v!
 	}
 	
 	func store<T>(_ object: T?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?, completionHandler: ((NCCacheRecord?) -> Void)?) {
@@ -105,33 +142,49 @@ class NCCache: NSObject {
 		}
 	}
 	
-	/*func store(_ data: Data?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?, completionHandler: ((NCCacheRecord?) -> Void)?) {
-		performBackgroundTask { (managedObjectContext) in
-			var record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
-			if record == nil {
-				
-				let r = NCCacheRecord(entity: NSEntityDescription.entity(forEntityName: "Record", in: managedObjectContext)!, insertInto: managedObjectContext)
-				r.account = account
-				r.key = key
-				r.data = NCCacheRecordData(entity: NSEntityDescription.entity(forEntityName: "RecordData", in: managedObjectContext)!, insertInto: managedObjectContext)
-				record = r
-			}
-			if data != nil || record!.data!.data == nil {
-				record!.data?.data = data
-				record!.date = date ?? Date()
-				record!.expireDate = expireDate ?? record!.expireDate ?? record!.date!.addingTimeInterval(3) as Date?
+	func store<T: Encodable>(_ object: T?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?) -> Future<NSManagedObjectID> {
+		return performBackgroundTask { (managedObjectContext) in
+			/*let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last ??
+			{
+				let record = NCCacheRecord(entity: NSEntityDescription.entity(forEntityName: "Record", in: managedObjectContext)!, insertInto: managedObjectContext)
+				record.account = account
+				record.key = key
+				record.data = NCCacheRecordData(entity: NSEntityDescription.entity(forEntityName: "RecordData", in: managedObjectContext)!, insertInto: managedObjectContext)
+				return record
+			}()
+
+			if object != nil || record.data!.data == nil {
+				record.set(object)
+				record.date = date ?? Date()
+				record.expireDate = expireDate ?? record.expireDate ?? record.date!.addingTimeInterval(3) as Date?
 			}
 			if managedObjectContext.hasChanges {
 				try? managedObjectContext.save()
-			}
-			if let completionHandler = completionHandler {
-				DispatchQueue.main.async {
-					completionHandler((try? self.viewContext.existingObject(with: record!.objectID)) as? NCCacheRecord)
-				}
-			}
+			}*/
+			return try self.store(object, forKey: key, account: account, date: date, expireDate: expireDate, error: error, into: managedObjectContext)
 		}
-	}*/
+	}
 	
+	func store<T: Encodable>(_ object: T?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?, into context: NSManagedObjectContext) throws -> NSManagedObjectID {
+		let record = (try? context.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last ??
+		{
+			let record = NCCacheRecord(entity: NSEntityDescription.entity(forEntityName: "Record", in: context)!, insertInto: context)
+			record.account = account
+			record.key = key
+			record.data = NCCacheRecordData(entity: NSEntityDescription.entity(forEntityName: "RecordData", in: context)!, insertInto: context)
+			return record
+			}()
+		
+		if object != nil || record.data!.data == nil {
+			record.set(object)
+			record.date = date ?? Date()
+			record.expireDate = expireDate ?? record.expireDate ?? record.date!.addingTimeInterval(3) as Date?
+		}
+		if context.hasChanges {
+			try context.save()
+		}
+		return record.objectID
+	}
 	//MARK: Private
 	
 	@objc func managedObjectContextDidSave(_ notification: Notification) {
@@ -218,12 +271,32 @@ class NCSecureUnarchiver: ValueTransformer {
 extension NCCacheRecord {
 	func get<T: Decodable>() -> T? {
 		guard let data = self.data?.data else {return nil}
-		return try? JSONDecoder().decode(T.self, from: data)
+		switch T.self {
+		case is String.Type:
+			return String(data: data, encoding: .utf8) as? T
+		case is Double.Type:
+			guard let s = String(data: data, encoding: .utf8) else {return nil}
+			return Double(s) as? T
+		case is Int.Type:
+			guard let s = String(data: data, encoding: .utf8) else {return nil}
+			return Int(s) as? T
+		default:
+			return try? JSONDecoder().decode(T.self, from: data)
+		}
 	}
+	
 	func set<T: Encodable>(_ value: T?) {
 		if let value = value {
-			guard let data = try? JSONEncoder().encode(value) else {return}
-			self.data?.data = data
+			switch value {
+			case let v as String:
+				self.data?.data = v.data(using: .utf8)
+			case let v as Double:
+				self.data?.data = "\(v)".data(using: .utf8)
+			case let v as Int:
+				self.data?.data = "\(v)".data(using: .utf8)
+			default:
+				self.data?.data = try? JSONEncoder().encode(value)
+			}
 		}
 		else {
 			data?.data = nil
@@ -243,8 +316,8 @@ extension NCCacheRecord {
 			data?.data = nil
 		}
 	}
-
 }
+
 
 /*extension NCMail {
 	enum Folder: Int {
@@ -275,3 +348,33 @@ extension NCCacheRecord {
 }
 
 */
+
+
+class CachedValue<T> {
+	let objectID: NSManagedObjectID
+	private(set) lazy var cacheRecord: NCCacheRecord = NCCache.sharedCache!.viewContext.object(with: objectID) as! NCCacheRecord
+	
+	init(_ objectID: NSManagedObjectID) {
+		assert(objectID.entity.name == "Record")
+		self.objectID = objectID
+	}
+}
+
+
+extension CachedValue where T:Codable {
+	var value: T? {
+		return NCCache.sharedCache!.performTaskAndWait { (context) -> T? in
+			return ((try? context.existingObject(with: self.objectID)) as? NCCacheRecord)?.get()
+		}
+	}
+}
+
+extension CachedValue where T == UIImage {
+	var value: T? {
+		return NCCache.sharedCache!.performTaskAndWait { (context) -> T? in
+			return ((try? context.existingObject(with: self.objectID)) as? NCCacheRecord)?.get()
+		}
+
+//		return cacheRecord.get()
+	}
+}

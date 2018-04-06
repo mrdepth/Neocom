@@ -1300,16 +1300,16 @@ enum Router {
 		}
 
 		class ContactReports: Route {
-			let contact: NCContact
+			let contact: NSManagedObjectID
 			
-			init(contact: NCContact) {
+			init(contact: NSManagedObjectID) {
 				self.contact = contact
 				super.init(kind: .push, storyboard: UIStoryboard.killReports, identifier: "NCZKillboardSummaryViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCZKillboardSummaryViewController
-				destination.contact = contact
+				destination.contact = (try? NCCache.sharedCache?.viewContext.existingObject(with: contact)) as? NCContact
 			}
 		}
 

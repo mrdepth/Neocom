@@ -25,11 +25,11 @@ enum NCLoadoutRepresentation {
 		case let .dna(loadouts):
 			return loadouts.map{dnaRepresentation($0)}
 		case let .dnaURL(loadouts):
-			return loadouts.flatMap{URL(string: "fitting:" + dnaRepresentation($0))}
+			return loadouts.compactMap{URL(string: "fitting:" + dnaRepresentation($0))}
 		case let .xml(loadouts):
 			return "<?xml version=\"1.0\" ?>\n<fittings>\n\(loadouts.map {xmlRepresentation($0)}.joined(separator: "\n"))\n</fittings>"
 		case let .httpURL(loadouts):
-			return loadouts.flatMap{URL(string: "http://neocom.by/api/fitting?dna=" + dnaRepresentation($0))}
+			return loadouts.compactMap{URL(string: "http://neocom.by/api/fitting?dna=" + dnaRepresentation($0))}
 		case let .eft(loadouts):
 			return loadouts.map{eftRepresentation($0)}
 		case let .inGame(loadouts):
@@ -190,7 +190,7 @@ enum NCLoadoutRepresentation {
 				return items
 				}.joined()
 			
-			let drones = loadout.data.drones?.flatMap { i -> ESI.Fittings.Item? in
+			let drones = loadout.data.drones?.compactMap { i -> ESI.Fittings.Item? in
 				guard let type = invTypes[i.typeID] else {return nil}
 				guard let categoryID = type.group?.category?.categoryID, let category = NCDBCategoryID(rawValue: Int(categoryID)) else {return nil}
 				
@@ -244,7 +244,7 @@ enum NCLoadoutRepresentation {
 		guard !fittings.isEmpty else {return nil}
 		
 		return NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> [(typeID: Int, data: NCFittingLoadout, name: String)] in
-			return fittings.flatMap { fitting -> (typeID: Int, data: NCFittingLoadout, name: String)? in
+			return fittings.compactMap { fitting -> (typeID: Int, data: NCFittingLoadout, name: String)? in
 				let name = fitting["name"] as? String ?? ""
 				guard let typeName = (fitting["shipType"] as? [String: Any])?["value"] as? String else {return nil}
 				guard let shipType: NCDBInvType = managedObjectContext.fetch("InvType", where: "typeName == %@", typeName) else {return nil}

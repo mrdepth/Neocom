@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 /*class NCFittingAreaEffectRow: TreeRow {
 	let objectID: NSManagedObjectID
@@ -42,14 +43,9 @@ class NCFittingAreaEffectsViewController: NCTreeViewController {
 		                    ])
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		guard let context = NCDatabase.sharedDatabase?.viewContext else {
-			completionHandler()
-			return
-		}
-
-		NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
-			guard let types: [NCDBInvType] = managedObjectContext.fetch("InvType", sortedBy: [NSSortDescriptor(key: "typeName", ascending: true)], where: "group.groupID == 920") else {return}
+	override func content() -> Future<TreeNode?> {
+		return NCDatabase.sharedDatabase!.performBackgroundTask { managedObjectContext -> TreeNode? in
+			guard let types: [NCDBInvType] = managedObjectContext.fetch("InvType", sortedBy: [NSSortDescriptor(key: "typeName", ascending: true)], where: "group.groupID == 920") else {return nil}
 			
 			let prefixes = ["Black Hole Effect Beacon Class",
 			                "Cataclysmic Variable Effect Beacon Class",
@@ -76,15 +72,11 @@ class NCFittingAreaEffectsViewController: NCTreeViewController {
 			
 			let sections = arrays.enumerated().map { (i, array) -> DefaultTreeSection in
 				let prefix = i < n ? prefixes[i] : NSLocalizedString("Other", comment: "")
-				let rows = array.map({NCTypeInfoRow(objectID: $0, managedObjectContext: context, accessoryType: .detailButton)})
+				let rows = array.map({NCTypeInfoRow(objectID: $0, managedObjectContext: managedObjectContext, accessoryType: .detailButton)})
 				
 				return DefaultTreeSection(nodeIdentifier: prefix, title: prefix.uppercased(), children: rows)
 			}
-			
-			DispatchQueue.main.async {
-				self.treeController?.content = RootNode(sections)
-				completionHandler()
-			}
+			return RootNode(sections)
 		}
 	}
 	

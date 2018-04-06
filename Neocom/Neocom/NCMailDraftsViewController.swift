@@ -19,10 +19,10 @@ class NCMailDraftsViewController: NCTreeViewController {
 		tableView.register([Prototype.NCMailTableViewCell.default])
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		treeController?.content = NCDraftsNode()
+	@available(iOS, deprecated: 1.0, message: "updateBackground")
+	override func content() -> Future<TreeNode?> {
+		return .init(NCDraftsNode())
 		updateBackground()
-		completionHandler()
 	}
 	
 	//MARK: - TreeControllerDelegate

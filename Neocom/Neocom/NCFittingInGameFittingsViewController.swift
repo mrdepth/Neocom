@@ -33,7 +33,9 @@ class NCInGameFittingRow: TreeRow {
 		cell.accessoryType = .disclosureIndicator
 	}
 	
-	override lazy var hashValue: Int = fitting.hashValue
+	override var hashValue: Int {
+		return fitting.hashValue
+	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCInGameFittingRow)?.hashValue == hashValue
@@ -60,7 +62,7 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 	
 	@IBAction func onDelete(_ sender: UIBarButtonItem) {
 		guard !isDeleting else {return}
-		guard var selected = treeController?.selectedNodes().flatMap ({$0 as? NCInGameFittingRow}) else {return}
+		guard let selected = treeController?.selectedNodes().compactMap ({$0 as? NCInGameFittingRow}) else {return}
 		guard !selected.isEmpty else {return}
 		
 		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -71,26 +73,21 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 			let progress = NCProgressHandler(viewController: strongSelf, totalUnitCount: Int64(selected.count))
 			strongSelf.tableView.isUserInteractionEnabled = false
 			
-			func dequeue() {
-				if selected.isEmpty {
-					strongSelf.tableView.isUserInteractionEnabled = true
-					if let context = strongSelf.fittings?.cacheRecord?.managedObjectContext, context.hasChanges {
-						try? context.save()
-					}
-					strongSelf.updateToolbar()
-					strongSelf.isDeleting = false
-					progress.finish()
-				}
-				else {
+			OperationQueue(qos: .utility).async {
+				selected.forEach { i in
 					progress.progress.perform {
-						strongSelf.deleteFitting(from: selected.removeFirst()) { _ in
-							dequeue()
-						}
+						strongSelf.deleteFitting(from: i).wait()
 					}
+				}
+			}.finally(on: .main) {
+				strongSelf.tableView.isUserInteractionEnabled = true
+				strongSelf.updateToolbar()
+				strongSelf.isDeleting = false
+				progress.finish()
+				if let context = strongSelf.fittings?.cacheRecord.managedObjectContext, context.hasChanges {
+					try? context.save()
 				}
 			}
-			dequeue()
-
 		})
 		
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
@@ -117,7 +114,7 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 	
 	func treeControllerDidUpdateContent(_ treeController: TreeController) {
 		updateToolbar()
-		tableView.backgroundView = treeController.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: fittings?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
+		tableView.backgroundView = treeController.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
 	}
 	
 	
@@ -133,44 +130,38 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 
 			let progress = NCProgressHandler(view: cell, totalUnitCount: 1, activityIndicatorStyle: .white)
 			progress.progress.perform {
-				strongSelf.deleteFitting(from: node) { result in
-
-					strongSelf.tableView.isUserInteractionEnabled = true
-					
-					switch result {
-					case .success:
-						if let context = strongSelf.fittings?.cacheRecord?.managedObjectContext, context.hasChanges {
-							try? context.save()
-						}
-					case let .failure(error):
-						strongSelf.present(UIAlertController(error: error), animated: true, completion: nil)
+				strongSelf.deleteFitting(from: node).then(on: .main) { result in
+					if let context = strongSelf.fittings?.cacheRecord.managedObjectContext, context.hasChanges {
+						try? context.save()
 					}
+				}.catch(on: .main) {error in
+					strongSelf.present(UIAlertController(error: error), animated: true, completion: nil)
+				}.finally(on: .main) {
+					strongSelf.tableView.isUserInteractionEnabled = true
 					progress.finish()
 				}
 			}
 		})]
 	}
 	
-	private var fittings: NCCachedResult<[ESI.Fittings.Fitting]>?
+	private var fittings: CachedValue<[ESI.Fittings.Fitting]>?
+	private var error: Error?
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
-
-		Progress(totalUnitCount: 1).perform {
-
-			dataManager.fittings { result in
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
+		return Progress(totalUnitCount: 1).perform {
+			return dataManager.fittings().then(on: .main) { result -> [NCCacheRecord] in
 				self.fittings = result
-				completionHandler([result.cacheRecord].flatMap {$0})
+				return [result.cacheRecord]
 			}
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		if let value = fittings?.value {
-			tableView.backgroundView = nil
-			
-			let progress = Progress(totalUnitCount: 1)
-			
-			NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
+	override func content() -> Future<TreeNode?> {
+		let progress = Progress(totalUnitCount: 1)
+
+		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+			guard let value = self.fittings?.value else {throw NCTreeViewControllerError.noResult}
+			return try NCDatabase.sharedDatabase!.performTaskAndWait { managedObjectContext in
 				var groups = [String: DefaultTreeSection]()
 				
 				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
@@ -199,51 +190,30 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 				}
 				
 				progress.completedUnitCount += 1
-				
-				DispatchQueue.main.async {
-					
-					if self.treeController?.content == nil {
-						self.treeController?.content = RootNode(sections)
-					}
-					else {
-						self.treeController?.content?.children = sections
-					}
-					self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-					completionHandler()
-				}
+				guard !sections.isEmpty else {throw NCTreeViewControllerError.noResult}
+				return RootNode(sections)
 			}
-			
-		}
-		else {
-			tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: fittings?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-			completionHandler()
 		}
 	}
 	
-	private func deleteFitting(from node: NCInGameFittingRow, completionHandler: @escaping (Result<String>) -> Void) {
-		Progress(totalUnitCount: 1).perform {
-			dataManager.deleteFitting(fittingID: node.fitting.fittingID) { result in
-				switch result {
-				case .success:
-					guard let record = self.fittings?.cacheRecord else {return}
-					guard var fittings: [ESI.Fittings.Fitting] = record.get() else {return}
-					guard let i = fittings.index(where: {$0.fittingID == node.fitting.fittingID}) else {return}
-					fittings.remove(at: i)
-					
-					
-					record.set(fittings)
-					
-					if let parent = node.parent, let i = parent.children.index(of: node) {
-						parent.children.remove(at: i)
-						if parent.children.isEmpty, let root = parent.parent, let i = root.children.index(of: parent) {
-							root.children.remove(at: i)
-						}
+	private func deleteFitting(from node: NCInGameFittingRow) -> Future<String> {
+		return Progress(totalUnitCount: 1).perform {
+			return dataManager.deleteFitting(fittingID: node.fitting.fittingID).then(on: .main) { result -> String in
+				guard let record = self.fittings?.cacheRecord else {return result}
+				guard var fittings: [ESI.Fittings.Fitting] = record.get() else {return result}
+				guard let i = fittings.index(where: {$0.fittingID == node.fitting.fittingID}) else {return result}
+				fittings.remove(at: i)
+				
+				
+				record.set(fittings)
+				
+				if let parent = node.parent, let i = parent.children.index(of: node) {
+					parent.children.remove(at: i)
+					if parent.children.isEmpty, let root = parent.parent, let i = root.children.index(of: parent) {
+						root.children.remove(at: i)
 					}
-				case .failure:
-					break
 				}
-				completionHandler(result)
-
+				return result
 			}
 		}
 	}

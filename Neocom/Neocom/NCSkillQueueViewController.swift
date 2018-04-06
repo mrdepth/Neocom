@@ -107,7 +107,7 @@ fileprivate class NCSkillQueueSection: DefaultTreeSection {
 		let invTypes = NCDatabase.sharedDatabase?.invTypes
 		func rows(_ skillQueue: [ESI.Skills.SkillQueueItem]) -> [NCSkillQueueRow] {
 			let date = Date()
-			return skillQueue.flatMap { (item) in
+			return skillQueue.compactMap { (item) in
 				guard let finishDate = item.finishDate, finishDate > date else {return nil}
 				guard let type = invTypes?[item.skillID] else {return nil}
 				guard let skill = NCSkill(type: type, skill: item) else {return nil}

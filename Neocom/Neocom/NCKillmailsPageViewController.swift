@@ -33,6 +33,10 @@ class NCDateSection: TreeSection {
 	}
 }
 
+enum NCKillmailsError: Error {
+	case isEndReached
+}
+
 
 class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 	
@@ -73,7 +77,7 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
 			progress.progress.perform {
-				fetch(from: lastID) { _ in
+				fetch(from: lastID).then { _ in
 					progress.finish()
 				}
 			}
@@ -107,7 +111,9 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 	func updateContent(completionHandler: @escaping () -> Void) {
 		kills = TreeNode()
 		losses = TreeNode()
-		update(result: result, completionHandler: completionHandler)
+		update(result: result).finally(on: .main) {
+			completionHandler()
+		}
 	}
 	
 	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void ) {
@@ -116,8 +122,10 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 		kills = nil
 		losses = nil
 		self.dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
-		fetch(from: nil) { result in
-			completionHandler([result.cacheRecord].flatMap {$0})
+		fetch(from: nil).then(on: .main) { result in
+			completionHandler([result.cacheRecord].compactMap {$0})
+		}.catch(on: .main) { _ in
+			completionHandler([])
 		}
 	}
 	
@@ -127,13 +135,13 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 	func didFailLoading(error: Error) {
 		lossesViewController?.error = error
 		killsViewController?.error = error
-		viewControllers?.flatMap {($0 as? UITableViewController)?.refreshControl}.filter {$0.isRefreshing}.forEach {
+		viewControllers?.compactMap {($0 as? UITableViewController)?.refreshControl}.filter {$0.isRefreshing}.forEach {
 			$0.endRefreshing()
 		}
 	}
 	
 	func didFinishLoading() {
-		viewControllers?.flatMap {($0 as? UITableViewController)?.refreshControl}.filter {$0.isRefreshing}.forEach {
+		viewControllers?.compactMap {($0 as? UITableViewController)?.refreshControl}.filter {$0.isRefreshing}.forEach {
 			$0.endRefreshing()
 		}
 	}
@@ -157,84 +165,94 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 	
 	private var kills: TreeNode?
 	private var losses: TreeNode?
-	private var result: NCCachedResult<[ESI.Killmails.Recent]>?
+	private var result: CachedValue<[ESI.Killmails.Recent]>?
+	private var error: Error?
 	
-	private func update(result: NCCachedResult<[ESI.Killmails.Recent]>?, completionHandler: @escaping () -> Void) {
+	private func update(result: CachedValue<[ESI.Killmails.Recent]>?) -> Future<Void> {
+		let promise = Promise<Void>()
 		guard let kills = kills, let losses = losses else {
 			isFetching = false
-			completionHandler()
-			return
+			try! promise.fulfill(())
+			return promise.future
 		}
 		
-		
-		if let killmails = result?.value, !killmails.isEmpty {
-			let partial = Progress(totalUnitCount: Int64(killmails.count))
+		let totalProgress = Progress(totalUnitCount: 1)
+		let dataManager = self.dataManager
+		let characterID = Int(dataManager.characterID)
 
-			var queue = killmails
-			let dataManager = self.dataManager
-			let characterID = Int(dataManager.characterID)
+		OperationQueue(qos: .utility).async { () -> Bool in
+			guard let killmails = result?.value, !killmails.isEmpty else { return true }
 			
-			func pop() {
-				if queue.isEmpty {
-					if let lastID = killmails.map({$0.killmailID}).min() {
-						self.lastID = Int64(lastID)
-					}
-					self.isFetching = false
-					self.fetchIfNeeded()
-					completionHandler()
-				}
-				else {
-					let killmail = queue.removeFirst()
-					dataManager.killmailInfo(killmailHash: killmail.killmailHash, killmailID: Int64(killmail.killmailID)) { result in
-						if let value = result.value {
-							UIView.performWithoutAnimation {
-								let isLoss = value.victim.characterID == characterID
-								
-								let node = isLoss ? losses : kills
-								let row = NCKillmailRow(killmail: value, characterID: Int64(characterID), dataManager: dataManager)
-								
-								if let section = node.children.last as? NCDateSection, section.date < value.killmailTime {
-									section.children.append(row)
-								}
-								else {
-									let calendar = Calendar(identifier: .gregorian)
-									let components = calendar.dateComponents([.year, .month, .day], from: value.killmailTime)
-									let date = calendar.date(from: components) ?? value.killmailTime
-									let section = NCDateSection(date: date)
-									section.children = [row]
-									node.children.append(section)
-								}
-								
-								self.lossesViewController?.error = nil
-								self.killsViewController?.error = nil
-								self.killsViewController?.treeController?.content = kills
-								self.lossesViewController?.treeController?.content = losses
+			let partialProgress = totalProgress.perform {Progress(totalUnitCount: Int64(killmails.count))}
+			
+			killmails.forEach { killmail in
+				partialProgress.perform {
+					dataManager.killmailInfo(killmailHash: killmail.killmailHash, killmailID: Int64(killmail.killmailID)).then(on: .main) { result in
+						UIView.performWithoutAnimation {
+							guard let value = result.value else {return}
+							
+							let isLoss = value.victim.characterID == characterID
+							
+							let node = isLoss ? losses : kills
+							let row = NCKillmailRow(killmail: value, characterID: Int64(characterID), dataManager: dataManager)
+							
+							if let section = node.children.last as? NCDateSection, section.date < value.killmailTime {
+								section.children.append(row)
 							}
+							else {
+								let calendar = Calendar(identifier: .gregorian)
+								let components = calendar.dateComponents([.year, .month, .day], from: value.killmailTime)
+								let date = calendar.date(from: components) ?? value.killmailTime
+								let section = NCDateSection(date: date)
+								section.children = [row]
+								node.children.append(section)
+							}
+							
+							self.lossesViewController?.error = nil
+							self.killsViewController?.error = nil
+							self.killsViewController?.treeController?.content = kills
+							self.lossesViewController?.treeController?.content = losses
 						}
-						partial.completedUnitCount += 1
-						pop()
-					}
+					}.wait()
 				}
 			}
 			
-			pop()
-		}
-		else {
+			if let lastID = killmails.map({$0.killmailID}).min() {
+				self.lastID = Int64(lastID)
+			}
+
+			return false
+		}.then(on: .main) { isEndReached in
+			self.isEndReached = isEndReached
 			self.isFetching = false
-			self.isEndReached = true
-			completionHandler()
+			if !isEndReached {
+				self.fetchIfNeeded()
+			}
+
+		}.finally {
+			try! promise.fulfill(())
 		}
+
+		return promise.future
 	}
 	
-	private func fetch(from: Int64?, completionHandler: ((NCCachedResult<[ESI.Killmails.Recent]>) -> Void)? = nil) {
-		guard !isEndReached, !isFetching else {return}
+	private func fetch(from: Int64?) -> Future<CachedValue<[ESI.Killmails.Recent]>> {
+		let promise = Promise<CachedValue<[ESI.Killmails.Recent]>>()
+		guard !isEndReached, !isFetching else {
+			try! promise.fail(NCKillmailsError.isEndReached)
+			return promise.future
+		}
 		isFetching = true
 		
-		dataManager.killmails(maxKillID: from) { result in
+		dataManager.killmails(maxKillID: from).then(on: .main) { result in
 			self.result = result
-			self.update(result: result) {
-				completionHandler?(result)
+			self.error = nil
+			self.update(result: result).finally {
+				try! promise.fulfill(result)
 			}
+		}.catch { error in
+			try! promise.fail(error)
 		}
+		return promise.future
 	}
 }

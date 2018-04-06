@@ -400,7 +400,7 @@ class NCFittingModulesViewController: UIViewController, TreeControllerDelegate, 
 				if ship.freeSlots(slot) > 0 {
 					groups.append([])
 				}
-				rows = groups.flatMap({ (modules) -> NCFittingModuleRow? in
+				rows = groups.compactMap({ (modules) -> NCFittingModuleRow? in
 					return NCFittingModuleRow(modules: modules, slot: slot, socket: nil)
 				})
 			}

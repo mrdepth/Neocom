@@ -103,10 +103,9 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 		navigationController?.setToolbarHidden(false, animated: false)
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		completionHandler()
+	override func content() -> Future<TreeNode?> {
+		return .init(nil)
 	}
-
 	
 	@IBAction func onDelete(_ sender: Any) {
 		guard let fleet = fleet else {return}

@@ -170,7 +170,7 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 		
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		
 		var rows: [TreeNode] = [
 			NCActionRow(title: NSLocalizedString("Select Pilot", comment: "").uppercased(), route: Router.KillReports.SearchContact(delegate: self)),
@@ -217,8 +217,7 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 		                                               NCActionRow(title: NSLocalizedString("Search Losses", comment: "").uppercased(), route: losses)]*/ nil)
 		rows.append(actionsSection!)
 		
-		treeController?.content = RootNode(rows)
-		completionHandler()
+		return .init(RootNode(rows))
 	}
 	
 	private func showReports(_ type: ZKillboard.Filter, from: Any?) {
@@ -320,7 +319,7 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 	}
 	
 	private var filter: [ZKillboard.Filter] {
-		var filter = treeController?.content?.children.flatMap { node -> ZKillboard.Filter? in
+		var filter = treeController?.content?.children.compactMap { node -> ZKillboard.Filter? in
 			switch node {
 			case let node as NCZKillboardContactRow:
 				guard let contact = node.contact else {break}
@@ -422,7 +421,7 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 	
 	func contactsSearchResultsViewController(_ controller: NCContactsSearchResultViewController, didSelect contact: NCContact) {
 		controller.dismiss(animated: true, completion: nil)
-		let row = NCZKillboardContactRow(contact: contact, dataManager: dataManager)
+		let row = NCZKillboardContactRow(contact: contact.objectID, dataManager: dataManager)
 		row.route = Router.KillReports.SearchContact(delegate: self)
 		treeController?.content?.children[0] = row
 		update()

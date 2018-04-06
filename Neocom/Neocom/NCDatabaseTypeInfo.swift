@@ -421,19 +421,12 @@ struct NCDatabaseTypeInfo {
 			
 			let dataManager = NCDataManager(account: NCAccount.current)
 			
-			dataManager.marketHistory(typeID: typeID, regionID: regionID) { result in
-				switch result {
-				case let .success(value, cacheRecord):
-					if let cacheRecord = cacheRecord, !value.isEmpty {
-						let row = NCDatabaseTypeMarketRow(history: cacheRecord, typeID: typeID)
-						marketSection?.children.append(row)
-					}
-				default:
-					break
-				}
+			dataManager.marketHistory(typeID: typeID, regionID: regionID).then(on: .main) { result in
+				let row = NCDatabaseTypeMarketRow(history: result.cacheRecord, typeID: typeID)
+				marketSection?.children.append(row)
 			}
 			
-			dataManager.prices(typeIDs: [typeID]) { result in
+			dataManager.prices(typeIDs: [typeID]).then(on: .main) { result in
 				guard let price = result[typeID] else {return}
 				let subtitle = NCUnitFormatter.localizedString(from: price, unit: .isk, style: .full)
 				let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute, image: #imageLiteral(resourceName: "wallet"), title: NSLocalizedString("PRICE", comment: ""), subtitle: subtitle, accessoryType: .disclosureIndicator, route: Router.Database.MarketInfo(typeID))

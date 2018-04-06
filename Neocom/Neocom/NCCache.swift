@@ -115,7 +115,7 @@ class NCCache: NSObject {
 		return v!
 	}
 	
-	func store<T>(_ object: T?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?, completionHandler: ((NCCacheRecord?) -> Void)?) {
+	/*func store<T>(_ object: T?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?, completionHandler: ((NCCacheRecord?) -> Void)?) {
 		performBackgroundTask { (managedObjectContext) in
 			var record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
 			if record == nil {
@@ -140,7 +140,7 @@ class NCCache: NSObject {
 				}
 			}
 		}
-	}
+	}*/
 	
 	func store<T: Encodable>(_ object: T?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?) -> Future<NSManagedObjectID> {
 		return performBackgroundTask { (managedObjectContext) in
@@ -370,8 +370,8 @@ extension CachedValue where T:Codable {
 }
 
 extension CachedValue where T == UIImage {
-	var value: T? {
-		return NCCache.sharedCache!.performTaskAndWait { (context) -> T? in
+	var value: UIImage? {
+		return NCCache.sharedCache!.performTaskAndWait { (context) -> UIImage? in
 			return ((try? context.existingObject(with: self.objectID)) as? NCCacheRecord)?.get()
 		}
 

@@ -8,11 +8,12 @@
 
 import UIKit
 import EVEAPI
+import CoreData
 
 class NCContractContactRow: NCContactRow {
 	let title: String
 	
-	init(title: String , contact: NCContact?, dataManager: NCDataManager) {
+	init(title: String , contact: NSManagedObjectID?, dataManager: NCDataManager) {
 		self.title = title
 		super.init(prototype: Prototype.NCContactTableViewCell.attribute, contact: contact, dataManager: dataManager)
 	}
@@ -46,7 +47,9 @@ class NCContractItem: TreeRow {
 		cell.accessoryType = .disclosureIndicator
 	}
 	
-	override lazy var hashValue: Int = item.hashValue
+	override var hashValue: Int {
+		return item.hashValue
+	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCContractItem)?.hashValue == hashValue
@@ -55,7 +58,7 @@ class NCContractItem: TreeRow {
 
 class NCContractBidRow: NCContactRow {
 	let bid: ESI.Contracts.Bid
-	init(bid: ESI.Contracts.Bid , contact: NCContact?, dataManager: NCDataManager) {
+	init(bid: ESI.Contracts.Bid , contact: NSManagedObjectID?, dataManager: NCDataManager) {
 		self.bid = bid
 		super.init(prototype: Prototype.NCContactTableViewCell.default, contact: contact, dataManager: dataManager)
 	}
@@ -83,53 +86,32 @@ class NCContractInfoViewController: NCTreeViewController {
 		                    Prototype.NCHeaderTableViewCell.default])
 	}
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+	
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		guard NCAccount.current != nil, let contract = contract else {
-			completionHandler([])
-			return
+			return .init(.failure(NCTreeViewControllerError.noResult))
 		}
 		
 		let progress = Progress(totalUnitCount: 2)
 		
-		let dispatchGroup = DispatchGroup()
-		
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.contractItems(contractID: Int64(contract.contractID)) { result in
-				self.items = result
-				dispatchGroup.leave()
-			}
+		return OperationQueue(qos: .utility).async { () -> (CachedValue<[ESI.Contracts.Item]>, CachedValue<[ESI.Contracts.Bid]>) in
+			let items = try progress.perform { self.dataManager.contractItems(contractID: Int64(contract.contractID))}.get()
+			let bids = try progress.perform { self.dataManager.contractBids(contractID: Int64(contract.contractID))}.get()
+			return (items, bids)
+		}.then(on: .main) { (items, bids) -> [NCCacheRecord] in
+			self.items = items
+			self.bids = bids
+			return [items.cacheRecord, bids.cacheRecord]
 		}
-		
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.contractBids(contractID: Int64(contract.contractID)) { result in
-				self.bids = result
-				dispatchGroup.leave()
-			}
-		}
-		
-		dispatchGroup.notify(queue: .main) {
-			let records = [self.items?.cacheRecord, self.bids?.cacheRecord].flatMap {$0}
-			completionHandler(records)
-		}
-
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		if let contract = self.contract {
-			tableView.backgroundView = nil
+	override func content() -> Future<TreeNode?> {
+		let progress = Progress(totalUnitCount: 2)
+		
+		return OperationQueue(qos: .utility).async { () -> ([Int64: NSManagedObjectID]?, [Int64: NCLocation]?) in
+			guard let contract = self.contract else {return (nil, nil)}
 			
-			let progress = Progress(totalUnitCount: 2)
-			
-			
-			let dispatchGroup = DispatchGroup()
-			
-			var locations: [Int64: NCLocation] = [:]
-			var contacts: [Int64: NCContact] = [:]
-
-			
-			progress.perform {
+			let contacts = progress.perform { () -> [Int64: NSManagedObjectID]? in
 				var contactIDs = Set<Int64>()
 				if contract.acceptorID > 0 {
 					contactIDs.insert(Int64(contract.acceptorID))
@@ -141,18 +123,14 @@ class NCContractInfoViewController: NCTreeViewController {
 					contactIDs.insert(Int64(contract.issuerID))
 				}
 				
-				if let bids = bids?.value {
+				if let bids = self.bids?.value {
 					contactIDs.formUnion(bids.map{Int64($0.bidderID)})
 				}
-
-				dispatchGroup.enter()
-				self.dataManager.contacts(ids: contactIDs) { result in
-					contacts = result
-					dispatchGroup.leave()
-				}
+				
+				return try? self.dataManager.contacts(ids: contactIDs).get()
 			}
 			
-			progress.perform {
+			let locations = progress.perform { () -> [Int64: NCLocation]? in
 				var locationIDs = Set<Int64>()
 				if let locationID = contract.startLocationID {
 					locationIDs.insert(locationID)
@@ -161,151 +139,136 @@ class NCContractInfoViewController: NCTreeViewController {
 					locationIDs.insert(locationID)
 				}
 				
-				dispatchGroup.enter()
-				self.dataManager.locations(ids: locationIDs) { result in
-					locations = result
-					dispatchGroup.leave()
+				return try? self.dataManager.locations(ids: locationIDs).get()
+			}
+			
+			return (contacts, locations)
+		}.then(on: .main) { (contacts, locations) -> TreeNode? in
+			guard let contract = self.contract else {throw NCTreeViewControllerError.noResult}
+
+			var sections = [TreeNode]()
+			var rows = [TreeNode]()
+			
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
+									   nodeIdentifier: "Type",
+									   title: NSLocalizedString("Type", comment: "").uppercased(),
+									   subtitle: contract.type.title))
+			
+			if let description = contract.title, !description.isEmpty {
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
+										   nodeIdentifier: "Description",
+										   title: NSLocalizedString("Description", comment: "").uppercased(),
+										   subtitle: description))
+			}
+			
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
+									   nodeIdentifier: "Availability",
+									   title: NSLocalizedString("Availability", comment: "").uppercased(),
+									   subtitle: contract.availability.title))
+			
+			let status = contract.currentStatus
+			
+			
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
+									   nodeIdentifier: "Status",
+									   title: NSLocalizedString("Status", comment: "").uppercased(),
+									   subtitle: status.title))
+			
+			if let contact = contacts?[Int64(contract.issuerID)] {
+				rows.append(NCContractContactRow(title: NSLocalizedString("From", comment: "").uppercased(), contact: contact, dataManager: self.dataManager))
+			}
+			if let contact = contacts?[Int64(contract.assigneeID)] {
+				rows.append(NCContractContactRow(title: NSLocalizedString("To", comment: "").uppercased(), contact: contact, dataManager: self.dataManager))
+			}
+			if let contact = contacts?[Int64(contract.acceptorID)] {
+				rows.append(NCContractContactRow(title: NSLocalizedString("Acceptor", comment: "").uppercased(), contact: contact, dataManager: self.dataManager))
+			}
+			
+			
+			if let fromID = contract.startLocationID, let toID = contract.endLocationID, fromID != toID, let from = locations?[fromID], let to = locations?[toID] {
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
+										   nodeIdentifier: "StartLocation",
+										   title: NSLocalizedString("Start Location", comment: "").uppercased(),
+										   attributedSubtitle: from.displayName))
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
+										   nodeIdentifier: "EndLocation",
+										   title: NSLocalizedString("End Location", comment: "").uppercased(),
+										   attributedSubtitle: to.displayName))
+			}
+			else if let locationID = contract.startLocationID, let location = locations?[locationID] {
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
+										   nodeIdentifier: "Location",
+										   title: NSLocalizedString("Location", comment: "").uppercased(),
+										   attributedSubtitle: location.displayName))
+			}
+			
+			if let price = contract.price, price > 0 {
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
+										   nodeIdentifier: "Price",
+										   title: NSLocalizedString("Buyer Will Pay", comment: "").uppercased(),
+										   subtitle: NCUnitFormatter.localizedString(from: price, unit: .isk, style: .full)))
+			}
+			
+			if let reward = contract.reward, reward > 0 {
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
+										   nodeIdentifier: "Reward",
+										   title: NSLocalizedString("Buyer Will Get", comment: "").uppercased(),
+										   subtitle: NCUnitFormatter.localizedString(from: reward, unit: .isk, style: .full)))
+			}
+			
+			
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
+									   nodeIdentifier: "Issued",
+									   title: NSLocalizedString("Date Issued", comment: "").uppercased(),
+									   subtitle: DateFormatter.localizedString(from: contract.dateIssued, dateStyle: .medium, timeStyle: .medium)))
+			rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
+									   nodeIdentifier: "Expired",
+									   title: NSLocalizedString("Date Expired", comment: "").uppercased(),
+									   subtitle: DateFormatter.localizedString(from: contract.dateExpired, dateStyle: .medium, timeStyle: .medium)))
+			
+			if let date = contract.dateAccepted {
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
+										   nodeIdentifier: "Accepted",
+										   title: NSLocalizedString("Date Accepted", comment: "").uppercased(),
+										   subtitle: DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .medium)))
+			}
+			if let date = contract.dateCompleted {
+				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
+										   nodeIdentifier: "Completed",
+										   title: NSLocalizedString("Date Completed", comment: "").uppercased(),
+										   subtitle: DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .medium)))
+			}
+			
+			sections.append(DefaultTreeSection(nodeIdentifier: "Details",
+											   title: NSLocalizedString("Details", comment: "").uppercased(),
+											   children: rows))
+			
+			if let items = self.items?.value, !items.isEmpty {
+				let get = items.filter {$0.isIncluded}.map ({NCContractItem(item: $0)})
+				let pay = items.filter {!$0.isIncluded}.map ({NCContractItem(item: $0)})
+				if !get.isEmpty {
+					sections.append(DefaultTreeSection(nodeIdentifier: "BuyerWillGet",
+													   title: NSLocalizedString("Buyer Will Get", comment: "").uppercased(),
+													   children: get))
+				}
+				if !pay.isEmpty {
+					sections.append(DefaultTreeSection(nodeIdentifier: "BuyerWillPay",
+													   title: NSLocalizedString("Buyer Will Pay", comment: "").uppercased(),
+													   children: pay))
 				}
 			}
 			
-			dispatchGroup.notify(queue: .main) {
-				var sections = [TreeNode]()
-				var rows = [TreeNode]()
-				
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
-				                           nodeIdentifier: "Type",
-				                           title: NSLocalizedString("Type", comment: "").uppercased(),
-				                           subtitle: contract.type.title))
-				
-				if let description = contract.title, !description.isEmpty {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
-					                           nodeIdentifier: "Description",
-					                           title: NSLocalizedString("Description", comment: "").uppercased(),
-					                           subtitle: description))
-				}
-				
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
-				                           nodeIdentifier: "Availability",
-				                           title: NSLocalizedString("Availability", comment: "").uppercased(),
-				                           subtitle: contract.availability.title))
-				
-				let status = contract.currentStatus
-				
-				
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
-				                           nodeIdentifier: "Status",
-				                           title: NSLocalizedString("Status", comment: "").uppercased(),
-				                           subtitle: status.title))
-				
-				if let contact = contacts[Int64(contract.issuerID)] {
-					rows.append(NCContractContactRow(title: NSLocalizedString("From", comment: "").uppercased(), contact: contact, dataManager: self.dataManager))
-				}
-				if let contact = contacts[Int64(contract.assigneeID)] {
-					rows.append(NCContractContactRow(title: NSLocalizedString("To", comment: "").uppercased(), contact: contact, dataManager: self.dataManager))
-				}
-				if let contact = contacts[Int64(contract.acceptorID)] {
-					rows.append(NCContractContactRow(title: NSLocalizedString("Acceptor", comment: "").uppercased(), contact: contact, dataManager: self.dataManager))
-				}
-				
-				
-				if let fromID = contract.startLocationID, let toID = contract.endLocationID, fromID != toID, let from = locations[fromID], let to = locations[toID] {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
-					                           nodeIdentifier: "StartLocation",
-					                           title: NSLocalizedString("Start Location", comment: "").uppercased(),
-					                           attributedSubtitle: from.displayName))
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
-					                           nodeIdentifier: "EndLocation",
-					                           title: NSLocalizedString("End Location", comment: "").uppercased(),
-					                           attributedSubtitle: to.displayName))
-				}
-				else if let locationID = contract.startLocationID, let location = locations[locationID] {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
-					                           nodeIdentifier: "Location",
-					                           title: NSLocalizedString("Location", comment: "").uppercased(),
-					                           attributedSubtitle: location.displayName))
-				}
-				
-				if let price = contract.price, price > 0 {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
-					                           nodeIdentifier: "Price",
-					                           title: NSLocalizedString("Buyer Will Pay", comment: "").uppercased(),
-					                           subtitle: NCUnitFormatter.localizedString(from: price, unit: .isk, style: .full)))
-				}
-				
-				if let reward = contract.reward, reward > 0 {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
-					                           nodeIdentifier: "Reward",
-					                           title: NSLocalizedString("Buyer Will Get", comment: "").uppercased(),
-					                           subtitle: NCUnitFormatter.localizedString(from: reward, unit: .isk, style: .full)))
-				}
-				
-				
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
-				                           nodeIdentifier: "Issued",
-				                           title: NSLocalizedString("Date Issued", comment: "").uppercased(),
-				                           subtitle: DateFormatter.localizedString(from: contract.dateIssued, dateStyle: .medium, timeStyle: .medium)))
-				rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
-				                           nodeIdentifier: "Expired",
-				                           title: NSLocalizedString("Date Expired", comment: "").uppercased(),
-				                           subtitle: DateFormatter.localizedString(from: contract.dateExpired, dateStyle: .medium, timeStyle: .medium)))
-				
-				if let date = contract.dateAccepted {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
-					                           nodeIdentifier: "Accepted",
-					                           title: NSLocalizedString("Date Accepted", comment: "").uppercased(),
-					                           subtitle: DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .medium)))
-				}
-				if let date = contract.dateCompleted {
-					rows.append(DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.attributeNoImage,
-					                           nodeIdentifier: "Completed",
-					                           title: NSLocalizedString("Date Completed", comment: "").uppercased(),
-					                           subtitle: DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .medium)))
-				}
-				
-				sections.append(DefaultTreeSection(nodeIdentifier: "Details",
-				                                   title: NSLocalizedString("Details", comment: "").uppercased(),
-				                                   children: rows))
-				
-				if let items = self.items?.value, !items.isEmpty {
-					let get = items.filter {$0.isIncluded}.map ({NCContractItem(item: $0)})
-					let pay = items.filter {!$0.isIncluded}.map ({NCContractItem(item: $0)})
-					if !get.isEmpty {
-						sections.append(DefaultTreeSection(nodeIdentifier: "BuyerWillGet",
-						                                   title: NSLocalizedString("Buyer Will Get", comment: "").uppercased(),
-						                                   children: get))
-					}
-					if !pay.isEmpty {
-						sections.append(DefaultTreeSection(nodeIdentifier: "BuyerWillPay",
-						                                   title: NSLocalizedString("Buyer Will Pay", comment: "").uppercased(),
-						                                   children: pay))
-					}
-				}
-				
-				if let bids = self.bids?.value, !bids.isEmpty {
-					let rows = bids.sorted {$0.amount > $1.amount}.map {NCContractBidRow(bid: $0, contact: contacts[Int64($0.bidderID)], dataManager: self.dataManager)}
-					sections.append(DefaultTreeSection(nodeIdentifier: "Bids",
-					                                   title: NSLocalizedString("Bids", comment: "").uppercased(),
-					                                   children: rows))
-				}
-				
-				if self.treeController?.content == nil {
-					self.treeController?.content = RootNode(sections)
-				}
-				else {
-					self.treeController?.content?.children = sections
-				}
-				
-				completionHandler()
-
+			if let bids = self.bids?.value, !bids.isEmpty {
+				let rows = bids.sorted {$0.amount > $1.amount}.map {NCContractBidRow(bid: $0, contact: contacts?[Int64($0.bidderID)], dataManager: self.dataManager)}
+				sections.append(DefaultTreeSection(nodeIdentifier: "Bids",
+												   title: NSLocalizedString("Bids", comment: "").uppercased(),
+												   children: rows))
 			}
-		}
-		else {
-			tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: (items?.error ?? bids?.error)?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-			completionHandler()
+			guard !sections.isEmpty else {throw NCTreeViewControllerError.noResult}
+			return RootNode(sections)
 		}
 	}
 	
-	private var items: NCCachedResult<[ESI.Contracts.Item]>?
-	private var bids: NCCachedResult<[ESI.Contracts.Bid]>?
-	
+	private var items: CachedValue<[ESI.Contracts.Item]>?
+	private var bids: CachedValue<[ESI.Contracts.Bid]>?
 }

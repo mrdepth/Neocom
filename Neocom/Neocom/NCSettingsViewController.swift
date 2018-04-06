@@ -25,7 +25,7 @@ class NCSkillQueueNotificationOptionsSection: DefaultTreeSection {
 		                                                                    .oneDay,
 		                                                                    .skillTrainingComplete]
 		
-		let children = keys.flatMap { key -> NCSwitchRow? in
+		let children = keys.compactMap { key -> NCSwitchRow? in
 			let title: String
 			
 			switch key.rawValue {

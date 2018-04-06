@@ -108,44 +108,28 @@ class NCNotificationManager: NSObject {
 
 					let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(characterID)_64.png")
 					
-					dispatchGroup.enter()
-					
 					let lifeTime = NCExtendedLifeTime(managedObjectContext)
-					
-					dataManager.skillQueue { result in
-						switch result {
-						case let .success(value, _):
-							if let uuid = uuid {
-								queue.append((characterID, characterName, value, value.flatMap{$0.finishDate}.max() ?? Date.distantFuture, uuid))
-							}
-							dispatchGroup.enter()
-							dataManager.image(characterID: characterID, dimension: 64) { result in
-								if let image = result.value {
-									try? UIImagePNGRepresentation(image)?.write(to: url)
-								}
-								self.schedule(skillQueue: value, account: account, requests: requests, imageURL: url) { result in
-									dispatchGroup.leave()
-									lifeTime.finalize()
-								}
-							}
-						case .failure:
-							lifeTime.finalize()
+					if let value = (try? dataManager.skillQueue().get())?.value {
+						if let uuid = uuid {
+							queue.append((characterID, characterName, value, value.compactMap{$0.finishDate}.max() ?? Date.distantFuture, uuid))
 						}
-						dispatchGroup.leave()
+						dispatchGroup.enter()
+						if let image = try? dataManager.image(characterID: characterID, dimension: 64).get() {
+							try? UIImagePNGRepresentation(image)?.write(to: url)
+						}
+						self.schedule(skillQueue: value, account: account, requests: requests, imageURL: url).wait()
 					}
 				}
 				
 				self.remove(requests: pending)
-			}
-			
-			dispatchGroup.notify(queue: .main) { [weak self] in
-				NCDatabase.sharedDatabase?.performBackgroundTask { (context) in
+				
+				NCDatabase.sharedDatabase?.performTaskAndWait { context in
 					if let url = WidgetData.url {
 						let date = Date()
 						let invTypes = NCDBInvType.invTypes(managedObjectContext: context)
 						let accounts = Array(queue.filter{!$0.2.isEmpty}.sorted{$0.3 < $1.3}.prefix(4))
 							.map { i -> WidgetData.Account in
-								let skills = i.2.flatMap { j-> WidgetData.Account.SkillQueueItem? in
+								let skills = i.2.compactMap { j-> WidgetData.Account.SkillQueueItem? in
 									guard let type = invTypes[j.skillID],
 										let skill = NCSkill(type: type, skill: j),
 										let startDate = j.startDate,
@@ -159,7 +143,7 @@ class NCNotificationManager: NSObject {
 						}
 						
 						let dispatchGroup = DispatchGroup()
-
+						
 						let widgetData = WidgetData(accounts: accounts)
 						
 						let fileManager = FileManager.default
@@ -178,23 +162,19 @@ class NCNotificationManager: NSObject {
 							
 							accounts.forEach { account in
 								dispatchGroup.enter()
-								dataManager.image(characterID: account.characterID, dimension: 64) { result in
-									if let image = result.value, let data = UIImagePNGRepresentation(image) {
-										try? data.write(to: baseURL.appendingPathComponent("\(account.characterID).png"))
-									}
-									dispatchGroup.leave()
+								if let image = try? dataManager.image(characterID: account.characterID, dimension: 64).get(), let data = UIImagePNGRepresentation(image) {
+									try? data.write(to: baseURL.appendingPathComponent("\(account.characterID).png"))
 								}
 							}
 						}
 						catch {
 							
 						}
-						dispatchGroup.notify(queue: .main) {
-							self?.lastScheduleDate = Date()
-							completionHandler?(true)
-						}
 					}
 				}
+			}.finally(on: .main) {
+					self.lastScheduleDate = Date()
+					completionHandler?(true)
 			}
 		}
 	}
@@ -215,7 +195,7 @@ class NCNotificationManager: NSObject {
 			UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)
 		} else {
 			let application = UIApplication.shared
-			requests.flatMap {$0 as? UILocalNotification}.forEach {
+			requests.compactMap {$0 as? UILocalNotification}.forEach {
 				application.cancelLocalNotification($0)
 			}
 		}
@@ -230,17 +210,18 @@ class NCNotificationManager: NSObject {
 		}
 	}
 	
-	private func schedule(skillQueue: [ESI.Skills.SkillQueueItem], account: NCAccount, requests: [NotificationRequest], imageURL: URL, completionHandler: ((Bool) -> Void)?) {
+	private func schedule(skillQueue: [ESI.Skills.SkillQueueItem], account: NCAccount, requests: [NotificationRequest], imageURL: URL) -> Future<Bool> {
+		let promise = Promise<Bool>()
 		let options = self.skillQueueNotificationOptions
 		guard let context = account.managedObjectContext, !options.isEmpty else {
-			completionHandler?(false)
-			return
+			try! promise.fulfill(false)
+			return promise.future
 		}
 		
 		
 		context.perform {
 			guard let uuid = account.uuid else {
-				completionHandler?(false)
+				try! promise.fulfill(false)
 				return
 			}
 			let characterName = account.characterName ?? ""
@@ -279,7 +260,7 @@ class NCNotificationManager: NSObject {
 				                                                  (.oneHour, lastSkill.finishDate!.addingTimeInterval(-3600)),
 				                                                  (.fourHours, lastSkill.finishDate!.addingTimeInterval(-3600 * 4)),
 				                                                  (.oneDay, lastSkill.finishDate!.addingTimeInterval(-3600 * 24))]
-				a.filter{options.contains($0.0) && $0.1 > date}.flatMap { (option, date) -> NotificationRequest? in
+				a.filter{options.contains($0.0) && $0.1 > date}.compactMap { (option, date) -> NotificationRequest? in
 					let body: String
 					switch option.rawValue {
 					case SkillQueueNotificationOptions.inactive.rawValue:
@@ -311,10 +292,11 @@ class NCNotificationManager: NSObject {
 			}
 			
 			dispatchGroup.notify(queue: .main) {
-				completionHandler?(true)
+				try! promise.fulfill(true)
 			}
 			
 		}
+		return promise.future
 	}
 	
 	private func request (title: String, subtitle: String?, body: String, date: Date, imageURL: URL, identifier: String, accountUUID: String) -> NotificationRequest {
@@ -327,7 +309,7 @@ class NCNotificationManager: NSObject {
 			
 			let attachmentURL = imageURL.deletingLastPathComponent().appendingPathComponent("\(identifier).png")
 			try? FileManager.default.linkItem(at: imageURL, to: attachmentURL)
-			content.attachments = [try? UNNotificationAttachment(identifier: "uuid", url: attachmentURL, options: nil)].flatMap {$0}
+			content.attachments = [try? UNNotificationAttachment(identifier: "uuid", url: attachmentURL, options: nil)].compactMap {$0}
 			content.sound = UNNotificationSound.default()
 			
 			let components = Calendar.current.dateComponents(Set([.year, .month, .day, .hour, .minute, .second, .timeZone]), from: date)

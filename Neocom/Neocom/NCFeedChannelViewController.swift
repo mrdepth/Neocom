@@ -21,82 +21,63 @@ class NCFeedChannelViewController: NCTreeViewController {
 		
 	}
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
-		guard let url = url else {
-			completionHandler([])
-			return
-		}
-		
-		dataManager.rss(url: url) { result in
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
+		guard let url = url else {return .init([])}
+		return dataManager.rss(url: url) { result -> [NCCacheRecord] in
 			self.rss = result
-			completionHandler([result.cacheRecord].flatMap {$0})
+			return [result.cacheRecord]
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		if let value = rss?.value {
-			let progress = Progress(totalUnitCount: Int64(value.items?.count ?? 0))
-			DispatchQueue.global(qos: .background).async {
-				autoreleasepool {
-					let dateFormatter = DateFormatter()
-					dateFormatter.dateStyle = .medium
-					dateFormatter.timeStyle = .none
-					dateFormatter.doesRelativeDateFormatting = true
-					
-					let calendar = Calendar(identifier: .gregorian)
-					
-					var date = calendar.date(from: calendar.dateComponents([.day, .month, .year], from: Date())) ?? Date()
-					
-					var sections = [TreeNode]()
-					var rows = [NCFeedItemRow]()
-					
-					let items = value.items?.sorted {($0.updated ?? Date()) > ($1.updated ?? Date())}
-					
-					for item in items ?? [] {
-						progress.completedUnitCount += 1
-						let row = NCFeedItemRow(item: item)
-						let updated = item.updated ?? Date()
-						if updated > date {
-							rows.append(row)
-						}
-						else {
-							if !rows.isEmpty {
-								let title = dateFormatter.string(from: date)
-								sections.append(DefaultTreeSection(nodeIdentifier: title, title: title.uppercased(), children: rows))
-							}
-							date = calendar.date(from: calendar.dateComponents([.day, .month, .year], from: updated)) ?? Date()
-							rows = [row]
-						}
-					}
-					
+	override func content() -> Future<TreeNode?> {
+		let rss = self.rss
+		let totalProgress = Progress(totalUnitCount: 1)
+		OperationQueue(qos: .utility).async { () -> TreeNode? in
+			guard let value = rss?.value else {throw NCTreeViewControllerError.noResult}
+			let progress = totalProgress.perform{ Progress(totalUnitCount: Int64(value.items?.count ?? 0)) }
+			
+			let dateFormatter = DateFormatter()
+			dateFormatter.dateStyle = .medium
+			dateFormatter.timeStyle = .none
+			dateFormatter.doesRelativeDateFormatting = true
+			
+			let calendar = Calendar(identifier: .gregorian)
+			
+			var date = calendar.date(from: calendar.dateComponents([.day, .month, .year], from: Date())) ?? Date()
+			
+			var sections = [TreeNode]()
+			var rows = [NCFeedItemRow]()
+			
+			let items = value.items?.sorted {($0.updated ?? Date()) > ($1.updated ?? Date())}
+			
+			for item in items ?? [] {
+				progress.completedUnitCount += 1
+				let row = NCFeedItemRow(item: item)
+				let updated = item.updated ?? Date()
+				if updated > date {
+					rows.append(row)
+				}
+				else {
 					if !rows.isEmpty {
 						let title = dateFormatter.string(from: date)
 						sections.append(DefaultTreeSection(nodeIdentifier: title, title: title.uppercased(), children: rows))
 					}
-					
-					DispatchQueue.main.async {
-						
-						if self.treeController?.content == nil {
-							self.treeController?.content = RootNode(sections)
-						}
-						else {
-							self.treeController?.content?.children = sections
-						}
-						self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-						completionHandler()
-					}
-					
+					date = calendar.date(from: calendar.dateComponents([.day, .month, .year], from: updated)) ?? Date()
+					rows = [row]
 				}
 			}
 			
-		}
-		else {
-			tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: rss?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-			completionHandler()
+			if !rows.isEmpty {
+				let title = dateFormatter.string(from: date)
+				sections.append(DefaultTreeSection(nodeIdentifier: title, title: title.uppercased(), children: rows))
+			}
+			
+			guard !sections.isEmpty else {throw NCTreeViewControllerError.noResult}
+			return RootNode(sections)
 		}
 	}
 	
-	private var rss: NCCachedResult<RSS.Feed>?
+	private var rss: CachedValue<RSS.Feed>?
 	
 	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {
 		super.treeController(treeController, didSelectCellWithNode: node)

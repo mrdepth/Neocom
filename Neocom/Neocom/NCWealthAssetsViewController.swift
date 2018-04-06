@@ -26,12 +26,10 @@ class NCWealthAssetsViewController: NCTreeViewController {
 		
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		pieChartRow = NCPieChartRow(formatter: NCUnitFormatter(unit: .isk, style: .short))
 		detailsSection = TreeNode()
 
-		treeController?.content = RootNode([pieChartRow!, detailsSection!])
-		
 		NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
 			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
 			var ships: (Double, [ESI.Assets.Asset]) = (0.0, [])
@@ -84,9 +82,9 @@ class NCWealthAssetsViewController: NCTreeViewController {
 				}
 				
 				self.detailsSection?.children = rows
-				completionHandler()
 			}
 		}
+		return .init(RootNode([pieChartRow!, detailsSection!]))
 	}
 	
 	

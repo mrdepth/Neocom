@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import Dgmpp
+import EVEAPI
 
 class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 	
@@ -28,10 +29,8 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 		// Dispose of any resources that can be recreated.
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		defer {completionHandler()}
-		
-		guard let fleet = fleet else {return}
+	override func content() -> Future<TreeNode?> {
+		guard let fleet = fleet else {return .init(nil)}
 		
 		var sections = [TreeNode]()
 		
@@ -47,7 +46,7 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 		})))
 		
 		let context = NCStorage.sharedStorage?.viewContext
-		let filter = fleet.pilots.flatMap { (_, objectID) -> NCLoadout? in
+		let filter = fleet.pilots.compactMap { (_, objectID) -> NCLoadout? in
 			guard let objectID = objectID else {return nil}
 			return context?.object(with: objectID) as? NCLoadout
 		}
@@ -55,11 +54,7 @@ class NCFittingFleetMemberPickerViewController: NCTreeViewController {
 		
 		
 		sections.append(NCLoadoutsSection<NCLoadoutNoRouteRow>(categoryID: .ship, filter: predicate))
-		if self.treeController?.content == nil {
-			self.treeController?.content = TreeNode()
-		}
-		self.treeController?.content?.children = sections
-		
+		return .init(RootNode(sections))
 	}
 	
 	//MARK: - TreeControllerDelegate

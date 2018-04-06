@@ -121,7 +121,7 @@ class NCProgressHandler: NSObject {
 	func finish() {
 		timer?.invalidate()
 		timer = nil
-		let views = ([_progressView, activityIndicatorView] as [UIView?]).flatMap({$0})
+		let views = ([_progressView, activityIndicatorView] as [UIView?]).compactMap({$0})
 		if views.count > 0 {
 			if Thread.isMainThread {
 				views.forEach ({$0.removeFromSuperview()})

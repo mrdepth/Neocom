@@ -424,7 +424,7 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 		let pricesSection = NCFittingPriceSection(ship: ship)
 		sections.append(pricesSection)
 		
-		var typeIDs = Set(ship.modules.map {[$0.typeID, $0.charge?.typeID]}.joined().flatMap{$0})
+		var typeIDs = Set(ship.modules.map {[$0.typeID, $0.charge?.typeID]}.joined().compactMap{$0})
 		typeIDs.formUnion(Set(ship.drones.map{$0.typeID}))
 		typeIDs.insert(ship.typeID)
 		if let pilot = fleet.active {

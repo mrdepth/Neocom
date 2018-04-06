@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import CoreData
 
 typealias NCContactTableViewCell = NCDefaultTableViewCell
 
@@ -22,12 +23,17 @@ extension Prototype {
 
 class NCContactRow: TreeRow {
 	
-	let contact: NCContact?
+	lazy var contact: NCContact? = {
+		guard let contactID = self.contactID else {return nil}
+		return (try? NCCache.sharedCache?.viewContext.existingObject(with: contactID)) as? NCContact
+	}()
+	
+	let contactID: NSManagedObjectID?
 	let dataManager: NCDataManager
 	var image: UIImage?
 	
-	init(prototype: Prototype = Prototype.NCContactTableViewCell.compact, contact: NCContact?, dataManager: NCDataManager, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
-		self.contact = contact
+	init(prototype: Prototype = Prototype.NCContactTableViewCell.compact, contact: NSManagedObjectID?, dataManager: NCDataManager, route: Route? = nil, accessoryButtonRoute: Route? = nil) {
+		self.contactID = contact
 		self.dataManager = dataManager
 		super.init(prototype: prototype, route: route, accessoryButtonRoute: accessoryButtonRoute)
 	}
@@ -45,27 +51,23 @@ class NCContactRow: TreeRow {
 			
 			guard let contact = self.contact else {return}
 			
-			let completionHandler = { (result: NCCachedResult<UIImage>) -> Void in
-				switch result {
-				case let .success(value):
-					self.image = value.value
-					if (cell.object as? NCContact) == self.contact {
-						cell.iconView?.image = self.image
-					}
-				case .failure:
-					self.image = UIImage()
-				}
-			}
+			let image: Future<UIImage>?
 			
 			switch contact.recipientType ?? .character {
 			case .alliance:
-				dataManager.image(allianceID: contact.contactID, dimension: Int(cell.iconView!.bounds.width), completionHandler: completionHandler)
+				image = dataManager.image(allianceID: contact.contactID, dimension: Int(cell.iconView!.bounds.width))
 			case .corporation:
-				dataManager.image(corporationID: contact.contactID, dimension: Int(cell.iconView!.bounds.width), completionHandler: completionHandler)
+				image = dataManager.image(corporationID: contact.contactID, dimension: Int(cell.iconView!.bounds.width))
 			case .character:
-				dataManager.image(characterID: contact.contactID, dimension: Int(cell.iconView!.bounds.width), completionHandler: completionHandler)
+				image = dataManager.image(characterID: contact.contactID, dimension: Int(cell.iconView!.bounds.width))
 			default:
-				break
+				image = nil
+			}
+			image?.then(on: .main) { value in
+				self.image = value
+				if (cell.object as? NCContact) == self.contact {
+					cell.iconView?.image = self.image
+				}
 			}
 		}
 	}

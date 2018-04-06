@@ -132,7 +132,7 @@ class NCLoyaltyStoreOffersViewController: NCTreeViewController {
 		
 		dataManager.loyaltyStoreOffers(corporationID: Int64(loyaltyPoints.corporationID)) { result in
 			self.offers = result
-			completionHandler([result.cacheRecord].flatMap {$0})
+			completionHandler([result.cacheRecord].compactMap {$0})
 		}
 	}
 	
@@ -149,19 +149,19 @@ class NCLoyaltyStoreOffersViewController: NCTreeViewController {
 				switch self.filter {
 				case let .category(categoryID)?:
 					let categoryID = Int32(categoryID)
-					let groups = Set(value.flatMap {invTypes[$0.typeID]?.group}).filter {$0.category?.categoryID == categoryID}
+					let groups = Set(value.compactMap {invTypes[$0.typeID]?.group}).filter {$0.category?.categoryID == categoryID}
 					sections = groups.sorted {($0.groupName ?? "") < ($1.groupName ?? "")}.map {NCLoyaltyStoreGroupRow(groupID: Int($0.groupID), route: Router.Character.LoyaltyStoreOffers(loyaltyPoints: loyaltyPoints, filter: .group(Int($0.groupID)), offers: offers))}
 				case let .group(groupID)?:
 					let groupID = Int32(groupID)
 					
-					let types = value.flatMap { i -> (NCDBInvType, ESI.Loyalty.Offer)? in
+					let types = value.compactMap { i -> (NCDBInvType, ESI.Loyalty.Offer)? in
 						guard let type = invTypes[i.typeID], type.group?.groupID == groupID else {return nil}
 						return (type, i)
 						}
 					sections = types.sorted {($0.0.typeName ?? "") < ($1.0.typeName ?? "")}.map {NCLoyaltyStoreOfferRow(offer: $0.1)}
 					
 				default:
-					let categories = Set(value.flatMap {invTypes[$0.typeID]?.group?.category})
+					let categories = Set(value.compactMap {invTypes[$0.typeID]?.group?.category})
 					sections = categories.sorted {($0.categoryName ?? "") < ($1.categoryName ?? "")}.map {NCLoyaltyStoreCategoryRow(categoryID: Int($0.categoryID), route: Router.Character.LoyaltyStoreOffers(loyaltyPoints: loyaltyPoints, filter: .category(Int($0.categoryID)), offers: offers))}
 				}
 				
@@ -169,14 +169,14 @@ class NCLoyaltyStoreOffersViewController: NCTreeViewController {
 				
 //				let sections =
 				
-				/*value.flatMap { offer -> NCLoyaltyStoreOfferRow? in
+				/*value.compactMap { offer -> NCLoyaltyStoreOfferRow? in
 					guard let type = invTypes[offer.typeID] else {return nil}
 					return NCLoyaltyStoreOfferRow(offer: offer, type: type)
 					}.sorted {$0.typeName < $1.typeName}.forEach {map[$0.groupID, default: []].append($0)}
 				
 				let invGroups = NCDBInvGroup.invGroups(managedObjectContext: managedObjectContext)
 				
-				let sections = map.flatMap { (key, value) -> DefaultTreeSection? in
+				let sections = map.compactMap { (key, value) -> DefaultTreeSection? in
 					guard let group = invGroups[key]?.groupName else {return nil}
 					return DefaultTreeSection(nodeIdentifier: "\(key)", title: group.uppercased(), children: value)
 					}.sorted {$0.title! < $1.title!}

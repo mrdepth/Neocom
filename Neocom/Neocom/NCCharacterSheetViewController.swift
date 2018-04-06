@@ -181,7 +181,7 @@ class NCCharacterSheetViewController: NCTreeViewController {
 			               self.corporationImage?.cacheRecord,
 			               self.allianceImage?.cacheRecord,
 			               self.characterShip?.cacheRecord,
-			               self.characterLocation?.cacheRecord].flatMap {$0}
+			               self.characterLocation?.cacheRecord].compactMap {$0}
 			
 			completionHandler(records)
 		}
@@ -291,7 +291,7 @@ class NCCharacterSheetViewController: NCTreeViewController {
 				            (NCDBAttributeID.charismaBonus, NSLocalizedString("Charisma", comment: ""))]
 				
 				
-				let implants = implants.flatMap { implant -> (NCDBInvType, Int)? in
+				let implants = implants.compactMap { implant -> (NCDBInvType, Int)? in
 					guard let type = invTypes?[implant] else {return nil}
 					return (type, Int(type.allAttributes[NCDBAttributeID.implantness.rawValue]?.value ?? 100))
 					}.sorted {$0.1 < $1.1}

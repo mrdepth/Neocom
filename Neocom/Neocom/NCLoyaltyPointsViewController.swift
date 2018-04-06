@@ -8,11 +8,12 @@
 
 import UIKit
 import EVEAPI
+import CoreData
 
 class NCLoyaltyPointRow: NCContactRow {
 	let loyaltyPoints: ESI.Loyalty.Point
 	
-	init(loyaltyPoints: ESI.Loyalty.Point, contact: NCContact?, dataManager: NCDataManager) {
+	init(loyaltyPoints: ESI.Loyalty.Point, contact: NSManagedObjectID?, dataManager: NCDataManager) {
 		self.loyaltyPoints = loyaltyPoints
 		super.init(prototype: Prototype.NCContactTableViewCell.default, contact: contact, dataManager: dataManager, route: Router.Character.LoyaltyStoreOffers(loyaltyPoints: loyaltyPoints))
 	}
@@ -33,41 +34,32 @@ class NCLoyaltyPointsViewController: NCTreeViewController {
 		tableView.register([Prototype.NCContactTableViewCell.default])
 	}
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
-		dataManager.loyaltyPoints { result in
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
+		return dataManager.loyaltyPoints().then(on: .main) { result -> [NCCacheRecord] in
 			self.loyaltyPoints = result
-			completionHandler([result.cacheRecord].flatMap {$0})
+			return [result.cacheRecord]
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		if let value = loyaltyPoints?.value {
-			tableView.backgroundView = nil
-			
+	override func content() -> Future<TreeNode?> {
+		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+			guard let value = self.loyaltyPoints?.value else {throw NCTreeViewControllerError.noResult}
 			let contactIDs = value.map {Int64($0.corporationID)}
 			let dataManager = self.dataManager
 			
-			dataManager.contacts(ids: Set(contactIDs)) { result in
+			let rows = try dataManager.contacts(ids: Set(contactIDs)).then { result -> [NCLoyaltyPointRow] in
 				let rows = value.map { lp -> NCLoyaltyPointRow in
 					return NCLoyaltyPointRow(loyaltyPoints: lp, contact: result[Int64(lp.corporationID)], dataManager: dataManager)
 					}.sorted {$0.loyaltyPoints.loyaltyPoints > $1.loyaltyPoints.loyaltyPoints}
-				
-				self.treeController?.content = RootNode(rows)
-				self.tableView.backgroundView = rows.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-				completionHandler()
-
-			}
-			
-		}
-		else {
-			tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: loyaltyPoints?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-			completionHandler()
+				return rows
+			}.get()
+			guard !rows.isEmpty else {throw NCTreeViewControllerError.noResult}
+			return RootNode(rows)
 		}
 	}
 	
 	//MARK: - NCRefreshable
 	
-	private var loyaltyPoints: NCCachedResult<[ESI.Loyalty.Point]>?
-	
+	private var loyaltyPoints: CachedValue<[ESI.Loyalty.Point]>?
 }
 

@@ -39,7 +39,7 @@ class NCContactsSearchResultViewController: NCTreeViewController {
 			                   ESI.Mail.Recipient.RecipientType.alliance: "2"]
 			var sections = [DefaultTreeSection]()
 			for (key, value) in names {
-				let rows = value.map { NCContactRow(contact: $0, dataManager: dataManager) }/*.sorted { ($0.contact?.name ?? "") < ($1.contact?.name ?? "") }*/
+				let rows = value.map { NCContactRow(contact: $0.objectID, dataManager: dataManager) }/*.sorted { ($0.contact?.name ?? "") < ($1.contact?.name ?? "") }*/
 				let section = DefaultTreeSection(nodeIdentifier: identifiers[key], title: titles[key], children: rows)
 				sections.append(section)
 			}
@@ -85,18 +85,11 @@ class NCContactsSearchResultViewController: NCTreeViewController {
 				return
 			}
 			
-			let dispatchGroup = DispatchGroup()
-			
-			dispatchGroup.enter()
-			
-			dataManager.searchNames(string, categories: [.character, .corporation, .alliance], strict: false) { [weak self] result in
-				defer {dispatchGroup.leave()}
-				guard let strongSelf = self else {return}
-				
-				strongSelf.contacts = result.values.sorted { ($0.name ?? "") < ($1.name ?? "") }
+			let result = try? dataManager.searchNames(string, categories: [.character, .corporation, .alliance], strict: false).get()
+			DispatchQueue.main.async {
+				let context = NCCache.sharedCache?.viewContext
+				self.contacts = result?.values.compactMap {(try? context?.existingObject(with: $0)) as? NCContact}.sorted { ($0.name ?? "") < ($1.name ?? "") } ?? []
 			}
-			
-			dispatchGroup.wait()
 		}
 	}
 	

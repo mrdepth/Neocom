@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import CoreData
 
 class NCKillmailAttackerTableViewCell: NCDefaultTableViewCell {
 	@IBOutlet weak var shipImageView: UIImageView?
@@ -24,16 +25,31 @@ extension Prototype {
 
 class NCKillmailAttackerRow: TreeRow {
 	let attacker: NCAttacker
-	let character: NCContact?
-	let corporation: NCContact?
-	let alliance: NCContact?
+	let characterID: NSManagedObjectID?
+	let corporationID: NSManagedObjectID?
+	let allianceID: NSManagedObjectID?
 	let dataManager: NCDataManager
 	
-	init(attacker: NCAttacker, character: NCContact?, corporation: NCContact?, alliance: NCContact?, dataManager: NCDataManager) {
+	lazy var character: NCContact? = {
+		guard let contactID = self.characterID else {return nil}
+		return (try? NCCache.sharedCache?.viewContext.existingObject(with: contactID)) as? NCContact
+	}()
+	
+	lazy var corporation: NCContact? = {
+		guard let contactID = self.corporationID else {return nil}
+		return (try? NCCache.sharedCache?.viewContext.existingObject(with: contactID)) as? NCContact
+	}()
+	
+	lazy var alliance: NCContact? = {
+		guard let contactID = self.allianceID else {return nil}
+		return (try? NCCache.sharedCache?.viewContext.existingObject(with: contactID)) as? NCContact
+	}()
+	
+	init(attacker: NCAttacker, character: NSManagedObjectID?, corporation: NSManagedObjectID?, alliance: NSManagedObjectID?, dataManager: NCDataManager) {
 		self.attacker = attacker
-		self.character = character
-		self.corporation = corporation
-		self.alliance = alliance
+		self.characterID = character
+		self.corporationID = corporation
+		self.allianceID = alliance
 		self.dataManager = dataManager
 		let contact = character ?? corporation ?? alliance
 		super.init(prototype: contact == nil ? Prototype.NCKillmailAttackerTableViewCell.npc : Prototype.NCKillmailAttackerTableViewCell.default)
@@ -140,32 +156,32 @@ class NCKillmailAttackerRow: TreeRow {
 		if image == nil, let size = cell.iconView?.bounds.size {
 			image = UIImage()
 			if let contact = self.character {
-				dataManager.image(characterID: contact.contactID, dimension: Int(size.width)) { result in
-					self.image = result.value ?? UIImage()
+				dataManager.image(characterID: contact.contactID, dimension: Int(size.width)).then(on: .main) { result in
+					self.image = result
 					if (cell.object as? NCAttacker)?.characterID == self.attacker.characterID {
 						cell.iconView?.image = self.image
 					}
 				}
 			}
 			else if let contact = self.corporation {
-				dataManager.image(corporationID: contact.contactID, dimension: Int(size.width)) { result in
-					self.image = result.value ?? UIImage()
+				dataManager.image(corporationID: contact.contactID, dimension: Int(size.width)).then(on: .main) { result in
+					self.image = result
 					if (cell.object as? NCAttacker)?.corporationID == self.attacker.corporationID {
 						cell.iconView?.image = self.image
 					}
 				}
 			}
 			else if let contact = self.alliance {
-				dataManager.image(allianceID: contact.contactID, dimension: Int(size.width)) { result in
-					self.image = result.value ?? UIImage()
+				dataManager.image(allianceID: contact.contactID, dimension: Int(size.width)).then(on: .main) { result in
+					self.image = result
 					if (cell.object as? NCAttacker)?.allianceID == self.attacker.allianceID {
 						cell.iconView?.image = self.image
 					}
 				}
 			}
 			else if let contact = self.faction {
-				dataManager.image(allianceID: Int64(contact.factionID), dimension: Int(size.width)) { result in
-					self.image = result.value ?? UIImage()
+				dataManager.image(allianceID: Int64(contact.factionID), dimension: Int(size.width)).then(on: .main) { result in
+					self.image = result
 					if (cell.object as? NCAttacker)?.factionID == self.attacker.factionID {
 						cell.iconView?.image = self.image
 					}

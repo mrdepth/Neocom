@@ -17,7 +17,7 @@ class NCFittingShipsViewController: NCFittingLoadoutsViewController {
 		super.viewDidLoad()
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		var sections = [TreeNode]()
 		
 		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("New Ship Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .ship)!, completionHandler: {[weak self] (controller, type) in
@@ -31,8 +31,7 @@ class NCFittingShipsViewController: NCFittingLoadoutsViewController {
 		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "browser"), title: NSLocalizedString("Import/Export", comment: ""), accessoryType: .disclosureIndicator, route: Router.Fitting.Server()))
 		
 		sections.append(NCLoadoutsSection(categoryID: .ship))
-		self.treeController?.content = RootNode(sections)
-		completionHandler()
+		return .init(RootNode(sections))
 	}
 	
 }

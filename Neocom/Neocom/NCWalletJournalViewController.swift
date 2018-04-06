@@ -27,49 +27,38 @@ class NCWalletJournalViewController: NCTreeViewController {
 		}
 	}
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
-		
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		switch wallet {
 		case .character:
 			let progress = Progress(totalUnitCount: 2)
-			OperationQueue().async { () -> (CachedValue<[ESI.Wallet.WalletJournalItem]>, CachedValue<Double>) in
+			return OperationQueue().async { () -> (CachedValue<[ESI.Wallet.WalletJournalItem]>, CachedValue<Double>) in
 				let walletJournal = progress.perform{self.dataManager.walletJournal()}
 				let walletBalance = progress.perform{self.dataManager.walletBalance()}
 				return try (walletJournal.get(), walletBalance.get())
-			}.then(on: .main) { result in
+			}.then(on: .main) { result -> [NCCacheRecord] in
 				self.walletJournal = result.0
 				self.walletBalance = result.1
-				self.error = nil
-				completionHandler([self.walletJournal?.cacheRecord, self.walletBalance?.cacheRecord].flatMap {$0})
-			}.catch(on: .main) { error in
-				self.error = error
-				completionHandler([])
-				self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: error.localizedDescription)
+				return [result.0.cacheRecord, result.1.cacheRecord]
 			}
 		case let .corporation(wallet):
-			Progress(totalUnitCount: 1).perform {
-				self.dataManager.corpWalletJournal(division: wallet.division ?? 0).then(on: .main) { result in
+			return Progress(totalUnitCount: 1).perform {
+				self.dataManager.corpWalletJournal(division: wallet.division ?? 0).then(on: .main) { result -> [NCCacheRecord] in
 					self.corpWalletJournal = result
-					completionHandler([self.corpWalletJournal?.cacheRecord].flatMap {$0})
-				}.catch(on: .main) { error in
-					self.error = error
-					completionHandler([])
-					self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: error.localizedDescription)
+					return [result.cacheRecord]
 				}
 			}
 		}
-		
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		if let value = walletBalance?.value {
 			let label = navigationItem.titleView as? NCNavigationItemTitleLabel
 			label?.set(title: NSLocalizedString("Wallet Journal", comment: ""), subtitle: NCUnitFormatter.localizedString(from: value, unit: .isk, style: .full))
 		}
 		let walletJournal = self.walletJournal
 		let corpWalletJournal = self.corpWalletJournal
-		OperationQueue(qos: .utility).async { () -> [TreeNode] in
-			guard let value: [NCWalletJournalItem] = walletJournal?.value ?? corpWalletJournal?.value else {return []}
+		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+			guard let value: [NCWalletJournalItem] = walletJournal?.value ?? corpWalletJournal?.value else {throw NCTreeViewControllerError.noResult}
 			
 			let dateFormatter = DateFormatter()
 			dateFormatter.dateStyle = .medium
@@ -104,22 +93,13 @@ class NCWalletJournalViewController: NCTreeViewController {
 				let title = dateFormatter.string(from: date)
 				sections.append(DefaultTreeSection(nodeIdentifier: title, title: title.uppercased(), children: rows))
 			}
-			return sections
-		}.then(on: .main) { sections in
-			if self.treeController?.content == nil {
-				self.treeController?.content = RootNode(sections)
-			}
-			else {
-				self.treeController?.content?.children = sections
-			}
-			self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: self.error?.localizedDescription ?? NSLocalizedString("No Results", comment: "")) : nil
-			completionHandler()
+			guard !sections.isEmpty else {throw NCTreeViewControllerError.noResult}
+			return RootNode(sections)
 		}
 	}
 	
 	private var walletJournal: CachedValue<[ESI.Wallet.WalletJournalItem]>?
 	private var corpWalletJournal: CachedValue<[ESI.Wallet.CorpWalletsJournalItem]>?
 	private var walletBalance: CachedValue<Double>?
-	private var error: Error?
-		
+	
 }

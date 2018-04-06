@@ -44,8 +44,8 @@ class NCManagedObjectObserver {
 				return deletes?.contains(object.objectID) == true
 			}
 
-//			let updated = Set((note.userInfo?[NSUpdatedObjectsKey] as? Set<NSObject>)?.flatMap{ ($0 as? NSManagedObject)?.objectID ?? $0 as? NSManagedObjectID} ?? []).intersection(objects)
-//			let deleted = Set((note.userInfo?[NSDeletedObjectsKey] as? Set<NSObject>)?.flatMap{ ($0 as? NSManagedObject)?.objectID ?? $0 as? NSManagedObjectID} ?? []).intersection(objects)
+//			let updated = Set((note.userInfo?[NSUpdatedObjectsKey] as? Set<NSObject>)?.compactMap{ ($0 as? NSManagedObject)?.objectID ?? $0 as? NSManagedObjectID} ?? []).intersection(objects)
+//			let deleted = Set((note.userInfo?[NSDeletedObjectsKey] as? Set<NSObject>)?.compactMap{ ($0 as? NSManagedObject)?.objectID ?? $0 as? NSManagedObjectID} ?? []).intersection(objects)
 			
 			//let updated = (note.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObjectID>)?.intersection(strongSelf.objectIDs)
 			//let deleted = (note.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObjectID>)?.intersection(strongSelf.objectIDs)
@@ -87,9 +87,9 @@ class NCEntityObserver {
 			guard let strongSelf = self else {return}
 			guard let context = note.object as? NSManagedObjectContext, strongSelf.managedObjectContext == context || strongSelf.managedObjectContext.persistentStoreCoordinator == context.persistentStoreCoordinator else {return}
 			
-			let updates: Set<NSEntityDescription> = Set((note.userInfo?[NSUpdatedObjectsKey] as? NSSet)?.flatMap {(($0 as? NSManagedObject)?.objectID ?? $0 as? NSManagedObjectID)?.entity} ?? [])
-			let deletes: Set<NSEntityDescription> = Set((note.userInfo?[NSDeletedObjectsKey] as? NSSet)?.flatMap {(($0 as? NSManagedObject)?.objectID ?? $0 as? NSManagedObjectID)?.entity} ?? [])
-			let inserts: Set<NSEntityDescription> = Set((note.userInfo?[NSInsertedObjectsKey] as? NSSet)?.flatMap {(($0 as? NSManagedObject)?.objectID ?? $0 as? NSManagedObjectID)?.entity} ?? [])
+			let updates: Set<NSEntityDescription> = Set((note.userInfo?[NSUpdatedObjectsKey] as? NSSet)?.compactMap {(($0 as? NSManagedObject)?.objectID ?? $0 as? NSManagedObjectID)?.entity} ?? [])
+			let deletes: Set<NSEntityDescription> = Set((note.userInfo?[NSDeletedObjectsKey] as? NSSet)?.compactMap {(($0 as? NSManagedObject)?.objectID ?? $0 as? NSManagedObjectID)?.entity} ?? [])
+			let inserts: Set<NSEntityDescription> = Set((note.userInfo?[NSInsertedObjectsKey] as? NSSet)?.compactMap {(($0 as? NSManagedObject)?.objectID ?? $0 as? NSManagedObjectID)?.entity} ?? [])
 			
 			let set = updates.union(deletes).union(inserts)
 

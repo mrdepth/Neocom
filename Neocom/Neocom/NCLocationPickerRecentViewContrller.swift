@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCRecentLocationRow: NCFetchedResultsObjectNode<NCCacheLocationPickerRecent> {
 	required init(object: NCCacheLocationPickerRecent) {
@@ -57,12 +58,8 @@ class NCLocationPickerRecentViewContrller: NCTreeViewController {
 		return (navigationController as? NCLocationPickerViewController)?.mode ?? []
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		defer {
-			completionHandler()
-		}
-		
-		guard let context = NCCache.sharedCache?.viewContext else {return}
+	override func content() -> Future<TreeNode?> {
+		guard let context = NCCache.sharedCache?.viewContext else {return .init(nil)}
 		
 		let request = NSFetchRequest<NCCacheLocationPickerRecent>(entityName: "LocationPickerRecent")
 
@@ -78,8 +75,7 @@ class NCLocationPickerRecentViewContrller: NCTreeViewController {
 		
 		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "locationTypeDisplayName", cacheName: nil)
 		
-		treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCCacheLocationPickerRecent>.self, objectNode: NCRecentLocationRow.self)
-		
+		return .init(FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCCacheLocationPickerRecent>.self, objectNode: NCRecentLocationRow.self))
 	}
 	
 	//MARK: - TreeControllerDelegate

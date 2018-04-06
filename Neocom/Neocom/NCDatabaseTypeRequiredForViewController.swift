@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCDatabaseTypeRequiredForViewController: NCTreeViewController {
 	
@@ -25,10 +26,9 @@ class NCDatabaseTypeRequiredForViewController: NCTreeViewController {
 		
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		
-		guard let type = type else {return}
-		guard let context = NCDatabase.sharedDatabase?.viewContext else {return}
+	override func content() -> Future<TreeNode?> {
+		guard let type = type else {return .init(nil)}
+		guard let context = NCDatabase.sharedDatabase?.viewContext else {return .init(nil)}
 		
 		let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
 		
@@ -37,12 +37,10 @@ class NCDatabaseTypeRequiredForViewController: NCTreeViewController {
 			NSSortDescriptor(key: "group.category.categoryName", ascending: true),
 			NSSortDescriptor(key: "typeName", ascending: true)]
 		
-		
 		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "group.category.categoryName", cacheName: nil)
 		
 		let root = FetchedResultsNode(resultsController: controller, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCDatabaseTypeRow<NCDBInvType>.self)
-		treeController?.content = root
-		completionHandler()
+		return .init(root)
 	}
 	
 	//MARK: - TreeControllerDelegate

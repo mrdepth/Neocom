@@ -8,6 +8,11 @@
 
 import UIKit
 import CloudData
+import EVEAPI
+
+enum NCTreeViewControllerError: Error {
+	case noResult
+}
 
 protocol NCSearchableViewController: UISearchResultsUpdating {
 	var searchController: UISearchController? {get set}
@@ -37,11 +42,7 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate, NCAPI
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		if #available(iOS 11.0, *) {
-//			tableView.contentInsetAdjustmentBehavior = .never
-		} else {
-			// Fallback on earlier versions
-		}
+
 		tableView.backgroundColor = UIColor.background
 		tableView.estimatedRowHeight = tableView.rowHeight
 		tableView.rowHeight = UITableViewAutomaticDimension
@@ -90,8 +91,7 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate, NCAPI
 				}
 			case .update:
 				accountChangeObserver = NotificationCenter.default.addNotificationObserver(forName: .NCCurrentAccountChanged, object: nil, queue: nil) { [weak self] _ in
-					self?.updateContent {
-					}
+					self?.updateContent()
 				}
 			}
 		}
@@ -100,14 +100,32 @@ class NCTreeViewController: UITableViewController, TreeControllerDelegate, NCAPI
 	var isLoading: Bool = false
 	lazy var dataManager: NCDataManager = NCDataManager(account: NCAccount.current)
 	
-	func updateContent(completionHandler: @escaping () -> Void) {
-		completionHandler()
+//	func updateContent(completionHandler: @escaping () -> Void) {
+//		completionHandler()
+//	}
+
+	func content() -> Future<TreeNode?> {
+		return .init(.failure(NCTreeViewControllerError.noResult))
 	}
 	
-	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void ) {
-		completionHandler([])
+	@discardableResult func updateContent() -> Future<TreeNode?> {
+		return content().then(on: .main) { content -> TreeNode? in
+			self.tableView.backgroundView = nil
+			self.treeController?.content = content
+			return content
+		}.catch(on: .main) { error in
+			self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
+		}
 	}
-	
+
+//	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void ) {
+//		completionHandler([])
+//	}
+
+	func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
+		return .init([])
+	}
+
 	func didStartLoading() {
 		tableView.backgroundView = nil
 	}
@@ -168,13 +186,16 @@ enum AccountChangeAction {
 }
 
 protocol NCAPIController: class {
-	func updateContent(completionHandler: @escaping () -> Void)
-	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void )
+//	func updateContent(completionHandler: @escaping () -> Void)
+//	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void )
 	
 	func didStartLoading()
 	func didFailLoading(error: Error)
 	func didFinishLoading()
 	
+	func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]>
+	func content() -> Future<TreeNode?>
+	@discardableResult func updateContent() -> Future<TreeNode?>
 
 	var accountChangeAction: AccountChangeAction {get set}
 	var isLoading: Bool {get set}
@@ -215,20 +236,15 @@ extension NCAPIController where Self: UIViewController {
 
 	fileprivate func delayedUpdate() {
 		let date = Date()
-		expireDate = managedObjectsObserver?.objects.flatMap {($0 as? NCCacheRecord)?.expireDate as Date?}.filter {$0 > date}.min()
+		expireDate = managedObjectsObserver?.objects.compactMap {($0 as? NCCacheRecord)?.expireDate as Date?}.filter {$0 > date}.min()
 		let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
 		updateGate.perform {
-			let group = DispatchGroup()
-			group.enter()
 			DispatchQueue.main.async {
 				progress.progress.perform {
-					self.updateContent {
-						progress.finish()
-						group.leave()
-					}
+					return self.updateContent()
 				}
-			}
-			group.wait()
+			}.wait()
+			progress.finish()
 		}
 		
 	}
@@ -252,23 +268,11 @@ extension NCAPIController where Self: UIViewController {
 		
 		let progress = NCProgressHandler(viewController: self, totalUnitCount: 2)
 		progress.progress.perform {
-			self.reload(cachePolicy: cachePolicy) { [weak self] records in
-				guard let strongSelf = self else {
-					progress.finish()
-					return
-				}
-				
+			self.load(cachePolicy: cachePolicy).then(on: .main) { records -> Future<TreeNode?> in
 				let date = Date()
-				strongSelf.expireDate = records.flatMap {$0.expireDate as Date?}.filter {$0 > date}.min()
+				self.expireDate = records.compactMap {$0.expireDate as Date?}.filter {$0 > date}.min()
 				
-				progress.progress.perform {
-					strongSelf.updateContent {
-						progress.finish()
-						strongSelf.isLoading = false
-						strongSelf.didFinishLoading()
-					}
-				}
-				strongSelf.managedObjectsObserver = NCManagedObjectObserver(managedObjects: records) { [weak self] (_,_) in
+				self.managedObjectsObserver = NCManagedObjectObserver(managedObjects: records) { [weak self] (_,_) in
 					guard let strongSelf = self else {return}
 					strongSelf.updateWork?.cancel()
 					strongSelf.updateWork = DispatchWorkItem {
@@ -277,7 +281,43 @@ extension NCAPIController where Self: UIViewController {
 					}
 					DispatchQueue.main.async(execute: strongSelf.updateWork!)
 				}
+				
+				return progress.progress.perform { self.updateContent() }
+			}.then(on: .main) { _ in
+				self.didFinishLoading()
+			}.catch(on: .main) { error in
+				self.didFailLoading(error: error)
+			}.finally(on: .main) {
+				progress.finish()
+				self.isLoading = false
 			}
+//
+//			self.reload(cachePolicy: cachePolicy) { [weak self] records in
+//				guard let strongSelf = self else {
+//					progress.finish()
+//					return
+//				}
+//
+//				let date = Date()
+//				strongSelf.expireDate = records.compactMap {$0.expireDate as Date?}.filter {$0 > date}.min()
+//
+//				progress.progress.perform {
+//					strongSelf.updateContent {
+//						progress.finish()
+//						strongSelf.isLoading = false
+//						strongSelf.didFinishLoading()
+//					}
+//				}
+//				strongSelf.managedObjectsObserver = NCManagedObjectObserver(managedObjects: records) { [weak self] (_,_) in
+//					guard let strongSelf = self else {return}
+//					strongSelf.updateWork?.cancel()
+//					strongSelf.updateWork = DispatchWorkItem {
+//						self?.delayedUpdate()
+//						self?.updateWork = nil
+//					}
+//					DispatchQueue.main.async(execute: strongSelf.updateWork!)
+//				}
+//			}
 		}
 	}
 }

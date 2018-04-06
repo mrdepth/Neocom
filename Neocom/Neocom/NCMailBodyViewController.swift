@@ -41,18 +41,20 @@ class NCMailBodyViewController: UIViewController {
 	
 		let dataManager = NCDataManager(account: account)
 		
-		var ids = Set<Int64>(mail.recipients?.flatMap {Int64($0.recipientID)} ?? [])
+		var ids = Set<Int64>(mail.recipients?.compactMap {Int64($0.recipientID)} ?? [])
 		if let from = mail.from {
 			ids.insert(Int64(from))
 		}
 		
 		if ids.count > 0 {
-			dataManager.contacts(ids: ids) { contacts in
+			dataManager.contacts(ids: ids).then(on: .main) { result in
+				let context = NCCache.sharedCache?.viewContext
+				let contacts = Dictionary(uniqueKeysWithValues: result.values.compactMap {(try? context?.existingObject(with: $0)) as? NCContact}.map {($0.contactID, $0)})
 
 				if let from = mail.from, let contact = contacts[Int64(from)] {
 					self.fromLabel.text = contact.name
 				}
-				let to = mail.recipients?.flatMap { recipient -> String? in
+				let to = mail.recipients?.compactMap { recipient -> String? in
 					guard let contact = contacts[Int64(recipient.recipientID)] else {return nil}
 					return contact.name
 				}.joined(separator: ", ")
@@ -63,32 +65,29 @@ class NCMailBodyViewController: UIViewController {
 		
 		let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
 		
-		dataManager.returnMailBody(mailID: mailID) { result in
-			defer {progress.finish()}
-			
-			switch result {
-			case let .success(value, _):
-				let font = self.textView.font ?? UIFont.preferredFont(forTextStyle: .footnote)
-//				let html = "<body style=\"color:white;font-size: \(font.pointSize);font-family: '\(font.familyName)';\">\(value.body ?? "")</body>"
-				let html = value.body ?? ""
-				if let s = try? NSAttributedString(data: html.data(using: .utf8) ?? Data(),
-				                                options: [.documentType : NSAttributedString.DocumentType.html,
-				                                          .characterEncoding: String.Encoding.utf8.rawValue,
-				                                          .defaultAttributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .footnote)]],
-				                                documentAttributes: nil) {
-					let body = NSMutableAttributedString(attributedString: s)
-					s.enumerateAttributes(in: NSMakeRange(0, s.length), options: []) { (attributes, range, stop) in
-						attributes.keys.filter {$0 != NSAttributedStringKey.link}.forEach {
-							body.removeAttribute($0, range: range)
-						}
+		dataManager.returnMailBody(mailID: mailID).then(on: .main) { result in
+			guard let value = result.value else {return}
+			let font = self.textView.font ?? UIFont.preferredFont(forTextStyle: .footnote)
+			//				let html = "<body style=\"color:white;font-size: \(font.pointSize);font-family: '\(font.familyName)';\">\(value.body ?? "")</body>"
+			let html = value.body ?? ""
+			if let s = try? NSAttributedString(data: html.data(using: .utf8) ?? Data(),
+											   options: [.documentType : NSAttributedString.DocumentType.html,
+														 .characterEncoding: String.Encoding.utf8.rawValue,
+														 .defaultAttributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .footnote)]],
+											   documentAttributes: nil) {
+				let body = NSMutableAttributedString(attributedString: s)
+				s.enumerateAttributes(in: NSMakeRange(0, s.length), options: []) { (attributes, range, stop) in
+					attributes.keys.filter {$0 != NSAttributedStringKey.link}.forEach {
+						body.removeAttribute($0, range: range)
 					}
-					self.body = body * [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: font]
-					self.textView.attributedText = self.body
 				}
-			case let .failure(error):
-				self.textView.text = error.localizedDescription
+				self.body = body * [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: font]
+				self.textView.attributedText = self.body
 			}
-			
+		}.catch(on: .main) { error in
+			self.textView.text = error.localizedDescription
+		}.finally(on: .main) {
+			progress.finish()
 			self.updateConstraints(self.textView)
 		}
 	}
@@ -107,7 +106,7 @@ class NCMailBodyViewController: UIViewController {
 		let recipients: [NCContact]
 		
 		if account.characterID == Int64(mail?.from ?? 0) {
-			recipients = mail?.recipients?.flatMap { recipient -> NCContact? in
+			recipients = mail?.recipients?.compactMap { recipient -> NCContact? in
 				return self.contacts?[Int64(recipient.recipientID)]
 			} ?? []
 		}

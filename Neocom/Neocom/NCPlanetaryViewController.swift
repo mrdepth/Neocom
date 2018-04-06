@@ -16,7 +16,7 @@ enum NCColonyError: Error {
 
 class NCColonySection: TreeSection {
 	let colony: ESI.PlanetaryInteraction.Colony
-	let layout: NCResult<ESI.PlanetaryInteraction.ColonyLayout>
+	let layout: Future<CachedValue<ESI.PlanetaryInteraction.ColonyLayout>>
 	var isHalted: Bool = false
 	let planet = DGMPlanet()
 	
@@ -24,92 +24,82 @@ class NCColonySection: TreeSection {
 		return NCDatabase.sharedDatabase?.mapPlanets[self.colony.planetID]
 	}()
 	
-	init(colony: ESI.PlanetaryInteraction.Colony, layout: NCResult<ESI.PlanetaryInteraction.ColonyLayout>) {
+	init(colony: ESI.PlanetaryInteraction.Colony, layout: Future<CachedValue<ESI.PlanetaryInteraction.ColonyLayout>>) {
 		self.colony = colony
 		self.layout = layout
 		
 		super.init(prototype: Prototype.NCHeaderTableViewCell.default)
 		
-		switch layout {
-		case let .success(layout):
-//			let planetTypeID: Int32 = NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
-//				return NCDBInvType.invTypes(managedObjectContext: managedObjectContext)[self.colony.planetID]?.typeID
-//			} ?? 0
+		do {
+			guard let layout = try layout.get().value else {return}
 			
-			do {
+			for pin in layout.pins {
+				guard planet[pin.pinID] == nil else {throw NCColonyError.invalidLayout}
+				let facility = try planet.add(facility: pin.typeID, identifier: pin.pinID)
 				
-				
-				for pin in layout.pins {
-					guard planet[pin.pinID] == nil else {throw NCColonyError.invalidLayout}
-					let facility = try planet.add(facility: pin.typeID, identifier: pin.pinID)
+				switch facility {
+				case let ecu as DGMExtractorControlUnit:
+					ecu.launchTime = pin.lastCycleStart ?? Date.init(timeIntervalSinceReferenceDate: 0)
+					ecu.installTime = pin.installTime ?? Date.init(timeIntervalSinceReferenceDate: 0)
+					ecu.expiryTime = pin.expiryTime ?? Date.init(timeIntervalSinceReferenceDate: 0)
+					ecu.cycleTime = TimeInterval(pin.extractorDetails?.cycleTime ?? 0)
+					ecu.quantityPerCycle = pin.extractorDetails?.qtyPerCycle ?? 0
+				//							ecu.quantityPerCycle *= 2
+				case let factory as DGMFactory:
+					factory.launchTime = pin.lastCycleStart ?? Date.init(timeIntervalSinceReferenceDate: 0)
+					if let schematicID = pin.schematicID {
+						factory.schematicID = schematicID
+					}
 					
-					switch facility {
-					case let ecu as DGMExtractorControlUnit:
-						ecu.launchTime = pin.lastCycleStart ?? Date.init(timeIntervalSinceReferenceDate: 0)
-						ecu.installTime = pin.installTime ?? Date.init(timeIntervalSinceReferenceDate: 0)
-						ecu.expiryTime = pin.expiryTime ?? Date.init(timeIntervalSinceReferenceDate: 0)
-						ecu.cycleTime = TimeInterval(pin.extractorDetails?.cycleTime ?? 0)
-						ecu.quantityPerCycle = pin.extractorDetails?.qtyPerCycle ?? 0
-					//							ecu.quantityPerCycle *= 2
-					case let factory as DGMFactory:
-						factory.launchTime = pin.lastCycleStart ?? Date.init(timeIntervalSinceReferenceDate: 0)
-						if let schematicID = pin.schematicID {
-							factory.schematicID = schematicID
-						}
-						
-					default:
-						break
-					}
-					pin.contents?.filter {$0.amount > 0}.forEach {
-						try? facility.add(DGMCommodity(typeID: $0.typeID, quantity: Int($0.amount)))
-					}
+				default:
+					break
 				}
-				
-				for route in layout.routes {
-					do {
-						guard let source = planet[route.sourcePinID],
-							let destination = planet[route.destinationPinID] else {throw NCColonyError.invalidLayout}
-						let route = try DGMRoute(from: source, to: destination, commodity: DGMCommodity(typeID: route.contentTypeID, quantity: Int(route.quantity)))
-						planet.add(route: route)
-					}
-					catch {
-						
-					}
+				pin.contents?.filter {$0.amount > 0}.forEach {
+					try? facility.add(DGMCommodity(typeID: $0.typeID, quantity: Int($0.amount)))
 				}
-				
-				let lastUpdate = colony.lastUpdate
-				planet.lastUpdate = lastUpdate
-				
-				planet.run()
-				
-				let currentTime = Date()
-				var rows = planet.facilities.flatMap { i -> NCFacilityRow? in
-					switch i {
-					case let facility as DGMExtractorControlUnit:
-						return NCExtractorControlUnitRow(extractor: facility, currentTime: currentTime)
-					case let facility as DGMFactory:
-						return NCFactoryRow(factory: facility, currentTime: currentTime)
-					case let facility as DGMStorage:
-						return NCStorageRow(storage: facility, currentTime: currentTime)
-					default:
-						return nil
-					}
-				}
-				
-				rows.sort(by: {$0.sortDescriptor < $1.sortDescriptor})
-				
-				self.children = rows.map{DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [$0])}
-				
-				isHalted = planet.facilities.lazy.flatMap{$0 as? DGMExtractorControlUnit}.first {$0.expiryTime < currentTime} != nil
-				isExpanded = isHalted
 			}
-			catch {
-				self.children = [DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, title: error.localizedDescription)]
+			
+			for route in layout.routes {
+				do {
+					guard let source = planet[route.sourcePinID],
+						let destination = planet[route.destinationPinID] else {throw NCColonyError.invalidLayout}
+					let route = try DGMRoute(from: source, to: destination, commodity: DGMCommodity(typeID: route.contentTypeID, quantity: Int(route.quantity)))
+					planet.add(route: route)
+				}
+				catch {
+					
+				}
 			}
-		case let .failure(error):
-			children = [DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, title: error.localizedDescription)]
+			
+			let lastUpdate = colony.lastUpdate
+			planet.lastUpdate = lastUpdate
+			
+			planet.run()
+			
+			let currentTime = Date()
+			var rows = planet.facilities.compactMap { i -> NCFacilityRow? in
+				switch i {
+				case let facility as DGMExtractorControlUnit:
+					return NCExtractorControlUnitRow(extractor: facility, currentTime: currentTime)
+				case let facility as DGMFactory:
+					return NCFactoryRow(factory: facility, currentTime: currentTime)
+				case let facility as DGMStorage:
+					return NCStorageRow(storage: facility, currentTime: currentTime)
+				default:
+					return nil
+				}
+			}
+			
+			rows.sort(by: {$0.sortDescriptor < $1.sortDescriptor})
+			
+			self.children = rows.map{DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [$0])}
+			
+			isHalted = planet.facilities.lazy.compactMap{$0 as? DGMExtractorControlUnit}.first {$0.expiryTime < currentTime} != nil
+			isExpanded = isHalted
 		}
-
+		catch {
+			self.children = [DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.placeholder, title: error.localizedDescription)]
+		}
 	}
 	
 	override var hashValue: Int {
@@ -216,7 +206,7 @@ class NCFacilityOutputRow: TreeRow {
 	}
 	
 	override var hashValue: Int {
-		return [identifier, typeID].hashValue
+		return [identifier.hashValue, typeID.hashValue].hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
@@ -237,7 +227,7 @@ class NCExtractorControlUnitRow: NCFacilityRow {
 		self.currentTime = currentTime
 		self.extractor = extractor
 		
-		let states = extractor.states.flatMap { state -> (BarChart.Item)? in
+		let states = extractor.states.compactMap { state -> (BarChart.Item)? in
 			guard let cycle = state.cycle else {return nil}
 			let yield = Double(cycle.yield.quantity)
 			let waste = Double(cycle.waste.quantity)
@@ -401,7 +391,7 @@ class NCFactoryInputRow: TreeRow {
 	}
 	
 	override var hashValue: Int {
-		return [identifier, typeID].hashValue
+		return [identifier.hashValue, typeID.hashValue].hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
@@ -421,7 +411,7 @@ class NCStorageRow: NCFacilityRow {
 		
 		if capacity > 0 {
 			let states = storage.states
-			var data = states.flatMap { state -> (BarChart.Item)? in
+			var data = states.compactMap { state -> (BarChart.Item)? in
 				let total = state.volume
 				return BarChart.Item(x: state.timestamp.timeIntervalSinceReferenceDate, y: total, f: 1)
 				}
@@ -512,7 +502,7 @@ class NCCommodityRow: TreeRow {
 	}
 	
 	override var hashValue: Int {
-		return [identifier, typeID].hashValue
+		return [identifier.hashValue, typeID.hashValue].hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
@@ -539,57 +529,24 @@ class NCPlanetaryViewController: NCTreeViewController {
 		
 	}
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
-		dataManager.colonies { result in
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
+		return dataManager.colonies().then(on: .main) { result -> [NCCacheRecord] in
 			self.colonies = result
-			completionHandler([result.cacheRecord].flatMap {$0})
+			return [result.cacheRecord]
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		if let value = colonies?.value {
-			tableView.backgroundView = nil
-			
-			let progress = Progress(totalUnitCount: Int64(value.count))
-			var sections = [NCColonySection]()
-			let dispatchGroup = DispatchGroup()
-			
-			for colony in value {
-				progress.perform {
-					dispatchGroup.enter()
-					dataManager.colonyLayout(planetID: colony.planetID) { result in
-						let layout: NCResult<ESI.PlanetaryInteraction.ColonyLayout>
-						
-						switch result {
-						case let .success(value, _):
-							layout = .success(value)
-						case let .failure(error):
-							layout = .failure(error)
-						}
-						
-//						engine.perform {
-							sections.append(NCColonySection(colony: colony, layout: layout))
-							dispatchGroup.leave()
-//						}
-					}
-				}
-			}
-			
-			dispatchGroup.notify(queue: .main) {
-				sections.sort {($0.planetInfo?.planetName ?? "") < ($1.planetInfo?.planetName ?? "")}
-				self.treeController?.content = RootNode(sections)
-				self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: self.colonies?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-				completionHandler()
-			}
-			
-		}
-		else {
-			tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: colonies?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-			completionHandler()
+	override func content() -> Future<TreeNode?> {
+		let totalProgress = Progress(totalUnitCount: 1)
+		let dataManager = self.dataManager
+		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+			guard let value = self.colonies?.value else {throw NCTreeViewControllerError.noResult}
+			let progress = totalProgress.perform {Progress(totalUnitCount: Int64(value.count))}
+			let sections = value.map { colony in return NCColonySection(colony: colony, layout: progress.perform{ dataManager.colonyLayout(planetID: colony.planetID) }) }
+			guard !sections.isEmpty else {throw NCTreeViewControllerError.noResult}
+			return RootNode(sections)
 		}
 	}
 
-	private var colonies: NCCachedResult<[ESI.PlanetaryInteraction.Colony]>?
-
-	
+	private var colonies: CachedValue<[ESI.PlanetaryInteraction.Colony]>?
 }

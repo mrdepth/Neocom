@@ -195,7 +195,7 @@ class NCFittingDronesViewController: UIViewController, TreeControllerDelegate, N
 			typePickerViewController.category = category
 			typePickerViewController.completionHandler = { [weak typePickerViewController, weak self] (_, type) in
 				let typeID = Int(type.typeID)
-				let tag = (ship.drones.flatMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -1) + 1
+				let tag = (ship.drones.compactMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -1) + 1
 				
 				do {
 					for _ in 0..<5 {

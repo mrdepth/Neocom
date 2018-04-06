@@ -18,38 +18,32 @@ class NCMarketOrdersViewController: NCTreeViewController {
 		tableView.register([Prototype.NCHeaderTableViewCell.default])
 	}
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		switch owner {
 		case .character:
-			dataManager.marketOrders().then(on: .main) { result in
+			return dataManager.marketOrders().then(on: .main) { result -> [NCCacheRecord] in
 				self.orders = result
-				completionHandler([result.cacheRecord].flatMap {$0})
-			}.catch(on: .main) { error in
-				self.error = error
-				completionHandler([])
+				return [result.cacheRecord]
 			}
 		case .corporation:
-			dataManager.corpMarketOrders().then(on: .main) { result in
+			return dataManager.corpMarketOrders().then(on: .main) { result -> [NCCacheRecord] in
 				self.corpOrders = result
-				completionHandler([result.cacheRecord].flatMap {$0})
-			}.catch(on: .main) { error in
-				self.error = error
-				completionHandler([])
+				return [result.cacheRecord]
 			}
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		let orders = self.orders
 		let corpOrders = self.corpOrders
 		let progress = Progress(totalUnitCount: 3)
 		
-		OperationQueue(qos: .utility).async { () -> [TreeNode] in
-			guard let value: [NCMarketOrder] = orders?.value ?? corpOrders?.value else {return []}
+		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+			guard let value: [NCMarketOrder] = orders?.value ?? corpOrders?.value else {throw NCTreeViewControllerError.noResult}
 			let locationIDs = Set(value.map {$0.locationID})
 			let locations = try? progress.perform{ self.dataManager.locations(ids: locationIDs) }.get()
 			
-			return NCDatabase.sharedDatabase!.performTaskAndWait { managedObjectContext in
+			return try NCDatabase.sharedDatabase!.performTaskAndWait { managedObjectContext in
 				
 				let open = value
 				
@@ -67,25 +61,13 @@ class NCMarketOrdersViewController: NCTreeViewController {
 				if !buy.isEmpty {
 					sections.append(DefaultTreeSection(nodeIdentifier: "Buy", title: NSLocalizedString("Buy", comment: "").uppercased(), children: buy))
 				}
-				return sections
+				guard !sections.isEmpty else {throw NCTreeViewControllerError.noResult}
+				return RootNode(sections)
 			}
-		}.then(on: .main) { sections in
-			if self.treeController?.content == nil {
-				self.treeController?.content = RootNode(sections)
-			}
-			else {
-				self.treeController?.content?.children = sections
-			}
-		}.catch(on: .main) {error in
-			self.error = error
-		}.finally(on: .main) {
-			self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: self.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-			completionHandler()
 		}
 	}
 	
 	private var orders: CachedValue<[ESI.Market.CharacterOrder]>?
 	private var corpOrders: CachedValue<[ESI.Market.CorpOrder]>?
-	private var error: Error?
 	
 }

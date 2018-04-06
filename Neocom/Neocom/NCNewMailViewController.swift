@@ -70,8 +70,9 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		textView.attributedText = body
 		
 		if recipients.count > 0 {
-			NCDataManager(account: NCAccount.current).contacts(ids: Set(recipients)) { result in
-				result.forEach {self._recipients[$0] = $1}
+			let context = NCCache.sharedCache?.viewContext
+			NCDataManager(account: NCAccount.current).contacts(ids: Set(recipients)).then(on: .main) { result in
+				result.forEach {self._recipients[$0] = (try? context?.existingObject(with: $1)) as? NCContact}
 				self.updateRecipients()
 			}
 		}
@@ -106,7 +107,7 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 //		guard let html = String(data: data, encoding: .utf8) else {return}
 		let html = textView.attributedText.eveHTML
 
-		let recipients = self.recipients.flatMap { id -> ESI.Mail.Recipient? in
+		let recipients = self.recipients.compactMap { id -> ESI.Mail.Recipient? in
 			guard let contact = self._recipients[id] else {return nil}
 			contact.lastUse = Date()
 			guard let recipientType = contact.recipientType else {return nil}
@@ -119,20 +120,17 @@ class NCNewMailViewController: UIViewController, UITextViewDelegate, NCContactsS
 		}
 		
 		
-		dataManager?.sendMail(body: html, subject: subjectTextView.text, recipients: recipients, completionHandler: { result in
-			switch result {
-			case .success:
-				if let draft = self.draft {
-					draft.managedObjectContext?.delete(draft)
-					if draft.managedObjectContext?.hasChanges == true {
-						try? draft.managedObjectContext?.save()
-					}
+		dataManager?.sendMail(body: html, subject: subjectTextView.text, recipients: recipients).then(on: .main) { _ in
+			if let draft = self.draft {
+				draft.managedObjectContext?.delete(draft)
+				if draft.managedObjectContext?.hasChanges == true {
+					try? draft.managedObjectContext?.save()
 				}
-				self.dismiss(animated: true, completion: nil)
-			case let .failure(error):
-				self.present(UIAlertController(error: error), animated: true, completion: nil)
 			}
-		})
+			self.dismiss(animated: true, completion: nil)
+		}.catch(on: .main) { error in
+			self.present(UIAlertController(error: error), animated: true, completion: nil)
+		}
 	}
 	
 	@IBAction func onCancel(_ sender: UIBarButtonItem) {

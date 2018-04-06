@@ -9,6 +9,7 @@
 import UIKit
 import CloudData
 import Dgmpp
+import EVEAPI
 
 class NCFittingFleetViewController: NCTreeViewController, NCFittingEditorPage {
 	
@@ -50,13 +51,11 @@ class NCFittingFleetViewController: NCTreeViewController, NCFittingEditorPage {
 
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		defer {
-			completionHandler()
+	override func content() -> Future<TreeNode?> {
+		guard editorViewController != nil else {return .init(nil)}
+		return Future(TreeNode()).finally(on: .main) {
+			self.reload() 
 		}
-		guard editorViewController != nil else {return}
-		treeController?.content = TreeNode()
-		reload()
 	}
 
 	//MARK: - TreeControllerDelegate

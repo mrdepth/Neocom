@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCImplantSetRow: NCFetchedResultsObjectNode<NCImplantSet> {
 	
@@ -24,7 +25,7 @@ class NCImplantSetRow: NCFetchedResultsObjectNode<NCImplantSet> {
 		ids.append(contentsOf: self.object.data?.boosterIDs ?? [])
 		
 		
-		return ids.flatMap { typeID -> NSAttributedString? in
+		return ids.compactMap { typeID -> NSAttributedString? in
 			guard let type = invTypes[typeID] else {return nil}
 			guard let typeName = type.typeName else {return nil}
 			if let image = type.icon?.image?.image ?? NCDBEveIcon.defaultType.image?.image {
@@ -88,21 +89,15 @@ class NCFittingImplantSetViewController: NCTreeViewController {
 		// Dispose of any resources that can be recreated.
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		defer {
-			completionHandler()
-		}
-		
-		guard let managedObjectContext = NCStorage.sharedStorage?.viewContext else {return}
+	override func content() -> Future<TreeNode?> {
 		var sections = [TreeNode]()
 		if mode == .save {
 			let save = NCActionRow(title: NSLocalizedString("Create New Implant Set", comment: "").uppercased())
 			sections.append(RootNode([save]))
 		}
 		
-		sections.append(NCImplantSetSection(managedObjectContext: managedObjectContext))
-		
-		treeController?.content = RootNode(sections)
+		sections.append(NCImplantSetSection(managedObjectContext: NCStorage.sharedStorage!.viewContext))
+		return .init(RootNode(sections))
 	}
 	
 	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {

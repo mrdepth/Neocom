@@ -126,12 +126,12 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 		
 	}
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		let progress = Progress(totalUnitCount: 3)
 		
 		switch owner {
 		case .character:
-				OperationQueue(qos: .utility).async { () -> [CachedValue<[ESI.Assets.Asset]>] in
+				return OperationQueue(qos: .utility).async { () -> [CachedValue<[ESI.Assets.Asset]>] in
 					var assets = [CachedValue<[ESI.Assets.Asset]>]()
 					
 					for i in 1...10 {
@@ -140,15 +140,12 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 						assets.append(page)
 					}
 					return Array(assets)
-				}.then(on: .main) { assets in
+				}.then(on: .main) { assets -> [NCCacheRecord] in
 						self.assets = assets
-						completionHandler(assets.flatMap {$0.cacheRecord})
-				}.catch(on: .main) { error in
-						completionHandler([])
-						self.tableView.backgroundView =  NCTableViewBackgroundLabel(text: error.localizedDescription)
+						return assets.compactMap {$0.cacheRecord}
 				}
 		case .corporation:
-			OperationQueue(qos: .utility).async { () -> [CachedValue<[ESI.Assets.CorpAsset]>] in
+			return OperationQueue(qos: .utility).async { () -> [CachedValue<[ESI.Assets.CorpAsset]>] in
 				var assets = [CachedValue<[ESI.Assets.CorpAsset]>]()
 				
 				for i in 1...10 {
@@ -157,20 +154,14 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 					assets.append(page)
 				}
 				return assets
-			}.then(on: .main) { assets in
+			}.then(on: .main) { assets -> [NCCacheRecord] in
 					self.corpAssets = assets
-					completionHandler(assets.flatMap {$0.cacheRecord})
-			}.catch(on: .main) { error in
-					completionHandler([])
-					self.error = error
-//					self.tableView.backgroundView =  NCTableViewBackgroundLabel(text: error.localizedDescription)
+					return assets.compactMap {$0.cacheRecord}
 			}
 		}
-		
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		var sections = [DefaultTreeSection]()
+	override func content() -> Future<TreeNode?> {
 		var contents: [Int64: [NCAsset]] = [:]
 		var items: [Int64: NCAsset] = [:]
 		var typeIDs = Set<Int>()
@@ -178,71 +169,66 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 		
 		let assets = self.assets
 		let corpAssets = self.corpAssets
-		OperationQueue(qos: .utility).async { () -> [NCAsset]? in
+		return OperationQueue(qos: .utility).async { () -> [NCAsset]? in
 			switch self.owner {
 			case .character:
-				return assets?.flatMap({ $0.value }).joined().filter({$0.locationFlag != .skill && $0.locationFlag != .implant}) as [NCAsset]?
+				return assets?.compactMap({ $0.value }).joined().filter({$0.locationFlag != .skill && $0.locationFlag != .implant}) as [NCAsset]?
 			case .corporation:
-				return corpAssets?.flatMap({ $0.value }).joined().filter({$0.locationFlag != .skill && $0.locationFlag != .implant}) as [NCAsset]?
+				return corpAssets?.compactMap({ $0.value }).joined().filter({$0.locationFlag != .skill && $0.locationFlag != .implant}) as [NCAsset]?
 			}
-		}.then { assets in
-			if let value = assets {
-				var locationIDs = Set(value.map {$0.locationID})
-				let itemIDs = Set(value.map {$0.itemID})
-				locationIDs.subtract(itemIDs)
+		}.then { assets -> TreeNode? in
+			guard let value = assets else {throw NCTreeViewControllerError.noResult}
+			var sections = [DefaultTreeSection]()
+			var locationIDs = Set(value.map {$0.locationID})
+			let itemIDs = Set(value.map {$0.itemID})
+			locationIDs.subtract(itemIDs)
+			
+			try? locations = self.dataManager.locations(ids: locationIDs).get()
+			NCDatabase.sharedDatabase!.performTaskAndWait { (managedObjectContext) in
 				
-				try? locations = self.dataManager.locations(ids: locationIDs).get()
-				NCDatabase.sharedDatabase!.performTaskAndWait { (managedObjectContext) in
+				value.forEach {
+					contents[$0.locationID, default: []].append($0)
+					items[$0.itemID] = $0
+					typeIDs.insert($0.typeID)
+				}
+				
+				var types = [Int: NCDBInvType]()
+				if typeIDs.count > 0 {
+					let result: [NCDBInvType]? = managedObjectContext.fetch("InvType", where: "typeID in %@", typeIDs)
+					result?.forEach {types[Int($0.typeID)] = $0}
+				}
+				
+				var unknown = [NCAssetRow]()
+				for locationID in locationIDs {
+					guard var rows = contents[locationID]?.map ({NCAssetRow(asset: $0, contents: contents, types: types)}) else {continue}
 					
-					value.forEach {
-						contents[$0.locationID, default: []].append($0)
-						items[$0.itemID] = $0
-						typeIDs.insert($0.typeID)
-					}
 					
-					var types = [Int: NCDBInvType]()
-					if typeIDs.count > 0 {
-						let result: [NCDBInvType]? = managedObjectContext.fetch("InvType", where: "typeID in %@", typeIDs)
-						result?.forEach {types[Int($0.typeID)] = $0}
-					}
-					
-					var unknown = [NCAssetRow]()
-					for locationID in locationIDs {
-						guard var rows = contents[locationID]?.map ({NCAssetRow(asset: $0, contents: contents, types: types)}) else {continue}
+					if let location = locations[locationID] {
+						rows.sort { ($0.attributedTitle?.string ?? "") < ($1.attributedTitle?.string ?? "") }
+						let title = location.displayName
+						let nodeIdentifier = "\(location.solarSystemName ?? "")\(locationID)"
 						
-						
-						if let location = locations[locationID] {
-							rows.sort { ($0.attributedTitle?.string ?? "") < ($1.attributedTitle?.string ?? "") }
-							let title = location.displayName
-							let nodeIdentifier = "\(location.solarSystemName ?? "")\(locationID)"
-							
-							let section = DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title.uppercased(), children: rows)
-							section.isExpanded = false
-							sections.append(section)
-						}
-						else {
-							unknown.append(contentsOf: rows)
-						}
-					}
-					if !unknown.isEmpty {
-						unknown.sort { ($0.attributedTitle?.string ?? "") < ($1.attributedTitle?.string ?? "") }
-						
-						let section = DefaultTreeSection(nodeIdentifier: "-1", title: NSLocalizedString("Unknown Location", comment: "").uppercased(), children: unknown)
+						let section = DefaultTreeSection(nodeIdentifier: nodeIdentifier, attributedTitle: title.uppercased(), children: rows)
 						section.isExpanded = false
 						sections.append(section)
 					}
-					sections.sort {$0.nodeIdentifier! < $1.nodeIdentifier!}
+					else {
+						unknown.append(contentsOf: rows)
+					}
 				}
-			}
-		}.then(on: .main) { _ in
-			if self.treeController?.content == nil {
-				self.treeController?.content = RootNode(sections)
-			}
-			else {
-				self.treeController?.content?.children = sections
+				if !unknown.isEmpty {
+					unknown.sort { ($0.attributedTitle?.string ?? "") < ($1.attributedTitle?.string ?? "") }
+					
+					let section = DefaultTreeSection(nodeIdentifier: "-1", title: NSLocalizedString("Unknown Location", comment: "").uppercased(), children: unknown)
+					section.isExpanded = false
+					sections.append(section)
+				}
+				sections.sort {$0.nodeIdentifier! < $1.nodeIdentifier!}
 			}
 			
-			
+			guard !sections.isEmpty else {throw NCTreeViewControllerError.noResult}
+			return RootNode(sections)
+		}.then(on: .main) { sections -> TreeNode? in
 			self.contents = contents
 			if let searchController = self.searchController, let searchResultsController = searchController.searchResultsController as? NCAssetsSearchResultViewController {
 				searchResultsController.items = items
@@ -253,15 +239,12 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 					searchResultsController.updateSearchResults(for: searchController)
 				}
 			}
-			
-			self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: self.error?.localizedDescription ?? NSLocalizedString("No Results", comment: "")) : nil
-			completionHandler()
+			return sections
 		}
 	}
 	
 	private var assets: [CachedValue<[ESI.Assets.Asset]>]?
 	private var corpAssets: [CachedValue<[ESI.Assets.CorpAsset]>]?
-	private var error: Error?
 	var contents: [Int64: [NCAsset]]?
 	
 	//MARK: - NCSearchableViewController

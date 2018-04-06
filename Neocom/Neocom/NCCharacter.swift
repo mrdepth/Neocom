@@ -84,7 +84,7 @@ class NCCharacter {
 						return
 				}
 				
-				let records = [skillsResult?.cacheRecord, skillQueueResult?.cacheRecord, attributesResult?.cacheRecord, implantsResult?.cacheRecord].flatMap{$0}
+				let records = [skillsResult?.cacheRecord, skillQueueResult?.cacheRecord, attributesResult?.cacheRecord, implantsResult?.cacheRecord].compactMap{$0}
 
 				DispatchQueue.global(qos: .background).async {
 					autoreleasepool {

@@ -48,7 +48,7 @@ class Neocom_II_Tests: XCTestCase {
 			}
 			let a = (category.itemGroups!.allObjects as! [NCDBDgmppItemGroup]).map {items($0)}.joined()
 //			let item: NCDBDgmppItem? = a.count <= 0 ? NCDatabase.sharedDatabase!.viewContext.fetch("DgmppItem", where: "charge == %@", category) : nil
-			XCTAssertGreaterThan(a.count, 0, "[\(NCDBDgmppItemCategoryID(rawValue: Int(category.category))!), \(category.subcategory)], items:\((category.dgmppItems as? Set<NCDBDgmppItem>)?.flatMap {$0.type?.typeName} ?? []), groups: \((category.itemGroups as? Set<NCDBDgmppItemGroup>)?.flatMap {$0.groupName} ?? [])")
+			XCTAssertGreaterThan(a.count, 0, "[\(NCDBDgmppItemCategoryID(rawValue: Int(category.category))!), \(category.subcategory)], items:\((category.dgmppItems as? Set<NCDBDgmppItem>)?.compactMap {$0.type?.typeName} ?? []), groups: \((category.itemGroups as? Set<NCDBDgmppItemGroup>)?.compactMap {$0.groupName} ?? [])")
 		}
 		
 		

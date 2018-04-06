@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import EVEAPI
 
 class NCMailAttachmentsStructuresViewController: NCTreeViewController {
 	
@@ -21,10 +22,8 @@ class NCMailAttachmentsStructuresViewController: NCTreeViewController {
 		// Dispose of any resources that can be recreated.
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		treeController?.content = NCLoadoutsSection<NCAttachmentLoadoutRow>(categoryID: .structure)
-		
-		completionHandler()
+	override func content() -> Future<TreeNode?> {
+		return .init(NCLoadoutsSection<NCAttachmentLoadoutRow>(categoryID: .structure))
 	}
 
 	//MARK: - TreeControllerDelegate

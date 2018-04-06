@@ -67,7 +67,7 @@ class NCMailRow: TreeRow {
 	
 	lazy var recipient: String = {
 		if self.mail.from == Int(self.dataManager.characterID) {
-			return self.mail.recipients?.flatMap({self.contacts[Int64($0.recipientID)]?.name}).joined(separator: ", ") ?? NSLocalizedString("Unknown", comment: "")
+			return self.mail.recipients?.compactMap({self.contacts[Int64($0.recipientID)]?.name}).joined(separator: ", ") ?? NSLocalizedString("Unknown", comment: "")
 		}
 		else {
 			return self.contacts[Int64(self.mail.from!)]?.name ?? NSLocalizedString("Unknown", comment: "")
@@ -109,17 +109,14 @@ class NCMailRow: TreeRow {
 		cell.iconView.image = image
 		
 		if image == nil {
-			dataManager.image(characterID: characterID, dimension: Int(cell.iconView.bounds.size.width)) { result in
-				switch result {
-				case let .success(value, _):
-					self.image = value
-				case .failure:
-					self.image = UIImage()
-				}
+			dataManager.image(characterID: characterID, dimension: Int(cell.iconView.bounds.size.width)).then(on: .main) { result in
+				self.image = result
+			}.catch(on: .main) { _ in
+				self.image = UIImage()
+			}.finally(on: .main) {
 				if (cell.object as? ESI.Mail.Header) == self.mail {
 					cell.iconView.image = self.image
 				}
-
 			}
 		}
 	}
@@ -176,32 +173,33 @@ class NCDraftRow: NCFetchedResultsObjectNode<NCMailDraft>, TreeNodeRoutable {
 		cell.iconView.image = nil
 		cell.dateLabel.text = nil
 		if recipient == nil, let to = object.to, !to.isEmpty {
-			NCDataManager(account: NCAccount.current).contacts(ids: Set(to)) { result in
-				let recipient = to.flatMap({result[$0]?.name}).joined(separator: ", ")
+			NCDataManager(account: NCAccount.current).contacts(ids: Set(to)).then(on: .main) { result in
+				let context = NCCache.sharedCache!.viewContext
+				let contacts = Dictionary(uniqueKeysWithValues: result.compactMap {(try? context.existingObject(with: $0.value)) as? NCContact}.compactMap { (Int64($0.contactID), $0) })
+				
+				let recipient = to.compactMap({contacts[$0]?.name}).joined(separator: ", ")
 				self.recipient = recipient
 				if (cell.object as? NCMailDraft) == self.object {
 					cell.recipientLabel.text = self.recipient
 				}
 				
-				if let (_, contact) = result.first(where: {$0.value.recipientType == .character || $0.value.recipientType == .corporation}) {
+				if let (_, contact) = contacts.first(where: {$0.value.recipientType == .character || $0.value.recipientType == .corporation}) {
 					
-					func handler(result: NCCachedResult<UIImage>) {
-						switch result {
-						case let .success(value, _):
-							self.image = value
-						case .failure:
-							self.image = UIImage()
-						}
+					let image: Future<UIImage>
+					if contact.recipientType == .character {
+						image = NCDataManager().image(characterID: contact.contactID, dimension: Int(cell.iconView.bounds.size.width))
+					}
+					else {
+						image = NCDataManager().image(corporationID: contact.contactID, dimension: Int(cell.iconView.bounds.size.width))
+					}
+					image.then(on: .main) { result in
+						self.image = result
+					}.catch(on: .main) { error in
+						self.image = UIImage()
+					}.finally(on: .main) {
 						if (cell.object as? NCMailDraft) == self.object {
 							cell.iconView.image = self.image
 						}
-					}
-					
-					if contact.recipientType == .character {
-						NCDataManager().image(characterID: contact.contactID, dimension: Int(cell.iconView.bounds.size.width), completionHandler: handler)
-					}
-					else {
-						NCDataManager().image(corporationID: contact.contactID, dimension: Int(cell.iconView.bounds.size.width), completionHandler: handler)
 					}
 				}
 			}

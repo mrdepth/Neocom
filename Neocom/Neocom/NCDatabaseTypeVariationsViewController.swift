@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCDatabaseTypeVariationsViewController: NCTreeViewController {
 	
@@ -25,10 +26,9 @@ class NCDatabaseTypeVariationsViewController: NCTreeViewController {
 		
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		
-		guard let type = type else {return}
-		guard let context = NCDatabase.sharedDatabase?.viewContext else {return}
+	override func content() -> Future<TreeNode?> {
+		guard let type = type else {return .init(nil)}
+		guard let context = NCDatabase.sharedDatabase?.viewContext else {return .init(nil)}
 		
 		let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
 		let what = type.parentType ?? type
@@ -41,9 +41,7 @@ class NCDatabaseTypeVariationsViewController: NCTreeViewController {
 		
 		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "metaGroup.metaGroupID", cacheName: nil)
 		
-		let root = FetchedResultsNode(resultsController: controller, sectionNode: NCMetaGroupFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCDatabaseTypeRow<NCDBInvType>.self)
-		treeController?.content = root
-		completionHandler()
+		return FetchedResultsNode(resultsController: controller, sectionNode: NCMetaGroupFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCDatabaseTypeRow<NCDBInvType>.self)
 	}
 	
 	//MARK: - TreeControllerDelegate

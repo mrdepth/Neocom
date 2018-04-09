@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import EVEAPI
 
 
 class NCDatabaseCertificateMasteryViewController: NCTreeViewController {
@@ -36,54 +36,6 @@ class NCDatabaseCertificateMasteryViewController: NCTreeViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if let certificate = certificate, treeController?.content == nil {
-			let progress = NCProgressHandler(viewController: self, totalUnitCount:2)
-			
-			progress.progress.becomeCurrent(withPendingUnitCount: 1)
-			NCCharacter.load(account: NCAccount.current) { result in
-				let character: NCCharacter
-				switch result {
-				case let .success(value):
-					character = value
-				default:
-					character = NCCharacter()
-				}
-				
-				NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
-					let certificate = try! managedObjectContext.existingObject(with: certificate.objectID) as! NCDBCertCertificate
-					var masteries = [TreeSection]()
-					for mastery in (certificate.masteries?.sortedArray(using: [NSSortDescriptor(key: "level.level", ascending: true)]) as? [NCDBCertMastery]) ?? [] {
-						var rows = [NCDatabaseTypeSkillRow]()
-						for skill in mastery.skills?.sortedArray(using: [NSSortDescriptor(key: "type.typeName", ascending: true)]) as? [NCDBCertSkill] ?? [] {
-							let row = NCDatabaseTypeSkillRow(skill: skill, character: character)
-							rows.append(row)
-						}
-						let trainingQueue = NCTrainingQueue(character: character)
-						trainingQueue.add(mastery: mastery)
-						let title = NSLocalizedString("Level", comment: "").uppercased() + " \(String(romanNumber: Int(mastery.level!.level + 1)))"
-						let section = NCDatabaseSkillsSection(nodeIdentifier: nil, title: title, trainingQueue: trainingQueue, character: character, children: rows)
-						section.isExpanded = section.trainingTime > 0
-						masteries.append(section)
-					}
-					progress.progress.completedUnitCount += 1
-					
-					DispatchQueue.main.async {
-						if self.treeController?.content == nil {
-							let root = TreeNode()
-							root.children = masteries
-							self.treeController?.content = root
-						}
-						else {
-							self.treeController?.content?.children = masteries
-						}
-						
-						self.tableView.backgroundView = masteries.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-						progress.finish()
-					}
-				}
-			}
-			progress.progress.resignCurrent()
-		}
 	}
 	
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -96,6 +48,32 @@ class NCDatabaseCertificateMasteryViewController: NCTreeViewController {
 				self.tableView.tableHeaderView?.frame = frame
 				self.tableView.tableHeaderView = self.tableView.tableHeaderView
 			}
+		}
+	}
+	
+	override func content() -> Future<TreeNode?> {
+		guard let certificate = certificate else {return .init(nil)}
+		let progress = Progress(totalUnitCount: 1)
+		return NCDatabase.sharedDatabase!.performBackgroundTask { managedObjectContext -> TreeNode? in
+			let character = (try? progress.perform{ NCCharacter.load(account: NCAccount.current) }.get()) ?? NCCharacter()
+			let certificate = try! managedObjectContext.existingObject(with: certificate.objectID) as! NCDBCertCertificate
+			var masteries = [TreeSection]()
+			for mastery in (certificate.masteries?.sortedArray(using: [NSSortDescriptor(key: "level.level", ascending: true)]) as? [NCDBCertMastery]) ?? [] {
+				var rows = [NCDatabaseTypeSkillRow]()
+				for skill in mastery.skills?.sortedArray(using: [NSSortDescriptor(key: "type.typeName", ascending: true)]) as? [NCDBCertSkill] ?? [] {
+					let row = NCDatabaseTypeSkillRow(skill: skill, character: character)
+					rows.append(row)
+				}
+				let trainingQueue = NCTrainingQueue(character: character)
+				trainingQueue.add(mastery: mastery)
+				let title = NSLocalizedString("Level", comment: "").uppercased() + " \(String(romanNumber: Int(mastery.level!.level + 1)))"
+				let section = NCDatabaseSkillsSection(nodeIdentifier: nil, title: title, trainingQueue: trainingQueue, character: character, children: rows)
+				section.isExpanded = section.trainingTime > 0
+				masteries.append(section)
+			}
+			
+			guard !masteries.isEmpty else {throw NCTreeViewControllerError.noResult}
+			return RootNode(masteries)
 		}
 	}
 	

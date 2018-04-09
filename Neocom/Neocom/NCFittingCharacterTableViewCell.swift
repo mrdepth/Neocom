@@ -212,9 +212,9 @@ class NCAccountCharacterRow: NCFetchedResultsObjectNode<NCAccount>, TreeNodeRout
 		if image == nil {
 			NCDataManager(account: object).image(characterID: object.characterID, dimension: Int(cell.characterImageView.bounds.size.width)).then(on: .main) { result in
 				if (cell.object as? NCAccount) === self.object {
-					self.image = result
+					self.image = result.value
 					if (cell.object as? NCAccount) == self.object {
-						cell.characterImageView.image = result
+						cell.characterImageView.image = self.image
 					}
 				}
 			}

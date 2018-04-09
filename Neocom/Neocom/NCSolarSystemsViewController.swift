@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCSolarSystemRow: NCFetchedResultsObjectNode<NCDBMapSolarSystem> {
 	
@@ -42,17 +43,14 @@ class NCSolarSystemsViewController: NCTreeViewController, NCSearchableViewContro
 		setupSearchController(searchResultsController: controller)
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		if let region = region {
-			let request = NSFetchRequest<NCDBMapSolarSystem>(entityName: "MapSolarSystem")
-			request.predicate = NSPredicate(format: "constellation.region == %@", region)
-			request.sortDescriptors = [NSSortDescriptor(key: "solarSystemName", ascending: true)]
-			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-			
-			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCSolarSystemRow.self)
-		}
-
-		completionHandler()
+	override func content() -> Future<TreeNode?> {
+		guard let region = region else {return .init(nil)}
+		let request = NSFetchRequest<NCDBMapSolarSystem>(entityName: "MapSolarSystem")
+		request.predicate = NSPredicate(format: "constellation.region == %@", region)
+		request.sortDescriptors = [NSSortDescriptor(key: "solarSystemName", ascending: true)]
+		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+		
+		return .init(FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCSolarSystemRow.self))
 	}
 	
 	//MARK: - TreeControllerDelegate

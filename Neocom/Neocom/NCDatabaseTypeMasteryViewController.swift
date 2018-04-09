@@ -7,9 +7,8 @@
 //
 
 import UIKit
-
-import UIKit
 import CoreData
+import EVEAPI
 
 /*
 class NCDatabaseCertificateSection: NCTreeSection {
@@ -51,57 +50,37 @@ class NCDatabaseTypeMasteryViewController: NCTreeViewController {
 		title = NSLocalizedString("Level", comment: "") + " \(String(romanNumber: Int((level?.level ?? 0) + 1)))"
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if let type = type, let level = level, treeController?.content == nil {
-			let progress = NCProgressHandler(viewController: self, totalUnitCount: 2)
+	override func content() -> Future<TreeNode?> {
+		guard let type = type, let level = level else {return .init(nil)}
+		
+		let progress = Progress(totalUnitCount: 1)
+		return NCDatabase.sharedDatabase!.performBackgroundTask { managedObjectContext -> TreeNode? in
+			let character = (try? progress.perform{ NCCharacter.load(account: NCAccount.current) }.get()) ?? NCCharacter()
+			let type = try! managedObjectContext.existingObject(with: type.objectID) as! NCDBInvType
+			let level = try! managedObjectContext.existingObject(with: level.objectID) as! NCDBCertMasteryLevel
 			
+			let request = NSFetchRequest<NCDBCertMastery>(entityName: "CertMastery")
+			request.predicate = NSPredicate(format: "level == %@ AND certificate.types CONTAINS %@", level, type)
+			request.sortDescriptors = [NSSortDescriptor(key: "certificate.certificateName", ascending: true)]
 			
-			progress.progress.becomeCurrent(withPendingUnitCount: 1)
-			NCCharacter.load(account: NCAccount.current) { result in
-				let character: NCCharacter
-				switch result {
-				case let .success(value):
-					character = value
-				default:
-					character = NCCharacter()
+			var certificates = [TreeSection]()
+			for mastery in (try? managedObjectContext.fetch(request)) ?? [] {
+				
+				var rows = [NCDatabaseTypeSkillRow]()
+				for skill in mastery.skills?.sortedArray(using: [NSSortDescriptor(key: "type.typeName", ascending: true)]) as? [NCDBCertSkill] ?? [] {
+					let row = NCDatabaseTypeSkillRow(skill: skill, character: character)
+					rows.append(row)
 				}
-
-				NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
-					let type = try! managedObjectContext.existingObject(with: type.objectID) as! NCDBInvType
-					let level = try! managedObjectContext.existingObject(with: level.objectID) as! NCDBCertMasteryLevel
-					
-					let request = NSFetchRequest<NCDBCertMastery>(entityName: "CertMastery")
-					request.predicate = NSPredicate(format: "level == %@ AND certificate.types CONTAINS %@", level, type)
-					request.sortDescriptors = [NSSortDescriptor(key: "certificate.certificateName", ascending: true)]
-					
-					var certificates = [TreeSection]()
-					for mastery in (try? managedObjectContext.fetch(request)) ?? [] {
-						
-						var rows = [NCDatabaseTypeSkillRow]()
-						for skill in mastery.skills?.sortedArray(using: [NSSortDescriptor(key: "type.typeName", ascending: true)]) as? [NCDBCertSkill] ?? [] {
-							let row = NCDatabaseTypeSkillRow(skill: skill, character: character)
-							rows.append(row)
-						}
-						let trainingQueue = NCTrainingQueue(character: character)
-						trainingQueue.add(mastery: mastery)
-						let title = mastery.certificate!.certificateName!.uppercased()
-						let section = NCDatabaseSkillsSection(nodeIdentifier: nil, title: title, trainingQueue: trainingQueue, character: character, children: rows)
-						section.isExpanded = section.trainingTime > 0
-						certificates.append(section)
-					}
-					progress.progress.completedUnitCount += 1
-					
-					DispatchQueue.main.async {
-						let node = TreeNode()
-						node.children = certificates
-						self.treeController?.content = node
-						progress.finish()
-						
-					}
-				}
+				let trainingQueue = NCTrainingQueue(character: character)
+				trainingQueue.add(mastery: mastery)
+				let title = mastery.certificate!.certificateName!.uppercased()
+				let section = NCDatabaseSkillsSection(nodeIdentifier: nil, title: title, trainingQueue: trainingQueue, character: character, children: rows)
+				section.isExpanded = section.trainingTime > 0
+				certificates.append(section)
 			}
-			progress.progress.resignCurrent()
+			
+			guard !certificates.isEmpty else {throw NCTreeViewControllerError.noResult}
+			return RootNode(certificates)
 		}
 	}
 	

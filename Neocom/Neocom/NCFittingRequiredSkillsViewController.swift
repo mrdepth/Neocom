@@ -9,6 +9,7 @@
 import UIKit
 import CloudData
 import Dgmpp
+import EVEAPI
 
 class NCTrainingSkillRow: TreeRow {
 	let skill: NCTrainingSkill
@@ -63,61 +64,47 @@ class NCFittingRequiredSkillsViewController: NCTreeViewController {
 		
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		guard let ship = ship else {
-			completionHandler()
-			return
+			return .init(nil)
 		}
 		
-		
 		let progress = Progress(totalUnitCount: 2)
-		progress.perform {
-			NCCharacter.load(account: NCAccount.current) { result in
-				switch result {
-				case let .success(character):
-					let trainingQueue = NCTrainingQueue(character: character)
-					NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
-						let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
-						var typeIDs = Set<Int>()
-						typeIDs.insert(ship.typeID)
-						ship.modules.forEach {
-							typeIDs.insert($0.typeID)
-							if let charge = $0.charge {
-								typeIDs.insert(charge.typeID)
-							}
-						}
-						ship.drones.forEach {
-							typeIDs.insert($0.typeID)
-						}
-
-						typeIDs.forEach {
-							guard let type = invTypes[$0] else {return}
-							trainingQueue.addRequiredSkills(for: type)
-						}
-						
-						let rows = trainingQueue.skills.map { NCTrainingSkillRow(skill: $0, character: character) }
-						let trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
-						
-						DispatchQueue.main.async {
-							self.character = character
-							self.trainingQueue = trainingQueue
-							if rows.isEmpty {
-								self.tableView.backgroundView = NCTableViewBackgroundLabel(text: NSLocalizedString("No Result", comment: ""))
-								self.navigationItem.rightBarButtonItem?.isEnabled = false
-							}
-							else {
-								let section = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.default, title: NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds), children: rows)
-								section.isExpandable = false
-								self.treeController?.content = RootNode([section])
-								self.navigationItem.rightBarButtonItem?.isEnabled = true
-							}
-							completionHandler()
+		return progress.perform {
+			return NCCharacter.load(account: NCAccount.current).then(on: .main) { character -> Future<TreeNode?> in
+				let trainingQueue = NCTrainingQueue(character: character)
+				return NCDatabase.sharedDatabase!.performBackgroundTask { managedObjectContext -> TreeNode? in
+					let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
+					var typeIDs = Set<Int>()
+					typeIDs.insert(ship.typeID)
+					ship.modules.forEach {
+						typeIDs.insert($0.typeID)
+						if let charge = $0.charge {
+							typeIDs.insert(charge.typeID)
 						}
 					}
+					ship.drones.forEach {
+						typeIDs.insert($0.typeID)
+					}
 					
-				case let .failure(error):
-					self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
-					completionHandler()
+					typeIDs.forEach {
+						guard let type = invTypes[$0] else {return}
+						trainingQueue.addRequiredSkills(for: type)
+					}
+					
+					let rows = trainingQueue.skills.map { NCTrainingSkillRow(skill: $0, character: character) }
+					let trainingTime = trainingQueue.trainingTime(characterAttributes: character.attributes)
+					
+					guard !rows.isEmpty else {throw NCTreeViewControllerError.noResult}
+					let section = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.default, title: NCTimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds), children: rows)
+					section.isExpandable = false
+					
+					DispatchQueue.main.async {
+						self.character = character
+						self.trainingQueue = trainingQueue
+						self.navigationItem.rightBarButtonItem?.isEnabled = !rows.isEmpty
+					}
+					return RootNode([section])
 				}
 			}
 		}

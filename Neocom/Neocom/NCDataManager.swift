@@ -213,32 +213,28 @@ class NCDataManager {
 	}
 
 	
-	func image(characterID: Int64, dimension: Int) -> Future<UIImage> {
-		return loadFromCache(forKey: "image.character.\(characterID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(characterID: Int(characterID), dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> UIImage in
-			guard let value = result.value, let image = UIImage(data: value, scale: UIScreen.main.scale) else {throw NCDataManagerError.noCacheData}
-			return image
+	func image(characterID: Int64, dimension: Int) -> Future<CachedValue<UIImage>> {
+		return loadFromCache(forKey: "image.character.\(characterID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(characterID: Int(characterID), dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> CachedValue<UIImage> in
+			return .init(result.cacheRecord.objectID)
 		}
 	}
 	
 	
-	func image(corporationID: Int64, dimension: Int) -> Future<UIImage> {
-		return loadFromCache(forKey: "image.corporation.\(corporationID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(corporationID: Int(corporationID), dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> UIImage in
-			guard let value = result.value, let image = UIImage(data: value, scale: UIScreen.main.scale) else {throw NCDataManagerError.noCacheData}
-			return image
+	func image(corporationID: Int64, dimension: Int) -> Future<CachedValue<UIImage>> {
+		return loadFromCache(forKey: "image.corporation.\(corporationID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(corporationID: Int(corporationID), dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> CachedValue<UIImage> in
+			return .init(result.cacheRecord.objectID)
 		}
 	}
 	
-	func image(allianceID: Int64, dimension: Int) -> Future<UIImage> {
-		return loadFromCache(forKey: "image.alliance.\(allianceID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(allianceID: Int(allianceID), dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> UIImage in
-			guard let value = result.value, let image = UIImage(data: value, scale: UIScreen.main.scale) else {throw NCDataManagerError.noCacheData}
-			return image
+	func image(allianceID: Int64, dimension: Int) -> Future<CachedValue<UIImage>> {
+		return loadFromCache(forKey: "image.alliance.\(allianceID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(allianceID: Int(allianceID), dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> CachedValue<UIImage> in
+			return .init(result.cacheRecord.objectID)
 		}
 	}
 
-	func image(typeID: Int, dimension: Int) -> Future<UIImage> {
-		return loadFromCache(forKey: "image.type.\(typeID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(typeID: typeID, dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> UIImage in
-			guard let value = result.value, let image = UIImage(data: value, scale: UIScreen.main.scale) else {throw NCDataManagerError.noCacheData}
-			return image
+	func image(typeID: Int, dimension: Int) -> Future<CachedValue<UIImage>> {
+		return loadFromCache(forKey: "image.type.\(typeID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(typeID: typeID, dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> CachedValue<UIImage> in
+			return .init(result.cacheRecord.objectID)
 		}
 	}
 	

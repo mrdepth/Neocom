@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import CloudData
+import EVEAPI
 
 class NCAccountsFolderRow: NCFetchedResultsObjectNode<NCAccountsFolder> {
 	
@@ -115,8 +116,8 @@ class NCAccountsFoldersViewController: NCTreeViewController {
 	}
 	
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		guard let context = NCStorage.sharedStorage?.viewContext else {return}
+	override func content() -> Future<TreeNode?> {
+		guard let context = NCStorage.sharedStorage?.viewContext else {return .init(nil)}
 		
 		var sections = [TreeNode]()
 		sections.append(NCAccountsNoFolder())
@@ -130,8 +131,7 @@ class NCAccountsFoldersViewController: NCTreeViewController {
 		let row = NCActionRow(title: NSLocalizedString("New Folder", comment: "").uppercased())
 		
 		sections.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [row]))
-		self.treeController?.content = RootNode(sections)
-		completionHandler()
+		return .init(RootNode(sections))
 	}
 	
 	private func performRename(folder: NCAccountsFolder) {

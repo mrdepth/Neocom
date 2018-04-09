@@ -36,159 +36,119 @@ class NCCharacterSheetViewController: NCTreeViewController {
 	
 	//MARK: - NCRefreshable
 	
-	private var character: NCCachedResult<ESI.Character.Information>?
-	private var corporation: NCCachedResult<ESI.Corporation.Information>?
-	private var alliance: NCCachedResult<ESI.Alliance.Information>?
-	private var clones: NCCachedResult<ESI.Clones.JumpClones>?
-	private var attributes: NCCachedResult<ESI.Skills.CharacterAttributes>?
-	private var implants: NCCachedResult<[Int]>?
-	private var skills: NCCachedResult<ESI.Skills.CharacterSkills>?
-	private var skillQueue: NCCachedResult<[ESI.Skills.SkillQueueItem]>?
-	private var walletBalance: NCCachedResult<Double>?
-	private var characterImage: NCCachedResult<UIImage>?
-	private var corporationImage: NCCachedResult<UIImage>?
-	private var allianceImage: NCCachedResult<UIImage>?
-	private var characterShip: NCCachedResult<ESI.Location.CharacterShip>?
-	private var characterLocation: NCCachedResult<ESI.Location.CharacterLocation>?
+	private var character: CachedValue<ESI.Character.Information>?
+	private var corporation: CachedValue<ESI.Corporation.Information>?
+	private var alliance: CachedValue<ESI.Alliance.Information>?
+	private var clones: CachedValue<ESI.Clones.JumpClones>?
+	private var attributes: CachedValue<ESI.Skills.CharacterAttributes>?
+	private var implants: CachedValue<[Int]>?
+	private var skills: CachedValue<ESI.Skills.CharacterSkills>?
+	private var skillQueue: CachedValue<[ESI.Skills.SkillQueueItem]>?
+	private var walletBalance: CachedValue<Double>?
+	private var characterImage: CachedValue<UIImage>?
+	private var corporationImage: CachedValue<UIImage>?
+	private var allianceImage: CachedValue<UIImage>?
+	private var characterShip: CachedValue<ESI.Location.CharacterShip>?
+	private var characterLocation: CachedValue<ESI.Location.CharacterLocation>?
 	
 	private var characterObserver: NCManagedObjectObserver?
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		guard let account = NCAccount.current else {
-			completionHandler([])
-			return
+			return .init([])
 		}
 		title = account.characterName
 		
-		let dispatchGroup = DispatchGroup()
 		let progress = Progress(totalUnitCount: 11)
+		let dataManager = self.dataManager
 		
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.character { result in
+		return OperationQueue(qos: .utility).async { () -> [NCCacheRecord] in
+			let character = progress.perform{dataManager.character()}
+
+			let characterDetails = character.then(on: .main) { result -> Future<[NCCacheRecord]> in
 				self.character = result
-				
-				if let cacheRecord = result.cacheRecord {
-					self.characterObserver = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] (_,_) in
-						self?.reloadCharacterDetails(completionHandler: nil)
-					}
-				}
-				
-				progress.perform {
-					self.reloadCharacterDetails {
-						dispatchGroup.leave()
-					}
+				self.characterObserver = NCManagedObjectObserver(managedObject: result.cacheRecord) { [weak self] (_,_) in
+					_ = self?.loadCharacterDetails()
 				}
 				self.update()
+				return progress.perform{self.loadCharacterDetails()}
 			}
-		}
-		
-		
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.clones { result in
+
+			let clones = progress.perform{dataManager.clones()}.then(on: .main) { result -> CachedValue<ESI.Clones.JumpClones> in
 				self.clones = result
-				dispatchGroup.leave()
 				self.update()
+				return result
 			}
-		}
 
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.attributes { result in
+			let attributes = progress.perform{dataManager.attributes()}.then(on: .main) { result -> CachedValue<ESI.Skills.CharacterAttributes> in
 				self.attributes = result
-				dispatchGroup.leave()
 				self.update()
+				return result
 			}
-		}
 
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.implants { result in
+			
+			let implants = progress.perform{dataManager.implants()}.then(on: .main) { result -> CachedValue<[Int]> in
 				self.implants = result
-				dispatchGroup.leave()
 				self.update()
+				return result
 			}
-		}
 
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.skills { result in
+			let skills = progress.perform{dataManager.skills()}.then(on: .main) { result -> CachedValue<ESI.Skills.CharacterSkills> in
 				self.skills = result
-				dispatchGroup.leave()
 				self.update()
+				return result
 			}
-		}
 
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.skillQueue { result in
+			let skillQueue = progress.perform{dataManager.skillQueue()}.then(on: .main) { result -> CachedValue<[ESI.Skills.SkillQueueItem]> in
 				self.skillQueue = result
-				dispatchGroup.leave()
 				self.update()
+				return result
 			}
-		}
-		
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.walletBalance { result in
+
+			let walletBalance = progress.perform{dataManager.walletBalance()}.then(on: .main) { result -> CachedValue<Double> in
 				self.walletBalance = result
-				dispatchGroup.leave()
 				self.update()
+				return result
 			}
-		}
 
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.image(characterID: account.characterID, dimension: 512) { result in
+			let characterImage = progress.perform{dataManager.image(characterID: account.characterID, dimension: 512)}.then(on: .main) { result -> CachedValue<UIImage> in
 				self.characterImage = result
-				dispatchGroup.leave()
 				self.update()
+				return result
 			}
-		}
-		
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.characterLocation { result in
+
+			let characterLocation = progress.perform{dataManager.characterLocation()}.then(on: .main) { result -> CachedValue<ESI.Location.CharacterLocation> in
 				self.characterLocation = result
-				dispatchGroup.leave()
 				self.update()
+				return result
 			}
-		}
 
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.characterShip { result in
+			let characterShip = progress.perform{dataManager.characterShip()}.then(on: .main) { result -> CachedValue<ESI.Location.CharacterShip> in
 				self.characterShip = result
-				dispatchGroup.leave()
 				self.update()
+				return result
 			}
-		}
 
-		
-		dispatchGroup.notify(queue: .main) {
+			var records = [character.then {$0.cacheRecord},
+						   clones.then{$0.cacheRecord},
+						   attributes.then{$0.cacheRecord},
+						   implants.then{$0.cacheRecord},
+						   skills.then{$0.cacheRecord},
+						   skillQueue.then{$0.cacheRecord},
+						   walletBalance.then{$0.cacheRecord},
+						   characterImage.then{$0.cacheRecord},
+						   characterLocation.then{$0.cacheRecord},
+						   characterShip.then{$0.cacheRecord}].compactMap { try? $0.get() }
+			do {
+				records.append(contentsOf: try characterDetails.get())
+			}
+			catch {}
+			return records
 			
-			let records = [self.character?.cacheRecord,
-			               self.corporation?.cacheRecord,
-			               self.alliance?.cacheRecord,
-			               self.clones?.cacheRecord,
-			               self.attributes?.cacheRecord,
-			               self.implants?.cacheRecord,
-			               self.skills?.cacheRecord,
-			               self.skillQueue?.cacheRecord,
-			               self.walletBalance?.cacheRecord,
-			               self.characterImage?.cacheRecord,
-			               self.corporationImage?.cacheRecord,
-			               self.allianceImage?.cacheRecord,
-			               self.characterShip?.cacheRecord,
-			               self.characterLocation?.cacheRecord].compactMap {$0}
-			
-			completionHandler(records)
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		
+	override func content() -> Future<TreeNode?> {
 		var sections = [TreeSection]()
 		
 		var rows = [TreeRow]()
@@ -323,62 +283,53 @@ class NCCharacterSheetViewController: NCTreeViewController {
 			}
 		}
 		
-		treeController?.content = RootNode(sections, collapseIdentifier: "NCCharacterSheetViewController")
-		
-		tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-		
-		completionHandler()
+		guard !sections.isEmpty else { return .init(.failure(NCTreeViewControllerError.noResult)) }
+		return .init(RootNode(sections, collapseIdentifier: "NCCharacterSheetViewController"))
 	}
 	
-	private func reloadCharacterDetails(completionHandler: (() -> Void)?) {
+	private func loadCharacterDetails() -> Future<[NCCacheRecord]> {
 		guard let character = self.character?.value else {
-			completionHandler?()
-			return
+			return .init([])
 		}
 		
-		let progress = Progress(totalUnitCount: 3)
+		let progress = Progress(totalUnitCount: 4)
 		
-		let dispatchGroup = DispatchGroup()
+		let dataManager = self.dataManager
 		
-		progress.perform {
-			dispatchGroup.enter()
+		return OperationQueue(qos: .utility).async { () -> Future<[NCCacheRecord]> in
+			var futures = [Future<NCCacheRecord>]()
 			
-			dataManager.corporation(corporationID: Int64(character.corporationID)) { result in
+			let corporation = progress.perform{dataManager.corporation(corporationID: Int64(character.corporationID))}
+			corporation.then(on: .main) { result in
 				self.corporation = result
-				dispatchGroup.leave()
-				self.update()
 			}
-		}
-		
-		progress.perform {
-			dispatchGroup.enter()
-			dataManager.image(corporationID: Int64(character.corporationID), dimension: 32) { result in
+			futures.append(corporation.then{$0.cacheRecord})
+			
+			let corporationImage = progress.perform{dataManager.image(corporationID: Int64(character.corporationID), dimension: 32)}
+			corporationImage.then(on: .main) { result in
 				self.corporationImage = result
-				dispatchGroup.leave()
+			}
+			futures.append(corporationImage.then{$0.cacheRecord})
+			
+			if let allianceID = (try? corporation.get())?.value?.allianceID {
+				let alliance = progress.perform{dataManager.alliance(allianceID: Int64(allianceID))}
+				alliance.then(on: .main) { result in
+					self.alliance = result
+				}
+				futures.append(alliance.then{$0.cacheRecord})
+				
+				let allianceImage = progress.perform{dataManager.image(allianceID: Int64(allianceID), dimension: 32)}
+				allianceImage.then(on: .main) { result in
+					self.allianceImage = result
+				}
+				futures.append(allianceImage.then{$0.cacheRecord})
+			}
+			else {
+				progress.completedUnitCount += 2
+			}
+			return all(futures).finally(on: .main) {
 				self.update()
 			}
-		}
-		
-		progress.perform {
-			if let allianceID = character.allianceID, allianceID > 0 {
-				dispatchGroup.enter()
-				dataManager.image(allianceID: Int64(allianceID), dimension: 32) { result in
-					self.allianceImage = result
-					dispatchGroup.leave()
-					self.update()
-				}
-				
-				dispatchGroup.enter()
-				dataManager.alliance(allianceID: Int64(allianceID)) { result in
-					self.alliance = result
-					dispatchGroup.leave()
-					self.update()
-				}
-			}
-		}
-		
-		dispatchGroup.notify(queue: .main) {
-			completionHandler?()
 		}
 	}
 	
@@ -388,8 +339,7 @@ class NCCharacterSheetViewController: NCTreeViewController {
 	}
 	
 	@objc private func internalUpdate() {
-		updateContent {
-		}
+		updateContent()
 	}
 
 	

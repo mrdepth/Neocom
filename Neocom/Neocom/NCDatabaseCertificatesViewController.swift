@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 fileprivate class NCDatabaseCertificateRow: NCFetchedResultsObjectNode<NCDBCertCertificate> {
 	var character: NCCharacter?
@@ -84,45 +85,39 @@ class NCDatabaseCertificatesViewController: NCTreeViewController {
 		title = group?.groupName
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if let group = group, treeController?.content == nil {
-			let request = NSFetchRequest<NCDBCertCertificate>(entityName: "CertCertificate")
-			request.predicate = NSPredicate(format: "group == %@", group)
-			request.sortDescriptors = [NSSortDescriptor(key: "certificateName", ascending: true)]
-			
-			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-
-			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCDatabaseCertificateRow.self)
-
-			
-			let progress = NCProgressHandler(totalUnitCount: 1)
-			progress.progress.becomeCurrent(withPendingUnitCount: 1)
-			NCCharacter.load(account: NCAccount.current) { result in
-				let character: NCCharacter
-				switch result {
-				case let .success(value):
-					character = value
-				default:
-					character = NCCharacter()
-				}
-				
-				self.treeController?.content?.children.forEach {
-					($0 as? NCDatabaseCertificateRow)?.character = character
-				}
-				progress.finish()
-				self.tableView.reloadData()
-			}
-			progress.progress.resignCurrent()
-		}
-	}
-	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
 			treeController?.content = nil
 		}
 	}
 	
+	override func content() -> Future<TreeNode?> {
+		guard let group = group, treeController?.content == nil else {return .init(nil)}
+		
+		let request = NSFetchRequest<NCDBCertCertificate>(entityName: "CertCertificate")
+		request.predicate = NSPredicate(format: "group == %@", group)
+		request.sortDescriptors = [NSSortDescriptor(key: "certificateName", ascending: true)]
+		
+		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+
+
+		Progress(totalUnitCount: 1).perform {
+			NCCharacter.load(account: NCAccount.current).then(on: .main) { character in
+				self.treeController?.content?.children.forEach {
+					($0 as? NCDatabaseCertificateRow)?.character = character
+				}
+			}.catch(on: .main) { _ in
+				let character = NCCharacter()
+				self.treeController?.content?.children.forEach {
+					($0 as? NCDatabaseCertificateRow)?.character = character
+				}
+			}.finally(on: .main) {
+				self.tableView.reloadData()
+			}
+		}
+		
+		return .init(FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCDatabaseCertificateRow.self))
+	}
 	
 	//MARK: - TreeControllerDelegate
 	

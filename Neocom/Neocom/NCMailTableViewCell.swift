@@ -110,7 +110,7 @@ class NCMailRow: TreeRow {
 		
 		if image == nil {
 			dataManager.image(characterID: characterID, dimension: Int(cell.iconView.bounds.size.width)).then(on: .main) { result in
-				self.image = result
+				self.image = result.value ?? UIImage()
 			}.catch(on: .main) { _ in
 				self.image = UIImage()
 			}.finally(on: .main) {
@@ -185,7 +185,7 @@ class NCDraftRow: NCFetchedResultsObjectNode<NCMailDraft>, TreeNodeRoutable {
 				
 				if let (_, contact) = contacts.first(where: {$0.value.recipientType == .character || $0.value.recipientType == .corporation}) {
 					
-					let image: Future<UIImage>
+					let image: Future<CachedValue<UIImage>>
 					if contact.recipientType == .character {
 						image = NCDataManager().image(characterID: contact.contactID, dimension: Int(cell.iconView.bounds.size.width))
 					}
@@ -193,7 +193,7 @@ class NCDraftRow: NCFetchedResultsObjectNode<NCMailDraft>, TreeNodeRoutable {
 						image = NCDataManager().image(corporationID: contact.contactID, dimension: Int(cell.iconView.bounds.size.width))
 					}
 					image.then(on: .main) { result in
-						self.image = result
+						self.image = result.value ?? UIImage()
 					}.catch(on: .main) { error in
 						self.image = UIImage()
 					}.finally(on: .main) {

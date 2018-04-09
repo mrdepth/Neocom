@@ -46,7 +46,7 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 			NCDataManager().image(typeID: Int(type.typeID), dimension: 512).then(on: .main) { value in
 				let to = self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseTypeInfoHeaderViewControllerLarge") as! NCDatabaseTypeInfoHeaderViewController
 				to.type = type
-				to.image = value
+				to.image = value.value
 				var frame = CGRect.zero
 				frame.size = to.view.systemLayoutSizeFitting(CGSize(width: self.view.bounds.size.width, height:0), withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
 				to.view.frame = frame
@@ -211,7 +211,7 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 	
 	@objc private func didChangeMarketRegion(_ note: Notification) {
 		if let type = type {
-			NCDatabaseTypeInfo.typeInfo(type: type, attributeValues: attributeValues) { result in
+			NCDatabaseTypeInfo.typeInfo(type: type, attributeValues: attributeValues).then(on: .main) { result in
 				self.treeController?.content?.children = result
 			}
 		}

@@ -124,25 +124,26 @@ class NCLoyaltyStoreOffersViewController: NCTreeViewController {
 
 	}
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		guard let loyaltyPoints = loyaltyPoints, filter == nil && offers == nil else {
-			completionHandler([])
-			return
+			return .init([])
 		}
 		
-		dataManager.loyaltyStoreOffers(corporationID: Int64(loyaltyPoints.corporationID)) { result in
+		return dataManager.loyaltyStoreOffers(corporationID: Int64(loyaltyPoints.corporationID)).then(on: .main) { result -> [NCCacheRecord] in
 			self.offers = result
-			completionHandler([result.cacheRecord].compactMap {$0})
+			return [result.cacheRecord]
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		if let loyaltyPoints = loyaltyPoints, let offers = offers, let value = offers.value {
-			tableView.backgroundView = nil
-			
-			NCDatabase.sharedDatabase?.performBackgroundTask { (managedObjectContext) in
+	override func content() -> Future<TreeNode?> {
+		let loyaltyPoints = self.loyaltyPoints
+		let offers = self.offers
+
+		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+			guard let loyaltyPoints = loyaltyPoints, let offers = offers, let value = offers.value else {throw NCTreeViewControllerError.noResult}
+			return try NCDatabase.sharedDatabase!.performTaskAndWait { (managedObjectContext) in
 				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
-//				var map: [Int: [NCLoyaltyStoreOfferRow]] = [:]
+				//				var map: [Int: [NCLoyaltyStoreOfferRow]] = [:]
 				
 				let sections: [TreeNode]
 				
@@ -157,7 +158,7 @@ class NCLoyaltyStoreOffersViewController: NCTreeViewController {
 					let types = value.compactMap { i -> (NCDBInvType, ESI.Loyalty.Offer)? in
 						guard let type = invTypes[i.typeID], type.group?.groupID == groupID else {return nil}
 						return (type, i)
-						}
+					}
 					sections = types.sorted {($0.0.typeName ?? "") < ($1.0.typeName ?? "")}.map {NCLoyaltyStoreOfferRow(offer: $0.1)}
 					
 				default:
@@ -165,39 +166,15 @@ class NCLoyaltyStoreOffersViewController: NCTreeViewController {
 					sections = categories.sorted {($0.categoryName ?? "") < ($1.categoryName ?? "")}.map {NCLoyaltyStoreCategoryRow(categoryID: Int($0.categoryID), route: Router.Character.LoyaltyStoreOffers(loyaltyPoints: loyaltyPoints, filter: .category(Int($0.categoryID)), offers: offers))}
 				}
 				
-				
-				
-//				let sections =
-				
-				/*value.compactMap { offer -> NCLoyaltyStoreOfferRow? in
-					guard let type = invTypes[offer.typeID] else {return nil}
-					return NCLoyaltyStoreOfferRow(offer: offer, type: type)
-					}.sorted {$0.typeName < $1.typeName}.forEach {map[$0.groupID, default: []].append($0)}
-				
-				let invGroups = NCDBInvGroup.invGroups(managedObjectContext: managedObjectContext)
-				
-				let sections = map.compactMap { (key, value) -> DefaultTreeSection? in
-					guard let group = invGroups[key]?.groupName else {return nil}
-					return DefaultTreeSection(nodeIdentifier: "\(key)", title: group.uppercased(), children: value)
-					}.sorted {$0.title! < $1.title!}
-				*/
-				DispatchQueue.main.async {
-					self.treeController?.content = RootNode(sections)
-					self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-					completionHandler()
-				}
+				guard !sections.isEmpty else {throw NCTreeViewControllerError.noResult}
+				return RootNode(sections)
 			}
-			
-		}
-		else {
-			tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: offers?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-			completionHandler()
 		}
 	}
 	
 	//MARK: - NCRefreshable
 	
-	var offers: NCCachedResult<[ESI.Loyalty.Offer]>?
+	var offers: CachedValue<[ESI.Loyalty.Offer]>?
 	
 }
 

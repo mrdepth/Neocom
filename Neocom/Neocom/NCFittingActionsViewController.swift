@@ -125,11 +125,11 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 	}
 
 	@IBAction func onShoppingList(_ sender: Any) {
-		guard let fleet = fleet else {return}
-		guard let pilot = fleet.active else {return}
-		UIApplication.shared.beginIgnoringInteractionEvents()
-		guard let shoppingItem = pilot.shoppingItem else {return}
-		Router.ShoppingList.Add(items: [shoppingItem]).perform(source: self, sender: sender)
+//		guard let fleet = fleet else {return}
+//		guard let pilot = fleet.active else {return}
+//		UIApplication.shared.beginIgnoringInteractionEvents()
+//		guard let shoppingItem = pilot.shoppingItem else {return}
+//		Router.ShoppingList.Add(items: [shoppingItem]).perform(source: self, sender: sender)
 	}
 
 	@IBAction func onDuplicate(_ sender: Any) {

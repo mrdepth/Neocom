@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import EVEAPI
 
 class NCSkillQueueNotificationOptionsSection: DefaultTreeSection {
 	let setting: NCSetting
@@ -80,7 +81,7 @@ class NCSettingsViewController: NCTreeViewController {
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		var sections = [TreeNode]()
 		
 //		sections.append(DefaultTreeSection(title: NSLocalizedString("Notifications", comment: "").uppercased(), children: [
@@ -106,7 +107,6 @@ class NCSettingsViewController: NCTreeViewController {
 		
 		sections.append(DefaultTreeSection(title: NSLocalizedString("Cache", comment: "").uppercased(), children: [NCActionRow(title: NSLocalizedString("Clear Cache", comment: "").uppercased(), route: clearCache, object: nil)]))
 
-		treeController?.content = RootNode(sections, collapseIdentifier: "NCSettingsViewController")
-		completionHandler()
+		return .init(RootNode(sections, collapseIdentifier: "NCSettingsViewController"))
 	}
 }

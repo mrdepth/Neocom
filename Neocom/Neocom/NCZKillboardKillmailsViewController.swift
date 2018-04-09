@@ -128,11 +128,11 @@ class NCZKillboardKillmailsViewController: NCTreeViewController {
 		
 		return progress.perform {
 			dataManager.zKillmails(filter: filter, page: page ?? 1).then(on: .main) { result in
-//				self.result = result
 				return self.process(result: result).then { () -> CachedValue<[ZKillboard.Killmail]> in
-					self.isFetching = false
 					return result
 				}
+			}.finally(on: .main) {
+				self.isFetching = false
 			}
 		}
 	}

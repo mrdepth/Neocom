@@ -9,6 +9,7 @@
 import UIKit
 import CloudData
 import Dgmpp
+import EVEAPI
 
 class NCFittingFuelRow: TreeRow {
 	let structure: DGMStructure
@@ -38,7 +39,7 @@ class NCFittingFuelRow: TreeRow {
 		else {
 			let typeID = structure.fuelBlockTypeID
 			
-			NCDataManager(account: NCAccount.current).prices(typeIDs: Set([typeID])) { result in
+			NCDataManager(account: NCAccount.current).prices(typeIDs: Set([typeID])).then(on: .main) { result in
 				self.price = result[typeID] ?? 0
 				self.treeController?.reloadCells(for: [self], with: .none)
 			}
@@ -347,12 +348,12 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 					self?.needsReload = true
 					return
 				}
-				self?.updateContent {}
+				self?.updateContent()
 			}
 		}
 		
 		if needsReload {
-			reload()
+			updateContent()
 		}
 
 	}
@@ -394,16 +395,9 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 	}
 	//MARK: - Private
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		defer {
-			completionHandler()
-		}
-
-		if self.treeController?.content == nil {
-			self.treeController?.content = TreeNode()
-		}
-		guard let fleet = fleet else {return}
-		guard let ship = fleet.active?.ship ?? fleet.structure?.0 else {return}
+	override func content() -> Future<TreeNode?> {
+		guard let fleet = fleet else {return .init(nil)}
+		guard let ship = fleet.active?.ship ?? fleet.structure?.0 else {return .init(nil)}
 		var sections = [TreeNode]()
 		
 		sections.append(DefaultTreeSection(nodeIdentifier: "Resources", title: NSLocalizedString("Resources", comment: "").uppercased(), children: [NCFittingResourcesRow(ship: ship)]))
@@ -431,11 +425,11 @@ class NCFittingStatsViewController: NCTreeViewController, NCFittingEditorPage {
 			typeIDs.formUnion(Set(pilot.implants.map{$0.typeID}))
 		}
 		
-		treeController?.content?.children = sections
-		NCDataManager(account: NCAccount.current).prices(typeIDs: typeIDs) { result in
+//		treeController?.content?.children = sections
+		NCDataManager(account: NCAccount.current).prices(typeIDs: typeIDs).then(on: .main) { result in
 			pricesSection.prices = result
 		}
 		needsReload = false
-
+		return .init(RootNode(sections))
 	}
 }

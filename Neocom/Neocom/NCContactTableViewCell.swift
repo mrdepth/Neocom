@@ -51,7 +51,7 @@ class NCContactRow: TreeRow {
 			
 			guard let contact = self.contact else {return}
 			
-			let image: Future<UIImage>?
+			let image: Future<CachedValue<UIImage>>?
 			
 			switch contact.recipientType ?? .character {
 			case .alliance:
@@ -64,7 +64,7 @@ class NCContactRow: TreeRow {
 				image = nil
 			}
 			image?.then(on: .main) { value in
-				self.image = value
+				self.image = value.value ?? UIImage()
 				if (cell.object as? NCContact) == self.contact {
 					cell.iconView?.image = self.image
 				}

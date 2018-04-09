@@ -23,7 +23,7 @@ class NCFeedChannelViewController: NCTreeViewController {
 	
 	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		guard let url = url else {return .init([])}
-		return dataManager.rss(url: url) { result -> [NCCacheRecord] in
+		return dataManager.rss(url: url).then(on: .main) { result -> [NCCacheRecord] in
 			self.rss = result
 			return [result.cacheRecord]
 		}
@@ -32,7 +32,7 @@ class NCFeedChannelViewController: NCTreeViewController {
 	override func content() -> Future<TreeNode?> {
 		let rss = self.rss
 		let totalProgress = Progress(totalUnitCount: 1)
-		OperationQueue(qos: .utility).async { () -> TreeNode? in
+		return OperationQueue(qos: .utility).async { () -> TreeNode? in
 			guard let value = rss?.value else {throw NCTreeViewControllerError.noResult}
 			let progress = totalProgress.perform{ Progress(totalUnitCount: Int64(value.items?.count ?? 0)) }
 			

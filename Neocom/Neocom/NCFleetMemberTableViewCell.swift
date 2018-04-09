@@ -81,9 +81,9 @@ class NCFleetMemberRow: TreeRow {
 			
 			if let characterID = characterID {
 				NCDataManager().image(characterID: characterID, dimension: Int(cell.characterImageView.bounds.size.width)).then(on: .main) { result in
-					self.characterImage = result
+					self.characterImage = result.value
 					if (cell.object as? NCFleetMemberRow) == self {
-						cell.characterImageView.image = result
+						cell.characterImageView.image = self.characterImage
 					}
 				}
 			}

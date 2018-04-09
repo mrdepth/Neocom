@@ -157,7 +157,7 @@ class NCKillmailAttackerRow: TreeRow {
 			image = UIImage()
 			if let contact = self.character {
 				dataManager.image(characterID: contact.contactID, dimension: Int(size.width)).then(on: .main) { result in
-					self.image = result
+					self.image = result.value
 					if (cell.object as? NCAttacker)?.characterID == self.attacker.characterID {
 						cell.iconView?.image = self.image
 					}
@@ -165,7 +165,7 @@ class NCKillmailAttackerRow: TreeRow {
 			}
 			else if let contact = self.corporation {
 				dataManager.image(corporationID: contact.contactID, dimension: Int(size.width)).then(on: .main) { result in
-					self.image = result
+					self.image = result.value
 					if (cell.object as? NCAttacker)?.corporationID == self.attacker.corporationID {
 						cell.iconView?.image = self.image
 					}
@@ -173,7 +173,7 @@ class NCKillmailAttackerRow: TreeRow {
 			}
 			else if let contact = self.alliance {
 				dataManager.image(allianceID: contact.contactID, dimension: Int(size.width)).then(on: .main) { result in
-					self.image = result
+					self.image = result.value
 					if (cell.object as? NCAttacker)?.allianceID == self.attacker.allianceID {
 						cell.iconView?.image = self.image
 					}
@@ -181,7 +181,7 @@ class NCKillmailAttackerRow: TreeRow {
 			}
 			else if let contact = self.faction {
 				dataManager.image(allianceID: Int64(contact.factionID), dimension: Int(size.width)).then(on: .main) { result in
-					self.image = result
+					self.image = result.value
 					if (cell.object as? NCAttacker)?.factionID == self.attacker.factionID {
 						cell.iconView?.image = self.image
 					}

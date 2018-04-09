@@ -24,15 +24,8 @@ class NCDatabaseCertificateInfoHeaderViewController: UIViewController {
 		
 		guard let certificate = certificate else {return}
 		
-		NCCharacter.load(account: NCAccount.current) { result in
-			let character: NCCharacter
-			switch result {
-			case let .success(value):
-				character = value
-			default:
-				character = NCCharacter()
-			}
-			
+		OperationQueue(qos: .utility).async {
+			let character = (try? NCCharacter.load(account: NCAccount.current).get()) ?? NCCharacter()
 			let trainingQueue = NCTrainingQueue(character: character)
 			var level: NCDBCertMasteryLevel?
 			for mastery in (certificate.masteries?.sortedArray(using: [NSSortDescriptor(key: "level.level", ascending: true)]) as? [NCDBCertMastery]) ?? [] {
@@ -48,7 +41,6 @@ class NCDatabaseCertificateInfoHeaderViewController: UIViewController {
 					self.imageView.image = image
 				}
 			}
-
 		}
 	}
 

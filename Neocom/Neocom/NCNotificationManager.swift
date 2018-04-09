@@ -114,7 +114,7 @@ class NCNotificationManager: NSObject {
 							queue.append((characterID, characterName, value, value.compactMap{$0.finishDate}.max() ?? Date.distantFuture, uuid))
 						}
 						dispatchGroup.enter()
-						if let image = try? dataManager.image(characterID: characterID, dimension: 64).get() {
+						if let image = (try? dataManager.image(characterID: characterID, dimension: 64).get())?.value {
 							try? UIImagePNGRepresentation(image)?.write(to: url)
 						}
 						self.schedule(skillQueue: value, account: account, requests: requests, imageURL: url).wait()
@@ -162,7 +162,7 @@ class NCNotificationManager: NSObject {
 							
 							accounts.forEach { account in
 								dispatchGroup.enter()
-								if let image = try? dataManager.image(characterID: account.characterID, dimension: 64).get(), let data = UIImagePNGRepresentation(image) {
+								if let image = (try? dataManager.image(characterID: account.characterID, dimension: 64).get())?.value, let data = UIImagePNGRepresentation(image) {
 									try? data.write(to: baseURL.appendingPathComponent("\(account.characterID).png"))
 								}
 							}

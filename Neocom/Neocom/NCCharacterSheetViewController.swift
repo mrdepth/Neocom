@@ -62,6 +62,8 @@ class NCCharacterSheetViewController: NCTreeViewController {
 		let progress = Progress(totalUnitCount: 11)
 		let dataManager = self.dataManager
 		
+		let characterID = account.characterID
+		
 		return OperationQueue(qos: .utility).async { () -> [NCCacheRecord] in
 			let character = progress.perform{dataManager.character()}
 
@@ -111,7 +113,7 @@ class NCCharacterSheetViewController: NCTreeViewController {
 				return result
 			}
 
-			let characterImage = progress.perform{dataManager.image(characterID: account.characterID, dimension: 512)}.then(on: .main) { result -> CachedValue<UIImage> in
+			let characterImage = progress.perform{dataManager.image(characterID: characterID, dimension: 512)}.then(on: .main) { result -> CachedValue<UIImage> in
 				self.characterImage = result
 				self.update()
 				return result

@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCNPCPickerGroupsViewController: NCTreeViewController, NCSearchableViewController {
 	
@@ -23,30 +24,26 @@ class NCNPCPickerGroupsViewController: NCTreeViewController, NCSearchableViewCon
 		title = parentGroup?.npcGroupName ?? NSLocalizedString("NPC", comment: "")
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if treeController?.content == nil {
-			let request = NSFetchRequest<NCDBNpcGroup>(entityName: "NpcGroup")
-			request.sortDescriptors = [NSSortDescriptor(key: "npcGroupName", ascending: true)]
-			if let parent = parentGroup {
-				request.predicate = NSPredicate(format: "parentNpcGroup == %@", parent)
-			}
-			else {
-				request.predicate = NSPredicate(format: "parentNpcGroup == NULL")
-			}
-			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-			
-			try? results.performFetch()
-			
-			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCNPCGroupRow.self)
-			
-		}
-	}
-	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
 			treeController?.content = nil
 		}
+	}
+	
+	override func content() -> Future<TreeNode?> {
+		let request = NSFetchRequest<NCDBNpcGroup>(entityName: "NpcGroup")
+		request.sortDescriptors = [NSSortDescriptor(key: "npcGroupName", ascending: true)]
+		if let parent = parentGroup {
+			request.predicate = NSPredicate(format: "parentNpcGroup == %@", parent)
+		}
+		else {
+			request.predicate = NSPredicate(format: "parentNpcGroup == NULL")
+		}
+		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+		
+		try? results.performFetch()
+		
+		return .init(FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCNPCGroupRow.self))
 	}
 	
 	//MARK: - TreeControllerDelegate

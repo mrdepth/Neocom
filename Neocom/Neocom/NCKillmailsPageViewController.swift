@@ -98,8 +98,7 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 				}
 			case .update:
 				accountChangeObserver = NotificationCenter.default.addNotificationObserver(forName: .NCCurrentAccountChanged, object: nil, queue: nil) { [weak self] _ in
-					self?.updateContent {
-					}
+					self?.updateContent()
 				}
 			}
 		}
@@ -108,24 +107,32 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 	var isLoading: Bool = false
 	lazy var dataManager: NCDataManager = NCDataManager(account: NCAccount.current)
 	
-	func updateContent(completionHandler: @escaping () -> Void) {
-		kills = TreeNode()
-		losses = TreeNode()
-		update(result: result).finally(on: .main) {
-			completionHandler()
+	@discardableResult func updateContent() -> Future<TreeNode?> {
+		return content().then(on: .main) { content -> TreeNode? in
+			self.killsViewController?.tableView.backgroundView = nil
+			self.lossesViewController?.tableView.backgroundView = nil
+			return content
+		}.catch(on: .main) { error in
+			self.killsViewController?.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
+			self.lossesViewController?.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
 		}
 	}
+
 	
-	func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void ) {
+	func content() -> Future<TreeNode?> {
+		kills = TreeNode()
+		losses = TreeNode()
+		return .init(nil)
+	}
+	
+	func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		lastID = nil
 		isEndReached = false
 		kills = nil
 		losses = nil
 		self.dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
-		fetch(from: nil).then(on: .main) { result in
-			completionHandler([result.cacheRecord].compactMap {$0})
-		}.catch(on: .main) { _ in
-			completionHandler([])
+		return fetch(from: nil).then(on: .main) { result in
+			return [result.cacheRecord]
 		}
 	}
 	

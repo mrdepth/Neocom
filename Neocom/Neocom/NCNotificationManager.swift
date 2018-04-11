@@ -108,7 +108,7 @@ class NCNotificationManager: NSObject {
 
 					let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(characterID)_64.png")
 					
-					let lifeTime = NCExtendedLifeTime(managedObjectContext)
+//					let lifeTime = NCExtendedLifeTime(managedObjectContext)
 					if let value = (try? dataManager.skillQueue().get())?.value {
 						if let uuid = uuid {
 							queue.append((characterID, characterName, value, value.compactMap{$0.finishDate}.max() ?? Date.distantFuture, uuid))
@@ -211,92 +211,94 @@ class NCNotificationManager: NSObject {
 	}
 	
 	private func schedule(skillQueue: [ESI.Skills.SkillQueueItem], account: NCAccount, requests: [NotificationRequest], imageURL: URL) -> Future<Bool> {
-		let promise = Promise<Bool>()
-		let options = self.skillQueueNotificationOptions
-		guard let context = account.managedObjectContext, !options.isEmpty else {
-			try! promise.fulfill(false)
+		return DispatchQueue.main.async {
+			let promise = Promise<Bool>()
+			let options = self.skillQueueNotificationOptions
+			guard let context = account.managedObjectContext, !options.isEmpty else {
+				try! promise.fulfill(false)
+				return promise.future
+			}
+			
+			
+			context.perform {
+				guard let uuid = account.uuid else {
+					try! promise.fulfill(false)
+					return
+				}
+				let characterName = account.characterName ?? ""
+				
+				let date = Date()
+				let value = skillQueue.filter {$0.finishDate != nil && $0.finishDate! > date}.sorted {$0.finishDate! < $1.finishDate!}
+				self.remove(requests: requests)
+				
+				
+				
+				let dispatchGroup = DispatchGroup()
+				
+				if options.contains(.skillTrainingComplete) {
+					NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> [NotificationRequest] in
+						let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
+						return value.map { skill -> NotificationRequest in
+							return self.request(title: characterName,
+												subtitle: NSLocalizedString("Skill Training Complete", comment: ""),
+												body: "\(invTypes[skill.skillID]?.typeName ?? NSLocalizedString("Unknown", comment: "")): \(skill.finishedLevel)",
+								date: skill.finishDate!,
+								imageURL: imageURL,
+								identifier: "\(uuid).\(skill.skillID).\(skill.finishedLevel)",
+								accountUUID: uuid)
+						}
+						}.forEach {
+							dispatchGroup.enter()
+							self.add(request: $0) { error in
+								dispatchGroup.leave()
+							}
+					}
+				}
+				
+				
+				if let lastSkill = value.last {
+					let a: [(SkillQueueNotificationOptions, Date)] = [(.inactive, lastSkill.finishDate!),
+																	  (.oneHour, lastSkill.finishDate!.addingTimeInterval(-3600)),
+																	  (.fourHours, lastSkill.finishDate!.addingTimeInterval(-3600 * 4)),
+																	  (.oneDay, lastSkill.finishDate!.addingTimeInterval(-3600 * 24))]
+					a.filter{options.contains($0.0) && $0.1 > date}.compactMap { (option, date) -> NotificationRequest? in
+						let body: String
+						switch option.rawValue {
+						case SkillQueueNotificationOptions.inactive.rawValue:
+							body = NSLocalizedString("Training Queue is inactive", comment: "")
+						case SkillQueueNotificationOptions.oneHour.rawValue:
+							body = NSLocalizedString("Training Queue will finish in 1 hour.", comment: "")
+						case SkillQueueNotificationOptions.fourHours.rawValue:
+							body = NSLocalizedString("Training Queue will finish in 4 hours.", comment: "")
+						case SkillQueueNotificationOptions.oneDay.rawValue:
+							body = NSLocalizedString("Training Queue will finish in 24 hours.", comment: "")
+						default:
+							return nil
+						}
+						
+						return self.request(title: characterName,
+											subtitle: nil,
+											body: body,
+											date: date,
+											imageURL: imageURL,
+											identifier: "\(uuid).\(option.rawValue)",
+							accountUUID: uuid)
+						
+						}.forEach {
+							dispatchGroup.enter()
+							self.add(request: $0) { error in
+								dispatchGroup.leave()
+							}
+					}
+				}
+				
+				dispatchGroup.notify(queue: .main) {
+					try! promise.fulfill(true)
+				}
+				
+			}
 			return promise.future
 		}
-		
-		
-		context.perform {
-			guard let uuid = account.uuid else {
-				try! promise.fulfill(false)
-				return
-			}
-			let characterName = account.characterName ?? ""
-			
-			let date = Date()
-			let value = skillQueue.filter {$0.finishDate != nil && $0.finishDate! > date}.sorted {$0.finishDate! < $1.finishDate!}
-			self.remove(requests: requests)
-			
-			
-			
-			let dispatchGroup = DispatchGroup()
-			
-			if options.contains(.skillTrainingComplete) {
-				NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext -> [NotificationRequest] in
-					let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
-					return value.map { skill -> NotificationRequest in
-						return self.request(title: characterName,
-						                    subtitle: NSLocalizedString("Skill Training Complete", comment: ""),
-						                    body: "\(invTypes[skill.skillID]?.typeName ?? NSLocalizedString("Unknown", comment: "")): \(skill.finishedLevel)",
-							date: skill.finishDate!,
-							imageURL: imageURL,
-							identifier: "\(uuid).\(skill.skillID).\(skill.finishedLevel)",
-							accountUUID: uuid)
-					}
-					}.forEach {
-						dispatchGroup.enter()
-						self.add(request: $0) { error in
-							dispatchGroup.leave()
-						}
-				}
-			}
-			
-			
-			if let lastSkill = value.last {
-				let a: [(SkillQueueNotificationOptions, Date)] = [(.inactive, lastSkill.finishDate!),
-				                                                  (.oneHour, lastSkill.finishDate!.addingTimeInterval(-3600)),
-				                                                  (.fourHours, lastSkill.finishDate!.addingTimeInterval(-3600 * 4)),
-				                                                  (.oneDay, lastSkill.finishDate!.addingTimeInterval(-3600 * 24))]
-				a.filter{options.contains($0.0) && $0.1 > date}.compactMap { (option, date) -> NotificationRequest? in
-					let body: String
-					switch option.rawValue {
-					case SkillQueueNotificationOptions.inactive.rawValue:
-						body = NSLocalizedString("Training Queue is inactive", comment: "")
-					case SkillQueueNotificationOptions.oneHour.rawValue:
-						body = NSLocalizedString("Training Queue will finish in 1 hour.", comment: "")
-					case SkillQueueNotificationOptions.fourHours.rawValue:
-						body = NSLocalizedString("Training Queue will finish in 4 hours.", comment: "")
-					case SkillQueueNotificationOptions.oneDay.rawValue:
-						body = NSLocalizedString("Training Queue will finish in 24 hours.", comment: "")
-					default:
-						return nil
-					}
-
-					return self.request(title: characterName,
-					               subtitle: nil,
-					               body: body,
-					               date: date,
-					               imageURL: imageURL,
-					               identifier: "\(uuid).\(option.rawValue)",
-						accountUUID: uuid)
-
-					}.forEach {
-						dispatchGroup.enter()
-						self.add(request: $0) { error in
-							dispatchGroup.leave()
-						}
-				}
-			}
-			
-			dispatchGroup.notify(queue: .main) {
-				try! promise.fulfill(true)
-			}
-			
-		}
-		return promise.future
 	}
 	
 	private func request (title: String, subtitle: String?, body: String, date: Date, imageURL: URL, identifier: String, accountUUID: String) -> NotificationRequest {

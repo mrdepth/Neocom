@@ -200,8 +200,6 @@ class NCServerStatusRow: NCAccountDataMenuRow<ESI.Status.ServerStatus> {
 		let dateFormatter = DateFormatter()
 		dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
 		dateFormatter.dateFormat = "HH:mm:ss"
-//		dateFormatter.timeStyle = .medium
-//		dateFormatter.dateStyle = .none
 		return dateFormatter
 	}()
 	
@@ -226,9 +224,9 @@ class NCServerStatusRow: NCAccountDataMenuRow<ESI.Status.ServerStatus> {
 			cell.titleLabel?.text = NSLocalizedString("Tranquility", comment: "")
 			cell.subtitleLabel?.text = NSLocalizedString("Updating...", comment: "")
 
-			guard let account = account, !isLoading else {return}
+			guard !isLoading else {return}
 			isLoading = true
-			NCDataManager(account: account).serverStatus().then(on: .main) { result in
+			NCDataManager().serverStatus().then(on: .main) { result in
 				self.result = result
 				self.error = nil
 				self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.timerTick(_:)), userInfo: nil, repeats: true)

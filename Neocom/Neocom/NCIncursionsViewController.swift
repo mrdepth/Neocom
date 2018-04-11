@@ -55,19 +55,9 @@ class NCIncursionsViewController: NCTreeViewController {
 				return row
 			}
 			
-			
-			if self.treeController?.content == nil {
-				let root = TreeNode()
-				root.children = rows
-				self.treeController?.content = root
-			}
-			else {
-				self.treeController?.content?.children = rows
-			}
 			guard !rows.isEmpty else {throw NCTreeViewControllerError.noResult}
 			return RootNode(rows)
 		}
-
 	}
 	
 	private func updateContacts() -> Future<Void> {

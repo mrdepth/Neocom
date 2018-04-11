@@ -195,7 +195,7 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 			if cell.imageView != nil {
 				options.insert(.image)
 			}
-			reload(options: options)
+			_ = reload(options: options)
 			isLoaded = true
 		}
 		
@@ -415,75 +415,85 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 		cell.characterImageView?.image = UIImage()
 		image?.then(on: .main) { result in
 			guard cell.object as? NCAccount == self.object else {return}
-			cell.characterImageView?.image = result
+			cell.characterImageView?.image = result.value
 		}
 	}
 	
 	private var observer: NCManagedObjectObserver?
 	private var isLoading: Bool = false
 	
-	private func reload(options: LoadingOptions, completionHandler: (()->Void)? = nil) {
+	private func reconfigure() {
+		guard let cell = self.treeController?.cell(for: self) else {return}
+		self.configure(cell: cell)
+	}
+	
+	private func reload(options: LoadingOptions) -> Future<Void> {
 		guard !isLoading else {
-			completionHandler?()
-			return
+			return .init(())
 		}
 		
 		isLoading = true
-		
 		if object.isInvalid {
 			image = dataManager.image(characterID: object.characterID, dimension: 64)
 			
 			image?.then(on: .main) { result in
-				self.treeController?.reloadCells(for: [self])
+				self.reconfigure()
 				self.isLoading = false
 			}
+			return .init(())
 		}
 		else {
 			
 			observer = NCManagedObjectObserver() { [weak self] (updated, deleted) in
 				guard let strongSelf = self else {return}
-				strongSelf.treeController?.reloadCells(for: [strongSelf])
+				strongSelf.reconfigure()
 			}
 			
 			let dataManager = self.dataManager
-			
+
 			let cell = treeController?.cell(for: self)
 			let progress = cell != nil ? NCProgressHandler(view: cell!, totalUnitCount: Int64(options.count)) : nil
-			let dispatchGroup = DispatchGroup()
+			
+			var queue = [Future<Void>]()
 			
 			if options.contains(.characterInfo) {
 				progress?.progress.becomeCurrent(withPendingUnitCount: 1)
 				character = dataManager.character()
 				progress?.progress.resignCurrent()
 				
-				character?.then(on: .main) { result in
-					guard let value = result.value else {throw NCDataManagerError.noCacheData}
-					self.observer?.add(managedObject: result.cacheRecord)
-					self.treeController?.reloadCells(for: [self])
-
-					if options.contains(.corporationInfo) {
-						progress?.progress.becomeCurrent(withPendingUnitCount: 1)
-						self.corporation = dataManager.corporation(corporationID: Int64(value.corporationID))
-						progress?.progress.resignCurrent()
+				queue.append(
+					character!.then(on: .main) { result -> Future<Void> in
+						guard let value = result.value else {throw NCDataManagerError.noCacheData}
+						self.observer?.add(managedObject: result.cacheRecord)
+						self.reconfigure()
 						
-						self.corporation?.then(on: .main) { result in
-							self.observer?.add(managedObject: result.cacheRecord)
-							self.treeController?.reloadCells(for: [self])
+						if options.contains(.corporationInfo) {
+							progress?.progress.becomeCurrent(withPendingUnitCount: 1)
+							self.corporation = dataManager.corporation(corporationID: Int64(value.corporationID))
+							progress?.progress.resignCurrent()
+							
+							return self.corporation!.then(on: .main) { result -> Void in
+								self.observer?.add(managedObject: result.cacheRecord)
+								self.reconfigure()
+							}
 						}
-					}
-				}
+						else {
+							return .init(())
+						}
+				})
 			}
-
 			
 			if options.contains(.skillQueue) {
 				progress?.progress.becomeCurrent(withPendingUnitCount: 1)
 				skillQueue = dataManager.skillQueue()
 				progress?.progress.resignCurrent()
 				
-				skillQueue?.then(on: .main) { result in
-					self.observer?.add(managedObject: result.cacheRecord)
-					self.treeController?.reloadCells(for: [self])
-				}
+				queue.append(
+					skillQueue!.then(on: .main) { result -> Void in
+						self.observer?.add(managedObject: result.cacheRecord)
+						self.reconfigure()
+				})
+				
 			}
 			
 			if options.contains(.skills) {
@@ -491,21 +501,24 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 				skills = dataManager.skills()
 				progress?.progress.resignCurrent()
 				
-				skills?.then(on: .main) { result in
-					self.observer?.add(managedObject: result.cacheRecord)
-					self.treeController?.reloadCells(for: [self])
-				}
+				queue.append(
+					skills!.then(on: .main) { result -> Void in
+						self.observer?.add(managedObject: result.cacheRecord)
+						self.reconfigure()
+				})
 			}
 			
 			if options.contains(.walletBalance) {
 				progress?.progress.becomeCurrent(withPendingUnitCount: 1)
 				walletBalance = dataManager.walletBalance()
 				progress?.progress.resignCurrent()
-				
-				walletBalance?.then(on: .main) { result in
-					self.observer?.add(managedObject: result.cacheRecord)
-					self.treeController?.reloadCells(for: [self])
-				}
+
+				queue.append(
+					walletBalance!.then(on: .main) { result -> Void in
+						self.observer?.add(managedObject: result.cacheRecord)
+						self.reconfigure()
+					}
+				)
 			}
 			
 			if options.contains(.characterLocation) {
@@ -513,10 +526,11 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 				location = dataManager.characterLocation()
 				progress?.progress.resignCurrent()
 				
-				location?.then(on: .main) { result in
-					self.observer?.add(managedObject: result.cacheRecord)
-					self.treeController?.reloadCells(for: [self])
-				}
+				queue.append(
+					location!.then(on: .main) { result -> Void in
+						self.observer?.add(managedObject: result.cacheRecord)
+						self.reconfigure()
+				})
 			}
 			
 			if options.contains(.characterShip) {
@@ -524,10 +538,11 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 				ship = dataManager.characterShip()
 				progress?.progress.resignCurrent()
 				
-				ship?.then(on: .main) { result in
-					self.observer?.add(managedObject: result.cacheRecord)
-					self.treeController?.reloadCells(for: [self])
-				}
+				queue.append(
+					ship!.then(on: .main) { result -> Void in
+						self.observer?.add(managedObject: result.cacheRecord)
+						self.reconfigure()
+				})
 			}
 			
 			
@@ -536,15 +551,17 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 				image = dataManager.image(characterID: object.characterID, dimension: 64)
 				progress?.progress.resignCurrent()
 				
-				image?.then(on: .main) { result in
-					self.treeController?.reloadCells(for: [self])
-				}
+				queue.append(
+					image!.then(on: .main) { result -> Void in
+						self.observer?.add(managedObject: result.cacheRecord)
+						self.reconfigure()
+				})
 			}
 			
-			dispatchGroup.notify(queue: .main) {
-				progress?.finish()
-				self.isLoading = false
-				completionHandler?()
+			return all(queue).then { _ -> Void in
+				}.finally(on: .main) {
+					progress?.finish()
+					self.isLoading = false
 			}
 		}
 	}

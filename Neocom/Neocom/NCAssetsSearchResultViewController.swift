@@ -24,7 +24,14 @@ class NCAssetsSearchResultViewController: NCTreeViewController, UISearchResultsU
 		                    Prototype.NCHeaderTableViewCell.image,
 		                    Prototype.NCDefaultTableViewCell.default])
     }
-    
+	
+	private let root = TreeNode()
+	
+	override func content() -> Future<TreeNode?> {
+		return .init(root)
+	}
+
+	
     //MARK: - UISearchResultsUpdating
     
     private let gate = NCGate()
@@ -107,12 +114,7 @@ class NCAssetsSearchResultViewController: NCTreeViewController, UISearchResultsU
                 sections.sort {$0.nodeIdentifier! < $1.nodeIdentifier!}
                 
                 DispatchQueue.main.async {
-                    if self.treeController?.content == nil {
-                        self.treeController?.content = RootNode(sections)
-                    }
-                    else {
-                        self.treeController?.content?.children = sections
-                    }
+					self.root.children = sections
                     self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
                 }
             }

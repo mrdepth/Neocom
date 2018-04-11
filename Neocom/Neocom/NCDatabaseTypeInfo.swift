@@ -462,8 +462,9 @@ struct NCDatabaseTypeInfo {
 	}
 	
 	static func itemInfo(type: NCDBInvType, attributeValues: [Int: Double]?) -> Future<[TreeNode]> {
-		
+		let account = NCAccount.current
 		return NCDatabase.sharedDatabase!.performBackgroundTask { managedObjectContext -> [TreeNode] in
+			
 			let character: NCCharacter = (try? NCCharacter.load(account: NCAccount.current).get()) ?? NCCharacter()
 
 			var sections = [TreeSection]()

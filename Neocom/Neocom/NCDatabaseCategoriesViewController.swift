@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 
 class NCDatabaseCategoryRow: NCFetchedResultsObjectNode<NCDBInvCategory> {
@@ -43,21 +44,18 @@ class NCDatabaseCategoriesViewController: NCTreeViewController, NCSearchableView
 		setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseTypesViewController"))
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if treeController?.content == nil {
-			let request = NSFetchRequest<NCDBInvCategory>(entityName: "InvCategory")
-			request.sortDescriptors = [NSSortDescriptor(key: "published", ascending: false), NSSortDescriptor(key: "categoryName", ascending: true)]
-			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: "published", cacheName: nil)
-			
-			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: NCDatabasePublishingSectionNode<NCDBInvCategory>.self, objectNode: NCDatabaseCategoryRow.self)
-		}
-	}
-	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
 			treeController?.content = nil
 		}
+	}
+	
+	override func content() -> Future<TreeNode?> {
+		let request = NSFetchRequest<NCDBInvCategory>(entityName: "InvCategory")
+		request.sortDescriptors = [NSSortDescriptor(key: "published", ascending: false), NSSortDescriptor(key: "categoryName", ascending: true)]
+		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: "published", cacheName: nil)
+		
+		return .init(FetchedResultsNode(resultsController: results, sectionNode: NCDatabasePublishingSectionNode<NCDBInvCategory>.self, objectNode: NCDatabaseCategoryRow.self))
 	}
 	
 	//MARK: - TreeControllerDelegate

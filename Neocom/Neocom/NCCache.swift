@@ -115,52 +115,8 @@ class NCCache: NSObject {
 		return v!
 	}
 	
-	/*func store<T>(_ object: T?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?, completionHandler: ((NCCacheRecord?) -> Void)?) {
-		performBackgroundTask { (managedObjectContext) in
-			var record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
-			if record == nil {
-				
-				let r = NCCacheRecord(entity: NSEntityDescription.entity(forEntityName: "Record", in: managedObjectContext)!, insertInto: managedObjectContext)
-				r.account = account
-				r.key = key
-				r.data = NCCacheRecordData(entity: NSEntityDescription.entity(forEntityName: "RecordData", in: managedObjectContext)!, insertInto: managedObjectContext)
-				record = r
-			}
-			if object != nil || record!.data!.data == nil {
-				record!.set(object)
-				record!.date = date ?? Date()
-				record!.expireDate = expireDate ?? record!.expireDate ?? record!.date!.addingTimeInterval(3) as Date?
-			}
-			if managedObjectContext.hasChanges {
-				try? managedObjectContext.save()
-			}
-			if let completionHandler = completionHandler {
-				DispatchQueue.main.async {
-					completionHandler((try? self.viewContext.existingObject(with: record!.objectID)) as? NCCacheRecord)
-				}
-			}
-		}
-	}*/
-	
 	func store<T: Encodable>(_ object: T?, forKey key: String, account: String?, date: Date?, expireDate: Date?, error: Error?) -> Future<NSManagedObjectID> {
 		return performBackgroundTask { (managedObjectContext) in
-			/*let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last ??
-			{
-				let record = NCCacheRecord(entity: NSEntityDescription.entity(forEntityName: "Record", in: managedObjectContext)!, insertInto: managedObjectContext)
-				record.account = account
-				record.key = key
-				record.data = NCCacheRecordData(entity: NSEntityDescription.entity(forEntityName: "RecordData", in: managedObjectContext)!, insertInto: managedObjectContext)
-				return record
-			}()
-
-			if object != nil || record.data!.data == nil {
-				record.set(object)
-				record.date = date ?? Date()
-				record.expireDate = expireDate ?? record.expireDate ?? record.date!.addingTimeInterval(3) as Date?
-			}
-			if managedObjectContext.hasChanges {
-				try? managedObjectContext.save()
-			}*/
 			return try self.store(object, forKey: key, account: account, date: date, expireDate: expireDate, error: error, into: managedObjectContext)
 		}
 	}
@@ -280,6 +236,8 @@ extension NCCacheRecord {
 		case is Int.Type:
 			guard let s = String(data: data, encoding: .utf8) else {return nil}
 			return Int(s) as? T
+		case is Data.Type:
+			return data as? T
 		default:
 			return try? JSONDecoder().decode(T.self, from: data)
 		}
@@ -294,6 +252,8 @@ extension NCCacheRecord {
 				self.data?.data = "\(v)".data(using: .utf8)
 			case let v as Int:
 				self.data?.data = "\(v)".data(using: .utf8)
+			case let v as Data:
+				self.data?.data = v
 			default:
 				self.data?.data = try? JSONEncoder().encode(value)
 			}
@@ -352,7 +312,12 @@ extension NCCacheRecord {
 
 class CachedValue<T> {
 	let objectID: NSManagedObjectID
-	private(set) lazy var cacheRecord: NCCacheRecord = NCCache.sharedCache!.viewContext.object(with: objectID) as! NCCacheRecord
+//	private(set) lazy var cacheRecord: NCCacheRecord = NCCache.sharedCache!.viewContext.object(with: objectID) as! NCCacheRecord
+	var cacheRecord: NCCacheRecord {
+		return NCCache.sharedCache!.performTaskAndWait { context in
+			return context.object(with: self.objectID) as! NCCacheRecord
+		}
+	}
 	
 	init(_ objectID: NSManagedObjectID) {
 		assert(objectID.entity.name == "Record")

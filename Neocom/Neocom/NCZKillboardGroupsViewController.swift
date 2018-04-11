@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCZKillboardGroupRow: NCDatabaseGroupRow {
 	
@@ -44,23 +45,19 @@ class NCZKillboardGroupsViewController: NCTreeViewController, NCSearchableViewCo
 		title = category?.categoryName
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if treeController?.content == nil {
-			let request = NSFetchRequest<NCDBInvGroup>(entityName: "InvGroup")
-			request.sortDescriptors = [NSSortDescriptor(key: "published", ascending: false), NSSortDescriptor(key: "groupName", ascending: true)]
-			request.predicate = NSPredicate(format: "category == %@ AND published == TRUE AND types.@count > 0", category!)
-			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-			
-			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCZKillboardGroupRow.self)
-			
-		}
-	}
-	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
 			treeController?.content = nil
 		}
+	}
+	
+	override func content() -> Future<TreeNode?> {
+		let request = NSFetchRequest<NCDBInvGroup>(entityName: "InvGroup")
+		request.sortDescriptors = [NSSortDescriptor(key: "published", ascending: false), NSSortDescriptor(key: "groupName", ascending: true)]
+		request.predicate = NSPredicate(format: "category == %@ AND published == TRUE AND types.@count > 0", category!)
+		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+		
+		return .init(FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCZKillboardGroupRow.self))
 	}
 	
 	//MARK: - TreeControllerDelegate

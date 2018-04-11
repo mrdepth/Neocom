@@ -92,7 +92,7 @@ class NCDatabaseCertificatesViewController: NCTreeViewController {
 	}
 	
 	override func content() -> Future<TreeNode?> {
-		guard let group = group, treeController?.content == nil else {return .init(nil)}
+		guard let group = group else {return .init(nil)}
 		
 		let request = NSFetchRequest<NCDBCertCertificate>(entityName: "CertCertificate")
 		request.predicate = NSPredicate(format: "group == %@", group)

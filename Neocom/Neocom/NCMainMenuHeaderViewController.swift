@@ -47,7 +47,7 @@ class NCMainMenuHeaderViewController: UIViewController {
 						self.characterNameLabel?.text = error.localizedDescription
 					}.get()
 				
-				progressHandler.progress.perform { dataManager.image(characterID: Int64(character.corporationID), dimension: 32) }
+				progressHandler.progress.perform { dataManager.image(corporationID: Int64(character.corporationID), dimension: 32) }
 					.then(on: .main) { result in
 						self.corporationImageView?.image = result.value
 				}

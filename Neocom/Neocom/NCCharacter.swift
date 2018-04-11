@@ -33,10 +33,11 @@ class NCCharacter {
 	
 	class func load(account: NCAccount?, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) -> Future<NCCharacter> {
 		if let account = account {
-			let dataManager = NCDataManager(account: account)
 			let progress = Progress(totalUnitCount: 4)
-			
-			return OperationQueue(qos: .utility).async { () -> NCCharacter in
+
+			return NCStorage.sharedStorage!.performBackgroundTask { context -> NCCharacter in
+				let account = try context.existingObject(with: account.objectID) as! NCAccount
+				let dataManager = NCDataManager(account: account)
 				let skills = try progress.perform {dataManager.skills()}.get()
 				let skillQueue = try progress.perform {dataManager.skillQueue()}.get()
 				let attributes = try progress.perform {dataManager.attributes()}.get()
@@ -59,11 +60,11 @@ class NCCharacter {
 						let implantsValue = implants.value else {
 							return
 					}
-
+					
 					DispatchQueue.global(qos: .utility).async {
 						character.load(attributes: NCCharacterAttributes(attributes: attributesValue, implants: implantsValue), skills: skillsValue, skillQueue: skillQueueValue)
-					}.then(on: .main) {
-						NotificationCenter.default.post(name: .NCCharacterChanged, object: character)
+						}.then(on: .main) {
+							NotificationCenter.default.post(name: .NCCharacterChanged, object: character)
 					}
 				}
 				return character

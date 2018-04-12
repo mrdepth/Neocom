@@ -10,14 +10,10 @@ import UIKit
 
 class NCTableViewCell: UITableViewCell {
 	var object: Any?
-	private(set) lazy var binder: NCBinder = {
-		return NCBinder(target: self)
-	}()
 	
 	var accessoryButtonHandler: NCActionHandler<UIButton>?
 	
 	override func prepareForReuse() {
-		binder.unbindAll()
 		super.prepareForReuse()
 		accessoryButtonHandler = nil
 	}

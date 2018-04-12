@@ -73,7 +73,7 @@ class NCContactRow: TreeRow {
 	}
 	
 	override var hashValue: Int {
-		return contact?.hashValue ?? super.hashValue
+		return contactID?.hashValue ?? super.hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {

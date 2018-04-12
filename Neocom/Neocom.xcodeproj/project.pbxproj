@@ -243,7 +243,6 @@
 		12AC8DB41DEF642600561A7A /* NCFetchedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DB31DEF642600561A7A /* NCFetchedCollection.swift */; };
 		12AC8DB61DEF6A3200561A7A /* NCDBImageValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DB51DEF6A3200561A7A /* NCDBImageValueTransformer.swift */; };
 		12AC8DBD1DF01BF100561A7A /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DBC1DF01BF100561A7A /* Test.m */; };
-		12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DC31DF088A000561A7A /* NCValueTransformer.swift */; };
 		12AC8DC61DF0894400561A7A /* NCDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DC51DF0894400561A7A /* NCDataManager.swift */; };
 		12AC8DCA1DF08AE800561A7A /* NCStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DC81DF08AE800561A7A /* NCStorage.xcdatamodeld */; };
 		12AC8DCE1DF08D9B00561A7A /* NCCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DCC1DF08D9B00561A7A /* NCCache.xcdatamodeld */; };
@@ -260,7 +259,6 @@
 		12BFC45D1E3F7CD2000ED8D6 /* TreeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BFC45C1E3F7CD2000ED8D6 /* TreeRow.swift */; };
 		12BFC46E1E409AC2000ED8D6 /* NCThinLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BFC46D1E409AC2000ED8D6 /* NCThinLineView.swift */; };
 		12BFE4212017BF6F0083AC2F /* ASReceipt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BFE4222017BF6F0083AC2F /* ASReceipt.framework */; };
-		12BFE4242017C10B0083AC2F /* NCBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DC11DF0833B00561A7A /* NCBinder.swift */; };
 		12BFE4412017C8E80083AC2F /* MPUnmutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 12BFE4292017C8E80083AC2F /* MPUnmutedBtn.png */; };
 		12BFE4422017C8E80083AC2F /* MRAID.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 12BFE42A2017C8E80083AC2F /* MRAID.bundle */; };
 		12BFE4432017C8E80083AC2F /* MPDAAIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 12BFE42B2017C8E80083AC2F /* MPDAAIcon.png */; };
@@ -541,7 +539,6 @@
 		122DB9AE1E806DB000E8E2C4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		122FFDF41E4B7D630066D45E /* NCFittingStatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingStatsViewController.swift; sourceTree = "<group>"; };
 		1230A3111DFFE2CF00627D92 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
-		1230A3121DFFE2CF00627D92 /* NCAccountsViewController1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountsViewController1.swift; sourceTree = "<group>"; };
 		1230A3131DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDatabaseCategoriesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1230A3141DFFE2CF00627D92 /* NCDatabaseGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDatabaseGroupsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1230A3151DFFE2CF00627D92 /* NCDatabaseTypeInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseTypeInfo.swift; sourceTree = "<group>"; };
@@ -726,8 +723,6 @@
 		12AC8DBA1DF01BF000561A7A /* Neocom-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Neocom-Bridging-Header.h"; sourceTree = "<group>"; };
 		12AC8DBB1DF01BF100561A7A /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Test.h; sourceTree = "<group>"; };
 		12AC8DBC1DF01BF100561A7A /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
-		12AC8DC11DF0833B00561A7A /* NCBinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCBinder.swift; sourceTree = "<group>"; };
-		12AC8DC31DF088A000561A7A /* NCValueTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCValueTransformer.swift; sourceTree = "<group>"; };
 		12AC8DC51DF0894400561A7A /* NCDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDataManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12AC8DC91DF08AE800561A7A /* NCStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCStorage.xcdatamodel; sourceTree = "<group>"; };
 		12AC8DCD1DF08D9B00561A7A /* NCCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCCache.xcdatamodel; sourceTree = "<group>"; };
@@ -1064,7 +1059,6 @@
 		1256BE511DF471EC00A2A24B /* MainMenu */ = {
 			isa = PBXGroup;
 			children = (
-				1230A3121DFFE2CF00627D92 /* NCAccountsViewController1.swift */,
 				1256BE521DF4725B00A2A24B /* NCMainMenuViewController.swift */,
 				12A3C4CD1F6BC115007FD291 /* NCMainMenuContainerViewController.swift */,
 				1256BE5B1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift */,
@@ -1475,8 +1469,6 @@
 		12AC8DB71DEF6C5E00561A7A /* NCTreeController */ = {
 			isa = PBXGroup;
 			children = (
-				12AC8DC11DF0833B00561A7A /* NCBinder.swift */,
-				12AC8DC31DF088A000561A7A /* NCValueTransformer.swift */,
 				12BFC45C1E3F7CD2000ED8D6 /* TreeRow.swift */,
 				12D930F01E657EA400CBAE1C /* Prototype.swift */,
 				127332E01E71D01D00DE46C9 /* TreeController.swift */,
@@ -2164,7 +2156,6 @@
 				126157061E0095380041B817 /* NCProgressHandler.swift in Sources */,
 				12CD2CAC1F581B6600367606 /* NCNotificationManager.swift in Sources */,
 				128C5F9E1F4AD7C60038FE7D /* NCImplantSetData.swift in Sources */,
-				12AC8DC41DF088A000561A7A /* NCValueTransformer.swift in Sources */,
 				1279A2F520233CBA00DD7A46 /* NCBugreportViewController.swift in Sources */,
 				12D20EB41EBCBD3C00BEC926 /* EVEAPI+NC.swift in Sources */,
 				1279A8481EB90690002D4A66 /* NCJumpClonesViewController.swift in Sources */,
@@ -2261,7 +2252,6 @@
 				1256BE5C1DF4762200A2A24B /* NCMainMenuHeaderViewController.swift in Sources */,
 				12AC8DB61DEF6A3200561A7A /* NCDBImageValueTransformer.swift in Sources */,
 				128CA3E11FED1059006E0989 /* NCExtractorDetailsTableViewCell.swift in Sources */,
-				12BFE4242017C10B0083AC2F /* NCBinder.swift in Sources */,
 				1230A3341DFFE2CF00627D92 /* NSExpressionDescription+NC.swift in Sources */,
 				1203E8881F093A48009ADF8D /* NCFeedsViewController.swift in Sources */,
 				12D39D141EF969210077BD17 /* NCContractTableViewCell.swift in Sources */,

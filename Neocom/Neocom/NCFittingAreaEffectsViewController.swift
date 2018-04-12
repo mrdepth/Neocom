@@ -44,40 +44,39 @@ class NCFittingAreaEffectsViewController: NCTreeViewController {
 	}
 	
 	override func content() -> Future<TreeNode?> {
-		return NCDatabase.sharedDatabase!.performBackgroundTask { managedObjectContext -> TreeNode? in
-			guard let types: [NCDBInvType] = managedObjectContext.fetch("InvType", sortedBy: [NSSortDescriptor(key: "typeName", ascending: true)], where: "group.groupID == 920") else {return nil}
-			
-			let prefixes = ["Black Hole Effect Beacon Class",
-			                "Cataclysmic Variable Effect Beacon Class",
-			                "Magnetar Effect Beacon Class",
-			                "Pulsar Effect Beacon Class",
-			                "Red Giant Beacon Class",
-			                "Wolf Rayet Effect Beacon Class",
-			                "Incursion",
-			                "Drifter Incursion",
-			                ]
-			let n = prefixes.count
-			
-			var arrays = [[NSManagedObjectID]](repeating: [], count: n + 1)
-			
-			types: for type in types {
-				for (i, prefix) in prefixes.enumerated() {
-					if type.typeName?.hasPrefix(prefix) == true {
-						arrays[i].append(type.objectID)
-						continue types
-					}
+		guard let managedObjectContext = NCDatabase.sharedDatabase?.viewContext else {return .init(nil)}
+		guard let types: [NCDBInvType] = managedObjectContext.fetch("InvType", sortedBy: [NSSortDescriptor(key: "typeName", ascending: true)], where: "group.groupID == 920") else {return .init(nil)}
+		
+		let prefixes = ["Black Hole Effect Beacon Class",
+						"Cataclysmic Variable Effect Beacon Class",
+						"Magnetar Effect Beacon Class",
+						"Pulsar Effect Beacon Class",
+						"Red Giant Beacon Class",
+						"Wolf Rayet Effect Beacon Class",
+						"Incursion",
+						"Drifter Incursion",
+						]
+		let n = prefixes.count
+		
+		var arrays = [[NSManagedObjectID]](repeating: [], count: n + 1)
+		
+		types: for type in types {
+			for (i, prefix) in prefixes.enumerated() {
+				if type.typeName?.hasPrefix(prefix) == true {
+					arrays[i].append(type.objectID)
+					continue types
 				}
-				arrays[n].append(type.objectID)
 			}
-			
-			let sections = arrays.enumerated().map { (i, array) -> DefaultTreeSection in
-				let prefix = i < n ? prefixes[i] : NSLocalizedString("Other", comment: "")
-				let rows = array.map({NCTypeInfoRow(objectID: $0, managedObjectContext: managedObjectContext, accessoryType: .detailButton)})
-				
-				return DefaultTreeSection(nodeIdentifier: prefix, title: prefix.uppercased(), children: rows)
-			}
-			return RootNode(sections)
+			arrays[n].append(type.objectID)
 		}
+		
+		let sections = arrays.enumerated().map { (i, array) -> DefaultTreeSection in
+			let prefix = i < n ? prefixes[i] : NSLocalizedString("Other", comment: "")
+			let rows = array.map({NCTypeInfoRow(objectID: $0, managedObjectContext: managedObjectContext, accessoryType: .detailButton)})
+			
+			return DefaultTreeSection(nodeIdentifier: prefix, title: prefix.uppercased(), children: rows)
+		}
+		return .init(RootNode(sections))
 	}
 	
 	@IBAction func onClear(_ sender: Any) {

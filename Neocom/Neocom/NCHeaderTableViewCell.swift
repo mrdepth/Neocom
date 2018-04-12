@@ -14,9 +14,6 @@ class NCHeaderTableViewCell: UITableViewCell, Expandable {
 	@IBOutlet weak var iconView: UIImageView?
 	@IBOutlet weak var expandIconView: UIImageView?
 	var object: Any?
-	private(set) lazy var binder: NCBinder = {
-		return NCBinder(target: self)
-	}()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,11 +21,6 @@ class NCHeaderTableViewCell: UITableViewCell, Expandable {
 		indentationWidth = 16
 		selectionStyle = .none
     }
-
-	override func prepareForReuse() {
-		binder.unbindAll()
-		super.prepareForReuse()
-	}
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

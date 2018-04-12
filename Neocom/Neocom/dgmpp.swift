@@ -60,7 +60,8 @@ extension DGMType: Comparable {
 
 extension DGMFacility {
 	var typeName: String? {
-		return NCDatabase.sharedDatabase?.invTypes[typeID]?.typeName
+		return NCDatabase.sharedDatabase?.performTaskAndWait{ return NCDBInvType.invTypes(managedObjectContext: $0)[self.typeID]?.typeName}
+//		return NCDatabase.sharedDatabase?.invTypes[typeID]?.typeName
 	}
 }
 

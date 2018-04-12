@@ -28,9 +28,130 @@ class NCWealthViewController: NCTreeViewController {
 	}
 	
 	override func content() -> Future<TreeNode?> {
-		guard let characterID = NCAccount.current?.characterID else { return .init(nil) }
+//		guard let characterID = NCAccount.current?.characterID else { return .init(nil) }
 		
-		let content = treeController?.content ?? RootNode([pieChartRow!, detailsSection!])
+		let content = RootNode([pieChartRow!, detailsSection!])
+		reload()
+		return .init(content)
+	}
+	
+	
+	//MARK: - NCRefreshable
+	
+	private var clones: CachedValue<ESI.Clones.JumpClones>?
+	private var implants: CachedValue<[Int]>?
+	private var walletBalance: CachedValue<Double>?
+	private var assets: [CachedValue<[ESI.Assets.Asset]>]?
+	private var blueprints: CachedValue<[ESI.Character.Blueprint]>?
+	private var marketOrders: CachedValue<[ESI.Market.CharacterOrder]>?
+	private var industryJobs: CachedValue<[ESI.Industry.Job]>?
+	private var contracts: CachedValue<[ESI.Contracts.Contract]>?
+	private var prices: [Int: Double]?
+	
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
+		let progress = Progress(totalUnitCount: 7)
+		let promise = Promise<[NCCacheRecord]>()
+		
+		OperationQueue(qos: .utility).async {
+			
+			let clones = progress.perform {self.dataManager.clones()}
+			let implants = progress.perform {self.dataManager.implants()}
+			let walletBalance = progress.perform {self.dataManager.walletBalance()}
+			let blueprints = progress.perform {self.dataManager.blueprints()}
+			let marketOrders = progress.perform {self.dataManager.marketOrders()}
+			let industryJobs = progress.perform {self.dataManager.industryJobs()}
+			let contracts = progress.perform {self.dataManager.contracts()}
+
+			var assets = [CachedValue<[ESI.Assets.Asset]>]()
+			
+			clones.then(on: .main) { result in
+				self.clones = result
+				self.update()
+			}
+			implants.then(on: .main) { result in
+				self.implants = result
+				self.update()
+			}
+			walletBalance.then(on: .main) { result in
+				self.walletBalance = result
+				self.update()
+			}
+			blueprints.then(on: .main) { result in
+				self.blueprints = result
+				self.update()
+			}
+			marketOrders.then(on: .main) { result in
+				self.marketOrders = result
+				self.update()
+			}
+			industryJobs.then(on: .main) { result in
+				self.industryJobs = result
+				self.update()
+			}
+			contracts.then(on: .main) { result in
+				self.contracts = result
+				self.update()
+			}
+
+			for i in 1...10 {
+				guard let page = try? progress.perform(block: {self.dataManager.assets(page: i)}).get() else {break}
+				guard page.value?.isEmpty == false else {break}
+				assets.append(page)
+			}
+			progress.completedUnitCount += 1
+			DispatchQueue.main.async {
+				self.assets = assets
+				self.update()
+			}
+			
+			clones.wait()
+			implants.wait()
+			walletBalance.wait()
+			blueprints.wait()
+			marketOrders.wait()
+			industryJobs.wait()
+			contracts.wait()
+		}.finally(on: .main) {
+			var records = [self.clones?.cacheRecord,
+						   self.implants?.cacheRecord,
+						   self.walletBalance?.cacheRecord,
+						   self.blueprints?.cacheRecord,
+						   self.marketOrders?.cacheRecord,
+						   self.industryJobs?.cacheRecord,
+						   self.contracts?.cacheRecord].compactMap {$0}
+			records.append(contentsOf: self.assets?.map {$0.cacheRecord} ?? [])
+			try! promise.fulfill(records)
+		}
+		
+		return promise.future
+	}
+	
+	private lazy var gate = NCGate()
+	
+	private var walletsSegment: PieSegment?
+	private var implantsSegment: PieSegment?
+	private var assetsSegment: PieSegment?
+	private var blueprintsSegment: PieSegment?
+	private var marketOrdersSegment: PieSegment?
+	private var industryJobsSegment: PieSegment?
+	private var contractsSegment: PieSegment?
+	
+	private func update() {
+		NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(internalUpdate), object: nil)
+		perform(#selector(internalUpdate), with: nil, afterDelay: 0.15)
+	}
+	
+	@objc private func internalUpdate() {
+		if treeController?.content == nil {
+			updateContent()
+		}
+		else {
+			reload()
+		}
+	}
+
+	private func reload() {
+		guard let characterID = NCAccount.current?.characterID else { return }
 		
 		let clones = self.clones?.value
 		let activeImplants = self.implants?.value
@@ -41,9 +162,7 @@ class NCWealthViewController: NCTreeViewController {
 		let industryJobs = self.industryJobs?.value
 		let contracts = self.contracts?.value
 		
-		let progress = Progress(totalUnitCount: 2)
-		
-		return NCDatabase.sharedDatabase!.performBackgroundTask { context -> TreeNode? in
+		NCDatabase.sharedDatabase!.performBackgroundTask { context in
 			let invTypes = NCDBInvType.invTypes(managedObjectContext: context)
 			
 			var implantsIDs = [Int: Int64]()
@@ -179,7 +298,7 @@ class NCWealthViewController: NCTreeViewController {
 			DispatchQueue.main.async { [weak self] in
 				guard let strongSelf = self else {return}
 				var rows: [DefaultTreeRow] = []
-
+				
 				if balance > 0 {
 					if (strongSelf.walletsSegment?.value = balance) == nil {
 						strongSelf.walletsSegment = PieSegment(value: balance, color: .green, title: NSLocalizedString("Account", comment: ""))
@@ -269,119 +388,7 @@ class NCWealthViewController: NCTreeViewController {
 				}
 				strongSelf.detailsSection?.children = rows
 			}
-			return content
 		}
-
 	}
-	
-	//MARK: - NCRefreshable
-	
-	private var clones: CachedValue<ESI.Clones.JumpClones>?
-	private var implants: CachedValue<[Int]>?
-	private var walletBalance: CachedValue<Double>?
-	private var assets: [CachedValue<[ESI.Assets.Asset]>]?
-	private var blueprints: CachedValue<[ESI.Character.Blueprint]>?
-	private var marketOrders: CachedValue<[ESI.Market.CharacterOrder]>?
-	private var industryJobs: CachedValue<[ESI.Industry.Job]>?
-	private var contracts: CachedValue<[ESI.Contracts.Contract]>?
-	private var prices: [Int: Double]?
-	
-	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
-		let progress = Progress(totalUnitCount: 7)
-		let promise = Promise<[NCCacheRecord]>()
-		
-		OperationQueue(qos: .utility).async {
-			
-			let clones = progress.perform {self.dataManager.clones()}
-			let implants = progress.perform {self.dataManager.implants()}
-			let walletBalance = progress.perform {self.dataManager.walletBalance()}
-			let blueprints = progress.perform {self.dataManager.blueprints()}
-			let marketOrders = progress.perform {self.dataManager.marketOrders()}
-			let industryJobs = progress.perform {self.dataManager.industryJobs()}
-			let contracts = progress.perform {self.dataManager.contracts()}
-
-			var assets = [CachedValue<[ESI.Assets.Asset]>]()
-			
-			clones.then(on: .main) { result in
-				self.clones = result
-				self.update()
-			}
-			implants.then(on: .main) { result in
-				self.implants = result
-				self.update()
-			}
-			walletBalance.then(on: .main) { result in
-				self.walletBalance = result
-				self.update()
-			}
-			blueprints.then(on: .main) { result in
-				self.blueprints = result
-				self.update()
-			}
-			marketOrders.then(on: .main) { result in
-				self.marketOrders = result
-				self.update()
-			}
-			industryJobs.then(on: .main) { result in
-				self.industryJobs = result
-				self.update()
-			}
-			contracts.then(on: .main) { result in
-				self.contracts = result
-				self.update()
-			}
-
-			for i in 1...10 {
-				guard let page = try? progress.perform(block: {self.dataManager.assets(page: i)}).get() else {break}
-				guard page.value?.isEmpty == false else {break}
-				assets.append(page)
-			}
-			progress.completedUnitCount += 1
-			DispatchQueue.main.async {
-				self.assets = assets
-				self.update()
-			}
-			
-			clones.wait()
-			implants.wait()
-			walletBalance.wait()
-			blueprints.wait()
-			marketOrders.wait()
-			industryJobs.wait()
-			contracts.wait()
-		}.finally(on: .main) {
-			var records = [self.clones?.cacheRecord,
-						   self.implants?.cacheRecord,
-						   self.walletBalance?.cacheRecord,
-						   self.blueprints?.cacheRecord,
-						   self.marketOrders?.cacheRecord,
-						   self.industryJobs?.cacheRecord,
-						   self.contracts?.cacheRecord].compactMap {$0}
-			records.append(contentsOf: self.assets?.map {$0.cacheRecord} ?? [])
-			try! promise.fulfill(records)
-		}
-		
-		return promise.future
-	}
-	
-	private lazy var gate = NCGate()
-	
-	private var walletsSegment: PieSegment?
-	private var implantsSegment: PieSegment?
-	private var assetsSegment: PieSegment?
-	private var blueprintsSegment: PieSegment?
-	private var marketOrdersSegment: PieSegment?
-	private var industryJobsSegment: PieSegment?
-	private var contractsSegment: PieSegment?
-	
-	private func update() {
-		NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(internalUpdate), object: nil)
-		perform(#selector(internalUpdate), with: nil, afterDelay: 0)
-	}
-	
-	@objc private func internalUpdate() {
-		updateContent()
-	}
-
 	
 }

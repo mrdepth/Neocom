@@ -23,8 +23,9 @@ class NCDatabaseCertificateInfoHeaderViewController: UIViewController {
 		imageView.image = NCDBEveIcon.icon(file: NCDBEveIcon.File.certificateUnclaimed.rawValue)?.image?.image
 		
 		guard let certificate = certificate else {return}
-		
-		OperationQueue(qos: .utility).async {
+
+		NCDatabase.sharedDatabase!.performBackgroundTask { context in
+			guard let certificate = (try? context.existingObject(with: certificate.objectID)) as? NCDBCertCertificate else {return}
 			let character = (try? NCCharacter.load(account: NCAccount.current).get()) ?? NCCharacter()
 			let trainingQueue = NCTrainingQueue(character: character)
 			var level: NCDBCertMasteryLevel?

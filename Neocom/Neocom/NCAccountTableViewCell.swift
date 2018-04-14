@@ -423,8 +423,8 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 	private var isLoading: Bool = false
 	
 	private func reconfigure() {
-		guard let cell = self.treeController?.cell(for: self) else {return}
-		self.configure(cell: cell)
+//		guard let cell = self.treeController?.cell(for: self) else {return}
+//		self.configure(cell: cell)
 	}
 	
 	private func reload(options: LoadingOptions) -> Future<Void> {
@@ -562,6 +562,8 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 				}.finally(on: .main) {
 					progress?.finish()
 					self.isLoading = false
+					guard let cell = self.treeController?.cell(for: self) else {return}
+					self.configure(cell: cell)
 			}
 		}
 	}

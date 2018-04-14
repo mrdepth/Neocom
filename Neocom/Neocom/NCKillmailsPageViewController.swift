@@ -120,16 +120,16 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 
 	
 	func content() -> Future<TreeNode?> {
-		kills = TreeNode()
-		losses = TreeNode()
+//		kills = TreeNode()
+//		losses = TreeNode()
 		return .init(nil)
 	}
 	
 	func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		lastID = nil
 		isEndReached = false
-		kills = nil
-		losses = nil
+		kills = TreeNode()
+		losses = TreeNode()
 		self.dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
 		return fetch(from: nil).then(on: .main) { result in
 			return [result.cacheRecord]
@@ -170,18 +170,15 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 	private var isEndReached = false
 	private var lastID: Int64?
 	
-	private var kills: TreeNode?
-	private var losses: TreeNode?
+	private var kills = TreeNode()
+	private var losses = TreeNode()
 	private var result: CachedValue<[ESI.Killmails.Recent]>?
 	private var error: Error?
 	
 	private func update(result: CachedValue<[ESI.Killmails.Recent]>?) -> Future<Void> {
 		let promise = Promise<Void>()
-		guard let kills = kills, let losses = losses else {
-			isFetching = false
-			try! promise.fulfill(())
-			return promise.future
-		}
+		let kills = self.kills
+		let losses = self.losses
 		
 		let totalProgress = Progress(totalUnitCount: 1)
 		let dataManager = self.dataManager

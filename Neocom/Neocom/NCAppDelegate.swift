@@ -35,7 +35,7 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		
 		setupAppearance()
 		
-		FirebaseApp.configure()
+
 		FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
 		
 		#if DEBUG

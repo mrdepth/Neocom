@@ -52,7 +52,7 @@ class NCWealthViewController: NCTreeViewController {
 		let progress = Progress(totalUnitCount: 7)
 		let promise = Promise<[NCCacheRecord]>()
 		
-		OperationQueue(qos: .utility).async {
+		DispatchQueue.global(qos: .utility).async {
 			
 			let clones = progress.perform {self.dataManager.clones()}
 			let implants = progress.perform {self.dataManager.implants()}
@@ -93,7 +93,7 @@ class NCWealthViewController: NCTreeViewController {
 				self.update()
 			}
 
-			for i in 1...10 {
+			for i in 1...20 {
 				guard let page = try? progress.perform(block: {self.dataManager.assets(page: i)}).get() else {break}
 				guard page.value?.isEmpty == false else {break}
 				assets.append(page)
@@ -112,14 +112,14 @@ class NCWealthViewController: NCTreeViewController {
 			industryJobs.wait()
 			contracts.wait()
 		}.finally(on: .main) {
-			var records = [self.clones?.cacheRecord,
-						   self.implants?.cacheRecord,
-						   self.walletBalance?.cacheRecord,
-						   self.blueprints?.cacheRecord,
-						   self.marketOrders?.cacheRecord,
-						   self.industryJobs?.cacheRecord,
-						   self.contracts?.cacheRecord].compactMap {$0}
-			records.append(contentsOf: self.assets?.map {$0.cacheRecord} ?? [])
+			var records = [self.clones?.cacheRecord(in: NCCache.sharedCache!.viewContext),
+						   self.implants?.cacheRecord(in: NCCache.sharedCache!.viewContext),
+						   self.walletBalance?.cacheRecord(in: NCCache.sharedCache!.viewContext),
+						   self.blueprints?.cacheRecord(in: NCCache.sharedCache!.viewContext),
+						   self.marketOrders?.cacheRecord(in: NCCache.sharedCache!.viewContext),
+						   self.industryJobs?.cacheRecord(in: NCCache.sharedCache!.viewContext),
+						   self.contracts?.cacheRecord(in: NCCache.sharedCache!.viewContext)].compactMap {$0}
+			records.append(contentsOf: self.assets?.map {$0.cacheRecord(in: NCCache.sharedCache!.viewContext)} ?? [])
 			try! promise.fulfill(records)
 		}
 		

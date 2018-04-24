@@ -313,11 +313,16 @@ extension NCCacheRecord {
 class CachedValue<T> {
 	let objectID: NSManagedObjectID
 //	private(set) lazy var cacheRecord: NCCacheRecord = NCCache.sharedCache!.viewContext.object(with: objectID) as! NCCacheRecord
-	var cacheRecord: NCCacheRecord {
-		return NCCache.sharedCache!.performTaskAndWait { context in
-			return context.object(with: self.objectID) as! NCCacheRecord
-		}
+	
+	func cacheRecord(in context: NSManagedObjectContext) -> NCCacheRecord {
+		return context.object(with: self.objectID) as! NCCacheRecord
 	}
+	
+//	var cacheRecord: NCCacheRecord {
+//		return NCCache.sharedCache!.performTaskAndWait { context in
+//			return context.object(with: self.objectID) as! NCCacheRecord
+//		}
+//	}
 	
 	init(_ objectID: NSManagedObjectID) {
 		assert(objectID.entity.name == "Record")

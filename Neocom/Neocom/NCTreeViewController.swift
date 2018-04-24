@@ -10,9 +10,20 @@ import UIKit
 import CloudData
 import EVEAPI
 
-enum NCTreeViewControllerError: Error {
+enum NCTreeViewControllerError: LocalizedError {
 	case noResult
+	
+	var errorDescription: String? {
+		switch self {
+		case .noResult:
+			return NSLocalizedString("No Results", comment: "")
+		}
+	}
+
 }
+
+//extension NCTreeViewControllerError {
+//}
 
 protocol NCSearchableViewController: UISearchResultsUpdating {
 	var searchController: UISearchController? {get set}

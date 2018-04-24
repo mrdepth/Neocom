@@ -422,7 +422,7 @@ struct NCDatabaseTypeInfo {
 			let dataManager = NCDataManager(account: NCAccount.current)
 			
 			dataManager.marketHistory(typeID: typeID, regionID: regionID).then(on: .main) { result in
-				let row = NCDatabaseTypeMarketRow(history: result.cacheRecord, typeID: typeID)
+				let row = NCDatabaseTypeMarketRow(history: result.cacheRecord(in: NCCache.sharedCache!.viewContext), typeID: typeID)
 				marketSection?.children.append(row)
 			}
 			

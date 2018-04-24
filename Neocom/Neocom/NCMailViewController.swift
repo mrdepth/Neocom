@@ -133,8 +133,8 @@ class NCMailViewController: NCTreeViewController {
 		lastID = nil
 		isEndReached = false
 		mails = TreeNode()
-		return fetch(from: nil).then { result in
-			return [result.cacheRecord]
+		return fetch(from: nil).then(on: .main) { result in
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 	
@@ -157,7 +157,7 @@ class NCMailViewController: NCTreeViewController {
 
 		var lastID: Int64? = nil
 
-		return OperationQueue(qos: .utility).async { () -> Void in
+		return DispatchQueue.global(qos: .utility).async { () -> Void in
 			guard let headers = result.value, !headers.isEmpty else {throw NCTreeViewControllerError.noResult}
 			
 			self.updateContacts(result: result).wait()
@@ -167,7 +167,7 @@ class NCMailViewController: NCTreeViewController {
 			
 			headers.filter {$0.mailID != nil && $0.timestamp != nil}.sorted{$0.mailID! > $1.mailID!}.forEach {
 				header in
-				let row = NCMailRow(mail: header, label: label, contacts: contacts, cacheRecord: result.cacheRecord, dataManager: dataManager)
+				let row = NCMailRow(mail: header, label: label, contacts: contacts, cacheRecord: result.objectID, dataManager: dataManager)
 				
 				if let section = children.last, section.date < header.timestamp! {
 					section.children.append(row)

@@ -23,12 +23,12 @@ class NCMarketOrdersViewController: NCTreeViewController {
 		case .character:
 			return dataManager.marketOrders().then(on: .main) { result -> [NCCacheRecord] in
 				self.orders = result
-				return [result.cacheRecord]
+				return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 			}
 		case .corporation:
 			return dataManager.corpMarketOrders().then(on: .main) { result -> [NCCacheRecord] in
 				self.corpOrders = result
-				return [result.cacheRecord]
+				return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 			}
 		}
 	}
@@ -38,7 +38,7 @@ class NCMarketOrdersViewController: NCTreeViewController {
 		let corpOrders = self.corpOrders
 		let progress = Progress(totalUnitCount: 3)
 		
-		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
 			guard let value: [NCMarketOrder] = orders?.value ?? corpOrders?.value else {throw NCTreeViewControllerError.noResult}
 			let locationIDs = Set(value.map {$0.locationID})
 			let locations = try? progress.perform{ self.dataManager.locations(ids: locationIDs) }.get()

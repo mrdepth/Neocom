@@ -24,7 +24,6 @@ class NCAccountsViewController: NCTreeViewController {
 		                    Prototype.NCHeaderTableViewCell.empty,
 							Prototype.NCDefaultTableViewCell.noImage])
 		
-		
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {

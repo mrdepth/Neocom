@@ -464,7 +464,7 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 				queue.append(
 					character!.then(on: .main) { result -> Future<Void> in
 						guard let value = result.value else {throw NCDataManagerError.noCacheData}
-						self.observer?.add(managedObject: result.cacheRecord)
+						self.observer?.add(managedObject: result.cacheRecord(in: NCCache.sharedCache!.viewContext))
 						self.reconfigure()
 						
 						if options.contains(.corporationInfo) {
@@ -473,7 +473,7 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 							progress?.progress.resignCurrent()
 							
 							return self.corporation!.then(on: .main) { result -> Void in
-								self.observer?.add(managedObject: result.cacheRecord)
+								self.observer?.add(managedObject: result.cacheRecord(in: NCCache.sharedCache!.viewContext))
 								self.reconfigure()
 							}
 						}
@@ -490,7 +490,7 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 				
 				queue.append(
 					skillQueue!.then(on: .main) { result -> Void in
-						self.observer?.add(managedObject: result.cacheRecord)
+						self.observer?.add(managedObject: result.cacheRecord(in: NCCache.sharedCache!.viewContext))
 						self.reconfigure()
 				})
 				
@@ -503,7 +503,7 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 				
 				queue.append(
 					skills!.then(on: .main) { result -> Void in
-						self.observer?.add(managedObject: result.cacheRecord)
+						self.observer?.add(managedObject: result.cacheRecord(in: NCCache.sharedCache!.viewContext))
 						self.reconfigure()
 				})
 			}
@@ -515,7 +515,7 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 
 				queue.append(
 					walletBalance!.then(on: .main) { result -> Void in
-						self.observer?.add(managedObject: result.cacheRecord)
+						self.observer?.add(managedObject: result.cacheRecord(in: NCCache.sharedCache!.viewContext))
 						self.reconfigure()
 					}
 				)
@@ -528,7 +528,7 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 				
 				queue.append(
 					location!.then(on: .main) { result -> Void in
-						self.observer?.add(managedObject: result.cacheRecord)
+						self.observer?.add(managedObject: result.cacheRecord(in: NCCache.sharedCache!.viewContext))
 						self.reconfigure()
 				})
 			}
@@ -540,7 +540,7 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 				
 				queue.append(
 					ship!.then(on: .main) { result -> Void in
-						self.observer?.add(managedObject: result.cacheRecord)
+						self.observer?.add(managedObject: result.cacheRecord(in: NCCache.sharedCache!.viewContext))
 						self.reconfigure()
 				})
 			}
@@ -553,7 +553,7 @@ class NCAccountRow: NCFetchedResultsObjectNode<NCAccount> {
 				
 				queue.append(
 					image!.then(on: .main) { result -> Void in
-						self.observer?.add(managedObject: result.cacheRecord)
+						self.observer?.add(managedObject: result.cacheRecord(in: NCCache.sharedCache!.viewContext))
 						self.reconfigure()
 				})
 			}

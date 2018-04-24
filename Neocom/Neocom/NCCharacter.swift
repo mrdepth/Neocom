@@ -49,22 +49,23 @@ class NCCharacter {
 						throw NCDataManagerError.noCacheData
 				}
 				
-				
 				let character = NCCharacter(attributes: NCCharacterAttributes(attributes: attributesValue, implants: implantsValue), skills: skillsValue, skillQueue: skillQueueValue)
-				character.observer = NCManagedObjectObserver(managedObjects: [skills.cacheRecord, skillQueue.cacheRecord, attributes.cacheRecord, implants.cacheRecord]) { [weak character] (updated, deleted) in
-					guard let character = character else {return}
-					guard updated != nil else {return}
-					guard let skillsValue = skills.value,
-						let skillQueueValue = skillQueue.value,
-						let attributesValue = attributes.value,
-						let implantsValue = implants.value else {
-							return
-					}
-					
-					DispatchQueue.global(qos: .utility).async {
-						character.load(attributes: NCCharacterAttributes(attributes: attributesValue, implants: implantsValue), skills: skillsValue, skillQueue: skillQueueValue)
-						}.then(on: .main) {
-							NotificationCenter.default.post(name: .NCCharacterChanged, object: character)
+				DispatchQueue.main.async {
+					character.observer = NCManagedObjectObserver(managedObjects: [skills.cacheRecord(in: NCCache.sharedCache!.viewContext), skillQueue.cacheRecord(in: NCCache.sharedCache!.viewContext), attributes.cacheRecord(in: NCCache.sharedCache!.viewContext), implants.cacheRecord(in: NCCache.sharedCache!.viewContext)]) { [weak character] (updated, deleted) in
+						guard let character = character else {return}
+						guard updated != nil else {return}
+						guard let skillsValue = skills.value,
+							let skillQueueValue = skillQueue.value,
+							let attributesValue = attributes.value,
+							let implantsValue = implants.value else {
+								return
+						}
+						
+						DispatchQueue.global(qos: .utility).async {
+							character.load(attributes: NCCharacterAttributes(attributes: attributesValue, implants: implantsValue), skills: skillsValue, skillQueue: skillQueueValue)
+							}.then(on: .main) {
+								NotificationCenter.default.post(name: .NCCharacterChanged, object: character)
+						}
 					}
 				}
 				return character

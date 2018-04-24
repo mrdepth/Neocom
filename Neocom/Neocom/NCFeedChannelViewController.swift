@@ -25,14 +25,14 @@ class NCFeedChannelViewController: NCTreeViewController {
 		guard let url = url else {return .init([])}
 		return dataManager.rss(url: url).then(on: .main) { result -> [NCCacheRecord] in
 			self.rss = result
-			return [result.cacheRecord]
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 	
 	override func content() -> Future<TreeNode?> {
 		let rss = self.rss
 		let totalProgress = Progress(totalUnitCount: 1)
-		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
 			guard let value = rss?.value else {throw NCTreeViewControllerError.noResult}
 			let progress = totalProgress.perform{ Progress(totalUnitCount: Int64(value.items?.count ?? 0)) }
 			

@@ -131,7 +131,7 @@ class NCLoyaltyStoreOffersViewController: NCTreeViewController {
 		
 		return dataManager.loyaltyStoreOffers(corporationID: Int64(loyaltyPoints.corporationID)).then(on: .main) { result -> [NCCacheRecord] in
 			self.offers = result
-			return [result.cacheRecord]
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 	
@@ -139,7 +139,7 @@ class NCLoyaltyStoreOffersViewController: NCTreeViewController {
 		let loyaltyPoints = self.loyaltyPoints
 		let offers = self.offers
 
-		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
 			guard let loyaltyPoints = loyaltyPoints, let offers = offers, let value = offers.value else {throw NCTreeViewControllerError.noResult}
 			return try NCDatabase.sharedDatabase!.performTaskAndWait { (managedObjectContext) in
 				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)

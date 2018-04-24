@@ -32,21 +32,21 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 		switch wallet {
 		case .character:
 			let progress = Progress(totalUnitCount: 2)
-			return OperationQueue(qos: .utility).async { () -> (CachedValue<[ESI.Wallet.Transaction]>, CachedValue<Double>) in
+			return DispatchQueue.global(qos: .utility).async { () -> (CachedValue<[ESI.Wallet.Transaction]>, CachedValue<Double>) in
 				let walletTransactions = progress.perform{self.dataManager.walletTransactions()}
 				let walletBalance = progress.perform{self.dataManager.walletBalance()}
 				return try (walletTransactions.get(), walletBalance.get())
 			}.then(on: .main) { result -> [NCCacheRecord] in
 				self.walletTransactions = result.0
 				self.walletBalance = result.1
-				return [self.walletTransactions?.cacheRecord, self.walletBalance?.cacheRecord].compactMap {$0}
+				return [self.walletTransactions?.cacheRecord(in: NCCache.sharedCache!.viewContext), self.walletBalance?.cacheRecord(in: NCCache.sharedCache!.viewContext)].compactMap {$0}
 //				completionHandler([self.walletTransactions?.cacheRecord, self.walletBalance?.cacheRecord].compactMap {$0})
 			}
 		case let .corporation(wallet):
 			return Progress(totalUnitCount: 1).perform {
 				self.dataManager.corpWalletTransactions(division: wallet.division ?? 0).then(on: .main) { result -> [NCCacheRecord] in
 					self.corpWalletTransactions = result
-					return [self.corpWalletTransactions?.cacheRecord].compactMap {$0}
+					return [self.corpWalletTransactions?.cacheRecord(in: NCCache.sharedCache!.viewContext)].compactMap {$0}
 				}
 			}
 		}
@@ -63,7 +63,7 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 		let progress = Progress(totalUnitCount: 3)
 
 
-		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
 			guard let value: [NCWalletTransaction] = walletTransactions?.value ?? corpWalletTransactions?.value else {throw NCTreeViewControllerError.noResult}
 			
 			var sections = [TreeNode]()

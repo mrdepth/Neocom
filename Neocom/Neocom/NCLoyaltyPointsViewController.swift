@@ -37,12 +37,12 @@ class NCLoyaltyPointsViewController: NCTreeViewController {
 	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		return dataManager.loyaltyPoints().then(on: .main) { result -> [NCCacheRecord] in
 			self.loyaltyPoints = result
-			return [result.cacheRecord]
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 	
 	override func content() -> Future<TreeNode?> {
-		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
 			guard let value = self.loyaltyPoints?.value else {throw NCTreeViewControllerError.noResult}
 			let contactIDs = value.map {Int64($0.corporationID)}
 			let dataManager = self.dataManager

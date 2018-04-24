@@ -73,7 +73,7 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 			let progress = NCProgressHandler(viewController: strongSelf, totalUnitCount: Int64(selected.count))
 			strongSelf.tableView.isUserInteractionEnabled = false
 			
-			OperationQueue(qos: .utility).async {
+			DispatchQueue.global(qos: .utility).async {
 				selected.forEach { i in
 					progress.progress.perform {
 						strongSelf.deleteFitting(from: i).wait()
@@ -84,7 +84,7 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 				strongSelf.updateToolbar()
 				strongSelf.isDeleting = false
 				progress.finish()
-				if let context = strongSelf.fittings?.cacheRecord.managedObjectContext, context.hasChanges {
+				if let context = NCCache.sharedCache?.viewContext, context.hasChanges {
 					try? context.save()
 				}
 			}
@@ -131,7 +131,7 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 			let progress = NCProgressHandler(view: cell, totalUnitCount: 1, activityIndicatorStyle: .white)
 			progress.progress.perform {
 				strongSelf.deleteFitting(from: node).then(on: .main) { result in
-					if let context = strongSelf.fittings?.cacheRecord.managedObjectContext, context.hasChanges {
+					if let context = NCCache.sharedCache?.viewContext, context.hasChanges {
 						try? context.save()
 					}
 				}.catch(on: .main) {error in
@@ -151,7 +151,7 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 		return Progress(totalUnitCount: 1).perform {
 			return dataManager.fittings().then(on: .main) { result -> [NCCacheRecord] in
 				self.fittings = result
-				return [result.cacheRecord]
+				return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 			}
 		}
 	}
@@ -159,7 +159,7 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 	override func content() -> Future<TreeNode?> {
 		let progress = Progress(totalUnitCount: 1)
 
-		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
 			guard let value = self.fittings?.value else {throw NCTreeViewControllerError.noResult}
 			return try NCDatabase.sharedDatabase!.performTaskAndWait { managedObjectContext in
 				var groups = [String: DefaultTreeSection]()
@@ -199,7 +199,7 @@ class NCFittingInGameFittingsViewController: NCTreeViewController {
 	private func deleteFitting(from node: NCInGameFittingRow) -> Future<String> {
 		return Progress(totalUnitCount: 1).perform {
 			return dataManager.deleteFitting(fittingID: node.fitting.fittingID).then(on: .main) { result -> String in
-				guard let record = self.fittings?.cacheRecord else {return result}
+				guard let record = self.fittings?.cacheRecord(in: NCCache.sharedCache!.viewContext) else {return result}
 				guard var fittings: [ESI.Fittings.Fitting] = record.get() else {return result}
 				guard let i = fittings.index(where: {$0.fittingID == node.fitting.fittingID}) else {return result}
 				fittings.remove(at: i)

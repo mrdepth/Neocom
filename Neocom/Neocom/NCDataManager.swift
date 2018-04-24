@@ -215,26 +215,26 @@ class NCDataManager {
 	
 	func image(characterID: Int64, dimension: Int) -> Future<CachedValue<UIImage>> {
 		return loadFromCache(forKey: "image.character.\(characterID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(characterID: Int(characterID), dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> CachedValue<UIImage> in
-			return .init(result.cacheRecord.objectID)
+			return .init(result.objectID)
 		}
 	}
 	
 	
 	func image(corporationID: Int64, dimension: Int) -> Future<CachedValue<UIImage>> {
 		return loadFromCache(forKey: "image.corporation.\(corporationID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(corporationID: Int(corporationID), dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> CachedValue<UIImage> in
-			return .init(result.cacheRecord.objectID)
+			return .init(result.objectID)
 		}
 	}
 	
 	func image(allianceID: Int64, dimension: Int) -> Future<CachedValue<UIImage>> {
 		return loadFromCache(forKey: "image.alliance.\(allianceID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(allianceID: Int(allianceID), dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> CachedValue<UIImage> in
-			return .init(result.cacheRecord.objectID)
+			return .init(result.objectID)
 		}
 	}
 
 	func image(typeID: Int, dimension: Int) -> Future<CachedValue<UIImage>> {
 		return loadFromCache(forKey: "image.type.\(typeID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(typeID: typeID, dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> CachedValue<UIImage> in
-			return .init(result.cacheRecord.objectID)
+			return .init(result.objectID)
 		}
 	}
 	
@@ -714,7 +714,7 @@ class NCDataManager {
 				do {
 					switch response.result {
 					case let .success(value):
-						try promise.fulfill(.init(value: value, cached: 600))
+						try promise.fulfill(.init(value: value, cached: 60))
 					case let .failure(error):
 						throw error
 					}

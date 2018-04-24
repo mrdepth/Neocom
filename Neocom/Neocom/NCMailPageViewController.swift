@@ -83,7 +83,7 @@ class NCMailPageViewController: NCPageViewController {
 	
 	
 	func saveUnreadCount() {
-		guard var value = mailLabels?.value, let record = mailLabels?.cacheRecord else {return}
+		guard var value = mailLabels?.value, let record = mailLabels?.cacheRecord(in: NCCache.sharedCache!.viewContext) else {return}
 		guard let labels = viewControllers?.compactMap ({($0 as? NCMailViewController)?.label}) else {return}
 		
 		value.totalUnreadCount = labels.compactMap {$0.unreadCount}.reduce(0, +)

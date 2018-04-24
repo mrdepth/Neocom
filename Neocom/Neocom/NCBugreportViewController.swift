@@ -146,7 +146,7 @@ class NCBugreportViewController: NCTreeViewController {
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 3)
 			let dataManager = NCDataManager(account: account)
 			
-			OperationQueue(qos: .utility).async { () -> [String: Data] in
+			DispatchQueue.global(qos: .utility).async { () -> [String: Data] in
 				var attachments = [String: Data]()
 				attachments["character.json"] = self.process(progress.progress.perform { dataManager.character() })
 				attachments["clones.json"] = self.process(progress.progress.perform { dataManager.clones() })
@@ -167,7 +167,7 @@ class NCBugreportViewController: NCTreeViewController {
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 2)
 			let dataManager = NCDataManager(account: account)
 			
-			OperationQueue(qos: .utility).async { () -> [String: Data] in
+			DispatchQueue.global(qos: .utility).async { () -> [String: Data] in
 				var attachments = [String: Data]()
 				attachments["skills.json"] = self.process(progress.progress.perform { dataManager.skills() })
 				attachments["skillQueue.json"] = self.process(progress.progress.perform { dataManager.skillQueue() })
@@ -187,10 +187,10 @@ class NCBugreportViewController: NCTreeViewController {
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
 			let dataManager = NCDataManager(account: account)
 
-			OperationQueue(qos: .utility).async { () -> [String: Data] in
+			DispatchQueue.global(qos: .utility).async { () -> [String: Data] in
 				var attachments = [String: Data]()
 				
-				for i in 1...10 {
+				for i in 1...20 {
 					let assets = progress.progress.perform { dataManager.assets(page: i) }
 					guard (try? assets.get())?.value?.isEmpty == false else {break}
 					attachments["assetsPage\(i).json"] = self.process(assets)
@@ -211,7 +211,7 @@ class NCBugreportViewController: NCTreeViewController {
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
 			let dataManager = NCDataManager(account: account)
 			
-			OperationQueue(qos: .utility).async { () -> [String: Data] in
+			DispatchQueue.global(qos: .utility).async { () -> [String: Data] in
 				var attachments = [String: Data]()
 				attachments["marketOrders.json"] = self.process(progress.progress.perform { dataManager.marketOrders() })
 				return attachments
@@ -230,7 +230,7 @@ class NCBugreportViewController: NCTreeViewController {
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
 			let dataManager = NCDataManager(account: account)
 			
-			OperationQueue(qos: .utility).async { () -> [String: Data] in
+			DispatchQueue.global(qos: .utility).async { () -> [String: Data] in
 				var attachments = [String: Data]()
 				attachments["industryJobs.json"] = self.process(progress.progress.perform { dataManager.industryJobs() })
 				return attachments
@@ -249,7 +249,7 @@ class NCBugreportViewController: NCTreeViewController {
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 2)
 			let dataManager = NCDataManager(account: account)
 			
-			OperationQueue(qos: .utility).async { () -> [String: Data] in
+			DispatchQueue.global(qos: .utility).async { () -> [String: Data] in
 				var attachments = [String: Data]()
 				let colonies = progress.progress.perform { dataManager.colonies() }
 				attachments["colonies.json"] = self.process(colonies)

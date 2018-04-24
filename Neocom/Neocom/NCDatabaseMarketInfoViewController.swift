@@ -91,12 +91,12 @@ class NCDatabaseMarketInfoViewController: NCTreeViewController {
 		
 		return dataManager.marketOrders(typeID: Int(type!.typeID), regionID: regionID).then(on: .main) { result -> [NCCacheRecord] in
 			self.orders = result
-			return [result.cacheRecord]
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 	
 	override func content() -> Future<TreeNode?> {
-		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
 			guard let value = self.orders?.value else {throw NCTreeViewControllerError.noResult}
 			let locationIDs = value.map ({$0.locationID})
 			

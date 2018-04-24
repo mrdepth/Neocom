@@ -22,12 +22,12 @@ class NCIndustryViewController: NCTreeViewController {
 		case .character:
 			return dataManager.industryJobs().then(on: .main) { result -> [NCCacheRecord] in
 				self.jobs = result
-				return [result.cacheRecord]
+				return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 			}
 		case .corporation:
 			return dataManager.corpIndustryJobs().then(on: .main) { result -> [NCCacheRecord] in
 				self.corpJobs = result
-				return [result.cacheRecord]
+				return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 			}
 		}
 	}
@@ -37,7 +37,7 @@ class NCIndustryViewController: NCTreeViewController {
 		let corpJobs = self.corpJobs
 		let progress = Progress(totalUnitCount: 3)
 		
-		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
 			guard let value: [NCIndustryJob] = jobs?.value ?? corpJobs?.value else {throw NCTreeViewControllerError.noResult}
 			let locationIDs = Set(value.map {$0.locationID})
 			let locations = try? progress.perform{ self.dataManager.locations(ids: locationIDs) }.get()

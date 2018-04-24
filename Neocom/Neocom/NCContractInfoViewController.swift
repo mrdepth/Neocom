@@ -94,21 +94,21 @@ class NCContractInfoViewController: NCTreeViewController {
 		
 		let progress = Progress(totalUnitCount: 2)
 		
-		return OperationQueue(qos: .utility).async { () -> (CachedValue<[ESI.Contracts.Item]>, CachedValue<[ESI.Contracts.Bid]>) in
+		return DispatchQueue.global(qos: .utility).async { () -> (CachedValue<[ESI.Contracts.Item]>, CachedValue<[ESI.Contracts.Bid]>) in
 			let items = try progress.perform { self.dataManager.contractItems(contractID: Int64(contract.contractID))}.get()
 			let bids = try progress.perform { self.dataManager.contractBids(contractID: Int64(contract.contractID))}.get()
 			return (items, bids)
 		}.then(on: .main) { (items, bids) -> [NCCacheRecord] in
 			self.items = items
 			self.bids = bids
-			return [items.cacheRecord, bids.cacheRecord]
+			return [items.cacheRecord(in: NCCache.sharedCache!.viewContext), bids.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 	
 	override func content() -> Future<TreeNode?> {
 		let progress = Progress(totalUnitCount: 2)
 		
-		return OperationQueue(qos: .utility).async { () -> ([Int64: NSManagedObjectID]?, [Int64: NCLocation]?) in
+		return DispatchQueue.global(qos: .utility).async { () -> ([Int64: NSManagedObjectID]?, [Int64: NCLocation]?) in
 			guard let contract = self.contract else {return (nil, nil)}
 			
 			let contacts = progress.perform { () -> [Int64: NSManagedObjectID]? in

@@ -147,7 +147,7 @@ class NCKillmailInfoViewController: NCTreeViewController {
 	override func content() -> Future<TreeNode?> {
 		let dataManager = self.dataManager
 		let progress = Progress(totalUnitCount: 3)
-		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
 			guard let killmail = self.killmail else {throw NCTreeViewControllerError.noResult}
 			return try NCDatabase.sharedDatabase!.performTaskAndWait { managedObjectContext in
 				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)

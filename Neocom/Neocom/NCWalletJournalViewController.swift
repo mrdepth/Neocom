@@ -38,13 +38,13 @@ class NCWalletJournalViewController: NCTreeViewController {
 			}.then(on: .main) { result -> [NCCacheRecord] in
 				self.walletJournal = result.0
 				self.walletBalance = result.1
-				return [result.0.cacheRecord, result.1.cacheRecord]
+				return [result.0.cacheRecord(in: NCCache.sharedCache!.viewContext), result.1.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 			}
 		case let .corporation(wallet):
 			return Progress(totalUnitCount: 1).perform {
 				self.dataManager.corpWalletJournal(division: wallet.division ?? 0).then(on: .main) { result -> [NCCacheRecord] in
 					self.corpWalletJournal = result
-					return [result.cacheRecord]
+					return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 				}
 			}
 		}
@@ -57,7 +57,7 @@ class NCWalletJournalViewController: NCTreeViewController {
 		}
 		let walletJournal = self.walletJournal
 		let corpWalletJournal = self.corpWalletJournal
-		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
 			guard let value: [NCWalletJournalItem] = walletJournal?.value ?? corpWalletJournal?.value else {throw NCTreeViewControllerError.noResult}
 			
 			let dateFormatter = DateFormatter()

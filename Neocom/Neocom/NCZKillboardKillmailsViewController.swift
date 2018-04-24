@@ -37,8 +37,8 @@ class NCZKillboardKillmailsViewController: NCTreeViewController {
 		page = nil
 		isEndReached = false
 		kills = TreeNode()
-		return fetch(page: nil).then { result -> [NCCacheRecord] in
-			return [result.cacheRecord]
+		return fetch(page: nil).then(on: .main) { result -> [NCCacheRecord] in
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 
@@ -56,7 +56,7 @@ class NCZKillboardKillmailsViewController: NCTreeViewController {
 
 		let dataManager = self.dataManager
 		
-		return OperationQueue(qos: .utility).async { () -> Void in
+		return DispatchQueue.global(qos: .utility).async { () -> Void in
 			guard let killmails = result.value, !killmails.isEmpty else {throw NCTreeViewControllerError.noResult}
 			
 			let calendar = Calendar(identifier: .gregorian)

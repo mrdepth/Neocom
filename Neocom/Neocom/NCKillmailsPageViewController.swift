@@ -132,7 +132,7 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 		losses = TreeNode()
 		self.dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
 		return fetch(from: nil).then(on: .main) { result in
-			return [result.cacheRecord]
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 	
@@ -184,7 +184,7 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 		let dataManager = self.dataManager
 		let characterID = Int(dataManager.characterID)
 
-		OperationQueue(qos: .utility).async { () -> Bool in
+		DispatchQueue.global(qos: .utility).async { () -> Bool in
 			guard let killmails = result?.value, !killmails.isEmpty else { return true }
 			
 			let partialProgress = totalProgress.perform {Progress(totalUnitCount: Int64(killmails.count))}

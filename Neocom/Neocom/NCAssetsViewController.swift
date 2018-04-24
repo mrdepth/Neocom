@@ -131,10 +131,10 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 		
 		switch owner {
 		case .character:
-				return OperationQueue(qos: .utility).async { () -> [CachedValue<[ESI.Assets.Asset]>] in
+				return DispatchQueue.global(qos: .utility).async { () -> [CachedValue<[ESI.Assets.Asset]>] in
 					var assets = [CachedValue<[ESI.Assets.Asset]>]()
 					
-					for i in 1...10 {
+					for i in 1...20 {
 						let page = try progress.perform{self.dataManager.assets(page: i)}.get()
 						guard page.value?.isEmpty == false else {break}
 						assets.append(page)
@@ -142,13 +142,13 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 					return Array(assets)
 				}.then(on: .main) { assets -> [NCCacheRecord] in
 						self.assets = assets
-						return assets.compactMap {$0.cacheRecord}
+						return assets.compactMap {$0.cacheRecord(in: NCCache.sharedCache!.viewContext)}
 				}
 		case .corporation:
-			return OperationQueue(qos: .utility).async { () -> [CachedValue<[ESI.Assets.CorpAsset]>] in
+			return DispatchQueue.global(qos: .utility).async { () -> [CachedValue<[ESI.Assets.CorpAsset]>] in
 				var assets = [CachedValue<[ESI.Assets.CorpAsset]>]()
 				
-				for i in 1...10 {
+				for i in 1...20 {
 					let page = try progress.perform{self.dataManager.corpAssets(page: i)}.get()
 					guard page.value?.isEmpty == false else {break}
 					assets.append(page)
@@ -156,7 +156,7 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 				return assets
 			}.then(on: .main) { assets -> [NCCacheRecord] in
 					self.corpAssets = assets
-					return assets.compactMap {$0.cacheRecord}
+					return assets.compactMap {$0.cacheRecord(in: NCCache.sharedCache!.viewContext)}
 			}
 		}
 	}
@@ -169,7 +169,7 @@ class NCAssetsViewController: NCTreeViewController, NCSearchableViewController {
 		
 		let assets = self.assets
 		let corpAssets = self.corpAssets
-		return OperationQueue(qos: .utility).async { () -> [NCAsset]? in
+		return DispatchQueue.global(qos: .utility).async { () -> [NCAsset]? in
 			switch self.owner {
 			case .character:
 				return assets?.compactMap({ $0.value }).joined().filter({$0.locationFlag != .skill && $0.locationFlag != .implant}) as [NCAsset]?

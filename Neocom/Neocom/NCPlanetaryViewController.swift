@@ -532,14 +532,14 @@ class NCPlanetaryViewController: NCTreeViewController {
 	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		return dataManager.colonies().then(on: .main) { result -> [NCCacheRecord] in
 			self.colonies = result
-			return [result.cacheRecord]
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 	
 	override func content() -> Future<TreeNode?> {
 		let totalProgress = Progress(totalUnitCount: 1)
 		let dataManager = self.dataManager
-		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
 			guard let value = self.colonies?.value else {throw NCTreeViewControllerError.noResult}
 			let progress = totalProgress.perform {Progress(totalUnitCount: Int64(value.count))}
 			let sections = value.map { colony in return NCColonySection(colony: colony, layout: progress.perform{ dataManager.colonyLayout(planetID: colony.planetID) }) }

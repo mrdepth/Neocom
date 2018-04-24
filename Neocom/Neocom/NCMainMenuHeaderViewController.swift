@@ -32,7 +32,8 @@ class NCMainMenuHeaderViewController: UIViewController {
 			let progressHandler = NCProgressHandler(view: view, totalUnitCount: 6)
 			let dataManager = NCDataManager(account: account)
 			let characterID = account.characterID
-			OperationQueue(qos: .utility).async {
+			
+			DispatchQueue.global(qos: .utility).async {
 				progressHandler.progress.perform { dataManager.image(characterID: characterID, dimension: 128) }
 					.then(on: .main) { result in
 						self.characterImageView?.image = result.value

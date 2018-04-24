@@ -21,12 +21,12 @@ class NCCalendarViewController: NCTreeViewController {
 	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		return dataManager.calendarEvents().then(on: .main) { result -> [NCCacheRecord] in
 			self.events = result
-			return [result.cacheRecord]
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 	
 	override func content() -> Future<TreeNode?> {
-		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
 			guard let value = self.events?.value else {throw NCTreeViewControllerError.noResult}
 			let dateFormatter = DateFormatter()
 			dateFormatter.dateStyle = .medium

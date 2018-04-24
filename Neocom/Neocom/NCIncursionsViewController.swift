@@ -27,7 +27,7 @@ class NCIncursionsViewController: NCTreeViewController {
 		let dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
 		return dataManager.incursions().then(on: .main) { result -> [NCCacheRecord] in
 			self.incursions = result
-			return [result.cacheRecord]
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 

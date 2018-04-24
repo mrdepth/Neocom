@@ -18,7 +18,7 @@ class NCContractsViewController: NCTreeViewController {
 	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		return dataManager.contracts().then(on: .main) { result -> [NCCacheRecord] in
 			self.contracts = result
-			return [result.cacheRecord]
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 	
@@ -27,7 +27,7 @@ class NCContractsViewController: NCTreeViewController {
 		let dataManager = self.dataManager
 		let progress = Progress(totalUnitCount: 2)
 
-		return OperationQueue(qos: .utility).async { () -> TreeNode? in
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
 			guard let contracts = contracts?.value else {throw NCTreeViewControllerError.noResult}
 			let value = Set(contracts)
 			

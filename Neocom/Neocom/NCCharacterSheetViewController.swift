@@ -64,13 +64,15 @@ class NCCharacterSheetViewController: NCTreeViewController {
 		
 		let characterID = account.characterID
 		
-		return OperationQueue(qos: .utility).async { () -> [NCCacheRecord] in
+		return DispatchQueue.global(qos: .utility).async { () -> [NCCacheRecord] in
 			let character = progress.perform{dataManager.character()}
 
 			let characterDetails = character.then(on: .main) { result -> Future<[NCCacheRecord]> in
 				self.character = result
-				self.characterObserver = NCManagedObjectObserver(managedObject: result.cacheRecord) { [weak self] (_,_) in
-					_ = self?.loadCharacterDetails()
+				DispatchQueue.main.async {
+					self.characterObserver = NCManagedObjectObserver(managedObject: result.cacheRecord(in: NCCache.sharedCache!.viewContext)) { [weak self] (_,_) in
+						_ = self?.loadCharacterDetails()
+					}
 				}
 				self.update()
 				return progress.perform{self.loadCharacterDetails()}
@@ -131,16 +133,16 @@ class NCCharacterSheetViewController: NCTreeViewController {
 				return result
 			}
 
-			var records = [character.then {$0.cacheRecord},
-						   clones.then{$0.cacheRecord},
-						   attributes.then{$0.cacheRecord},
-						   implants.then{$0.cacheRecord},
-						   skills.then{$0.cacheRecord},
-						   skillQueue.then{$0.cacheRecord},
-						   walletBalance.then{$0.cacheRecord},
-						   characterImage.then{$0.cacheRecord},
-						   characterLocation.then{$0.cacheRecord},
-						   characterShip.then{$0.cacheRecord}].compactMap { try? $0.get() }
+			var records = [character.then(on: .main) {$0.cacheRecord(in: NCCache.sharedCache!.viewContext)},
+						   clones.then(on: .main) {$0.cacheRecord(in: NCCache.sharedCache!.viewContext)},
+						   attributes.then(on: .main) {$0.cacheRecord(in: NCCache.sharedCache!.viewContext)},
+						   implants.then(on: .main) {$0.cacheRecord(in: NCCache.sharedCache!.viewContext)},
+						   skills.then(on: .main) {$0.cacheRecord(in: NCCache.sharedCache!.viewContext)},
+						   skillQueue.then(on: .main) {$0.cacheRecord(in: NCCache.sharedCache!.viewContext)},
+						   walletBalance.then(on: .main) {$0.cacheRecord(in: NCCache.sharedCache!.viewContext)},
+						   characterImage.then(on: .main) {$0.cacheRecord(in: NCCache.sharedCache!.viewContext)},
+						   characterLocation.then(on: .main) {$0.cacheRecord(in: NCCache.sharedCache!.viewContext)},
+						   characterShip.then(on: .main) {$0.cacheRecord(in: NCCache.sharedCache!.viewContext)}].compactMap { try? $0.get() }
 			do {
 				records.append(contentsOf: try characterDetails.get())
 			}
@@ -298,33 +300,33 @@ class NCCharacterSheetViewController: NCTreeViewController {
 		
 		let dataManager = self.dataManager
 		
-		return OperationQueue(qos: .utility).async { () -> Future<[NCCacheRecord]> in
+		return DispatchQueue.global(qos: .utility).async { () -> Future<[NCCacheRecord]> in
 			var futures = [Future<NCCacheRecord>]()
 			
 			let corporation = progress.perform{dataManager.corporation(corporationID: Int64(character.corporationID))}
 			corporation.then(on: .main) { result in
 				self.corporation = result
 			}
-			futures.append(corporation.then{$0.cacheRecord})
+			futures.append(corporation.then(on: .main){$0.cacheRecord(in: NCCache.sharedCache!.viewContext)})
 			
 			let corporationImage = progress.perform{dataManager.image(corporationID: Int64(character.corporationID), dimension: 32)}
 			corporationImage.then(on: .main) { result in
 				self.corporationImage = result
 			}
-			futures.append(corporationImage.then{$0.cacheRecord})
+			futures.append(corporationImage.then(on: .main){$0.cacheRecord(in: NCCache.sharedCache!.viewContext)})
 			
 			if let allianceID = (try? corporation.get())?.value?.allianceID {
 				let alliance = progress.perform{dataManager.alliance(allianceID: Int64(allianceID))}
 				alliance.then(on: .main) { result in
 					self.alliance = result
 				}
-				futures.append(alliance.then{$0.cacheRecord})
+				futures.append(alliance.then(on: .main){$0.cacheRecord(in: NCCache.sharedCache!.viewContext)})
 				
 				let allianceImage = progress.perform{dataManager.image(allianceID: Int64(allianceID), dimension: 32)}
 				allianceImage.then(on: .main) { result in
 					self.allianceImage = result
 				}
-				futures.append(allianceImage.then{$0.cacheRecord})
+				futures.append(allianceImage.then(on: .main){$0.cacheRecord(in: NCCache.sharedCache!.viewContext)})
 			}
 			else {
 				progress.completedUnitCount += 2

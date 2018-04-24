@@ -75,12 +75,17 @@ class NCMailRow: TreeRow {
 	}()
 	
 	let characterID: Int64
-	let cacheRecord: NCCacheRecord?
+	lazy var cacheRecord: NCCacheRecord? = {
+		guard let objectID = cacheRecordID else {return nil}
+		return (try? NCCache.sharedCache?.viewContext.existingObject(with: objectID)) as? NCCacheRecord
+	}()
+	
+	private let cacheRecordID: NSManagedObjectID?
 	let dataManager: NCDataManager
 	
-	init(mail: ESI.Mail.Header, label: ESI.Mail.MailLabelsAndUnreadCounts.Label, contacts: [Int64: NCContact], cacheRecord: NCCacheRecord?, dataManager: NCDataManager) {
+	init(mail: ESI.Mail.Header, label: ESI.Mail.MailLabelsAndUnreadCounts.Label, contacts: [Int64: NCContact], cacheRecord: NSManagedObjectID?, dataManager: NCDataManager) {
 		self.mail = mail
-		self.cacheRecord = cacheRecord
+		self.cacheRecordID = cacheRecord
 		self.label = label
 		self.contacts = contacts
 		self.dataManager = dataManager

@@ -12,9 +12,10 @@ import EVEAPI
 
 
 class NCCache: NSObject {
-	private(set) lazy var managedObjectModel: NSManagedObjectModel = {
-		NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "NCCache", withExtension: "momd")!)!
-	}()
+//	private(set) lazy var managedObjectModel: NSManagedObjectModel = {
+//		NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "NCCache", withExtension: "momd")!)!
+//	}()
+	let managedObjectModel: NSManagedObjectModel
 	
 	private(set) lazy var viewContext: NSManagedObjectContext = {
 		var viewContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
@@ -23,7 +24,8 @@ class NCCache: NSObject {
 		return viewContext
 	}()
 	
-	private(set) lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
+	let persistentStoreCoordinator: NSPersistentStoreCoordinator
+	/*private(set) lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
 		var persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
 		let directory = URL.init(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]).appendingPathComponent("com.shimanski.eveuniverse.NCCache")
 		try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
@@ -42,11 +44,31 @@ class NCCache: NSObject {
 		}
 		
 		return persistentStoreCoordinator
-	}()
+	}()*/
 	
 	static let sharedCache: NCCache? = NCCache()
 	
 	override init() {
+		managedObjectModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "NCCache", withExtension: "momd")!)!
+		persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+		
+		let directory = URL.init(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]).appendingPathComponent("com.shimanski.eveuniverse.NCCache")
+		try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
+		let url = directory.appendingPathComponent("store.sqlite")
+		
+		for _ in 0...1 {
+			do {
+				try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType,
+																  configurationName: nil,
+																  at: url,
+																  options: nil)
+				break
+			} catch {
+				try? FileManager.default.removeItem(at: url)
+			}
+		}
+
+		
 		ValueTransformer.setValueTransformer(NCSecureUnarchiver(), forName: NSValueTransformerName("NCSecureUnarchiver"))
 	}
 	
@@ -64,7 +86,7 @@ class NCCache: NSObject {
 			do {
 				try promise.fulfill(block(context))
 				if (context.hasChanges) {
-					try context.save()
+					try? context.save()
 				}
 			}
 			catch {

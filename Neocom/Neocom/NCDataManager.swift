@@ -102,7 +102,7 @@ class NCDataManager {
 	let cachePolicy: URLRequest.CachePolicy
 	var observer: NCManagedObjectObserver?
 	
-	lazy var esi: ESI = {
+	private lazy var _esi: ESI = {
 		if let token = self.token {
 			return ESI(token: token, clientID: ESClientID, secretKey: ESSecretKey, server: .tranquility, cachePolicy: self.cachePolicy)
 		}
@@ -110,25 +110,36 @@ class NCDataManager {
 			return ESI(cachePolicy: self.cachePolicy)
 		}
 	}()
+	
+	private var lock = NSLock()
+	
+	var esi: ESI {
+		return lock.perform {self._esi}
+	}
 
-	lazy var zKillboard: ZKillboard = {
+	private lazy var _zKillboard: ZKillboard = {
 		return ZKillboard(cachePolicy: self.cachePolicy)
 	}()
+	
+	var zKillboard: ZKillboard {
+		return lock.perform {self._zKillboard}
+	}
 
 	let characterID: Int64
-	lazy var corporationID: Future<Int64> = {
+	private lazy var _corporationID: Future<Int64> = {
 		return self.character().then { (result) -> Int64 in
 			guard let corporationID = result.value?.corporationID else {throw NCDataManagerError.noCacheData}
 			return Int64(corporationID)
 		}
 	}()
 	
+	var corporationID: Future<Int64> {
+		return lock.perform {self._corporationID}
+	}
+	
 	init(account: NCAccount? = nil, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) {
 		self.cachePolicy = cachePolicy
 		if let acc = account {
-			/*observer = NCManagedObjectObserver(managedObjectID: acc.objectID) {[weak self] (_, _) in
-				self?.token = acc.token
-			}*/
 			if acc.isInvalid {
 				token = nil
 			}

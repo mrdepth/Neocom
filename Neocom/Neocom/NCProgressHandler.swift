@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import EVEAPI
 
 class NCProgressHandler: NSObject {
 	let progress: Progress
@@ -16,6 +17,7 @@ class NCProgressHandler: NSObject {
 	weak var viewController: UIViewController?
 	weak var view: UIView?
 	private var activityIndicatorView: UIActivityIndicatorView?
+	private var lock = NSLock()
 	
 	init(totalUnitCount: Int64) {
 		totalProgress = Progress(totalUnitCount:3)
@@ -107,7 +109,13 @@ class NCProgressHandler: NSObject {
 	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
 		if keyPath == "fractionCompleted" {
 			DispatchQueue.main.async {
-				guard self.timer != nil else {return}
+				self.lock.lock()
+				guard self.timer != nil else {
+					self.lock.unlock()
+					return
+				}
+				self.lock.unlock()
+				
 				if self.totalProgress.fractionCompleted >= 1 {
 					self.finish()
 				}
@@ -119,9 +127,12 @@ class NCProgressHandler: NSObject {
 	}
 	
 	func finish() {
-		timer?.invalidate()
-		timer = nil
-		let views = ([_progressView, activityIndicatorView] as [UIView?]).compactMap({$0})
+		let views = lock.perform { () -> [UIView] in
+			timer?.invalidate()
+			timer = nil
+			return ([_progressView, activityIndicatorView] as [UIView?]).compactMap({$0})
+		}
+		
 		if views.count > 0 {
 			if Thread.isMainThread {
 				views.forEach ({$0.removeFromSuperview()})
@@ -137,8 +148,10 @@ class NCProgressHandler: NSObject {
 	@objc private func timerTick(_ timer: Timer) {
 		fakeProgress.completedUnitCount += 5
 		if fakeProgress.fractionCompleted >= 1 {
-			timer.invalidate()
-			self.timer = nil
+			lock.perform {
+				timer.invalidate()
+				self.timer = nil
+			}
 		}
 	}
 }

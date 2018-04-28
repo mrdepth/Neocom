@@ -69,7 +69,7 @@ class NCStorage: NSObject {
 			do {
 				try promise.fulfill(block(context))
 				if (context.hasChanges) {
-					try context.save()
+					try? context.save()
 				}
 			}
 			catch {

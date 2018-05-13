@@ -52,7 +52,7 @@ fileprivate class NCSkillRow: NCTreeRow {
 }
 */
 
-fileprivate class NCSkillSection: DefaultTreeSection {
+class NCSkillSection: DefaultTreeSection {
 	let group: NCDBInvGroup
 	init(group: NCDBInvGroup, children: [NCSkillRow], skillPoints: Int64?) {
 		self.group = group

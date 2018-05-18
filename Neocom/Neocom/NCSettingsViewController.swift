@@ -106,6 +106,14 @@ class NCSettingsViewController: NCTreeViewController {
 		
 		
 		sections.append(DefaultTreeSection(title: NSLocalizedString("Cache", comment: "").uppercased(), children: [NCActionRow(title: NSLocalizedString("Clear Cache", comment: "").uppercased(), route: clearCache, object: nil)]))
+		
+		if let value = UserDefaults.standard.object(forKey: UserDefaults.Key.NCConsent) as? NSNumber {
+			let row = NCSwitchRow(title: NSLocalizedString("Limit Ad Tracking", comment: ""), value: !value.boolValue) { (value) in
+				UserDefaults.standard.set(!value, forKey: UserDefaults.Key.NCConsent)
+			}
+			sections.append(DefaultTreeSection(title: NSLocalizedString("Advertising", comment: "").uppercased(), children: [row]))
+		}
+
 
 		return .init(RootNode(sections, collapseIdentifier: "NCSettingsViewController"))
 	}

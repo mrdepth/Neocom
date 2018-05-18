@@ -292,13 +292,18 @@ extension UserDefaults {
 		static let NCMarketRegion = "NCMarketRegion"
 		static let NCFirstLaunchDate = "NCFirstLaunchDate"
 		static let NCLastReviewDate = "NCLastReviewDate"
+		static let NCConsent = "NCConsent"
 	}
 }
 
 extension TimeInterval {
 	static let NCFirstReviewTime: TimeInterval = 3600 * 24
 	static let NCReviewTimeInterval: TimeInterval = 3600 * 24 * 20
+	#if DEBUG
+	static let NCBannerStartTime: TimeInterval = 0
+	#else
 	static let NCBannerStartTime: TimeInterval = 3600 * 48
+	#endif
 }
 
 enum Owner {

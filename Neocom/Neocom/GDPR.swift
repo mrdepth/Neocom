@@ -11,6 +11,29 @@ import EVEAPI
 import AdSupport
 import Alamofire
 
+fileprivate let GDPRCountryCodes = [
+	"BE",	"EL",	"LT",	"PT",
+	"BG",	"ES",	"LU",	"RO",
+	"CZ",	"FR",	"HU",	"SI",
+	"DK",	"HR",	"MT",	"SK",
+	"DE",	"IT",	"NL",	"FI",
+	"EE",	"CY",	"AT",	"SE",
+	"IE",	"LV",	"PL",	"UK"
+]
+
+fileprivate let GDPRStartDate: Date = {
+	let dateFormatter = DateFormatter()
+	dateFormatter.dateFormat = "yyyy.MM.dd HH:mm"
+	return dateFormatter.date(from: "2018.05.28 00:00")!
+}()
+
+
+struct APIIP: Codable {
+	var country: String
+	var countryCode: String
+}
+
+
 extension UIStoryboard {
 	static let gdpr = UIStoryboard(name: "GDPR", bundle: nil)
 }
@@ -19,7 +42,18 @@ class GDPR {
 	private static var window: UIWindow?
 	
 	class func requireConsent() -> Future<Bool> {
-		return .init(true)
+		guard Date() >= GDPRStartDate else {return .init(false)}
+		let promise = Promise<Bool>()
+		Alamofire.request("http://ip-api.com/json").validate().responseJSONDecodable { (response: DataResponse<APIIP>) in
+			switch response.result {
+			case let .success(value):
+				try? promise.fulfill(GDPRCountryCodes.contains(value.countryCode.uppercased()))
+			case let .failure(error):
+				try? promise.fail(error)
+			}
+		}
+		
+		return promise.future
 	}
 	
 	class func requestConsent() -> Future<Bool> {
@@ -27,7 +61,7 @@ class GDPR {
 		let stored = UserDefaults.standard.object(forKey: UserDefaults.Key.NCConsent) as? NSNumber
 		
 		return DispatchQueue.global(qos: .utility).async { () -> Future<Bool> in
-			guard try requireConsent().get() else {return (.init(false))}
+			guard try requireConsent().get() else {return (.init(true))}
 			if let stored = stored {
 				return .init(stored.boolValue)
 			}
@@ -66,7 +100,7 @@ class GDPR {
 	private class func consentRequestMessage() -> Future<NSAttributedString> {
 		let promise = Promise<NSAttributedString>()
 		
-		Alamofire.request("https://s3-us-west-1.amazonaws.com/appodeal-ios/docs/GDPRPrivacy.html").responseString { response in
+		Alamofire.request("https://s3-us-west-1.amazonaws.com/appodeal-ios/docs/GDPRPrivacy.html").validate().responseString { response in
 			do {
 				switch response.result {
 				case let .success(string):

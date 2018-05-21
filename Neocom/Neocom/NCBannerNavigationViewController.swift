@@ -54,12 +54,19 @@ class NCBannerNavigationViewController: NCNavigationController {
 			else {
 				let firstLaunchDate = UserDefaults.standard.object(forKey: UserDefaults.Key.NCFirstLaunchDate) as? Date ?? Date()
 				if firstLaunchDate.timeIntervalSinceNow < -TimeInterval.NCBannerStartTime {
-					GDPR.consent().then(on: .main) { hasConsent in
+					GDPR.requestConsent().then(on: .main) { hasConsent in
 #if DEBUG
 						Appodeal.setTestingEnabled(true)
 #endif
 						Appodeal.setLocationTracking(false)
 						Appodeal.initialize(withApiKey: NCApoodealKey, types: [.banner], hasConsent: hasConsent)
+					}.catch(on: .main) { _ in
+#if DEBUG
+						Appodeal.setTestingEnabled(true)
+#endif
+						Appodeal.setLocationTracking(false)
+						Appodeal.initialize(withApiKey: NCApoodealKey, types: [.banner], hasConsent: false)
+					}.finally(on: .main) {
 						strongSelf.bannerView?.loadAd()
 						SKPaymentQueue.default().add(strongSelf)
 					}

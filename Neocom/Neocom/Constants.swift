@@ -315,3 +315,4 @@ enum Wallet {
 	case character
 	case corporation(ESI.Corporation.Divisions.Wallet)
 }
+

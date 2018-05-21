@@ -679,13 +679,13 @@ extension ESI.Killmails.Killmail.Attacker: NCAttacker {
 extension ZKillboard.Killmail.Attacker: NCAttacker {
 }
 
-extension ESI.Killmails.Killmail.Victim.Item: NCItem {
+extension ESI.Killmails.Killmail.Victim.Items: NCItem {
 	func getItems() -> [NCItem]? {
 		return items
 	}
 }
 
-extension ESI.Killmails.Killmail.Victim.Item.Item: NCItem {
+extension ESI.Killmails.Killmail.Victim.Items.Item: NCItem {
 	func getItems() -> [NCItem]? {
 		return nil
 	}

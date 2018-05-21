@@ -65,7 +65,7 @@ class NCMailBodyViewController: UIViewController {
 		
 		let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
 		
-		dataManager.returnMailBody(mailID: mailID).then(on: .main) { result in
+		dataManager.returnMailBody(mailID: Int64(mailID)).then(on: .main) { result in
 			guard let value = result.value else {return}
 			let font = self.textView.font ?? UIFont.preferredFont(forTextStyle: .footnote)
 			//				let html = "<body style=\"color:white;font-size: \(font.pointSize);font-family: '\(font.familyName)';\">\(value.body ?? "")</body>"

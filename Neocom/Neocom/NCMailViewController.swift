@@ -74,7 +74,7 @@ class NCMailViewController: NCTreeViewController {
 			
 			let progress = NCProgressHandler(view: cell, totalUnitCount: 1, activityIndicatorStyle: .white)
 			progress.progress.perform {
-				strongSelf.dataManager.delete(mailID: mailID).then(on: .main) { result in
+				strongSelf.dataManager.delete(mailID: Int64(mailID)).then(on: .main) { result in
 					guard let record = node.cacheRecord else {return}
 					guard var headers: [ESI.Mail.Header] = record.get() else {return}
 					guard let i = headers.index(where: {$0.mailID == node.mail.mailID}) else {return}
@@ -180,7 +180,7 @@ class NCMailViewController: NCTreeViewController {
 					section.children = [row]
 					children.append(section)
 				}
-				lastID = header.mailID
+				lastID = header.mailID.map {Int64($0)}
 			}
 		}.then(on: .main) { () -> Void in
 			UIView.performWithoutAnimation {

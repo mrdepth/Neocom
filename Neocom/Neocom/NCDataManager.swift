@@ -499,7 +499,7 @@ class NCDataManager {
 	
 	func returnMailHeaders(lastMailID: Int64? = nil, labels: [Int64]) -> Future<CachedValue<[ESI.Mail.Header]>> {
 		let labels = labels.sorted()
-		return loadFromCache(forKey: "ESI.Mail.Header.\(labels.hashValue).\(lastMailID ?? 0)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.mail.returnMailHeaders(characterID: Int(self.characterID), labels: labels, lastMailID: lastMailID != nil ? Int(lastMailID!) : nil))
+		return loadFromCache(forKey: "ESI.Mail.Header.\(labels.hashValue).\(lastMailID ?? 0)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.mail.returnMailHeaders(characterID: Int(self.characterID), labels: labels.map{Int($0)}, lastMailID: lastMailID != nil ? Int(lastMailID!) : nil))
 	}
 
 	func returnMailBody(mailID: Int64) -> Future<CachedValue<ESI.Mail.MailBody>> {

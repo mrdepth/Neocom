@@ -181,9 +181,22 @@ class NCWealthViewController: NCTreeViewController {
 			var assetsIDs = [Int: Int64]()
 			var assetsArray = [ESI.Assets.Asset]()
 			if let value = assets {
+				var types = [Int: NCDBInvType]()
 				for asset in value {
 					guard asset.locationFlag != .skill && asset.locationFlag != .implant else {continue}
-					guard let type = invTypes[asset.typeID], type.group?.category?.categoryID != Int32(NCDBCategoryID.blueprint.rawValue) else {continue}
+					let t: NCDBInvType? = {
+						if let t = types[asset.typeID] {
+							return t
+						}
+						else if let t = invTypes[asset.typeID] {
+							types[asset.typeID] = t
+							return t
+						}
+						else {
+							return nil
+						}
+					}()
+					guard let type = t, type.group?.category?.categoryID != Int32(NCDBCategoryID.blueprint.rawValue) else {continue}
 					_ = (assetsIDs[asset.typeID]? += Int64(asset.quantity)) ?? (assetsIDs[asset.typeID] = Int64(asset.quantity))
 					assetsArray.append(asset)
 				}

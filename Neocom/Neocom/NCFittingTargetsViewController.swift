@@ -8,6 +8,7 @@
 
 import UIKit
 import Dgmpp
+import EVEAPI
 
 class NCFittingTargetsViewController: NCTreeViewController {
 
@@ -24,26 +25,25 @@ class NCFittingTargetsViewController: NCTreeViewController {
 		completionHandler(self, nil)
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		defer {completionHandler()}
-		guard let module = modules?.first else {return}
-		guard let ship = module.parent as? DGMShip else {return}
-		guard let character = ship.parent as? DGMCharacter else {return}
-		guard let gang = character.parent as? DGMGang else {return}
+	override func content() -> Future<TreeNode?> {
+		guard let module = modules?.first else {return .init(nil)}
+		guard let ship = module.parent as? DGMShip else {return .init(nil)}
+		guard let character = ship.parent as? DGMCharacter else {return .init(nil)}
+		guard let gang = character.parent as? DGMGang else {return .init(nil)}
 		
-		let targets = gang.pilots.flatMap {return $0 == character ? nil : $0}
+		let targets = gang.pilots.compactMap {return $0 == character ? nil : $0}
 		let currentTarget = module.target?.parent as? DGMCharacter
 		var rows: [TreeNode] = targets.map {NCFleetMemberRow(pilot: $0)}
 		
 		let i = currentTarget != nil ? targets.index(of: currentTarget!) : nil
 		
-		let root = TreeNode()
-		root.children = rows
-		self.treeController?.content = root
-		if let i = i {
-			let row = rows[i]
-			self.treeController?.selectCell(for: row, animated: false, scrollPosition: .bottom)
+		return Future(RootNode(rows)).finally(on: .main) {
+			if let i = i {
+				let row = rows[i]
+				self.treeController?.selectCell(for: row, animated: false, scrollPosition: .bottom)
+			}
 		}
+//		self.treeController?.content = root
 	}
 	//MARK: - TreeControllerDelegate
 	

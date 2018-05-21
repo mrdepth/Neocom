@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCWHGroupRow: NCFetchedResultsObjectNode<NCDBWhType> {
 	
@@ -47,17 +48,17 @@ class NCWHViewController: NCTreeViewController, NCSearchableViewController {
 		}
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if treeController?.content == nil {
-			reloadData()
-		}
-	}
-	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
 			treeController?.content = nil
 		}
+	}
+	
+	private let root = TreeNode()
+	
+	override func content() -> Future<TreeNode?> {
+		reloadData()
+		return .init(root)
 	}
 	
 	//MARK: - TreeControllerDelegate
@@ -99,7 +100,7 @@ class NCWHViewController: NCTreeViewController, NCSearchableViewController {
 		
 		try? results.performFetch()
 		
-		treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBWhType>.self, objectNode: NCWHGroupRow.self)
+		root.children = [FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBWhType>.self, objectNode: NCWHGroupRow.self)]
 	}
 	
 }

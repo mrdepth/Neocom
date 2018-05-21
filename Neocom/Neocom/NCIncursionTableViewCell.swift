@@ -72,7 +72,7 @@ class NCIncursionRow: TreeRow {
 		
 		cell.iconView.image = image
 		if image == nil {
-			NCDataManager().image(allianceID: Int64(incursion.factionID), dimension: Int(cell.iconView.bounds.size.width)) { result in
+			NCDataManager().image(allianceID: Int64(incursion.factionID), dimension: Int(cell.iconView.bounds.size.width)).then(on: .main) { result in
 				self.image = result.value ?? UIImage()
 				if (cell.object as? ESI.Incursions.Incursion) == self.incursion {
 					cell.iconView.image = self.image
@@ -81,7 +81,9 @@ class NCIncursionRow: TreeRow {
 		}
 	}
 	
-	override lazy var hashValue: Int = incursion.hashValue
+	override var hashValue: Int {
+		return incursion.hashValue
+	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCIncursionRow)?.hashValue == hashValue

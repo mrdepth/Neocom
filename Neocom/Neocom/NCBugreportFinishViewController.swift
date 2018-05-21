@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageUI
+import EVEAPI
 
 class NCBugreportFinishViewController: NCTreeViewController {
 	var subject: String?
@@ -27,7 +28,7 @@ class NCBugreportFinishViewController: NCTreeViewController {
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		
 		var sections = [TreeNode]()
 		
@@ -60,8 +61,7 @@ class NCBugreportFinishViewController: NCTreeViewController {
 			]))
 
 		
-		treeController?.content = RootNode(sections)
-		completionHandler()
+		return .init(RootNode(sections))
 	}
 	
 	private var attachAccessToken: Bool = false

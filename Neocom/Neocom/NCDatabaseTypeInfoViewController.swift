@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPreviewingDelegate {
 	var type: NCDBInvType?
@@ -42,36 +43,30 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 			addChildViewController(headerViewController)
 			self.headerViewController = headerViewController
 			
-			NCDataManager().image(typeID: Int(type.typeID), dimension: 512) { result in
-				switch result {
-				case let .success(value, _):
-					let to = self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseTypeInfoHeaderViewControllerLarge") as! NCDatabaseTypeInfoHeaderViewController
-					to.type = type
-					to.image = value
-					var frame = CGRect.zero
-					frame.size = to.view.systemLayoutSizeFitting(CGSize(width: self.view.bounds.size.width, height:0), withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
-					to.view.frame = frame
-					to.view.layoutIfNeeded()
-
-					let from = self.headerViewController!
-					
-					from.willMove(toParentViewController: nil)
-					self.addChildViewController(to)
-					to.view.alpha = 0.0;
-					self.transition(from: from, to: to, duration: 0.25, options: [], animations: {
-						from.view.alpha = 0.0;
-						to.view.alpha = 1.0;
-						self.tableView?.tableHeaderView?.frame = frame;
-						self.tableView?.tableHeaderView = self.tableView?.tableHeaderView;
-					}, completion: { (fihisned) in
-						from.removeFromParentViewController()
-						to.didMove(toParentViewController: self)
-					})
-					self.headerViewController = to
-					
-				default:
-					break
-				}
+			NCDataManager().image(typeID: Int(type.typeID), dimension: 512).then(on: .main) { value in
+				let to = self.storyboard!.instantiateViewController(withIdentifier: "NCDatabaseTypeInfoHeaderViewControllerLarge") as! NCDatabaseTypeInfoHeaderViewController
+				to.type = type
+				to.image = value.value
+				var frame = CGRect.zero
+				frame.size = to.view.systemLayoutSizeFitting(CGSize(width: self.view.bounds.size.width, height:0), withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel)
+				to.view.frame = frame
+				to.view.layoutIfNeeded()
+				
+				let from = self.headerViewController!
+				
+				from.willMove(toParentViewController: nil)
+				self.addChildViewController(to)
+				to.view.alpha = 0.0;
+				self.transition(from: from, to: to, duration: 0.25, options: [], animations: {
+					from.view.alpha = 0.0;
+					to.view.alpha = 1.0;
+					self.tableView?.tableHeaderView?.frame = frame;
+					self.tableView?.tableHeaderView = self.tableView?.tableHeaderView;
+				}, completion: { (fihisned) in
+					from.removeFromParentViewController()
+					to.didMove(toParentViewController: self)
+				})
+				self.headerViewController = to
 			}
 			
 			if marketQuickItem == nil {
@@ -91,13 +86,12 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 		NotificationCenter.default.addObserver(self, selector: #selector(didChangeMarketRegion(_:)), name: .NCMarketRegionChanged, object: nil)
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		guard let type = type else {
-			completionHandler()
-			return
+			return .init(nil)
 		}
-		NCDatabaseTypeInfo.typeInfo(type: type, attributeValues: attributeValues) { result in
-			self.treeController?.content = RootNode(result, collapseIdentifier: "NCDatabaseTypeInfoViewController")
+		return NCDatabaseTypeInfo.typeInfo(type: type, attributeValues: attributeValues).then { result in
+			return RootNode(result, collapseIdentifier: "NCDatabaseTypeInfoViewController")
 		}
 	}
 	
@@ -217,7 +211,7 @@ class NCDatabaseTypeInfoViewController: NCTreeViewController, UIViewControllerPr
 	
 	@objc private func didChangeMarketRegion(_ note: Notification) {
 		if let type = type {
-			NCDatabaseTypeInfo.typeInfo(type: type, attributeValues: attributeValues) { result in
+			NCDatabaseTypeInfo.typeInfo(type: type, attributeValues: attributeValues).then(on: .main) { result in
 				self.treeController?.content?.children = result
 			}
 		}

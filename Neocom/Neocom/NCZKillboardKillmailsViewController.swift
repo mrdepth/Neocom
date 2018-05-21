@@ -31,84 +31,61 @@ class NCZKillboardKillmailsViewController: NCTreeViewController {
 	
 	//MARK: - TreeControllerDelegate
 	
-	private var result: NCCachedResult<[ZKillboard.Killmail]>?
+//	private var result: CachedValue<[ZKillboard.Killmail]>?
 
-	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		page = nil
 		isEndReached = false
-		kills = nil
-		fetch(page: nil) { result in
-			completionHandler([result.cacheRecord].flatMap {$0})
+		kills = TreeNode()
+		return fetch(page: nil).then(on: .main) { result -> [NCCacheRecord] in
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 
-	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		kills = TreeNode()
-		update(result: result, completionHandler: completionHandler)
+	override func content() -> Future<TreeNode?> {
+		return .init(kills)
 	}
 	
-	private func update(result: NCCachedResult<[ZKillboard.Killmail]>?, completionHandler: @escaping () -> Void) {
-		guard let killsNode = kills else {
-			isFetching = false
-			completionHandler()
-			return
+	private func process(result: CachedValue<[ZKillboard.Killmail]>) -> Future<Void> {
+		let killsNode = self.kills
+		var kills = killsNode.children.map { i -> NCDateSection in
+			let section = NCDateSection(date: (i as! NCDateSection).date)
+			section.children = i.children
+			return section
 		}
+
+		let dataManager = self.dataManager
 		
-		if let killmails = result?.value, !killmails.isEmpty {
-			var kills = killsNode.children.map { i -> NCDateSection in
-				let section = NCDateSection(date: (i as! NCDateSection).date)
-				section.children = i.children
-				return section
-			}
+		return DispatchQueue.global(qos: .utility).async { () -> Void in
+			guard let killmails = result.value, !killmails.isEmpty else {throw NCTreeViewControllerError.noResult}
 			
-			let dataManager = self.dataManager
+			let calendar = Calendar(identifier: .gregorian)
 			
-			DispatchQueue.global(qos: .background).async {
-				autoreleasepool {
-					let calendar = Calendar(identifier: .gregorian)
-					
-					for killmail in killmails {
-						let row = NCKillmailRow(killmail: killmail, characterID: nil, dataManager: dataManager)
-						
-						if let section = kills.last, section.date < killmail.killmailTime {
-							section.children.append(row)
-						}
-						else {
-							
-							let components = calendar.dateComponents([.year, .month, .day], from: killmail.killmailTime)
-							let date = calendar.date(from: components) ?? killmail.killmailTime
-							let section = NCDateSection(date: date)
-							section.children = [row]
-							kills.append(section)
-						}
-					}
-					DispatchQueue.main.async {
-						UIView.performWithoutAnimation {
-							killsNode.children = kills
-							self.treeController?.content = killsNode
-						}
-						
-						self.page = (self.page ?? 1) + 1
-						
-						self.isFetching = false
-						self.fetchIfNeeded()
-						completionHandler()
-						self.tableView.backgroundView = killsNode.children.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-					}
+			for killmail in killmails {
+				let row = NCKillmailRow(killmail: killmail, characterID: nil, dataManager: dataManager)
+				
+				if let section = kills.last, section.date < killmail.killmailTime {
+					section.children.append(row)
+				}
+				else {
+					let components = calendar.dateComponents([.year, .month, .day], from: killmail.killmailTime)
+					let date = calendar.date(from: components) ?? killmail.killmailTime
+					let section = NCDateSection(date: date)
+					section.children = [row]
+					kills.append(section)
 				}
 			}
+		}.then(on: .main) { () -> Void in
+			UIView.performWithoutAnimation {
+				killsNode.children = kills
+			}
 			
-			
-		}
-		else {
-			self.isFetching = false
+			self.page = (self.page ?? 1) + 1
+			self.isEndReached = false
+			self.fetchIfNeeded()
+		}.catch(on: .main) { _ in
 			self.isEndReached = true
-			completionHandler()
-			self.tableView.backgroundView = killsNode.children.isEmpty ? NCTableViewBackgroundLabel(text: result?.error?.localizedDescription ?? NSLocalizedString("No Results", comment: "")) : nil
 		}
-
 	}
 	
 	//MARK: - Private
@@ -124,7 +101,7 @@ class NCZKillboardKillmailsViewController: NCTreeViewController {
 			}
 		}
 	}
-	private var kills: TreeNode?
+	private var kills: TreeNode = TreeNode()
 	
 	private func fetchIfNeeded() {
 		if let page = page, tableView.contentOffset.y > tableView.contentSize.height - tableView.bounds.size.height * 2 {
@@ -132,7 +109,7 @@ class NCZKillboardKillmailsViewController: NCTreeViewController {
 
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
 			progress.progress.perform {
-				fetch(page: page) { _ in
+				fetch(page: page).then { _ in
 					progress.finish()
 				}
 			}
@@ -140,23 +117,22 @@ class NCZKillboardKillmailsViewController: NCTreeViewController {
 	}
 
 
-	private func fetch(page: Int?, completionHandler: ((NCCachedResult<[ZKillboard.Killmail]>) -> Void)? = nil) {
-		guard let filter = filter else {return}
-		guard !isEndReached, !isFetching else {return}
+	private func fetch(page: Int?) -> Future<CachedValue<[ZKillboard.Killmail]>> {
+		guard let filter = filter else {return .init(.failure(NCTreeViewControllerError.noResult))}
+		guard !isEndReached, !isFetching else {return .init(.failure(NCTreeViewControllerError.noResult))}
+		
 		let dataManager = self.dataManager
 		isFetching = true
 
 		let progress = Progress(totalUnitCount: 1)
 		
-		func process(killmails: [ZKillboard.Killmail]) {
-		}
-		
-		progress.perform {
-			dataManager.zKillmails(filter: filter, page: page ?? 1) { result in
-				self.result = result
-				self.update(result: result) {
-					completionHandler?(result)
+		return progress.perform {
+			dataManager.zKillmails(filter: filter, page: page ?? 1).then(on: .main) { result in
+				return self.process(result: result).then { () -> CachedValue<[ZKillboard.Killmail]> in
+					return result
 				}
+			}.finally(on: .main) {
+				self.isFetching = false
 			}
 		}
 	}

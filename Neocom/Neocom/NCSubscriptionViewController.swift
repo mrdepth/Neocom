@@ -9,6 +9,7 @@
 import Foundation
 import ASReceipt
 import StoreKit
+import EVEAPI
 
 class NCSubscriptionViewController: NCTreeViewController {
 	
@@ -39,13 +40,14 @@ class NCSubscriptionViewController: NCTreeViewController {
 		SKPaymentQueue.default().remove(self)
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		/*
-		return;*/
+	override func content() -> Future<TreeNode?> {
+		let promise = Promise<TreeNode?>()
 		
 		Receipt.fetchValidReceipt { result in
-			defer {completionHandler()}
-			guard let products = self.products ?? (UIApplication.shared.delegate as? NCAppDelegate)?.products, !products.isEmpty else {return}
+			guard let products = self.products ?? (UIApplication.shared.delegate as? NCAppDelegate)?.products, !products.isEmpty else {
+				try! promise.fulfill(nil)
+				return
+			}
 
 			var rows: [TreeNode] = []
 			
@@ -70,7 +72,7 @@ class NCSubscriptionViewController: NCTreeViewController {
 						NCSubscriptionStatusRow(product: product, inApp: inApp, purchase: purchase),
 						]))
 					
-					let plans = products.filter {$0 != product}.flatMap ({ i -> TreeNode? in
+					let plans = products.filter {$0 != product}.compactMap ({ i -> TreeNode? in
 						guard let inApp = InAppProductID(rawValue: i.productIdentifier) else {return nil}
 						let route = Router.Custom { [weak self] (_, sender) in
 							self?.purchase(product: i, sender: sender)
@@ -92,7 +94,7 @@ class NCSubscriptionViewController: NCTreeViewController {
 				}
 			}
 			else {
-				let plans = products.flatMap ({ i -> TreeNode? in
+				let plans = products.compactMap ({ i -> TreeNode? in
 					guard let inApp = InAppProductID(rawValue: i.productIdentifier) else {return nil}
 					let route = Router.Custom { [weak self] (_, sender) in
 						self?.purchase(product: i, sender: sender)
@@ -136,9 +138,10 @@ class NCSubscriptionViewController: NCTreeViewController {
 				})),
 				
 				]))
-			
-			self.treeController?.content = RootNode(rows)
+			try! promise.fulfill(RootNode(rows))
 		}
+		
+		return promise.future
 	}
 	
 	private var products: [SKProduct]?
@@ -164,7 +167,7 @@ class NCSubscriptionViewController: NCTreeViewController {
 extension NCSubscriptionViewController: SKProductsRequestDelegate {
 	public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
 		products = response.products.sorted {$0.price.doubleValue < $1.price.doubleValue}
-		updateContent {}
+		updateContent()
 	}
 }
 
@@ -179,7 +182,7 @@ extension NCSubscriptionViewController: SKPaymentTransactionObserver {
 			progressHandler?.finish()
 			progressHandler = nil
 			tableView.isUserInteractionEnabled = true
-			updateContent { }
+			updateContent()
 		}
 	}
 	

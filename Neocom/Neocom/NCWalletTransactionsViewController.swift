@@ -28,39 +28,31 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 		}
 	}
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		switch wallet {
 		case .character:
 			let progress = Progress(totalUnitCount: 2)
-			OperationQueue(qos: .utility).async { () -> (CachedValue<[ESI.Wallet.Transaction]>, CachedValue<Double>) in
+			return DispatchQueue.global(qos: .utility).async { () -> (CachedValue<[ESI.Wallet.Transaction]>, CachedValue<Double>) in
 				let walletTransactions = progress.perform{self.dataManager.walletTransactions()}
 				let walletBalance = progress.perform{self.dataManager.walletBalance()}
 				return try (walletTransactions.get(), walletBalance.get())
-			}.then(on: .main) { result in
+			}.then(on: .main) { result -> [NCCacheRecord] in
 				self.walletTransactions = result.0
 				self.walletBalance = result.1
-				self.error = nil
-				completionHandler([self.walletTransactions?.cacheRecord, self.walletBalance?.cacheRecord].flatMap {$0})
-			}.catch(on: .main) { error in
-				self.error = error
-				completionHandler([])
-				self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: error.localizedDescription)
+				return [self.walletTransactions?.cacheRecord(in: NCCache.sharedCache!.viewContext), self.walletBalance?.cacheRecord(in: NCCache.sharedCache!.viewContext)].compactMap {$0}
+//				completionHandler([self.walletTransactions?.cacheRecord, self.walletBalance?.cacheRecord].compactMap {$0})
 			}
 		case let .corporation(wallet):
-			Progress(totalUnitCount: 1).perform {
-				self.dataManager.corpWalletTransactions(division: wallet.division ?? 0).then(on: .main) { result in
+			return Progress(totalUnitCount: 1).perform {
+				self.dataManager.corpWalletTransactions(division: wallet.division ?? 0).then(on: .main) { result -> [NCCacheRecord] in
 					self.corpWalletTransactions = result
-					completionHandler([self.corpWalletTransactions?.cacheRecord].flatMap {$0})
-				}.catch(on: .main) { error in
-					self.error = error
-					completionHandler([])
-					self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: error.localizedDescription)
+					return [self.corpWalletTransactions?.cacheRecord(in: NCCache.sharedCache!.viewContext)].compactMap {$0}
 				}
 			}
 		}
 	}
-
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	
+	override func content() -> Future<TreeNode?> {
 		if let value = walletBalance?.value {
 			let label = navigationItem.titleView as? NCNavigationItemTitleLabel
 			label?.set(title: NSLocalizedString("Wallet Transactions", comment: ""), subtitle: NCUnitFormatter.localizedString(from: value, unit: .isk, style: .full))
@@ -71,8 +63,8 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 		let progress = Progress(totalUnitCount: 3)
 
 
-		OperationQueue(qos: .utility).async { () -> [TreeNode] in
-			guard let value: [NCWalletTransaction] = walletTransactions?.value ?? corpWalletTransactions?.value else {return []}
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
+			guard let value: [NCWalletTransaction] = walletTransactions?.value ?? corpWalletTransactions?.value else {throw NCTreeViewControllerError.noResult}
 			
 			var sections = [TreeNode]()
 
@@ -132,28 +124,13 @@ class NCWalletTransactionsViewController: NCTreeViewController {
 				}
 				
 			}
-			return sections
-		}.then(on: .main) { sections -> Void in
-			progress.completedUnitCount += 1
-			
-			if self.treeController?.content == nil {
-				self.treeController?.content = RootNode(sections)
-			}
-			else {
-				self.treeController?.content?.children = sections
-			}
-			
-			self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: self.error?.localizedDescription ?? NSLocalizedString("No Results", comment: "")) : nil
-		}.catch(on: .main) {error in
-			self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: self.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-		}.finally(on: .main) {
-			completionHandler()
+			guard !sections.isEmpty else {throw NCTreeViewControllerError.noResult}
+			return RootNode(sections)
 		}
 	}
 	
 	private var walletTransactions: CachedValue<[ESI.Wallet.Transaction]>?
 	private var corpWalletTransactions: CachedValue<[ESI.Wallet.CorpTransaction]>?
 	private var walletBalance: CachedValue<Double>?
-	private var error: Error?
 
 }

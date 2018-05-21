@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCRegionRow: NCFetchedResultsObjectNode<NCDBMapRegion> {
 	
@@ -58,18 +59,17 @@ class NCRegionsViewController: NCTreeViewController, NCSearchableViewController 
 		return (navigationController as? NCLocationPickerViewController)?.mode ?? []
 	}
 
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		let request = NSFetchRequest<NCDBMapRegion>(entityName: "MapRegion")
 		request.sortDescriptors = [NSSortDescriptor(key: "securityClass", ascending: false), NSSortDescriptor(key: "regionName", ascending: true)]
 		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: "securityClassDisplayName", cacheName: nil)
 		
 		if mode.contains(.regions) && mode.contains(.solarSystems) {
-			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBMapRegion>.self, objectNode: NCRegionSelectionRow.self)
+			return .init(FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBMapRegion>.self, objectNode: NCRegionSelectionRow.self))
 		}
 		else {
-			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBMapRegion>.self, objectNode: NCRegionRow.self)
+			return .init(FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBMapRegion>.self, objectNode: NCRegionRow.self))
 		}
-		completionHandler()
 	}
 	
 	

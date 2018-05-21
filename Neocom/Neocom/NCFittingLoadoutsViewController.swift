@@ -178,7 +178,7 @@ class NCFittingLoadoutsViewController: NCTreeViewController, NCSearchableViewCon
 	}
 	
 	@IBAction func onDelete(_ sender: UIBarButtonItem) {
-		guard let selected = treeController?.selectedNodes().flatMap ({($0 as? NCLoadoutRow)?.loadoutID}) else {return}
+		guard let selected = treeController?.selectedNodes().compactMap ({($0 as? NCLoadoutRow)?.loadoutID}) else {return}
 		guard !selected.isEmpty else {return}
 		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		controller.addAction(UIAlertAction(title: String(format: NSLocalizedString("Delete %d Loadouts", comment: ""), selected.count), style: .destructive) { [weak self] _ in
@@ -198,13 +198,13 @@ class NCFittingLoadoutsViewController: NCTreeViewController, NCSearchableViewCon
 	}
 	
 	@IBAction func onShare(_ sender: UIBarButtonItem) {
-		guard let selected = treeController?.selectedNodes().flatMap ({($0 as? NCLoadoutRow)?.loadoutID}) else {return}
+		guard let selected = treeController?.selectedNodes().compactMap ({($0 as? NCLoadoutRow)?.loadoutID}) else {return}
 		
 		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		
 		func loadouts(_ completionHandler: @escaping ([(typeID: Int, data: NCFittingLoadout, name: String)]) -> Void) {
 			NCStorage.sharedStorage?.performBackgroundTask { managedObjectContext in
-				let loadouts = selected.flatMap { loadoutID -> (typeID: Int, data: NCFittingLoadout, name: String)? in
+				let loadouts = selected.compactMap { loadoutID -> (typeID: Int, data: NCFittingLoadout, name: String)? in
 					guard let loadout = (try? managedObjectContext.existingObject(with: loadoutID)) as? NCLoadout else {return nil}
 					guard let data = loadout.data?.data else {return nil}
 					

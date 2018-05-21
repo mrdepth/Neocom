@@ -10,6 +10,11 @@ import UIKit
 import CoreData
 import EVEAPI
 
+enum NCMailViewControllerError: Error {
+	case isEndReached
+}
+
+
 class NCMailViewController: NCTreeViewController {
 	
 	var label: ESI.Mail.MailLabelsAndUnreadCounts.Label? {
@@ -51,9 +56,7 @@ class NCMailViewController: NCTreeViewController {
 					(parent as? NCMailPageViewController)?.saveUnreadCount()
 				}
 				updateTitle()
-				NCDataManager(account: NCAccount.current).markRead(mail: node.mail) { _ in
-					
-				}
+				_ = NCDataManager(account: NCAccount.current).markRead(mail: node.mail)
 			}
 		}
 	}
@@ -64,44 +67,41 @@ class NCMailViewController: NCTreeViewController {
 		let header = node.mail
 		
 		return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { [weak self] (_,_) in
+			guard let strongSelf = self else {return}
 			guard let cell = self?.treeController?.cell(for: node) else {return}
-			self?.tableView.isUserInteractionEnabled = false
+			strongSelf.tableView.isUserInteractionEnabled = false
 
 			
 			let progress = NCProgressHandler(view: cell, totalUnitCount: 1, activityIndicatorStyle: .white)
 			progress.progress.perform {
-
-				self?.dataManager.delete(mailID: mailID) { result in
-					self?.tableView.isUserInteractionEnabled = true
+				strongSelf.dataManager.delete(mailID: Int64(mailID)).then(on: .main) { result in
+					guard let record = node.cacheRecord else {return}
+					guard var headers: [ESI.Mail.Header] = record.get() else {return}
+					guard let i = headers.index(where: {$0.mailID == node.mail.mailID}) else {return}
+					headers.remove(at: i)
 					
-					switch result {
-					case .success:
-						guard let record = node.cacheRecord else {return}
-						guard var headers: [ESI.Mail.Header] = record.get() else {return}
-						guard let i = headers.index(where: {$0.mailID == node.mail.mailID}) else {return}
-						headers.remove(at: i)
-						
-						guard let strongSelf = self else {return}
-						
-						if header.isRead == false, let unread = strongSelf.label?.unreadCount, unread > 0 {
-							strongSelf.label?.unreadCount = unread - 1
-							strongSelf.updateTitle()
-							(strongSelf.parent as? NCMailPageViewController)?.saveUnreadCount()
-						}
-						
-						record.set(headers)
-						if record.managedObjectContext?.hasChanges == true {
-							try? record.managedObjectContext?.save()
-						}
-						if let parent = node.parent, let i = parent.children.index(of: node) {
-							parent.children.remove(at: i)
-							if parent.children.isEmpty, let root = parent.parent, let i = root.children.index(of: parent) {
-								root.children.remove(at: i)
-							}
-						}
-					case .failure:
-						break
+					guard let strongSelf = self else {return}
+					
+					if header.isRead == false, let unread = strongSelf.label?.unreadCount, unread > 0 {
+						strongSelf.label?.unreadCount = unread - 1
+						strongSelf.updateTitle()
+						(strongSelf.parent as? NCMailPageViewController)?.saveUnreadCount()
 					}
+					
+					record.set(headers)
+					if record.managedObjectContext?.hasChanges == true {
+						try? record.managedObjectContext?.save()
+					}
+					if let parent = node.parent, let i = parent.children.index(of: node) {
+						parent.children.remove(at: i)
+						if parent.children.isEmpty, let root = parent.parent, let i = root.children.index(of: parent) {
+							root.children.remove(at: i)
+						}
+					}
+				}.catch(on: .main) { error in
+					strongSelf.present(UIAlertController(error: error), animated: true, completion: nil)
+				}.finally(on: .main) {
+					self?.tableView.isUserInteractionEnabled = true
 					progress.finish()
 				}
 			}
@@ -124,125 +124,119 @@ class NCMailViewController: NCTreeViewController {
 		}
 	}
 	private var lastID: Int64?
-	private var mails: TreeNode?
-	private var result: NCCachedResult<[ESI.Mail.Header]>?
+	private var mails: TreeNode = TreeNode()
+//	private var result: CachedValue<[ESI.Mail.Header]>?
 	private var contacts: [Int64: NCContact] = [:]
+//	private var error: Error?
 
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		lastID = nil
 		isEndReached = false
-		mails = nil
-		fetch(from: nil) { result in
-			completionHandler([result.cacheRecord].flatMap {$0})
+		mails = TreeNode()
+		return fetch(from: nil).then(on: .main) { result in
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		mails = TreeNode()
-		update(result: result, completionHandler: completionHandler)
+	override func content() -> Future<TreeNode?> {
+		return .init(mails)
 	}
 	
-	private func update(result: NCCachedResult<[ESI.Mail.Header]>?, completionHandler: @escaping () -> Void) {
-		guard let mails = mails else {
-			completionHandler()
-			self.isFetching = false
-			return
+	private func process(result: CachedValue<[ESI.Mail.Header]>) -> Future<Void> {
+		guard let label = self.label else {
+			return .init(.failure(NCTreeViewControllerError.noResult))
 		}
 		
-		if let label = self.label, let headers = result?.value, !headers.isEmpty {
-			updateContacts(result: result) {
-				var children = mails.children.map { i -> NCDateSection in
-					let section = NCDateSection(date: (i as! NCDateSection).date)
-					section.children = i.children
-					return section
-				}
-				
-				var lastID = self.lastID
-				let cacheRecord = result?.cacheRecord
-				let dataManager = self.dataManager
-				let contacts = self.contacts
-				
-				DispatchQueue.global(qos: .background).async {
-					autoreleasepool {
-						let calendar = Calendar(identifier: .gregorian)
-						headers.filter {$0.mailID != nil && $0.timestamp != nil}.sorted{$0.mailID! > $1.mailID!}.forEach {
-							header in
-							let row = NCMailRow(mail: header, label: label, contacts: contacts, cacheRecord: cacheRecord, dataManager: dataManager)
-							
-							if let section = children.last, section.date < header.timestamp! {
-								section.children.append(row)
-							}
-							else {
-								
-								let components = calendar.dateComponents([.year, .month, .day], from: header.timestamp!)
-								let date = calendar.date(from: components) ?? header.timestamp!
-								let section = NCDateSection(date: date)
-								section.children = [row]
-								children.append(section)
-							}
-							lastID = header.mailID
-						}
-						
-						DispatchQueue.main.async {
-							UIView.performWithoutAnimation {
-								mails.children = children
-								self.treeController?.content = mails
-							}
-							
-							self.lastID = lastID
-							
-							self.isFetching = false
-							self.fetchIfNeeded()
-							completionHandler()
-							self.tableView.backgroundView = mails.children.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Messages", comment: "")) : nil
-						}
-					}
-				}
-			}
+		var children = mails.children.map { i -> NCDateSection in
+			let section = NCDateSection(date: (i as! NCDateSection).date)
+			section.children = i.children
+			return section
 		}
-		else {
-			self.isFetching = false
+
+		let dataManager = self.dataManager
+
+		var lastID: Int64? = nil
+
+		return DispatchQueue.global(qos: .utility).async { () -> Void in
+			guard let headers = result.value, !headers.isEmpty else {throw NCTreeViewControllerError.noResult}
+			
+			self.updateContacts(result: result).wait()
+			let contacts = self.contacts
+			
+			let calendar = Calendar(identifier: .gregorian)
+			
+			headers.filter {$0.mailID != nil && $0.timestamp != nil}.sorted{$0.mailID! > $1.mailID!}.forEach {
+				header in
+				let row = NCMailRow(mail: header, label: label, contacts: contacts, cacheRecord: result.objectID, dataManager: dataManager)
+				
+				if let section = children.last, section.date < header.timestamp! {
+					section.children.append(row)
+				}
+				else {
+					
+					let components = calendar.dateComponents([.year, .month, .day], from: header.timestamp!)
+					let date = calendar.date(from: components) ?? header.timestamp!
+					let section = NCDateSection(date: date)
+					section.children = [row]
+					children.append(section)
+				}
+				lastID = header.mailID.map {Int64($0)}
+			}
+		}.then(on: .main) { () -> Void in
+			UIView.performWithoutAnimation {
+				self.mails.children = children
+			}
+			self.lastID = lastID
+			self.isEndReached = false
+			self.fetchIfNeeded()
+		}.catch(on: .main) { error in
 			self.isEndReached = true
-			completionHandler()
-			self.tableView.backgroundView = mails.children.isEmpty ? NCTableViewBackgroundLabel(text: result?.error?.localizedDescription ?? NSLocalizedString("No Messages", comment: "")) : nil
 		}
 	}
 	
-	private func updateContacts(result: NCCachedResult<[ESI.Mail.Header]>?, completionHandler: @escaping () -> Void) {
+	private func updateContacts(result: CachedValue<[ESI.Mail.Header]>) -> Future<Void> {
+		let promise = Promise<Void>()
 		var ids = Set<Int64>()
-		result?.value?.forEach { mail in
-			ids.formUnion(Set(mail.recipients?.flatMap {Int64($0.recipientID)} ?? []))
+		result.value?.forEach { mail in
+			ids.formUnion(Set(mail.recipients?.compactMap {Int64($0.recipientID)} ?? []))
 			if let from = mail.from {
 				ids.insert(Int64(from))
 			}
 		}
-		ids.formSymmetricDifference(Set(contacts.keys))
+		ids.subtract(contacts.keys)
 		if !ids.isEmpty {
 			Progress(totalUnitCount: 1).perform {
-				self.dataManager.contacts(ids: ids) { result in
-					result.forEach {
-						self.contacts[$0.key] = $0.value
+				self.dataManager.contacts(ids: ids).then(on: .main) { result in
+					let context = NCCache.sharedCache?.viewContext
+					result.values.compactMap { (try? context?.existingObject(with: $0)) as? NCContact }.forEach {
+						self.contacts[$0.contactID] = $0
 					}
-					completionHandler()
+					try! promise.fulfill(())
+				}.catch{error in
+					try! promise.fail(error)
 				}
 			}
 		}
 		else {
-			completionHandler()
+			try! promise.fulfill(())
 		}
+		return promise.future
 	}
 	
-	private func fetch(from: Int64?, completionHandler: ((NCCachedResult<[ESI.Mail.Header]>) -> Void)? = nil) {
-		guard let label = label else {return}
-		guard let labelID = label.labelID else {return}
-		guard !isEndReached, !isFetching else {return}
-		isFetching = true
+	private func fetch(from: Int64?) -> Future<CachedValue<[ESI.Mail.Header]>> {
+		guard let label = label,
+			let labelID = label.labelID,
+			!isEndReached, !isFetching else {return .init(.failure(NCTreeViewControllerError.noResult))}
 		
-		dataManager.returnMailHeaders(lastMailID: from, labels: [Int64(labelID)]) { result in
-			self.result = result
-			
-			self.update(result: result) {
-				completionHandler?(result)
+		isFetching = true
+		let progress = Progress(totalUnitCount: 1)
+		return progress.perform{
+			dataManager.returnMailHeaders(lastMailID: from, labels: [Int64(labelID)]).then(on: .main) { result in
+				return self.process(result: result).then {
+					return result
+				}
+			}.finally(on: .main) {
+				self.isFetching = false
 			}
 		}
 	}
@@ -253,7 +247,7 @@ class NCMailViewController: NCTreeViewController {
 			
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
 			progress.progress.perform {
-				fetch(from: lastID) { _ in
+				fetch(from: lastID).then { _ in
 					progress.finish()
 				}
 			}

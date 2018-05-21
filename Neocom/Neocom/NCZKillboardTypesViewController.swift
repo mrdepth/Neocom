@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCZKillboardTypeRow: NCDatabaseTypeRow<NSDictionary> {
 
@@ -39,13 +40,13 @@ class NCZKillboardTypesViewController: NCTreeViewController, NCSearchableViewCon
 		}
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if treeController?.content == nil {
-			reloadData()
-		}
-	}
+	private let root = TreeNode()
 	
+	override func content() -> Future<TreeNode?> {
+		reloadData()
+		return .init(root)
+	}
+
 	func reloadData() {
 		gate.perform {
 			NCDatabase.sharedDatabase?.performTaskAndWait({ (managedObjectContext) in
@@ -53,7 +54,7 @@ class NCZKillboardTypesViewController: NCTreeViewController, NCSearchableViewCon
 				try? section.resultsController.performFetch()
 				
 				DispatchQueue.main.async {
-					self.treeController?.content = section
+					self.root.children = [section]
 					self.tableView.backgroundView = (section.resultsController.fetchedObjects?.count ?? 0) == 0 ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
 				}
 			})

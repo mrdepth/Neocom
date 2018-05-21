@@ -31,96 +31,48 @@ class NCCharacter {
 	
 	var observer: NCManagedObjectObserver?
 	
-	class func load(account: NCAccount?, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: @escaping(NCResult<NCCharacter>) -> Void) {
+	class func load(account: NCAccount?, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) -> Future<NCCharacter> {
 		if let account = account {
-			let dataManager = NCDataManager(account: account)
-			var skillsResult: NCCachedResult<ESI.Skills.CharacterSkills>?
-			var skillQueueResult: NCCachedResult<[ESI.Skills.SkillQueueItem]>?
-			var attributesResult: NCCachedResult<ESI.Skills.CharacterAttributes>?
-			var implantsResult: NCCachedResult<[Int]>?
-			
-			let dispatchGroup = DispatchGroup()
-			
 			let progress = Progress(totalUnitCount: 4)
-			
-			progress.perform {
-				dispatchGroup.enter()
-				dataManager.skills { result in
-					skillsResult = result
-					dispatchGroup.leave()
-				}
-			}
-			
-			progress.perform {
-				dispatchGroup.enter()
-				dataManager.skillQueue { result in
-					skillQueueResult = result
-					dispatchGroup.leave()
-				}
-			}
-			
-			progress.perform {
-				dispatchGroup.enter()
-				dataManager.attributes { result in
-					attributesResult = result
-					dispatchGroup.leave()
-				}
-			}
 
-			progress.perform {
-				dispatchGroup.enter()
-				dataManager.implants { result in
-					implantsResult = result
-					dispatchGroup.leave()
-				}
-			}
-			
-			dispatchGroup.notify(queue: .main) {
-				guard let skills = skillsResult?.value,
-					let skillQueue = skillQueueResult?.value,
-					let attributes = attributesResult?.value,
-					let implants = implantsResult?.value else {
-						completionHandler(.failure(skillsResult?.error ?? skillQueueResult?.error ?? attributesResult?.error ?? implantsResult?.error ?? NCDataManagerError.internalError))
-						return
+			return NCStorage.sharedStorage!.performBackgroundTask { context -> NCCharacter in
+				let account = try context.existingObject(with: account.objectID) as! NCAccount
+				let dataManager = NCDataManager(account: account)
+				let skills = try progress.perform {dataManager.skills()}.get()
+				let skillQueue = try progress.perform {dataManager.skillQueue()}.get()
+				let attributes = try progress.perform {dataManager.attributes()}.get()
+				let implants = try progress.perform {dataManager.implants()}.get()
+				guard let skillsValue = skills.value,
+					let skillQueueValue = skillQueue.value,
+					let attributesValue = attributes.value,
+					let implantsValue = implants.value else {
+						throw NCDataManagerError.noCacheData
 				}
 				
-				let records = [skillsResult?.cacheRecord, skillQueueResult?.cacheRecord, attributesResult?.cacheRecord, implantsResult?.cacheRecord].flatMap{$0}
-
-				DispatchQueue.global(qos: .background).async {
-					autoreleasepool {
-						let character = NCCharacter(attributes: NCCharacterAttributes(attributes: attributes, implants: implants), skills: skills, skillQueue: skillQueue)
+				let character = NCCharacter(attributes: NCCharacterAttributes(attributes: attributesValue, implants: implantsValue), skills: skillsValue, skillQueue: skillQueueValue)
+				DispatchQueue.main.async {
+					character.observer = NCManagedObjectObserver(managedObjects: [skills.cacheRecord(in: NCCache.sharedCache!.viewContext), skillQueue.cacheRecord(in: NCCache.sharedCache!.viewContext), attributes.cacheRecord(in: NCCache.sharedCache!.viewContext), implants.cacheRecord(in: NCCache.sharedCache!.viewContext)]) { [weak character] (updated, deleted) in
+						guard let character = character else {return}
+						guard updated != nil else {return}
+						guard let skillsValue = skills.value,
+							let skillQueueValue = skillQueue.value,
+							let attributesValue = attributes.value,
+							let implantsValue = implants.value else {
+								return
+						}
 						
-						DispatchQueue.main.async {
-							character.observer = NCManagedObjectObserver(managedObjects: records) { [weak character] (updated, deleted) in
-								guard let character = character else {return}
-								guard updated != nil else {return}
-								
-								guard let skills = skillsResult?.value,
-									let skillQueue = skillQueueResult?.value,
-									let attributes = attributesResult?.value,
-									let implants = implantsResult?.value else {
-										return
-								}
-								
-								DispatchQueue.global(qos: .background).async {
-									autoreleasepool {
-										character.load(attributes: NCCharacterAttributes(attributes: attributes, implants: implants), skills: skills, skillQueue: skillQueue)
-										
-										DispatchQueue.main.async {
-											NotificationCenter.default.post(name: .NCCharacterChanged, object: character)
-										}
-									}
-								}
-							}
-							completionHandler(.success(character))
+						DispatchQueue.global(qos: .utility).async {
+							character.load(attributes: NCCharacterAttributes(attributes: attributesValue, implants: implantsValue), skills: skillsValue, skillQueue: skillQueueValue)
+							}.then(on: .main) {
+								NotificationCenter.default.post(name: .NCCharacterChanged, object: character)
 						}
 					}
 				}
-
+				return character
 			}
 		}
 		else {
-			completionHandler(.success(NCCharacter()))
+			return .init(NCCharacter())
 		}
 	}
 	

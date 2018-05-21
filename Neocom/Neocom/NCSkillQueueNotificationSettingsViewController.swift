@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import EVEAPI
 
 class NCSettingsAccountSwitchTableViewCell: NCAccountTableViewCell {
 	@IBOutlet weak var switchControl: UISwitch!
@@ -92,7 +93,7 @@ class NCSkillQueueNotificationEventsSection: DefaultTreeSection {
 																		   .oneDay,
 																		   .skillTrainingComplete]
 		
-		let children = keys.flatMap { key -> NCSwitchRow? in
+		let children = keys.compactMap { key -> NCSwitchRow? in
 			let title: String
 			
 			switch key.rawValue {
@@ -148,7 +149,7 @@ class NCSkillQueueNotificationSettingsViewController: NCTreeViewController {
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		var sections = [TreeNode]()
 		
 		if let setting = NCSetting.setting(key: NCSetting.Key.skillQueueNotifications) {
@@ -167,13 +168,12 @@ class NCSkillQueueNotificationSettingsViewController: NCTreeViewController {
 			controller.present(alert, animated: true, completion: nil)
 		}
 		
-		guard let context = NCStorage.sharedStorage?.viewContext else {return}
-		guard let setting = NCSetting.setting(key: NCSetting.Key.skillQueueNotificationsAccounts) else {return}
+		guard let context = NCStorage.sharedStorage?.viewContext else {return .init(nil)}
+		guard let setting = NCSetting.setting(key: NCSetting.Key.skillQueueNotificationsAccounts) else {return .init(nil)}
 		
 		sections.append(NCNotificationSettingsAccountsNode(context: context, setting: setting, handler: {
 			
 		}))
-		treeController?.content = RootNode(sections, collapseIdentifier: "NCFeedsViewController")
-		completionHandler()
+		return .init(RootNode(sections, collapseIdentifier: "NCFeedsViewController"))
 	}
 }

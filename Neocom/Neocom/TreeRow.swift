@@ -56,17 +56,6 @@ class RootNode: TreeNode, CollapseSerializable {
 	
 	init(_ children: [TreeNode] = [], collapseIdentifier: String? = nil) {
 		self.collapseIdentifier = collapseIdentifier
-/*		if let collapseIdentifier = collapseIdentifier {
-			collapseState = NCCache.sharedCache?.viewContext.fetch("SectionCollapse", where: "identifier == %@", collapseIdentifier) ?? {
-				let state = NCCacheSectionCollapse(entity: NSEntityDescription.entity(forEntityName: "SectionCollapse!", in: NCCache.sharedCache!.viewContext)!, insertInto: NCCache.sharedCache!.viewContext)
-				state.identifier = collapseIdentifier
-				state.isExpanded = true
-				return state
-			}()
-		}
-		else {
-			collapseState = nil
-		}*/
 		super.init()
 		self.children = children
 	}

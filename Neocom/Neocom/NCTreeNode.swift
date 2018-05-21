@@ -29,8 +29,8 @@ class NCTreeNode: NSObject {
 }
 
 class NCTreeSection: NCTreeNode {
-	@objc dynamic var title: String?
-	@objc dynamic var attributedTitle: NSAttributedString?
+	var title: String?
+	var attributedTitle: NSAttributedString?
 	var configurationHandler: ((UITableViewCell) -> Void)?
 	
 	init(cellIdentifier: String, nodeIdentifier: String? = nil, title: String? = nil, attributedTitle: NSAttributedString? = nil, children: [NCTreeNode]? = nil, object: Any? = nil, configurationHandler: ((UITableViewCell) -> Void)? = nil) {
@@ -47,14 +47,11 @@ class NCTreeSection: NCTreeNode {
 		else if let cell = cell as? NCHeaderTableViewCell {
 			cell.object = object
 			if title != nil {
-				//cell.titleLabel?.text = title
-				cell.binder.bind("titleLabel.text", toObject: self, withKeyPath: "title", transformer: nil)
+				cell.titleLabel?.text = title
 			}
 			else if attributedTitle != nil {
-				//cell.titleLabel?.attributedText = attributedTitle
-				cell.binder.bind("titleLabel.attributedText", toObject: self, withKeyPath: "attributedTitle", transformer: nil)
+				cell.titleLabel?.attributedText = attributedTitle
 			}
-
 		}
 	}
 }

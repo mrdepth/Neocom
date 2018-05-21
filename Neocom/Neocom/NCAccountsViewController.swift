@@ -24,7 +24,6 @@ class NCAccountsViewController: NCTreeViewController {
 		                    Prototype.NCHeaderTableViewCell.empty,
 							Prototype.NCDefaultTableViewCell.noImage])
 		
-		
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -42,7 +41,7 @@ class NCAccountsViewController: NCTreeViewController {
 
 	
 	@IBAction func onDelete(_ sender: UIBarButtonItem) {
-		guard let selected = treeController?.selectedNodes().flatMap ({$0 as? NCAccountRow}) else {return}
+		guard let selected = treeController?.selectedNodes().compactMap ({$0 as? NCAccountRow}) else {return}
 		guard !selected.isEmpty else {return}
 		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		controller.addAction(UIAlertAction(title: String(format: NSLocalizedString("Delete %d Accounts", comment: ""), selected.count), style: .destructive) { [weak self] _ in
@@ -62,7 +61,7 @@ class NCAccountsViewController: NCTreeViewController {
 	}
 	
 	@IBAction func onMoveTo(_ sender: Any) {
-		guard let selected = treeController?.selectedNodes().flatMap ({$0 as? NCAccountRow}) else {return}
+		guard let selected = treeController?.selectedNodes().compactMap ({$0 as? NCAccountRow}) else {return}
 		guard !selected.isEmpty else {return}
 
 		Router.Account.AccountsFolderPicker { [weak self] (controller, folder) in
@@ -95,7 +94,7 @@ class NCAccountsViewController: NCTreeViewController {
 	}
 	
 	@IBAction func onFolders(_ sender: Any) {
-		guard let selected = treeController?.selectedNodes().flatMap ({$0 as? NCAccountRow}) else {return}
+		guard let selected = treeController?.selectedNodes().compactMap ({$0 as? NCAccountRow}) else {return}
 
 		if selected.isEmpty {
 			Router.Account.Folders().perform(source: self, sender: sender)
@@ -163,20 +162,16 @@ class NCAccountsViewController: NCTreeViewController {
 	
 	private var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		defer {
-			completionHandler()
-		}
-		
-		guard let context = NCStorage.sharedStorage?.viewContext else {return}
+	override func content() -> Future<TreeNode?> {
+		guard let context = NCStorage.sharedStorage?.viewContext else {return .init(nil)}
 		let row = NCActionRow(title: NSLocalizedString("SIGN IN", comment: ""))
 		let space = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty)
-		treeController?.content = RootNode([NCAccountsNode<NCAccountRow>(context: context, cachePolicy: cachePolicy), space, row], collapseIdentifier: "NCAccountsViewController")
+		return .init(RootNode([NCAccountsNode<NCAccountRow>(context: context, cachePolicy: cachePolicy), space, row], collapseIdentifier: "NCAccountsViewController"))
 	}
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		self.cachePolicy = cachePolicy
-		completionHandler([])
+		return .init([])
 	}
 	
 	// MARK: TreeControllerDelegate

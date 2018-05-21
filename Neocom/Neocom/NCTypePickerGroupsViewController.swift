@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCDgmppItemGroupRow: NCFetchedResultsObjectNode<NCDBDgmppItemGroup> {
 	required init(object: NCDBDgmppItemGroup) {
@@ -36,25 +37,21 @@ class NCTypePickerGroupsViewController: NCTreeViewController, NCSearchableViewCo
 		title = parentGroup?.groupName
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		//title = group?.groupName
-		if treeController?.content == nil {
-			guard let parentGroup = parentGroup else {return}
-			let request = NSFetchRequest<NCDBDgmppItemGroup>(entityName: "DgmppItemGroup")
-			request.sortDescriptors = [NSSortDescriptor(key: "groupName", ascending: true)]
-			request.predicate = NSPredicate(format: "parentGroup == %@", parentGroup)
-			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-			
-			
-			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCDgmppItemGroupRow.self)
-		}
-	}
-	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
 			treeController?.content = nil
 		}
+	}
+	
+	override func content() -> Future<TreeNode?> {
+		guard let parentGroup = parentGroup else {return .init(nil)}
+		let request = NSFetchRequest<NCDBDgmppItemGroup>(entityName: "DgmppItemGroup")
+		request.sortDescriptors = [NSSortDescriptor(key: "groupName", ascending: true)]
+		request.predicate = NSPredicate(format: "parentGroup == %@", parentGroup)
+		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+		
+		
+		return .init(FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCDgmppItemGroupRow.self))
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-
+import EVEAPI
 
 class NCMarketQuickbarViewController: NCTreeViewController {
 	
@@ -38,25 +38,23 @@ class NCMarketQuickbarViewController: NCTreeViewController {
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		defer {
-			tableView.backgroundView =  treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: NSLocalizedString("No Result", comment: ""))
-			completionHandler()
-		}
+	override func content() -> Future<TreeNode?> {
 		
 		
-		guard let items: [NCMarketQuickItem] = NCStorage.sharedStorage?.viewContext.fetch("MarketQuickItem") else {return}
+		guard let items: [NCMarketQuickItem] = NCStorage.sharedStorage?.viewContext.fetch("MarketQuickItem") else {return .init(.failure(NCTreeViewControllerError.noResult))}
 		
 		let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
 		request.predicate = NSPredicate(format: "typeID IN %@", items.map{$0.typeID})
 		request.sortDescriptors = [NSSortDescriptor(key: "group.category.categoryName", ascending: true), NSSortDescriptor(key: "typeName", ascending: true)]
 		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: "group.category.categoryName", cacheName: nil)
 		
-		treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCDatabaseTypeRow<NCDBInvType>.self)
+		guard (results.fetchedObjects?.count ?? 0) > 0 else {return .init(.failure(NCTreeViewControllerError.noResult))}
+		
+		return .init(FetchedResultsNode(resultsController: results, sectionNode: NCDefaultFetchedResultsSectionNode<NCDBInvType>.self, objectNode: NCDatabaseTypeRow<NCDBInvType>.self))
 	}
 	
 	@objc private func delayedUpdate() {
-		updateContent {}
+		updateContent()
 	}
 	
 	//MARK: - TreeControllerDelegate

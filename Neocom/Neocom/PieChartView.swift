@@ -204,7 +204,7 @@ class PieChartView: UIView {
 	var formatter: Formatter?
 	
 	var segments: [PieSegment] {
-		return segmentLayers.flatMap {$0.segment}
+		return segmentLayers.compactMap {$0.segment}
 	}
 	
 	func add(segment: PieSegment) {
@@ -231,7 +231,7 @@ class PieChartView: UIView {
 		segmentLayer.formatter = formatter
 		segmentLayer.insets = segmentLayers.first?.presentation()?.insets ?? segmentLayers.first?.insets ?? 0
 		
-		segmentLayer.start = segmentLayers.flatMap {$0.presentation()?.end}.last ?? segmentLayers.last?.end ?? 0
+		segmentLayer.start = segmentLayers.compactMap {$0.presentation()?.end}.last ?? segmentLayers.last?.end ?? 0
 		segmentLayer.end = segmentLayer.start
 		segmentLayer.titleLocation = segmentLayer.start
 		

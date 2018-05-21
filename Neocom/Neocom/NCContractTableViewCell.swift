@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import CoreData
 
 class NCContractTableViewCell: NCTableViewCell {
 	@IBOutlet weak var titleLabel: UILabel!
@@ -25,12 +26,17 @@ extension Prototype {
 
 class NCContractRow: TreeRow {
 	let contract: ESI.Contracts.Contract
-	let contacts: [Int64: NCContact]?
+	let contacts: [Int64: NSManagedObjectID]?
 	let location: NCLocation?
 	let endDate: Date
 	let characterID: Int64
 	
-	init(contract: ESI.Contracts.Contract, characterID: Int64, contacts: [Int64: NCContact]?, location: NCLocation?) {
+	lazy var issuer: NCContact? = {
+		guard let objectID = contacts?[Int64(contract.issuerID)] else {return nil}
+		return (try? NCCache.sharedCache?.viewContext.existingObject(with: objectID)) as? NCContact
+	}()
+	
+	init(contract: ESI.Contracts.Contract, characterID: Int64, contacts: [Int64: NSManagedObjectID]?, location: NCLocation?) {
 		self.contract = contract
 		self.characterID = characterID
 		self.contacts = contacts
@@ -76,12 +82,14 @@ class NCContractRow: TreeRow {
 		if contract.issuerID == Int(characterID) {
 			cell.dateLabel.text = DateFormatter.localizedString(from: contract.dateIssued, dateStyle: .medium, timeStyle: .medium)
 		}
-		else if let issuer = contacts?[Int64(contract.issuerID)]?.name {
+		else if let issuer = issuer?.name {
 			cell.dateLabel.text = "\(DateFormatter.localizedString(from: contract.dateIssued, dateStyle: .medium, timeStyle: .medium)) \(NSLocalizedString("by", comment: "")) \(issuer)"
 		}
 	}
 	
-	override lazy var hashValue: Int = contract.hashValue
+	override var hashValue: Int {
+		return contract.hashValue
+	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCContractRow)?.hashValue == hashValue

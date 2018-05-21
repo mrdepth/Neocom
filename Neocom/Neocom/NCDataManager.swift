@@ -102,7 +102,7 @@ class NCDataManager {
 	let cachePolicy: URLRequest.CachePolicy
 	var observer: NCManagedObjectObserver?
 	
-	lazy var esi: ESI = {
+	private lazy var _esi: ESI = {
 		if let token = self.token {
 			return ESI(token: token, clientID: ESClientID, secretKey: ESSecretKey, server: .tranquility, cachePolicy: self.cachePolicy)
 		}
@@ -110,25 +110,36 @@ class NCDataManager {
 			return ESI(cachePolicy: self.cachePolicy)
 		}
 	}()
+	
+	private var lock = NSLock()
+	
+	var esi: ESI {
+		return lock.perform {self._esi}
+	}
 
-	lazy var zKillboard: ZKillboard = {
+	private lazy var _zKillboard: ZKillboard = {
 		return ZKillboard(cachePolicy: self.cachePolicy)
 	}()
+	
+	var zKillboard: ZKillboard {
+		return lock.perform {self._zKillboard}
+	}
 
 	let characterID: Int64
-	lazy var corporationID: Future<Int64> = {
+	private lazy var _corporationID: Future<Int64> = {
 		return self.character().then { (result) -> Int64 in
 			guard let corporationID = result.value?.corporationID else {throw NCDataManagerError.noCacheData}
 			return Int64(corporationID)
 		}
 	}()
 	
+	var corporationID: Future<Int64> {
+		return lock.perform {self._corporationID}
+	}
+	
 	init(account: NCAccount? = nil, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) {
 		self.cachePolicy = cachePolicy
 		if let acc = account {
-			/*observer = NCManagedObjectObserver(managedObjectID: acc.objectID) {[weak self] (_, _) in
-				self?.token = acc.token
-			}*/
 			if acc.isInvalid {
 				token = nil
 			}
@@ -165,25 +176,20 @@ class NCDataManager {
 	}
 
 	
-	func character(characterID: Int64? = nil, completionHandler: @escaping (NCCachedResult<ESI.Character.Information>) -> Void) {
-		let id = Int(characterID ?? self.characterID)
-		loadFromCache(forKey: "ESI.Character.Information.\(id)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.character.getCharactersPublicInformation(characterID: id))
-	}
-	
-	func corporation(corporationID: Int64, completionHandler: @escaping (NCCachedResult<ESI.Corporation.Information>) -> Void) {
-		loadFromCache(forKey: "ESI.Corporation.Information.\(corporationID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.corporation.getCorporationInformation(corporationID: Int(corporationID)))
+	func corporation(corporationID: Int64) -> Future<CachedValue<ESI.Corporation.Information>> {
+		return loadFromCache(forKey: "ESI.Corporation.Information.\(corporationID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.corporation.getCorporationInformation(corporationID: Int(corporationID)))
 	}
 
-	func alliance(allianceID: Int64, completionHandler: @escaping (NCCachedResult<ESI.Alliance.Information>) -> Void) {
-		loadFromCache(forKey: "ESI.Alliance.Information.\(allianceID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.alliance.getAllianceInformation(allianceID: Int(allianceID)))
+	func alliance(allianceID: Int64) -> Future<CachedValue<ESI.Alliance.Information>> {
+		return loadFromCache(forKey: "ESI.Alliance.Information.\(allianceID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.alliance.getAllianceInformation(allianceID: Int(allianceID)))
 	}
 
-	func skillQueue(completionHandler: @escaping (NCCachedResult<[ESI.Skills.SkillQueueItem]>) -> Void) {
-		loadFromCache(forKey: "ESI.Skills.SkillQueueItem", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.skills.getCharactersSkillQueue(characterID: Int(self.characterID)))
+	func skillQueue() -> Future<CachedValue<[ESI.Skills.SkillQueueItem]>> {
+		return loadFromCache(forKey: "ESI.Skills.SkillQueueItem", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.skills.getCharactersSkillQueue(characterID: Int(self.characterID)))
 	}
 	
-	func skills(completionHandler: @escaping (NCCachedResult<ESI.Skills.CharacterSkills>) -> Void) {
-		loadFromCache(forKey: "ESI.Skills.CharacterSkills", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.skills.getCharacterSkills(characterID: Int(self.characterID)))
+	func skills() -> Future<CachedValue<ESI.Skills.CharacterSkills>> {
+		return loadFromCache(forKey: "ESI.Skills.CharacterSkills", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.skills.getCharacterSkills(characterID: Int(self.characterID)))
 	}
 	
 	
@@ -197,101 +203,50 @@ class NCDataManager {
 		}
 	}
 
-	func walletBalance(completionHandler: @escaping (NCCachedResult<Double>) -> Void) {
-		loadFromCache(forKey: "ESI.WalletBalance", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.wallet.getCharactersWalletBalance(characterID: Int(self.characterID)))
-	}
-	
-	func characterLocation(completionHandler: @escaping (NCCachedResult<ESI.Location.CharacterLocation>) -> Void) {
-		loadFromCache(forKey: "ESI.Location.CharacterLocation", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.location.getCharacterLocation(characterID: Int(self.characterID)))
+	func characterLocation() -> Future<CachedValue<ESI.Location.CharacterLocation>> {
+		return loadFromCache(forKey: "ESI.Location.CharacterLocation", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.location.getCharacterLocation(characterID: Int(self.characterID)))
 	}
 
-	func characterShip(completionHandler: @escaping (NCCachedResult<ESI.Location.CharacterShip>) -> Void) {
-		loadFromCache(forKey: "ESI.Location.CharacterShip", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.location.getCurrentShip(characterID: Int(self.characterID)))
+	func characterShip() -> Future<CachedValue<ESI.Location.CharacterShip>> {
+		return loadFromCache(forKey: "ESI.Location.CharacterShip", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.location.getCurrentShip(characterID: Int(self.characterID)))
 	}
 	
-//	func clones(completionHandler: @escaping (NCCachedResult<ESI.Clones.JumpClones>) -> Void) {
-//		loadFromCache(forKey: "ESI.Clones.JumpClones", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
-//			self.esi.clones.getClones(characterID: Int(self.characterID)) { result in
-//				completion(result, 3600.0)
-//			}
-//		})
-//	}
-	
-	func clones(completionHandler: @escaping (NCCachedResult<ESI.Clones.JumpClones>) -> Void) {
-		loadFromCache(forKey: "ESI.Clones.JumpClones", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.clones.getClones(characterID: Int(self.characterID)))
+	func clones() -> Future<CachedValue<ESI.Clones.JumpClones>> {
+		return loadFromCache(forKey: "ESI.Clones.JumpClones", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.clones.getClones(characterID: Int(self.characterID)))
 	}
 
-	func implants(completionHandler: @escaping (NCCachedResult<[Int]>) -> Void) {
-		loadFromCache(forKey: "ESI.Clones.ActiveImplants", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.clones.getActiveImplants(characterID: Int(self.characterID)))
+	func implants() -> Future<CachedValue<[Int]>> {
+		return loadFromCache(forKey: "ESI.Clones.ActiveImplants", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.clones.getActiveImplants(characterID: Int(self.characterID)))
 	}
 
-	func attributes(completionHandler: @escaping (NCCachedResult<ESI.Skills.CharacterAttributes>) -> Void) {
-		loadFromCache(forKey: "ESI.Skills.CharacterAttributes", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.skills.getCharacterAttributes(characterID: Int(self.characterID)))
+	func attributes() -> Future<CachedValue<ESI.Skills.CharacterAttributes>> {
+		return loadFromCache(forKey: "ESI.Skills.CharacterAttributes", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.skills.getCharacterAttributes(characterID: Int(self.characterID)))
 	}
 
 	
-	func image(characterID: Int64, dimension: Int, completionHandler: @escaping (NCCachedResult<UIImage>) -> Void) {
-		loadFromCache(forKey: "image.character.\(characterID).\(dimension)", account: nil, cachePolicy: cachePolicy, completionHandler: { (result: NCCachedResult<Data>) in
-			switch result {
-			case let .success(value, cacheRecord):
-				if let image = UIImage(data: value, scale: UIScreen.main.scale) {
-					completionHandler(.success(value: image, cacheRecord: cacheRecord))
-				}
-				else {
-					completionHandler(.failure(NCDataManagerError.invalidResponse))
-				}
-			case let .failure(error):
-				completionHandler(.failure(error))
-			}
-		}, elseLoad: self.esi.image(characterID: Int(characterID), dimension: dimension * Int(UIScreen.main.scale)))
+	func image(characterID: Int64, dimension: Int) -> Future<CachedValue<UIImage>> {
+		return loadFromCache(forKey: "image.character.\(characterID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(characterID: Int(characterID), dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> CachedValue<UIImage> in
+			return .init(result.objectID)
+		}
 	}
 	
-	func image(corporationID: Int64, dimension: Int, completionHandler: @escaping (NCCachedResult<UIImage>) -> Void) {
-		loadFromCache(forKey: "image.corporation.\(corporationID).\(dimension)", account: nil, cachePolicy: cachePolicy, completionHandler: { (result: NCCachedResult<Data>) in
-			switch result {
-			case let .success(value, cacheRecord):
-				if let image = UIImage(data: value, scale: UIScreen.main.scale) {
-					completionHandler(.success(value: image, cacheRecord: cacheRecord))
-				}
-				else {
-					completionHandler(.failure(NCDataManagerError.invalidResponse))
-				}
-			case let .failure(error):
-				completionHandler(.failure(error))
-			}
-		}, elseLoad: self.esi.image(corporationID: Int(corporationID), dimension: dimension * Int(UIScreen.main.scale)))
+	
+	func image(corporationID: Int64, dimension: Int) -> Future<CachedValue<UIImage>> {
+		return loadFromCache(forKey: "image.corporation.\(corporationID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(corporationID: Int(corporationID), dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> CachedValue<UIImage> in
+			return .init(result.objectID)
+		}
 	}
 	
-	func image(allianceID: Int64, dimension: Int, completionHandler: @escaping (NCCachedResult<UIImage>) -> Void) {
-		loadFromCache(forKey: "image.alliance.\(allianceID).\(dimension)", account: nil, cachePolicy: cachePolicy, completionHandler: { (result: NCCachedResult<Data>) in
-			switch result {
-			case let .success(value, cacheRecord):
-				if let image = UIImage(data: value, scale: UIScreen.main.scale) {
-					completionHandler(.success(value: image, cacheRecord: cacheRecord))
-				}
-				else {
-					completionHandler(.failure(NCDataManagerError.invalidResponse))
-				}
-			case let .failure(error):
-				completionHandler(.failure(error))
-			}
-		}, elseLoad: self.esi.image(allianceID: Int(allianceID), dimension: dimension * Int(UIScreen.main.scale)))
+	func image(allianceID: Int64, dimension: Int) -> Future<CachedValue<UIImage>> {
+		return loadFromCache(forKey: "image.alliance.\(allianceID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(allianceID: Int(allianceID), dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> CachedValue<UIImage> in
+			return .init(result.objectID)
+		}
 	}
 
-	func image(typeID: Int, dimension: Int, completionHandler: @escaping (NCCachedResult<UIImage>) -> Void) {
-		loadFromCache(forKey: "image.type.\(typeID).\(dimension)", account: nil, cachePolicy: cachePolicy, completionHandler: { (result: NCCachedResult<Data>) in
-			switch result {
-			case let .success(value, cacheRecord):
-				if let image = UIImage(data: value, scale: UIScreen.main.scale) {
-					completionHandler(.success(value: image, cacheRecord: cacheRecord))
-				}
-				else {
-					completionHandler(.failure(NCDataManagerError.invalidResponse))
-				}
-			case let .failure(error):
-				completionHandler(.failure(error))
-			}
-		}, elseLoad: self.esi.image(typeID: typeID, dimension: dimension * Int(UIScreen.main.scale)))
+	func image(typeID: Int, dimension: Int) -> Future<CachedValue<UIImage>> {
+		return loadFromCache(forKey: "image.type.\(typeID).\(dimension)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.image(typeID: typeID, dimension: dimension * Int(UIScreen.main.scale))).then(on: .main) { result -> CachedValue<UIImage> in
+			return .init(result.objectID)
+		}
 	}
 	
 	private var cachedLocations: [Int64: NCLocation]?
@@ -368,157 +323,43 @@ class NCDataManager {
 	}
 	
 	
-	func locations(ids: Set<Int64>, completionHandler: @escaping ([Int64: NCLocation]) -> Void) {
-		guard !ids.isEmpty else {
-			completionHandler([:])
-			return
-		}
-		
-		var locations = [Int64: NCLocation]()
-		var missing = Set<Int64>()
-		var structures = Set<Int64>()
-		
-		var cachedLocations = self.cachedLocations ?? [:]
-		
-		for id in ids {
-			if let location = cachedLocations[id] {
-				locations[id] = location
-			}
-			else if id > Int64(Int32.max) {
-				structures.insert(id)
-			}
-			else if (66000000 < id && id < 66014933) { //staStations
-				if let station = NCDatabase.sharedDatabase?.staStations[Int(id) - 6000001] {
-					let location = NCLocation(station)
-					locations[id] = location
-					cachedLocations[id] = location
-				}
-				else {
-					missing.insert(id)
-				}
-			}
-			else if (60000000 < id && id < 61000000) { //staStations
-				if let station = NCDatabase.sharedDatabase?.staStations[Int(id)] {
-					let location = NCLocation(station)
-					locations[id] = location
-					cachedLocations[id] = location
-				}
-				else {
-					missing.insert(id)
-				}
-			}
-			else {
-				missing.insert(id)
-			}
-		}
-		let dispatchGroup = DispatchGroup()
-		let lifeTime = NCExtendedLifeTime(self)
-		if missing.count > 0 {
-			dispatchGroup.enter()
-			self.universeNames(ids: missing) { result in
-				let _ = self
-				switch result {
-				case let .success(value, _):
-					for name in value {
-						if let location = NCLocation(name) {
-							locations[Int64(name.id)] = location
-							cachedLocations[Int64(name.id)] = location
-						}
-					}
-				case .failure:
-					break
-				}
-				dispatchGroup.leave()
-			}
-		}
-		for id in structures {
-			dispatchGroup.enter()
-			self.universeStructure(structureID: id) { result in
-				let _ = self
-				switch result {
-				case let .success(value, _):
-					let location = NCLocation(value)
-					locations[id] = location
-					cachedLocations[id] = location
-				case .failure:
-					break
-				}
-				dispatchGroup.leave()
-			}
-		}
-		
-		dispatchGroup.notify(queue: .main) {
-			self.cachedLocations = cachedLocations
-			completionHandler(locations)
-			lifeTime.finalize()
-		}
-	}
-
 	func universeNames(ids: Set<Int64>) -> Future<CachedValue<[ESI.Universe.Name]>> {
 		let ids = ids.map{Int($0)}.sorted()
 		return loadFromCache(forKey: "ESI.Universe.Name.\(ids.hashValue)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.universe.getNamesAndCategoriesForSetOfIDs(ids: ids))
-	}
-
-	func universeNames(ids: Set<Int64>, completionHandler: @escaping (NCCachedResult<[ESI.Universe.Name]>) -> Void) {
-		let ids = ids.map{Int($0)}.sorted()
-		loadFromCache(forKey: "ESI.Universe.Name.\(ids.hashValue)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.universe.getNamesAndCategoriesForSetOfIDs(ids: ids))
 	}
 
 	func universeStructure(structureID: Int64) -> Future<CachedValue<ESI.Universe.StructureInformation>> {
 		return loadFromCache(forKey: "ESI.Universe.StructureInformation.\(structureID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.universe.getStructureInformation(structureID: structureID))
 	}
 
-	func universeStructure(structureID: Int64, completionHandler: @escaping (NCCachedResult<ESI.Universe.StructureInformation>) -> Void) {
-		loadFromCache(forKey: "ESI.Universe.StructureInformation.\(structureID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.universe.getStructureInformation(structureID: structureID))
-	}
-
-	
-	func updateMarketPrices(completionHandler: ((_ isUpdated: Bool) -> Void)? = nil) {
-		let lifeTime = NCExtendedLifeTime(self)
-		NCCache.sharedCache?.performBackgroundTask{ managedObjectContext in
+	func updateMarketPrices() -> Future<Bool> {
+		return NCCache.sharedCache!.performBackgroundTask { managedObjectContext -> Bool in
 			let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: "ESI.Market.Price", account: nil)))?.last
 			if record == nil || record!.isExpired {
-				self.marketPrices { result in
-					let _ = self
-					switch result {
-					case let .success(value, _):
-						NCCache.sharedCache?.performBackgroundTask{ managedObjectContext in
-							if let objects = try? managedObjectContext.fetch(NSFetchRequest<NCCachePrice>(entityName: "Price")) {
-								for object in objects {
-									managedObjectContext.delete(object)
-								}
-							}
-							for price in value {
-								let record = NCCachePrice(entity: NSEntityDescription.entity(forEntityName: "Price", in: managedObjectContext)!, insertInto: managedObjectContext)
-								record.typeID = Int32(price.typeID)
-								record.price = Double(price.averagePrice ?? 0)
-							}
-							if managedObjectContext.hasChanges {
-								try? managedObjectContext.save()
-							}
-							DispatchQueue.main.async {
-								completionHandler?(true)
-								lifeTime.finalize()
-							}
-						}
-					default:
-						completionHandler?(false)
-						lifeTime.finalize()
+				let result = try self.marketPrices().get()
+				if let objects = try? managedObjectContext.fetch(NSFetchRequest<NCCachePrice>(entityName: "Price")) {
+					for object in objects {
+						managedObjectContext.delete(object)
 					}
 				}
+				result.value?.forEach { price in
+					let record = NCCachePrice(entity: NSEntityDescription.entity(forEntityName: "Price", in: managedObjectContext)!, insertInto: managedObjectContext)
+					record.typeID = Int32(price.typeID)
+					record.price = Double(price.averagePrice ?? 0)
+				}
+				if managedObjectContext.hasChanges {
+					try? managedObjectContext.save()
+				}
+				return true
 			}
 			else {
-				DispatchQueue.main.async {
-					completionHandler?(false)
-					lifeTime.finalize()
-				}
+				return false
 			}
 		}
 	}
 	
-	func prices(typeIDs: Set<Int>, completionHandler: @escaping ([Int: Double]) -> Void) {
-		let lifeTime = NCExtendedLifeTime(self)
-		NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
+	func prices(typeIDs: Set<Int>) -> Future<[Int: Double]> {
+		return NCCache.sharedCache!.performBackgroundTask { managedObjectContext -> [Int: Double] in
 			let request = NSFetchRequest<NCCachePrice>(entityName: "Price")
 			request.predicate = NSPredicate(format: "typeID in %@", typeIDs)
 			var prices = [Int: Double]()
@@ -528,54 +369,40 @@ class NCDataManager {
 			
 			let missing = typeIDs.filter {return prices[$0] == nil}
 			if missing.count > 0 {
-				self.updateMarketPrices { isUpdated in
-					if isUpdated {
-						NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
-							let request = NSFetchRequest<NCCachePrice>(entityName: "Price")
-							request.predicate = NSPredicate(format: "typeID in %@", missing)
-							for price in (try? managedObjectContext.fetch(request)) ?? [] {
-								prices[Int(price.typeID)] = price.price
-							}
-							DispatchQueue.main.async {
-								completionHandler(prices)
-								lifeTime.finalize()
-							}
-
-						}
+				let isUpdated = try self.updateMarketPrices().get()
+				if isUpdated {
+					let request = NSFetchRequest<NCCachePrice>(entityName: "Price")
+					request.predicate = NSPredicate(format: "typeID in %@", missing)
+					for price in (try? managedObjectContext.fetch(request)) ?? [] {
+						prices[Int(price.typeID)] = price.price
 					}
-					else {
-						completionHandler(prices)
-						lifeTime.finalize()
-					}
+					return prices
+				}
+				else {
+					return prices
 				}
 			}
 			else {
-				DispatchQueue.main.async {
-					completionHandler(prices)
-					lifeTime.finalize()
-				}
+				return prices
 			}
 		}
 	}
 
-	func marketHistory(typeID: Int, regionID: Int, completionHandler: @escaping (NCCachedResult<[ESI.Market.History]>) -> Void) {
-		loadFromCache(forKey: "ESI.Market.History.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.market.listHistoricalMarketStatisticsInRegion(regionID: regionID, typeID: typeID))
+	func marketHistory(typeID: Int, regionID: Int) -> Future<CachedValue<[ESI.Market.History]>> {
+		return loadFromCache(forKey: "ESI.Market.History.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.market.listHistoricalMarketStatisticsInRegion(regionID: regionID, typeID: typeID))
 	}
 
-	func marketOrders(typeID: Int, regionID: Int, completionHandler: @escaping (NCCachedResult<[ESI.Market.Order]>) -> Void) {
-		loadFromCache(forKey: "ESI.Market.Order.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.market.listOrdersInRegion(orderType: .all, regionID: regionID, typeID: typeID))
+	func marketOrders(typeID: Int, regionID: Int) -> Future<CachedValue<[ESI.Market.Order]>> {
+		return loadFromCache(forKey: "ESI.Market.Order.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.market.listOrdersInRegion(orderType: .all, regionID: regionID, typeID: typeID))
 	}
 	
-	func search(_ string: String, categories: [ESI.Search.Categories], strict: Bool = false, completionHandler: @escaping (NCCachedResult<ESI.Search.SearchResult>) -> Void) {
-		loadFromCache(forKey: "ESI.Search.SearchResult.\(categories.hashValue).\(string.lowercased().hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.search.search(categories: categories, search: string, strict: strict))
+	func search(_ string: String, categories: [ESI.Search.Categories], strict: Bool = false) -> Future<CachedValue<ESI.Search.SearchResult>> {
+		return loadFromCache(forKey: "ESI.Search.SearchResult.\(categories.hashValue).\(string.lowercased().hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.search.search(categories: categories, search: string, strict: strict))
 	}
 
-	func searchNames(_ string: String, categories: [ESI.Search.Categories], strict: Bool = false, completionHandler: @escaping ([Int64: NCContact]) -> Void) {
-		let lifeTime = NCExtendedLifeTime(self)
-		self.search(string, categories: categories) { result in
-			switch result {
-			case let .success(value):
-				let searchResult = value.value
+	func searchNames(_ string: String, categories: [ESI.Search.Categories], strict: Bool = false) -> Future<[Int64: NSManagedObjectID]> {
+		return self.search(string, categories: categories).then(on: .global(qos: .utility)) { result -> [Int64: NSManagedObjectID] in
+			if let searchResult = result.value {
 				var ids = Set<Int>()
 				ids.formUnion(searchResult.agent ?? [])
 				ids.formUnion(searchResult.alliance ?? [])
@@ -589,15 +416,15 @@ class NCDataManager {
 				ids.formUnion(searchResult.station ?? [])
 				
 				if ids.count > 0 {
-					self.contacts(ids: Set(ids.map{Int64($0)}), completionHandler: completionHandler)
+					return try self.contacts(ids: Set(ids.map{Int64($0)})).get()
 				}
 				else {
-					completionHandler([:])
+					return [:]
 				}
-			case .failure:
-				completionHandler([:])
 			}
-			lifeTime.finalize()
+			else {
+				return [:]
+			}
 		}
 
 /*		loadFromCache(forKey: "ESI.Search.SearchNamesResult.\(categories.hashValue).\(string.lowercased().hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: { completion in
@@ -631,17 +458,17 @@ class NCDataManager {
 									return (Int64(key), value)
 								}
 								var result: [String: [Int64: String]] = [:]
-								result[ESI.Search.SearchCategories.agent.rawValue] = Dictionary(searchResult.agent?.flatMap(map))
-								result[ESI.Search.SearchCategories.alliance.rawValue] = Dictionary(searchResult.alliance?.flatMap(map))
-								result[ESI.Search.SearchCategories.character.rawValue] = Dictionary(searchResult.character?.flatMap(map))
-								result[ESI.Search.SearchCategories.constellation.rawValue] = Dictionary(searchResult.constellation?.flatMap(map))
-								result[ESI.Search.SearchCategories.corporation.rawValue] = Dictionary(searchResult.corporation?.flatMap(map))
-								result[ESI.Search.SearchCategories.faction.rawValue] = Dictionary(searchResult.faction?.flatMap(map))
-								result[ESI.Search.SearchCategories.inventorytype.rawValue] = Dictionary(searchResult.inventorytype?.flatMap(map))
-								result[ESI.Search.SearchCategories.region.rawValue] = Dictionary(searchResult.region?.flatMap(map))
-								result[ESI.Search.SearchCategories.solarsystem.rawValue] = Dictionary(searchResult.solarsystem?.flatMap(map))
-								result[ESI.Search.SearchCategories.station.rawValue] = Dictionary(searchResult.station?.flatMap(map))
-								result[ESI.Search.SearchCategories.wormhole.rawValue] = Dictionary(searchResult.wormhole?.flatMap(map))
+								result[ESI.Search.SearchCategories.agent.rawValue] = Dictionary(searchResult.agent?.compactMap(map))
+								result[ESI.Search.SearchCategories.alliance.rawValue] = Dictionary(searchResult.alliance?.compactMap(map))
+								result[ESI.Search.SearchCategories.character.rawValue] = Dictionary(searchResult.character?.compactMap(map))
+								result[ESI.Search.SearchCategories.constellation.rawValue] = Dictionary(searchResult.constellation?.compactMap(map))
+								result[ESI.Search.SearchCategories.corporation.rawValue] = Dictionary(searchResult.corporation?.compactMap(map))
+								result[ESI.Search.SearchCategories.faction.rawValue] = Dictionary(searchResult.faction?.compactMap(map))
+								result[ESI.Search.SearchCategories.inventorytype.rawValue] = Dictionary(searchResult.inventorytype?.compactMap(map))
+								result[ESI.Search.SearchCategories.region.rawValue] = Dictionary(searchResult.region?.compactMap(map))
+								result[ESI.Search.SearchCategories.solarsystem.rawValue] = Dictionary(searchResult.solarsystem?.compactMap(map))
+								result[ESI.Search.SearchCategories.station.rawValue] = Dictionary(searchResult.station?.compactMap(map))
+								result[ESI.Search.SearchCategories.wormhole.rawValue] = Dictionary(searchResult.wormhole?.compactMap(map))
 								completion(.success(result), 3600.0 * 12)
 								
 							case let .failure(error):
@@ -663,22 +490,20 @@ class NCDataManager {
 		})*/
 	}
 
-	func sendMail(body: String, subject: String, recipients: [ESI.Mail.Recipient], completionHandler: @escaping (Result<Int>) -> Void) {
+	func sendMail(body: String, subject: String, recipients: [ESI.Mail.Recipient]) -> Future<Int> {
 		let mail = ESI.Mail.NewMail(approvedCost: nil, body: body, recipients: recipients, subject: subject)
-		self.esi.mail.sendNewMail(characterID: Int(characterID), mail: mail).then { result in
-			completionHandler(.success(result.value))
-		}.catch { error in
-			completionHandler(.failure(error))
+		return self.esi.mail.sendNewMail(characterID: Int(characterID), mail: mail).then { result in
+			return result.value
 		}
 	}
 	
-	func returnMailHeaders(lastMailID: Int64? = nil, labels: [Int64], completionHandler: @escaping (NCCachedResult<[ESI.Mail.Header]>) -> Void) {
+	func returnMailHeaders(lastMailID: Int64? = nil, labels: [Int64]) -> Future<CachedValue<[ESI.Mail.Header]>> {
 		let labels = labels.sorted()
-		loadFromCache(forKey: "ESI.Mail.Header.\(labels.hashValue).\(lastMailID ?? 0)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.mail.returnMailHeaders(characterID: Int(self.characterID), labels: labels, lastMailID: lastMailID != nil ? Int(lastMailID!) : nil))
+		return loadFromCache(forKey: "ESI.Mail.Header.\(labels.hashValue).\(lastMailID ?? 0)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.mail.returnMailHeaders(characterID: Int(self.characterID), labels: labels.map{Int($0)}, lastMailID: lastMailID != nil ? Int(lastMailID!) : nil))
 	}
 
-	func returnMailBody(mailID: Int64, completionHandler: @escaping (NCCachedResult<ESI.Mail.MailBody>) -> Void) {
-		loadFromCache(forKey: "ESI.Mail.MailBody.\(mailID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.mail.returnMail(characterID: Int(self.characterID), mailID: Int(mailID)))
+	func returnMailBody(mailID: Int64) -> Future<CachedValue<ESI.Mail.MailBody>> {
+		return loadFromCache(forKey: "ESI.Mail.MailBody.\(mailID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.mail.returnMail(characterID: Int(self.characterID), mailID: Int(mailID)))
 	}
 
 	func returnMailingLists() -> Future<CachedValue<[ESI.Mail.Subscription]>> {
@@ -686,42 +511,35 @@ class NCDataManager {
 	}
 
 	
-	func returnMailingLists(completionHandler: @escaping (NCCachedResult<[ESI.Mail.Subscription]>) -> Void) {
-		loadFromCache(forKey: "ESI.Mail.Subscription", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.mail.returnMailingListSubscriptions(characterID: Int(self.characterID)))
+	func mailLabels() -> Future<CachedValue<ESI.Mail.MailLabelsAndUnreadCounts>> {
+		return loadFromCache(forKey: "ESI.Mail.MailLabelsAndUnreadCounts", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.mail.getMailLabelsAndUnreadCounts(characterID: Int(self.characterID)))
 	}
 	
-	func mailLabels(completionHandler: @escaping (NCCachedResult<ESI.Mail.MailLabelsAndUnreadCounts>) -> Void) {
-		loadFromCache(forKey: "ESI.Mail.MailLabelsAndUnreadCounts", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.mail.getMailLabelsAndUnreadCounts(characterID: Int(self.characterID)))
-	}
-	
-	func calendarEvents(completionHandler: @escaping (NCCachedResult<[ESI.Calendar.Summary]>) -> Void) {
-		loadFromCache(forKey: "ESI.Calendar.Summary", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.calendar.listCalendarEventSummaries(characterID: Int(self.characterID)))
+	func calendarEvents() -> Future<CachedValue<[ESI.Calendar.Summary]>> {
+		return loadFromCache(forKey: "ESI.Calendar.Summary", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.calendar.listCalendarEventSummaries(characterID: Int(self.characterID)))
 	}
 
-	func calendarEventDetails(eventID: Int64, completionHandler: @escaping (NCCachedResult<ESI.Calendar.Event>) -> Void) {
-		loadFromCache(forKey: "ESI.Calendar.Event.\(eventID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.calendar.getAnEvent(characterID: Int(self.characterID), eventID: Int(eventID)))
+	func calendarEventDetails(eventID: Int64) -> Future<CachedValue<ESI.Calendar.Event>> {
+		return loadFromCache(forKey: "ESI.Calendar.Event.\(eventID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.calendar.getAnEvent(characterID: Int(self.characterID), eventID: Int(eventID)))
 	}
 
 	
-	func markRead(mail: ESI.Mail.Header, completionHandler: @escaping (Result<String>) -> Void) {
+	func markRead(mail: ESI.Mail.Header) -> Future<String> {
 		guard let mailID = mail.mailID else {
-			completionHandler(.failure(NCDataManagerError.internalError))
-			return
+			let promise = Promise<String>()
+			try! promise.fail(NCDataManagerError.internalError)
+			return promise.future
 		}
 		
 		let contents = ESI.Mail.UpdateContents(labels: mail.labels, read: true)
-		self.esi.mail.updateMetadataAboutMail(characterID: Int(self.characterID), contents: contents, mailID: Int(mailID)).then { result in
-			completionHandler(.success(result.value))
-		}.catch { error in
-			completionHandler(.failure(error))
+		return self.esi.mail.updateMetadataAboutMail(characterID: Int(self.characterID), contents: contents, mailID: Int(mailID)).then { result in
+			return result.value
 		}
 	}
 	
-	func delete(mailID: Int64, completionHandler: @escaping (Result<String>) -> Void) {
-		self.esi.mail.deleteMail(characterID: Int(self.characterID), mailID: Int(mailID)).then { result in
-			completionHandler(.success(result.value))
-		}.catch { error in
-			completionHandler(.failure(error))
+	func delete(mailID: Int64) -> Future<String> {
+		return self.esi.mail.deleteMail(characterID: Int(self.characterID), mailID: Int(mailID)).then { result in
+			return result.value
 		}
 	}
 
@@ -788,108 +606,8 @@ class NCDataManager {
 		}
 	}
 	
-	func contacts(ids: Set<Int64>, completionHandler: @escaping ([Int64: NCContact]) -> Void) {
-		let ids = ids.subtracting(NCDataManager.invalidIDs)
-		var contacts: Set<Int64> = Set()
-		
-		func finish() {
-			DispatchQueue.main.async {
-				guard let context = NCCache.sharedCache?.viewContext else {
-					completionHandler([:])
-					return
-				}
-				
-				let request = NSFetchRequest<NCContact>(entityName: "Contact")
-				request.predicate = NSPredicate(format: "contactID in %@", ids)
-				
-				var result: [Int64: NCContact] = [:]
-				(try? context.fetch(request))?.forEach {
-					result[$0.contactID] = $0
-				}
-
-				completionHandler(result)
-			}
-		}
-		
-		NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
-			
-//			let ids = ids.sorted()
-			let request = NSFetchRequest<NSDictionary>(entityName: "Contact")
-			request.predicate = NSPredicate(format: "contactID in %@", ids)
-			request.resultType = .dictionaryResultType
-			request.propertiesToFetch = [NSEntityDescription.entity(forEntityName: "Contact", in: managedObjectContext)!.propertiesByName["contactID"]!]
-			
-			contacts = Set((try? managedObjectContext.fetch(request))?.flatMap {$0["contactID"] as? Int64} ?? [])
-			
-			var missing = ids.subtracting(contacts)
-			
-			if !missing.isEmpty {
-				var mailingLists: [ESI.Mail.Subscription] = []
-				var names: [ESI.Universe.Name] = []
-				let dispatchGroup = DispatchGroup()
-				
-				
-				dispatchGroup.enter()
-				self.universeNames(ids: missing) { result in
-					switch result {
-					case let .success(value, _):
-						names = value
-						missing.subtract(Set(value.map {Int64($0.id)}))
-					case let .failure(error):
-						if (error as? AFError)?.responseCode == 404 {
-							NCDataManager.invalidIDs.formUnion(missing)
-						}
-					}
-					
-					if !missing.isEmpty {
-						dispatchGroup.enter()
-						self.returnMailingLists { result in
-							switch result {
-							case let .success(value, _):
-								mailingLists = value.filter {ids.contains(Int64($0.mailingListID))}
-							case .failure:
-								break
-							}
-							dispatchGroup.leave()
-						}
-					}
-
-					dispatchGroup.leave()
-				}
-				
-				dispatchGroup.notify(queue: .main) {
-					NCCache.sharedCache?.performBackgroundTask { managedObjectContext in
-						managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-						
-						var result = names.map{($0.id, $0.name, $0.category.rawValue)}
-						result.append(contentsOf: mailingLists.map {($0.mailingListID, $0.name, ESI.Mail.Recipient.RecipientType.mailingList.rawValue)})
-						
-						for name in result {
-							let contact = NCContact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: managedObjectContext)!, insertInto: managedObjectContext)
-							contact.contactID = Int64(name.0)
-							contact.name = name.1
-							contact.type = name.2
-							
-							contacts.insert(contact.contactID)
-//							contacts[contact.contactID] = contact
-						}
-						if managedObjectContext.hasChanges {
-							try! managedObjectContext.save()
-						}
-						finish()
-					}
-				}
-
-			}
-			else {
-				finish()
-			}
-		}
-	}
-	
-	
-	func marketPrices(completionHandler: @escaping (NCCachedResult<[ESI.Market.Price]>) -> Void) {
-		loadFromCache(forKey: "ESI.Market.Price", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.market.listMarketPrices())
+	func marketPrices() -> Future<CachedValue<[ESI.Market.Price]>> {
+		return loadFromCache(forKey: "ESI.Market.Price", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.market.listMarketPrices())
 	}
 
 	func assets(page: Int? = nil) -> Future<CachedValue<[ESI.Assets.Asset]>> {
@@ -908,16 +626,8 @@ class NCDataManager {
 		}
 	}
 
-	func assets(page: Int? = nil, completionHandler: @escaping (NCCachedResult<[ESI.Assets.Asset]>) -> Void) {
-		loadFromCache(forKey: "ESI.Assets.Asset.\(page ?? 0)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.assets.getCharacterAssets(characterID: Int(self.characterID), page: page))
-	}
-	
-	func corpAssets(corporationID: Int64, page: Int? = nil, completionHandler: @escaping (NCCachedResult<[ESI.Assets.CorpAsset]>) -> Void) {
-		loadFromCache(forKey: "ESI.Assets.CorpAsset.\(corporationID).\(page ?? 0)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.assets.getCorporationAssets(corporationID: Int(corporationID)))
-	}
-	
-	func blueprints(completionHandler: @escaping (NCCachedResult<[ESI.Character.Blueprint]>) -> Void) {
-		loadFromCache(forKey: "ESI.Character.Blueprint", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.character.getBlueprints(characterID: Int(self.characterID)))
+	func blueprints() -> Future<CachedValue<[ESI.Character.Blueprint]>> {
+		return loadFromCache(forKey: "ESI.Character.Blueprint", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.character.getBlueprints(characterID: Int(self.characterID)))
 	}
 	
 	func corpIndustryJobs() -> Future<CachedValue<[ESI.Industry.CorpJob]>> {
@@ -931,10 +641,6 @@ class NCDataManager {
 		return loadFromCache(forKey: "ESI.Industry.Job", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.industry.listCharacterIndustryJobs(characterID: Int(self.characterID), includeCompleted: true))
 	}
 
-	func industryJobs(completionHandler: @escaping (NCCachedResult<[ESI.Industry.Job]>) -> Void) {
-		loadFromCache(forKey: "ESI.Industry.Job", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.industry.listCharacterIndustryJobs(characterID: Int(self.characterID), includeCompleted: true))
-	}
-
 	func corpMarketOrders() -> Future<CachedValue<[ESI.Market.CorpOrder]>> {
 		return corporationID.then { corporationID in
 			return self.loadFromCache(forKey: "ESI.Market.CorpOrder", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.market.listOpenOrdersFromCorporation(corporationID: Int(corporationID)))
@@ -945,10 +651,6 @@ class NCDataManager {
 		return loadFromCache(forKey: "ESI.Market.CharacterOrder", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.market.listOpenOrdersFromCharacter(characterID: Int(self.characterID)))
 	}
 
-	func marketOrders(completionHandler: @escaping (NCCachedResult<[ESI.Market.CharacterOrder]>) -> Void) {
-		loadFromCache(forKey: "ESI.Market.CharacterOrder", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.market.listOpenOrdersFromCharacter(characterID: Int(self.characterID)))
-	}
-	
 	func walletJournal() -> Future<CachedValue<[ESI.Wallet.WalletJournalItem]>> {
 		return loadFromCache(forKey: "ESI.Wallet.WalletJournalItem", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.wallet.getCharacterWalletJournal(characterID: Int(self.characterID)))
 	}
@@ -959,19 +661,10 @@ class NCDataManager {
 		}
 	}
 
-	func walletJournal(completionHandler: @escaping (NCCachedResult<[ESI.Wallet.WalletJournalItem]>) -> Void) {
-		loadFromCache(forKey: "ESI.Wallet.WalletJournalItem", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.wallet.getCharacterWalletJournal(characterID: Int(self.characterID)))
-	}
-
-
 	func walletTransactions() -> Future<CachedValue<[ESI.Wallet.Transaction]>> {
 		return loadFromCache(forKey: "ESI.Wallet.Transaction", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.wallet.getWalletTransactions(characterID: Int(self.characterID)))
 	}
 
-	func walletTransactions(completionHandler: @escaping (NCCachedResult<[ESI.Wallet.Transaction]>) -> Void) {
-		loadFromCache(forKey: "ESI.Wallet.Transaction", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.wallet.getWalletTransactions(characterID: Int(self.characterID)))
-	}
-	
 	func corpWalletTransactions(division: Int) -> Future<CachedValue<[ESI.Wallet.CorpTransaction]>> {
 		return corporationID.then { corporationID in
 			return self.loadFromCache(forKey: "ESI.Wallet.CorpTransaction.\(division)", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.wallet.getCorporationWalletTransactions(corporationID: Int(corporationID), division: division))
@@ -987,52 +680,52 @@ class NCDataManager {
 //		})
 //	}
 
-	func contracts(completionHandler: @escaping (NCCachedResult<[ESI.Contracts.Contract]>) -> Void) {
-		loadFromCache(forKey: "ESI.Contracts.Contract", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.contracts.getContracts(characterID: Int(self.characterID)))
+	func contracts() -> Future<CachedValue<[ESI.Contracts.Contract]>> {
+		return loadFromCache(forKey: "ESI.Contracts.Contract", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.contracts.getContracts(characterID: Int(self.characterID)))
 	}
 
-	func contractItems(contractID: Int64, completionHandler: @escaping (NCCachedResult<[ESI.Contracts.Item]>) -> Void) {
-		loadFromCache(forKey: "ESI.Contracts.Item.\(contractID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.contracts.getContractItems(characterID: Int(self.characterID), contractID: Int(contractID)))
+	func contractItems(contractID: Int64) -> Future<CachedValue<[ESI.Contracts.Item]>> {
+		return loadFromCache(forKey: "ESI.Contracts.Item.\(contractID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.contracts.getContractItems(characterID: Int(self.characterID), contractID: Int(contractID)))
 	}
 
-	func contractBids(contractID: Int64, completionHandler: @escaping (NCCachedResult<[ESI.Contracts.Bid]>) -> Void) {
-		loadFromCache(forKey: "ESI.Contracts.Bid.\(contractID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.contracts.getContractBids(characterID: Int(self.characterID), contractID: Int(contractID)))
+	func contractBids(contractID: Int64) -> Future<CachedValue<[ESI.Contracts.Bid]>> {
+		return loadFromCache(forKey: "ESI.Contracts.Bid.\(contractID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.contracts.getContractBids(characterID: Int(self.characterID), contractID: Int(contractID)))
 	}
 
 
-	func incursions(completionHandler: @escaping (NCCachedResult<[ESI.Incursions.Incursion]>) -> Void) {
-		loadFromCache(forKey: "ESI.Incursions.Incursion", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.incursions.listIncursions())
+	func incursions() -> Future<CachedValue<[ESI.Incursions.Incursion]>> {
+		return loadFromCache(forKey: "ESI.Incursions.Incursion", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.incursions.listIncursions())
 	}
 	
-	func colonies(completionHandler: @escaping (NCCachedResult<[ESI.PlanetaryInteraction.Colony]>) -> Void) {
-		loadFromCache(forKey: "ESI.PlanetaryInteraction.Colony", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.planetaryInteraction.getColonies(characterID: Int(self.characterID)))
+	func colonies() -> Future<CachedValue<[ESI.PlanetaryInteraction.Colony]>> {
+		return loadFromCache(forKey: "ESI.PlanetaryInteraction.Colony", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.planetaryInteraction.getColonies(characterID: Int(self.characterID)))
 	}
 	
-	func colonyLayout(planetID: Int, completionHandler: @escaping (NCCachedResult<ESI.PlanetaryInteraction.ColonyLayout>) -> Void) {
-		loadFromCache(forKey: "ESI.PlanetaryInteraction.ColonyLayout.\(planetID)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.planetaryInteraction.getColonyLayout(characterID: Int(self.characterID), planetID: planetID))
+	func colonyLayout(planetID: Int) -> Future<CachedValue<ESI.PlanetaryInteraction.ColonyLayout>> {
+		return loadFromCache(forKey: "ESI.PlanetaryInteraction.ColonyLayout.\(planetID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.planetaryInteraction.getColonyLayout(characterID: Int(self.characterID), planetID: planetID))
 	}
 
-	func killmails(maxKillID: Int64? = nil, completionHandler: @escaping (NCCachedResult<[ESI.Killmails.Recent]>) -> Void) {
-		loadFromCache(forKey: "ESI.Killmails.Recent.\(maxKillID ?? 0)", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.killmails.getCharacterKillsAndLosses(characterID: Int(self.characterID), maxKillID: maxKillID != nil ? Int(maxKillID!) : nil))
+	func killmails(maxKillID: Int64? = nil) -> Future<CachedValue<[ESI.Killmails.Recent]>> {
+		return loadFromCache(forKey: "ESI.Killmails.Recent.\(maxKillID ?? 0)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.killmails.getCharacterKillsAndLosses(characterID: Int(self.characterID), maxKillID: maxKillID != nil ? Int(maxKillID!) : nil))
 	}
 	
-	func killmailInfo(killmailHash: String, killmailID: Int64, completionHandler: @escaping (NCCachedResult<ESI.Killmails.Killmail>) -> Void) {
-		loadFromCache(forKey: "ESI.KillMails.Killmail.\(killmailID).\(killmailHash)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.killmails.getSingleKillmail(killmailHash: killmailHash, killmailID: Int(killmailID)))
+	func killmailInfo(killmailHash: String, killmailID: Int64) -> Future<CachedValue<ESI.Killmails.Killmail>> {
+		return loadFromCache(forKey: "ESI.KillMails.Killmail.\(killmailID).\(killmailHash)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.killmails.getSingleKillmail(killmailHash: killmailHash, killmailID: Int(killmailID)))
 	}
 	
-	func zKillmails(filter: [ZKillboard.Filter], page: Int, completionHandler: @escaping (NCCachedResult<[ZKillboard.Killmail]>) -> Void) {
+	func zKillmails(filter: [ZKillboard.Filter], page: Int) -> Future<CachedValue<[ZKillboard.Killmail]>> {
 		let key = filter.map{$0.value}.sorted().joined(separator: "/")
-		loadFromCache(forKey: "ZKillboard.Killmail.\(key)/\(page)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.zKillboard.kills(filter: filter, page: page))
+		return loadFromCache(forKey: "ZKillboard.Killmail.\(key)/\(page)", account: nil, cachePolicy: cachePolicy, elseLoad: self.zKillboard.kills(filter: filter, page: page))
 	}
 	
-	func rss(url: URL, completionHandler: @escaping (NCCachedResult<RSS.Feed>) -> Void) {
-		loadFromCache(forKey: "RSS.Feed.\(url.absoluteString)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: {
+	func rss(url: URL) -> Future<CachedValue<RSS.Feed>> {
+		return loadFromCache(forKey: "RSS.Feed.\(url.absoluteString)", account: nil, cachePolicy: cachePolicy, elseLoad: { () -> Future<ESI.Result<RSS.Feed>> in
 			let promise = Promise<ESI.Result<RSS.Feed>>()
 			Alamofire.request(url, method: .get).validate().responseRSS { (response: DataResponse<RSS.Feed>) in
 				do {
 					switch response.result {
 					case let .success(value):
-						try promise.fulfill(.init(value: value, cached: 600))
+						try promise.fulfill(.init(value: value, cached: 60))
 					case let .failure(error):
 						throw error
 					}
@@ -1046,15 +739,13 @@ class NCDataManager {
 	}
 
 	
-	func fittings(completionHandler: @escaping (NCCachedResult<[ESI.Fittings.Fitting]>) -> Void) {
-		loadFromCache(forKey: "ESI.Fittings.Fitting", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.fittings.getFittings(characterID: Int(self.characterID)))
+	func fittings() -> Future<CachedValue<[ESI.Fittings.Fitting]>> {
+		return loadFromCache(forKey: "ESI.Fittings.Fitting", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.fittings.getFittings(characterID: Int(self.characterID)))
 	}
 	
-	func deleteFitting(fittingID: Int, completionHandler: @escaping (Result<String>) -> Void) {
-		self.esi.fittings.deleteFitting(characterID: Int(self.characterID), fittingID: fittingID).then { result in
-			completionHandler(.success(result.value))
-		}.catch { error in
-			completionHandler(.failure(error))
+	func deleteFitting(fittingID: Int) -> Future<String> {
+		return self.esi.fittings.deleteFitting(characterID: Int(self.characterID), fittingID: fittingID).then { result in
+			return result.value
 		}
 	}
 	
@@ -1066,16 +757,16 @@ class NCDataManager {
 		}
 	}
 	
-	func serverStatus(completionHandler: @escaping (NCCachedResult<ESI.Status.ServerStatus>) -> Void) {
-		loadFromCache(forKey: "ESI.Status.ServerStatus", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.status.retrieveTheUptimeAndPlayerCounts())
+	func serverStatus() -> Future<CachedValue<ESI.Status.ServerStatus>> {
+		return loadFromCache(forKey: "ESI.Status.ServerStatus", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.status.retrieveTheUptimeAndPlayerCounts())
 	}
 	
-	func loyaltyPoints(completionHandler: @escaping (NCCachedResult<[ESI.Loyalty.Point]>) -> Void) {
-		loadFromCache(forKey: "ESI.Loyalty.Point", account: account, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.loyalty.getLoyaltyPoints(characterID: Int(self.characterID)))
+	func loyaltyPoints() -> Future<CachedValue<[ESI.Loyalty.Point]>> {
+		return loadFromCache(forKey: "ESI.Loyalty.Point", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.loyalty.getLoyaltyPoints(characterID: Int(self.characterID)))
 	}
 	
-	func loyaltyStoreOffers(corporationID: Int64, completionHandler: @escaping (NCCachedResult<[ESI.Loyalty.Offer]>) -> Void) {
-		loadFromCache(forKey: "ESI.Loyalty.Offer.\(corporationID)", account: nil, cachePolicy: cachePolicy, completionHandler: completionHandler, elseLoad: self.esi.loyalty.listLoyaltyStoreOffers(corporationID: Int(corporationID)))
+	func loyaltyStoreOffers(corporationID: Int64) -> Future<CachedValue<[ESI.Loyalty.Offer]>> {
+		return loadFromCache(forKey: "ESI.Loyalty.Offer.\(corporationID)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.loyalty.listLoyaltyStoreOffers(corporationID: Int(corporationID)))
 	}
 
 	//MARK: Private
@@ -1102,7 +793,7 @@ class NCDataManager {
 		case .reloadIgnoringLocalCacheData:
 			progress.becomeCurrent(withPendingUnitCount: 1)
 			future = loader().then { result in
-					return cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: result.cached), error: nil)
+				return cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: result.cached), error: nil)
 			}
 			progress.resignCurrent()
 			
@@ -1168,142 +859,4 @@ class NCDataManager {
 		
 		return promise.future
 	}
-	
-	private func loadFromCache<T> (forKey key: String,
-	                           account: String?,
-	                           cachePolicy:URLRequest.CachePolicy,
-	                           completionHandler: @escaping (NCCachedResult<T>) -> Void,
-	                           elseLoad loader: @escaping @autoclosure () -> Future<ESI.Result<T>>) {
-		
-		guard let cache = NCCache.sharedCache else {
-			completionHandler(.failure(NCDataManagerError.internalError))
-			return
-		}
-		
-		let completionHandlerKey = key + (account ?? "")
-		func finish(value: T?, record: NCCacheRecord?, error: Error?) {
-			let array = completionHandlers[completionHandlerKey]
-			completionHandlers[completionHandlerKey] = nil
-			array?.forEach {$0(value, record, error)}
-		}
-		
-		let completion = {(value: Any?, record: NCCacheRecord?, error: Error?) in
-			if let value = value as? T {
-				completionHandler(.success(value: value, cacheRecord: record))
-			}
-			else {
-				completionHandler(.failure(error ?? NCDataManagerError.invalidResponse))
-			}
-		}
-		
-		var array = completionHandlers[completionHandlerKey] ?? []
-		if !array.isEmpty {
-			array.append(completion)
-			completionHandlers[completionHandlerKey] = array
-			return
-		}
-		else {
-			completionHandlers[completionHandlerKey] = [completion]
-		}
-		
-		let progress = Progress(totalUnitCount: 1)
-		let lifeTime = NCExtendedLifeTime(self)
-
-		switch cachePolicy {
-		case .reloadIgnoringLocalCacheData:
-			progress.becomeCurrent(withPendingUnitCount: 1)
-			loader().then { result in
-				cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: result.cached), error: nil) { cacheRecord in
-					finish(value: result.value, record: cacheRecord, error: nil)
-					lifeTime.finalize()
-				}
-			}.catch { error in
-				finish(value: nil, record: nil, error: error)
-				lifeTime.finalize()
-			}
-			progress.resignCurrent()
-			
-		case .returnCacheDataElseLoad:
-			cache.performBackgroundTask { (managedObjectContext) in
-				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
-				let object: T? = record?.get() ?? nil
-				
-				DispatchQueue.main.async {
-					if let object = object {
-						progress.completedUnitCount += 1
-//						completionHandler(.success(value: object, cacheRecord: (try? NCCache.sharedCache?.viewContext.existingObject(with: record!.objectID)) as? NCCacheRecord))
-						finish(value: object, record: (try? NCCache.sharedCache?.viewContext.existingObject(with: record!.objectID)) as? NCCacheRecord, error: nil)
-						lifeTime.finalize()
-					}
-					else {
-						progress.becomeCurrent(withPendingUnitCount: 1)
-						loader().then { result in
-							cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: result.cached), error: nil) { cacheRecord in
-								finish(value: result.value, record: cacheRecord, error: nil)
-								lifeTime.finalize()
-							}
-						}.catch { error in
-							finish(value: nil, record: nil, error: error)
-							lifeTime.finalize()
-						}
-						progress.resignCurrent()
-					}
-				}
-			}
-		case .returnCacheDataDontLoad:
-			cache.performBackgroundTask { (managedObjectContext) in
-				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
-				let object: T? = record?.get() ?? nil
-				
-				DispatchQueue.main.async {
-					if let object = object {
-						progress.completedUnitCount += 1
-//						completionHandler(.success(value: object, cacheRecord: (try? NCCache.sharedCache?.viewContext.existingObject(with: record!.objectID)) as? NCCacheRecord))
-						finish(value: object, record: (try? NCCache.sharedCache?.viewContext.existingObject(with: record!.objectID)) as? NCCacheRecord, error: nil)
-					}
-					else {
-//						completionHandler(.failure(NCDataManagerError.noCacheData))
-						finish(value: nil, record: nil, error: NCDataManagerError.noCacheData)
-					}
-					lifeTime.finalize()
-				}
-			}
-		default:
-			cache.performBackgroundTask { (managedObjectContext) in
-				let record = (try? managedObjectContext.fetch(NCCacheRecord.fetchRequest(forKey: key, account: account)))?.last
-				let object: T? = record?.get() ?? nil
-				let expired = record?.isExpired ?? true
-				DispatchQueue.main.async {
-					if let object = object {
-						progress.completedUnitCount += 1
-//						completionHandler(.success(value: object, cacheRecord: (try? NCCache.sharedCache?.viewContext.existingObject(with: record!.objectID)) as? NCCacheRecord))
-						finish(value: object, record: (try? NCCache.sharedCache?.viewContext.existingObject(with: record!.objectID)) as? NCCacheRecord, error: nil)
-						if expired {
-							loader().then { result in
-								cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: result.cached), error: nil) { cacheRecord in
-									lifeTime.finalize()
-								}
-							}.catch { error in
-								lifeTime.finalize()
-							}
-						}
-					}
-					else {
-						progress.becomeCurrent(withPendingUnitCount: 1)
-						loader().then { result in
-							cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: result.cached), error: nil) { cacheRecord in
-								finish(value: result.value, record: cacheRecord, error: nil)
-								lifeTime.finalize()
-							}
-						}.catch { error in
-							finish(value: nil, record: nil, error: error)
-							lifeTime.finalize()
-						}
-						progress.resignCurrent()
-					}
-				}
-			}
-		}
-	}
-	
 }

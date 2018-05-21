@@ -17,38 +17,32 @@ class NCIndustryViewController: NCTreeViewController {
 		accountChangeAction = .reload
 	}
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		switch owner {
 		case .character:
-			dataManager.industryJobs().then(on: .main) { result in
+			return dataManager.industryJobs().then(on: .main) { result -> [NCCacheRecord] in
 				self.jobs = result
-				completionHandler([result.cacheRecord].flatMap {$0})
-			}.catch(on: .main) { error in
-				self.error = error
-				completionHandler([])
+				return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 			}
 		case .corporation:
-			dataManager.corpIndustryJobs().then(on: .main) { result in
+			return dataManager.corpIndustryJobs().then(on: .main) { result -> [NCCacheRecord] in
 				self.corpJobs = result
-				completionHandler([result.cacheRecord].flatMap {$0})
-			}.catch(on: .main) { error in
-				self.error = error
-				completionHandler([])
+				return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 			}
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		let jobs = self.jobs
 		let corpJobs = self.corpJobs
 		let progress = Progress(totalUnitCount: 3)
 		
-		OperationQueue(qos: .utility).async { () -> [TreeNode] in
-			guard let value: [NCIndustryJob] = jobs?.value ?? corpJobs?.value else {return []}
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
+			guard let value: [NCIndustryJob] = jobs?.value ?? corpJobs?.value else {throw NCTreeViewControllerError.noResult}
 			let locationIDs = Set(value.map {$0.locationID})
 			let locations = try? progress.perform{ self.dataManager.locations(ids: locationIDs) }.get()
 			
-			return NCDatabase.sharedDatabase!.performTaskAndWait { managedObjectContext in
+			return try NCDatabase.sharedDatabase!.performTaskAndWait { managedObjectContext in
 				var open = value.filter {$0.status == .active || $0.status == .paused}.map {NCIndustryRow(job: $0, location: locations?[$0.locationID])}
 				var closed = value.filter {$0.status != .active && $0.status != .paused}.map {NCIndustryRow(job: $0, location: locations?[$0.locationID])}
 				
@@ -57,26 +51,15 @@ class NCIndustryViewController: NCTreeViewController {
 				
 				var rows = open
 				rows.append(contentsOf: closed)
-				return rows
+				
+				guard !rows.isEmpty else {throw NCTreeViewControllerError.noResult}
+				return RootNode(rows)
 			}
-		}.then(on: .main) { sections in
-			if self.treeController?.content == nil {
-				self.treeController?.content = RootNode(sections)
-			}
-			else {
-				self.treeController?.content?.children = sections
-			}
-		}.catch(on: .main) {error in
-			self.error = error
-		}.finally(on: .main) {
-			self.tableView.backgroundView = self.treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: self.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-			completionHandler()
 		}
 	}
 	
 	private var jobs: CachedValue<[ESI.Industry.Job]>?
 	private var corpJobs: CachedValue<[ESI.Industry.CorpJob]>?
-	private var error: Error?
 
 	
 }

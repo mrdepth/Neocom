@@ -31,7 +31,9 @@ class NCDatabaseMarketInfoRow: TreeRow {
 		cell.quantityLabel.text = quantity
 	}
 	
-	override lazy var hashValue: Int = order.hashValue
+	override var hashValue: Int {
+		return order.hashValue
+	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCDatabaseMarketInfoRow)?.hashValue == hashValue
@@ -82,62 +84,47 @@ class NCDatabaseMarketInfoViewController: NCTreeViewController {
 
 	}
 	
-	private var orders: NCCachedResult<[ESI.Market.Order]>?
+	private var orders: CachedValue<[ESI.Market.Order]>?
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
 		let regionID = UserDefaults.standard.object(forKey: UserDefaults.Key.NCMarketRegion) as? Int ?? NCDBRegionID.theForge.rawValue
 		
-		dataManager.marketOrders(typeID: Int(type!.typeID), regionID: regionID) { result in
+		return dataManager.marketOrders(typeID: Int(type!.typeID), regionID: regionID).then(on: .main) { result -> [NCCacheRecord] in
 			self.orders = result
-			completionHandler([result.cacheRecord].flatMap {$0})
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
-		
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		if let value = self.orders?.value {
+	override func content() -> Future<TreeNode?> {
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
+			guard let value = self.orders?.value else {throw NCTreeViewControllerError.noResult}
 			let locationIDs = value.map ({$0.locationID})
 			
-			dataManager.locations(ids: Set(locationIDs)) { locations in
-				var buy: [ESI.Market.Order] = []
-				var sell: [ESI.Market.Order] = []
-				for order in value {
-					if order.isBuyOrder {
-						buy.append(order)
-					}
-					else {
-						sell.append(order)
-					}
-				}
-				buy.sort {return $0.price > $1.price}
-				sell.sort {return $0.price < $1.price}
-				
-				let sellRows = sell.map { return NCDatabaseMarketInfoRow(order: $0, location: locations[$0.locationID])}
-				let buyRows = buy.map { return NCDatabaseMarketInfoRow(order: $0, location: locations[$0.locationID])}
-				let sections = [DefaultTreeSection(nodeIdentifier: "Sellers",
-				                                   title: NSLocalizedString("Sellers", comment: "").uppercased(),
-				                                   children: sellRows),
-				                DefaultTreeSection(nodeIdentifier: "Buyers",
-				                                   title: NSLocalizedString("Buyers", comment: "").uppercased(),
-				                                   children: buyRows)]
-				if sellRows.isEmpty && buyRows.isEmpty {
-					self.tableView.backgroundView = NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: ""))
+			let locations = try? self.dataManager.locations(ids: Set(locationIDs)).get()
+			var buy: [ESI.Market.Order] = []
+			var sell: [ESI.Market.Order] = []
+			for order in value {
+				if order.isBuyOrder {
+					buy.append(order)
 				}
 				else {
-					if self.treeController?.content == nil {
-						self.treeController?.content = RootNode(sections)
-					}
-					else {
-						self.treeController?.content?.children = sections
-					}
-					self.tableView.backgroundView = nil
+					sell.append(order)
 				}
-				completionHandler()
 			}
-		}
-		else {
-			self.tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: self.orders?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-			completionHandler()
+			buy.sort {return $0.price > $1.price}
+			sell.sort {return $0.price < $1.price}
+			
+			let sellRows = sell.map { return NCDatabaseMarketInfoRow(order: $0, location: locations?[$0.locationID])}
+			let buyRows = buy.map { return NCDatabaseMarketInfoRow(order: $0, location: locations?[$0.locationID])}
+			guard !sellRows.isEmpty || !buyRows.isEmpty else {throw NCTreeViewControllerError.noResult}
+			let sections = [DefaultTreeSection(nodeIdentifier: "Sellers",
+											   title: NSLocalizedString("Sellers", comment: "").uppercased(),
+											   children: sellRows),
+							DefaultTreeSection(nodeIdentifier: "Buyers",
+											   title: NSLocalizedString("Buyers", comment: "").uppercased(),
+											   children: buyRows)]
+			
+			return RootNode(sections)
 		}
 	}
 	

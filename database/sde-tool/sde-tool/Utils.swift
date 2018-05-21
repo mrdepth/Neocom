@@ -38,7 +38,9 @@ extension NSDictionary {
 				try dic1.validate(keyPath: subkey, with: dic2)
 			case let (arr1 as NSArray, arr2 as NSArray):
 				try arr1.validate(keyPath: subkey, with: arr2)
-			case let (obj1 as Double, obj2 as Double) where obj1.distance(to: obj2) < 0.00001:
+			case let (obj1 as Double, obj2 as Double) where abs(obj1) > 0 || obj1.distance(to: obj2) / obj1 < 0.001:
+				break
+			case let (obj1 as NSNumber, obj2 as NSNumber) where abs(obj1.doubleValue) > 0 || obj1.doubleValue.distance(to: obj2.doubleValue) / obj1.doubleValue < 0.001:
 				break
 			case let (obj1 as NSObject, obj2 as NSObject) where obj1.isEqual(obj2):
 				break
@@ -200,16 +202,16 @@ extension NSColor {
 	public convenience init(number: UInt) {
 		var n = number
 		var abgr = [CGFloat]()
-		
+
 		for _ in 0...3 {
 			let byte = n & 0xFF
 			abgr.append(CGFloat(byte) / 255.0)
 			n >>= 8
 		}
-		
+
 		self.init(red: abgr[3], green: abgr[2], blue: abgr[1], alpha: abgr[0])
 	}
-	
+
 	public convenience init?(string: String) {
 		let scanner = Scanner(string: string)
 		var rgba: UInt32 = 0
@@ -218,14 +220,9 @@ extension NSColor {
 		}
 		else {
 			let key = string.capitalized
-			for colorList in NSColorList.availableColorLists {
-				
-				guard let color = colorList.color(withKey: NSColor.Name(key)) else {continue}
-				self.init(cgColor: color.cgColor)
-				return
-			}
+			guard let color = NSColorList.availableColorLists.compactMap ({$0.color(withKey: NSColor.Name(key))}).first else {return nil}
+			self.init(cgColor: color.cgColor)
 		}
-		return nil
 	}
 }
 

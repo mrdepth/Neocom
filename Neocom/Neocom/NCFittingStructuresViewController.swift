@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import CloudData
+import EVEAPI
 
 class NCFittingStructuresViewController: NCFittingLoadoutsViewController {
 	
@@ -16,7 +17,7 @@ class NCFittingStructuresViewController: NCFittingLoadoutsViewController {
 		super.viewDidLoad()
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		var sections = [TreeNode]()
 		
 		sections.append(DefaultTreeRow(image: #imageLiteral(resourceName: "station"), title: NSLocalizedString("New Structure Fit", comment: ""), accessoryType: .disclosureIndicator, route: Router.Database.TypePicker(category: NCDBDgmppItemCategory.category(categoryID: .structure)!, completionHandler: {[weak self] (controller, type) in
@@ -28,8 +29,7 @@ class NCFittingStructuresViewController: NCFittingLoadoutsViewController {
 		})))
 		
 		sections.append(NCLoadoutsSection(categoryID: .structure))
-		self.treeController?.content = RootNode(sections)
-		completionHandler()
+		return .init(RootNode(sections))
 	}
 	
 }

@@ -108,8 +108,11 @@ class NCKillmailRow: TreeRow {
 					cell.subtitleLabel?.text = contactName
 				}
 				else {
-					dataManager.contacts(ids: Set([Int64(contactID)])) { result in
-						let contact = result[Int64(contactID)]
+					dataManager.contacts(ids: Set([Int64(contactID)])).then(on: .main) { result in
+						let contact: NCContact? = {
+							guard let objectID = result[Int64(contactID)] else {return nil}
+							return (try? NCCache.sharedCache?.viewContext.existingObject(with: objectID)) as? NCContact
+						}()
 						self.contactName = contact?.name ?? NSLocalizedString("Unknown", comment: "")
 						if (cell.object as? NCKillmail)?.killmailID == self.killmail.killmailID {
 							cell.subtitleLabel?.text = self.contactName

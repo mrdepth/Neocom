@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import EVEAPI
 
 struct NCRSS: Codable {
 	struct Folder: Codable {
@@ -33,13 +34,11 @@ class NCFeedsViewController: NCTreeViewController {
 		
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		defer {completionHandler()}
-		
+	override func content() -> Future<TreeNode?> {
 		guard let url = Bundle.main.url(forResource: "rssFeeds", withExtension: "json"),
 			let data = try? Data(contentsOf: url),
 			let rss = try? JSONDecoder().decode(NCRSS.self, from: data)
-			else {return}
+			else {return .init(nil)}
 		
 		let sections = rss.folders.map { i -> DefaultTreeSection in
 			let rows = i.feeds.map { j -> DefaultTreeRow in
@@ -53,6 +52,6 @@ class NCFeedsViewController: NCTreeViewController {
 			let title = i.title.uppercased()
 			return DefaultTreeSection(nodeIdentifier: title, title: title, children: rows)
 		}
-		treeController?.content = RootNode(sections, collapseIdentifier: "NCFeedsViewController")
+		return .init(RootNode(sections, collapseIdentifier: "NCFeedsViewController"))
 	}
 }

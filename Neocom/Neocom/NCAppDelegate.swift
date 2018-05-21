@@ -23,7 +23,6 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions:
 		[UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-		
 		application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert], categories: nil))
 		application.registerForRemoteNotifications()
 
@@ -35,15 +34,9 @@ class NCAppDelegate: UIResponder, UIApplicationDelegate {
 		
 		setupAppearance()
 		
-		FirebaseApp.configure()
+
 		FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
 		
-		#if DEBUG
-			Appodeal.setTestingEnabled(true)
-		#endif
-		Appodeal.setLocationTracking(false)
-		Appodeal.initialize(withApiKey: NCApoodealKey, types: [.banner])
-
 		SKPaymentQueue.default().add(self)
 		return true
 	}

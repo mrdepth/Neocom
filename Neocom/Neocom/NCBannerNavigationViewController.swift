@@ -13,12 +13,12 @@ import StoreKit
 
 class NCBannerNavigationViewController: NCNavigationController {
 	
-	lazy var bannerView: AppodealBannerView? = {
-		let bannerView = AppodealBannerView(size: kAppodealUnitSize_320x50, rootViewController: self)
-		bannerView?.translatesAutoresizingMaskIntoConstraints = false
-		bannerView?.widthAnchor.constraint(equalToConstant: kAppodealUnitSize_320x50.width).isActive = true
-		bannerView?.heightAnchor.constraint(equalToConstant: kAppodealUnitSize_320x50.height).isActive = true
-		bannerView?.setDelegate(self)
+	lazy var bannerView: APDBannerView? = {
+		let bannerView = APDBannerView(size: kAppodealUnitSize_320x50, rootViewController: self)
+		bannerView.translatesAutoresizingMaskIntoConstraints = false
+		bannerView.widthAnchor.constraint(equalToConstant: kAppodealUnitSize_320x50.width).isActive = true
+		bannerView.heightAnchor.constraint(equalToConstant: kAppodealUnitSize_320x50.height).isActive = true
+		bannerView.delegate = self
 		return bannerView
 	}()
 	
@@ -36,7 +36,15 @@ class NCBannerNavigationViewController: NCNavigationController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		#if TARGET_OS_SIMULATOR
+		#if targetEnvironment(simulator)
+		let strongSelf = self
+		GDPR.requestConsent().then(on: .main) { hasConsent in
+			Appodeal.setTestingEnabled(true)
+			Appodeal.setLocationTracking(false)
+			Appodeal.initialize(withApiKey: NCApoodealKey, types: [.banner], hasConsent: hasConsent)
+			strongSelf.bannerView?.loadAd()
+			SKPaymentQueue.default().add(strongSelf)
+		}
 		#else
 		Receipt.fetchValidReceipt { [weak self] (result) in
 			guard let strongSelf = self else {return}
@@ -46,8 +54,22 @@ class NCBannerNavigationViewController: NCNavigationController {
 			else {
 				let firstLaunchDate = UserDefaults.standard.object(forKey: UserDefaults.Key.NCFirstLaunchDate) as? Date ?? Date()
 				if firstLaunchDate.timeIntervalSinceNow < -TimeInterval.NCBannerStartTime {
-					strongSelf.bannerView?.loadAd()
-					SKPaymentQueue.default().add(strongSelf)
+					GDPR.requestConsent().then(on: .main) { hasConsent in
+#if DEBUG
+						Appodeal.setTestingEnabled(true)
+#endif
+						Appodeal.setLocationTracking(false)
+						Appodeal.initialize(withApiKey: NCApoodealKey, types: [.banner], hasConsent: hasConsent)
+					}.catch(on: .main) { _ in
+#if DEBUG
+						Appodeal.setTestingEnabled(true)
+#endif
+						Appodeal.setLocationTracking(false)
+						Appodeal.initialize(withApiKey: NCApoodealKey, types: [.banner], hasConsent: false)
+					}.finally(on: .main) {
+						strongSelf.bannerView?.loadAd()
+						SKPaymentQueue.default().add(strongSelf)
+					}
 				}
 			}
 		}
@@ -57,13 +79,7 @@ class NCBannerNavigationViewController: NCNavigationController {
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		if let bannerContainerView = self.bannerContainerView, bannerContainerView.superview != nil {
-//			if #available(iOS 11.0, *) {
-//			}
-//			else {
-//				view.subviews.first?.frame = view.bounds.insetBy(UIEdgeInsets(top: 0, left: 0, bottom: bannerContainerView.bounds.height, right: 0))
-//			}
 			view.subviews.first?.frame = view.bounds.insetBy(UIEdgeInsets(top: 0, left: 0, bottom: bannerContainerView.bounds.height, right: 0))
-
 		}
 		else {
 			view.subviews.first?.frame = view.bounds
@@ -81,15 +97,6 @@ class NCBannerNavigationViewController: NCNavigationController {
 		
 		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: [], metrics: nil, views: ["view": bannerContainerView]))
 		NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:[view]-0-|", options: [], metrics: nil, views: ["view": bannerContainerView]))
-		
-//		if #available(iOS 11.0, *) {
-////			bannerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: kAppodealUnitSize_320x50.height).isActive = true
-//
-////			additionalSafeAreaInsets.bottom = kAppodealUnitSize_320x50.height
-//
-//		} else {
-//			bannerView.bottomAnchor.constraint(equalTo: self.bottomLayoutGuide.topAnchor).isActive = true
-//		}
 		bannerView.bottomAnchor.constraint(equalTo: self.bottomLayoutGuide.topAnchor).isActive = true
 
 	}
@@ -114,11 +121,11 @@ class NCBannerNavigationViewController: NCNavigationController {
 
 extension NCBannerNavigationViewController: AppodealBannerViewDelegate {
 	
-	func bannerViewDidLoadAd(_ bannerView: APDBannerView!) {
+	func bannerViewDidLoadAd(_ bannerView: APDBannerView) {
 		showBanner()
 	}
 	
-	func bannerView(_ bannerView: APDBannerView!, didFailToLoadAdWithError error: Error!) {
+	func bannerView(_ bannerView: APDBannerView, didFailToLoadAdWithError error: Error) {
 		hideBanner()
 	}
 	

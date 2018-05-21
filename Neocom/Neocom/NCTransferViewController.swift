@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import EVEAPI
 
 class NCTransferRow: TreeRow {
 	let loadout: (typeID: Int, data: NCFittingLoadout, name: String)
@@ -53,9 +54,9 @@ class NCTransferViewController: NCTreeViewController {
 		try? fileManager.removeItem(at: loadoutsURL)
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		if let loadouts = loadouts?.loadouts {
-			NCDatabase.sharedDatabase?.performTaskAndWait { managedObjectContext in
+			return NCDatabase.sharedDatabase!.performBackgroundTask { managedObjectContext -> TreeNode? in
 				let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
 				var groups = [String: [NCTransferRow]]()
 				
@@ -68,24 +69,20 @@ class NCTransferViewController: NCTreeViewController {
 				let sections = groups.sorted {$0.key < $1.key}.map {
 					DefaultTreeSection(title: $0.key, children: $0.value)
 				}
-				DispatchQueue.main.async {
-					self.treeController?.content = RootNode(sections)
-					
-					self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-					
-					let allRows = sections.map{$0.children}.joined()
-					allRows.forEach {
-						self.treeController?.selectCell(for: $0, animated: false, scrollPosition: .none)
-					}
-					self.allRows = Array(allRows)
-					self.updateButtons()
-					completionHandler()
+				guard !sections.isEmpty else {throw NCTreeViewControllerError.noResult}
+				return RootNode(sections)
+			}.finally(on: .main) {
+				guard let sections = self.treeController?.content?.children else {return}
+				let allRows = sections.map{$0.children}.joined()
+				allRows.forEach {
+					self.treeController?.selectCell(for: $0, animated: false, scrollPosition: .none)
 				}
+				self.allRows = Array(allRows)
+				self.updateButtons()
 			}
 		}
 		else {
-			tableView.backgroundView = NCTableViewBackgroundLabel(text: NSLocalizedString("No Result", comment: ""))
-			completionHandler()
+			return .init(.failure(NCTreeViewControllerError.noResult))
 		}
 		
 	}

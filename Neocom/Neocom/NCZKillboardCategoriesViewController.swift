@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCZKillboardCategoriesViewController: NCTreeViewController, NCSearchableViewController {
 	
@@ -19,22 +20,19 @@ class NCZKillboardCategoriesViewController: NCTreeViewController, NCSearchableVi
 		setupSearchController(searchResultsController: self.storyboard!.instantiateViewController(withIdentifier: "NCZKillboardTypesViewController"))
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if treeController?.content == nil {
-			let request = NSFetchRequest<NCDBInvCategory>(entityName: "InvCategory")
-			request.predicate = NSPredicate(format: "categoryID IN %@", [NCDBCategoryID.ship.rawValue, NCDBCategoryID.structure.rawValue])
-			request.sortDescriptors = [NSSortDescriptor(key: "categoryName", ascending: true)]
-			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-			
-			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCDatabaseCategoryRow.self)
-		}
-	}
-	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
 			treeController?.content = nil
 		}
+	}
+	
+	override func content() -> Future<TreeNode?> {
+		let request = NSFetchRequest<NCDBInvCategory>(entityName: "InvCategory")
+		request.predicate = NSPredicate(format: "categoryID IN %@", [NCDBCategoryID.ship.rawValue, NCDBCategoryID.structure.rawValue])
+		request.sortDescriptors = [NSSortDescriptor(key: "categoryName", ascending: true)]
+		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+		
+		return .init(FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCDatabaseCategoryRow.self))
 	}
 	
 	//MARK: - TreeControllerDelegate

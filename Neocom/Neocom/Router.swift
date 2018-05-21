@@ -675,7 +675,7 @@ enum Router {
 		class LoyaltyStoreOffers: Route {
 			let loyaltyPoints: ESI.Loyalty.Point
 			let filter: NCLoyaltyStoreOffersViewController.Filter?
-			let offers: NCCachedResult<[ESI.Loyalty.Offer]>?
+			let offers: CachedValue<[ESI.Loyalty.Offer]>?
 			
 			init(loyaltyPoints: ESI.Loyalty.Point) {
 				self.loyaltyPoints = loyaltyPoints
@@ -684,7 +684,7 @@ enum Router {
 				super.init(kind: .push, storyboard: .character, identifier: "NCLoyaltyStoreOffersViewController")
 			}
 
-			init(loyaltyPoints: ESI.Loyalty.Point, filter: NCLoyaltyStoreOffersViewController.Filter, offers: NCCachedResult<[ESI.Loyalty.Offer]>) {
+			init(loyaltyPoints: ESI.Loyalty.Point, filter: NCLoyaltyStoreOffersViewController.Filter, offers: CachedValue<[ESI.Loyalty.Offer]>) {
 				self.loyaltyPoints = loyaltyPoints
 				self.filter = filter
 				self.offers = offers
@@ -1300,16 +1300,16 @@ enum Router {
 		}
 
 		class ContactReports: Route {
-			let contact: NCContact
+			let contact: NSManagedObjectID
 			
-			init(contact: NCContact) {
+			init(contact: NSManagedObjectID) {
 				self.contact = contact
 				super.init(kind: .push, storyboard: UIStoryboard.killReports, identifier: "NCZKillboardSummaryViewController")
 			}
 			
 			override func prepareForSegue(destination: UIViewController) {
 				let destination = destination as! NCZKillboardSummaryViewController
-				destination.contact = contact
+				destination.contact = (try? NCCache.sharedCache?.viewContext.existingObject(with: contact)) as? NCContact
 			}
 		}
 
@@ -1361,21 +1361,21 @@ enum Router {
 		}
 	}
 	
-	enum ShoppingList {
-		
-		class Add: Route {
-			let items: [NCShoppingItem]
-			init(items: [NCShoppingItem]) {
-				self.items = items
-				super.init(kind: .adaptiveModal, identifier: "NCShoppingListAdditionViewController")
-			}
-			
-			override func prepareForSegue(destination: UIViewController) {
-				let destination = destination as! NCShoppingListAdditionViewController
-				destination.items = items
-			}
-		}
-	}
+//	enum ShoppingList {
+//		
+//		class Add: Route {
+//			let items: [NCShoppingItem]
+//			init(items: [NCShoppingItem]) {
+//				self.items = items
+//				super.init(kind: .adaptiveModal, identifier: "NCShoppingListAdditionViewController")
+//			}
+//			
+//			override func prepareForSegue(destination: UIViewController) {
+//				let destination = destination as! NCShoppingListAdditionViewController
+//				destination.items = items
+//			}
+//		}
+//	}
 	
 	enum Account {
 		class AccountsFolderPicker: Route {

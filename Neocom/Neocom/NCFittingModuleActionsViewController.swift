@@ -9,6 +9,7 @@
 import UIKit
 import CloudData
 import Dgmpp
+import EVEAPI
 
 class NCFittingModuleStateRow: TreeRow {
 	let fleet: NCFittingFleet
@@ -177,9 +178,7 @@ class NCFittingModuleActionsViewController: NCTreeViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
 
-		
 		tableView.register([Prototype.NCFittingModuleStateTableViewCell.default,
 		                    Prototype.NCDamageTypeTableViewCell.compact,
 		                    Prototype.NCDefaultTableViewCell.compact,
@@ -213,8 +212,8 @@ class NCFittingModuleActionsViewController: NCTreeViewController {
 
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		completionHandler()
+	override func content() -> Future<TreeNode?> {
+		return .init(nil)
 	}
 
 	@IBAction func onDelete(_ sender: UIButton) {

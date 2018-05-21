@@ -20,7 +20,7 @@ class NCMainMenuRow: DefaultTreeRow {
 		self.account = account
 		let isEnabled: Bool = {
 			guard !scopes.isEmpty else {return true}
-			guard let currentScopes = account?.scopes?.flatMap({($0 as? NCScope)?.name}).flatMap ({ESI.Scope($0)}) else {return false}
+			guard let currentScopes = account?.scopes?.compactMap({($0 as? NCScope)?.name}).compactMap ({ESI.Scope($0)}) else {return false}
 			return scopes.isSubset(of: currentScopes)
 		}()
 		
@@ -50,9 +50,9 @@ class NCAccountDataMenuRow<T>: NCMainMenuRow {
 	private var observer: NCManagedObjectObserver?
 	var isLoading = false
 
-	var result: NCCachedResult<T>? {
+	var result: CachedValue<T>? {
 		didSet {
-			if let cacheRecord = result?.cacheRecord {
+			if let cacheRecord = result?.cacheRecord(in: NCCache.sharedCache!.viewContext) {
 				self.observer = NCManagedObjectObserver(managedObject: cacheRecord) { [weak self] (_,_) in
 					guard let strongSelf = self else {return}
 					strongSelf.treeController?.reloadCells(for: [strongSelf], with: .none)
@@ -60,6 +60,7 @@ class NCAccountDataMenuRow<T>: NCMainMenuRow {
 			}
 		}
 	}
+	var error: Error?
 }
 
 class NCCharacterSheetMenuRow: NCAccountDataMenuRow<ESI.Skills.CharacterSkills> {
@@ -69,19 +70,22 @@ class NCCharacterSheetMenuRow: NCAccountDataMenuRow<ESI.Skills.CharacterSkills> 
 		super.configure(cell: cell)
 		guard let cell = cell as? NCDefaultTableViewCell, isEnabled else {return}
 
-		if let result = result {
-			if let value = result.value {
-				cell.subtitleLabel?.text = NCUnitFormatter.localizedString(from: value.totalSP, unit: .skillPoints, style: .full)
-			}
-			else {
-				cell.subtitleLabel?.text = result.error?.localizedDescription
-			}
+		if let value = result?.value {
+			cell.subtitleLabel?.text = NCUnitFormatter.localizedString(from: value.totalSP, unit: .skillPoints, style: .full)
+		}
+		else if let error = error {
+			cell.subtitleLabel?.text = error.localizedDescription
 		}
 		else {
 			guard let account = account, !isLoading else {return}
 			isLoading = true
-			NCDataManager(account: account).skills { result in
+			NCDataManager(account: account).skills().then(on: .main) { result in
 				self.result = result
+				self.error = nil
+			}.catch(on: .main) { error in
+				self.result = nil
+				self.error = error
+			}.finally(on: .main) {
 				self.isLoading = false
 				self.treeController?.reloadCells(for: [self], with: .none)
 			}
@@ -95,20 +99,23 @@ class NCJumpClonesMenuRow: NCAccountDataMenuRow<ESI.Clones.JumpClones> {
 		super.configure(cell: cell)
 		guard let cell = cell as? NCDefaultTableViewCell, isEnabled else {return}
 		
-		if let result = result {
-			if let value = result.value {
-				let t = 3600 * 24 + (value.lastCloneJumpDate ?? .distantPast).timeIntervalSinceNow
-				cell.subtitleLabel?.text = String(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes) : NSLocalizedString("Now", comment: ""))
-			}
-			else {
-				cell.subtitleLabel?.text = result.error?.localizedDescription
-			}
+		if let value = result?.value {
+			let t = 3600 * 24 + (value.lastCloneJumpDate ?? .distantPast).timeIntervalSinceNow
+			cell.subtitleLabel?.text = String(format: NSLocalizedString("Clone jump availability: %@", comment: ""), t > 0 ? NCTimeIntervalFormatter.localizedString(from: t, precision: .minutes) : NSLocalizedString("Now", comment: ""))
+		}
+		else if let error = error {
+			cell.subtitleLabel?.text = error.localizedDescription
 		}
 		else {
 			guard let account = account, !isLoading else {return}
 			isLoading = true
-			NCDataManager(account: account).clones { result in
+			NCDataManager(account: account).clones().then(on: .main) { result in
 				self.result = result
+				self.error = nil
+			}.catch(on: .main) { error in
+				self.result = nil
+				self.error = error
+			}.finally(on: .main) {
 				self.isLoading = false
 				self.treeController?.reloadCells(for: [self], with: .none)
 			}
@@ -122,33 +129,35 @@ class NCSkillsMenuRow: NCAccountDataMenuRow<[ESI.Skills.SkillQueueItem]> {
 		super.configure(cell: cell)
 		guard let cell = cell as? NCDefaultTableViewCell, isEnabled else {return}
 		
-		if let result = result {
-			if let value = result.value {
-				let date = Date()
-				
-				let skillQueue = value.filter {
-					guard let finishDate = $0.finishDate else {return false}
-					return finishDate >= date
-				}
-				
-				if let skill = skillQueue.last,
-					let endTime = skill.finishDate {
-					cell.subtitleLabel?.text = String(format: NSLocalizedString("%d skills in queue (%@)", comment: ""), skillQueue.count, NCTimeIntervalFormatter.localizedString(from: endTime.timeIntervalSinceNow, precision: .minutes))
-				}
-					else {
-					cell.subtitleLabel?.text = NSLocalizedString("No skills in training", comment: "")
-				}
-				
+		if let value = result?.value {
+			let date = Date()
+			
+			let skillQueue = value.filter {
+				guard let finishDate = $0.finishDate else {return false}
+				return finishDate >= date
+			}
+			
+			if let skill = skillQueue.last,
+				let endTime = skill.finishDate {
+				cell.subtitleLabel?.text = String(format: NSLocalizedString("%d skills in queue (%@)", comment: ""), skillQueue.count, NCTimeIntervalFormatter.localizedString(from: endTime.timeIntervalSinceNow, precision: .minutes))
 			}
 			else {
-				cell.subtitleLabel?.text = result.error?.localizedDescription
+				cell.subtitleLabel?.text = NSLocalizedString("No skills in training", comment: "")
 			}
+		}
+		else if let error = error {
+			cell.subtitleLabel?.text = error.localizedDescription
 		}
 		else {
 			guard let account = account, !isLoading else {return}
 			isLoading = true
-			NCDataManager(account: account).skillQueue { result in
+			NCDataManager(account: account).skillQueue().then(on: .main) { result in
 				self.result = result
+				self.error = nil
+			}.catch(on: .main) { error in
+				self.result = nil
+				self.error = error
+			}.finally(on: .main) {
 				self.isLoading = false
 				self.treeController?.reloadCells(for: [self], with: .none)
 			}
@@ -160,22 +169,24 @@ class NCWealthMenuRow: NCAccountDataMenuRow<Double> {
 	
 	override func configure(cell: UITableViewCell) {
 		super.configure(cell: cell)
-
 		guard let cell = cell as? NCDefaultTableViewCell, isEnabled else {return}
 		
-		if let result = result {
-			if let value = result.value {
-				cell.subtitleLabel?.text = NCUnitFormatter.localizedString(from: value, unit: .isk, style: .full)
-			}
-			else {
-				cell.subtitleLabel?.text = result.error?.localizedDescription
-			}
+		if let value = result?.value {
+			cell.subtitleLabel?.text = NCUnitFormatter.localizedString(from: value, unit: .isk, style: .full)
+		}
+		else if let error = error {
+			cell.subtitleLabel?.text = error.localizedDescription
 		}
 		else {
 			guard let account = account, !isLoading else {return}
 			isLoading = true
-			NCDataManager(account: account).walletBalance { result in
+			NCDataManager(account: account).walletBalance().then(on: .main) { result in
 				self.result = result
+				self.error = nil
+			}.catch(on: .main) { error in
+				self.result = nil
+				self.error = error
+			}.finally(on: .main) {
 				self.isLoading = false
 				self.treeController?.reloadCells(for: [self], with: .none)
 			}
@@ -189,8 +200,6 @@ class NCServerStatusRow: NCAccountDataMenuRow<ESI.Status.ServerStatus> {
 		let dateFormatter = DateFormatter()
 		dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
 		dateFormatter.dateFormat = "HH:mm:ss"
-//		dateFormatter.timeStyle = .medium
-//		dateFormatter.dateStyle = .none
 		return dateFormatter
 	}()
 	
@@ -198,40 +207,35 @@ class NCServerStatusRow: NCAccountDataMenuRow<ESI.Status.ServerStatus> {
 		guard let cell = cell as? NCDefaultTableViewCell, isEnabled else {return}
 		cell.accessoryType = .none
 		
-		if let result = result {
-			if let value = result.value {
-				if value.players > 0 {
-					cell.titleLabel?.text = String(format: NSLocalizedString("Tranquility: online %@ players", comment: ""), NCUnitFormatter.localizedString(from: value.players, unit: .none, style: .full))
-				}
-				else {
-					cell.titleLabel?.text = NSLocalizedString("Tranquility: offline", comment: "")
-				}
-				cell.subtitleLabel?.text = NSLocalizedString("EVE Time: ", comment: "") + dateFormatter.string(from: Date())
+		if let value = result?.value {
+			if value.players > 0 {
+				cell.titleLabel?.text = String(format: NSLocalizedString("Tranquility: online %@ players", comment: ""), NCUnitFormatter.localizedString(from: value.players, unit: .none, style: .full))
 			}
 			else {
-				cell.titleLabel?.text = NSLocalizedString("Tranquility", comment: "")
-				cell.subtitleLabel?.text = result.error?.localizedDescription
+				cell.titleLabel?.text = NSLocalizedString("Tranquility: offline", comment: "")
 			}
+			cell.subtitleLabel?.text = NSLocalizedString("EVE Time: ", comment: "") + dateFormatter.string(from: Date())
+		}
+		else if let error = error {
+			cell.titleLabel?.text = NSLocalizedString("Tranquility", comment: "")
+			cell.subtitleLabel?.text = error.localizedDescription
 		}
 		else {
 			cell.titleLabel?.text = NSLocalizedString("Tranquility", comment: "")
 			cell.subtitleLabel?.text = NSLocalizedString("Updating...", comment: "")
-//			guard !isLoading else {return}
-//			isLoading = true
-//			NCDataManager(account: NCAccount.current).serverStatus { result in
-//				self.result = result
-//				self.isLoading = false
-//				self.treeController?.reloadCells(for: [self], with: .none)
-//			}
-		}
-		
-		if result == nil && !isLoading {
+
+			guard !isLoading else {return}
 			isLoading = true
-			NCDataManager(account: NCAccount.current).serverStatus { result in
+			NCDataManager().serverStatus().then(on: .main) { result in
 				self.result = result
+				self.error = nil
+				self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.timerTick(_:)), userInfo: nil, repeats: true)
+			}.catch(on: .main) { error in
+				self.result = nil
+				self.error = error
+			}.finally(on: .main) {
 				self.isLoading = false
 				self.treeController?.reloadCells(for: [self], with: .none)
-				self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.timerTick(_:)), userInfo: nil, repeats: true)
 			}
 		}
 	}
@@ -320,7 +324,7 @@ class NCMainMenuViewController: NCTreeViewController {
 		}
 	}*/
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		let account = NCAccount.current
 		
 		var sections: [TreeNode] = [
@@ -382,41 +386,6 @@ class NCMainMenuViewController: NCTreeViewController {
 
 								]),
 
-			DefaultTreeSection(nodeIdentifier: "Corporation", title: NSLocalizedString("Corporation", comment: "").uppercased(),
-							   children: [
-								NCMainMenuRow(nodeIdentifier: "Assets",
-											  image: #imageLiteral(resourceName: "assets"),
-											  title: NSLocalizedString("Assets", comment: ""),
-											  route: Router.MainMenu.Assets(owner: .corporation),
-											  scopes: [.esiAssetsReadCorporationAssetsV1],
-											  account: account),
-								NCMainMenuRow(nodeIdentifier: "MarketOrders",
-											  image: #imageLiteral(resourceName: "marketdeliveries"),
-											  title: NSLocalizedString("Market Orders", comment: ""),
-											  route: Router.MainMenu.MarketOrders(owner: .corporation),
-											  scopes: [.esiMarketsReadCorporationOrdersV1],
-											  account: account),
-								NCMainMenuRow(nodeIdentifier: "WalletTransactions",
-											  image: #imageLiteral(resourceName: "journal"),
-											  title: NSLocalizedString("Wallet Transactions", comment: ""),
-											  route: Router.MainMenu.WalletTransactions(owner: .corporation),
-											  scopes: [.esiWalletReadCorporationWalletsV1, .esiCorporationsReadDivisionsV1],
-											  account: account),
-								NCMainMenuRow(nodeIdentifier: "WalletJournal",
-											  image: #imageLiteral(resourceName: "wallet"),
-											  title: NSLocalizedString("Wallet Journal", comment: ""),
-											  route: Router.MainMenu.WalletJournal(owner: .corporation),
-											  scopes: [.esiWalletReadCorporationWalletsV1, .esiCorporationsReadDivisionsV1],
-											  account: account),
-								NCMainMenuRow(nodeIdentifier: "IndustryJobs",
-											  image: #imageLiteral(resourceName: "industry"),
-											  title: NSLocalizedString("Industry Jobs", comment: ""),
-											  route: Router.MainMenu.IndustryJobs(owner: .corporation),
-											  scopes: [.esiIndustryReadCorporationJobsV1],
-											  account: account)
-				]),
-			
-			
 			DefaultTreeSection(nodeIdentifier: "Database", title: NSLocalizedString("Database", comment: "").uppercased(),
 		                                   children: [
 											NCMainMenuRow(nodeIdentifier: "Database", image: #imageLiteral(resourceName: "items"), title: NSLocalizedString("Database", comment: ""), route: Router.MainMenu.Database()),
@@ -485,6 +454,40 @@ class NCMainMenuViewController: NCTreeViewController {
 								              account: account),
 				]),
 
+			DefaultTreeSection(nodeIdentifier: "Corporation", title: NSLocalizedString("Corporation", comment: "").uppercased(),
+							   children: [
+								NCMainMenuRow(nodeIdentifier: "Assets",
+											  image: #imageLiteral(resourceName: "assets"),
+											  title: NSLocalizedString("Assets", comment: ""),
+											  route: Router.MainMenu.Assets(owner: .corporation),
+											  scopes: [.esiAssetsReadCorporationAssetsV1],
+											  account: account),
+								NCMainMenuRow(nodeIdentifier: "MarketOrders",
+											  image: #imageLiteral(resourceName: "marketdeliveries"),
+											  title: NSLocalizedString("Market Orders", comment: ""),
+											  route: Router.MainMenu.MarketOrders(owner: .corporation),
+											  scopes: [.esiMarketsReadCorporationOrdersV1],
+											  account: account),
+								NCMainMenuRow(nodeIdentifier: "WalletTransactions",
+											  image: #imageLiteral(resourceName: "journal"),
+											  title: NSLocalizedString("Wallet Transactions", comment: ""),
+											  route: Router.MainMenu.WalletTransactions(owner: .corporation),
+											  scopes: [.esiWalletReadCorporationWalletsV1, .esiCorporationsReadDivisionsV1],
+											  account: account),
+								NCMainMenuRow(nodeIdentifier: "WalletJournal",
+											  image: #imageLiteral(resourceName: "wallet"),
+											  title: NSLocalizedString("Wallet Journal", comment: ""),
+											  route: Router.MainMenu.WalletJournal(owner: .corporation),
+											  scopes: [.esiWalletReadCorporationWalletsV1, .esiCorporationsReadDivisionsV1],
+											  account: account),
+								NCMainMenuRow(nodeIdentifier: "IndustryJobs",
+											  image: #imageLiteral(resourceName: "industry"),
+											  title: NSLocalizedString("Industry Jobs", comment: ""),
+											  route: Router.MainMenu.IndustryJobs(owner: .corporation),
+											  scopes: [.esiIndustryReadCorporationJobsV1],
+											  account: account)
+				]),
+			
 			DefaultTreeSection(nodeIdentifier: "Info", title: NSLocalizedString("Info", comment: "").uppercased(),
 			                   children: [
 								NCMainMenuRow(nodeIdentifier: "News", image: #imageLiteral(resourceName: "newspost"), title: NSLocalizedString("News", comment: ""), route: Router.MainMenu.News()),
@@ -497,22 +500,20 @@ class NCMainMenuViewController: NCTreeViewController {
 
 		]
 		
-//		let currentScopes = Set((account?.scopes?.allObjects as? [NCScope])?.flatMap {return $0.name != nil ? ESI.Scope($0.name!) : nil} ?? [])
+//		let currentScopes = Set((account?.scopes?.allObjects as? [NCScope])?.compactMap {return $0.name != nil ? ESI.Scope($0.name!) : nil} ?? [])
 		
-		if (account?.scopes as? Set<NCScope>)?.flatMap({$0.name}).contains(ESI.Scope.esiAssetsReadCorporationAssetsV1.rawValue) == true {
-			sections[1].isExpanded = true
+		if (account?.scopes as? Set<NCScope>)?.compactMap({$0.name}).contains(ESI.Scope.esiAssetsReadCorporationAssetsV1.rawValue) == true {
+			sections[4].isExpanded = true
 		}
 		else {
-			sections[1].isExpanded = false
+			sections[4].isExpanded = false
 		}
 		
 		sections.forEach {$0.children = ($0.children as! [NCMainMenuRow]).filter({$0.scopes.isEmpty || account != nil})}
 		sections = sections.filter {!$0.children.isEmpty}
 		
 		sections.insert(NCServerStatusRow(prototype: Prototype.NCDefaultTableViewCell.noImage,nodeIdentifier: "ServerStatus"), at: 0)
-		treeController?.content = RootNode(sections, collapseIdentifier: "NCMainMenuViewController")
-		
-		completionHandler()
+		return .init(RootNode(sections, collapseIdentifier: "NCMainMenuViewController"))
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

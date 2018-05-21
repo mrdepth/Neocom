@@ -218,7 +218,7 @@ class NCFittingServerViewController: UIViewController {
 				let xml: String? = NCStorage.sharedStorage?.performTaskAndWait { managedObjectContext -> String? in
 					if uuid == "all" {
 						guard let loadouts: [NCLoadout] = managedObjectContext.fetch("Loadout") else {return nil}
-						let array = loadouts.flatMap { loadout -> (typeID: Int, data: NCFittingLoadout, name: String)? in
+						let array = loadouts.compactMap { loadout -> (typeID: Int, data: NCFittingLoadout, name: String)? in
 							guard let data = loadout.data?.data else {return nil}
 							return (typeID: Int(loadout.typeID), data: data, name: loadout.name ?? "")
 						}

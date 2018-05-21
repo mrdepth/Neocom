@@ -52,7 +52,7 @@ fileprivate class NCSkillRow: NCTreeRow {
 }
 */
 
-fileprivate class NCSkillSection: DefaultTreeSection {
+class NCSkillSection: DefaultTreeSection {
 	let group: NCDBInvGroup
 	init(group: NCDBInvGroup, children: [NCSkillRow], skillPoints: Int64?) {
 		self.group = group
@@ -95,7 +95,7 @@ class NCSkillsPageViewController: NCPageViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		if sections == nil {
-			reload()
+			_ = reload()
 		}
 	}
 	
@@ -112,9 +112,9 @@ class NCSkillsPageViewController: NCPageViewController {
 		}
 	}
 	
-	private func process(_ character: NCCharacter, completionHandler: (() -> Void)?) {
+	private func process(_ character: NCCharacter) -> Future<Void> {
 		let progress = Progress(totalUnitCount: 1)
-		NCDatabase.sharedDatabase?.performBackgroundTask{ managedObjectContext in
+		return NCDatabase.sharedDatabase!.performBackgroundTask{ managedObjectContext -> [[NCSkillSection]] in
 			let request = NSFetchRequest<NCDBInvType>(entityName: "InvType")
 			request.predicate = NSPredicate(format: "published == TRUE AND group.category.categoryID == %d", NCDBCategoryID.skill.rawValue)
 			
@@ -183,48 +183,35 @@ class NCSkillsPageViewController: NCPageViewController {
 				}
 				sectionsProgress.completedUnitCount += 1
 			}
-			
-			DispatchQueue.main.async {
-				self.sections = [mySections, canTrainSections, notKnownSections, allSections]
-				(self.viewControllers as? [NCSkillsContentViewController])?.forEach {
-					$0.tableView.backgroundView = nil
-				}
-				
-				completionHandler?()
+			return [mySections, canTrainSections, notKnownSections, allSections]
+		}.then(on: .main) { result -> Void in
+			self.sections = result
+			(self.viewControllers as? [NCSkillsContentViewController])?.forEach {
+				$0.tableView.backgroundView = nil
 			}
 		}
 	}
 	
-	private func reload(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: (() -> Void)? = nil ) {
+	
+	func reload(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) -> Future<Void> {
 		if let account = NCAccount.current {
 			let progress = NCProgressHandler(totalUnitCount: 2)
 			
-			progress.progress.perform {
-				NCCharacter.load(account: account, cachePolicy: cachePolicy) { result in
-					switch result {
-					case let .success(character):
-						
-						self.observer = NotificationCenter.default.addNotificationObserver(forName: .NCCharacterChanged, object: character, queue: .main) { [weak self] _ in
-							self?.process(character, completionHandler: nil)
-						}
-						
-						progress.progress.perform {
-							self.process(character) {
-								progress.finish()
-								completionHandler?()
-							}
-						}
-					case let .failure(error):
-						progress.finish()
-						(self.viewControllers as? [NCSkillsContentViewController])?.forEach {
-							if $0.content == nil {
-								$0.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
-							}
-						}
+			return progress.progress.perform {
+				return NCCharacter.load(account: account, cachePolicy: cachePolicy).then(on: .main) { character -> Future<Void> in
+					self.observer = NotificationCenter.default.addNotificationObserver(forName: .NCCharacterChanged, object: character, queue: .main) { [weak self] _ in
+						_ = self?.process(character)
 					}
+					
+					return progress.progress.perform {
+						return self.process(character)
+					}
+				}.finally(on: .main) {
+					progress.finish()
 				}
 			}
 		}
+		return .init(())
 	}
 	
 }

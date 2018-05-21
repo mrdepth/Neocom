@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NCShoppingItemRow: NCFetchedResultsObjectNode<NCShoppingItem>, TreeNodeRoutable {
+/*class NCShoppingItemRow: NCFetchedResultsObjectNode<NCShoppingItem>, TreeNodeRoutable {
 	var route: Route?
 	var accessoryButtonRoute: Route?
 	
@@ -85,10 +85,10 @@ class NCShoppingItemRow: NCFetchedResultsObjectNode<NCShoppingItem>, TreeNodeRou
 		else {
 		}
 	}
-}
+}*/
 
 class NCShoppingListAdditionViewController: UITableViewController, TreeControllerDelegate {
-	
+	/*
 	@IBOutlet var treeController: TreeController!
 	
 	var items: [NCShoppingItem]?
@@ -128,5 +128,5 @@ class NCShoppingListAdditionViewController: UITableViewController, TreeControlle
 		}
 		treeController.deselectCell(for: node, animated: true)
 	}
-	
+	*/
 }

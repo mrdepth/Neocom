@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import CloudData
 import Dgmpp
+import EVEAPI
 
 class NCFittingDroneInfoRow: NCChargeRow {
 	let count: Int
@@ -181,8 +182,8 @@ class NCFittingDroneActionsViewController: NCTreeViewController {
 		
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		completionHandler()
+	override func content() -> Future<TreeNode?> {
+		return .init(nil)
 	}
 
 	@IBAction func onDelete(_ sender: UIButton) {

@@ -8,6 +8,7 @@
 
 import Foundation
 import Dgmpp
+import EVEAPI
 
 class NCAboutViewController: NCTreeViewController {
 	
@@ -20,8 +21,7 @@ class NCAboutViewController: NCTreeViewController {
 
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		defer {completionHandler()}
+	override func content() -> Future<TreeNode?> {
 		
 		var sections = [TreeNode]()
 		
@@ -60,7 +60,7 @@ class NCAboutViewController: NCTreeViewController {
 		
 		sections.append(DefaultTreeSection(title: NSLocalizedString("Special Thanks", comment: "").uppercased(), children: NCSpecialThanks.map { DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.noImage, title: $0) }))
 		
-		treeController?.content = RootNode(sections)
+		return .init(RootNode(sections))
 	}
 }
 

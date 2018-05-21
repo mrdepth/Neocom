@@ -53,7 +53,8 @@ class NCMailPageViewController: NCPageViewController {
 		Router.Mail.NewMessage().perform(source: self, sender: sender)
 	}
 
-	private var mailLabels: NCCachedResult<ESI.Mail.MailLabelsAndUnreadCounts>?
+	private var mailLabels: CachedValue<ESI.Mail.MailLabelsAndUnreadCounts>?
+	private var error: Error?
 	
 	func reload(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, completionHandler: (() -> Void)? = nil ) {
 		guard let account = NCAccount.current else {return}
@@ -61,21 +62,20 @@ class NCMailPageViewController: NCPageViewController {
 		let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
 		
 		progress.progress.perform {
-			dataManager.mailLabels { result in
+			dataManager.mailLabels().then(on:. main) { result in
+				self.error = nil
 				self.mailLabels = result
-				switch result {
-				case let .success(value, _):
-					var controllers: [UIViewController]? = value.labels?.map { label -> NCMailViewController in
-						let controller = self.storyboard!.instantiateViewController(withIdentifier: "NCMailViewController") as! NCMailViewController
-						controller.label = label
-						return controller
-					}
-					controllers?.append(self.storyboard!.instantiateViewController(withIdentifier: "NCMailDraftsViewController"))
-					self.viewControllers = controllers
-					self.errorLabel = nil
-				case let .failure(error):
-					self.errorLabel = NCTableViewBackgroundLabel(text: error.localizedDescription)
+				var controllers: [UIViewController]? = result.value?.labels?.map { label -> NCMailViewController in
+					let controller = self.storyboard!.instantiateViewController(withIdentifier: "NCMailViewController") as! NCMailViewController
+					controller.label = label
+					return controller
 				}
+				controllers?.append(self.storyboard!.instantiateViewController(withIdentifier: "NCMailDraftsViewController"))
+				self.viewControllers = controllers
+				self.errorLabel = nil
+			}.catch(on: .main) { error in
+				self.errorLabel = NCTableViewBackgroundLabel(text: error.localizedDescription)
+			}.finally(on: .main) {
 				progress.finish()
 			}
 		}
@@ -83,20 +83,15 @@ class NCMailPageViewController: NCPageViewController {
 	
 	
 	func saveUnreadCount() {
-		switch mailLabels {
-		case .success(var value, let record)?:
-			guard let record = record else {return}
-			guard let labels = viewControllers?.flatMap ({($0 as? NCMailViewController)?.label}) else {return}
-			
-			value.totalUnreadCount = labels.flatMap {$0.unreadCount}.reduce(0, +)
-			value.labels = labels
-			record.set(value)
-
-			if record.managedObjectContext?.hasChanges == true {
-				try? record.managedObjectContext?.save()
-			}
-		default:
-			break
+		guard var value = mailLabels?.value, let record = mailLabels?.cacheRecord(in: NCCache.sharedCache!.viewContext) else {return}
+		guard let labels = viewControllers?.compactMap ({($0 as? NCMailViewController)?.label}) else {return}
+		
+		value.totalUnreadCount = labels.compactMap {$0.unreadCount}.reduce(0, +)
+		value.labels = labels
+		record.set(value)
+		
+		if record.managedObjectContext?.hasChanges == true {
+			try? record.managedObjectContext?.save()
 		}
 	}
 	

@@ -17,7 +17,7 @@ class NCBugreportViewController: NCTreeViewController {
 							Prototype.NCHeaderTableViewCell.static])
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		let rows = [
 			
 			DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.compact,
@@ -101,8 +101,7 @@ class NCBugreportViewController: NCTreeViewController {
 		
 		let root = DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.static, nodeIdentifier: "Root", title: NSLocalizedString("What kind of problem is this?", comment: "").uppercased(), isExpandable: false, children: rows)
 		
-		treeController?.content = RootNode([root])
-		completionHandler()
+		return .init(RootNode([root]))
 	}
 	
 	lazy var encoder: JSONEncoder = {
@@ -130,41 +129,30 @@ class NCBugreportViewController: NCTreeViewController {
 			return data
 		}
 	}
+	
+	func process<T: Codable> (_ result: Future<CachedValue<T>>) -> Data {
+		do {
+			guard let value = try result.get().value else {throw NCDataManagerError.noCacheData}
+			return try encoder.encode(value)
+		}
+		catch {
+			guard let data = (error as CustomDebugStringConvertible).debugDescription.data(using: .utf8) ?? error.localizedDescription.data(using: .utf8) else {return "Unknown Error".data(using: .utf8)!}
+			return data
+		}
+	}
 
 	private func reportCharacterSheet() {
 		if let account = NCAccount.current {
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 3)
-			let dispatchGroup = DispatchGroup()
 			let dataManager = NCDataManager(account: account)
-
-			var attachments = [String: Data]()
 			
-			
-			progress.progress.perform {
-				dispatchGroup.enter()
-				dataManager.character { result in
-					attachments["character.json"] = self.process(result: result)
-					dispatchGroup.leave()
-				}
-			}
-			
-			progress.progress.perform {
-				dispatchGroup.enter()
-				dataManager.clones { result in
-					attachments["clones.json"] = self.process(result: result)
-					dispatchGroup.leave()
-				}
-			}
-			
-			progress.progress.perform {
-				dispatchGroup.enter()
-				dataManager.characterLocation { result in
-					attachments["characterLocation.json"] = self.process(result: result)
-					dispatchGroup.leave()
-				}
-			}
-			
-			dispatchGroup.notify(queue: .main) {
+			DispatchQueue.global(qos: .utility).async { () -> [String: Data] in
+				var attachments = [String: Data]()
+				attachments["character.json"] = self.process(progress.progress.perform { dataManager.character() })
+				attachments["clones.json"] = self.process(progress.progress.perform { dataManager.clones() })
+				attachments["characterLocation.json"] = self.process(progress.progress.perform { dataManager.characterLocation() })
+				return attachments
+			}.then(on: .main) { (attachments) in
 				progress.finish()
 				Router.MainMenu.BugReport.Finish(attachments: attachments, subject: "Character Sheet").perform(source: self, sender: nil)
 			}
@@ -177,29 +165,14 @@ class NCBugreportViewController: NCTreeViewController {
 	private func reportSkills() {
 		if let account = NCAccount.current {
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 2)
-			let dispatchGroup = DispatchGroup()
 			let dataManager = NCDataManager(account: account)
 			
-			var attachments = [String: Data]()
-			
-			
-			progress.progress.perform {
-				dispatchGroup.enter()
-				dataManager.skills { result in
-					attachments["skills.json"] = self.process(result: result)
-					dispatchGroup.leave()
-				}
-			}
-			
-			progress.progress.perform {
-				dispatchGroup.enter()
-				dataManager.skillQueue { result in
-					attachments["skillQueue.json"] = self.process(result: result)
-					dispatchGroup.leave()
-				}
-			}
-			
-			dispatchGroup.notify(queue: .main) {
+			DispatchQueue.global(qos: .utility).async { () -> [String: Data] in
+				var attachments = [String: Data]()
+				attachments["skills.json"] = self.process(progress.progress.perform { dataManager.skills() })
+				attachments["skillQueue.json"] = self.process(progress.progress.perform { dataManager.skillQueue() })
+				return attachments
+			}.then(on: .main) { (attachments) in
 				progress.finish()
 				Router.MainMenu.BugReport.Finish(attachments: attachments, subject: "Skills").perform(source: self, sender: nil)
 			}
@@ -212,26 +185,18 @@ class NCBugreportViewController: NCTreeViewController {
 	private func reportAssets() {
 		if let account = NCAccount.current {
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
-			let dispatchGroup = DispatchGroup()
 			let dataManager = NCDataManager(account: account)
-			
-			var attachments = [String: Data]()
-			
-			dispatchGroup.enter()
-			func load(page: Int) {
-				dataManager.assets(page: page) { result in
-					if result.value?.isEmpty == false {
-						attachments["assetsPage\(page).json"] = self.process(result: result)
-						load(page: page + 1)
-					}
-					else {
-						dispatchGroup.leave()
-					}
+
+			DispatchQueue.global(qos: .utility).async { () -> [String: Data] in
+				var attachments = [String: Data]()
+				
+				for i in 1...20 {
+					let assets = progress.progress.perform { dataManager.assets(page: i) }
+					guard (try? assets.get())?.value?.isEmpty == false else {break}
+					attachments["assetsPage\(i).json"] = self.process(assets)
 				}
-			}
-			load(page: 1)
-			
-			dispatchGroup.notify(queue: .main) {
+				return attachments
+			}.then(on: .main) { (attachments) in
 				progress.finish()
 				Router.MainMenu.BugReport.Finish(attachments: attachments, subject: "Assets").perform(source: self, sender: nil)
 			}
@@ -244,21 +209,13 @@ class NCBugreportViewController: NCTreeViewController {
 	private func reportMarketOrders() {
 		if let account = NCAccount.current {
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
-			let dispatchGroup = DispatchGroup()
 			let dataManager = NCDataManager(account: account)
 			
-			var attachments = [String: Data]()
-			
-			
-			progress.progress.perform {
-				dispatchGroup.enter()
-				dataManager.marketOrders { result in
-					attachments["marketOrders.json"] = self.process(result: result)
-					dispatchGroup.leave()
-				}
-			}
-			
-			dispatchGroup.notify(queue: .main) {
+			DispatchQueue.global(qos: .utility).async { () -> [String: Data] in
+				var attachments = [String: Data]()
+				attachments["marketOrders.json"] = self.process(progress.progress.perform { dataManager.marketOrders() })
+				return attachments
+			}.then(on: .main) { (attachments) in
 				progress.finish()
 				Router.MainMenu.BugReport.Finish(attachments: attachments, subject: "Market Orders").perform(source: self, sender: nil)
 			}
@@ -271,21 +228,13 @@ class NCBugreportViewController: NCTreeViewController {
 	private func reportIndustryJobs() {
 		if let account = NCAccount.current {
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
-			let dispatchGroup = DispatchGroup()
 			let dataManager = NCDataManager(account: account)
 			
-			var attachments = [String: Data]()
-			
-			
-			progress.progress.perform {
-				dispatchGroup.enter()
-				dataManager.industryJobs { result in
-					attachments["industryJobs.json"] = self.process(result: result)
-					dispatchGroup.leave()
-				}
-			}
-			
-			dispatchGroup.notify(queue: .main) {
+			DispatchQueue.global(qos: .utility).async { () -> [String: Data] in
+				var attachments = [String: Data]()
+				attachments["industryJobs.json"] = self.process(progress.progress.perform { dataManager.industryJobs() })
+				return attachments
+			}.then(on: .main) { (attachments) in
 				progress.finish()
 				Router.MainMenu.BugReport.Finish(attachments: attachments, subject: "Industry Jobs").perform(source: self, sender: nil)
 			}
@@ -298,39 +247,23 @@ class NCBugreportViewController: NCTreeViewController {
 	private func reportPlanetaries() {
 		if let account = NCAccount.current {
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 2)
-			let dispatchGroup = DispatchGroup()
 			let dataManager = NCDataManager(account: account)
 			
-			var attachments = [String: Data]()
-			
-			
-			progress.progress.perform {
-				dispatchGroup.enter()
-				dataManager.colonies { result in
-					attachments["colonies.json"] = self.process(result: result)
-					
-					progress.progress.perform {
-						if let value = result.value {
-							let progress = Progress(totalUnitCount: Int64(value.count))
-							for colony in value {
-								progress.perform {
-									dispatchGroup.enter()
-									dataManager.colonyLayout(planetID: colony.planetID) { result in
-										attachments["colony\(colony.planetID).json"] = self.process(result: result)
-										dispatchGroup.leave()
-									}
-								}
+			DispatchQueue.global(qos: .utility).async { () -> [String: Data] in
+				var attachments = [String: Data]()
+				let colonies = progress.progress.perform { dataManager.colonies() }
+				attachments["colonies.json"] = self.process(colonies)
 
-							}
+				if let value = (try? colonies.get())?.value {
+					progress.progress.perform {
+						let progress = Progress(totalUnitCount: Int64(value.count))
+						for colony in value {
+							attachments["colony\(colony.planetID).json"] = self.process(progress.perform { dataManager.colonyLayout(planetID: colony.planetID) })
 						}
 					}
-					
-					dispatchGroup.leave()
-					
 				}
-			}
-			
-			dispatchGroup.notify(queue: .main) {
+				return attachments
+			}.then(on: .main) { (attachments) in
 				progress.finish()
 				Router.MainMenu.BugReport.Finish(attachments: attachments, subject: "Planetaries").perform(source: self, sender: nil)
 			}

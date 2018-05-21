@@ -60,7 +60,8 @@ extension DGMType: Comparable {
 
 extension DGMFacility {
 	var typeName: String? {
-		return NCDatabase.sharedDatabase?.invTypes[typeID]?.typeName
+		return NCDatabase.sharedDatabase?.performTaskAndWait{ return NCDBInvType.invTypes(managedObjectContext: $0)[self.typeID]?.typeName}
+//		return NCDatabase.sharedDatabase?.invTypes[typeID]?.typeName
 	}
 }
 
@@ -463,20 +464,20 @@ extension DGMCharacter {
 	
 	func setSkills(from account: NCAccount, completionHandler: ((Bool) -> Void)? = nil) {
 		let url = DGMCharacter.url(account: account)
-		NCDataManager(account: account, cachePolicy: .returnCacheDataElseLoad).skills { result in
-			switch result {
-			case let .success(value, _):
-				var levels = [Int: Int]()
-				for skill in value.skills {
-					levels[skill.skillID] = skill.trainedSkillLevel
-				}
-				self.setSkills(levels: levels)
-				self.name = url?.absoluteString ?? ""
-				completionHandler?(true)
-				
-			default:
+		NCDataManager(account: account, cachePolicy: .returnCacheDataElseLoad).skills().then(on: .main) { result in
+			guard let value = result.value else {
 				completionHandler?(false)
+				return
 			}
+			var levels = [Int: Int]()
+			for skill in value.skills {
+				levels[skill.skillID] = skill.trainedSkillLevel
+			}
+			self.setSkills(levels: levels)
+			self.name = url?.absoluteString ?? ""
+			completionHandler?(true)
+		}.catch(on: .main) { _ in
+			completionHandler?(false)
 		}
 	}
 	

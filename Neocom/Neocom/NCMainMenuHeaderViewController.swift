@@ -31,100 +31,60 @@ class NCMainMenuHeaderViewController: UIViewController {
 		if let account = NCAccount.current {
 			let progressHandler = NCProgressHandler(view: view, totalUnitCount: 6)
 			let dataManager = NCDataManager(account: account)
-			let dispatchGroup = DispatchGroup()
+			let characterID = account.characterID
 			
-			
-			dispatchGroup.enter()
-			progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
-			dataManager.character { result in
-				switch result {
-					
-				case let .success(value, _):
-					self.characterNameLabel?.text = value.name
-					let corporationID = value.corporationID
-					
-					dispatchGroup.enter()
-					progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
-					dataManager.corporation(corporationID: Int64(corporationID)) { result in
-						switch result {
-						case let .success(value, _):
-							self.corporationLabel?.text = value.name
-							if let allianceID = value.allianceID {
-								self.allianceLabel?.superview?.isHidden = false
-								dispatchGroup.enter()
-								progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
-								dataManager.alliance(allianceID: Int64(allianceID)) { result in
-									switch result {
-									case let .success(value, _):
-										self.allianceLabel?.text = value.name
-										
-										dispatchGroup.enter()
-										progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
-										dataManager.image(allianceID: Int64(allianceID), dimension: 32) { result in
-											switch result {
-											case let .success(value, _):
-												self.allianceImageView?.image = value
-											default:
-												break
-											}
-											dispatchGroup.leave()
-										}
-										progressHandler.progress.resignCurrent()
-									case let .failure(error):
-										self.allianceLabel?.text = error.localizedDescription
-									}
-									
-									dispatchGroup.leave()
-								}
-								progressHandler.progress.resignCurrent()
-							}
-							else {
-								self.allianceLabel?.superview?.isHidden = true
-							}
-							
-							dispatchGroup.enter()
-							progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
-							dataManager.image(corporationID: Int64(corporationID), dimension: 32) { result in
-								switch result {
-								case let .success(value, _):
-									self.corporationImageView?.image = value
-								default:
-									break
-								}
-								dispatchGroup.leave()
-							}
-							progressHandler.progress.resignCurrent()
-						case let .failure(error):
-							self.corporationLabel?.text = error.localizedDescription
-						}
-
-						dispatchGroup.leave()
-					}
-					progressHandler.progress.resignCurrent()
-					
-					dispatchGroup.enter()
-					progressHandler.progress.becomeCurrent(withPendingUnitCount: 1)
-					dataManager.image(characterID: account.characterID, dimension: 128) { result in
-						switch result {
-						case let .success(value, _):
-							self.characterImageView?.image = value
-						default:
-							break
-						}
-						dispatchGroup.leave()
-					}
-					progressHandler.progress.resignCurrent()
-					
-				case let .failure(error):
-					self.characterNameLabel?.text = error.localizedDescription
-					
+			DispatchQueue.global(qos: .utility).async {
+				progressHandler.progress.perform { dataManager.image(characterID: characterID, dimension: 128) }
+					.then(on: .main) { result in
+						self.characterImageView?.image = result.value
 				}
+
+				let character = try progressHandler.progress.perform { dataManager.character() }
+					.then(on: .main) { result -> ESI.Character.Information in
+						guard let value = result.value else {throw NCDataManagerError.noCacheData}
+						self.characterNameLabel?.text = value.name
+						return value
+					}.catch(on: .main) { error in
+						self.characterNameLabel?.text = error.localizedDescription
+					}.get()
 				
-				dispatchGroup.leave()
-			}
-			progressHandler.progress.resignCurrent()
-			
-			dispatchGroup.notify(queue: .main) {
+				progressHandler.progress.perform { dataManager.image(corporationID: Int64(character.corporationID), dimension: 32) }
+					.then(on: .main) { result in
+						self.corporationImageView?.image = result.value
+				}
+
+				let corporation = try progressHandler.progress.perform { dataManager.corporation(corporationID: Int64(character.corporationID)) }
+					.then(on: .main) { result -> ESI.Corporation.Information in
+						guard let corporation = result.value else {throw NCDataManagerError.noCacheData}
+						self.corporationLabel?.text = corporation.name
+						return corporation
+					}.catch(on: .main) { error in
+						self.corporationLabel?.text = error.localizedDescription
+					}.get()
+				
+
+				if let allianceID = corporation.allianceID {
+					progressHandler.progress.perform { dataManager.image(allianceID: Int64(allianceID), dimension: 32) }
+						.then(on: .main) { result in
+							self.allianceImageView?.image = result.value
+					}
+
+					progressHandler.progress.perform { dataManager.alliance(allianceID: Int64(allianceID)) }
+						.then(on: .main) { result in
+							guard let alliance = result.value else {throw NCDataManagerError.noCacheData}
+							self.allianceLabel?.text = alliance.name
+							self.allianceLabel?.superview?.isHidden = false
+						}.catch(on: .main) { error in
+							self.allianceLabel?.text = error.localizedDescription
+							self.allianceLabel?.superview?.isHidden = true
+						}.wait()
+				}
+				else {
+					DispatchQueue.main.async {
+						self.allianceLabel?.superview?.isHidden = true
+					}
+				}
+			}.finally {
 				progressHandler.finish()
 			}
 		}

@@ -34,7 +34,7 @@ extension NCAccount {
 
 	var token: OAuth2Token {
 		get {
-			let scopes = (self.scopes as? Set<NCScope>)?.flatMap {
+			let scopes = (self.scopes as? Set<NCScope>)?.compactMap {
 				return $0.name
 			} ?? []
 			
@@ -65,7 +65,7 @@ extension NCAccount {
 					scopes.remove(scope)
 				}
 				
-				toInsert = newScopes.symmetricDifference(scopes.flatMap {return $0.name})
+				toInsert = newScopes.symmetricDifference(scopes.compactMap {return $0.name})
 			}
 			else {
 				toInsert = newScopes

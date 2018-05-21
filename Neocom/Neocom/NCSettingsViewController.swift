@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import EVEAPI
 
 class NCSkillQueueNotificationOptionsSection: DefaultTreeSection {
 	let setting: NCSetting
@@ -25,7 +26,7 @@ class NCSkillQueueNotificationOptionsSection: DefaultTreeSection {
 		                                                                    .oneDay,
 		                                                                    .skillTrainingComplete]
 		
-		let children = keys.flatMap { key -> NCSwitchRow? in
+		let children = keys.compactMap { key -> NCSwitchRow? in
 			let title: String
 			
 			switch key.rawValue {
@@ -80,7 +81,7 @@ class NCSettingsViewController: NCTreeViewController {
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		var sections = [TreeNode]()
 		
 //		sections.append(DefaultTreeSection(title: NSLocalizedString("Notifications", comment: "").uppercased(), children: [
@@ -105,8 +106,15 @@ class NCSettingsViewController: NCTreeViewController {
 		
 		
 		sections.append(DefaultTreeSection(title: NSLocalizedString("Cache", comment: "").uppercased(), children: [NCActionRow(title: NSLocalizedString("Clear Cache", comment: "").uppercased(), route: clearCache, object: nil)]))
+		
+		if let value = UserDefaults.standard.object(forKey: UserDefaults.Key.NCConsent) as? NSNumber {
+			let row = NCSwitchRow(title: NSLocalizedString("Limit Ad Tracking", comment: ""), value: !value.boolValue) { (value) in
+				UserDefaults.standard.set(!value, forKey: UserDefaults.Key.NCConsent)
+			}
+			sections.append(DefaultTreeSection(title: NSLocalizedString("Advertising", comment: "").uppercased(), children: [row]))
+		}
 
-		treeController?.content = RootNode(sections, collapseIdentifier: "NCSettingsViewController")
-		completionHandler()
+
+		return .init(RootNode(sections, collapseIdentifier: "NCSettingsViewController"))
 	}
 }

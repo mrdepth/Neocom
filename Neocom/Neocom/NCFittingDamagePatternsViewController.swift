@@ -32,7 +32,7 @@ class NCAddDamagePatternRow: NCActionRow {
 
 class NCPredefinedDamagePatternsSection: DefaultTreeSection {
 	init() {
-		let predefined = NSArray(contentsOf: Bundle.main.url(forResource: "damagePatterns", withExtension: "plist")!)?.flatMap { item -> NCFittingDamagePatternInfoRow? in
+		let predefined = NSArray(contentsOf: Bundle.main.url(forResource: "damagePatterns", withExtension: "plist")!)?.compactMap { item -> NCFittingDamagePatternInfoRow? in
 			guard let item = item as? [String: Any] else {return nil}
 			guard let name = item["name"] as? String else {return nil}
 			guard let em = item["em"] as? Double else {return nil}

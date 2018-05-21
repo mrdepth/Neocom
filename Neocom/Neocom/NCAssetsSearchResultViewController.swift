@@ -24,7 +24,14 @@ class NCAssetsSearchResultViewController: NCTreeViewController, UISearchResultsU
 		                    Prototype.NCHeaderTableViewCell.image,
 		                    Prototype.NCDefaultTableViewCell.default])
     }
-    
+	
+	private let root = TreeNode()
+	
+	override func content() -> Future<TreeNode?> {
+		return .init(root)
+	}
+
+	
     //MARK: - UISearchResultsUpdating
     
     private let gate = NCGate()
@@ -56,7 +63,7 @@ class NCAssetsSearchResultViewController: NCTreeViewController, UISearchResultsU
 					request.predicate = NSPredicate(format: "typeID in %@ AND (typeName CONTAINS [C] %@ OR group.groupName CONTAINS [C] %@ OR group.category.categoryName CONTAINS [C] %@)", typeIDs, text, text, text)
 					request.propertiesToFetch = [NSEntityDescription.entity(forEntityName: "InvType", in: managedObjectContext)!.propertiesByName["typeID"]!]
 					request.resultType = .dictionaryResultType
-					let result = Set((try? managedObjectContext.fetch(request))?.flatMap {$0["typeID"] as? Int} ?? [])
+					let result = Set((try? managedObjectContext.fetch(request))?.compactMap {$0["typeID"] as? Int} ?? [])
 					var array = Array(items.values.filter {
                         result.contains($0.typeID) || filteredLocations.contains($0.locationID)
                     })
@@ -64,12 +71,12 @@ class NCAssetsSearchResultViewController: NCTreeViewController, UISearchResultsU
 					filtered.append(contentsOf: array)
 					
 					while !array.isEmpty {
-						array = array.flatMap {items[$0.locationID]}
+						array = array.compactMap {items[$0.locationID]}
 						filtered.append(contentsOf: array)
 					}
 
 					while !array2.isEmpty {
-						array2 = Array(array2.flatMap {contents[$0.itemID]}.joined())
+						array2 = Array(array2.compactMap {contents[$0.itemID]}.joined())
 						filtered.append(contentsOf: array2)
 					}
 
@@ -107,12 +114,7 @@ class NCAssetsSearchResultViewController: NCTreeViewController, UISearchResultsU
                 sections.sort {$0.nodeIdentifier! < $1.nodeIdentifier!}
                 
                 DispatchQueue.main.async {
-                    if self.treeController?.content == nil {
-                        self.treeController?.content = RootNode(sections)
-                    }
-                    else {
-                        self.treeController?.content?.children = sections
-                    }
+					self.root.children = sections
                     self.tableView.backgroundView = sections.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
                 }
             }

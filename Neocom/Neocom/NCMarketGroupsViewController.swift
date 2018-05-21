@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCMarketGroupRow: NCFetchedResultsObjectNode<NCDBInvMarketGroup> {
 	
@@ -38,24 +39,20 @@ class NCMarketGroupsViewController: NCTreeViewController, NCSearchableViewContro
 		title = parentGroup?.marketGroupName ?? NSLocalizedString("Browse", comment: "")
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if treeController?.content == nil {
-			let request = NSFetchRequest<NCDBInvMarketGroup>(entityName: "InvMarketGroup")
-			request.sortDescriptors = [NSSortDescriptor(key: "marketGroupName", ascending: true)]
-			if let parent = parentGroup {
-				request.predicate = NSPredicate(format: "parentGroup == %@", parent)
-			}
-			else {
-				request.predicate = NSPredicate(format: "parentGroup == NULL")
-			}
-			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-			
-			try? results.performFetch()
-			
-			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCMarketGroupRow.self)
-			
+	override func content() -> Future<TreeNode?> {
+		let request = NSFetchRequest<NCDBInvMarketGroup>(entityName: "InvMarketGroup")
+		request.sortDescriptors = [NSSortDescriptor(key: "marketGroupName", ascending: true)]
+		if let parent = parentGroup {
+			request.predicate = NSPredicate(format: "parentGroup == %@", parent)
 		}
+		else {
+			request.predicate = NSPredicate(format: "parentGroup == NULL")
+		}
+		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+		
+		try? results.performFetch()
+		
+		return .init(FetchedResultsNode(resultsController: results, sectionNode: nil, objectNode: NCMarketGroupRow.self))
 	}
 	
 	override func didReceiveMemoryWarning() {

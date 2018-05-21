@@ -15,84 +15,51 @@ class NCContractsViewController: NCTreeViewController {
 		super.viewDidLoad()
 	}
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
-		dataManager.contracts { result in
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
+		return dataManager.contracts().then(on: .main) { result -> [NCCacheRecord] in
 			self.contracts = result
-			completionHandler([result.cacheRecord].flatMap {$0})
+			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		if let contracts = contracts?.value {
-			let value = Set(contracts)
-			tableView.backgroundView = nil
-			
-			var locationIDs = Set(value.flatMap {$0.startLocationID})
-			locationIDs.formUnion(Set(value.flatMap {$0.endLocationID}))
-			
-			var contactIDs = Set(value.flatMap {$0.issuerID > 0 ? Int64($0.issuerID) : nil})
-			contactIDs.formUnion(Set(value.flatMap {$0.acceptorID > 0 ? Int64($0.acceptorID) : nil}))
-			contactIDs.formUnion(Set(value.flatMap {$0.assigneeID > 0 ?Int64($0.assigneeID) : nil}))
+	override func content() -> Future<TreeNode?> {
+		let contracts = self.contracts
+		let dataManager = self.dataManager
+		let progress = Progress(totalUnitCount: 2)
 
-			let dispatchGroup = DispatchGroup()
+		return DispatchQueue.global(qos: .utility).async { () -> TreeNode? in
+			guard let contracts = contracts?.value else {throw NCTreeViewControllerError.noResult}
+			let value = Set(contracts)
 			
-			let progress = Progress(totalUnitCount: 2)
+			var locationIDs = Set(value.compactMap {$0.startLocationID})
+			locationIDs.formUnion(Set(value.compactMap {$0.endLocationID}))
 			
-			var locations: [Int64: NCLocation] = [:]
-			var contacts: [Int64: NCContact] = [:]
+			var contactIDs = Set(value.compactMap {$0.issuerID > 0 ? Int64($0.issuerID) : nil})
+			contactIDs.formUnion(Set(value.compactMap {$0.acceptorID > 0 ? Int64($0.acceptorID) : nil}))
+			contactIDs.formUnion(Set(value.compactMap {$0.assigneeID > 0 ? Int64($0.assigneeID) : nil}))
+			
+			
 			let characterID = self.characterID ?? 0
 
-			
-			progress.perform {
-				dispatchGroup.enter()
-				dataManager.contacts(ids: contactIDs) { result in
-					contacts = result
-					dispatchGroup.leave()
-				}
+			let contacts = try? progress.perform {dataManager.contacts(ids: contactIDs)}.get()
+			let locations = try? progress.perform {dataManager.locations(ids: locationIDs)}.get()
+			return try NCDatabase.sharedDatabase!.performTaskAndWait { managedObjectContext in
+				var open = value.filter {$0.isOpen}.map {NCContractRow(contract: $0, characterID: characterID, contacts: contacts, location: $0.startLocationID != nil ? locations?[$0.startLocationID!] : nil)}
+				var closed = value.filter {!$0.isOpen}.map {NCContractRow(contract: $0, characterID: characterID, contacts: contacts, location: $0.startLocationID != nil ? locations?[$0.startLocationID!] : nil)}
+				
+				open.sort {$0.contract.dateExpired < $1.contract.dateExpired}
+				closed.sort {$0.endDate > $1.endDate}
+				
+				var rows = open
+				rows.append(contentsOf: closed)
+				guard !rows.isEmpty else {throw NCTreeViewControllerError.noResult}
+				return RootNode(rows)
 			}
-			
-			progress.perform {
-				dispatchGroup.enter()
-				dataManager.locations(ids: locationIDs) { result in
-					locations = result
-					dispatchGroup.leave()
-				}
-			}
-			
-			dispatchGroup.notify(queue: .main) {
-				NCDatabase.sharedDatabase?.performBackgroundTask { managedObjectContext in
-					var open = value.filter {$0.isOpen}.map {NCContractRow(contract: $0, characterID: characterID, contacts: contacts, location: $0.startLocationID != nil ? locations[$0.startLocationID!] : nil)}
-					var closed = value.filter {!$0.isOpen}.map {NCContractRow(contract: $0, characterID: characterID, contacts: contacts, location: $0.startLocationID != nil ? locations[$0.startLocationID!] : nil)}
-					
-					open.sort {$0.contract.dateExpired < $1.contract.dateExpired}
-					closed.sort {$0.endDate > $1.endDate}
-					
-					var rows = open
-					rows.append(contentsOf: closed)
-					
-					DispatchQueue.main.async {
-						
-						if self.treeController?.content == nil {
-							self.treeController?.content = RootNode(rows)
-						}
-						else {
-							self.treeController?.content?.children = rows
-						}
-						
-						self.tableView.backgroundView = rows.isEmpty ? NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: "")) : nil
-						completionHandler()
-					}
-				}
-			}
-			
 		}
-		else {
-			tableView.backgroundView = treeController?.content?.children.isEmpty == false ? nil : NCTableViewBackgroundLabel(text: contracts?.error?.localizedDescription ?? NSLocalizedString("No Result", comment: ""))
-			completionHandler()
-		}
+
 	}
 	
-	private var contracts: NCCachedResult<[ESI.Contracts.Contract]>?
+	private var contracts: CachedValue<[ESI.Contracts.Contract]>?
 	private var characterID: Int64?
 	
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-
+import EVEAPI
 
 class NCFittingFleetsViewController: NCTreeViewController {
 	
@@ -29,7 +29,7 @@ class NCFittingFleetsViewController: NCTreeViewController {
 	}
 	
 	@IBAction func onDelete(_ sender: UIBarButtonItem) {
-		guard let selected = treeController?.selectedNodes().flatMap ({($0 as? NCFleetRow)?.object}) else {return}
+		guard let selected = treeController?.selectedNodes().compactMap ({($0 as? NCFleetRow)?.object}) else {return}
 		guard !selected.isEmpty else {return}
 		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		controller.addAction(UIAlertAction(title: String(format: NSLocalizedString("Delete %d Fleets", comment: ""), selected.count), style: .destructive) { [weak self] _ in
@@ -84,19 +84,14 @@ class NCFittingFleetsViewController: NCTreeViewController {
 		return [deleteAction]
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
+		guard let context = NCStorage.sharedStorage?.viewContext else {return .init(nil)}
+		let request = NSFetchRequest<NCFleet>(entityName: "Fleet")
+		request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
 		
-		if let context = NCStorage.sharedStorage?.viewContext {
-			let request = NSFetchRequest<NCFleet>(entityName: "Fleet")
-			request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-			let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-			
-			let root = FetchedResultsNode(resultsController: controller, objectNode: NCFleetRow.self)
-			treeController?.content = root
-			tableView.backgroundView = !root.children.isEmpty ? nil : NCTableViewBackgroundLabel(text: NSLocalizedString("No Results", comment: ""))
-		}
-		
-		completionHandler()
+		let root = FetchedResultsNode(resultsController: controller, objectNode: NCFleetRow.self)
+		return .init(root)
 	}
 
 	

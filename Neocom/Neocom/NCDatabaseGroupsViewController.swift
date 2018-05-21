@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import EVEAPI
 
 class NCDatabaseGroupRow: NCFetchedResultsObjectNode<NCDBInvGroup> {
 	
@@ -37,25 +38,20 @@ class NCDatabaseGroupsViewController: NCTreeViewController, NCSearchableViewCont
 		title = category?.categoryName
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		if treeController?.content == nil {
-			let request = NSFetchRequest<NCDBInvGroup>(entityName: "InvGroup")
-			request.sortDescriptors = [NSSortDescriptor(key: "published", ascending: false), NSSortDescriptor(key: "groupName", ascending: true)]
-			request.predicate = NSPredicate(format: "category == %@ AND types.@count > 0", category!)
-			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: "published", cacheName: nil)
-			
-			treeController?.content = FetchedResultsNode(resultsController: results, sectionNode: NCDatabasePublishingSectionNode<NCDBInvGroup>.self, objectNode: NCDatabaseGroupRow.self)
-
-		}
-	}
-	
 	override func didReceiveMemoryWarning() {
 		if !isViewLoaded || view.window == nil {
 			treeController?.content = nil
 		}
 	}
 	
+	override func content() -> Future<TreeNode?> {
+		let request = NSFetchRequest<NCDBInvGroup>(entityName: "InvGroup")
+		request.sortDescriptors = [NSSortDescriptor(key: "published", ascending: false), NSSortDescriptor(key: "groupName", ascending: true)]
+		request.predicate = NSPredicate(format: "category == %@ AND types.@count > 0", category!)
+		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: "published", cacheName: nil)
+		
+		return .init(FetchedResultsNode(resultsController: results, sectionNode: NCDatabasePublishingSectionNode<NCDBInvGroup>.self, objectNode: NCDatabaseGroupRow.self))
+	}
 	//MARK: - TreeControllerDelegate
 	
 	override func treeController(_ treeController: TreeController, didSelectCellWithNode node: TreeNode) {

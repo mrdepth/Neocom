@@ -9,6 +9,7 @@
 import UIKit
 import CloudData
 import Dgmpp
+import EVEAPI
 
 class NCImplantRow: TreeRow {
 	lazy var type: NCDBInvType? = {
@@ -124,22 +125,63 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 					self?.needsReload = true
 					return
 				}
-				self?.reload()
+				self?.updateContent()
 			}
 		}
 		
 		if needsReload {
-			reload()
+			updateContent()
 		}
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		defer {
-			completionHandler()
+	override func content() -> Future<TreeNode?> {
+		guard editorViewController != nil else {return .init(nil)}
+		guard let pilot = self.fleet?.active else {return .init(nil)}
+
+		let implantSlots = stride(from: 1, to: 11, by: 1)
+		
+		let boosterCategories: [NCDBDgmppItemCategory]? = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemCategory", where: "category == %d", NCDBDgmppItemCategoryID.booster.rawValue)
+		let boosterSlots = boosterCategories?.map {Int($0.subcategory)}.sorted() ?? [1,2,3,4]
+		
+		var sections = [TreeNode]()
+		
+		var implants = implantSlots.map({NCImplantRow(dummySlot: $0)})
+		
+		for implant in pilot.implants {
+			guard let i = implants.index(where: {$0.slot == implant.slot}) else {continue}
+			implants[i] = NCImplantRow(implant: implant)
 		}
-		guard editorViewController != nil else {return}
-		treeController?.content = TreeNode()
-		reload()
+		
+		var boosters = boosterSlots.map({NCBoosterRow(dummySlot: $0)})
+		
+		for booster in pilot.boosters {
+			guard let i = boosters.index(where: {$0.slot == booster.slot}) else {continue}
+			boosters[i] = NCBoosterRow(booster: booster)
+		}
+		
+		var actions = [TreeNode]()
+		actions.append(NCActionRow(title: NSLocalizedString("Load Implant Set", comment: "").uppercased(), route: Router.Fitting.ImplantSet(load: { [weak self] (controller, implantSet) in
+			controller.dismiss(animated: true, completion: nil)
+			guard let pilot = self?.fleet?.active else {return}
+			
+			let implantIDs = implantSet.data?.implantIDs
+			let boosterIDs = implantSet.data?.boosterIDs
+			
+			implantIDs?.forEach {try? pilot.add(DGMImplant(typeID: $0), replace: true)}
+			boosterIDs?.forEach {try? pilot.add(DGMBooster(typeID: $0), replace: true)}
+			NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
+		})))
+		
+		if !pilot.implants.isEmpty || !pilot.boosters.isEmpty {
+			actions.append(NCActionRow(title: NSLocalizedString("Save Implant Set", comment: "").uppercased(), route: Router.Fitting.ImplantSet(save: pilot)))
+		}
+		sections.append(RootNode(actions))
+		
+		sections.append(DefaultTreeSection(nodeIdentifier: "Implants", title: NSLocalizedString("Implants", comment: "").uppercased(), children: implants))
+		sections.append(DefaultTreeSection(nodeIdentifier: "Boosters", title: NSLocalizedString("Boosters", comment: "").uppercased(), children: boosters))
+		
+		needsReload = false
+		return .init(RootNode(sections))
 	}
 	
 	//MARK: - TreeControllerDelegate
@@ -234,54 +276,4 @@ class NCFittingImplantsViewController: NCTreeViewController, NCFittingEditorPage
 	
 	//MARK: - Private
 	
-	private func reload() {
-		
-//		let implantCategories: [NCDBDgmppItemCategory]? = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemCategory", where: "category == %d", NCDBDgmppItemCategoryID.implant.rawValue)
-//		let implantSlots = implantCategories?.map {Int($0.subcategory)}.sorted() ?? Array(stride(from: 1, to: 11, by: 1))
-		let implantSlots = stride(from: 1, to: 11, by: 1)
-
-		let boosterCategories: [NCDBDgmppItemCategory]? = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemCategory", where: "category == %d", NCDBDgmppItemCategoryID.booster.rawValue)
-		let boosterSlots = boosterCategories?.map {Int($0.subcategory)}.sorted() ?? [1,2,3,4]
-
-		guard let pilot = self.fleet?.active else {return}
-		var sections = [TreeNode]()
-		
-		var implants = implantSlots.map({NCImplantRow(dummySlot: $0)})
-		
-		for implant in pilot.implants {
-			guard let i = implants.index(where: {$0.slot == implant.slot}) else {continue}
-			implants[i] = NCImplantRow(implant: implant)
-		}
-		
-		var boosters = boosterSlots.map({NCBoosterRow(dummySlot: $0)})
-		
-		for booster in pilot.boosters {
-			guard let i = boosters.index(where: {$0.slot == booster.slot}) else {continue}
-			boosters[i] = NCBoosterRow(booster: booster)
-		}
-		
-		var actions = [TreeNode]()
-		actions.append(NCActionRow(title: NSLocalizedString("Load Implant Set", comment: "").uppercased(), route: Router.Fitting.ImplantSet(load: { [weak self] (controller, implantSet) in
-			controller.dismiss(animated: true, completion: nil)
-			guard let pilot = self?.fleet?.active else {return}
-			
-			let implantIDs = implantSet.data?.implantIDs
-			let boosterIDs = implantSet.data?.boosterIDs
-			
-			implantIDs?.forEach {try? pilot.add(DGMImplant(typeID: $0), replace: true)}
-			boosterIDs?.forEach {try? pilot.add(DGMBooster(typeID: $0), replace: true)}
-			NotificationCenter.default.post(name: Notification.Name.NCFittingFleetDidUpdate, object: self?.fleet)
-		})))
-		
-		if !pilot.implants.isEmpty || !pilot.boosters.isEmpty {
-			actions.append(NCActionRow(title: NSLocalizedString("Save Implant Set", comment: "").uppercased(), route: Router.Fitting.ImplantSet(save: pilot)))
-		}
-		sections.append(RootNode(actions))
-		
-		sections.append(DefaultTreeSection(nodeIdentifier: "Implants", title: NSLocalizedString("Implants", comment: "").uppercased(), children: implants))
-		sections.append(DefaultTreeSection(nodeIdentifier: "Boosters", title: NSLocalizedString("Boosters", comment: "").uppercased(), children: boosters))
-		
-		treeController?.content?.children = sections
-		needsReload = false
-	}
 }

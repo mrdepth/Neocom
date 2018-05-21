@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import Dgmpp
+import EVEAPI
 
 class NCAmmoNode: NCFetchedResultsObjectNode<NCDBInvType> {
 	
@@ -97,14 +98,12 @@ class NCFittingAmmoViewController: NCTreeViewController {
 		                    Prototype.NCChargeTableViewCell.default])
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		defer {completionHandler()}
-		
-		guard let category = category else {return}
-		guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return}
+	override func content() -> Future<TreeNode?> {
+		guard let category = category else {return .init(nil)}
+		guard let group: NCDBDgmppItemGroup = NCDatabase.sharedDatabase?.viewContext.fetch("DgmppItemGroup", where: "category == %@ AND parentGroup == NULL", category) else {return .init(nil)}
 		title = group.groupName
 		
-		guard let ammo = NCAmmoSection(category: category, objectNode: NCAmmoNode.self) else {return}
+		guard let ammo = NCAmmoSection(category: category, objectNode: NCAmmoNode.self) else {return .init(nil)}
 		
 		let root = TreeNode()
 		
@@ -119,8 +118,7 @@ class NCFittingAmmoViewController: NCTreeViewController {
 			root.children = [ammo]
 		}
 		
-		treeController?.content = root
-		
+		return .init(root)
 	}
 	
 	@IBAction func onClear(_ sender: Any) {

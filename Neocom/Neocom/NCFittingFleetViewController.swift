@@ -9,6 +9,7 @@
 import UIKit
 import CloudData
 import Dgmpp
+import EVEAPI
 
 class NCFittingFleetViewController: NCTreeViewController, NCFittingEditorPage {
 	
@@ -50,13 +51,11 @@ class NCFittingFleetViewController: NCTreeViewController, NCFittingEditorPage {
 
 	}
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
-		defer {
-			completionHandler()
-		}
-		guard editorViewController != nil else {return}
-		treeController?.content = TreeNode()
+	private let root = TreeNode()
+	override func content() -> Future<TreeNode?> {
+		guard editorViewController != nil else {return .init(nil)}
 		reload()
+		return .init(root)
 	}
 
 	//MARK: - TreeControllerDelegate
@@ -103,7 +102,7 @@ class NCFittingFleetViewController: NCTreeViewController, NCFittingEditorPage {
 
 		if fleet.pilots.count == 1 {
 			let row = NCActionRow(title: NSLocalizedString("Create Fleet", comment: "").uppercased(), route: route)
-			treeController?.content?.children = [row]
+			root.children = [row]
 		}
 		else {
 			var active: TreeNode?
@@ -119,7 +118,7 @@ class NCFittingFleetViewController: NCTreeViewController, NCFittingEditorPage {
 			
 			rows.append(NCActionRow(title: NSLocalizedString("Add Pilot", comment: "").uppercased(), route: route))
 			
-			treeController?.content?.children = rows
+			root.children = rows
 			if let node = active {
 				treeController?.selectCell(for: node, animated: false, scrollPosition: .none)
 			}

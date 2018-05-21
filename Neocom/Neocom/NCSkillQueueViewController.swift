@@ -107,7 +107,7 @@ fileprivate class NCSkillQueueSection: DefaultTreeSection {
 		let invTypes = NCDatabase.sharedDatabase?.invTypes
 		func rows(_ skillQueue: [ESI.Skills.SkillQueueItem]) -> [NCSkillQueueRow] {
 			let date = Date()
-			return skillQueue.flatMap { (item) in
+			return skillQueue.compactMap { (item) in
 				guard let finishDate = item.finishDate, finishDate > date else {return nil}
 				guard let type = invTypes?[item.skillID] else {return nil}
 				guard let skill = NCSkill(type: type, skill: item) else {return nil}
@@ -694,40 +694,27 @@ class NCSkillQueueViewController: NCTreeViewController {
 			characterObserver = nil
 			if let character = character {
 				characterObserver = NotificationCenter.default.addNotificationObserver(forName: .NCCharacterChanged, object: character, queue: nil) { [weak self] _ in
-					self?.updateContent {
-					}
+					self?.updateContent()
 				}
 			}
 		}
 	}
 	
-	override func reload(cachePolicy: URLRequest.CachePolicy, completionHandler: @escaping ([NCCacheRecord]) -> Void) {
+	override func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
         if let account = NCAccount.current {
-            NCCharacter.load(account: account) { result in
-                switch result {
-                case let .success(character):
-                    self.character = character
-
-					completionHandler([])
-
-                case let .failure(error):
-                    if self.treeController?.content == nil {
-                        self.tableView.backgroundView = NCTableViewBackgroundLabel(text: error.localizedDescription)
-                    }
-					completionHandler([])
-
-                }
-            }
+			return NCCharacter.load(account: account).then(on: .main) { character -> [NCCacheRecord] in
+				self.character = character
+				return []
+			}
         }
         else {
-            completionHandler([])
+			return .init([])
         }
     }
 	
-	override func updateContent(completionHandler: @escaping () -> Void) {
+	override func content() -> Future<TreeNode?> {
 		guard let account = NCAccount.current, let character = character else {
-			completionHandler()
-			return
+			return .init(nil)
 		}
 		let skillBrowser = TreeSection(prototype: nil)
 		skillBrowser.children = [NCActionRow(title: NSLocalizedString("SKILL BROWSER", comment: ""),
@@ -750,13 +737,7 @@ class NCSkillQueueViewController: NCTreeViewController {
 		sections.append(skillQueue)
 		sections.append(NCSkillPlansSection(account: account, character: character))
 		
-		if treeController?.content == nil {
-			treeController?.content = RootNode(sections)
-		}
-		else {
-			treeController?.content?.children = sections
-		}
-		completionHandler()
+		return .init(RootNode(sections))
 	}
 	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

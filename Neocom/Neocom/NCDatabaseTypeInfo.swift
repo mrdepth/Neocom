@@ -411,7 +411,7 @@ class NCDatabaseSkillsSection: NCActionTreeSection {
 
 struct NCDatabaseTypeInfo {
 	
-	static func typeInfo(type: NCDBInvType, attributeValues: [Int: Double]?, completionHandler: @escaping ([TreeNode]) -> Void) {
+	static func typeInfo(type: NCDBInvType, attributeValues: [Int: Double]?) -> Future<[TreeNode]> {
 
 		var marketSection: DefaultTreeSection?
 		if type.marketGroup != nil {
@@ -421,19 +421,12 @@ struct NCDatabaseTypeInfo {
 			
 			let dataManager = NCDataManager(account: NCAccount.current)
 			
-			dataManager.marketHistory(typeID: typeID, regionID: regionID) { result in
-				switch result {
-				case let .success(value, cacheRecord):
-					if let cacheRecord = cacheRecord, !value.isEmpty {
-						let row = NCDatabaseTypeMarketRow(history: cacheRecord, typeID: typeID)
-						marketSection?.children.append(row)
-					}
-				default:
-					break
-				}
+			dataManager.marketHistory(typeID: typeID, regionID: regionID).then(on: .main) { result in
+				let row = NCDatabaseTypeMarketRow(history: result.cacheRecord(in: NCCache.sharedCache!.viewContext), typeID: typeID)
+				marketSection?.children.append(row)
 			}
 			
-			dataManager.prices(typeIDs: [typeID]) { result in
+			dataManager.prices(typeIDs: [typeID]).then(on: .main) { result in
 				guard let price = result[typeID] else {return}
 				let subtitle = NCUnitFormatter.localizedString(from: price, unit: .isk, style: .full)
 				let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute, image: #imageLiteral(resourceName: "wallet"), title: NSLocalizedString("PRICE", comment: ""), subtitle: subtitle, accessoryType: .disclosureIndicator, route: Router.Database.MarketInfo(typeID))
@@ -442,287 +435,248 @@ struct NCDatabaseTypeInfo {
 		}
 		switch NCDBCategoryID(rawValue: Int(type.group?.category?.categoryID ?? 0)) {
 		case .blueprint?:
-			blueprintInfo(type: type) { result in
+			return blueprintInfo(type: type).then(on: .main) { result -> [TreeNode] in
 				var sections = result
 				if let marketSection = marketSection {
 					sections.insert(marketSection, at: 0)
 				}
-				completionHandler(sections)
+				return result
 			}
 		case .entity?:
-			npcInfo(type: type) { result in
-				completionHandler(result)
-			}
+			return npcInfo(type: type)
 		default:
 			if type.wormhole != nil {
-				whInfo(type: type) { result in
-					completionHandler(result)
-				}
+				return whInfo(type: type)
 			}
 			else {
-				itemInfo(type: type, attributeValues: attributeValues) { result in
+				return itemInfo(type: type, attributeValues: attributeValues).then(on: .main) { result -> [TreeNode] in
 					var sections = result
 					if let marketSection = marketSection {
 						sections.insert(marketSection, at: 0)
 					}
-					completionHandler(sections)
+					return sections
 				}
 			}
 		}
 
 	}
 	
-	static func itemInfo(type: NCDBInvType, attributeValues: [Int: Double]?, completionHandler: @escaping ([TreeSection]) -> Void) {
-		
-		NCCharacter.load(account: NCAccount.current) { result in
-			let character: NCCharacter
-			switch result {
-			case let .success(value):
-				character = value
-			default:
-				character = NCCharacter()
-			}
-
-			NCDatabase.sharedDatabase?.performBackgroundTask({ (managedObjectContext) in
-				var sections = [TreeSection]()
-				
-				defer {
-					DispatchQueue.main.async {
-						completionHandler(sections)
-					}
-				}
-				
-				guard let type = (try? managedObjectContext.existingObject(with: type.objectID)) as? NCDBInvType else {return}
-				
-				if let skillPlan = NCDatabaseTypeInfo.skillPlan(type: type, character: character) {
-					sections.append(skillPlan)
-				}
-				
-				if let mastery = NCDatabaseTypeInfo.masteries(type: type, character: character) {
-					sections.append(mastery)
-				}
-				
-				if type.parentType != nil || (type.variations?.count ?? 0) > 0 {
-					let n = max(type.variations?.count ?? 0, type.parentType?.variations?.count ?? 0) + 1
-					let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-					                                nodeIdentifier: "Variations",
-					                                title: String(format: NSLocalizedString("%d types", comment: ""), n).uppercased(),
-					                                accessoryType: .disclosureIndicator,
-					                                route: Router.Database.Variations(typeObjectID: type.objectID))
-					let section = DefaultTreeSection(nodeIdentifier: "VariationsSection", title: NSLocalizedString("Variations", comment: "").uppercased(), children: [row])
-					sections.append(section)
-				}
-				else if (type.requiredForSkill?.count ?? 0) > 0 {
-					let n = type.requiredForSkill!.count
-					
-					let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-					                                nodeIdentifier: "RequiredFor",
-					                                title: String(format: NSLocalizedString("%d types", comment: ""), n).uppercased(),
-					                                accessoryType: .disclosureIndicator,
-					                                route: Router.Database.RequiredFor(typeObjectID: type.objectID))
-					let section = DefaultTreeSection(nodeIdentifier: "RequiredForSection", title: NSLocalizedString("Required for", comment: "").uppercased(), children: [row])
-					sections.append(section)
-				}
-				
-				let request = NSFetchRequest<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute")
-				request.predicate = NSPredicate(format: "type == %@ AND attributeType.published == TRUE", type)
-				request.sortDescriptors = [NSSortDescriptor(key: "attributeType.attributeCategory.categoryID", ascending: true), NSSortDescriptor(key: "attributeType.attributeID", ascending: true)]
-				let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: "attributeType.attributeCategory.categoryID", cacheName: nil)
-				guard let _ = try? results.performFetch() else {return}
-				guard results.sections != nil else {return}
-				
-				for section in results.sections! {
-					guard let attributeCategory = (section.objects?.first as? NCDBDgmTypeAttribute)?.attributeType?.attributeCategory else {continue}
-					
-					if attributeCategory.categoryID == Int32(NCDBAttributeCategoryID.requiredSkills.rawValue) {
-						if let section = requiredSkills(type: type, character: character) {
-							sections.append(section)
-						}
-						
-					}
-					else {
-						let sectionTitle: String
-						if Int(attributeCategory.categoryID) == NCDBAttributeCategoryID.null.rawValue {
-							sectionTitle = NSLocalizedString("Other", comment: "")
-						}
-						else {
-							sectionTitle = attributeCategory.categoryName ?? NSLocalizedString("Other", comment: "")
-						}
-						
-						var rows = [TreeNode]()
-						
-						var resistanceRow: NCDatabaseTypeResistanceRow?
-						
-						func resistance() -> NCDatabaseTypeResistanceRow? {
-							if resistanceRow == nil {
-								resistanceRow = NCDatabaseTypeResistanceRow()
-							}
-							return resistanceRow
-						}
-						
-						var damageRow: NCDatabaseTypeDamageRow?
-						
-						func damage() -> NCDatabaseTypeDamageRow? {
-							if damageRow == nil {
-								damageRow = NCDatabaseTypeDamageRow()
-							}
-							return damageRow
-						}
-						
-						
-						
-						for attribute in (section.objects as? [NCDBDgmTypeAttribute]) ?? [] {
-							let value = attributeValues?[Int(attribute.attributeType!.attributeID)] ?? attribute.value
-							switch NCDBAttributeID(rawValue: Int(attribute.attributeType!.attributeID)) ?? NCDBAttributeID.none {
-							case .emDamageResonance, .armorEmDamageResonance, .shieldEmDamageResonance,
-							     .hullEmDamageResonance, .passiveArmorEmDamageResonance, .passiveShieldEmDamageResonance:
-								guard let row = resistance() else {continue}
-								row.em = max(row.em, 1 - value)
-							case .thermalDamageResonance, .armorThermalDamageResonance, .shieldThermalDamageResonance,
-							     .hullThermalDamageResonance, .passiveArmorThermalDamageResonance, .passiveShieldThermalDamageResonance:
-								guard let row = resistance() else {continue}
-								row.thermal = max(row.thermal, 1 - value)
-							case .kineticDamageResonance, .armorKineticDamageResonance, .shieldKineticDamageResonance,
-							     .hullKineticDamageResonance, .passiveArmorKineticDamageResonance, .passiveShieldKineticDamageResonance:
-								guard let row = resistance() else {continue}
-								row.kinetic = max(row.kinetic, 1 - value)
-							case .explosiveDamageResonance, .armorExplosiveDamageResonance, .shieldExplosiveDamageResonance,
-							     .hullExplosiveDamageResonance, .passiveArmorExplosiveDamageResonance, .passiveShieldExplosiveDamageResonance:
-								guard let row = resistance() else {continue}
-								row.explosive = max(row.explosive, 1 - value)
-							case .emDamage:
-								damage()?.em = value
-							case .thermalDamage:
-								damage()?.thermal = value
-							case .kineticDamage:
-								damage()?.kinetic = value
-							case .explosiveDamage:
-								damage()?.explosive = value
-
-							case .warpSpeedMultiplier:
-								guard let attributeType = attribute.attributeType else {continue}
-								let baseWarpSpeed =  attributeValues?[NCDBAttributeID.baseWarpSpeed.rawValue] ?? type.allAttributes[NCDBAttributeID.baseWarpSpeed.rawValue]?.value ?? 1.0
-								var s = NCUnitFormatter.localizedString(from: Double(value * baseWarpSpeed), unit: .none, style: .full)
-								s += " " + NSLocalizedString("AU/sec", comment: "")
-								rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-								                                  image: attributeType.icon?.image?.image,
-								                                  title: NSLocalizedString("Warp Speed", comment: ""),
-								                                  subtitle: s))
-							default:
-								guard let row = NCDatabaseTypeInfoRow(attribute: attribute, value: value) else {continue}
-								rows.append(row)
-							}
-						}
-						
-						if let resistanceRow = resistanceRow {
-							rows.append(resistanceRow)
-							
-						}
-						if let damageRow = damageRow {
-							rows.append(damageRow)
-						}
-						if rows.count > 0 {
-							sections.append(DefaultTreeSection(nodeIdentifier: String(attributeCategory.categoryID), title: sectionTitle.uppercased(), children: rows))
-						}
-					}
-				}
-			})
-
-		}
-	}
-
-	static func blueprintInfo(type: NCDBInvType, completionHandler: @escaping ([TreeSection]) -> Void) {
-		
-		NCCharacter.load(account: NCAccount.current) { result in
-			let character: NCCharacter
-			switch result {
-			case let .success(value):
-				character = value
-			default:
-				character = NCCharacter()
-			}
-
-			NCDatabase.sharedDatabase?.performBackgroundTask({ (managedObjectContext) in
-				var sections = [TreeSection]()
-				
-				defer {
-					DispatchQueue.main.async {
-						completionHandler(sections)
-					}
-				}
-				
-				guard let type = (try? managedObjectContext.existingObject(with: type.objectID)) as? NCDBInvType else {return}
-				guard let blueprintType = type.blueprintType else {return}
-				for activity in blueprintType.activities?.sortedArray(using: [NSSortDescriptor(key: "activity.activityID", ascending: true)]) as? [NCDBIndActivity] ?? [] {
-					var rows = [TreeNode]()
-					let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.default,
-					                                image: #imageLiteral(resourceName: "skillRequirementQueued"),
-//					                                title: NSLocalizedString("TIME", comment: ""),
-					                                subtitle: NCTimeIntervalFormatter.localizedString(from: TimeInterval(activity.time), precision: .seconds))
-					rows.append(row)
-					
-					for product in activity.products?.sortedArray(using: [NSSortDescriptor(key: "productType.typeName", ascending: true)]) as? [NCDBIndProduct] ?? [] {
-						guard let type = product.productType, let subtitle = type.typeName else {continue}
-						let title = NSLocalizedString("PRODUCT", comment: "")
-						let image = type.icon?.image?.image
-						let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-						                                image: image,
-						                                title: title,
-						                                subtitle: subtitle,
-						                                accessoryType: .disclosureIndicator,
-						                                route: Router.Database.TypeInfo(type.objectID))
-						rows.append(row)
-					}
-					
-					var materials = [TreeNode]()
-					for material in activity.requiredMaterials?.sortedArray(using: [NSSortDescriptor(key: "materialType.typeName", ascending: true)]) as? [NCDBIndRequiredMaterial] ?? [] {
-						guard let type = material.materialType, let title = type.typeName else {continue}
-						let subtitle = NCUnitFormatter.localizedString(from: material.quantity, unit: .none, style: .full)
-						let image = type.icon?.image?.image
-						
-						let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-						                                image: image,
-						                                title: title,
-						                                subtitle: subtitle,
-						                                accessoryType: .disclosureIndicator,
-						                                route: Router.Database.TypeInfo(type.objectID))
-						materials.append(row)
-					}
-					if materials.count > 0 {
-						rows.append(DefaultTreeSection(nodeIdentifier: "Materials\(activity.activity?.activityID ?? 0)", title: NSLocalizedString("MATERIALS", comment: ""), children: materials))
-					}
-					
-					if let skills = requiredSkills(activity: activity, character: character) {
-						rows.append(skills)
-					}
-					
-					sections.append(DefaultTreeSection(nodeIdentifier: activity.activity?.activityName, title: activity.activity?.activityName?.uppercased(), children: rows))
-				}
-				
-			})
+	static func itemInfo(type: NCDBInvType, attributeValues: [Int: Double]?) -> Future<[TreeNode]> {
+		let account = NCAccount.current
+		return NCDatabase.sharedDatabase!.performBackgroundTask { managedObjectContext -> [TreeNode] in
 			
-		}
-	}
-	
-	static func npcInfo(type: NCDBInvType, completionHandler: @escaping ([TreeSection]) -> Void) {
-		
-		NCDatabase.sharedDatabase?.performBackgroundTask({ (managedObjectContext) in
+			let character: NCCharacter = (try? NCCharacter.load(account: NCAccount.current).get()) ?? NCCharacter()
+
 			var sections = [TreeSection]()
 			
-			defer {
-				DispatchQueue.main.async {
-					completionHandler(sections)
-				}
+			guard let type = (try? managedObjectContext.existingObject(with: type.objectID)) as? NCDBInvType else {return sections}
+			
+			if let skillPlan = NCDatabaseTypeInfo.skillPlan(type: type, character: character) {
+				sections.append(skillPlan)
 			}
 			
-			guard let type = (try? managedObjectContext.existingObject(with: type.objectID)) as? NCDBInvType else {return}
+			if let mastery = NCDatabaseTypeInfo.masteries(type: type, character: character) {
+				sections.append(mastery)
+			}
+			
+			if type.parentType != nil || (type.variations?.count ?? 0) > 0 {
+				let n = max(type.variations?.count ?? 0, type.parentType?.variations?.count ?? 0) + 1
+				let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+												nodeIdentifier: "Variations",
+												title: String(format: NSLocalizedString("%d types", comment: ""), n).uppercased(),
+												accessoryType: .disclosureIndicator,
+												route: Router.Database.Variations(typeObjectID: type.objectID))
+				let section = DefaultTreeSection(nodeIdentifier: "VariationsSection", title: NSLocalizedString("Variations", comment: "").uppercased(), children: [row])
+				sections.append(section)
+			}
+			else if (type.requiredForSkill?.count ?? 0) > 0 {
+				let n = type.requiredForSkill!.count
+				
+				let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+												nodeIdentifier: "RequiredFor",
+												title: String(format: NSLocalizedString("%d types", comment: ""), n).uppercased(),
+												accessoryType: .disclosureIndicator,
+												route: Router.Database.RequiredFor(typeObjectID: type.objectID))
+				let section = DefaultTreeSection(nodeIdentifier: "RequiredForSection", title: NSLocalizedString("Required for", comment: "").uppercased(), children: [row])
+				sections.append(section)
+			}
 			
 			let request = NSFetchRequest<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute")
 			request.predicate = NSPredicate(format: "type == %@ AND attributeType.published == TRUE", type)
 			request.sortDescriptors = [NSSortDescriptor(key: "attributeType.attributeCategory.categoryID", ascending: true), NSSortDescriptor(key: "attributeType.attributeID", ascending: true)]
 			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: "attributeType.attributeCategory.categoryID", cacheName: nil)
-			guard let _ = try? results.performFetch() else {return}
-			guard results.sections != nil else {return}
+			guard let _ = try? results.performFetch() else {return sections}
+			guard results.sections != nil else {return sections}
+			
+			for section in results.sections! {
+				guard let attributeCategory = (section.objects?.first as? NCDBDgmTypeAttribute)?.attributeType?.attributeCategory else {continue}
+				
+				if attributeCategory.categoryID == Int32(NCDBAttributeCategoryID.requiredSkills.rawValue) {
+					if let section = requiredSkills(type: type, character: character) {
+						sections.append(section)
+					}
+					
+				}
+				else {
+					let sectionTitle: String
+					if Int(attributeCategory.categoryID) == NCDBAttributeCategoryID.null.rawValue {
+						sectionTitle = NSLocalizedString("Other", comment: "")
+					}
+					else {
+						sectionTitle = attributeCategory.categoryName ?? NSLocalizedString("Other", comment: "")
+					}
+					
+					var rows = [TreeNode]()
+					
+					var resistanceRow: NCDatabaseTypeResistanceRow?
+					
+					func resistance() -> NCDatabaseTypeResistanceRow? {
+						if resistanceRow == nil {
+							resistanceRow = NCDatabaseTypeResistanceRow()
+						}
+						return resistanceRow
+					}
+					
+					var damageRow: NCDatabaseTypeDamageRow?
+					
+					func damage() -> NCDatabaseTypeDamageRow? {
+						if damageRow == nil {
+							damageRow = NCDatabaseTypeDamageRow()
+						}
+						return damageRow
+					}
+					
+					
+					
+					for attribute in (section.objects as? [NCDBDgmTypeAttribute]) ?? [] {
+						let value = attributeValues?[Int(attribute.attributeType!.attributeID)] ?? attribute.value
+						switch NCDBAttributeID(rawValue: Int(attribute.attributeType!.attributeID)) ?? NCDBAttributeID.none {
+						case .emDamageResonance, .armorEmDamageResonance, .shieldEmDamageResonance,
+							 .hullEmDamageResonance, .passiveArmorEmDamageResonance, .passiveShieldEmDamageResonance:
+							guard let row = resistance() else {continue}
+							row.em = max(row.em, 1 - value)
+						case .thermalDamageResonance, .armorThermalDamageResonance, .shieldThermalDamageResonance,
+							 .hullThermalDamageResonance, .passiveArmorThermalDamageResonance, .passiveShieldThermalDamageResonance:
+							guard let row = resistance() else {continue}
+							row.thermal = max(row.thermal, 1 - value)
+						case .kineticDamageResonance, .armorKineticDamageResonance, .shieldKineticDamageResonance,
+							 .hullKineticDamageResonance, .passiveArmorKineticDamageResonance, .passiveShieldKineticDamageResonance:
+							guard let row = resistance() else {continue}
+							row.kinetic = max(row.kinetic, 1 - value)
+						case .explosiveDamageResonance, .armorExplosiveDamageResonance, .shieldExplosiveDamageResonance,
+							 .hullExplosiveDamageResonance, .passiveArmorExplosiveDamageResonance, .passiveShieldExplosiveDamageResonance:
+							guard let row = resistance() else {continue}
+							row.explosive = max(row.explosive, 1 - value)
+						case .emDamage:
+							damage()?.em = value
+						case .thermalDamage:
+							damage()?.thermal = value
+						case .kineticDamage:
+							damage()?.kinetic = value
+						case .explosiveDamage:
+							damage()?.explosive = value
+							
+						case .warpSpeedMultiplier:
+							guard let attributeType = attribute.attributeType else {continue}
+							let baseWarpSpeed =  attributeValues?[NCDBAttributeID.baseWarpSpeed.rawValue] ?? type.allAttributes[NCDBAttributeID.baseWarpSpeed.rawValue]?.value ?? 1.0
+							var s = NCUnitFormatter.localizedString(from: Double(value * baseWarpSpeed), unit: .none, style: .full)
+							s += " " + NSLocalizedString("AU/sec", comment: "")
+							rows.append(NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+															  image: attributeType.icon?.image?.image,
+															  title: NSLocalizedString("Warp Speed", comment: ""),
+															  subtitle: s))
+						default:
+							guard let row = NCDatabaseTypeInfoRow(attribute: attribute, value: value) else {continue}
+							rows.append(row)
+						}
+					}
+					
+					if let resistanceRow = resistanceRow {
+						rows.append(resistanceRow)
+						
+					}
+					if let damageRow = damageRow {
+						rows.append(damageRow)
+					}
+					if rows.count > 0 {
+						sections.append(DefaultTreeSection(nodeIdentifier: String(attributeCategory.categoryID), title: sectionTitle.uppercased(), children: rows))
+					}
+				}
+			}
+			return sections
+		}
+	}
+
+	static func blueprintInfo(type: NCDBInvType) -> Future<[TreeNode]> {
+		
+		return NCDatabase.sharedDatabase!.performBackgroundTask { managedObjectContext -> [TreeNode] in
+			let character: NCCharacter = (try? NCCharacter.load(account: NCAccount.current).get()) ?? NCCharacter()
+			var sections = [TreeSection]()
+			
+			guard let type = (try? managedObjectContext.existingObject(with: type.objectID)) as? NCDBInvType else {return sections}
+			guard let blueprintType = type.blueprintType else {return sections}
+			for activity in blueprintType.activities?.sortedArray(using: [NSSortDescriptor(key: "activity.activityID", ascending: true)]) as? [NCDBIndActivity] ?? [] {
+				var rows = [TreeNode]()
+				let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.default,
+												image: #imageLiteral(resourceName: "skillRequirementQueued"),
+												//					                                title: NSLocalizedString("TIME", comment: ""),
+					subtitle: NCTimeIntervalFormatter.localizedString(from: TimeInterval(activity.time), precision: .seconds))
+				rows.append(row)
+				
+				for product in activity.products?.sortedArray(using: [NSSortDescriptor(key: "productType.typeName", ascending: true)]) as? [NCDBIndProduct] ?? [] {
+					guard let type = product.productType, let subtitle = type.typeName else {continue}
+					let title = NSLocalizedString("PRODUCT", comment: "")
+					let image = type.icon?.image?.image
+					let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+													image: image,
+													title: title,
+													subtitle: subtitle,
+													accessoryType: .disclosureIndicator,
+													route: Router.Database.TypeInfo(type.objectID))
+					rows.append(row)
+				}
+				
+				var materials = [TreeNode]()
+				for material in activity.requiredMaterials?.sortedArray(using: [NSSortDescriptor(key: "materialType.typeName", ascending: true)]) as? [NCDBIndRequiredMaterial] ?? [] {
+					guard let type = material.materialType, let title = type.typeName else {continue}
+					let subtitle = NCUnitFormatter.localizedString(from: material.quantity, unit: .none, style: .full)
+					let image = type.icon?.image?.image
+					
+					let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
+													image: image,
+													title: title,
+													subtitle: subtitle,
+													accessoryType: .disclosureIndicator,
+													route: Router.Database.TypeInfo(type.objectID))
+					materials.append(row)
+				}
+				if materials.count > 0 {
+					rows.append(DefaultTreeSection(nodeIdentifier: "Materials\(activity.activity?.activityID ?? 0)", title: NSLocalizedString("MATERIALS", comment: ""), children: materials))
+				}
+				
+				if let skills = requiredSkills(activity: activity, character: character) {
+					rows.append(skills)
+				}
+				
+				sections.append(DefaultTreeSection(nodeIdentifier: activity.activity?.activityName, title: activity.activity?.activityName?.uppercased(), children: rows))
+			}
+			return sections
+		}
+	}
+	
+	static func npcInfo(type: NCDBInvType) -> Future<[TreeNode]> {
+		
+		return NCDatabase.sharedDatabase!.performBackgroundTask { managedObjectContext -> [TreeNode] in
+			var sections = [TreeSection]()
+			
+			guard let type = (try? managedObjectContext.existingObject(with: type.objectID)) as? NCDBInvType else {return sections}
+			
+			let request = NSFetchRequest<NCDBDgmTypeAttribute>(entityName: "DgmTypeAttribute")
+			request.predicate = NSPredicate(format: "type == %@ AND attributeType.published == TRUE", type)
+			request.sortDescriptors = [NSSortDescriptor(key: "attributeType.attributeCategory.categoryID", ascending: true), NSSortDescriptor(key: "attributeType.attributeID", ascending: true)]
+			let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: "attributeType.attributeCategory.categoryID", cacheName: nil)
+			guard let _ = try? results.performFetch() else {return sections}
+			guard results.sections != nil else {return sections}
 			
 			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
 			let attributes = type.allAttributes
@@ -964,21 +918,16 @@ struct NCDatabaseTypeInfo {
 					}
 				}
 			}
-		})
+			return sections
+		}
 	}
 	
-	static func whInfo(type: NCDBInvType, completionHandler: @escaping ([TreeNode]) -> Void) {
-		NCDatabase.sharedDatabase?.performBackgroundTask({ (managedObjectContext) in
+	static func whInfo(type: NCDBInvType) -> Future<[TreeNode]> {
+		return NCDatabase.sharedDatabase!.performBackgroundTask { managedObjectContext -> [TreeNode] in
 			var rows = [TreeNode]()
 			
-			defer {
-				DispatchQueue.main.async {
-					completionHandler(rows)
-				}
-			}
-			
-			guard let type = (try? managedObjectContext.existingObject(with: type.objectID)) as? NCDBInvType else {return}
-			guard let wh = type.wormhole else {return}
+			guard let type = (try? managedObjectContext.existingObject(with: type.objectID)) as? NCDBInvType else {return rows}
+			guard let wh = type.wormhole else {return rows}
 			
 			
 			let eveIcons = NCDBEveIcon.eveIcons(managedObjectContext: managedObjectContext)
@@ -1051,8 +1000,8 @@ struct NCDatabaseTypeInfo {
 				                                  subtitle: NCUnitFormatter.localizedString(from: wh.maxRegeneration, unit: .kilogram, style: .full)))
 				
 			}
-			
-		})
+			return rows
+		}
 	}
 	
 	static func subskills(skill: NCDBInvType, character: NCCharacter) -> [NCDatabaseTypeSkillRow] {
@@ -1135,17 +1084,8 @@ struct NCDatabaseTypeInfo {
 		guard NCDBCategoryID(rawValue: Int(type.group?.category?.categoryID ?? 0)) == .skill else {return nil}
 		var rows = [TreeRow]()
 		for i in 1...5 {
-//			let trainingQueue = NCTrainingQueue(character: character)
-//			trainingQueue.add(skill: type, level: i)
 			let row = NCDatabaseTrainingSkillRow(skill: type, level: i, character: character)
 			guard row.trainingTime > 0 else {continue}
-//			let t = trainingQueue.trainingTime(characterAttributes: character.attributes)
-//			guard t > 0 else {continue}
-//			let row = NCDatabaseTypeInfoRow(prototype: Prototype.NCDefaultTableViewCell.attribute,
-//			                                image: #imageLiteral(resourceName: "skills"),
-//			                                title: NSLocalizedString("Train to Level", comment: "").uppercased() + " \(i)",
-//			                                subtitle: NCTimeIntervalFormatter.localizedString(from: t, precision: .seconds),
-//			                                object: trainingQueue)
 			rows.append(row)
 
 		}

@@ -11,27 +11,36 @@ import EVEAPI
 import AdSupport
 import Alamofire
 
-fileprivate let GDPRCountryCodes = [
-	"BE",	"EL",	"LT",	"PT",
-	"BG",	"ES",	"LU",	"RO",
-	"CZ",	"FR",	"HU",	"SI",
-	"DK",	"HR",	"MT",	"SK",
-	"DE",	"IT",	"NL",	"FI",
-	"EE",	"CY",	"AT",	"SE",
-	"IE",	"LV",	"PL",	"UK"
-]
+//fileprivate let GDPRCountryCodes = [
+//	"BE",	"EL",	"LT",	"PT",
+//	"BG",	"ES",	"LU",	"RO",
+//	"CZ",	"FR",	"HU",	"SI",
+//	"DK",	"HR",	"MT",	"SK",
+//	"DE",	"IT",	"NL",	"FI",
+//	"EE",	"CY",	"AT",	"SE",
+//	"IE",	"LV",	"PL",	"UK",
+//	"CH",	"NO",	"IS",	"LI"
+//]
 
 fileprivate let GDPRStartDate: Date = {
 	let dateFormatter = DateFormatter()
 	dateFormatter.dateFormat = "yyyy.MM.dd HH:mm"
+	#if DEBUG
+	return dateFormatter.date(from: "2018.05.20 00:00")!
+	#else
 	return dateFormatter.date(from: "2018.05.28 00:00")!
+	#endif
 }()
 
-
-struct APIIP: Codable {
-	var country: String
-	var countryCode: String
+struct IsEEA: Codable {
+	var is_request_in_eea_or_unknown: Bool
 }
+
+
+//struct APIIP: Codable {
+//	var country: String
+//	var countryCode: String
+//}
 
 
 extension UIStoryboard {
@@ -44,14 +53,26 @@ class GDPR {
 	class func requireConsent() -> Future<Bool> {
 		guard Date() >= GDPRStartDate else {return .init(false)}
 		let promise = Promise<Bool>()
-		Alamofire.request("http://ip-api.com/json").validate().responseJSONDecodable { (response: DataResponse<APIIP>) in
+		Alamofire.request("https://adservice.google.com/getconfig/pubvendors?es=2&pubs=ca-app-pub-0434787749004673~8578320061").validate().responseJSONDecodable { (response: DataResponse<IsEEA>) in
 			switch response.result {
 			case let .success(value):
-				try? promise.fulfill(GDPRCountryCodes.contains(value.countryCode.uppercased()))
+				#if DEBUG
+				try? promise.fulfill(true)
+				#else
+				try? promise.fulfill(value.is_request_in_eea_or_unknown)
+				#endif
 			case let .failure(error):
 				try? promise.fail(error)
 			}
 		}
+//		Alamofire.request("http://ip-api.com/json").validate().responseJSONDecodable { (response: DataResponse<APIIP>) in
+//			switch response.result {
+//			case let .success(value):
+//				try? promise.fulfill(GDPRCountryCodes.contains(value.countryCode.uppercased()))
+//			case let .failure(error):
+//				try? promise.fail(error)
+//			}
+//		}
 		
 		return promise.future
 	}
@@ -62,9 +83,12 @@ class GDPR {
 		
 		return DispatchQueue.global(qos: .utility).async { () -> Future<Bool> in
 			guard try requireConsent().get() else {return (.init(true))}
+			#if DEBUG
+			#else
 			if let stored = stored {
 				return .init(stored.boolValue)
 			}
+			#endif
 			let message = try consentRequestMessage().get()
 			
 			return DispatchQueue.main.async {
@@ -144,4 +168,15 @@ class GDPRViewController: UIViewController {
 	@IBAction func onCancel(_ sender: Any) {
 		completionHandler?(false)
 	}
+}
+
+extension GDPRViewController: UITextViewDelegate {
+
+	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+		if UIApplication.shared.canOpenURL(URL) {
+			UIApplication.shared.openURL(URL)
+		}
+		return false
+	}
+
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import Appodeal
 
 class NCSkillQueueNotificationOptionsSection: DefaultTreeSection {
 	let setting: NCSetting
@@ -110,6 +111,7 @@ class NCSettingsViewController: NCTreeViewController {
 		if let value = UserDefaults.standard.object(forKey: UserDefaults.Key.NCConsent) as? NSNumber {
 			let row = NCSwitchRow(title: NSLocalizedString("Limit Ad Tracking", comment: ""), value: !value.boolValue) { (value) in
 				UserDefaults.standard.set(!value, forKey: UserDefaults.Key.NCConsent)
+//				APDSdk.shared().setUserConsent(!value)
 			}
 			sections.append(DefaultTreeSection(title: NSLocalizedString("Advertising", comment: "").uppercased(), children: [row]))
 		}

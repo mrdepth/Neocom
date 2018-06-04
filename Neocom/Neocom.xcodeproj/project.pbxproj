@@ -17,6 +17,7 @@
 		120A59E81F0BFCB20053F94B /* NCShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A59E71F0BFCB20053F94B /* NCShoppingListViewController.swift */; };
 		120A59EC1F0CAFEF0053F94B /* NCShoppingListAdditionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A59EB1F0CAFEF0053F94B /* NCShoppingListAdditionViewController.swift */; };
 		120A59EF1F10ABEC0053F94B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120A59EE1F10ABEC0053F94B /* StoreKit.framework */; };
+		120C6FC720C5267800F14473 /* NCFittingAffectingSkillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120C6FC620C5267800F14473 /* NCFittingAffectingSkillsViewController.swift */; };
 		120F4C591EF9A044003C92E9 /* NCContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */; };
 		120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */; };
 		120F62F21F30CDAA0019F5BB /* NCDatabaseTypeVariationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120F62F11F30CDAA0019F5BB /* NCDatabaseTypeVariationsViewController.swift */; };
@@ -296,13 +297,13 @@
 		12C44D001E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */; };
 		12C966D71F95E02D00B141CC /* NCTransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C966D61F95E02D00B141CC /* NCTransferViewController.swift */; };
 		12C966DD1F95F56700B141CC /* NCAboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C966DC1F95F56700B141CC /* NCAboutViewController.swift */; };
-		12C967001F96111900B141CC /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F71F9610DE00B141CC /* FirebaseCore.framework */; };
-		12C967011F96111900B141CC /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F81F9610DE00B141CC /* FirebaseCoreDiagnostics.framework */; };
-		12C967021F96111900B141CC /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F91F9610DE00B141CC /* FirebaseInstanceID.framework */; };
-		12C967031F96111900B141CC /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FA1F9610DE00B141CC /* FirebaseNanoPB.framework */; };
+		12C967001F96111900B141CC /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F71F9610DE00B141CC /* FirebaseCore.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		12C967011F96111900B141CC /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F81F9610DE00B141CC /* FirebaseCoreDiagnostics.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		12C967021F96111900B141CC /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F91F9610DE00B141CC /* FirebaseInstanceID.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		12C967031F96111900B141CC /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FA1F9610DE00B141CC /* FirebaseNanoPB.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12C967041F96111900B141CC /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FB1F9610DE00B141CC /* GoogleToolboxForMac.framework */; };
 		12C967051F96111900B141CC /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FC1F9610DE00B141CC /* nanopb.framework */; };
-		12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F61F9610DE00B141CC /* FirebaseAnalytics.framework */; };
+		12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F61F9610DE00B141CC /* FirebaseAnalytics.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12C967101F9614B200B141CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12C9670F1F96149F00B141CC /* GoogleService-Info.plist */; };
 		12CA8F752046ED32000360DE /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 12CA8F732046ED32000360DE /* NCDatabase.sqlite */; };
 		12CA8F762046ED32000360DE /* NCDatabaseVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CA8F742046ED32000360DE /* NCDatabaseVersion.swift */; };
@@ -397,6 +398,10 @@
 		12FE20FF1F8FA52F004C021E /* NCLoyaltyStoreOffersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FE20FE1F8FA52F004C021E /* NCLoyaltyStoreOffersViewController.swift */; };
 		12FF4D3E1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */; };
 		12FF4D401E33A5DB00A8BAD4 /* NCResourceLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FF4D3F1E33A5DB00A8BAD4 /* NCResourceLabel.swift */; };
+		1F60DBB39128749EDAB8D1FE /* Pods_Widget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2966A910CF3B7B0D3616B717 /* Pods_Widget.framework */; };
+		2EDF3DDFC8CE66C9F281EDB2 /* Pods_Neocom.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AD37530C1DC990A12B6E565 /* Pods_Neocom.framework */; };
+		31068991767696E8553EB168 /* Pods_Neocom_II_UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 109ECAA07552D18BDB7F6B5E /* Pods_Neocom_II_UITests.framework */; };
+		A4CE02563DC17CE31EC51A0E /* Pods_Neocom_II_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 892328FAC283635AA2B5B091 /* Pods_Neocom_II_Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -489,6 +494,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		109ECAA07552D18BDB7F6B5E /* Pods_Neocom_II_UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Neocom_II_UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1203E87E1F043A86009ADF8D /* NCZKillboardSummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardSummaryViewController.swift; sourceTree = "<group>"; };
 		1203E8821F0932D9009ADF8D /* rssFeeds.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = rssFeeds.plist; sourceTree = "<group>"; };
 		1203E8841F09350A009ADF8D /* rssFeeds.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = rssFeeds.json; path = ../../rssFeeds.json; sourceTree = "<group>"; };
@@ -500,6 +506,7 @@
 		120A59E71F0BFCB20053F94B /* NCShoppingListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCShoppingListViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		120A59EB1F0CAFEF0053F94B /* NCShoppingListAdditionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCShoppingListAdditionViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		120A59EE1F10ABEC0053F94B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		120C6FC620C5267800F14473 /* NCFittingAffectingSkillsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCFittingAffectingSkillsViewController.swift; sourceTree = "<group>"; };
 		120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContractInfoViewController.swift; sourceTree = "<group>"; };
 		120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultNoImageTableViewCell.xib; sourceTree = "<group>"; };
 		120F62F11F30CDAA0019F5BB /* NCDatabaseTypeVariationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDatabaseTypeVariationsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -892,6 +899,17 @@
 		12FE20FE1F8FA52F004C021E /* NCLoyaltyStoreOffersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCLoyaltyStoreOffersViewController.swift; sourceTree = "<group>"; };
 		12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCTypePickerRecentViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12FF4D3F1E33A5DB00A8BAD4 /* NCResourceLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCResourceLabel.swift; sourceTree = "<group>"; };
+		26F19F6AD3084E9423FB6557 /* Pods-Widget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widget.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Widget/Pods-Widget.debug.xcconfig"; sourceTree = "<group>"; };
+		2966A910CF3B7B0D3616B717 /* Pods_Widget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Widget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E8A6CBB5E44FA02FA920900 /* Pods-Neocom.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Neocom.release.xcconfig"; path = "Pods/Target Support Files/Pods-Neocom/Pods-Neocom.release.xcconfig"; sourceTree = "<group>"; };
+		4AD37530C1DC990A12B6E565 /* Pods_Neocom.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Neocom.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E5825F6C4F7AEE00B190036 /* Pods-Neocom.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Neocom.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Neocom/Pods-Neocom.debug.xcconfig"; sourceTree = "<group>"; };
+		69D55909B3FC7E52C75B925F /* Pods-Neocom II UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Neocom II UITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Neocom II UITests/Pods-Neocom II UITests.debug.xcconfig"; sourceTree = "<group>"; };
+		892328FAC283635AA2B5B091 /* Pods_Neocom_II_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Neocom_II_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B24AFA34EA58F730029C309 /* Pods-Neocom II UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Neocom II UITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Neocom II UITests/Pods-Neocom II UITests.release.xcconfig"; sourceTree = "<group>"; };
+		B16F259A201412C05EE571A1 /* Pods-Neocom II Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Neocom II Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Neocom II Tests/Pods-Neocom II Tests.release.xcconfig"; sourceTree = "<group>"; };
+		B18DF5B9F5C5216192F82C93 /* Pods-Widget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widget.release.xcconfig"; path = "Pods/Target Support Files/Pods-Widget/Pods-Widget.release.xcconfig"; sourceTree = "<group>"; };
+		DED2AF5630D24196CD2EA026 /* Pods-Neocom II Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Neocom II Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Neocom II Tests/Pods-Neocom II Tests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -899,6 +917,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31068991767696E8553EB168 /* Pods_Neocom_II_UITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -927,6 +946,7 @@
 				129DE43B1FF628AD00A2C1CD /* FBSDKCoreKit.framework in Frameworks */,
 				12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */,
 				12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */,
+				2EDF3DDFC8CE66C9F281EDB2 /* Pods_Neocom.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -934,6 +954,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4CE02563DC17CE31EC51A0E /* Pods_Neocom_II_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -942,6 +963,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				12CACFE52008C36B000B76C3 /* NotificationCenter.framework in Frameworks */,
+				1F60DBB39128749EDAB8D1FE /* Pods_Widget.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1238,6 +1260,7 @@
 				12E9321D1E6B56D40033D71A /* NCFittingCharactersViewController.swift */,
 				1224AF611E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift */,
 				1263EE2B1F0E77FA005128E6 /* NCFittingRequiredSkillsViewController.swift */,
+				120C6FC620C5267800F14473 /* NCFittingAffectingSkillsViewController.swift */,
 			);
 			name = Fitting;
 			sourceTree = "<group>";
@@ -1390,6 +1413,7 @@
 				1293D7D3204A89AE00A1F453 /* Neocom II UITests */,
 				12AC8D911DEF58A100561A7A /* Products */,
 				12DBEAAF1E1D3B860088A486 /* Frameworks */,
+				1C3620389121FA0BAD1DDA72 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1682,6 +1706,10 @@
 				122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */,
 				12DBEAB01E1D3B860088A486 /* libsqlite3.tbd */,
 				12CACFE42008C36B000B76C3 /* NotificationCenter.framework */,
+				4AD37530C1DC990A12B6E565 /* Pods_Neocom.framework */,
+				892328FAC283635AA2B5B091 /* Pods_Neocom_II_Tests.framework */,
+				109ECAA07552D18BDB7F6B5E /* Pods_Neocom_II_UITests.framework */,
+				2966A910CF3B7B0D3616B717 /* Pods_Widget.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1718,6 +1746,21 @@
 			name = Segues;
 			sourceTree = "<group>";
 		};
+		1C3620389121FA0BAD1DDA72 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4E5825F6C4F7AEE00B190036 /* Pods-Neocom.debug.xcconfig */,
+				2E8A6CBB5E44FA02FA920900 /* Pods-Neocom.release.xcconfig */,
+				DED2AF5630D24196CD2EA026 /* Pods-Neocom II Tests.debug.xcconfig */,
+				B16F259A201412C05EE571A1 /* Pods-Neocom II Tests.release.xcconfig */,
+				69D55909B3FC7E52C75B925F /* Pods-Neocom II UITests.debug.xcconfig */,
+				8B24AFA34EA58F730029C309 /* Pods-Neocom II UITests.release.xcconfig */,
+				26F19F6AD3084E9423FB6557 /* Pods-Widget.debug.xcconfig */,
+				B18DF5B9F5C5216192F82C93 /* Pods-Widget.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1725,6 +1768,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1293D7D9204A89AE00A1F453 /* Build configuration list for PBXNativeTarget "Neocom II UITests" */;
 			buildPhases = (
+				1F1D971C412497879C815DFD /* [CP] Check Pods Manifest.lock */,
 				1293D7CE204A89AE00A1F453 /* Sources */,
 				1293D7CF204A89AE00A1F453 /* Frameworks */,
 				1293D7D0204A89AE00A1F453 /* Resources */,
@@ -1765,6 +1809,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 12CA8F862047DED1000360DE /* Build configuration list for PBXNativeTarget "Neocom II Tests" */;
 			buildPhases = (
+				E587F9DE5D0D7738CB7F6BBA /* [CP] Check Pods Manifest.lock */,
 				12CA8F7B2047DED1000360DE /* Sources */,
 				12CA8F7C2047DED1000360DE /* Frameworks */,
 				12CA8F7D2047DED1000360DE /* Resources */,
@@ -1783,6 +1828,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 12CACFF32008C36B000B76C3 /* Build configuration list for PBXNativeTarget "Widget" */;
 			buildPhases = (
+				30F4D1B875AA00E2E5589CA1 /* [CP] Check Pods Manifest.lock */,
 				12CACFDF2008C36B000B76C3 /* Sources */,
 				12CACFE02008C36B000B76C3 /* Frameworks */,
 				12CACFE12008C36B000B76C3 /* Resources */,
@@ -2022,6 +2068,63 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1F1D971C412497879C815DFD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Neocom II UITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		30F4D1B875AA00E2E5589CA1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Widget-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E587F9DE5D0D7738CB7F6BBA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Neocom II Tests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1293D7CE204A89AE00A1F453 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -2078,6 +2181,7 @@
 				1230A32D1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift in Sources */,
 				124BD4B22018978E00816946 /* NCSubscriptionViewController.swift in Sources */,
 				129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */,
+				120C6FC720C5267800F14473 /* NCFittingAffectingSkillsViewController.swift in Sources */,
 				1256BE3B1DF1EFA600A2A24B /* NCSplitViewController.swift in Sources */,
 				1285FB3A1EB9C5700025331A /* NCWealthViewController.swift in Sources */,
 				1256BE5A1DF4742F00A2A24B /* NCTableViewCell.swift in Sources */,
@@ -2371,6 +2475,7 @@
 /* Begin XCBuildConfiguration section */
 		1293D7DA204A89AE00A1F453 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 69D55909B3FC7E52C75B925F /* Pods-Neocom II UITests.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -2378,6 +2483,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				FRAMEWORK_SEARCH_PATHS = (
+					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
+					"${PROJECT_DIR}/../ThirdParty/Facebook",
+					"${PROJECT_DIR}/../ThirdParty/Appodeal",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Neocom II UITests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -2392,6 +2502,7 @@
 		};
 		1293D7DB204A89AE00A1F453 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B24AFA34EA58F730029C309 /* Pods-Neocom II UITests.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -2399,6 +2510,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				FRAMEWORK_SEARCH_PATHS = (
+					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
+					"${PROJECT_DIR}/../ThirdParty/Facebook",
+					"${PROJECT_DIR}/../ThirdParty/Appodeal",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Neocom II UITests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -2520,6 +2636,7 @@
 		};
 		12AC8DA31DEF58A100561A7A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4E5825F6C4F7AEE00B190036 /* Pods-Neocom.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -2548,6 +2665,7 @@
 		};
 		12AC8DA41DEF58A100561A7A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2E8A6CBB5E44FA02FA920900 /* Pods-Neocom.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -2574,6 +2692,7 @@
 		};
 		12CA8F872047DED1000360DE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DED2AF5630D24196CD2EA026 /* Pods-Neocom II Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -2602,6 +2721,7 @@
 		};
 		12CA8F882047DED1000360DE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B16F259A201412C05EE571A1 /* Pods-Neocom II Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -2630,6 +2750,7 @@
 		};
 		12CACFF02008C36B000B76C3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 26F19F6AD3084E9423FB6557 /* Pods-Widget.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -2652,6 +2773,7 @@
 		};
 		12CACFF12008C36B000B76C3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B18DF5B9F5C5216192F82C93 /* Pods-Widget.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -2569,7 +2569,7 @@
                                                                     <rect key="frame" x="86" y="0.0" width="82" height="20"/>
                                                                     <subviews>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XLg-ux-MVR">
-                                                                            <rect key="frame" x="11.5" y="0.0" width="61" height="20"/>
+                                                                            <rect key="frame" x="10.5" y="0.0" width="61" height="20"/>
                                                                             <subviews>
                                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="drone" translatesAutoresizingMaskIntoConstraints="NO" id="I5R-pa-4vT">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -3964,7 +3964,7 @@
         <!--Affecting Skills-->
         <scene sceneID="FGJ-y9-fY1">
             <objects>
-                <tableViewController storyboardIdentifier="NCFittingRequiredSkillsViewController" id="izZ-M3-d8P" customClass="NCFittingRequiredSkillsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="NCFittingAffectingSkillsViewController" id="izZ-M3-d8P" customClass="NCFittingAffectingSkillsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="9eR-Hk-LCA" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -4333,6 +4333,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5wd-Iu-pa1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1609" y="3816"/>
+        </scene>
+        <!--Required Skills-->
+        <scene sceneID="qhU-rB-20a">
+            <objects>
+                <tableViewController storyboardIdentifier="NCFittingRequiredSkillsViewController" id="ehs-LZ-Fpy" customClass="NCFittingRequiredSkillsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="gyx-1G-uKI" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Required Skills" id="Bgg-X2-QWr"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BbB-Xg-0fh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6914" y="5364"/>
         </scene>
     </scenes>
     <resources>

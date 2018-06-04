@@ -1004,7 +1004,21 @@ enum Router {
 				destination.ship = ship
 			}
 		}
-		
+
+		class AffectingSkills: Route {
+			let ship: DGMShip
+			
+			init(for ship: DGMShip) {
+				self.ship = ship
+				super.init(kind: .adaptiveModal, storyboard: UIStoryboard.fitting, identifier: "NCFittingAffectingSkillsViewController")
+			}
+			
+			override func prepareForSegue(destination: UIViewController) {
+				let destination = destination as! NCFittingAffectingSkillsViewController
+				destination.ship = ship
+			}
+		}
+
 		class ImplantSet: Route {
 			let character: DGMCharacter?
 			let mode: NCFittingImplantSetViewController.Mode

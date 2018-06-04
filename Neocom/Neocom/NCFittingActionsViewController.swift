@@ -121,7 +121,18 @@ class NCFittingActionsViewController: NCTreeViewController, UITextFieldDelegate 
 	
 	@IBAction func onSkills(_ sender: Any) {
 		guard let ship = fleet?.active?.ship else {return}
-		Router.Fitting.RequiredSkills(for: ship).perform(source: self, sender: sender)
+		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Affecting Skills", comment: ""), style: .default, handler: { [weak self] (_) in
+			guard let strongSelf = self else {return}
+			Router.Fitting.AffectingSkills(for: ship).perform(source: strongSelf, sender: sender)
+		}))
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Required Skills", comment: ""), style: .default, handler: { [weak self] (_) in
+			guard let strongSelf = self else {return}
+			Router.Fitting.RequiredSkills(for: ship).perform(source: strongSelf, sender: sender)
+		}))
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: { (_) in
+		}))
+		present(controller, animated: true, completion: nil)
 	}
 
 	@IBAction func onShoppingList(_ sender: Any) {

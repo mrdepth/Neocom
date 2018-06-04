@@ -398,10 +398,6 @@
 		12FE20FF1F8FA52F004C021E /* NCLoyaltyStoreOffersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FE20FE1F8FA52F004C021E /* NCLoyaltyStoreOffersViewController.swift */; };
 		12FF4D3E1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */; };
 		12FF4D401E33A5DB00A8BAD4 /* NCResourceLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FF4D3F1E33A5DB00A8BAD4 /* NCResourceLabel.swift */; };
-		1F60DBB39128749EDAB8D1FE /* Pods_Widget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2966A910CF3B7B0D3616B717 /* Pods_Widget.framework */; };
-		2EDF3DDFC8CE66C9F281EDB2 /* Pods_Neocom.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AD37530C1DC990A12B6E565 /* Pods_Neocom.framework */; };
-		31068991767696E8553EB168 /* Pods_Neocom_II_UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 109ECAA07552D18BDB7F6B5E /* Pods_Neocom_II_UITests.framework */; };
-		A4CE02563DC17CE31EC51A0E /* Pods_Neocom_II_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 892328FAC283635AA2B5B091 /* Pods_Neocom_II_Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -917,7 +913,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31068991767696E8553EB168 /* Pods_Neocom_II_UITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -946,7 +941,6 @@
 				129DE43B1FF628AD00A2C1CD /* FBSDKCoreKit.framework in Frameworks */,
 				12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */,
 				12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */,
-				2EDF3DDFC8CE66C9F281EDB2 /* Pods_Neocom.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -954,7 +948,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4CE02563DC17CE31EC51A0E /* Pods_Neocom_II_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -963,7 +956,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				12CACFE52008C36B000B76C3 /* NotificationCenter.framework in Frameworks */,
-				1F60DBB39128749EDAB8D1FE /* Pods_Widget.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1768,7 +1760,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1293D7D9204A89AE00A1F453 /* Build configuration list for PBXNativeTarget "Neocom II UITests" */;
 			buildPhases = (
-				1F1D971C412497879C815DFD /* [CP] Check Pods Manifest.lock */,
 				1293D7CE204A89AE00A1F453 /* Sources */,
 				1293D7CF204A89AE00A1F453 /* Frameworks */,
 				1293D7D0204A89AE00A1F453 /* Resources */,
@@ -1809,7 +1800,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 12CA8F862047DED1000360DE /* Build configuration list for PBXNativeTarget "Neocom II Tests" */;
 			buildPhases = (
-				E587F9DE5D0D7738CB7F6BBA /* [CP] Check Pods Manifest.lock */,
 				12CA8F7B2047DED1000360DE /* Sources */,
 				12CA8F7C2047DED1000360DE /* Frameworks */,
 				12CA8F7D2047DED1000360DE /* Resources */,
@@ -1828,7 +1818,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 12CACFF32008C36B000B76C3 /* Build configuration list for PBXNativeTarget "Widget" */;
 			buildPhases = (
-				30F4D1B875AA00E2E5589CA1 /* [CP] Check Pods Manifest.lock */,
 				12CACFDF2008C36B000B76C3 /* Sources */,
 				12CACFE02008C36B000B76C3 /* Frameworks */,
 				12CACFE12008C36B000B76C3 /* Resources */,
@@ -2067,63 +2056,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		1F1D971C412497879C815DFD /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Neocom II UITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		30F4D1B875AA00E2E5589CA1 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Widget-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E587F9DE5D0D7738CB7F6BBA /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Neocom II Tests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1293D7CE204A89AE00A1F453 /* Sources */ = {

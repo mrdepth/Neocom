@@ -134,7 +134,7 @@ class NCDataManager {
 	}()
 	
 	var corporationID: Future<Int64> {
-		return lock.perform {self._corporationID}
+		return self._corporationID
 	}
 	
 	init(account: NCAccount? = nil, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) {

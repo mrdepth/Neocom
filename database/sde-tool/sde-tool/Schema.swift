@@ -490,10 +490,10 @@ struct SolarSystem: Codable {
 	var securityClass: String?
 	var solarSystemID: Int
 	var solarSystemNameID: Int
-	var star: Star
+	var star: Star?
 	var secondarySun: SecondarySun?
 	var stargates: [Int: Stargate]
-	var sunTypeID: Int
+	var sunTypeID: Int?
 	var wormholeClassID: Int?
 	var visualEffect: String?
 	var disallowedAnchorCategories: [Int]?

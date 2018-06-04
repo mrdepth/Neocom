@@ -47,6 +47,7 @@ class NCMarketQuickbarViewController: NCTreeViewController {
 		request.predicate = NSPredicate(format: "typeID IN %@", items.map{$0.typeID})
 		request.sortDescriptors = [NSSortDescriptor(key: "group.category.categoryName", ascending: true), NSSortDescriptor(key: "typeName", ascending: true)]
 		let results = NSFetchedResultsController(fetchRequest: request, managedObjectContext: NCDatabase.sharedDatabase!.viewContext, sectionNameKeyPath: "group.category.categoryName", cacheName: nil)
+		try? results.performFetch()
 		
 		guard (results.fetchedObjects?.count ?? 0) > 0 else {return .init(.failure(NCTreeViewControllerError.noResult))}
 		

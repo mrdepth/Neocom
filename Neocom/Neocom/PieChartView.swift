@@ -66,8 +66,9 @@ public class PieSegmentLayer: CALayer {
 	}
 
 	fileprivate var preferredTitleSize: CGSize {
+		guard let superlayer = self.superlayer else {return .zero}
 		let s = title
-		let rect = s.boundingRect(with: self.superlayer!.bounds.size, options: [.usesLineFragmentOrigin], context: nil)
+		let rect = s.boundingRect(with: superlayer.bounds.size, options: [.usesLineFragmentOrigin], context: nil)
 		return rect.size
 	}
 	
@@ -223,6 +224,7 @@ class PieChartView: UIView {
 
 		segment.chart = self
 		let segmentLayer = PieSegmentLayer()
+		segmentLayer.drawsAsynchronously = false
 		segmentLayer.contentsScale = UIScreen.main.scale
 		segmentLayer.segment = segment
 		segmentLayer.needsDisplayOnBoundsChange = true

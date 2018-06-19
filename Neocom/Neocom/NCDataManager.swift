@@ -602,7 +602,7 @@ class NCDataManager {
 					try! managedObjectContext.save()
 				}
 			}
-			return Dictionary(uniqueKeysWithValues: contacts.map{($0.contactID, $0.objectID)})
+			return Dictionary(contacts.map{($0.contactID, $0.objectID)}, uniquingKeysWith: { (first, _) in first})
 		}
 	}
 	

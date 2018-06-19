@@ -18,13 +18,15 @@ public class NCFleetConfiguration: NSObject, NSCoding {
 	
 	public required init?(coder aDecoder: NSCoder) {
 		if let d = aDecoder.decodeObject(forKey: "pilots") as? [String: String] {
-			pilots = [Int: String](uniqueKeysWithValues: d.map{ (Int($0) ?? $0.hashValue, $1) })
+			pilots = Dictionary(d.map{ (Int($0) ?? $0.hashValue, $1) },
+								uniquingKeysWith: { (first, _) in first})
 		}
 		else {
 			pilots = aDecoder.decodeObject(forKey: "pilots") as? [Int: String]
 		}
 		if let d = aDecoder.decodeObject(forKey: "links") as? [String: String] {
-			links = [Int: Int](uniqueKeysWithValues: d.map{ (Int($0) ?? $0.hashValue, Int($1) ?? $1.hashValue) })
+			links = Dictionary(d.map{ (Int($0) ?? $0.hashValue, Int($1) ?? $1.hashValue) },
+								uniquingKeysWith: { (first, _) in first})
 		}
 		else {
 			links = aDecoder.decodeObject(forKey: "links") as? [Int: Int]

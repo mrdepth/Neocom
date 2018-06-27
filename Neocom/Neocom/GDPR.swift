@@ -22,15 +22,15 @@ import Alamofire
 //	"CH",	"NO",	"IS",	"LI"
 //]
 
-fileprivate let GDPRStartDate: Date = {
-	let dateFormatter = DateFormatter()
-	dateFormatter.dateFormat = "yyyy.MM.dd HH:mm"
-	#if DEBUG
-	return dateFormatter.date(from: "2018.05.20 00:00")!
-	#else
-	return dateFormatter.date(from: "2018.05.28 00:00")!
-	#endif
-}()
+//fileprivate let GDPRStartDate: Date = {
+//	let dateFormatter = DateFormatter()
+//	dateFormatter.dateFormat = "yyyy.MM.dd HH:mm"
+//	#if DEBUG
+//	return dateFormatter.date(from: "2018.05.20 00:00")!
+//	#else
+//	return dateFormatter.date(from: "2018.05.28 00:00")!
+//	#endif
+//}()
 
 struct IsEEA: Codable {
 	var is_request_in_eea_or_unknown: Bool
@@ -51,7 +51,7 @@ class GDPR {
 	private static var window: UIWindow?
 	
 	class func requireConsent() -> Future<Bool> {
-		guard Date() >= GDPRStartDate else {return .init(false)}
+//		guard Date() >= GDPRStartDate else {return .init(false)}
 		let promise = Promise<Bool>()
 		Alamofire.request("https://adservice.google.com/getconfig/pubvendors?es=2&pubs=ca-app-pub-0434787749004673~8578320061").validate().responseJSONDecodable { (response: DataResponse<IsEEA>) in
 			switch response.result {

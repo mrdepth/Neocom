@@ -17,6 +17,7 @@
 		120A59E81F0BFCB20053F94B /* NCShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A59E71F0BFCB20053F94B /* NCShoppingListViewController.swift */; };
 		120A59EC1F0CAFEF0053F94B /* NCShoppingListAdditionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A59EB1F0CAFEF0053F94B /* NCShoppingListAdditionViewController.swift */; };
 		120A59EF1F10ABEC0053F94B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120A59EE1F10ABEC0053F94B /* StoreKit.framework */; };
+		120C6FC720C5267800F14473 /* NCFittingAffectingSkillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120C6FC620C5267800F14473 /* NCFittingAffectingSkillsViewController.swift */; };
 		120F4C591EF9A044003C92E9 /* NCContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */; };
 		120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */; };
 		120F62F21F30CDAA0019F5BB /* NCDatabaseTypeVariationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120F62F11F30CDAA0019F5BB /* NCDatabaseTypeVariationsViewController.swift */; };
@@ -296,13 +297,13 @@
 		12C44D001E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */; };
 		12C966D71F95E02D00B141CC /* NCTransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C966D61F95E02D00B141CC /* NCTransferViewController.swift */; };
 		12C966DD1F95F56700B141CC /* NCAboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C966DC1F95F56700B141CC /* NCAboutViewController.swift */; };
-		12C967001F96111900B141CC /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F71F9610DE00B141CC /* FirebaseCore.framework */; };
-		12C967011F96111900B141CC /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F81F9610DE00B141CC /* FirebaseCoreDiagnostics.framework */; };
-		12C967021F96111900B141CC /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F91F9610DE00B141CC /* FirebaseInstanceID.framework */; };
-		12C967031F96111900B141CC /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FA1F9610DE00B141CC /* FirebaseNanoPB.framework */; };
+		12C967001F96111900B141CC /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F71F9610DE00B141CC /* FirebaseCore.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		12C967011F96111900B141CC /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F81F9610DE00B141CC /* FirebaseCoreDiagnostics.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		12C967021F96111900B141CC /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F91F9610DE00B141CC /* FirebaseInstanceID.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		12C967031F96111900B141CC /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FA1F9610DE00B141CC /* FirebaseNanoPB.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12C967041F96111900B141CC /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FB1F9610DE00B141CC /* GoogleToolboxForMac.framework */; };
 		12C967051F96111900B141CC /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FC1F9610DE00B141CC /* nanopb.framework */; };
-		12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F61F9610DE00B141CC /* FirebaseAnalytics.framework */; };
+		12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F61F9610DE00B141CC /* FirebaseAnalytics.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12C967101F9614B200B141CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12C9670F1F96149F00B141CC /* GoogleService-Info.plist */; };
 		12CA8F752046ED32000360DE /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 12CA8F732046ED32000360DE /* NCDatabase.sqlite */; };
 		12CA8F762046ED32000360DE /* NCDatabaseVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CA8F742046ED32000360DE /* NCDatabaseVersion.swift */; };
@@ -489,6 +490,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		109ECAA07552D18BDB7F6B5E /* Pods_Neocom_II_UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Neocom_II_UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1203E87E1F043A86009ADF8D /* NCZKillboardSummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardSummaryViewController.swift; sourceTree = "<group>"; };
 		1203E8821F0932D9009ADF8D /* rssFeeds.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = rssFeeds.plist; sourceTree = "<group>"; };
 		1203E8841F09350A009ADF8D /* rssFeeds.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = rssFeeds.json; path = ../../rssFeeds.json; sourceTree = "<group>"; };
@@ -500,6 +502,7 @@
 		120A59E71F0BFCB20053F94B /* NCShoppingListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCShoppingListViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		120A59EB1F0CAFEF0053F94B /* NCShoppingListAdditionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCShoppingListAdditionViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		120A59EE1F10ABEC0053F94B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		120C6FC620C5267800F14473 /* NCFittingAffectingSkillsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCFittingAffectingSkillsViewController.swift; sourceTree = "<group>"; };
 		120F4C581EF9A044003C92E9 /* NCContractInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContractInfoViewController.swift; sourceTree = "<group>"; };
 		120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultNoImageTableViewCell.xib; sourceTree = "<group>"; };
 		120F62F11F30CDAA0019F5BB /* NCDatabaseTypeVariationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDatabaseTypeVariationsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -892,6 +895,9 @@
 		12FE20FE1F8FA52F004C021E /* NCLoyaltyStoreOffersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCLoyaltyStoreOffersViewController.swift; sourceTree = "<group>"; };
 		12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCTypePickerRecentViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12FF4D3F1E33A5DB00A8BAD4 /* NCResourceLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCResourceLabel.swift; sourceTree = "<group>"; };
+		2966A910CF3B7B0D3616B717 /* Pods_Widget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Widget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4AD37530C1DC990A12B6E565 /* Pods_Neocom.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Neocom.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		892328FAC283635AA2B5B091 /* Pods_Neocom_II_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Neocom_II_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1238,6 +1244,7 @@
 				12E9321D1E6B56D40033D71A /* NCFittingCharactersViewController.swift */,
 				1224AF611E6D8FC80043F96C /* NCFittingCharacterEditorViewController.swift */,
 				1263EE2B1F0E77FA005128E6 /* NCFittingRequiredSkillsViewController.swift */,
+				120C6FC620C5267800F14473 /* NCFittingAffectingSkillsViewController.swift */,
 			);
 			name = Fitting;
 			sourceTree = "<group>";
@@ -1682,6 +1689,10 @@
 				122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */,
 				12DBEAB01E1D3B860088A486 /* libsqlite3.tbd */,
 				12CACFE42008C36B000B76C3 /* NotificationCenter.framework */,
+				4AD37530C1DC990A12B6E565 /* Pods_Neocom.framework */,
+				892328FAC283635AA2B5B091 /* Pods_Neocom_II_Tests.framework */,
+				109ECAA07552D18BDB7F6B5E /* Pods_Neocom_II_UITests.framework */,
+				2966A910CF3B7B0D3616B717 /* Pods_Widget.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2078,6 +2089,7 @@
 				1230A32D1DFFE2CF00627D92 /* NCImageFromDataValueTransformer.swift in Sources */,
 				124BD4B22018978E00816946 /* NCSubscriptionViewController.swift in Sources */,
 				129E60F01E01554F00B56EB8 /* NCTintImageView.swift in Sources */,
+				120C6FC720C5267800F14473 /* NCFittingAffectingSkillsViewController.swift in Sources */,
 				1256BE3B1DF1EFA600A2A24B /* NCSplitViewController.swift in Sources */,
 				1285FB3A1EB9C5700025331A /* NCWealthViewController.swift in Sources */,
 				1256BE5A1DF4742F00A2A24B /* NCTableViewCell.swift in Sources */,
@@ -2378,6 +2390,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				FRAMEWORK_SEARCH_PATHS = (
+					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
+					"${PROJECT_DIR}/../ThirdParty/Facebook",
+					"${PROJECT_DIR}/../ThirdParty/Appodeal",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Neocom II UITests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -2399,6 +2416,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
+				FRAMEWORK_SEARCH_PATHS = (
+					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
+					"${PROJECT_DIR}/../ThirdParty/Facebook",
+					"${PROJECT_DIR}/../ThirdParty/Appodeal",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Neocom II UITests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;

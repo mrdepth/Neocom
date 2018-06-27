@@ -180,7 +180,8 @@ class NCDraftRow: NCFetchedResultsObjectNode<NCMailDraft>, TreeNodeRoutable {
 		if recipient == nil, let to = object.to, !to.isEmpty {
 			NCDataManager(account: NCAccount.current).contacts(ids: Set(to)).then(on: .main) { result in
 				let context = NCCache.sharedCache!.viewContext
-				let contacts = Dictionary(uniqueKeysWithValues: result.compactMap {(try? context.existingObject(with: $0.value)) as? NCContact}.compactMap { (Int64($0.contactID), $0) })
+				let contacts = Dictionary(result.compactMap {(try? context.existingObject(with: $0.value)) as? NCContact}.compactMap { (Int64($0.contactID), $0) },
+										  uniquingKeysWith: { (first, _) in first})
 				
 				let recipient = to.compactMap({contacts[$0]?.name}).joined(separator: ", ")
 				self.recipient = recipient

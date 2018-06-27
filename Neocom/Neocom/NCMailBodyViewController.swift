@@ -49,7 +49,8 @@ class NCMailBodyViewController: UIViewController {
 		if ids.count > 0 {
 			dataManager.contacts(ids: ids).then(on: .main) { result in
 				let context = NCCache.sharedCache?.viewContext
-				let contacts = Dictionary(uniqueKeysWithValues: result.values.compactMap {(try? context?.existingObject(with: $0)) as? NCContact}.map {($0.contactID, $0)})
+				let contacts = Dictionary(result.values.compactMap {(try? context?.existingObject(with: $0)) as? NCContact}.map {($0.contactID, $0)},
+										  uniquingKeysWith: { (first, _) in first})
 
 				if let from = mail.from, let contact = contacts[Int64(from)] {
 					self.fromLabel.text = contact.name

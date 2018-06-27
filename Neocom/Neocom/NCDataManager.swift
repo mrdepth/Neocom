@@ -134,7 +134,7 @@ class NCDataManager {
 	}()
 	
 	var corporationID: Future<Int64> {
-		return lock.perform {self._corporationID}
+		return self._corporationID
 	}
 	
 	init(account: NCAccount? = nil, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) {
@@ -602,7 +602,7 @@ class NCDataManager {
 					try! managedObjectContext.save()
 				}
 			}
-			return Dictionary(uniqueKeysWithValues: contacts.map{($0.contactID, $0.objectID)})
+			return Dictionary(contacts.map{($0.contactID, $0.objectID)}, uniquingKeysWith: { (first, _) in first})
 		}
 	}
 	

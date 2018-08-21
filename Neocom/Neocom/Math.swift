@@ -52,11 +52,6 @@ extension CGRect {
 		r.size.height = lerp(self.size.height, to.size.height, t)
 		return r
 	}
-    
-    func insetBy(_ insets: UIEdgeInsets) -> CGRect {
-        return UIEdgeInsetsInsetRect(self, insets)
-    }
-
 }
 
 

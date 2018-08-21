@@ -26,6 +26,15 @@
       location = "group:ThirdParty/swifter/XCode/Swifter.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:ThirdParty/Expressible/Expressible.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:ThirdParty/ASReceipt/ASReceipt/ASReceipt.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/TreeController/TreeController.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/EVEOnlineAPI/ThirdParty/Futures/Futures.xcodeproj">
    </FileRef>
 </Workspace>

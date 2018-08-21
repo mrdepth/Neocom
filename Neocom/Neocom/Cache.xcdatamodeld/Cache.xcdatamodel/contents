@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17G65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CacheRecord" representedClassName="CacheRecord" syncable="YES" codeGenerationType="class">
+        <attribute name="account" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cachedUntil" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="data" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CacheRecordData" inverseName="record" inverseEntity="CacheRecordData" syncable="YES"/>
+        <fetchIndex name="byIdentifierIndex">
+            <fetchIndexElement property="identifier" type="Binary" order="ascending"/>
+            <fetchIndexElement property="account" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="identifier"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CacheRecordData" representedClassName="CacheRecordData" syncable="YES" codeGenerationType="class">
+        <attribute name="value" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CacheRecord" inverseName="data" inverseEntity="CacheRecord" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="CacheRecord" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="CacheRecordData" positionX="-36" positionY="27" width="128" height="75"/>
+    </elements>
+</model>

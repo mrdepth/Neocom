@@ -51,7 +51,7 @@ extension NSManagedObjectContext {
 //	}
 //}
 
-extension NCDBEveIcon {
+extension SDEEveIcon {
 	static let lock = NSRecursiveLock()
 	
 	convenience init?(_ iconID: (key: Int, value: IconID)) {
@@ -61,24 +61,24 @@ extension NCDBEveIcon {
 		guard let data = try? Data(contentsOf: url) else {return nil}
 		self.init(context: .current)
 		iconFile = url.deletingPathExtension().lastPathComponent
-		image = NCDBEveIconImage(context: .current)
+		image = SDEEveIconImage(context: .current)
 		image?.image = data
 	}
 	
-	class func icon(iconName: String) throws -> NCDBEveIcon? {
+	class func icon(iconName: String) throws -> SDEEveIcon? {
 		lock.lock(); defer {lock.unlock()}
 		if let eveIcon = nameIcons[iconName] {
 			return try eveIcon.object()
 		}
 		else if let icon = try iconIDs.get().first(where: {$0.value.iconFile.hasSuffix("\(iconName).png")}),
-			let eveIcon = try NCDBEveIcon.icon(iconID: icon.key) {
+			let eveIcon = try SDEEveIcon.icon(iconID: icon.key) {
 			return eveIcon
 		}
 		else {
 			let url = URL(fileURLWithPath: CommandLine.input).appendingPathComponent("Icons/items/\(iconName).png")
 			guard let data = try? Data(contentsOf: url) else {return nil}
-			let icon = NCDBEveIcon(context: .current)
-			icon.image = NCDBEveIconImage(context: .current)
+			let icon = SDEEveIcon(context: .current)
+			icon.image = SDEEveIconImage(context: .current)
 			icon.iconFile = iconName
 			icon.image?.image = data
 //			try NSManagedObjectContext.current.save()
@@ -87,13 +87,13 @@ extension NCDBEveIcon {
 		}
 	}
 	
-	class func icon(iconID: Int) throws -> NCDBEveIcon? {
+	class func icon(iconID: Int) throws -> SDEEveIcon? {
 		lock.lock(); defer {lock.unlock()}
 		if let icon = eveIcons[iconID] {
 			return try icon.object()
 		}
 		guard let icon = try iconIDs.get()[iconID] else {return nil}
-		if let eveIcon = NCDBEveIcon((iconID, icon)) {
+		if let eveIcon = SDEEveIcon((iconID, icon)) {
 //			try NSManagedObjectContext.current.save()
 			eveIcons[iconID] = .init(eveIcon)
 			return eveIcon
@@ -101,7 +101,7 @@ extension NCDBEveIcon {
 		return nil
 	}
 	
-	class func icon(typeID: Int) throws -> NCDBEveIcon? {
+	class func icon(typeID: Int) throws -> SDEEveIcon? {
 		lock.lock(); defer {lock.unlock()}
 		let url = URL(fileURLWithPath: CommandLine.input).appendingPathComponent("Types/\(typeID)_64.png")
 		guard let data = try? Data(contentsOf: url) else {return nil}
@@ -109,8 +109,8 @@ extension NCDBEveIcon {
 		if let icon = typeIcons[hash] {
 			return try icon.object()
 		}
-		let icon = NCDBEveIcon(context: .current)
-		icon.image = NCDBEveIconImage(context: .current)
+		let icon = SDEEveIcon(context: .current)
+		icon.image = SDEEveIconImage(context: .current)
 		icon.image?.image = data
 //		try NSManagedObjectContext.current.save()
 		typeIcons[hash] = .init(icon)
@@ -120,19 +120,19 @@ extension NCDBEveIcon {
 }
 
 
-extension NCDBInvCategory {
+extension SDEInvCategory {
 	convenience init(_ category: (key: Int, value: CategoryID)) throws {
 		self.init(context: .current)
 		categoryID = Int32(category.key)
 		categoryName = category.value.name.en
 		published = category.value.published
 		if let iconID = category.value.iconID {
-			try icon = NCDBEveIcon.icon(iconID: iconID)
+			try icon = SDEEveIcon.icon(iconID: iconID)
 		}
 	}
 }
 
-extension NCDBInvGroup {
+extension SDEInvGroup {
 	convenience init(_ group: (key: Int, value: GroupID)) throws {
 		self.init(context: .current)
 		groupID = Int32(group.key)
@@ -140,12 +140,12 @@ extension NCDBInvGroup {
 		published = group.value.published
 		try category = invCategories.get()[group.value.categoryID]?.object()
 		if let iconID = group.value.iconID {
-			try icon = NCDBEveIcon.icon(iconID: iconID)
+			try icon = SDEEveIcon.icon(iconID: iconID)
 		}
 	}
 }
 
-extension NCDBInvType {
+extension SDEInvType {
 	convenience init(_ type: (key: Int, value: TypeID), typeIDs: Schema.TypeIDs) throws {
 		self.init(context: .current)
 		typeID = Int32(type.key)
@@ -158,7 +158,7 @@ extension NCDBInvType {
 		volume = type.value.volume ?? 0
 		published = type.value.published
 		portionSize = Int32(type.value.portionSize)
-		try metaLevel = Int16(typeAttributes.get()[type.key]?[NCDBDgmAttributeID.metaLevel.rawValue]?.value ?? 0)
+		try metaLevel = Int16(typeAttributes.get()[type.key]?[SDEDgmAttributeID.metaLevel.rawValue]?.value ?? 0)
 		icon = try .icon(typeID: type.key)
 		if let raceID = type.value.raceID {
 			try race = chrRaces.get()[raceID]!.object()
@@ -175,7 +175,7 @@ extension NCDBInvType {
 		}
 		
 		try typeAttributes.get()[type.key]?.forEach { (attributeID, attribute) in
-			let typeAttribute = NCDBDgmTypeAttribute(context: .current)
+			let typeAttribute = SDEDgmTypeAttribute(context: .current)
 			typeAttribute.type = self
 			typeAttribute.value = attribute.value ?? 0
 			try typeAttribute.attributeType = dgmAttributeTypes.get()[attribute.attributeID]!.object()
@@ -208,12 +208,12 @@ extension NCDBInvType {
 			}
 		}
 		
-		let roleBonuses = try type.value.traits?.roleBonuses?.flatMap { try traitToString($0) }.joined(separator: "\n")
-		let miscBonuses = try type.value.traits?.miscBonuses?.flatMap { try traitToString($0) }.joined(separator: "\n")
+		let roleBonuses = try type.value.traits?.roleBonuses?.compactMap { try traitToString($0) }.joined(separator: "\n")
+		let miscBonuses = try type.value.traits?.miscBonuses?.compactMap { try traitToString($0) }.joined(separator: "\n")
 		let skillBonuses = try type.value.traits?.types?.map { (typeID, traits) -> String in
 			let skill = typeIDs[typeID]!
 			let title = "<a href=showinfo:\(typeID)>\(skill.name.en!)</a> bonuses (per skill level):"
-			return "\(title)\n \(try traits.flatMap{try traitToString($0)}.joined(separator: "\n"))"
+			return "\(title)\n \(try traits.compactMap{try traitToString($0)}.joined(separator: "\n"))"
 		}
 		var traitGroups = [String]()
 		if let s = roleBonuses, !s.isEmpty {
@@ -231,17 +231,17 @@ extension NCDBInvType {
 			description += "\n\n" + traitGroups.joined(separator: "\n\n")
 		}
 		if !description.isEmpty {
-			typeDescription = NCDBTxtDescription(context: .current)
+			typeDescription = SDETxtDescription(context: .current)
 			typeDescription?.text = NSAttributedString(html: description)
 		}
 		
 		if group?.groupID == 988 {
-			try wormhole = NCDBWhType(self)
+			try wormhole = SDEWhType(self)
 		}
 	}
 }
 
-extension NCDBInvMetaGroup {
+extension SDEInvMetaGroup {
 	convenience init(_ metaGroup: MetaGroup) {
 		self.init(context: .current)
 		metaGroupID = Int32(metaGroup.metaGroupID)
@@ -249,7 +249,7 @@ extension NCDBInvMetaGroup {
 	}
 }
 
-extension NCDBInvMarketGroup {
+extension SDEInvMarketGroup {
 	convenience init(_ marketGroup: MarketGroup) throws {
 		self.init(context: .current)
 		marketGroupID = Int32(marketGroup.marketGroupID)
@@ -260,7 +260,7 @@ extension NCDBInvMarketGroup {
 	}
 }
 
-extension NCDBEveUnit {
+extension SDEEveUnit {
 	convenience init(_ unit: Unit) {
 		self.init(context: .current)
 		unitID = Int32(unit.unitID)
@@ -268,7 +268,7 @@ extension NCDBEveUnit {
 	}
 }
 
-extension NCDBDgmAttributeCategory {
+extension SDEDgmAttributeCategory {
 	convenience init(_ attributeCategory: AttributeCategory) {
 		self.init(context: .current)
 		categoryID = Int32(attributeCategory.categoryID)
@@ -276,7 +276,7 @@ extension NCDBDgmAttributeCategory {
 	}
 }
 
-extension NCDBDgmAttributeType {
+extension SDEDgmAttributeType {
 	convenience init(_ attributeType: AttributeType) throws {
 		self.init(context: .current)
 		attributeID = Int32(attributeType.attributeID)
@@ -295,14 +295,14 @@ extension NCDBDgmAttributeType {
 	}
 }
 
-extension NCDBDgmEffect {
+extension SDEDgmEffect {
 	convenience init(_ effect: Effect) {
 		self.init(context: .current)
 		effectID = Int32(effect.effectID)
 	}
 }
 
-extension NCDBChrRace {
+extension SDEChrRace {
 	convenience init(_ race: Race) throws {
 		self.init(context: .current)
 		raceID = Int32(race.raceID)
@@ -313,7 +313,7 @@ extension NCDBChrRace {
 	}
 }
 
-extension NCDBChrFaction {
+extension SDEChrFaction {
 	convenience init(_ faction: Faction) throws {
 		self.init(context: .current)
 		factionID = Int32(faction.factionID)
@@ -325,7 +325,7 @@ extension NCDBChrFaction {
 	}
 }
 
-extension NCDBCertMasteryLevel {
+extension SDECertMasteryLevel {
 	convenience init(level: Int, name: String, iconName: String) throws {
 		self.init(context: .current)
 		self.level = Int16(level)
@@ -334,18 +334,18 @@ extension NCDBCertMasteryLevel {
 	}
 }
 
-extension NCDBCertCertificate {
+extension SDECertCertificate {
 	convenience init(_ certificate: (key: Int, value: Certificate)) throws {
 		self.init(context: .current)
 		certificateID = Int32(certificate.key)
 		certificateName = certificate.value.name
 		try group = invGroups.get()[certificate.value.groupID]!.object()
-		certificateDescription = NCDBTxtDescription(context: .current)
+		certificateDescription = SDETxtDescription(context: .current)
 		certificateDescription?.text = NSAttributedString(html: certificate.value.description.replacingEscapes())
 		let types = try invTypes.get()
 		
-		let masteries = try certMasteryLevels.get().map { i -> NCDBCertMastery in
-			let mastery = NCDBCertMastery(context: .current)
+		let masteries = try certMasteryLevels.get().map { i -> SDECertMastery in
+			let mastery = SDECertMastery(context: .current)
 			try mastery.level = i.object()
 			mastery.certificate = self
 			return mastery
@@ -353,20 +353,20 @@ extension NCDBCertCertificate {
 		
 		try certificate.value.skillTypes.forEach { (skillID, skill) in
 			try [skill.basic, skill.standard, skill.improved, skill.advanced, skill.elite].enumerated().forEach {
-				let skill = NCDBCertSkill(context: .current)
+				let skill = SDECertSkill(context: .current)
 				try skill.type = types[skillID]!.object()
 				skill.skillLevel = Int16($0.element)
 				skill.mastery = masteries[$0.offset]
 			}
 		}
-		if let recommendedFor = try certificate.value.recommendedFor?.flatMap ({try types[$0]?.object()}), !recommendedFor.isEmpty {
+		if let recommendedFor = try certificate.value.recommendedFor?.compactMap ({try types[$0]?.object()}), !recommendedFor.isEmpty {
 			self.types = Set(recommendedFor) as NSSet
 		}
 	}
 }
 
 
-extension NCDBMapRegion {
+extension SDEMapRegion {
 	convenience init(_ region: Region) throws {
 		self.init(context: .current)
 		regionID = Int32(region.regionID)
@@ -377,7 +377,7 @@ extension NCDBMapRegion {
 	}
 }
 
-extension NCDBMapConstellation {
+extension SDEMapConstellation {
 	convenience init(_ constellation: Constellation) throws {
 		self.init(context: .current)
 		constellationID = Int32(constellation.constellationID)
@@ -388,7 +388,7 @@ extension NCDBMapConstellation {
 	}
 }
 
-extension NCDBMapSolarSystem {
+extension SDEMapSolarSystem {
 	convenience init(_ solarSystem: SolarSystem) throws {
 		self.init(context: .current)
 		solarSystemID = Int32(solarSystem.solarSystemID)
@@ -399,12 +399,12 @@ extension NCDBMapSolarSystem {
 		}
 		
 		try solarSystem.planets.forEach {
-			try NCDBMapPlanet($0).solarSystem = self
+			try SDEMapPlanet($0).solarSystem = self
 		}
 	}
 }
 
-extension NCDBMapPlanet {
+extension SDEMapPlanet {
 	convenience init(_ planet: (Int, SolarSystem.Planet)) throws {
 		self.init(context: .current)
 		planetID = Int32(planet.0)
@@ -413,7 +413,7 @@ extension NCDBMapPlanet {
 	}
 }
 
-extension NCDBStaStation {
+extension SDEStaStation {
 	convenience init(_ station: Station) throws {
 		self.init(context: .current)
 		stationID = Int32(station.stationID)
@@ -424,7 +424,7 @@ extension NCDBStaStation {
 	}
 }
 
-//extension NCDBMapDenormalize {
+//extension SDEMapDenormalize {
 //	convenience init(station: (key: Int, value: SolarSystem.Planet.Station), solarSystem: SolarSystem) throws {
 //		self.init(context: .current)
 //		itemID = Int32(station.key)
@@ -436,7 +436,7 @@ extension NCDBStaStation {
 //	}
 //}
 
-extension NCDBRamActivity {
+extension SDERamActivity {
 	convenience init(_ activity: Activity) throws {
 		self.init(context: .current)
 		activityID = Int32(activity.activityID)
@@ -448,7 +448,7 @@ extension NCDBRamActivity {
 	}
 }
 
-extension NCDBRamAssemblyLineType {
+extension SDERamAssemblyLineType {
 	convenience init(_ assemblyLineType: AssemblyLineType) throws {
 		self.init(context: .current)
 		assemblyLineTypeID = Int32(assemblyLineType.assemblyLineTypeID)
@@ -462,7 +462,7 @@ extension NCDBRamAssemblyLineType {
 	}
 }
 
-extension NCDBRamInstallationTypeContent {
+extension SDERamInstallationTypeContent {
 	convenience init(_ installationTypeContent: InstallationTypeContent) throws {
 		self.init(context: .current)
 		quantity = Int32(installationTypeContent.quantity)
@@ -471,7 +471,7 @@ extension NCDBRamInstallationTypeContent {
 	}
 }
 
-extension NCDBNpcGroup {
+extension SDENpcGroup {
 	convenience init (_ npcGroup: NPCGroup) throws {
 		self.init(context: .current)
 		npcGroupName = npcGroup.groupName
@@ -483,11 +483,11 @@ extension NCDBNpcGroup {
 			try icon = .icon(iconName: iconName)
 		}
 
-		try npcGroup.groups?.map { try NCDBNpcGroup($0) }.forEach {$0.parentNpcGroup = self}
+		try npcGroup.groups?.map { try SDENpcGroup($0) }.forEach {$0.parentNpcGroup = self}
 	}
 }
 
-extension NCDBIndBlueprintType {
+extension SDEIndBlueprintType {
 	convenience init? (_ blueprint: Blueprint) throws {
 		guard let type = try invTypes.get()[blueprint.blueprintTypeID]?.object() else {return nil}
 		self.init(context: .current)
@@ -499,31 +499,31 @@ extension NCDBIndBlueprintType {
 		 (blueprint.activities.copying, 5),
 		 (blueprint.activities.invention, 8),
 		 (blueprint.activities.reaction, 11)].filter {$0.0 != nil}.forEach {
-			try NCDBIndActivity($0.0!, ramActivity: ramActivities.get()[$0.1]!.object()).blueprintType = self
+			try SDEIndActivity($0.0!, ramActivity: ramActivities.get()[$0.1]!.object()).blueprintType = self
 		}
 		
 		 
 	}
 }
 
-extension NCDBIndActivity {
-	convenience init (_ activity: Blueprint.Activities.Activity, ramActivity: NCDBRamActivity) throws {
+extension SDEIndActivity {
+	convenience init (_ activity: Blueprint.Activities.Activity, ramActivity: SDERamActivity) throws {
 		self.init(context: .current)
 		self.activity = ramActivity
 		self.time = Int32(activity.time)
 		try activity.materials?.forEach {
-			try NCDBIndRequiredMaterial($0)?.activity = self
+			try SDEIndRequiredMaterial($0)?.activity = self
 		}
 		try activity.skills?.forEach {
-			try NCDBIndRequiredSkill($0).activity = self
+			try SDEIndRequiredSkill($0).activity = self
 		}
 		try activity.products?.forEach {
-			try NCDBIndProduct($0)?.activity = self
+			try SDEIndProduct($0)?.activity = self
 		}
 	}
 }
 
-extension NCDBIndRequiredMaterial {
+extension SDEIndRequiredMaterial {
 	convenience init? (_ material: Blueprint.Activities.Activity.Material) throws {
 		guard let type = try invTypes.get()[material.typeID]?.object() else {return nil}
 		self.init(context: .current)
@@ -532,7 +532,7 @@ extension NCDBIndRequiredMaterial {
 	}
 }
 
-extension NCDBIndRequiredSkill {
+extension SDEIndRequiredSkill {
 	convenience init (_ skill: Blueprint.Activities.Activity.Skill) throws {
 		self.init(context: .current)
 		skillLevel = Int16(skill.level)
@@ -540,7 +540,7 @@ extension NCDBIndRequiredSkill {
 	}
 }
 
-extension NCDBIndProduct {
+extension SDEIndProduct {
 	convenience init? (_ product: Blueprint.Activities.Activity.Product) throws {
 		guard let type = try invTypes.get()[product.typeID]?.object() else {return nil}
 		self.init(context: .current)
@@ -550,8 +550,8 @@ extension NCDBIndProduct {
 	}
 }
 
-extension NCDBWhType {
-	convenience init (_ type: NCDBInvType) throws {
+extension SDEWhType {
+	convenience init (_ type: SDEInvType) throws {
 		self.init(context: .current)
 		let attributes = try typeAttributes.get()[Int(type.typeID)]
 		self.type = type

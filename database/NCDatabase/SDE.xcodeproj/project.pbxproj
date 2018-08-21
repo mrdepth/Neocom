@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1229AE75203EABD4003EE80A /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1229AE73203EABD4003EE80A /* NCDatabase.xcdatamodeld */; };
 		129E61191E03CC5F00B56EB8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E61181E03CC5F00B56EB8 /* main.swift */; };
 		129E61281E03CCC600B56EB8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 129E61271E03CCC600B56EB8 /* libsqlite3.tbd */; };
+		12AB971E212BE7CA00B30DD3 /* SDE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AB971C212BE7CA00B30DD3 /* SDE.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,11 +25,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1229AE74203EABD4003EE80A /* NCDatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCDatabase.xcdatamodel; sourceTree = "<group>"; };
-		129E61151E03CC5F00B56EB8 /* NCDatabase */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NCDatabase; sourceTree = BUILT_PRODUCTS_DIR; };
+		129E61151E03CC5F00B56EB8 /* SDE */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SDE; sourceTree = BUILT_PRODUCTS_DIR; };
 		129E61181E03CC5F00B56EB8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		129E61221E03CCAC00B56EB8 /* NCDatabase-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NCDatabase-Bridging-Header.h"; sourceTree = "<group>"; };
+		129E61221E03CCAC00B56EB8 /* SDE-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SDE-Bridging-Header.h"; sourceTree = "<group>"; };
 		129E61271E03CCC600B56EB8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		12AB971D212BE7CA00B30DD3 /* SDE.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SDE.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +47,7 @@
 		129E610C1E03CC5F00B56EB8 = {
 			isa = PBXGroup;
 			children = (
-				129E61171E03CC5F00B56EB8 /* NCDatabase */,
+				129E61171E03CC5F00B56EB8 /* SDE */,
 				129E61161E03CC5F00B56EB8 /* Products */,
 				129E61261E03CCC600B56EB8 /* Frameworks */,
 			);
@@ -56,19 +56,19 @@
 		129E61161E03CC5F00B56EB8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				129E61151E03CC5F00B56EB8 /* NCDatabase */,
+				129E61151E03CC5F00B56EB8 /* SDE */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		129E61171E03CC5F00B56EB8 /* NCDatabase */ = {
+		129E61171E03CC5F00B56EB8 /* SDE */ = {
 			isa = PBXGroup;
 			children = (
+				12AB971C212BE7CA00B30DD3 /* SDE.xcdatamodeld */,
 				129E61181E03CC5F00B56EB8 /* main.swift */,
-				1229AE73203EABD4003EE80A /* NCDatabase.xcdatamodeld */,
-				129E61221E03CCAC00B56EB8 /* NCDatabase-Bridging-Header.h */,
+				129E61221E03CCAC00B56EB8 /* SDE-Bridging-Header.h */,
 			);
-			path = NCDatabase;
+			path = SDE;
 			sourceTree = "<group>";
 		};
 		129E61261E03CCC600B56EB8 /* Frameworks */ = {
@@ -82,9 +82,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		129E61141E03CC5F00B56EB8 /* NCDatabase */ = {
+		129E61141E03CC5F00B56EB8 /* SDE */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 129E611C1E03CC5F00B56EB8 /* Build configuration list for PBXNativeTarget "NCDatabase" */;
+			buildConfigurationList = 129E611C1E03CC5F00B56EB8 /* Build configuration list for PBXNativeTarget "SDE" */;
 			buildPhases = (
 				129E61111E03CC5F00B56EB8 /* Sources */,
 				129E61121E03CC5F00B56EB8 /* Frameworks */,
@@ -94,9 +94,9 @@
 			);
 			dependencies = (
 			);
-			name = NCDatabase;
+			name = SDE;
 			productName = NCDatabase;
-			productReference = 129E61151E03CC5F00B56EB8 /* NCDatabase */;
+			productReference = 129E61151E03CC5F00B56EB8 /* SDE */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -117,7 +117,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 129E61101E03CC5F00B56EB8 /* Build configuration list for PBXProject "NCDatabase" */;
+			buildConfigurationList = 129E61101E03CC5F00B56EB8 /* Build configuration list for PBXProject "SDE" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -129,7 +129,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				129E61141E03CC5F00B56EB8 /* NCDatabase */,
+				129E61141E03CC5F00B56EB8 /* SDE */,
 			);
 		};
 /* End PBXProject section */
@@ -139,8 +139,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12AB971E212BE7CA00B30DD3 /* SDE.xcdatamodeld in Sources */,
 				129E61191E03CC5F00B56EB8 /* main.swift in Sources */,
-				1229AE75203EABD4003EE80A /* NCDatabase.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,7 +242,7 @@
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "NCDatabase/NCDatabase-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "SDE/SDE-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -255,7 +255,7 @@
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "NCDatabase/NCDatabase-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "SDE/SDE-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -263,7 +263,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		129E61101E03CC5F00B56EB8 /* Build configuration list for PBXProject "NCDatabase" */ = {
+		129E61101E03CC5F00B56EB8 /* Build configuration list for PBXProject "SDE" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				129E611A1E03CC5F00B56EB8 /* Debug */,
@@ -272,7 +272,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		129E611C1E03CC5F00B56EB8 /* Build configuration list for PBXNativeTarget "NCDatabase" */ = {
+		129E611C1E03CC5F00B56EB8 /* Build configuration list for PBXNativeTarget "SDE" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				129E611D1E03CC5F00B56EB8 /* Debug */,
@@ -284,14 +284,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		1229AE73203EABD4003EE80A /* NCDatabase.xcdatamodeld */ = {
+		12AB971C212BE7CA00B30DD3 /* SDE.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				1229AE74203EABD4003EE80A /* NCDatabase.xcdatamodel */,
+				12AB971D212BE7CA00B30DD3 /* SDE.xcdatamodel */,
 			);
-			currentVersion = 1229AE74203EABD4003EE80A /* NCDatabase.xcdatamodel */;
-			name = NCDatabase.xcdatamodeld;
-			path = ../../../Neocom/Neocom/NCDatabase.xcdatamodeld;
+			currentVersion = 12AB971D212BE7CA00B30DD3 /* SDE.xcdatamodel */;
+			name = SDE.xcdatamodeld;
+			path = ../../../Neocom/Neocom/SDE.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "129E61141E03CC5F00B56EB8"
-               BuildableName = "NCDatabase"
-               BlueprintName = "NCDatabase"
-               ReferencedContainer = "container:NCDatabase.xcodeproj">
+               BuildableName = "SDE"
+               BlueprintName = "SDE"
+               ReferencedContainer = "container:SDE.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -26,7 +26,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
@@ -34,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "129E61141E03CC5F00B56EB8"
-            BuildableName = "NCDatabase"
-            BlueprintName = "NCDatabase"
-            ReferencedContainer = "container:NCDatabase.xcodeproj">
+            BuildableName = "SDE"
+            BlueprintName = "SDE"
+            ReferencedContainer = "container:SDE.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -46,7 +45,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -58,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "129E61141E03CC5F00B56EB8"
-            BuildableName = "NCDatabase"
-            BlueprintName = "NCDatabase"
-            ReferencedContainer = "container:NCDatabase.xcodeproj">
+            BuildableName = "SDE"
+            BlueprintName = "SDE"
+            ReferencedContainer = "container:SDE.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -123,9 +121,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "129E61141E03CC5F00B56EB8"
-            BuildableName = "NCDatabase"
-            BlueprintName = "NCDatabase"
-            ReferencedContainer = "container:NCDatabase.xcodeproj">
+            BuildableName = "SDE"
+            BlueprintName = "SDE"
+            ReferencedContainer = "container:SDE.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

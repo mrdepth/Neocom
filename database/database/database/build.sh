@@ -58,10 +58,10 @@ if [ ! -d "${version}" ]; then
 fi
 
 
-if [ ! -f "${out}/${version}/NCDatabase.sqlite" ]; then
+if [ ! -f "${out}/${version}/SDE.sqlite" ]; then
 	cd $version
-	${TARGET_BUILD_DIR}/sde-tool -o "${out}/${version}/NCDatabase.sqlite" -i "${out}/${version}"
-	sqlite3 "${out}/${version}/NCDatabase.sqlite" "vacuum"
-	yes | cp "${out}/${version}/NCDatabase.sqlite" "${PROJECT_DIR}/../../Neocom/NCDatabase.sqlite"
-	echo "extension NCDatabase { static let version = \"$version\" }" > "${PROJECT_DIR}/../../Neocom/NCDatabaseVersion.swift"
+	${TARGET_BUILD_DIR}/sde-tool -o "${out}/${version}/SDE.sqlite" -i "${out}/${version}"
+	sqlite3 "${out}/${version}/SDE.sqlite" "vacuum"
+	yes | cp "${out}/${version}/SDE.sqlite" "${PROJECT_DIR}/../../Neocom/SDE.sqlite"
+	echo "let SDEVersion = \"$version\"" > "${PROJECT_DIR}/../../Neocom/SDEVersion.swift"
 fi

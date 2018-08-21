@@ -147,6 +147,7 @@ class Future<T> {
 			return nil
 		}
 	}
+	
 	var error: Error? {
 		operation?.waitUntilFinished()
 		switch result {
@@ -168,7 +169,7 @@ class Future<T> {
 	}
 }
 
-enum NCDBDgmppItemCategoryID: Int32 {
+enum SDEDgmppItemCategoryID: Int32 {
 	case none = 0
 	case hi
 	case med
@@ -188,7 +189,7 @@ enum NCDBDgmppItemCategoryID: Int32 {
 	case structureRig
 }
 
-enum NCDBDgmAttributeID: Int {
+enum SDEDgmAttributeID: Int {
 	case metaGroup = 1692
 	case metaLevel = 633
 }

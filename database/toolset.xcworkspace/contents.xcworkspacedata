@@ -11,6 +11,6 @@
       location = "group:sde-tool/sde-tool.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:NCDatabase/NCDatabase.xcodeproj">
+      location = "group:/Users/shimanski/Documents/git/EVEUniverse/database/NCDatabase/SDE.xcodeproj">
    </FileRef>
 </Workspace>

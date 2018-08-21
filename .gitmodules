@@ -25,3 +25,6 @@
 [submodule "ThirdParty/ASReceipt"]
 	path = ThirdParty/ASReceipt
 	url = ../ASReceipt.git
+[submodule "ThirdParty/Expressible"]
+	path = ThirdParty/Expressible
+	url = https://github.com/mrdepth/Expressible.git

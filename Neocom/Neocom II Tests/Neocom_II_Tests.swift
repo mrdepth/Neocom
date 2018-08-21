@@ -8,7 +8,9 @@
 
 import XCTest
 import CoreData
-import Neocom
+@testable import Neocom
+
+let sde = SDEPersistentContainer()
 
 class Neocom_II_Tests: XCTestCase {
     
@@ -29,17 +31,9 @@ class Neocom_II_Tests: XCTestCase {
         }
     }
 	
-	func testIcons() {
-		XCTAssertNotNil(NCDBEveIcon.defaultCategory.image?.image)
-		XCTAssertNotNil(NCDBEveIcon.defaultGroup.image?.image)
-		XCTAssertNotNil(NCDBEveIcon.defaultType.image?.image)
-		for level in 0...4 {
-			XCTAssertNotNil(NCDBEveIcon.icon(masteryLevel: level)?.image?.image)
-		}
-		XCTAssertNotNil(NCDBEveIcon.icon(file: NCDBEveIcon.File.certificateUnclaimed.rawValue)?.image?.image)
-	}
 	
-	func testDgmppItemCategories() {
+	
+	/*func testDgmppItemCategories() {
 		(try! NCDatabase.sharedDatabase!.viewContext.fetch(NSFetchRequest<NCDBDgmppItemCategory>(entityName: "DgmppItemCategory"))).forEach { category in
 			func items(_ group: NCDBDgmppItemGroup) -> [NCDBDgmppItem] {
 				var result = group.items?.allObjects as? [NCDBDgmppItem] ?? []
@@ -74,6 +68,6 @@ class Neocom_II_Tests: XCTestCase {
 			let a = (category.itemGroups!.allObjects as! [NCDBDgmppItemGroup]).map {items($0)}.joined()
 			XCTAssertGreaterThan(a.count, 0, "\(category)")
 		}
-	}
+	}*/
     
 }

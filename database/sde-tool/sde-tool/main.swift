@@ -40,12 +40,12 @@ try! persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, co
 let mainContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
 mainContext.persistentStoreCoordinator = persistentStoreCoordinator
 
-class NCDBImageValueTransformer: ValueTransformer {
+class ImageValueTransformer: ValueTransformer {
 	override func reverseTransformedValue(_ value: Any?) -> Any? {
 		return value
 	}
 }
-ValueTransformer.setValueTransformer(NCDBImageValueTransformer(), forName: NSValueTransformerName("NCDBImageValueTransformer"))
+ValueTransformer.setValueTransformer(ImageValueTransformer(), forName: NSValueTransformerName("ImageValueTransformer"))
 
 
 let root = URL(fileURLWithPath: CommandLine.input)
@@ -53,41 +53,41 @@ let root = URL(fileURLWithPath: CommandLine.input)
 let availableCategoryIDs = [2,3,4,5,6,7,8,9,11,16,17,18,20,22,23,24,25,30,32,34,35,39,40,41,42,43,46,63,65,66,87,91,350001]
 
 let iconIDs: Future<[Int: IconID]>
-let invMetaGroups: Future<[Int: ObjectID<NCDBInvMetaGroup>]>
+let invMetaGroups: Future<[Int: ObjectID<SDEInvMetaGroup>]>
 let metaTypes: Future<[Int: MetaType]>
 
-let invCategories: Future<[Int: ObjectID<NCDBInvCategory>]>
-let invGroups: Future<[Int: ObjectID<NCDBInvGroup>]>
-let invTypes: Future<[Int: ObjectID<NCDBInvType>]>
-let invMarketGroups: Future<[Int: ObjectID<NCDBInvMarketGroup>]>
-let eveUnits: Future<[Int: ObjectID<NCDBEveUnit>]>
-let dgmAttributeCategories: Future<[Int: ObjectID<NCDBDgmAttributeCategory>]>
-let dgmAttributeTypes: Future<[Int: ObjectID<NCDBDgmAttributeType>]>
-let dgmEffects: Future<[Int: ObjectID<NCDBDgmEffect>]>
-let chrRaces: Future<[Int: ObjectID<NCDBChrRace>]>
-let chrFactions: Future<[Int: ObjectID<NCDBChrFaction>]>
-let certMasteryLevels: Future<[ObjectID<NCDBCertMasteryLevel>]>
+let invCategories: Future<[Int: ObjectID<SDEInvCategory>]>
+let invGroups: Future<[Int: ObjectID<SDEInvGroup>]>
+let invTypes: Future<[Int: ObjectID<SDEInvType>]>
+let invMarketGroups: Future<[Int: ObjectID<SDEInvMarketGroup>]>
+let eveUnits: Future<[Int: ObjectID<SDEEveUnit>]>
+let dgmAttributeCategories: Future<[Int: ObjectID<SDEDgmAttributeCategory>]>
+let dgmAttributeTypes: Future<[Int: ObjectID<SDEDgmAttributeType>]>
+let dgmEffects: Future<[Int: ObjectID<SDEDgmEffect>]>
+let chrRaces: Future<[Int: ObjectID<SDEChrRace>]>
+let chrFactions: Future<[Int: ObjectID<SDEChrFaction>]>
+let certMasteryLevels: Future<[ObjectID<SDECertMasteryLevel>]>
 let invNames: Future<[Int: String]>
 
 let universe: Future<[(String, [(Region, [(Constellation, [Future<SolarSystem>])])])]>
-let mapUniverses: Future<[ObjectID<NCDBMapUniverse>]>
-let mapSolarSystems: Future<[Int: ObjectID<NCDBMapSolarSystem>]>
-let staStations: Future<[Int: ObjectID<NCDBStaStation>]>
-//let mapDenormalize: Future<[Int: ObjectID<NCDBMapDenormalize>]>
+let mapUniverses: Future<[ObjectID<SDEMapUniverse>]>
+let mapSolarSystems: Future<[Int: ObjectID<SDEMapSolarSystem>]>
+let staStations: Future<[Int: ObjectID<SDEStaStation>]>
+//let mapDenormalize: Future<[Int: ObjectID<SDEMapDenormalize>]>
 
-let ramActivities: Future<[Int:ObjectID<NCDBRamActivity>]>
-let ramAssemblyLineTypes: Future<[Int:ObjectID<NCDBRamAssemblyLineType>]>
+let ramActivities: Future<[Int:ObjectID<SDERamActivity>]>
+let ramAssemblyLineTypes: Future<[Int:ObjectID<SDERamAssemblyLineType>]>
 
-var eveIcons: [Int: ObjectID<NCDBEveIcon>] = [:]
-var typeIcons: [Int: ObjectID<NCDBEveIcon>] = [:]
-var nameIcons: [String: ObjectID<NCDBEveIcon>] = [:]
+var eveIcons: [Int: ObjectID<SDEEveIcon>] = [:]
+var typeIcons: [Int: ObjectID<SDEEveIcon>] = [:]
+var nameIcons: [String: ObjectID<SDEEveIcon>] = [:]
 
 
 let typeAttributes: Future<[Int: [Int: TypeAttribute]]>
-let unpublishedMetaGroup: ObjectID<NCDBInvMetaGroup> = {
-	var objectID: ObjectID<NCDBInvMetaGroup>?
+let unpublishedMetaGroup: ObjectID<SDEInvMetaGroup> = {
+	var objectID: ObjectID<SDEInvMetaGroup>?
 	mainContext.performAndWait {
-		let metaGroup = NCDBInvMetaGroup(context: mainContext)
+		let metaGroup = SDEInvMetaGroup(context: mainContext)
 		metaGroup.metaGroupID = 1001
 		metaGroup.metaGroupName = "Unpublished"
 		objectID = .init(metaGroup)
@@ -107,7 +107,7 @@ do {
 	_ = operationQueue.detach {
 		let from = Date(); defer {print("extraIcons\t\(Date().timeIntervalSince(from))s")}
 		try ["9_64_7", "105_32_32", "50_64_13", "38_16_193", "38_16_194", "38_16_195", "38_16_174", "17_128_4", "74_64_14", "23_64_3", "18_128_2", "33_128_2", "79_64_1", "79_64_2", "79_64_3", "79_64_4", "79_64_5", "79_64_6"].forEach {
-			if try NCDBEveIcon.icon(iconName: $0) == nil {
+			if try SDEEveIcon.icon(iconName: $0) == nil {
 				print("Warning: missing icon \($0)")
 			}
 		}
@@ -115,17 +115,17 @@ do {
 	
 	chrRaces = operationQueue.detach {
 		let from = Date(); defer {print("chrRaces\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/chrRaces.json"), type: Schema.Races.self).map {($0.raceID, try .init(NCDBChrRace($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/chrRaces.json"), type: Schema.Races.self).map {($0.raceID, try .init(SDEChrRace($0)))})
 	}
 	
 	chrFactions = operationQueue.detach {
 		let from = Date(); defer {print("chrRaces\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/chrFactions.json"), type: Schema.Factions.self).map {($0.factionID, try .init(NCDBChrFaction($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/chrFactions.json"), type: Schema.Factions.self).map {($0.factionID, try .init(SDEChrFaction($0)))})
 	}
 	
 	invMetaGroups = operationQueue.detach {
 		let from = Date(); defer {print("invMetaGroups\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/invMetaGroups.json"), type: Schema.MetaGroups.self).map {($0.metaGroupID, .init(NCDBInvMetaGroup($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/invMetaGroups.json"), type: Schema.MetaGroups.self).map {($0.metaGroupID, .init(SDEInvMetaGroup($0)))})
 	}
 	metaTypes = operationQueue.detach {
 		let from = Date(); defer {print("metaTypes\t\(Date().timeIntervalSince(from))s")}
@@ -134,13 +134,13 @@ do {
 	
 	invCategories = operationQueue.detach {
 		let from = Date(); defer {print("invCategories\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/fsd/categoryIDs.json"), type: Schema.CategoryIDs.self).filter{availableCategoryIDs.contains($0.key)}.map{($0.key, try .init(NCDBInvCategory($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/fsd/categoryIDs.json"), type: Schema.CategoryIDs.self).filter{availableCategoryIDs.contains($0.key)}.map{($0.key, try .init(SDEInvCategory($0)))})
 	}
 
 	invGroups = operationQueue.detach {
 		let from = Date(); defer {print("invGroups\t\(Date().timeIntervalSince(from))s")}
 		let keys = try invCategories.get().keys
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/fsd/groupIDs.json"), type: Schema.GroupIDs.self).filter{keys.contains($0.value.categoryID)}.map{($0.key, try .init(NCDBInvGroup($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/fsd/groupIDs.json"), type: Schema.GroupIDs.self).filter{keys.contains($0.value.categoryID)}.map{($0.key, try .init(SDEInvGroup($0)))})
 	}
 	
 	invTypes = operationQueue.detach {
@@ -148,18 +148,18 @@ do {
 		let keys = try invGroups.get().keys
 		let typeIDs: Schema.TypeIDs = try load(root.appendingPathComponent("/sde/fsd/typeIDs.json"))
 		
-		return try Dictionary(uniqueKeysWithValues: typeIDs.filter{keys.contains($0.value.groupID)}.map{($0.key, try .init(NCDBInvType($0, typeIDs: typeIDs)))})
+		return try Dictionary(uniqueKeysWithValues: typeIDs.filter{keys.contains($0.value.groupID)}.map{($0.key, try .init(SDEInvType($0, typeIDs: typeIDs)))})
 	}
 	
 	invMarketGroups = operationQueue.detach {
 		let from = Date(); defer {print("invMarketGroups\t\(Date().timeIntervalSince(from))s")}
-		var invMarketGroups = [Int: NCDBInvMarketGroup]()
+		var invMarketGroups = [Int: SDEInvMarketGroup]()
 		var queue = try load(root.appendingPathComponent("/sde/bsd/invMarketGroups.json"), type: Schema.MarketGroups.self)
 		while !queue.isEmpty {
 			let first = queue.removeFirst()
 			if let parentGroupID = first.parentGroupID {
 				if let parent = invMarketGroups[parentGroupID] {
-					let marketGroup = try NCDBInvMarketGroup(first)
+					let marketGroup = try SDEInvMarketGroup(first)
 					marketGroup.parentGroup = parent
 					parent.addToSubGroups(marketGroup)
 					invMarketGroups[first.marketGroupID] = marketGroup
@@ -169,7 +169,7 @@ do {
 				}
 			}
 			else {
-				let marketGroup = try NCDBInvMarketGroup(first)
+				let marketGroup = try SDEInvMarketGroup(first)
 				invMarketGroups[first.marketGroupID] = marketGroup
 			}
 		}
@@ -187,14 +187,14 @@ do {
 		let types = try invTypes.get()
 		try types.forEach { (_, objectID) in
 			let type = try objectID.object()
-			guard let attributes = type.attributes as? Set<NCDBDgmTypeAttribute> else {return}
+			guard let attributes = type.attributes as? Set<SDEDgmTypeAttribute> else {return}
 			
 			for i in pairs {
 				guard let skillID = attributes.first(where: {$0.attributeType?.attributeID == i.0}),
 					let skillLevel = attributes.first(where: {$0.attributeType?.attributeID == i.1}),
 					let skill = try types[Int(skillID.value)]?.object(),
 					Int32(skillID.value) != type.typeID else {continue}
-				let requiredSkill = NCDBInvTypeRequiredSkill(context: .current)
+				let requiredSkill = SDEInvTypeRequiredSkill(context: .current)
 				requiredSkill.type = type
 				requiredSkill.skillType = skill
 				requiredSkill.skillLevel = Int16(skillLevel.value)
@@ -213,22 +213,22 @@ do {
 
 	eveUnits = operationQueue.detach {
 		let from = Date(); defer {print("eveUnits\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/eveUnits.json"), type: Schema.Units.self).map {($0.unitID, .init(NCDBEveUnit($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/eveUnits.json"), type: Schema.Units.self).map {($0.unitID, .init(SDEEveUnit($0)))})
 	}
 	
 	dgmAttributeCategories = operationQueue.detach {
 		let from = Date(); defer {print("dgmAttributeCategories\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/dgmAttributeCategories.json"), type: Schema.AttributeCategories.self).map {($0.categoryID, .init(NCDBDgmAttributeCategory($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/dgmAttributeCategories.json"), type: Schema.AttributeCategories.self).map {($0.categoryID, .init(SDEDgmAttributeCategory($0)))})
 	}
 
 	dgmAttributeTypes = operationQueue.detach {
 		let from = Date(); defer {print("dgmAttributeTypes\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/dgmAttributeTypes.json"), type: Schema.AttributeTypes.self).map {($0.attributeID, .init(try NCDBDgmAttributeType($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/dgmAttributeTypes.json"), type: Schema.AttributeTypes.self).map {($0.attributeID, .init(try SDEDgmAttributeType($0)))})
 	}
 
 	dgmEffects = operationQueue.detach {
 		let from = Date(); defer {print("dgmEffects\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/dgmEffects.json"), type: Schema.Effects.self).map {($0.effectID, .init(NCDBDgmEffect($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/dgmEffects.json"), type: Schema.Effects.self).map {($0.effectID, .init(SDEDgmEffect($0)))})
 	}
 
 	typeAttributes = operationQueue.detach {
@@ -253,14 +253,14 @@ do {
 	certMasteryLevels = operationQueue.detach {
 		let from = Date(); defer {print("certMasteryLevels\t\(Date().timeIntervalSince(from))s")}
 		return try zip(["basic", "standard", "improved", "advanced", "elite"],
-				["79_64_2", "79_64_3", "79_64_4", "79_64_5", "79_64_6"]).enumerated().map { (i, cert) in try .init(NCDBCertMasteryLevel(level: i, name: cert.0, iconName: cert.1))
+				["79_64_2", "79_64_3", "79_64_4", "79_64_5", "79_64_6"]).enumerated().map { (i, cert) in try .init(SDECertMasteryLevel(level: i, name: cert.0, iconName: cert.1))
 		}
 	}
 	
 	_ = operationQueue.detach {
 		let from = Date(); defer {print("certCertificates\t\(Date().timeIntervalSince(from))s")}
 		try load(root.appendingPathComponent("/sde/fsd/certificates.json"), type: Schema.Certificates.self).forEach {
-			_ = try NCDBCertCertificate($0)
+			_ = try SDECertCertificate($0)
 		}
 	}
 	
@@ -301,7 +301,7 @@ do {
 		let universes = try load(root.appendingPathComponent("/sde/bsd/mapUniverse.json"), type: Schema.Universes.self)
 		
 		return try universe.get().map {
-			let universe = NCDBMapUniverse(context: .current)
+			let universe = SDEMapUniverse(context: .current)
 			switch $0.0 {
 			case "wormhole":
 				universe.name = universes.first {$0.universeID == 9000001}!.universeName
@@ -309,18 +309,21 @@ do {
 			case "eve":
 				universe.name = universes.first {$0.universeID == 9}!.universeName
 				universe.universeID = 9
+			case "abyssal":
+				universe.name = "Abyssal"
+				universe.universeID = 9100001
 			default:
 				throw DumpError.invalidUniverse($0.0)
 			}
 
 			try $0.1.forEach {
-				let region = try NCDBMapRegion($0.0)
+				let region = try SDEMapRegion($0.0)
 				region.universe = universe
 				try $0.1.forEach {
-					let constellation = try NCDBMapConstellation($0.0)
+					let constellation = try SDEMapConstellation($0.0)
 					constellation.region = region
 					try $0.1.forEach {
-						let solarSystem = try NCDBMapSolarSystem($0.get())
+						let solarSystem = try SDEMapSolarSystem($0.get())
 						solarSystem.constellation = constellation
 					}
 				}
@@ -332,10 +335,10 @@ do {
 	mapSolarSystems = operationQueue.detach {
 		let from = Date(); defer {print("mapSolarSystems\t\(Date().timeIntervalSince(from))s")}
 		return try Dictionary(uniqueKeysWithValues:
-			mapUniverses.get().flatMap {
-				try ($0.object().regions as! Set<NCDBMapRegion>).map {
-					($0.constellations as! Set<NCDBMapConstellation>).map {
-						($0.solarSystems as! Set<NCDBMapSolarSystem>).map {(Int($0.solarSystemID), .init($0))}
+			mapUniverses.get().compactMap {
+				try ($0.object().regions as! Set<SDEMapRegion>).map {
+					($0.constellations as! Set<SDEMapConstellation>).map {
+						($0.solarSystems as! Set<SDEMapSolarSystem>).map {(Int($0.solarSystemID), .init($0))}
 						}.joined()
 					}.joined()
 				}.joined()
@@ -344,23 +347,23 @@ do {
 
 	staStations = operationQueue.detach {
 		let from = Date(); defer {print("staStations\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/staStations.json"), type: Schema.Stations.self).map {($0.stationID, try .init(NCDBStaStation($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/staStations.json"), type: Schema.Stations.self).map {($0.stationID, try .init(SDEStaStation($0)))})
 	}
 	
 	ramActivities = operationQueue.detach {
 		let from = Date(); defer {print("ramActivities\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/ramActivities.json"), type: Schema.Activities.self).map {($0.activityID, try .init(NCDBRamActivity($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/ramActivities.json"), type: Schema.Activities.self).map {($0.activityID, try .init(SDERamActivity($0)))})
 	}
 
 	ramAssemblyLineTypes = operationQueue.detach {
 		let from = Date(); defer {print("ramAssemblyLineTypes\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/ramAssemblyLineTypes.json"), type: Schema.AssemblyLineTypes.self).map {($0.assemblyLineTypeID, try .init(NCDBRamAssemblyLineType($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/ramAssemblyLineTypes.json"), type: Schema.AssemblyLineTypes.self).map {($0.assemblyLineTypeID, try .init(SDERamAssemblyLineType($0)))})
 	}
 
 	_ = operationQueue.detach {
 		let from = Date(); defer {print("ramInstallationTypeContents\t\(Date().timeIntervalSince(from))s")}
 		_ = try load(root.appendingPathComponent("/sde/bsd/ramInstallationTypeContents.json"), type: Schema.InstallationTypeContents.self).map {
-			try NCDBRamInstallationTypeContent($0)
+			try SDERamInstallationTypeContent($0)
 		}
 	}
 
@@ -368,21 +371,21 @@ do {
 		let from = Date(); defer {print("npcGroups\t\(Date().timeIntervalSince(from))s")}
 		let url = URL(fileURLWithPath: CommandLine.arguments[0]).deletingLastPathComponent().appendingPathComponent("npc.json")
 		
-		_ = try JSONDecoder().decode([NPCGroup].self, from: Data(contentsOf: url)).map { try NCDBNpcGroup($0) }
+		_ = try JSONDecoder().decode([NPCGroup].self, from: Data(contentsOf: url)).map { try SDENpcGroup($0) }
 	}
 	
 	_ = operationQueue.detach {
 		let from = Date(); defer {print("indBlueprints\t\(Date().timeIntervalSince(from))s")}
-		_ = try load(root.appendingPathComponent("/sde/fsd/blueprints.json"), type: Schema.Blueprints.self).flatMap {
-			try NCDBIndBlueprintType($0.value)
+		_ = try load(root.appendingPathComponent("/sde/fsd/blueprints.json"), type: Schema.Blueprints.self).compactMap {
+			try SDEIndBlueprintType($0.value)
 		}
 	}
 	
 //	_ = operationQueue.detach {
 //		let from = Date(); defer {print("whTypes\t\(Date().timeIntervalSince(from))s")}
-//		try invTypes.get().values.filter {try $0.object().group!.groupID == 988}.map { try NCDBWhType($0.object()) }
-////		_ = try (invGroups.get()[988]!.object().types as! Set<NCDBInvType>).map {
-////			try NCDBWhType($0)
+//		try invTypes.get().values.filter {try $0.object().group!.groupID == 988}.map { try SDEWhType($0.object()) }
+////		_ = try (invGroups.get()[988]!.object().types as! Set<SDEInvType>).map {
+////			try SDEWhType($0)
 ////		}
 //	}
 
@@ -399,11 +402,11 @@ do {
 		let from = Date(); defer {print("mapDenormalize\t\(Date().timeIntervalSince(from))s")}
 		let stations = try Set(staStations.get().keys)
 		let denormalize = try universe.get().map { try $0.1.map { try $0.1.map { try $0.1.map { solarSystem in
-			try solarSystem.get().planets.values.map { planet -> [(Int, NCDBMapDenormalize)] in
+			try solarSystem.get().planets.values.map { planet -> [(Int, SDEMapDenormalize)] in
 				let npcStations = planet.npcStations?.filter {!stations.contains($0.key)}.map {$0}
 				let moonStations = planet.moons?.flatMap { $0.1.npcStations?.filter {!stations.contains($0.key)} }
 				return try [moonStations?.joined().map{$0}, npcStations].flatMap{ $0 }.joined().map{ station in
-					try (station.key, NCDBMapDenormalize(station: station, solarSystem: solarSystem.get()))
+					try (station.key, SDEMapDenormalize(station: station, solarSystem: solarSystem.get()))
 				}
 			}.joined()
 			}.joined()}.joined()}.joined()}.joined()
@@ -423,7 +426,7 @@ do {
 	let attributeTypes: Future<Schema.AttributeTypes> = load(root.appendingPathComponent("/sde/bsd/dgmAttributeTypes.json"))
 	try load(root.appendingPathComponent("/sde/bsd/dgmTypeAttributes.json"), type: Schema.TypeAttributes.self).get().forEach { typeAttributes[$0.typeID, default: [:]][$0.attributeID] = $0 }
 	
-	invGroups = try Dictionary(uniqueKeysWithValues: groupIDs.get().filter{invCategories.keys.contains($0.value.categoryID)}.map{($0.key, NCDBInvGroup($0))})
+	invGroups = try Dictionary(uniqueKeysWithValues: groupIDs.get().filter{invCategories.keys.contains($0.value.categoryID)}.map{($0.key, SDEInvGroup($0))})
 	
 	metaTypes.forEach { invTypes[$0.key]?.parentType = invTypes[$0.value.parentTypeID] }
 

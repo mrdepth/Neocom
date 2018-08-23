@@ -4,6 +4,7 @@
         <attribute name="account" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="cachedUntil" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="etag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="data" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CacheRecordData" inverseName="record" inverseEntity="CacheRecordData" syncable="YES"/>
         <fetchIndex name="byIdentifierIndex">
@@ -12,6 +13,7 @@
         </fetchIndex>
         <uniquenessConstraints>
             <uniquenessConstraint>
+                <constraint value="account"/>
                 <constraint value="identifier"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
@@ -21,7 +23,7 @@
         <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CacheRecord" inverseName="data" inverseEntity="CacheRecord" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CacheRecord" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="CacheRecord" positionX="-63" positionY="-18" width="128" height="135"/>
         <element name="CacheRecordData" positionX="-36" positionY="27" width="128" height="75"/>
     </elements>
 </model>

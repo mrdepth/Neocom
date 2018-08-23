@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum SDEAttributeID: Int32 {
+public enum SDEAttributeID: Int32, Codable {
 	case none = 0
 	case charismaBonus = 175
 	case intelligenceBonus = 176

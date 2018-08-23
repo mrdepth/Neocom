@@ -10,27 +10,24 @@ import Foundation
 
 class TrainingQueue {
 	struct Item: Hashable {
-		let skill: NCCharacter.Skill
+		let skill: Character.Skill
 		let targetLevel: Int
 		let startSP: Int
 		let finishSP: Int
 	}
-	let character: NCCharacter
+	let character: Character
 	var queue: [Item] = []
 	
-	var trainedSkillLevels: [Int: Int] = [:]
-	
-	init(character: NCCharacter) {
+	init(character: Character) {
 		self.character = character
-		trainedSkillLevels = Dictionary(character.trainedSkills.map{($0.skill.typeID, $0.characterSkill.trainedSkillLevel)}) { max($0, $1) }
 	}
 	
 	func add(_ skillType: SDEInvType, level: Int) {
-		guard let skill = NCCharacter.Skill(type: skillType) else {return}
+		guard let skill = Character.Skill(type: skillType) else {return}
 		addRequiredSkills(for: skillType)
 		
 		let typeID = Int(skillType.typeID)
-		let trainedLevel = trainedSkillLevels[typeID] ?? 0
+		let trainedLevel = character.trainedSkills[typeID] ?? 0
 		
 		guard trainedLevel < level else {return}
 		
@@ -55,7 +52,7 @@ class TrainingQueue {
 	func addRequiredSkills(for type: SDEInvType) {
 		type.requiredSkills?.forEach {
 			guard let requiredSkill = ($0 as? SDEInvTypeRequiredSkill) else {return}
-			guard let type = requiredSkill.type else {return}
+			guard let type = requiredSkill.skillType else {return}
 			add(type, level: Int(requiredSkill.skillLevel))
 		}
 	}
@@ -78,7 +75,7 @@ class TrainingQueue {
 		return trainingTime(with: character.attributes + character.augmentations)
 	}
 
-	func trainingTime(with attributes: NCCharacter.Attributes) -> TimeInterval {
+	func trainingTime(with attributes: Character.Attributes) -> TimeInterval {
 		return queue.map {$0.trainingTime(with: attributes)}.reduce(0, +)
 	}
 
@@ -86,14 +83,14 @@ class TrainingQueue {
 
 extension TrainingQueue.Item {
 	
-	init(skill: NCCharacter.Skill, targetLevel: Int, startSP: Int?) {
+	init(skill: Character.Skill, targetLevel: Int, startSP: Int?) {
 		self.skill = skill
 		self.targetLevel = targetLevel
 		self.startSP = startSP ?? skill.skillPoints(at: targetLevel - 1)
 		finishSP = skill.skillPoints(at: targetLevel)
 	}
 	
-	func trainingTime(with attributes: NCCharacter.Attributes) -> TimeInterval {
+	func trainingTime(with attributes: Character.Attributes) -> TimeInterval {
 		return Double(finishSP - startSP) / skill.skillpointsPerSecond(with: attributes)
 	}
 }

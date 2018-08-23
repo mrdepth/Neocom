@@ -11,7 +11,10 @@ import CoreData
 import Futures
 import Expressible
 
-protocol SDE: PersistentContainer where Context: SDEContext {
+protocol SDE {
+	var viewContext: SDEContext {get}
+	@discardableResult func performBackgroundTask<T>(_ block: @escaping (SDEContext) throws -> T) -> Future<T>
+	@discardableResult func performBackgroundTask<T>(_ block: @escaping (SDEContext) throws -> Future<T>) -> Future<T>
 }
 
 protocol SDEContext: PersistentContext {
@@ -34,37 +37,31 @@ protocol SDEContext: PersistentContext {
 	func staStation(_ stationID: Int) -> SDEStaStation?
 }
 
-class SDEPersistentContainer: SDE {
-	lazy var viewContext: SDEContextBox = {
-		var viewContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-		viewContext.persistentStoreCoordinator = self.persistentStoreCoordinator
-		return SDEContextBox(managedObjectContext: viewContext)
-	}()
+class SDEContainer: SDE {
+	lazy var viewContext: SDEContext = SDEContextBox(managedObjectContext: persistentContainer.viewContext)
+	var persistentContainer: NSPersistentContainer
 	
-	private(set) lazy var managedObjectModel: NSManagedObjectModel = {
-		NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "SDE", withExtension: "momd")!)!
-	}()
-
-	private(set) lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
-		var persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-		try! persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType,
-														   configurationName: nil,
-														   at: Bundle.main.url(forResource: "SDE", withExtension: "sqlite"),
-														   options: [NSReadOnlyPersistentStoreOption: true])
-		return persistentStoreCoordinator
-	}()
-	
-	init() {
+	init(persistentContainer: NSPersistentContainer? = nil) {
 		ValueTransformer.setValueTransformer(ImageValueTransformer(), forName: NSValueTransformerName("ImageValueTransformer"))
+
+		self.persistentContainer = persistentContainer ?? {
+			let container = NSPersistentContainer(name: "SDE", managedObjectModel: NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "SDE", withExtension: "momd")!)!)
+			
+			let description = NSPersistentStoreDescription()
+			description.url = Bundle.main.url(forResource: "SDE", withExtension: "sqlite")
+			description.isReadOnly = true
+			container.persistentStoreDescriptions = [description]
+			container.loadPersistentStores { (_, _) in
+			}
+			return container
+		}()
 	}
 	
-	func performBackgroundTask<T>(_ block: @escaping (SDEContextBox) throws -> T) -> Future<T> {
+	
+	@discardableResult
+	func performBackgroundTask<T>(_ block: @escaping (SDEContext) throws -> T) -> Future<T> {
 		let promise = Promise<T>()
-
-		let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-		context.persistentStoreCoordinator = persistentStoreCoordinator
-
-		context.perform {
+		persistentContainer.performBackgroundTask { (context) in
 			do {
 				try promise.fulfill(block(SDEContextBox(managedObjectContext: context)))
 			}
@@ -74,6 +71,27 @@ class SDEPersistentContainer: SDE {
 		}
 		return promise.future
 	}
+	
+	@discardableResult
+	func performBackgroundTask<T>(_ block: @escaping (SDEContext) throws -> Future<T>) -> Future<T> {
+		let promise = Promise<T>()
+		
+		persistentContainer.performBackgroundTask { (context) in
+			do {
+				try block(SDEContextBox(managedObjectContext: context)).then {
+					try? promise.fulfill($0)
+				}.catch {
+					try? promise.fail($0)
+				}
+			}
+			catch {
+				try? promise.fail(error)
+			}
+		}
+		return promise.future
+	}
+	
+	static let shared = SDEContainer()
 }
 
 

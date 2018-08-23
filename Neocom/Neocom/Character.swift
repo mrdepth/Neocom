@@ -1,5 +1,5 @@
 //
-//  NCCharacter.swift
+//  Character.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 21.08.2018.
@@ -9,15 +9,15 @@
 import Foundation
 import EVEAPI
 
-struct NCCharacter {
-	struct Skill: Hashable {
+struct Character: Codable {
+	struct Skill: Hashable, Codable {
 		let typeID: Int
 		let primaryAttributeID: SDEAttributeID
 		let secondaryAttributeID: SDEAttributeID
 		let rank: Double
 	}
 	
-	struct Attributes {
+	struct Attributes: Codable {
 		var intelligence: Int
 		var memory: Int
 		var perception: Int
@@ -25,27 +25,31 @@ struct NCCharacter {
 		var charisma: Int
 	}
 	
-	struct TrainedSkill: Hashable {
-		var skill: Skill
-		var characterSkill: ESI.Skills.CharacterSkills.Skill
-	}
+//	struct TrainedSkill: Codable {
+//		var skill: Skill
+//		var characterSkill: ESI.Skills.CharacterSkills.Skill
+//	}
 	
-	struct QueuedSkill: Hashable {
+	struct SkillQueueItem: Codable {
 		var skill: Skill
 		var queuedSkill: ESI.Skills.SkillQueueItem
 	}
 	
 	var attributes: Attributes
 	var augmentations: Attributes
-	var trainedSkills: [TrainedSkill]
-	var skillQueue: [QueuedSkill]
+	var trainedSkills: [Int: Int]
+	var skillQueue: [SkillQueueItem]
 	
 	
-	static let empty = NCCharacter(attributes: .default, augmentations: .none, trainedSkills: [], skillQueue: [])
+	static let empty = Character(attributes: .default, augmentations: .none, trainedSkills: [:], skillQueue: [])
+	
+//	init(attributes: ESI.Skills.CharacterAttributes, skills: ESI.Skills.CharacterSkills, skillQueue: [ESI.Skills.SkillQueueItem]) {
+//		
+//	}
 }
 
 
-extension NCCharacter.Skill {
+extension Character.Skill {
 	init?(type: SDEInvType) {
 		guard let primaryAttributeID = type[.primaryAttribute].flatMap({SDEAttributeID(rawValue: Int32($0.value))}),
 			let secondaryAttributeID = type[.secondaryAttribute].flatMap({SDEAttributeID(rawValue: Int32($0.value))}),
@@ -72,35 +76,53 @@ extension NCCharacter.Skill {
 		return Int(level.rounded(.down))
 	}
 	
-	func skillpointsPerSecond(with attributes: NCCharacter.Attributes) -> Double {
+	func skillpointsPerSecond(with attributes: Character.Attributes) -> Double {
 		let primary = attributes[primaryAttributeID]
 		let secondary = attributes[secondaryAttributeID]
 		return (Double(primary) + Double(secondary) / 2.0) / 60.0;
 	}
 }
 
-extension NCCharacter.Attributes {
-	static let `default` = NCCharacter.Attributes(intelligence: 20, memory: 20, perception: 20, willpower: 20, charisma: 19)
-	static let none = NCCharacter.Attributes(intelligence: 0, memory: 0, perception: 0, willpower: 0, charisma: 0)
+extension Character.Attributes {
+	static let `default` = Character.Attributes(intelligence: 20, memory: 20, perception: 20, willpower: 20, charisma: 19)
+	static let none = Character.Attributes(intelligence: 0, memory: 0, perception: 0, willpower: 0, charisma: 0)
 	
 	subscript(key: SDEAttributeID) -> Int {
-		switch key {
-		case .intelligence:
-			return intelligence
-		case .memory:
-			return memory
-		case .perception:
-			return perception
-		case .willpower:
-			return willpower
-		case .charisma:
-			return charisma
-		default:
-			return 0
+		get {
+			switch key {
+			case .intelligence:
+				return intelligence
+			case .memory:
+				return memory
+			case .perception:
+				return perception
+			case .willpower:
+				return willpower
+			case .charisma:
+				return charisma
+			default:
+				return 0
+			}
+		}
+		set {
+			switch key {
+			case .intelligence:
+				intelligence = newValue
+			case .memory:
+				memory = newValue
+			case .perception:
+				perception = newValue
+			case .willpower:
+				willpower = newValue
+			case .charisma:
+				charisma = newValue
+			default:
+				break
+			}
 		}
 	}
 	
-	static func + (lhs: NCCharacter.Attributes, rhs: NCCharacter.Attributes) -> NCCharacter.Attributes {
+	static func + (lhs: Character.Attributes, rhs: Character.Attributes) -> Character.Attributes {
 		var lhs = lhs
 		lhs.charisma += rhs.charisma
 		lhs.intelligence += rhs.intelligence
@@ -110,7 +132,7 @@ extension NCCharacter.Attributes {
 		return lhs
 	}
 	
-	static func - (lhs: NCCharacter.Attributes, rhs: NCCharacter.Attributes) -> NCCharacter.Attributes {
+	static func - (lhs: Character.Attributes, rhs: Character.Attributes) -> Character.Attributes {
 		var lhs = lhs
 		lhs.charisma -= rhs.charisma
 		lhs.intelligence -= rhs.intelligence
@@ -120,7 +142,7 @@ extension NCCharacter.Attributes {
 		return lhs
 	}
 	
-	static func += (lhs: inout NCCharacter.Attributes, rhs: NCCharacter.Attributes) {
+	static func += (lhs: inout Character.Attributes, rhs: Character.Attributes) {
 		lhs.charisma += rhs.charisma
 		lhs.intelligence += rhs.intelligence
 		lhs.perception += rhs.perception
@@ -128,7 +150,7 @@ extension NCCharacter.Attributes {
 		lhs.charisma += rhs.charisma
 	}
 	
-	static func -= (lhs: inout NCCharacter.Attributes, rhs: NCCharacter.Attributes) {
+	static func -= (lhs: inout Character.Attributes, rhs: Character.Attributes) {
 		lhs.charisma -= rhs.charisma
 		lhs.intelligence -= rhs.intelligence
 		lhs.perception -= rhs.perception
@@ -137,7 +159,7 @@ extension NCCharacter.Attributes {
 	}
 }
 
-extension NCCharacter.QueuedSkill {
+extension Character.SkillQueueItem {
 	var skillPoints: Int {
 		
 		if let startDate = queuedSkill.startDate,
@@ -159,11 +181,11 @@ extension NCCharacter.QueuedSkill {
 		return skill.skillPoints(at: max(queuedSkill.finishedLevel - 1, 0))
 	}
 	
-//	func trainingTime(to level: Int, with attributes: NCCharacter.Attributes) -> TimeInterval {
+//	func trainingTime(to level: Int, with attributes: Character.Attributes) -> TimeInterval {
 //		return (Double(skill.skillPoints(at: level) - skillPoints)) / skill.skillpointsPerSecond(with: attributes)
 //	}
 
-	func trainingTimeToLevelUp(with attributes: NCCharacter.Attributes) -> TimeInterval {
+	func trainingTimeToLevelUp(with attributes: Character.Attributes) -> TimeInterval {
 		return Double(skillPointsToLevelUp) / skill.skillpointsPerSecond(with: attributes)
 //		return trainingTime(to: queuedSkill.finishedLevel, with: attributes)
 	}
@@ -186,7 +208,7 @@ extension NCCharacter.QueuedSkill {
 }
 
 
-extension NCCharacter.Attributes {
+extension Character.Attributes {
 	struct Key: Hashable {
 		let primary: SDEAttributeID
 		let secondary: SDEAttributeID
@@ -206,7 +228,7 @@ extension NCCharacter.Attributes {
 		let totalMaxPoints = basePoints * 5 + bonusPoints
 		var minTrainingTime = TimeInterval.greatestFiniteMagnitude
 		
-		var optimal = NCCharacter.Attributes.default
+		var optimal = Character.Attributes.default
 		
 		for intelligence in basePoints...maxPoints {
 			for memory in basePoints...maxPoints {
@@ -217,7 +239,7 @@ extension NCCharacter.Attributes {
 						let charisma = totalMaxPoints - (intelligence + memory + perception + willpower)
 						guard charisma <= maxPoints else {continue}
 						
-						let attributes = NCCharacter.Attributes(intelligence: intelligence, memory: memory, perception: perception, willpower: willpower, charisma: charisma)
+						let attributes = Character.Attributes(intelligence: intelligence, memory: memory, perception: perception, willpower: willpower, charisma: charisma)
 						
 						let trainingTime = skillPoints.reduce(0) { (t, i) -> TimeInterval in
 							let primary = attributes[i.key.primary]

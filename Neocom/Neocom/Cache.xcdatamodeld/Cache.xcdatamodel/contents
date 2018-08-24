@@ -22,8 +22,17 @@
         <attribute name="value" optional="YES" attributeType="Binary" syncable="YES"/>
         <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CacheRecord" inverseName="data" inverseEntity="CacheRecord" syncable="YES"/>
     </entity>
+    <entity name="SectionCollapseState" representedClassName="SectionCollapseState" syncable="YES" codeGenerationType="class">
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isExpanded" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="scope" optional="YES" attributeType="String" syncable="YES"/>
+        <fetchIndex name="byIdentifierIndex">
+            <fetchIndexElement property="identifier" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
     <elements>
         <element name="CacheRecord" positionX="-63" positionY="-18" width="128" height="135"/>
         <element name="CacheRecordData" positionX="-36" positionY="27" width="128" height="75"/>
+        <element name="SectionCollapseState" positionX="-45" positionY="36" width="128" height="90"/>
     </elements>
 </model>

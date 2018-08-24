@@ -20,6 +20,9 @@ protocol Cache {
 protocol CacheContext: PersistentContext {
 	func record(identifier: String, account: String?) -> CacheRecord?
 	func newRecord(identifier: String, account: String?) -> CacheRecord
+//	func sectionCollapseState(identifier: String, scope: String) -> SectionCollapseState?
+	func sectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState?
+	func newSectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState
 }
 
 
@@ -98,7 +101,27 @@ struct CacheContextBox: CacheContext {
 		record.data = CacheRecordData(context: managedObjectContext)
 		return record
 	}
+	
+//	func sectionCollapseState(identifier: String, scope: String) -> SectionCollapseState? {
+//		return (try? managedObjectContext.from(SectionCollapseState.self).filter(\SectionCollapseState.scope == scope && \SectionCollapseState.identifier == identifier).first()) ?? nil
+//	}
+	
+	func sectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState? {
+		let scope = "\(scope)"
+		return (try? managedObjectContext.from(SectionCollapseState.self).filter(\SectionCollapseState.scope == scope && \SectionCollapseState.identifier == identifier).first()) ?? nil
 
+		
+//		return sectionCollapseState(identifier: identifier, scope: "\(scope)")
+	}
+
+	func newSectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState {
+		let scope = "\(scope)"
+		let state = SectionCollapseState(context: managedObjectContext)
+		state.scope = scope
+		state.identifier = identifier
+		return state
+	}
+	
 	var managedObjectContext: NSManagedObjectContext
 	
 }

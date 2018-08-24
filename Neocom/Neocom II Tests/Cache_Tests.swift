@@ -10,11 +10,17 @@ import XCTest
 @testable import Neocom
 import CoreData
 import Futures
+import Expressible
 
 class Cache_Tests: XCTestCase {
 	
     override func setUp() {
         super.setUp()
+		try? cache.viewContext.managedObjectContext.from(CacheRecord.self).all().forEach {
+			$0.managedObjectContext?.delete($0)
+		}
+		
+		try? cache.viewContext.save()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     

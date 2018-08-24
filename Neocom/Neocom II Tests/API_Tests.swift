@@ -8,8 +8,9 @@
 
 import XCTest
 import Expressible
-import EVEAPI
+@testable import EVEAPI
 @testable import Neocom
+import Futures
 
 class API_Tests: XCTestCase {
     
@@ -38,11 +39,11 @@ class API_Tests: XCTestCase {
 		let exp = expectation(description: "Wait")
 		
 		
-		var observer: APIObserver<ESI.Character.Information>?
+		var value: CachedValue<ESI.Character.Information>?
 		
 		let ci = api.characterInformation().then { result in
-			observer = result.observer
-			observer?.handler = { (_, _) in
+			value = result
+			result.observer?.handler = { _ in
 				exp.fulfill()
 			}
 		}.catch { error in
@@ -57,9 +58,28 @@ class API_Tests: XCTestCase {
 		}
 		
 		wait(for: [exp], timeout: 10)
-		observer = nil
+		value = nil
 		api = nil
     }
+	
+	func testCharacter() {
+		let account: Account? = storage.viewContext.accounts().first
+		XCTAssertNotNil(account)
+		var api: API! = APIClient(account: account, cache: cache, sde: sde)
+		let exp = expectation(description: "Wait")
+		
+		api.character().then { result in
+			XCTAssertFalse(result.value.trainedSkills.isEmpty)
+			
+			exp.fulfill()
+		}.catch { error in
+			XCTFail(error.localizedDescription)
+		}
+		
+		wait(for: [exp], timeout: 10)
+		api = nil
+
+	}
     
     func testPerformanceExample() {
         // This is an example of a performance test case.

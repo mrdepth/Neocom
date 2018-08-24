@@ -4,13 +4,31 @@ import UIKit
 import PlaygroundSupport
 import CoreData
 
-enum A: Int {
-	case a
+protocol P {
+	func f()
 }
 
-let desc = NSPersistentStoreDescription()
-desc.setOption(A.a.rawValue as NSNumber, forKey: "a")
+class A<T>: P {
+	
+}
 
-let d = desc.options as [String: Any]
-let a = d["a"] as? A
-print(a)
+class B: A<String> {
+	
+}
+
+extension P {
+	func f() {
+		print("\(type(of: self))")
+	}
+}
+
+let a: P = A<Int>()
+let b: P = B()
+a.f()
+b.f()
+
+
+func f<T>(_ t: T) {
+	print("\(t)")
+}
+

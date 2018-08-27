@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import TreeController
 
-struct Prototype {
+struct Prototype: Hashable {
 	var nib: UINib?
 	var reuseIdentifier: String
 }
@@ -33,7 +34,7 @@ extension UICollectionView {
 }
 
 
-protocol SelfConfiguringItem {
+protocol CellConfiguring {
 	var cellIdentifier: String? {get}
 	func configure(cell: UITableViewCell) -> Void
 }
@@ -51,4 +52,67 @@ extension ExpandableItem {
 	var expandIdentifier: CustomStringConvertible? {
 		return nil
 	}
+}
+
+struct TreeVirtualItem<T: TreeItem>: TreeItem {
+	typealias Child = T
+	var children: [Child]?
+	
+	init(children: [Child]) {
+		self.children = children
+	}
+}
+
+class TreeContentItem<Content: Hashable, T: TreeItem>: TreeItem {
+	typealias Child = T
+	typealias Children = [Child]
+	
+	var content: Content
+	var children: Children?
+
+	var hashValue: Int {
+		return content.hashValue
+	}
+	
+	var diffIdentifier: AnyHashable
+	
+	init<T: Hashable>(content: Content, diffIdentifier: T, children: Children? = nil) {
+		self.content = content
+		self.diffIdentifier = AnyHashable(diffIdentifier)
+		self.children = children
+	}
+
+	convenience init(content: Content, children: Children? = nil) {
+		self.init(content: content, diffIdentifier: content, children: children)
+	}
+
+	static func == (lhs: TreeContentItem<Content, Child>, rhs: TreeContentItem<Content, Child>) -> Bool {
+		return lhs.content == rhs.content
+	}
+}
+
+typealias TreeCollectionItem = TreeContentItem
+
+class TreeRowItem<Content: Hashable>: TreeContentItem<Content, TreeItemNull> {
+}
+
+extension TreeContentItem: CellConfiguring where Content: CellConfiguring {
+	var cellIdentifier: String? {
+		return content.cellIdentifier
+	}
+	
+	func configure(cell: UITableViewCell) {
+		return content.configure(cell: cell)
+	}
+}
+
+extension TreeContentItem: ExpandableItem where Content: ExpandableItem {
+	var initiallyExpanded: Bool {
+		return content.initiallyExpanded
+	}
+	
+	var expandIdentifier: CustomStringConvertible? {
+		return content.expandIdentifier
+	}
+	
 }

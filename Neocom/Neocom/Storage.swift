@@ -23,6 +23,7 @@ protocol StorageContext: PersistentContext {
 	func accounts() -> [Account]
 	func account(with token: OAuth2Token) -> Account?
 	func newAccount(with token: OAuth2Token) -> Account
+	func currentAccount() -> Account?
 }
 
 class StorageContainer: Storage {
@@ -93,6 +94,8 @@ class StorageContainer: Storage {
 		}
 		return promise.future
 	}
+	
+	static let shared = StorageContainer()
 }
 
 struct StorageContextBox: StorageContext {
@@ -112,6 +115,11 @@ struct StorageContextBox: StorageContext {
 		account.uuid = UUID().uuidString
 		return account
 	}
+	
+	func currentAccount() -> Account? {
+		return accounts().first
+	}
+	
 }
 
 extension Account {

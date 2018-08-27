@@ -21,7 +21,7 @@ extension TreeController {
 }
 
 protocol TreeView: View, TreeControllerDelegate where P: TreePresenter {
-	var tableView: UITableView {get}
+	var tableView: UITableView! {get}
 	var treeController: TreeController! {get}
 }
 
@@ -49,7 +49,7 @@ protocol TreeInteractor: Interactor where P: TreePresenter {
 extension TreeView {
 	
 	func treeController<T: TreeItem> (_ treeController: TreeController, cellIdentifierFor item: T) -> String? {
-		if let item = item as? SelfConfiguringItem {
+		if let item = item as? CellConfiguring {
 			return item.cellIdentifier
 		}
 		else {
@@ -58,7 +58,7 @@ extension TreeView {
 	}
 	
 	func treeController<T: TreeItem> (_ treeController: TreeController, configure cell: UITableViewCell, for item: T) -> Void {
-		if let item = item as? SelfConfiguringItem {
+		if let item = item as? CellConfiguring {
 			return item.configure(cell: cell)
 		}
 	}
@@ -99,12 +99,20 @@ extension TreePresenter {
 		}
 	}
 	
+	func didChange(content: I.Content) -> Void {
+		self.presentation(for: content).then(on: .main) { [weak self] presentation -> Future<Void> in
+			guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
+			strongSelf.content = content
+			return strongSelf.view.treeController.reload(presentation)
+		}
+	}
+	
 	func isItemExpandable<T: TreeItem>(_ item: T) -> Bool {
 		return item is ExpandableItem
 	}
 	
 	func isItemExpanded<T: TreeItem>(_ item: T) -> Bool {
-		if let item = item as? ExpandableItem {
+		if let item = item as? ExpandableItem ?? (item as? AnyTreeItem)?.base as? ExpandableItem {
 			if let identifier = item.expandIdentifier?.description,
 				let state = interactor.cache.viewContext.sectionCollapseState(identifier: identifier, scope: V.self) {
 				return state.isExpanded
@@ -119,7 +127,8 @@ extension TreePresenter {
 	}
 	
 	func didExpand<T: TreeItem>(item: T) {
-		if let item = item as? ExpandableItem, let identifier = item.expandIdentifier?.description {
+		if let item = item as? ExpandableItem ?? (item as? AnyTreeItem)?.base as? ExpandableItem,
+			let identifier = item.expandIdentifier?.description {
 			let state = interactor.cache.viewContext.sectionCollapseState(identifier: identifier, scope: V.self) ??
 				interactor.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: V.self)
 			state.isExpanded = true
@@ -128,7 +137,8 @@ extension TreePresenter {
 	}
 	
 	func didCollapse<T: TreeItem>(item: T) {
-		if let item = item as? ExpandableItem, let identifier = item.expandIdentifier?.description {
+		if let item = item as? ExpandableItem ?? (item as? AnyTreeItem)?.base as? ExpandableItem,
+			let identifier = item.expandIdentifier?.description {
 			let state = interactor.cache.viewContext.sectionCollapseState(identifier: identifier, scope: V.self) ??
 				interactor.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: V.self)
 			state.isExpanded = false
@@ -136,8 +146,21 @@ extension TreePresenter {
 	}
 }
 
+extension TreeInteractor {
+	func api(cachePolicy: URLRequest.CachePolicy) -> API {
+		return APIClient(account: storage.viewContext.currentAccount(), cachePolicy: cachePolicy, cache: cache, sde: sde)
+	}
+}
+
+extension TreePresenter where I.Content == Void {
+	var content: Void? {
+		get { return nil}
+		set {}
+	}
+}
+
 extension TreeInteractor where Content == Void {
-	func load() -> Future<Void> {
+	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Void> {
 		return .init(())
 	}
 }

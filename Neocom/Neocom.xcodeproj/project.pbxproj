@@ -36,6 +36,11 @@
 		1256BECE1DF4770A00A2A24B /* Fitting.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE671DF4770A00A2A24B /* Fitting.xcassets */; };
 		1256BF2B1DF4770B00A2A24B /* MainMenu.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BEC61DF4770A00A2A24B /* MainMenu.xcassets */; };
 		1256BF2C1DF4770B00A2A24B /* UI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BEC71DF4770A00A2A24B /* UI.xcassets */; };
+		125DF6312133CFBA00B86AE0 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6302133CFBA00B86AE0 /* Main.swift */; };
+		125DF6332133CFC700B86AE0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6322133CFC700B86AE0 /* MainViewController.swift */; };
+		125DF6352133CFD000B86AE0 /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6342133CFD000B86AE0 /* MainPresenter.swift */; };
+		125DF6372133CFDB00B86AE0 /* MainInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6362133CFDB00B86AE0 /* MainInteractor.swift */; };
+		125DF63C2133D30000B86AE0 /* TreeDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF63B2133D30000B86AE0 /* TreeDefaultCell.swift */; };
 		1263C50D1E64BE9D003D002D /* NCDefaultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1263C50C1E64BE9D003D002D /* NCDefaultTableViewCell.xib */; };
 		1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1263C50E1E64BF39003D002D /* NCHeaderTableViewCell.xib */; };
 		12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12678BEE212BE32A00E7E427 /* AppDelegate.swift */; };
@@ -48,6 +53,7 @@
 		128130431F3B01230039D46B /* main.css in Resources */ = {isa = PBXBuildFile; fileRef = 128130401F3B01230039D46B /* main.css */; };
 		128130451F3B08600039D46B /* main.js in Resources */ = {isa = PBXBuildFile; fileRef = 128130441F3B08600039D46B /* main.js */; };
 		12841C10205BD9F900B30582 /* cwrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12841C11205BD9F900B30582 /* cwrapper.framework */; };
+		1284C1512133F84800AF52C2 /* TreeDefaultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1284C1502133F84800AF52C2 /* TreeDefaultCell.xib */; };
 		1285FB351EB8DD350025331A /* NCAttributeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1285FB341EB8DD350025331A /* NCAttributeTableViewCell.xib */; };
 		128C5F711F418CF30038FE7D /* NCFacilityChartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F701F418CF30038FE7D /* NCFacilityChartTableViewCell.xib */; };
 		128C5F761F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F751F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib */; };
@@ -386,6 +392,11 @@
 		125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContactsSearchResultViewController.swift; sourceTree = "<group>"; };
 		125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailViewController.swift; sourceTree = "<group>"; };
 		125CE13D1EA12DCB007B8B6B /* NCMailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailTableViewCell.swift; sourceTree = "<group>"; };
+		125DF6302133CFBA00B86AE0 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
+		125DF6322133CFC700B86AE0 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		125DF6342133CFD000B86AE0 /* MainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
+		125DF6362133CFDB00B86AE0 /* MainInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInteractor.swift; sourceTree = "<group>"; };
+		125DF63B2133D30000B86AE0 /* TreeDefaultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeDefaultCell.swift; sourceTree = "<group>"; };
 		126156FE1E008AE00041B817 /* dgm.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = dgm.sqlite; path = ../../dbTools/dbinit/dgm.sqlite; sourceTree = "<group>"; };
 		126157031E008E770041B817 /* NCRoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRoundedImageView.swift; sourceTree = "<group>"; };
 		126157051E0095380041B817 /* NCProgressHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCProgressHandler.swift; sourceTree = "<group>"; };
@@ -423,6 +434,7 @@
 		12841C11205BD9F900B30582 /* cwrapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = cwrapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12841C12205BEA4900B30582 /* NCWalletJournalPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCWalletJournalPageViewController.swift; sourceTree = "<group>"; };
 		128442141EBCEECB00D87992 /* NCAssetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAssetsViewController.swift; sourceTree = "<group>"; };
+		1284C1502133F84800AF52C2 /* TreeDefaultCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TreeDefaultCell.xib; sourceTree = "<group>"; };
 		12851D7B1EFD1ADE00C8DD42 /* NCPlanetaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCPlanetaryViewController.swift; sourceTree = "<group>"; };
 		12851D7F1EFD3D5300C8DD42 /* NCKillmailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailsViewController.swift; sourceTree = "<group>"; };
 		1285FB321EB8DBFA0025331A /* NCImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCImageView.swift; sourceTree = "<group>"; };
@@ -927,6 +939,26 @@
 			path = Attributes;
 			sourceTree = "<group>";
 		};
+		125DF62E2133CFAE00B86AE0 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				125DF6302133CFBA00B86AE0 /* Main.swift */,
+				125DF6322133CFC700B86AE0 /* MainViewController.swift */,
+				125DF6342133CFD000B86AE0 /* MainPresenter.swift */,
+				125DF6362133CFDB00B86AE0 /* MainInteractor.swift */,
+			);
+			name = Main;
+			sourceTree = "<group>";
+		};
+		125DF63A2133D2CD00B86AE0 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				125DF63B2133D30000B86AE0 /* TreeDefaultCell.swift */,
+				1284C1502133F84800AF52C2 /* TreeDefaultCell.xib */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		126157081E01D2080041B817 /* Character */ = {
 			isa = PBXGroup;
 			children = (
@@ -1379,9 +1411,11 @@
 			children = (
 				12B8906F213005350082D4A3 /* SOLID */,
 				1241597C212FEFCE001709F2 /* TreeView */,
+				125DF63A2133D2CD00B86AE0 /* Cells */,
 				12A374ED211C2BC900259593 /* API */,
 				12D3109C211C2B7B00367440 /* Database */,
 				12AB9738212C111800B30DD3 /* Character */,
+				125DF62E2133CFAE00B86AE0 /* Main */,
 				12E04180212D44360000CB4F /* Config.swift */,
 				12E0419B212D77530000CB4F /* Error.swift */,
 			);
@@ -1895,6 +1929,7 @@
 				1298BA8B20AEFCFC002C941E /* GDPR.storyboard in Resources */,
 				12CFDAE61F03D8E800CC0762 /* NCDatePickerTableViewCell.xib in Resources */,
 				1298BA7720AEFB73002C941E /* MPCloseBtn@2x.png in Resources */,
+				1284C1512133F84800AF52C2 /* TreeDefaultCell.xib in Resources */,
 				12D404471F31C010007F1715 /* NCSwitchTableViewCell.xib in Resources */,
 				12C37D2C1EFA9CDC0070F055 /* NCContactTableViewCell.xib in Resources */,
 			);
@@ -1935,6 +1970,7 @@
 				12D3109A211C282100367440 /* PersistentContext.swift in Sources */,
 				12AFD473211C1E7D00007423 /* Cache.swift in Sources */,
 				12AB974D212C30E300B30DD3 /* SDEVersion.swift in Sources */,
+				125DF63C2133D30000B86AE0 /* TreeDefaultCell.swift in Sources */,
 				12AFD46D211C1C3D00007423 /* SDE.swift in Sources */,
 				12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */,
 				12B8907F21300E610082D4A3 /* TreeView.swift in Sources */,
@@ -1943,12 +1979,16 @@
 				12415981212FF0AC001709F2 /* TreeItem.swift in Sources */,
 				12B890722130054E0082D4A3 /* SOLID.swift in Sources */,
 				12AB972C212BF6A900B30DD3 /* Storage.swift in Sources */,
+				125DF6332133CFC700B86AE0 /* MainViewController.swift in Sources */,
 				12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */,
 				12E04181212D44360000CB4F /* Config.swift in Sources */,
 				12AFD476211C1EA800007423 /* Cache.xcdatamodeld in Sources */,
 				12AB973E212C162A00B30DD3 /* Character.swift in Sources */,
+				125DF6352133CFD000B86AE0 /* MainPresenter.swift in Sources */,
+				125DF6312133CFBA00B86AE0 /* Main.swift in Sources */,
 				12AB9735212C0E6E00B30DD3 /* NCImplantSetData.swift in Sources */,
 				12AB9733212C0E5C00B30DD3 /* NCFittingLoadout.swift in Sources */,
+				125DF6372133CFDB00B86AE0 /* MainInteractor.swift in Sources */,
 				12E0417E212D3C4F0000CB4F /* API.swift in Sources */,
 				12AB9755212C488400B30DD3 /* TrainingQueue.swift in Sources */,
 				12E0419C212D77530000CB4F /* Error.swift in Sources */,

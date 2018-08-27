@@ -86,7 +86,6 @@ class CacheContainer: Cache {
 }
 
 
-
 struct CacheContextBox: CacheContext {
 	
 	func record(identifier: String, account: String?) -> CacheRecord? {

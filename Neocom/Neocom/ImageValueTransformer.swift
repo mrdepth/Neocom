@@ -12,7 +12,7 @@ class ImageValueTransformer: ValueTransformer {
 	
 	override func transformedValue(_ value: Any?) -> Any? {
 		if let image = value as? UIImage {
-			return UIImagePNGRepresentation(image)
+			return image.pngData()
 		}
 		else {
 			return nil

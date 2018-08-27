@@ -21,9 +21,11 @@ protocol Interactor: class {
 	var presenter: P! {get set}
 	var cache: Cache! {get set}
 	var sde: SDE! {get set}
-	var storage: Storage {get set}
+	var storage: Storage! {get set}
 	
+	init(presenter: P)
 	func configure() -> Void
+	func api(cachePolicy: URLRequest.CachePolicy) -> API
 }
 
 protocol Presenter: class {
@@ -32,6 +34,8 @@ protocol Presenter: class {
 	var view: V! {get set}
 	var interactor: I! {get set}
 	
+	init(view: V)
+
 	func configure() -> Void
 	func viewWillAppear(_ animated: Bool) -> Void
 	func viewDidAppear(_ animated: Bool) -> Void
@@ -63,4 +67,3 @@ extension Presenter {
 	func viewDidDisappear(_ animated: Bool) -> Void {
 	}
 }
-

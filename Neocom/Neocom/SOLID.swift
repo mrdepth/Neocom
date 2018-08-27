@@ -41,6 +41,7 @@ protocol Presenter: class {
 	func viewDidAppear(_ animated: Bool) -> Void
 	func viewWillDisappear(_ animated: Bool) -> Void
 	func viewDidDisappear(_ animated: Bool) -> Void
+	func applicationWillEnterForeground() -> Void
 }
 
 extension View where Input == Void {

@@ -10,8 +10,14 @@ import Foundation
 import CloudData
 import CoreData
 
+protocol CachedValueProtocol {
+	associatedtype Value
+	var value: Value {get}
+	var cachedUntil: Date? {get}
+	var observer: APIObserver<Value>? {get}
+}
 
-class CachedValue<Value> {
+class CachedValue<Value>: CachedValueProtocol {
 	var value: Value
 	var cachedUntil: Date?
 	let observer: APIObserver<Value>?

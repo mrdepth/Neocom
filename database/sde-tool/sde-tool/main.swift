@@ -312,6 +312,9 @@ do {
 			case "abyssal":
 				universe.name = "Abyssal"
 				universe.universeID = 9100001
+			case "penalty":
+				universe.name = "Penalty"
+				universe.universeID = 9100002
 			default:
 				throw DumpError.invalidUniverse($0.0)
 			}

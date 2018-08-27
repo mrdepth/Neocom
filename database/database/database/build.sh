@@ -1,5 +1,7 @@
 out=${TEMP_DIR}
 
+mkdir -p ${out}
+
 if [[ $ACTION = "clean" ]]; then
 	find "$out" -name "*.sqlite" -type f -delete
 	exit

@@ -28,11 +28,12 @@ protocol TreeView: View, TreeControllerDelegate where P: TreePresenter {
 protocol TreePresenter: Presenter where V: TreeView, I: TreeInteractor {
 	associatedtype Item: TreeItem
 	var content: I.Content? {get set}
+	var presentation: [Item]? {get set}
+	var isLoading: Bool {get set}
 	
 	func reload(cachePolicy: URLRequest.CachePolicy) -> Future<Void>
 	func presentation(for content: I.Content) -> Future<[Item]>
 	func didChange(content: I.Content) -> Void
-	func applicationWillEnterForeground() -> Void
 	
 	func isItemExpandable<T: TreeItem>(_ item: T) -> Bool
 	func isItemExpanded<T: TreeItem>(_ item: T) -> Bool
@@ -94,8 +95,13 @@ extension TreePresenter {
 			return strongSelf.presentation(for: content).then(on: .main) { presentation -> Future<Void> in
 				guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
 				strongSelf.content = content
+				strongSelf.presentation = presentation
+				strongSelf.view.tableView.backgroundView = nil
 				return strongSelf.view.treeController.reload(presentation)
 			}
+		}.catch(on: .main) { [weak self] error in
+			guard let strongSelf = self else {return}
+			strongSelf.view.tableView.backgroundView = TableViewBackgroundLabel(error: error)
 		}
 	}
 	
@@ -103,12 +109,13 @@ extension TreePresenter {
 		self.presentation(for: content).then(on: .main) { [weak self] presentation -> Future<Void> in
 			guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
 			strongSelf.content = content
+			strongSelf.presentation = presentation
 			return strongSelf.view.treeController.reload(presentation)
 		}
 	}
 	
 	func isItemExpandable<T: TreeItem>(_ item: T) -> Bool {
-		return item is ExpandableItem
+		return item is ExpandableItem || (item as? AnyTreeItem)?.base is ExpandableItem
 	}
 	
 	func isItemExpanded<T: TreeItem>(_ item: T) -> Bool {
@@ -154,13 +161,48 @@ extension TreeInteractor {
 
 extension TreePresenter where I.Content == Void {
 	var content: Void? {
-		get { return nil}
+		get { return ()}
 		set {}
+	}
+}
+
+extension TreeInteractor where Content: CachedValueProtocol {
+	
+	func isExpired(_ content: Content) -> Bool {
+		guard let cachedUntil = content.cachedUntil else {return true}
+		return cachedUntil < Date()
+	}
+}
+
+extension TreePresenter {
+	func reloadIfNeeded() {
+		guard !isLoading else {return}
+		if let content = content, presentation != nil, !interactor.isExpired(content) {
+			return
+		}
+		else {
+			isLoading = true
+			reload(cachePolicy: .useProtocolCachePolicy).finally(on: .main) { [weak self] in
+				self?.isLoading = false
+			}
+		}
+	}
+	
+	func viewWillAppear(_ animated: Bool) -> Void {
+		reloadIfNeeded()
+	}
+
+	func applicationWillEnterForeground() -> Void {
+		reloadIfNeeded()
 	}
 }
 
 extension TreeInteractor where Content == Void {
 	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Void> {
 		return .init(())
+	}
+	
+	func isExpired(_ content: Void) -> Bool {
+		return false
 	}
 }

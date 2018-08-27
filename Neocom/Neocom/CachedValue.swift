@@ -11,7 +11,7 @@ import CloudData
 import CoreData
 
 
-class CachedValue<Value: Codable> {
+class CachedValue<Value> {
 	var value: Value
 	var cachedUntil: Date?
 	let observer: APIObserver<Value>?
@@ -23,17 +23,17 @@ class CachedValue<Value: Codable> {
 		observer?.cachedValue = self
 	}
 	
-	func map<T: Codable>(_ transform: @escaping (Value) -> T ) -> CachedValue<T> {
+	func map<T>(_ transform: @escaping (Value) -> T ) -> CachedValue<T> {
 		return CachedValue<T>(value: transform(value), cachedUntil: cachedUntil, observer: observer?.map(transform))
 	}
 }
 
-class APIObserver<Value: Codable> {
+class APIObserver<Value> {
 	
 	var handler: ((CachedValue<Value>) -> Void)?
 	weak var cachedValue: CachedValue<Value>?
 	
-	func map<T: Codable>(_ transform: @escaping (Value) -> T ) -> APIObserver<T> {
+	func map<T>(_ transform: @escaping (Value) -> T ) -> APIObserver<T> {
 		return APIObserverMap<T, Value>(self, transform: transform)
 	}
 	
@@ -81,7 +81,7 @@ class APICacheRecordObserver<Value: Codable>: APIObserver<Value> {
 	}
 }
 
-class APIObserverMap<Value: Codable, Base: Codable>: APIObserver<Value> {
+class APIObserverMap<Value, Base>: APIObserver<Value> {
 	let base: APIObserver<Base>
 	let transform: (Base) -> Value
 	
@@ -106,32 +106,32 @@ class APIObserverMap<Value: Codable, Base: Codable>: APIObserver<Value> {
 	}
 }
 
-func all<R: Codable, A: Codable, B: Codable>(_ a: CachedValue<A>, _ b: CachedValue<B>) -> Join2<R, A, B> {
+func all<R, A, B>(_ a: CachedValue<A>, _ b: CachedValue<B>) -> Join2<R, A, B> {
 	return Join2(a: a, b: b)
 }
 
-func all<R: Codable, A: Codable, B: Codable, C:Codable>(_ a: CachedValue<A>, _ b: CachedValue<B>, _ c: CachedValue<C>) -> Join3<R, A, B, C> {
+func all<R, A, B, C:Codable>(_ a: CachedValue<A>, _ b: CachedValue<B>, _ c: CachedValue<C>) -> Join3<R, A, B, C> {
 	return Join3(a: a, b: b, c: c)
 }
 
-func all<R: Codable, A: Codable, B: Codable, C:Codable, D:Codable>(_ a: CachedValue<A>, _ b: CachedValue<B>, _ c: CachedValue<C>, _ d: CachedValue<D>) -> Join4<R, A, B, C, D> {
+func all<R, A, B, C:Codable, D:Codable>(_ a: CachedValue<A>, _ b: CachedValue<B>, _ c: CachedValue<C>, _ d: CachedValue<D>) -> Join4<R, A, B, C, D> {
 	return Join4(a: a, b: b, c: c, d: d)
 }
 
-func all<R: Codable, A: Codable, B: Codable>(_ values: (CachedValue<A>, CachedValue<B>)) -> Join2<R, A, B> {
+func all<R, A, B>(_ values: (CachedValue<A>, CachedValue<B>)) -> Join2<R, A, B> {
 	return Join2(a: values.0, b: values.1)
 }
 
-func all<R: Codable, A: Codable, B: Codable, C: Codable>(_ values: (CachedValue<A>, CachedValue<B>, CachedValue<C>)) -> Join3<R, A, B, C> {
+func all<R, A, B, C>(_ values: (CachedValue<A>, CachedValue<B>, CachedValue<C>)) -> Join3<R, A, B, C> {
 	return Join3(a: values.0, b: values.1, c: values.2)
 }
 
-func all<R: Codable, A: Codable, B: Codable, C: Codable, D: Codable>(_ values: (CachedValue<A>, CachedValue<B>, CachedValue<C>, CachedValue<D>)) -> Join4<R, A, B, C, D> {
+func all<R, A, B, C, D>(_ values: (CachedValue<A>, CachedValue<B>, CachedValue<C>, CachedValue<D>)) -> Join4<R, A, B, C, D> {
 	return Join4(a: values.0, b: values.1, c: values.2, d: values.3)
 }
 
 
-struct Join2<R: Codable, A: Codable, B: Codable> {
+struct Join2<R, A, B> {
 	var a: CachedValue<A>
 	var b: CachedValue<B>
 	
@@ -143,7 +143,7 @@ struct Join2<R: Codable, A: Codable, B: Codable> {
 	}
 }
 
-struct Join3<R: Codable, A: Codable, B: Codable, C: Codable> {
+struct Join3<R, A, B, C> {
 	var a: CachedValue<A>
 	var b: CachedValue<B>
 	var c: CachedValue<C>
@@ -156,7 +156,7 @@ struct Join3<R: Codable, A: Codable, B: Codable, C: Codable> {
 	}
 }
 
-struct Join4<R: Codable, A: Codable, B: Codable, C: Codable, D: Codable> {
+struct Join4<R, A, B, C, D> {
 	var a: CachedValue<A>
 	var b: CachedValue<B>
 	var c: CachedValue<C>
@@ -170,7 +170,7 @@ struct Join4<R: Codable, A: Codable, B: Codable, C: Codable, D: Codable> {
 	}
 }
 
-class APIObserverJoin2<Value: Codable, A: Codable, B: Codable>: APIObserver<Value> {
+class APIObserverJoin2<Value, A, B>: APIObserver<Value> {
 	var a: CachedValue<A>
 	var b: CachedValue<B>
 	let transform: (A, B) -> Value
@@ -208,7 +208,7 @@ class APIObserverJoin2<Value: Codable, A: Codable, B: Codable>: APIObserver<Valu
 	}
 }
 
-class APIObserverJoin3<Value: Codable, A: Codable, B: Codable, C: Codable>: APIObserver<Value> {
+class APIObserverJoin3<Value, A, B, C>: APIObserver<Value> {
 	var a: CachedValue<A>
 	var b: CachedValue<B>
 	var c: CachedValue<C>
@@ -255,7 +255,7 @@ class APIObserverJoin3<Value: Codable, A: Codable, B: Codable, C: Codable>: APIO
 	}
 }
 
-class APIObserverJoin4<Value: Codable, A: Codable, B: Codable, C: Codable, D: Codable>: APIObserver<Value> {
+class APIObserverJoin4<Value, A, B, C, D>: APIObserver<Value> {
 	var a: CachedValue<A>
 	var b: CachedValue<B>
 	var c: CachedValue<C>

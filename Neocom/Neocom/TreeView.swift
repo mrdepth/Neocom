@@ -148,7 +148,7 @@ extension TreePresenter {
 
 extension TreeInteractor {
 	func api(cachePolicy: URLRequest.CachePolicy) -> API {
-		return APIClient(account: storage.viewContext.currentAccount(), cachePolicy: cachePolicy, cache: cache, sde: sde)
+		return APIClient(account: storage.viewContext.currentAccount, cachePolicy: cachePolicy, cache: cache, sde: sde)
 	}
 }
 

@@ -82,8 +82,10 @@ class TreeContentItem<Content: Hashable, T: TreeItem>: TreeItem {
 		self.children = children
 	}
 
-	convenience init(content: Content, children: Children? = nil) {
-		self.init(content: content, diffIdentifier: content, children: children)
+	init(content: Content, children: Children? = nil) {
+		self.content = content
+		self.diffIdentifier = AnyHashable(content)
+		self.children = children
 	}
 
 	static func == (lhs: TreeContentItem<Content, Child>, rhs: TreeContentItem<Content, Child>) -> Bool {
@@ -94,6 +96,13 @@ class TreeContentItem<Content: Hashable, T: TreeItem>: TreeItem {
 typealias TreeCollectionItem = TreeContentItem
 
 class TreeRowItem<Content: Hashable>: TreeContentItem<Content, TreeItemNull> {
+	init<T: Hashable>(content: Content, diffIdentifier: T) {
+		super.init(content: content, diffIdentifier: diffIdentifier)
+	}
+
+	init(content: Content) {
+		super.init(content: content)
+	}
 }
 
 extension TreeContentItem: CellConfiguring where Content: CellConfiguring {
@@ -116,3 +125,4 @@ extension TreeContentItem: ExpandableItem where Content: ExpandableItem {
 	}
 	
 }
+

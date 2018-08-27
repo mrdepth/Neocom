@@ -23,7 +23,7 @@ protocol StorageContext: PersistentContext {
 	func accounts() -> [Account]
 	func account(with token: OAuth2Token) -> Account?
 	func newAccount(with token: OAuth2Token) -> Account
-	func currentAccount() -> Account?
+	var currentAccount: Account? {get}
 }
 
 class StorageContainer: Storage {
@@ -116,7 +116,7 @@ struct StorageContextBox: StorageContext {
 		return account
 	}
 	
-	func currentAccount() -> Account? {
+	var currentAccount: Account? {
 		return accounts().first
 	}
 	

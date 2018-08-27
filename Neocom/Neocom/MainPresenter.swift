@@ -19,10 +19,8 @@ class MainPresenter: TreePresenter {
 		self.view = view
 	}
 
-	func presentation(for content: ()) -> Future<[TreeVirtualItem<AnyTreeItem>]> {
+	func presentation(for content: Void) -> Future<[TreeVirtualItem<AnyTreeItem>]> {
 		return .init([])
-//		TreeContentLeafItem<TreeDefaultItem>(content: TreeDefaultItem(), diffIdentifier: "asdf")
-//		TreeContentItem<TreeDefaultItem>(
 	}
 	
 	func applicationWillEnterForeground() {

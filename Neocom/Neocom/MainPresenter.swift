@@ -17,7 +17,6 @@ class MainPresenter: TreePresenter {
 	var presentation: [AnyTreeItem]?
 	var isLoading: Bool = false
 	
-	
 	weak var view: MainViewController!
 	lazy var interactor: MainInteractor! = MainInteractor(presenter: self)
 	

@@ -8,6 +8,7 @@
 
 import Foundation
 import TreeController
+import Futures
 
 class MainViewController: UITableViewController, TreeView {
 	lazy var presenter: MainPresenter! = MainPresenter(view: self)

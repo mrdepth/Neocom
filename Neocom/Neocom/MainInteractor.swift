@@ -19,10 +19,4 @@ class MainInteractor: TreeInteractor {
 		self.presenter = presenter
 	}
 	
-	func isExpired(_ content: ()) -> Bool {
-		return false
-	}
-	
-	func configure() {
-	}
 }

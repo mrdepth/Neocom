@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import Futures
 
-class MainHeaderInteractor: Interactor {
+class MainHeaderInteractor: ContentProviderInteractor {
 	weak var presenter: MainHeaderPresenter!
 	lazy var cache: Cache! = CacheContainer.shared
 	lazy var sde: SDE! = SDEContainer.shared
@@ -18,10 +19,19 @@ class MainHeaderInteractor: Interactor {
 		self.presenter = presenter
 	}
 	
-	func configure() {
+	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Void> {
+		guard let account = storage.viewContext.currentAccount else {return .init(.failure(NCError.authenticationRequired))}
+		let progress = Progress(totalUnitCount: 4)
+		let api = self.api(cachePolicy: cachePolicy)
+
+		DispatchQueue.global(qos: .utility).async {
+			let characterInfo = try api.characterInformation().get()
+			let characterImage = try? api.image(characterID: account.characterID, dimension: 128).get()
+			let corporationImage = try? api.image(corporationID: characterInfo.value.corporationID, dimension: 32)
+			if let allianceID {
+				
+			}
+		}
 	}
 	
-	func load(cachePolicy: URLRequest.CachePolicy) {
-		let api = self.api(cachePolicy: cachePolicy)
-	}
 }

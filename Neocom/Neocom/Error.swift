@@ -14,4 +14,5 @@ enum NCError: Error {
 	case missingCharacterID(function: String)
 	case cancelled(type: Any?, function: String)
 	case invalidImageFormat
+	case authenticationRequired
 }

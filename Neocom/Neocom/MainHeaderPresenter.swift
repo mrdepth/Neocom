@@ -7,8 +7,26 @@
 //
 
 import Foundation
+import Futures
 
-class MainHeaderPresenter: Presenter {
+class MainHeaderPresenter: ContentProviderPresenter {
+	
+	struct Info {
+		var characterName: String?
+		var characterImage: UIImage?
+		var corporation: String?
+		var alliance: String?
+		var corporationImage: UIImage?
+		var allianceImage: UIImage?
+	}
+	
+	var presentation: CachedValue<Info>?
+	var isLoading: Bool = false
+	
+	func presentation(for content: ()) -> Future<CachedValue<MainHeaderPresenter.Info>> {
+		return .init(.failure(NCError.invalidImageFormat))
+	}
+
 	weak var view: MainHeaderViewController!
 	lazy var interactor: MainHeaderInteractor! = MainHeaderInteractor(presenter: self)
 

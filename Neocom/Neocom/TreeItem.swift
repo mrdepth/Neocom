@@ -8,10 +8,17 @@
 
 import Foundation
 import TreeController
+import Futures
 
 struct Prototype: Hashable {
 	var nib: UINib?
 	var reuseIdentifier: String
+}
+
+extension TreeItem {
+	var asAnyItem: AnyTreeItem {
+		return AnyTreeItem(self)
+	}
 }
 
 extension UITableView {
@@ -23,7 +30,6 @@ extension UITableView {
 	}
 }
 
-
 extension UICollectionView {
 	
 	func register(_ prototypes: [Prototype]) {
@@ -33,14 +39,13 @@ extension UICollectionView {
 	}
 }
 
-
 protocol CellConfiguring {
 	var cellIdentifier: String? {get}
 	func configure(cell: UITableViewCell) -> Void
 }
 
 protocol ExpandableItem {
-	var initiallyExpanded: Bool {get}
+	var isExpanded: Bool {get set}
 	var expandIdentifier: CustomStringConvertible? {get}
 }
 
@@ -54,75 +59,125 @@ extension ExpandableItem {
 	}
 }
 
-struct TreeVirtualItem<T: TreeItem>: TreeItem {
-	typealias Child = T
-	var children: [Child]?
-	
-	init(children: [Child]) {
-		self.children = children
+enum Tree {
+	enum Item {
+		
+	}
+	enum Content {
+		
 	}
 }
 
-class TreeContentItem<Content: Hashable, T: TreeItem>: TreeItem {
-	typealias Child = T
-	typealias Children = [Child]
-	
-	var content: Content
-	var children: Children?
-
-	var hashValue: Int {
-		return content.hashValue
+extension Tree.Item {
+	struct Virtual<T: TreeItem>: TreeItem {
+		typealias Child = T
+		var children: [Child]?
+		
+		init(children: [Child]) {
+			self.children = children
+		}
 	}
 	
-	var diffIdentifier: AnyHashable
+	class Base<Content: Hashable, T: TreeItem>: TreeItem, CellConfiguring {
+		typealias Child = T
+		typealias Children = [Child]
+		
+		var content: Content
+		var children: Children?
+		
+		var hashValue: Int {
+			return content.hashValue
+		}
+		
+		var diffIdentifier: AnyHashable
+		
+		init<T: Hashable>(content: Content, diffIdentifier: T, children: Children? = nil) {
+			self.content = content
+			self.diffIdentifier = AnyHashable(diffIdentifier)
+			self.children = children
+		}
+		
+		init(content: Content, children: Children? = nil) {
+			self.content = content
+			self.diffIdentifier = AnyHashable(content)
+			self.children = children
+		}
+		
+		static func == (lhs: Base<Content, Child>, rhs: Base<Content, Child>) -> Bool {
+			return lhs.content == rhs.content
+		}
+		
+		var cellIdentifier: String? {
+			return (content as? CellConfiguring)?.cellIdentifier
+		}
+		
+		func configure(cell: UITableViewCell) {
+			(content as? CellConfiguring)?.configure(cell: cell)
+		}
+
+	}
 	
-	init<T: Hashable>(content: Content, diffIdentifier: T, children: Children? = nil) {
-		self.content = content
-		self.diffIdentifier = AnyHashable(diffIdentifier)
-		self.children = children
+
+	typealias Collection = Base
+
+	class Row<Content: Hashable>: Base<Content, TreeItemNull> {
+		init<T: Hashable>(content: Content, diffIdentifier: T) {
+			super.init(content: content, diffIdentifier: diffIdentifier)
+		}
+		
+		init(content: Content) {
+			super.init(content: content)
+		}
 	}
 
-	init(content: Content, children: Children? = nil) {
-		self.content = content
-		self.diffIdentifier = AnyHashable(content)
-		self.children = children
-	}
+	class CachedRow<Content: Hashable>: Row<Content> {
+		let value: Future<CachedValue<Content>>
+		weak var treeController: TreeController?
+		
+		init<T: Hashable>(treeController: TreeController, content: Content, value: Future<CachedValue<Content>>, diffIdentifier: T) {
+			self.value = value
+			self.treeController = treeController
+			super.init(content: content, diffIdentifier: diffIdentifier)
 
-	static func == (lhs: TreeContentItem<Content, Child>, rhs: TreeContentItem<Content, Child>) -> Bool {
-		return lhs.content == rhs.content
+			value.then(on: .main) { [weak self] value -> Void in
+				value.observer?.handler = { newValue in
+					self?.didUpdate(newValue.value)
+				}
+			}
+		}
+		
+		func didUpdate(_ content: Content) {
+			self.content = content
+			treeController?.reloadRow(for: self, with: .fade)
+		}
+		
+		func didFail(_ error: Error) {
+			
+		}
 	}
+	
+	
 }
 
-typealias TreeCollectionItem = TreeContentItem
 
-class TreeRowItem<Content: Hashable>: TreeContentItem<Content, TreeItemNull> {
-	init<T: Hashable>(content: Content, diffIdentifier: T) {
-		super.init(content: content, diffIdentifier: diffIdentifier)
-	}
+//extension Tree.Item.Base: CellConfiguring where Content: CellConfiguring {
+//	var cellIdentifier: String? {
+//		return content.cellIdentifier
+//	}
+//
+//	func configure(cell: UITableViewCell) {
+//		return content.configure(cell: cell)
+//	}
+//}
 
-	init(content: Content) {
-		super.init(content: content)
-	}
-}
-
-extension TreeContentItem: CellConfiguring where Content: CellConfiguring {
-	var cellIdentifier: String? {
-		return content.cellIdentifier
-	}
-	
-	func configure(cell: UITableViewCell) {
-		return content.configure(cell: cell)
-	}
-}
-
-extension TreeContentItem: ExpandableItem where Content: ExpandableItem {
-	var initiallyExpanded: Bool {
-		return content.initiallyExpanded
-	}
-	
-	var expandIdentifier: CustomStringConvertible? {
-		return content.expandIdentifier
-	}
-	
-}
-
+//extension Tree.Item.Base: ExpandableItem where Content: ExpandableItem {
+//	var initiallyExpanded: Bool {
+//		return content.initiallyExpanded
+//	}
+//
+//	var expandIdentifier: CustomStringConvertible? {
+//		return content.expandIdentifier
+//	}
+//
+//}
+//

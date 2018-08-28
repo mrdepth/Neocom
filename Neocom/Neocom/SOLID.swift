@@ -42,6 +42,8 @@ protocol Presenter: class {
 	func viewWillDisappear(_ animated: Bool) -> Void
 	func viewDidDisappear(_ animated: Bool) -> Void
 	func applicationWillEnterForeground() -> Void
+	func beginTask(totalUnitCount: Int64, indicator: ProgressTask.Indicator) -> ProgressTask
+	func beginTask(totalUnitCount: Int64) -> ProgressTask
 }
 
 extension View where Input == Void {
@@ -66,5 +68,36 @@ extension Presenter {
 	}
 	
 	func viewDidDisappear(_ animated: Bool) -> Void {
+	}
+	
+	func applicationWillEnterForeground() {
+		
+	}
+}
+
+extension Presenter {
+	func beginTask(totalUnitCount: Int64, indicator: ProgressTask.Indicator) -> ProgressTask {
+		return ProgressTask(progress: Progress(totalUnitCount: totalUnitCount), indicator: indicator)
+	}
+
+}
+
+extension Presenter where V: UIViewController {
+	func beginTask(totalUnitCount: Int64) -> ProgressTask {
+		return beginTask(totalUnitCount: totalUnitCount, indicator: .progressBar(view))
+	}
+	
+}
+
+extension Presenter where V: UIView {
+	func beginTask(totalUnitCount: Int64) -> ProgressTask {
+		return beginTask(totalUnitCount: totalUnitCount, indicator: .progressBar(view))
+	}
+	
+}
+
+extension Interactor {
+	func api(cachePolicy: URLRequest.CachePolicy) -> API {
+		return APIClient(account: storage.viewContext.currentAccount, cachePolicy: cachePolicy, cache: cache, sde: sde)
 	}
 }

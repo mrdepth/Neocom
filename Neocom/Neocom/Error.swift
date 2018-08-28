@@ -13,4 +13,5 @@ enum NCError: Error {
 	case noCachedResult(type: Any, identifier: String)
 	case missingCharacterID(function: String)
 	case cancelled(type: Any?, function: String)
+	case invalidImageFormat
 }

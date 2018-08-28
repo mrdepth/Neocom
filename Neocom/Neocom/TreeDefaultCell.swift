@@ -9,7 +9,7 @@
 import Foundation
 import TreeController
 
-class TreeDefaultCell: UITableViewCell {
+class TreeDefaultCell: RowCell {
 	@IBOutlet var titleLabel: UILabel?
 	@IBOutlet var subtitleLabel: UILabel?
 	@IBOutlet var iconView: UIImageView?
@@ -21,16 +21,32 @@ extension Prototype {
 	}
 }
 
-struct TreeDefaultItemContent: Hashable {
-	var prototype: Prototype = Prototype.TreeDefaultCell.default
-	var title: String? = nil
-	var subtitle: String? = nil
-	var attributedTitle: NSAttributedString? = nil
-	var attributedSubtitle: NSAttributedString? = nil
-	var image: UIImage? = nil
+extension Tree.Content {
+	struct Default: Hashable {
+		var prototype: Prototype
+		var title: String?
+		var subtitle: String?
+		var attributedTitle: NSAttributedString?
+		var attributedSubtitle: NSAttributedString?
+		var image: UIImage?
+		
+		init(prototype: Prototype = Prototype.TreeDefaultCell.default,
+			 title: String? = nil,
+			 subtitle: String? = nil,
+			 attributedTitle: NSAttributedString? = nil,
+			 attributedSubtitle: NSAttributedString? = nil,
+			 image: UIImage? = nil) {
+			self.prototype = prototype
+			self.title = title
+			self.subtitle = subtitle
+			self.attributedTitle = attributedTitle
+			self.attributedSubtitle = attributedSubtitle
+			self.image = image
+		}
+	}
 }
 
-extension TreeDefaultItemContent: CellConfiguring {
+extension Tree.Content.Default: CellConfiguring {
 	var cellIdentifier: String? {
 		return prototype.reuseIdentifier
 	}
@@ -73,3 +89,4 @@ extension TreeDefaultItemContent: CellConfiguring {
 		}
 	}
 }
+

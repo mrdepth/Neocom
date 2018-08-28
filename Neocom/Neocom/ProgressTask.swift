@@ -8,21 +8,22 @@
 
 import Foundation
 
+protocol ProgressIndicatorContainer {}
+extension UIView: ProgressIndicatorContainer {}
+extension UIViewController: ProgressIndicatorContainer {}
+
 class ProgressTask {
 	enum Indicator {
-		enum Container {
-			case view(UIView)
-			case viewController(UIViewController)
-		}
-		case activity(UIView)
-		case progressBar(Container)
+		case activity(UIView, UIActivityIndicatorView.Style)
+		case progressBar(ProgressIndicatorContainer)
 	}
 	
-	let progress: Progress
+	private let progress: Progress
 	let indicator: Indicator
 	private let totalProgress: Progress
 	private let fakeProgress: Progress
 	private var observer: NSKeyValueObservation?
+	private var timer: Timer?
 
 	init(progress: Progress, indicator: Indicator) {
 		self.progress = progress
@@ -34,15 +35,85 @@ class ProgressTask {
 		totalProgress.resignCurrent()
 		totalProgress.addChild(progress, withPendingUnitCount: 2)
 		
+		timer = Timer(timeInterval: 0.2, repeats: true) { [weak self] timer in
+			guard let strongSelf = self else {return}
+			strongSelf.fakeProgress.completedUnitCount += 10
+			if strongSelf.fakeProgress.completedUnitCount >= 100 {
+				timer.invalidate()
+				strongSelf.timer = nil
+			}
+		}
+		RunLoop.main.add(timer!, forMode: .default)
 		
 		observer = totalProgress.observe(\Progress.fractionCompleted) { [weak self] (progress, change) in
-			self?.didUpdate(progress.fractionCompleted)
+			if Thread.isMainThread {
+				self?.didUpdate(progress.fractionCompleted)
+			}
+			else {
+				DispatchQueue.main.async {
+					self?.didUpdate(progress.fractionCompleted)
+				}
+			}
+		}
+		
+		if case let .activity(containerView, style) = indicator {
+			activityIndicatorView = UIActivityIndicatorView(style: style)
+			activityIndicatorView?.translatesAutoresizingMaskIntoConstraints = true
+			activityIndicatorView?.autoresizingMask = [.flexibleBottomMargin, .flexibleTopMargin, .flexibleLeftMargin, .flexibleRightMargin]
+			containerView.addSubview(activityIndicatorView!)
+			activityIndicatorView?.startAnimating()
+			activityIndicatorView?.center = CGPoint(x: containerView.bounds.midX, y: containerView.bounds.midY)
 		}
 	}
 	
-	func didUpdate(_ fractionCompleted: Double) {
+	public func performAsCurrent<ReturnType>(withPendingUnitCount unitCount: Int64, using work: () throws -> ReturnType) rethrows -> ReturnType {
+		if Progress.current() == totalProgress {
+			totalProgress.resignCurrent()
+		}
+		totalProgress.becomeCurrent(withPendingUnitCount: unitCount)
+
+		defer {
+			if Progress.current() == totalProgress {
+				totalProgress.resignCurrent()
+			}
+		}
+		let result = try work()
+		return result
 	}
 	
+	deinit {
+		finalize()
+	}
+	
+	private func finalize() {
+		let timer = self.timer
+		self.timer = nil
+		let progressView = _progressView
+		_progressView = nil
+		let activityIndicatorView = self.activityIndicatorView
+		self.activityIndicatorView = nil
+
+		if Thread.isMainThread {
+			timer?.invalidate()
+			progressView?.removeFromSuperview()
+			activityIndicatorView?.removeFromSuperview()
+		}
+		else {
+			DispatchQueue.main.async {
+				timer?.invalidate()
+				progressView?.removeFromSuperview()
+				activityIndicatorView?.removeFromSuperview()
+			}
+		}
+	}
+	
+	private func didUpdate(_ fractionCompleted: Double) {
+		if case .progressBar = indicator, let progressView = progressView {
+			progressView.setProgress(Float(fractionCompleted), animated: true)
+		}
+	}
+	
+	private var activityIndicatorView: UIActivityIndicatorView?
 	private var _progressView: UIProgressView?
 	
 	private var progressView: UIProgressView? {
@@ -68,7 +139,7 @@ class ProgressTask {
 				}
 				
 				switch container {
-				case let .view(containerView):
+				case let containerView as UIView:
 					guard containerView.window != nil else {return nil}
 					let progressView = makeProgressView(in: containerView)
 					progressView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
@@ -76,7 +147,7 @@ class ProgressTask {
 					_progressView = progressView
 					return progressView
 
-				case let .viewController(viewController):
+				case let viewController as UIViewController:
 					let controller = sequence(first: viewController, next: {$0.parent}).reversed()
 						.first {$0.parent is UINavigationController} ?? viewController
 					let containerView: UIView = controller.view
@@ -100,6 +171,8 @@ class ProgressTask {
 						_progressView = progressView
 						return progressView
 					}
+				default:
+					return nil
 				}
 			}
 		}

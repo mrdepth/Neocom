@@ -13,19 +13,31 @@ class MainViewController: UITableViewController, TreeView {
 	lazy var presenter: MainPresenter! = MainPresenter(view: self)
 	lazy var treeController: TreeController! = TreeController()
 	
-}
-
-class MainAPIItem<T: Codable>: TreeRowItem<TreeDefaultItemContent> {
-	var value: CachedValue<TreeDefaultItemContent>
-	weak var treeController: TreeController?
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		treeController.delegate = self
+		treeController.tableView = tableView
+		presenter.configure()
+	}
 	
-	init(value: CachedValue<TreeDefaultItemContent>, treeController: TreeController) {
-		self.value = value
-		self.treeController = treeController
-		super.init(content: value.value)
-		self.value.observer?.handler = { [weak self] _ in
-			guard let strongSelf = self else {return}
-			treeController.reloadRow(for: strongSelf, with: .fade)
-		}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		presenter.viewWillAppear(animated)
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		presenter.viewDidAppear(animated)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		presenter.viewWillDisappear(animated)
+	}
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		presenter.viewDidDisappear(animated)
 	}
 }

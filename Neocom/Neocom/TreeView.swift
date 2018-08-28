@@ -50,7 +50,7 @@ protocol TreeInteractor: Interactor where P: TreePresenter {
 extension TreeView {
 	
 	func treeController<T: TreeItem> (_ treeController: TreeController, cellIdentifierFor item: T) -> String? {
-		if let item = item as? CellConfiguring {
+		if let item = item as? CellConfiguring ?? (item as? AnyTreeItem)?.base as? CellConfiguring {
 			return item.cellIdentifier
 		}
 		else {
@@ -59,7 +59,7 @@ extension TreeView {
 	}
 	
 	func treeController<T: TreeItem> (_ treeController: TreeController, configure cell: UITableViewCell, for item: T) -> Void {
-		if let item = item as? CellConfiguring {
+		if let item = item as? CellConfiguring ?? (item as? AnyTreeItem)?.base as? CellConfiguring {
 			return item.configure(cell: cell)
 		}
 	}
@@ -90,18 +90,28 @@ extension TreeView {
 extension TreePresenter {
 	
 	func reload(cachePolicy: URLRequest.CachePolicy) -> Future<Void> {
-		return interactor.load(cachePolicy: cachePolicy).then { [weak self] content -> Future<Void> in
-			guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
-			return strongSelf.presentation(for: content).then(on: .main) { presentation -> Future<Void> in
+		let task = beginTask(totalUnitCount: 3)
+		
+		return task.performAsCurrent(withPendingUnitCount: 1) {
+			interactor.load(cachePolicy: cachePolicy).then { [weak self] content -> Future<Void> in
 				guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
-				strongSelf.content = content
-				strongSelf.presentation = presentation
-				strongSelf.view.tableView.backgroundView = nil
-				return strongSelf.view.treeController.reload(presentation)
+				return DispatchQueue.main.async {
+					task.performAsCurrent(withPendingUnitCount: 1) {
+						strongSelf.presentation(for: content).then(on: .main) { presentation -> Future<Void> in
+							guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
+							strongSelf.content = content
+							strongSelf.presentation = presentation
+							strongSelf.view.tableView.backgroundView = nil
+							return task.performAsCurrent(withPendingUnitCount: 1) {
+								strongSelf.view.treeController.reload(presentation)
+							}
+						}
+					}
+				}
+			}.catch(on: .main) { [weak self] error in
+				guard let strongSelf = self else {return}
+				strongSelf.view.tableView.backgroundView = TableViewBackgroundLabel(error: error)
 			}
-		}.catch(on: .main) { [weak self] error in
-			guard let strongSelf = self else {return}
-			strongSelf.view.tableView.backgroundView = TableViewBackgroundLabel(error: error)
 		}
 	}
 	
@@ -134,30 +144,27 @@ extension TreePresenter {
 	}
 	
 	func didExpand<T: TreeItem>(item: T) {
-		if let item = item as? ExpandableItem ?? (item as? AnyTreeItem)?.base as? ExpandableItem,
+		if var item = item as? ExpandableItem ?? (item as? AnyTreeItem)?.base as? ExpandableItem,
 			let identifier = item.expandIdentifier?.description {
 			let state = interactor.cache.viewContext.sectionCollapseState(identifier: identifier, scope: V.self) ??
 				interactor.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: V.self)
 			state.isExpanded = true
+			item.isExpanded = true
 		}
 
 	}
 	
 	func didCollapse<T: TreeItem>(item: T) {
-		if let item = item as? ExpandableItem ?? (item as? AnyTreeItem)?.base as? ExpandableItem,
+		if var item = item as? ExpandableItem ?? (item as? AnyTreeItem)?.base as? ExpandableItem,
 			let identifier = item.expandIdentifier?.description {
 			let state = interactor.cache.viewContext.sectionCollapseState(identifier: identifier, scope: V.self) ??
 				interactor.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: V.self)
 			state.isExpanded = false
+			item.isExpanded = false
 		}
 	}
 }
 
-extension TreeInteractor {
-	func api(cachePolicy: URLRequest.CachePolicy) -> API {
-		return APIClient(account: storage.viewContext.currentAccount, cachePolicy: cachePolicy, cache: cache, sde: sde)
-	}
-}
 
 extension TreePresenter where I.Content == Void {
 	var content: Void? {

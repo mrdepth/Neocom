@@ -30,7 +30,14 @@ protocol ClonesAPI {
 	func implants() -> Future<CachedValue<[Int]>>
 }
 
-typealias API = CharacterAPI & SkillsAPI & ClonesAPI
+protocol ImageAPI {
+	func image(characterID: Int64, dimension: Int) -> Future<CachedValue<UIImage>>
+	func image(corporationID: Int64, dimension: Int) -> Future<CachedValue<UIImage>>
+	func image(allianceID: Int64, dimension: Int) -> Future<CachedValue<UIImage>>
+	func image(typeID: Int, dimension: Int) -> Future<CachedValue<UIImage>>
+}
+
+typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI
 
 class APIClient {
 	
@@ -192,6 +199,56 @@ extension APIClient: ClonesAPI {
 		})
 	}
 
+}
+
+extension APIClient: ImageAPI {
+	func image(characterID: Int64, dimension: Int) -> Future<CachedValue<UIImage>> {
+		let esi = self.esi
+		return load(for: "image.character.\(characterID).\(dimension)", account: nil, loader: { (_) -> Future<ESI.Result<Data>> in
+			return esi.image(characterID: Int(characterID), dimension: dimension * Int(UIScreen.main.scale))
+		}).then { result -> CachedValue<UIImage> in
+			return try result.map { value -> UIImage in
+				guard let image = UIImage(data: value) else {throw NCError.invalidImageFormat}
+				return image
+			}
+		}
+	}
+	
+	func image(corporationID: Int64, dimension: Int) -> Future<CachedValue<UIImage>> {
+		let esi = self.esi
+		return load(for: "image.corporation.\(corporationID).\(dimension)", account: nil, loader: { (_) -> Future<ESI.Result<Data>> in
+			return esi.image(corporationID: Int(corporationID), dimension: dimension * Int(UIScreen.main.scale))
+		}).then { result -> CachedValue<UIImage> in
+			return try result.map { value -> UIImage in
+				guard let image = UIImage(data: value) else {throw NCError.invalidImageFormat}
+				return image
+			}
+		}
+	}
+	
+	func image(allianceID: Int64, dimension: Int) -> Future<CachedValue<UIImage>> {
+		let esi = self.esi
+		return load(for: "image.alliance.\(allianceID).\(dimension)", account: nil, loader: { (_) -> Future<ESI.Result<Data>> in
+			return esi.image(allianceID: Int(allianceID), dimension: dimension * Int(UIScreen.main.scale))
+		}).then { result -> CachedValue<UIImage> in
+			return try result.map { value -> UIImage in
+				guard let image = UIImage(data: value) else {throw NCError.invalidImageFormat}
+				return image
+			}
+		}
+	}
+	
+	func image(typeID: Int, dimension: Int) -> Future<CachedValue<UIImage>> {
+		let esi = self.esi
+		return load(for: "image.type.\(typeID).\(dimension)", account: nil, loader: { (_) -> Future<ESI.Result<Data>> in
+			return esi.image(typeID: typeID, dimension: dimension * Int(UIScreen.main.scale))
+		}).then { result -> CachedValue<UIImage> in
+			return try result.map { value -> UIImage in
+				guard let image = UIImage(data: value) else {throw NCError.invalidImageFormat}
+				return image
+			}
+		}
+	}
 }
 
 extension APIClient {

@@ -41,7 +41,7 @@ class StorageContainer: Storage {
 			
 			let description = NSPersistentStoreDescription()
 			description.url = url
-			description.type = CloudStoreType
+			//description.type = CloudStoreType
 			description.setOption("Neocom" as NSString, forKey: CloudStoreOptions.recordZoneKey)
 			description.setOption(CompressionMethod.zlibDefault as NSNumber, forKey: CloudStoreOptions.binaryDataCompressionMethod)
 			description.setOption(NSMergePolicy.overwrite, forKey: CloudStoreOptions.mergePolicy)

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+NS_SWIFT_NAME(TableView)
 @interface NCTableView : UITableView
 @property(nullable, nonatomic, copy) UIColor* tableBackgroundColor UI_APPEARANCE_SELECTOR;
 

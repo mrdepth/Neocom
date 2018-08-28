@@ -33,16 +33,17 @@ class CacheContainer: Cache {
 	init(persistentContainer: NSPersistentContainer? = nil) {
 		self.persistentContainer = persistentContainer ?? {
 			let container = NSPersistentContainer(name: "Cache")
-			container.loadPersistentStores { (description, _) in
-				if let url = description.url {
-					try? FileManager.default.removeItem(at: url)
-					container.loadPersistentStores{ (_, error) in
-						if let error = error {
-							print(error)
-						}
-					}
+			var isLoaded = false
+			container.loadPersistentStores { (_, error) in
+				isLoaded = error == nil
+			}
+			
+			if !isLoaded, let url = container.persistentStoreDescriptions.first?.url {
+				try? FileManager.default.removeItem(at: url)
+				container.loadPersistentStores { (_, _) in
 				}
 			}
+
 			return container
 		}()
 	}

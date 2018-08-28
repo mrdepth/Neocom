@@ -29,8 +29,8 @@ class CachedValue<Value>: CachedValueProtocol {
 		observer?.cachedValue = self
 	}
 	
-	func map<T>(_ transform: @escaping (Value) -> T ) -> CachedValue<T> {
-		return CachedValue<T>(value: transform(value), cachedUntil: cachedUntil, observer: observer?.map(transform))
+	func map<T>(_ transform: @escaping (Value) throws -> T ) rethrows -> CachedValue<T> {
+		return try CachedValue<T>(value: transform(value), cachedUntil: cachedUntil, observer: observer?.map(transform))
 	}
 }
 
@@ -39,7 +39,7 @@ class APIObserver<Value> {
 	var handler: ((CachedValue<Value>) -> Void)?
 	weak var cachedValue: CachedValue<Value>?
 	
-	func map<T>(_ transform: @escaping (Value) -> T ) -> APIObserver<T> {
+	func map<T>(_ transform: @escaping (Value) throws -> T ) -> APIObserver<T> {
 		return APIObserverMap<T, Value>(self, transform: transform)
 	}
 	
@@ -89,7 +89,7 @@ class APICacheRecordObserver<Value: Codable>: APIObserver<Value> {
 
 class APIObserverMap<Value, Base>: APIObserver<Value> {
 	let base: APIObserver<Base>
-	let transform: (Base) -> Value
+	let transform: (Base) throws -> Value
 	
 	override var handler: ((CachedValue<Value>) -> Void)? {
 		didSet {
@@ -99,13 +99,13 @@ class APIObserverMap<Value, Base>: APIObserver<Value> {
 			else {
 				base.handler = { [weak self] newValue in
 					guard let strongSelf = self else {return}
-					strongSelf.notify(newValue: strongSelf.transform(newValue.value), cachedUntil: newValue.cachedUntil)
+					try? strongSelf.notify(newValue: strongSelf.transform(newValue.value), cachedUntil: newValue.cachedUntil)
 				}
 			}
 		}
 	}
 	
-	init(_ base: APIObserver<Base>, transform: @escaping (Base) -> Value ) {
+	init(_ base: APIObserver<Base>, transform: @escaping (Base) throws -> Value ) {
 		self.base = base
 		self.transform = transform
 		super.init()
@@ -116,12 +116,20 @@ func all<R, A, B>(_ a: CachedValue<A>, _ b: CachedValue<B>) -> Join2<R, A, B> {
 	return Join2(a: a, b: b)
 }
 
-func all<R, A, B, C:Codable>(_ a: CachedValue<A>, _ b: CachedValue<B>, _ c: CachedValue<C>) -> Join3<R, A, B, C> {
+func all<R, A, B, C>(_ a: CachedValue<A>, _ b: CachedValue<B>, _ c: CachedValue<C>) -> Join3<R, A, B, C> {
 	return Join3(a: a, b: b, c: c)
 }
 
-func all<R, A, B, C:Codable, D:Codable>(_ a: CachedValue<A>, _ b: CachedValue<B>, _ c: CachedValue<C>, _ d: CachedValue<D>) -> Join4<R, A, B, C, D> {
+func all<R, A, B, C, D>(_ a: CachedValue<A>, _ b: CachedValue<B>, _ c: CachedValue<C>, _ d: CachedValue<D>) -> Join4<R, A, B, C, D> {
 	return Join4(a: a, b: b, c: c, d: d)
+}
+
+func all<R, A, B, C, D, E>(_ a: CachedValue<A>, _ b: CachedValue<B>, _ c: CachedValue<C>, _ d: CachedValue<D>, _ e: CachedValue<E>) -> Join5<R, A, B, C, D, E> {
+	return Join5(a: a, b: b, c: c, d: d, e: e)
+}
+
+func all<R, A, B, C, D, E, F>(_ a: CachedValue<A>, _ b: CachedValue<B>, _ c: CachedValue<C>, _ d: CachedValue<D>, _ e: CachedValue<E>, _ f: CachedValue<F>) -> Join6<R, A, B, C, D, E, F> {
+	return Join6(a: a, b: b, c: c, d: d, e: e, f: f)
 }
 
 func all<R, A, B>(_ values: (CachedValue<A>, CachedValue<B>)) -> Join2<R, A, B> {
@@ -134,6 +142,14 @@ func all<R, A, B, C>(_ values: (CachedValue<A>, CachedValue<B>, CachedValue<C>))
 
 func all<R, A, B, C, D>(_ values: (CachedValue<A>, CachedValue<B>, CachedValue<C>, CachedValue<D>)) -> Join4<R, A, B, C, D> {
 	return Join4(a: values.0, b: values.1, c: values.2, d: values.3)
+}
+
+func all<R, A, B, C, D, E>(_ values: (CachedValue<A>, CachedValue<B>, CachedValue<C>, CachedValue<D>, CachedValue<E>)) -> Join5<R, A, B, C, D, E> {
+	return Join5(a: values.0, b: values.1, c: values.2, d: values.3, e: values.4)
+}
+
+func all<R, A, B, C, D, E, F>(_ values: (CachedValue<A>, CachedValue<B>, CachedValue<C>, CachedValue<D>, CachedValue<E>, CachedValue<F>)) -> Join6<R, A, B, C, D, E, F> {
+	return Join6(a: values.0, b: values.1, c: values.2, d: values.3, e: values.4, f: values.5)
 }
 
 
@@ -172,6 +188,37 @@ struct Join4<R, A, B, C, D> {
 		let cachedUntil = [a.cachedUntil, b.cachedUntil, c.cachedUntil, d.cachedUntil].compactMap{$0}.min()
 		let value = transform(a.value, b.value, c.value, d.value)
 		let observer = APIObserverJoin4(a, b, c, d, transform: transform)
+		return CachedValue(value: value, cachedUntil: cachedUntil, observer: observer)
+	}
+}
+
+struct Join5<R, A, B, C, D, E> {
+	var a: CachedValue<A>
+	var b: CachedValue<B>
+	var c: CachedValue<C>
+	var d: CachedValue<D>
+	var e: CachedValue<E>
+	
+	func map(_ transform: @escaping (A, B, C, D, E) -> R) -> CachedValue<R> {
+		let cachedUntil = [a.cachedUntil, b.cachedUntil, c.cachedUntil, d.cachedUntil, e.cachedUntil].compactMap{$0}.min()
+		let value = transform(a.value, b.value, c.value, d.value, e.value)
+		let observer = APIObserverJoin5(a, b, c, d, e, transform: transform)
+		return CachedValue(value: value, cachedUntil: cachedUntil, observer: observer)
+	}
+}
+
+struct Join6<R, A, B, C, D, E, F> {
+	var a: CachedValue<A>
+	var b: CachedValue<B>
+	var c: CachedValue<C>
+	var d: CachedValue<D>
+	var e: CachedValue<E>
+	var f: CachedValue<F>
+	
+	func map(_ transform: @escaping (A, B, C, D, E, F) -> R) -> CachedValue<R> {
+		let cachedUntil = [a.cachedUntil, b.cachedUntil, c.cachedUntil, d.cachedUntil, e.cachedUntil, f.cachedUntil].compactMap{$0}.min()
+		let value = transform(a.value, b.value, c.value, d.value, e.value, f.value)
+		let observer = APIObserverJoin6(a, b, c, d, e, f, transform: transform)
 		return CachedValue(value: value, cachedUntil: cachedUntil, observer: observer)
 	}
 }
@@ -312,6 +359,140 @@ class APIObserverJoin4<Value, A, B, C, D>: APIObserver<Value> {
 		self.b = b
 		self.c = c
 		self.d = d
+		self.transform = transform
+	}
+}
+
+class APIObserverJoin5<Value, A, B, C, D, E>: APIObserver<Value> {
+	var a: CachedValue<A>
+	var b: CachedValue<B>
+	var c: CachedValue<C>
+	var d: CachedValue<D>
+	var e: CachedValue<E>
+	let transform: (A, B, C, D, E) -> Value
+	
+	override var handler: ((CachedValue<Value>) -> Void)? {
+		didSet {
+			if handler == nil {
+				a.observer?.handler = nil
+				b.observer?.handler = nil
+				c.observer?.handler = nil
+				d.observer?.handler = nil
+				e.observer?.handler = nil
+			}
+			else {
+				a.observer?.handler = { [weak self] newValue in
+					self?.a = newValue
+					self?.notify()
+				}
+				
+				b.observer?.handler = { [weak self] newValue in
+					self?.b = newValue
+					self?.notify()
+				}
+				
+				c.observer?.handler = { [weak self] newValue in
+					self?.c = newValue
+					self?.notify()
+				}
+				
+				d.observer?.handler = { [weak self] newValue in
+					self?.d = newValue
+					self?.notify()
+				}
+
+				e.observer?.handler = { [weak self] newValue in
+					self?.e = newValue
+					self?.notify()
+				}
+
+			}
+		}
+	}
+	
+	private func notify() {
+		let cachedUntil = [a.cachedUntil, b.cachedUntil, c.cachedUntil, d.cachedUntil, e.cachedUntil].compactMap{$0}.min()
+		let value = transform(a.value, b.value, c.value, d.value, e.value)
+		notify(newValue: value, cachedUntil: cachedUntil)
+	}
+	
+	init(_ a: CachedValue<A>, _ b: CachedValue<B>, _ c: CachedValue<C>, _ d: CachedValue<D>, _ e: CachedValue<E>, transform: @escaping (A, B, C, D, E) -> Value ) {
+		self.a = a
+		self.b = b
+		self.c = c
+		self.d = d
+		self.e = e
+		self.transform = transform
+	}
+}
+
+class APIObserverJoin6<Value, A, B, C, D, E, F>: APIObserver<Value> {
+	var a: CachedValue<A>
+	var b: CachedValue<B>
+	var c: CachedValue<C>
+	var d: CachedValue<D>
+	var e: CachedValue<E>
+	var f: CachedValue<F>
+	let transform: (A, B, C, D, E, F) -> Value
+	
+	override var handler: ((CachedValue<Value>) -> Void)? {
+		didSet {
+			if handler == nil {
+				a.observer?.handler = nil
+				b.observer?.handler = nil
+				c.observer?.handler = nil
+				d.observer?.handler = nil
+				e.observer?.handler = nil
+				f.observer?.handler = nil
+			}
+			else {
+				a.observer?.handler = { [weak self] newValue in
+					self?.a = newValue
+					self?.notify()
+				}
+				
+				b.observer?.handler = { [weak self] newValue in
+					self?.b = newValue
+					self?.notify()
+				}
+				
+				c.observer?.handler = { [weak self] newValue in
+					self?.c = newValue
+					self?.notify()
+				}
+				
+				d.observer?.handler = { [weak self] newValue in
+					self?.d = newValue
+					self?.notify()
+				}
+				
+				e.observer?.handler = { [weak self] newValue in
+					self?.e = newValue
+					self?.notify()
+				}
+
+				f.observer?.handler = { [weak self] newValue in
+					self?.f = newValue
+					self?.notify()
+				}
+
+			}
+		}
+	}
+	
+	private func notify() {
+		let cachedUntil = [a.cachedUntil, b.cachedUntil, c.cachedUntil, d.cachedUntil, e.cachedUntil, f.cachedUntil].compactMap{$0}.min()
+		let value = transform(a.value, b.value, c.value, d.value, e.value, f.value)
+		notify(newValue: value, cachedUntil: cachedUntil)
+	}
+	
+	init(_ a: CachedValue<A>, _ b: CachedValue<B>, _ c: CachedValue<C>, _ d: CachedValue<D>, _ e: CachedValue<E>, _ f: CachedValue<F>, transform: @escaping (A, B, C, D, E, F) -> Value ) {
+		self.a = a
+		self.b = b
+		self.c = c
+		self.d = d
+		self.e = e
+		self.f = f
 		self.transform = transform
 	}
 }

@@ -14,11 +14,13 @@ import CloudData
 
 class MainPresenter: TreePresenter {
 	typealias Item = AnyTreeItem
+
+	weak var view: MainViewController!
+	lazy var interactor: MainInteractor! = MainInteractor(presenter: self)
+
 	var presentation: [AnyTreeItem]?
 	var isLoading: Bool = false
 	
-	weak var view: MainViewController!
-	lazy var interactor: MainInteractor! = MainInteractor(presenter: self)
 	
 	required init(view: MainViewController) {
 		self.view = view

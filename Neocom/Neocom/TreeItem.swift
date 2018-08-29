@@ -155,29 +155,4 @@ extension Tree.Item {
 			
 		}
 	}
-	
-	
 }
-
-
-//extension Tree.Item.Base: CellConfiguring where Content: CellConfiguring {
-//	var cellIdentifier: String? {
-//		return content.cellIdentifier
-//	}
-//
-//	func configure(cell: UITableViewCell) {
-//		return content.configure(cell: cell)
-//	}
-//}
-
-//extension Tree.Item.Base: ExpandableItem where Content: ExpandableItem {
-//	var initiallyExpanded: Bool {
-//		return content.initiallyExpanded
-//	}
-//
-//	var expandIdentifier: CustomStringConvertible? {
-//		return content.expandIdentifier
-//	}
-//
-//}
-//

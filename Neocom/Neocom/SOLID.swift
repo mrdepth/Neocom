@@ -133,7 +133,7 @@ extension ContentProviderPresenter {
 	
 	func reload(cachePolicy: URLRequest.CachePolicy) -> Future<Void> {
 		let task = beginTask(totalUnitCount: 3)
-		
+
 		return task.performAsCurrent(withPendingUnitCount: 1) {
 			interactor.load(cachePolicy: cachePolicy).then { [weak self] content -> Future<Void> in
 				guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
@@ -188,7 +188,6 @@ extension ContentProviderPresenter {
 			return
 		}
 		else {
-			isLoading = true
 			reload(cachePolicy: .useProtocolCachePolicy).finally(on: .main) { [weak self] in
 				self?.isLoading = false
 			}
@@ -212,4 +211,39 @@ extension ContentProviderInteractor where Content == Void {
 	func isExpired(_ content: Void) -> Bool {
 		return false
 	}
+}
+
+extension ContentProviderPresenter where Interactor.Content: CachedValueProtocol {
+	
+	func reload(cachePolicy: URLRequest.CachePolicy) -> Future<Void> {
+		let task = beginTask(totalUnitCount: 3)
+		
+		return task.performAsCurrent(withPendingUnitCount: 1) {
+			interactor.load(cachePolicy: cachePolicy).then { [weak self] content -> Future<Void> in
+				guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
+				return DispatchQueue.main.async {
+					task.performAsCurrent(withPendingUnitCount: 1) {
+						strongSelf.presentation(for: content).then(on: .main) { presentation -> Future<Void> in
+							guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
+							strongSelf.content = content
+							strongSelf.presentation = presentation
+							
+							strongSelf.content?.observer?.handler = { newValue in
+								self?.didChange(content: newValue)
+							}
+
+							return task.performAsCurrent(withPendingUnitCount: 1) {
+								strongSelf.view.present(presentation)
+							}
+
+						}
+					}
+				}
+				}.catch(on: .main) { [weak self] error in
+					guard let strongSelf = self else {return}
+					strongSelf.view.fail(error)
+			}
+		}
+	}
+	
 }

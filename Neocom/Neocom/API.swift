@@ -37,9 +37,27 @@ protocol ImageAPI {
 	func image(typeID: Int, dimension: Int) -> Future<CachedValue<UIImage>>
 }
 
-typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI
+protocol CorporationAPI {
+	func corporationInformation(corporationID: Int64) -> Future<CachedValue<ESI.Corporation.Information>>
+	func divisions() -> Future<CachedValue<ESI.Corporation.Divisions>>
+}
 
-class APIClient {
+protocol AllianceAPI {
+	func allianceInformation(allianceID: Int64) -> Future<CachedValue<ESI.Alliance.Information>>
+}
+
+protocol LocationAPI {
+	func characterLocation() -> Future<CachedValue<ESI.Location.CharacterLocation>>
+	func characterShip() -> Future<CachedValue<ESI.Location.CharacterShip>>
+}
+
+protocol StatusAPI {
+	func serverStatus() -> Future<CachedValue<ESI.Status.ServerStatus>>
+}
+
+typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI
+
+class APIClient: API {
 	
 	var cache: Cache
 	var sde: SDE
@@ -60,9 +78,9 @@ class APIClient {
 		self.oAuth2Token = account?.oAuth2Token
 		self.characterID = account?.characterID
 	}
-}
+	
+	//MARK: CharacterAPI
 
-extension APIClient: CharacterAPI {
 	func characterInformation() -> Future<CachedValue<ESI.Character.Information>> {
 		return characterInformation(with: nil)
 	}
@@ -136,9 +154,8 @@ extension APIClient: CharacterAPI {
 			return result
 		}
 	}
-}
-
-extension APIClient: SkillsAPI {
+	
+	//MARK: SkillsAPI
 
 	func characterAttributes() -> Future<CachedValue<ESI.Skills.CharacterAttributes>> {
 		guard let id = characterID else {
@@ -173,10 +190,8 @@ extension APIClient: SkillsAPI {
 		})
 	}
 	
-}
+	//MARK: ClonesAPI
 
-extension APIClient: ClonesAPI {
-	
 	func implants() -> Future<CachedValue<[Int]>> {
 		guard let id = characterID else {
 			return .init(.failure(NCError.missingCharacterID(function: #function)))
@@ -199,9 +214,8 @@ extension APIClient: ClonesAPI {
 		})
 	}
 
-}
+	//MARK: ImageAPI
 
-extension APIClient: ImageAPI {
 	func image(characterID: Int64, dimension: Int) -> Future<CachedValue<UIImage>> {
 		let esi = self.esi
 		return load(for: "image.character.\(characterID).\(dimension)", account: nil, loader: { (_) -> Future<ESI.Result<Data>> in
@@ -249,10 +263,70 @@ extension APIClient: ImageAPI {
 			}
 		}
 	}
+
+	//MARK: CorporationAPI
+
+	func corporationInformation(corporationID: Int64) -> Future<CachedValue<ESI.Corporation.Information>> {
+		let esi = self.esi
+		return load(for: "ESI.Corporation.Information.\(corporationID)", account: account, loader: { etag in
+			return esi.corporation.getCorporationInformation(corporationID: Int(corporationID), ifNoneMatch: etag)
+		})
+	}
+	
+	func divisions() -> Future<CachedValue<ESI.Corporation.Divisions>> {
+		let esi = self.esi
+		return load(for: "ESI.Corporation.Division", account: account, loader: { etag in
+			return self.characterInformation().then { result in
+				return esi.corporation.getCorporationDivisions(corporationID: result.value.corporationID, ifNoneMatch: etag)
+			}
+		})
+	}
+	
+	//MARK: AllianceAPI
+	
+	func allianceInformation(allianceID: Int64) -> Future<CachedValue<ESI.Alliance.Information>> {
+		let esi = self.esi
+		return load(for: "ESI.Alliance.Information.\(allianceID)", account: account, loader: { etag in
+			return esi.alliance.getAllianceInformation(allianceID: Int(allianceID), ifNoneMatch: etag)
+		})
+	}
+	
+	//MARK: LocationAPI
+	
+	func characterLocation() -> Future<CachedValue<ESI.Location.CharacterLocation>> {
+		guard let id = characterID else {
+			return .init(.failure(NCError.missingCharacterID(function: #function)))
+		}
+		
+		let esi = self.esi
+		return load(for: "ESI.Location.CharacterLocation", account: account, loader: { etag in
+			return esi.location.getCharacterLocation(characterID: Int(id), ifNoneMatch: etag)
+		})
+	}
+	
+	func characterShip() -> Future<CachedValue<ESI.Location.CharacterShip>> {
+		guard let id = characterID else {
+			return .init(.failure(NCError.missingCharacterID(function: #function)))
+		}
+		
+		let esi = self.esi
+		return load(for: "ESI.Location.CharacterShip", account: account, loader: { etag in
+			return esi.location.getCurrentShip(characterID: Int(id), ifNoneMatch: etag)
+		})
+	}
+
+	//MARK: StatusAPI
+
+	func serverStatus() -> Future<CachedValue<ESI.Status.ServerStatus>> {
+		let esi = self.esi
+		return load(for: "ESI.Status.ServerStatus", account: account, loader: { etag in
+			return esi.status.retrieveTheUptimeAndPlayerCounts(ifNoneMatch: etag)
+		})
+	}
 }
 
 extension APIClient {
-	private func load<T: Codable>(for identifier: String, account: String?, loader: @escaping (_ etag: String?) -> Future<ESI.Result<T>>) -> Future<CachedValue<T>> {
+	func load<T: Codable>(for identifier: String, account: String?, loader: @escaping (_ etag: String?) -> Future<ESI.Result<T>>) -> Future<CachedValue<T>> {
 		let cachePolicy = self.cachePolicy
 		let cache = self.cache
 		return cache.performBackgroundTask { (context) -> CachedValue<T> in
@@ -274,7 +348,7 @@ extension APIClient {
 				
 				guard let cacheRecord = cacheRecord,
 					let value: T = cacheRecord.getValue() else {throw NCError.noCachedResult(type: T.self, identifier: identifier)}
-				return CachedValue<T>(value: value, cachedUntil: cacheRecord.cachedUntil, observer: APICacheRecordObserver<T>(cacheRecord: cacheRecord, cache: cache))
+				return CachedValue<T>(value: value, cachedUntil: cacheRecord.cachedUntil, observer: APICacheRecordObserver<CachedValue<T>>(cacheRecord: cacheRecord, cache: cache))
 			}
 			
 			

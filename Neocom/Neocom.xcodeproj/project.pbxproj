@@ -12,6 +12,14 @@
 		120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */; };
 		1211A4631EEEC35A00364744 /* NCSkillTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */; };
 		1211A4651EEEDE3600364744 /* NCActionHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */; };
+		121F26E02136BD9400AE1D70 /* SOLID_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26DF2136BD9400AE1D70 /* SOLID_Tests.swift */; };
+		121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26E32136EC3800AE1D70 /* BannerNavigationViewController.swift */; };
+		121F26E62136EC5700AE1D70 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26E52136EC5700AE1D70 /* NavigationController.swift */; };
+		121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26E72136ECA800AE1D70 /* SplitViewController.swift */; };
+		121F26EB2136EE6C00AE1D70 /* AccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26EA2136EE6C00AE1D70 /* AccountsViewController.swift */; };
+		121F26ED2136EE8700AE1D70 /* AccountsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26EC2136EE8700AE1D70 /* AccountsInteractor.swift */; };
+		121F26EF2136EE9100AE1D70 /* AccountsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26EE2136EE9100AE1D70 /* AccountsPresenter.swift */; };
+		121F26F12136F07200AE1D70 /* TreeItem+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26F02136F07200AE1D70 /* TreeItem+CoreData.swift */; };
 		122A7CA21F4B49D100537467 /* Database.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA11F4B49D100537467 /* Database.storyboard */; };
 		122A7CA41F4B589200537467 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA31F4B589200537467 /* Character.storyboard */; };
 		122A7CA61F4B5DD800537467 /* Business.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA51F4B5DD800537467 /* Business.storyboard */; };
@@ -199,13 +207,6 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
-		1293D7D7204A89AE00A1F453 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 12AC8D881DEF58A100561A7A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 12AC8D8F1DEF58A100561A7A;
-			remoteInfo = Neocom;
-		};
 		12C9670D1F96132200B141CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 12C966EE1F9610D800B141CC /* clrconvert.xcodeproj */;
@@ -305,6 +306,14 @@
 		121D10AF1E26345D00DD671B /* NSManagedObjectContext+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+NC.swift"; sourceTree = "<group>"; };
 		121D10B11E263E3700DD671B /* NCTypePickerTypesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerTypesViewController.swift; sourceTree = "<group>"; };
 		121D10B41E265D5A00DD671B /* NCFittingLoadout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingLoadout.swift; sourceTree = "<group>"; };
+		121F26DF2136BD9400AE1D70 /* SOLID_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOLID_Tests.swift; sourceTree = "<group>"; };
+		121F26E32136EC3800AE1D70 /* BannerNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerNavigationViewController.swift; sourceTree = "<group>"; };
+		121F26E52136EC5700AE1D70 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		121F26E72136ECA800AE1D70 /* SplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
+		121F26EA2136EE6C00AE1D70 /* AccountsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsViewController.swift; sourceTree = "<group>"; };
+		121F26EC2136EE8700AE1D70 /* AccountsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsInteractor.swift; sourceTree = "<group>"; };
+		121F26EE2136EE9100AE1D70 /* AccountsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsPresenter.swift; sourceTree = "<group>"; };
+		121F26F02136F07200AE1D70 /* TreeItem+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeItem+CoreData.swift"; sourceTree = "<group>"; };
 		1220710B1EF2C6B8007D86CE /* NCDatabaseCertificateMasteryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateMasteryViewController.swift; sourceTree = "<group>"; };
 		1220710D1EF2C6E1007D86CE /* NCDatabaseCertificateRequirementsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDatabaseCertificateRequirementsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		122242451E5C3A0000269A01 /* NCPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCPageViewController.swift; sourceTree = "<group>"; };
@@ -489,9 +498,6 @@
 		1293D7C72049807E00A1F453 /* openssl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = openssl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1293D7C82049813200A1F453 /* NCWealthBlueprintsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCWealthBlueprintsViewController.swift; sourceTree = "<group>"; };
 		1293D7CC20499B2900A1F453 /* NCWealthAssetsDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCWealthAssetsDetailsViewController.swift; sourceTree = "<group>"; };
-		1293D7D2204A89AE00A1F453 /* Neocom II UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Neocom II UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1293D7D4204A89AE00A1F453 /* Neocom_II_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Neocom_II_UITests.swift; sourceTree = "<group>"; };
-		1293D7D6204A89AE00A1F453 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1294AB311F161A15002B9BA8 /* NCMailAttachmentsStructuresViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailAttachmentsStructuresViewController.swift; sourceTree = "<group>"; };
 		12961DB71E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseMarketInfoViewController.swift; sourceTree = "<group>"; };
 		12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketInfoTableViewCell.swift; sourceTree = "<group>"; };
@@ -725,13 +731,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1293D7CF204A89AE00A1F453 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		12AC8D8D1DEF58A100561A7A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -805,6 +804,24 @@
 			name = Loadouts;
 			sourceTree = "<group>";
 		};
+		121F26E22136EC2800AE1D70 /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+				121F26E32136EC3800AE1D70 /* BannerNavigationViewController.swift */,
+			);
+			name = Banner;
+			sourceTree = "<group>";
+		};
+		121F26E92136EE5C00AE1D70 /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				121F26EA2136EE6C00AE1D70 /* AccountsViewController.swift */,
+				121F26EE2136EE9100AE1D70 /* AccountsPresenter.swift */,
+				121F26EC2136EE8700AE1D70 /* AccountsInteractor.swift */,
+			);
+			name = Accounts;
+			sourceTree = "<group>";
+		};
 		1230A3361DFFE30400627D92 /* Database */ = {
 			isa = PBXGroup;
 			children = (
@@ -854,6 +871,7 @@
 				125DF63A2133D2CD00B86AE0 /* Cells */,
 				12B8907E21300E610082D4A3 /* TreeView.swift */,
 				12415980212FF0AC001709F2 /* TreeItem.swift */,
+				121F26F02136F07200AE1D70 /* TreeItem+CoreData.swift */,
 			);
 			name = TreeView;
 			sourceTree = "<group>";
@@ -1155,15 +1173,6 @@
 			name = KillReports;
 			sourceTree = "<group>";
 		};
-		1293D7D3204A89AE00A1F453 /* Neocom II UITests */ = {
-			isa = PBXGroup;
-			children = (
-				1293D7D4204A89AE00A1F453 /* Neocom_II_UITests.swift */,
-				1293D7D6204A89AE00A1F453 /* Info.plist */,
-			);
-			path = "Neocom II UITests";
-			sourceTree = "<group>";
-		};
 		1298BA5A20AEFB73002C941E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1312,7 +1321,6 @@
 				12C966ED1F9610CC00B141CC /* ThirdParty */,
 				12CACFE62008C36B000B76C3 /* Widget */,
 				12CA8F802047DED1000360DE /* Neocom II Tests */,
-				1293D7D3204A89AE00A1F453 /* Neocom II UITests */,
 				12AC8D911DEF58A100561A7A /* Products */,
 				12DBEAAF1E1D3B860088A486 /* Frameworks */,
 			);
@@ -1324,7 +1332,6 @@
 				12AC8D901DEF58A100561A7A /* Neocom.app */,
 				12CACFE32008C36B000B76C3 /* Widget.appex */,
 				12CA8F7F2047DED1000360DE /* Neocom II Tests.xctest */,
-				1293D7D2204A89AE00A1F453 /* Neocom II UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1344,7 +1351,6 @@
 				12851D7E1EFD3C6800C8DD42 /* KillReports */,
 				1203E8861F093A0D009ADF8D /* Misc */,
 				12AC8D931DEF58A100561A7A /* NCAppDelegate.swift */,
-				12678BEE212BE32A00E7E427 /* AppDelegate.swift */,
 				12AC8D951DEF58A100561A7A /* ViewController.swift */,
 				12AC8DBB1DF01BF100561A7A /* Test.h */,
 				12AC8DBC1DF01BF100561A7A /* Test.m */,
@@ -1474,9 +1480,14 @@
 				1279EFFA21358E14005340C0 /* Views */,
 				125DF62E2133CFAE00B86AE0 /* Main */,
 				12E04180212D44360000CB4F /* Config.swift */,
+				121F26E22136EC2800AE1D70 /* Banner */,
+				121F26E92136EE5C00AE1D70 /* Accounts */,
 				12E0419B212D77530000CB4F /* Error.swift */,
+				121F26E52136EC5700AE1D70 /* NavigationController.swift */,
+				121F26E72136ECA800AE1D70 /* SplitViewController.swift */,
 				129DFE1F213486D900C85496 /* ProgressTask.swift */,
 				1279EFED213543B7005340C0 /* UnitFormatter.swift */,
+				12678BEE212BE32A00E7E427 /* AppDelegate.swift */,
 			);
 			name = Refactor;
 			sourceTree = "<group>";
@@ -1570,6 +1581,7 @@
 				12AB9750212C32EB00B30DD3 /* SDE_Tests.swift */,
 				12E0419F212D89840000CB4F /* Cache_Tests.swift */,
 				12AB9752212C3E5800B30DD3 /* Character_Tests.swift */,
+				121F26DF2136BD9400AE1D70 /* SOLID_Tests.swift */,
 				12CA8F832047DED1000360DE /* Info.plist */,
 			);
 			path = "Neocom II Tests";
@@ -1709,24 +1721,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1293D7D1204A89AE00A1F453 /* Neocom II UITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 1293D7D9204A89AE00A1F453 /* Build configuration list for PBXNativeTarget "Neocom II UITests" */;
-			buildPhases = (
-				1293D7CE204A89AE00A1F453 /* Sources */,
-				1293D7CF204A89AE00A1F453 /* Frameworks */,
-				1293D7D0204A89AE00A1F453 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				1293D7D8204A89AE00A1F453 /* PBXTargetDependency */,
-			);
-			name = "Neocom II UITests";
-			productName = "Neocom II UITests";
-			productReference = 1293D7D2204A89AE00A1F453 /* Neocom II UITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		12AC8D8F1DEF58A100561A7A /* Neocom */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 12AC8DA21DEF58A100561A7A /* Build configuration list for PBXNativeTarget "Neocom" */;
@@ -1790,17 +1784,11 @@
 		12AC8D881DEF58A100561A7A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = NC;
+				CLASSPREFIX = "";
 				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Artem Shimanski";
 				TargetAttributes = {
-					1293D7D1204A89AE00A1F453 = {
-						CreatedOnToolsVersion = 9.2;
-						DevelopmentTeam = YB4RLQ4M9A;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 12AC8D8F1DEF58A100561A7A;
-					};
 					12AC8D8F1DEF58A100561A7A = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = YB4RLQ4M9A;
@@ -1868,7 +1856,6 @@
 				12AC8D8F1DEF58A100561A7A /* Neocom */,
 				12CACFE22008C36B000B76C3 /* Widget */,
 				12CA8F7E2047DED1000360DE /* Neocom II Tests */,
-				1293D7D1204A89AE00A1F453 /* Neocom II UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1891,13 +1878,6 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		1293D7D0204A89AE00A1F453 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		12AC8D8E1DEF58A100561A7A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2013,13 +1993,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		1293D7CE204A89AE00A1F453 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		12AC8D8C1DEF58A100561A7A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2029,24 +2002,31 @@
 				12B8907F21300E610082D4A3 /* TreeView.swift in Sources */,
 				12AB9737212C0ECC00B30DD3 /* SDE+Constants.swift in Sources */,
 				12AB974F212C325E00B30DD3 /* ImageValueTransformer.swift in Sources */,
+				121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */,
 				12B89081213023280082D4A3 /* CachedValue.swift in Sources */,
 				12D3109A211C282100367440 /* PersistentContext.swift in Sources */,
 				12AFD473211C1E7D00007423 /* Cache.swift in Sources */,
 				1279EFF7213587D7005340C0 /* Cells.swift in Sources */,
 				12AB974D212C30E300B30DD3 /* SDEVersion.swift in Sources */,
 				125DF63C2133D30000B86AE0 /* TreeDefaultCell.swift in Sources */,
+				121F26EF2136EE9100AE1D70 /* AccountsPresenter.swift in Sources */,
 				12AFD46D211C1C3D00007423 /* SDE.swift in Sources */,
+				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
+				121F26F12136F07200AE1D70 /* TreeItem+CoreData.swift in Sources */,
 				12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */,
+				121F26ED2136EE8700AE1D70 /* AccountsInteractor.swift in Sources */,
 				1279EFF5213586D6005340C0 /* NCTableView.m in Sources */,
 				1279F00121358F7C005340C0 /* MainHeaderInteractor.swift in Sources */,
 				1279EFF121355DC9005340C0 /* TreeHeaderCell.swift in Sources */,
 				129DFE1B21347A6F00C85496 /* TableViewBackgroundLabel.swift in Sources */,
 				1279EFFF21358F73005340C0 /* MainHeaderPresenter.swift in Sources */,
+				121F26E62136EC5700AE1D70 /* NavigationController.swift in Sources */,
 				12AB972A212BF60000B30DD3 /* Storage.xcdatamodeld in Sources */,
 				12AB9732212C0E4F00B30DD3 /* NCFleetConfiguration.swift in Sources */,
 				12B890722130054E0082D4A3 /* SOLID.swift in Sources */,
 				12AB972C212BF6A900B30DD3 /* Storage.swift in Sources */,
 				125DF6332133CFC700B86AE0 /* MainViewController.swift in Sources */,
+				121F26EB2136EE6C00AE1D70 /* AccountsViewController.swift in Sources */,
 				129DFE1E21347AFB00C85496 /* AccessibilityLabel.swift in Sources */,
 				129DFE20213486D900C85496 /* ProgressTask.swift in Sources */,
 				12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */,
@@ -2076,6 +2056,7 @@
 				12CA8F822047DED1000360DE /* Neocom_II_Tests.swift in Sources */,
 				12E041A0212D89840000CB4F /* Cache_Tests.swift in Sources */,
 				12AB9753212C3E5800B30DD3 /* Character_Tests.swift in Sources */,
+				121F26E02136BD9400AE1D70 /* SOLID_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2095,11 +2076,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		1293D7D8204A89AE00A1F453 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 12AC8D8F1DEF58A100561A7A /* Neocom */;
-			targetProxy = 1293D7D7204A89AE00A1F453 /* PBXContainerItemProxy */;
-		};
 		12CA8F852047DED1000360DE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 12AC8D8F1DEF58A100561A7A /* Neocom */;
@@ -2137,60 +2113,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		1293D7DA204A89AE00A1F453 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = YB4RLQ4M9A;
-				FRAMEWORK_SEARCH_PATHS = (
-					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
-					"${PROJECT_DIR}/../ThirdParty/Facebook",
-					"${PROJECT_DIR}/../ThirdParty/Appodeal",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "Neocom II UITests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.shimanski.Neocom-II-UITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Neocom;
-			};
-			name = Debug;
-		};
-		1293D7DB204A89AE00A1F453 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = YB4RLQ4M9A;
-				FRAMEWORK_SEARCH_PATHS = (
-					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
-					"${PROJECT_DIR}/../ThirdParty/Facebook",
-					"${PROJECT_DIR}/../ThirdParty/Appodeal",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "Neocom II UITests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.shimanski.Neocom-II-UITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Neocom;
-			};
-			name = Release;
-		};
 		12AC8DA01DEF58A100561A7A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2378,6 +2300,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shimanski.Neocom-II-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Neocom.app/Neocom";
@@ -2461,15 +2384,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1293D7D9204A89AE00A1F453 /* Build configuration list for PBXNativeTarget "Neocom II UITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1293D7DA204A89AE00A1F453 /* Debug */,
-				1293D7DB204A89AE00A1F453 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		12AC8D8B1DEF58A100561A7A /* Build configuration list for PBXProject "Neocom" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

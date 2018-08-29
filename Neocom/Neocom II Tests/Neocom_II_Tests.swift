@@ -47,7 +47,7 @@ let oAuth2Token = try! JSONDecoder().decode(OAuth2Token.self, from: "{\"scopes\"
 
 
 
-class Neocom_II_Tests: XCTestCase {
+/*class Neocom_II_Tests: XCTestCase {
     
     override func setUp() {
         super.setUp()
@@ -106,3 +106,4 @@ class Neocom_II_Tests: XCTestCase {
 	}*/
     
 }
+*/

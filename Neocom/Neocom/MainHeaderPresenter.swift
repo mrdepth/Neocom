@@ -10,21 +10,12 @@ import Foundation
 import Futures
 
 class MainHeaderPresenter: ContentProviderPresenter {
-	
-	struct Info {
-		var characterName: String?
-		var characterImage: UIImage?
-		var corporation: String?
-		var alliance: String?
-		var corporationImage: UIImage?
-		var allianceImage: UIImage?
-	}
-	
-	var presentation: CachedValue<Info>?
+	var content: CachedValue<MainHeaderInteractor.Info>?
+	var presentation: MainHeaderInteractor.Info?
 	var isLoading: Bool = false
 	
-	func presentation(for content: ()) -> Future<CachedValue<MainHeaderPresenter.Info>> {
-		return .init(.failure(NCError.invalidImageFormat))
+	func presentation(for content: CachedValue<MainHeaderInteractor.Info>) -> Future<MainHeaderInteractor.Info> {
+		return .init(content.value)
 	}
 
 	weak var view: MainHeaderViewController!

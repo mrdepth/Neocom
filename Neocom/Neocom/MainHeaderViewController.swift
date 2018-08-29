@@ -18,21 +18,18 @@ class MainHeaderViewController: UIViewController, ContentProviderView {
 	@IBOutlet weak var allianceImageView: UIImageView?
 
 	var presenter: MainHeaderPresenter!
-	var input: Account?
 	
-	func present(_ content: CachedValue<MainHeaderPresenter.Info>) -> Future<Void> {
-		let value = content.value
-		characterNameLabel?.text = value.characterName
-		characterImageView?.image = value.characterImage
-		corporationLabel?.text = value.corporation
-		allianceLabel?.text = value.alliance
-		corporationImageView?.image = value.corporationImage
-		allianceImageView?.image = value.allianceImage
+	func present(_ content: MainHeaderInteractor.Info) -> Future<Void> {
+		characterNameLabel?.text = content.characterName
+		characterImageView?.image = content.characterImage
+		corporationLabel?.text = content.corporation
+		allianceLabel?.text = content.alliance
+		corporationImageView?.image = content.corporationImage
+		allianceImageView?.image = content.allianceImage
 		return .init(())
 	}
 	
 	func fail(_ error: Error) {
-		
 	}
 
 }

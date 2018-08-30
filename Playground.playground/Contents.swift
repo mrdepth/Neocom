@@ -4,22 +4,42 @@ import UIKit
 import PlaygroundSupport
 import CoreData
 
-protocol P {
+class A {
+	func f() {
+		print("f")
+	}
 	
+	deinit {
+		print("deinit")
+	}
 }
 
-extension Int: P {}
-
-func f<A: P, B: P>(_ a: A, _ b: B) {
-	print("1")
+func ff() {
+	var a: A? = A()
+	
+	func f() {
+		a?.f()
+	}
+//	let f = {
+//		a?.f()
+//	}
+	
+	a?.f()
+	
+	DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+		print("async")
+		//print(a)
+		f()
+		//a = nil
+		DispatchQueue.main.async {
+			PlaygroundPage.current.finishExecution()
+		}
+	}
+	
+	print("end")
 }
 
-func f<A: P, B: P>(_ a: A?, _ b: B?) {
-	print("2")
-}
+ff()
 
-
-
-f(1, 2)
-let i: Int? = nil
-f(1, i)
+//a = nil
+PlaygroundPage.current.needsIndefiniteExecution

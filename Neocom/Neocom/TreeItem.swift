@@ -40,7 +40,7 @@ extension UICollectionView {
 }
 
 protocol CellConfiguring {
-	var cellIdentifier: String? {get}
+	var prototype: Prototype? {get}
 	func configure(cell: UITableViewCell) -> Void
 }
 
@@ -91,13 +91,13 @@ extension Tree.Item {
 		
 		var diffIdentifier: AnyHashable
 		
-		init<T: Hashable>(content: Content, diffIdentifier: T, children: Children? = nil) {
+		init<T: Hashable>(_ content: Content, diffIdentifier: T, children: Children? = nil) {
 			self.content = content
 			self.diffIdentifier = AnyHashable(diffIdentifier)
 			self.children = children
 		}
 		
-		init(content: Content, children: Children? = nil) {
+		init(_ content: Content, children: Children? = nil) {
 			self.content = content
 			self.diffIdentifier = AnyHashable(content)
 			self.children = children
@@ -107,8 +107,8 @@ extension Tree.Item {
 			return lhs.content == rhs.content
 		}
 		
-		var cellIdentifier: String? {
-			return (content as? CellConfiguring)?.cellIdentifier
+		var prototype: Prototype? {
+			return (content as? CellConfiguring)?.prototype
 		}
 		
 		func configure(cell: UITableViewCell) {
@@ -121,28 +121,26 @@ extension Tree.Item {
 	typealias Collection = Base
 
 	class Row<Content: Hashable>: Base<Content, TreeItemNull> {
-		init<T: Hashable>(content: Content, diffIdentifier: T) {
-			super.init(content: content, diffIdentifier: diffIdentifier)
+		init<T: Hashable>(_ content: Content, diffIdentifier: T) {
+			super.init(content, diffIdentifier: diffIdentifier)
 		}
 		
-		init(content: Content) {
-			super.init(content: content)
+		init(_ content: Content) {
+			super.init(content)
 		}
 	}
 
-	class CachedRow<Content: Hashable>: Row<Content> {
-		let value: Future<CachedValue<Content>>
+	class APIResultRow<Content: Hashable>: Row<Content> {
+		let value: Future<APIResult<Content>>
 		weak var treeController: TreeController?
 		
-		init<T: Hashable>(treeController: TreeController, content: Content, value: Future<CachedValue<Content>>, diffIdentifier: T) {
+		init<T: Hashable>(_ content: Content, value: Future<APIResult<Content>>, diffIdentifier: T, treeController: TreeController) {
 			self.value = value
 			self.treeController = treeController
-			super.init(content: content, diffIdentifier: diffIdentifier)
+			super.init(content, diffIdentifier: diffIdentifier)
 
 			value.then(on: .main) { [weak self] value -> Void in
-				value.observer?.handler = { newValue in
-					self?.didUpdate(newValue.value)
-				}
+				self?.didUpdate(value.value)
 			}
 		}
 		

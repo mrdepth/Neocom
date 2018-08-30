@@ -16,7 +16,7 @@ class MainHeaderInteractor: ContentProviderInteractor {
 	lazy var sde: SDE! = SDEContainer.shared
 	lazy var storage: Storage! = StorageContainer.shared
 	
-	typealias Content = CachedValue<Info>
+	typealias Content = APIResult<Info>
 	
 	struct Info {
 		var characterName: String?
@@ -31,19 +31,19 @@ class MainHeaderInteractor: ContentProviderInteractor {
 		self.presenter = presenter
 	}
 	
-	func load(cachePolicy: URLRequest.CachePolicy) -> Future<CachedValue<Info>> {
+	func load(cachePolicy: URLRequest.CachePolicy) -> Future<APIResult<Info>> {
 		guard let account = storage.viewContext.currentAccount else {return .init(.failure(NCError.authenticationRequired))}
 		let progress = Progress(totalUnitCount: 6)
 		let api = self.api(cachePolicy: cachePolicy)
 
-		return DispatchQueue.global(qos: .utility).async { () -> CachedValue<Info> in
+		return DispatchQueue.global(qos: .utility).async { () -> APIResult<Info> in
 			let characterInfo =  try progress.performAsCurrent(withPendingUnitCount: 1) { try api.characterInformation().get() }
 			let characterImage = progress.performAsCurrent(withPendingUnitCount: 1) { try? api.image(characterID: account.characterID, dimension: 128).get() }
 			let corporationInfo = progress.performAsCurrent(withPendingUnitCount: 1) { try? api.corporationInformation(corporationID: Int64(characterInfo.value.corporationID)).get() }
 			let corporationImage = progress.performAsCurrent(withPendingUnitCount: 1) { try? api.image(corporationID: Int64(characterInfo.value.corporationID), dimension: 32).get() }
 			
-			let allianceInformation: CachedValue<ESI.Alliance.Information>?
-			let allianceImage: CachedValue<UIImage>?
+			let allianceInformation: APIResult<ESI.Alliance.Information>?
+			let allianceImage: APIResult<UIImage>?
 			
 			if let allianceID = characterInfo.value.allianceID {
 				allianceInformation = progress.performAsCurrent(withPendingUnitCount: 1) { try? api.allianceInformation(allianceID: Int64(allianceID)).get() }
@@ -54,9 +54,15 @@ class MainHeaderInteractor: ContentProviderInteractor {
 				allianceImage = nil
 			}
 			
-			return all(characterInfo, characterImage, corporationInfo, corporationImage, allianceInformation, allianceImage).map { Info(characterName: $0?.name, characterImage: $1, corporation: $2?.name, corporationImage: $3, alliance: $4?.name, allianceImage: $5) }
+			let value = Info(characterName: characterInfo.value.name,
+							 characterImage: characterImage?.value,
+							 corporation: corporationInfo?.value.name,
+							 corporationImage: corporationImage?.value,
+							 alliance: allianceInformation?.value.name,
+							 allianceImage: allianceImage?.value)
+			let cachedUntil = [characterInfo.cachedUntil, characterImage?.cachedUntil, corporationInfo?.cachedUntil, corporationImage?.cachedUntil, allianceInformation?.cachedUntil, allianceImage?.cachedUntil].compactMap {$0}.min()
+			return APIResult(value: value, cachedUntil: cachedUntil)
 		}
-		
 	}
 	
 }

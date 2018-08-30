@@ -11,9 +11,17 @@ import TreeController
 import Futures
 
 extension TreeController {
-	func reload<T: TreeItem>(_ content: [T], options: BatchUpdateOptions = [], with animation: TreeController.RowAnimation = .none) -> Future<Void> {
+	func reloadData<T: Collection>(_ data: T, options: BatchUpdateOptions = [], with animation: TreeController.RowAnimation = .none) -> Future<Void> where T.Element: TreeItem {
 		let promise = Promise<Void>()
-		reload(content, options: options, with: animation) {
+		reloadData(data, options: options, with: animation) {
+			try? promise.fulfill(())
+		}
+		return promise.future
+	}
+	
+	func reloadData<T: TreeItem>(from item: T, options: BatchUpdateOptions = [], with animation: TreeController.RowAnimation = .none)  -> Future<Void> {
+		let promise = Promise<Void>()
+		reloadData(from: item, options: options, with: animation) {
 			try? promise.fulfill(())
 		}
 		return promise.future
@@ -25,8 +33,8 @@ protocol TreeView: ContentProviderView, TreeControllerDelegate where Presenter: 
 	var treeController: TreeController! {get}
 }
 
-protocol TreePresenter: ContentProviderPresenter where View: TreeView, Interactor: TreeInteractor, Presentation == [Item] {
-	associatedtype Item: TreeItem
+protocol TreePresenter: ContentProviderPresenter where View: TreeView, Interactor: TreeInteractor {//, Presentation == [Item] {
+//	associatedtype Item: TreeItem
 	func isItemExpandable<T: TreeItem>(_ item: T) -> Bool
 	func isItemExpanded<T: TreeItem>(_ item: T) -> Bool
 	func didExpand<T: TreeItem>(item: T) -> Void
@@ -36,11 +44,21 @@ protocol TreePresenter: ContentProviderPresenter where View: TreeView, Interacto
 protocol TreeInteractor: ContentProviderInteractor where Presenter: TreePresenter {
 }
 
-extension TreeView {
+extension TreeView where Presenter.Presentation: Collection, Presenter.Presentation.Element: TreeItem {
 	func present(_ content: Presenter.Presentation) -> Future<Void> {
 		tableView.backgroundView = nil
-		return treeController.reload(content)
+		return treeController.reloadData(content)
 	}
+}
+
+extension TreeView where Presenter.Presentation: TreeItem {
+	func present(_ content: Presenter.Presentation) -> Future<Void> {
+		tableView.backgroundView = nil
+		return treeController.reloadData(from: content)
+	}
+}
+
+extension TreeView {
 	
 	func fail(_ error: Error) -> Void {
 		tableView.backgroundView = TableViewBackgroundLabel(error: error)
@@ -48,7 +66,7 @@ extension TreeView {
 
 	func treeController<T: TreeItem> (_ treeController: TreeController, cellIdentifierFor item: T) -> String? {
 		if let item = item as? CellConfiguring ?? (item as? AnyTreeItem)?.base as? CellConfiguring {
-			return item.cellIdentifier
+			return item.prototype?.reuseIdentifier
 		}
 		else {
 			return nil

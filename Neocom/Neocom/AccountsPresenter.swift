@@ -8,6 +8,7 @@
 
 import Foundation
 import TreeController
+import CoreData
 import Futures
 
 class AccountsPresenter: TreePresenter {
@@ -21,10 +22,22 @@ class AccountsPresenter: TreePresenter {
 	}
 
 	var presentation: [AnyTreeItem]?
+	var content: NSFetchedResultsController<Account>?
 	
 	var isLoading: Bool = false
 	
-	func presentation(for content: ()) -> Future<[AnyTreeItem]> {
+	func presentation(for content: NSFetchedResultsController<Account>) -> Future<[AnyTreeItem]> {
 		return .init([])
+	}
+}
+
+extension Tree.Item {
+	class AccountsResultsController: FetchedResultsController<Account, FetchedResultsSection<Account, AccountsItem>, AccountsItem> {
+		weak var presenter: AccountsPresenter?
+		
+		init<T>(_ fetchedResultsController: NSFetchedResultsController<Account>, diffIdentifier: T, presenter: AccountsPresenter) where T : Hashable {
+			self.presenter = presenter
+			super.init(fetchedResultsController, diffIdentifier: diffIdentifier, treeController: presenter.view.treeController)
+		}
 	}
 }

@@ -23,7 +23,7 @@ extension Prototype {
 
 extension Tree.Content {
 	struct Default: Hashable {
-		var prototype: Prototype
+		var prototype: Prototype?
 		var title: String?
 		var subtitle: String?
 		var attributedTitle: NSAttributedString?
@@ -47,9 +47,6 @@ extension Tree.Content {
 }
 
 extension Tree.Content.Default: CellConfiguring {
-	var cellIdentifier: String? {
-		return prototype.reuseIdentifier
-	}
 	
 	func configure(cell: UITableViewCell) {
 		guard let cell = cell as? TreeDefaultCell else {return}

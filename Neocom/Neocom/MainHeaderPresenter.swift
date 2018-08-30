@@ -10,11 +10,11 @@ import Foundation
 import Futures
 
 class MainHeaderPresenter: ContentProviderPresenter {
-	var content: CachedValue<MainHeaderInteractor.Info>?
+	var content: APIResult<MainHeaderInteractor.Info>?
 	var presentation: MainHeaderInteractor.Info?
 	var isLoading: Bool = false
 	
-	func presentation(for content: CachedValue<MainHeaderInteractor.Info>) -> Future<MainHeaderInteractor.Info> {
+	func presentation(for content: APIResult<MainHeaderInteractor.Info>) -> Future<MainHeaderInteractor.Info> {
 		return .init(content.value)
 	}
 

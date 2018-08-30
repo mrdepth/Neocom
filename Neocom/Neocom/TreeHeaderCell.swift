@@ -22,7 +22,7 @@ extension Prototype {
 
 extension Tree.Content {
 	struct Section: Hashable {
-		var prototype: Prototype
+		var prototype: Prototype?
 		var title: String?
 		var attributedTitle: NSAttributedString?
 		var isExpanded: Bool
@@ -51,18 +51,15 @@ extension Tree.Item {
 		
 		var expandIdentifier: CustomStringConvertible?
 		
-		init<T: Hashable>(treeController: TreeController, content: Tree.Content.Section, diffIdentifier: T, expandIdentifier: CustomStringConvertible?, children: Children? = nil) {
+		init<T: Hashable>(_ content: Tree.Content.Section, diffIdentifier: T, expandIdentifier: CustomStringConvertible?, treeController: TreeController, children: Children? = nil) {
 			self.treeController = treeController
 			self.expandIdentifier = expandIdentifier
-			super.init(content: content, diffIdentifier: diffIdentifier, children: children)
+			super.init(content, diffIdentifier: diffIdentifier, children: children)
 		}
 	}
 }
 
 extension Tree.Content.Section: CellConfiguring {
-	var cellIdentifier: String? {
-		return prototype.reuseIdentifier
-	}
 	
 	func configure(cell: UITableViewCell) {
 		guard let cell = cell as? TreeHeaderCell else {return}

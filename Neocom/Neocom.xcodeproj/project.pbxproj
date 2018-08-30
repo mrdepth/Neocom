@@ -44,6 +44,8 @@
 		1256BECE1DF4770A00A2A24B /* Fitting.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE671DF4770A00A2A24B /* Fitting.xcassets */; };
 		1256BF2B1DF4770B00A2A24B /* MainMenu.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BEC61DF4770A00A2A24B /* MainMenu.xcassets */; };
 		1256BF2C1DF4770B00A2A24B /* UI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BEC71DF4770A00A2A24B /* UI.xcassets */; };
+		1259639521381EA100B3A53C /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1259639421381EA100B3A53C /* AccountCell.swift */; };
+		1259639721381ECD00B3A53C /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259639621381ECD00B3A53C /* AccountCell.xib */; };
 		125DF6312133CFBA00B86AE0 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6302133CFBA00B86AE0 /* Main.swift */; };
 		125DF6332133CFC700B86AE0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6322133CFC700B86AE0 /* MainViewController.swift */; };
 		125DF6352133CFD000B86AE0 /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6342133CFD000B86AE0 /* MainPresenter.swift */; };
@@ -135,7 +137,6 @@
 		12B68F2A1E802958006462B7 /* CloudData.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12B68F281E802958006462B7 /* CloudData.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		12B890722130054E0082D4A3 /* SOLID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B890712130054E0082D4A3 /* SOLID.swift */; };
 		12B8907F21300E610082D4A3 /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B8907E21300E610082D4A3 /* TreeView.swift */; };
-		12B89081213023280082D4A3 /* CachedValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B89080213023280082D4A3 /* CachedValue.swift */; };
 		12BC40A21DFF1EBB00657D40 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BC40A11DFF1EBB00657D40 /* Alamofire.framework */; };
 		12BC40A31DFF1EBB00657D40 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12BC40A11DFF1EBB00657D40 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		12BFE4212017BF6F0083AC2F /* ASReceipt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BFE4222017BF6F0083AC2F /* ASReceipt.framework */; };
@@ -407,6 +408,8 @@
 		1256BEC61DF4770A00A2A24B /* MainMenu.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MainMenu.xcassets; sourceTree = "<group>"; };
 		1256BEC71DF4770A00A2A24B /* UI.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = UI.xcassets; sourceTree = "<group>"; };
 		1256BF2D1DF48AA800A2A24B /* NCBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCBackgroundView.swift; sourceTree = "<group>"; };
+		1259639421381EA100B3A53C /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
+		1259639621381ECD00B3A53C /* AccountCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountCell.xib; sourceTree = "<group>"; };
 		125AB80E1E41D9F500B8A2A8 /* UIViewController+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+NC.swift"; sourceTree = "<group>"; };
 		125AB8101E41DEE600B8A2A8 /* NCChargeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCChargeTableViewCell.swift; sourceTree = "<group>"; };
 		125AB8131E42033200B8A2A8 /* NCFittingAmmoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCFittingAmmoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -982,6 +985,24 @@
 			path = Attributes;
 			sourceTree = "<group>";
 		};
+		1259639221381E8800B3A53C /* TreeHeaderCell */ = {
+			isa = PBXGroup;
+			children = (
+				1279EFF021355DC9005340C0 /* TreeHeaderCell.swift */,
+				1279EFF321355DFD005340C0 /* TreeHeaderCell.xib */,
+			);
+			name = TreeHeaderCell;
+			sourceTree = "<group>";
+		};
+		1259639321381E8E00B3A53C /* AccountCell */ = {
+			isa = PBXGroup;
+			children = (
+				1259639421381EA100B3A53C /* AccountCell.swift */,
+				1259639621381ECD00B3A53C /* AccountCell.xib */,
+			);
+			name = AccountCell;
+			sourceTree = "<group>";
+		};
 		125DF62E2133CFAE00B86AE0 /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -998,9 +1019,9 @@
 			isa = PBXGroup;
 			children = (
 				1279EFF6213587D7005340C0 /* Cells.swift */,
+				1259639321381E8E00B3A53C /* AccountCell */,
 				1279EFF221355DE2005340C0 /* TreeDefaultCell */,
-				1279EFF021355DC9005340C0 /* TreeHeaderCell.swift */,
-				1279EFF321355DFD005340C0 /* TreeHeaderCell.xib */,
+				1259639221381E8800B3A53C /* TreeHeaderCell */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1914,6 +1935,7 @@
 				1248DB3A1F1C9DE9009625EC /* NCMailTableViewCell.xib in Resources */,
 				1298BA7F20AEFB73002C941E /* MPCloseButtonX.png in Resources */,
 				12AC8D9E1DEF58A100561A7A /* LaunchScreen.storyboard in Resources */,
+				1259639721381ECD00B3A53C /* AccountCell.xib in Resources */,
 				1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */,
 				128130451F3B08600039D46B /* main.js in Resources */,
 				1298BA7E20AEFB73002C941E /* MPCloseButtonX@3x.png in Resources */,
@@ -2003,7 +2025,6 @@
 				12AB9737212C0ECC00B30DD3 /* SDE+Constants.swift in Sources */,
 				12AB974F212C325E00B30DD3 /* ImageValueTransformer.swift in Sources */,
 				121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */,
-				12B89081213023280082D4A3 /* CachedValue.swift in Sources */,
 				12D3109A211C282100367440 /* PersistentContext.swift in Sources */,
 				12AFD473211C1E7D00007423 /* Cache.swift in Sources */,
 				1279EFF7213587D7005340C0 /* Cells.swift in Sources */,
@@ -2033,6 +2054,7 @@
 				12E04181212D44360000CB4F /* Config.swift in Sources */,
 				12AFD476211C1EA800007423 /* Cache.xcdatamodeld in Sources */,
 				1279EFF921358922005340C0 /* TintImageView.swift in Sources */,
+				1259639521381EA100B3A53C /* AccountCell.swift in Sources */,
 				12AB973E212C162A00B30DD3 /* Character.swift in Sources */,
 				125DF6352133CFD000B86AE0 /* MainPresenter.swift in Sources */,
 				125DF6312133CFBA00B86AE0 /* Main.swift in Sources */,

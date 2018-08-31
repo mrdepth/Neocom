@@ -12,124 +12,107 @@ import EVEAPI
 import Alamofire
 import Expressible
 
-protocol APIResultProtocol {
+protocol ESIResultProtocol {
 	associatedtype Value
 	var value: Value {get}
-	var cachedUntil: Date? {get}
+	var expires: Date? {get}
 }
 
-struct APIResult<Value>: APIResultProtocol {
-	var value: Value
-	var cachedUntil: Date?
-	func map<T>(_ transform: (Value) throws -> T) rethrows -> APIResult<T> {
-		return try APIResult<T>(value: transform(value), cachedUntil: cachedUntil)
+extension ESI.Result: ESIResultProtocol {
+	func map<T>(_ transform: (Value) throws -> T) rethrows -> ESI.Result<T> {
+		return try ESI.Result<T>(value: transform(value), expires: expires)
 	}
 }
 
-
 protocol CharacterAPI: class {
-	func characterInformation() -> Future<APIResult<ESI.Character.Information>>
-	func characterInformation(with characterID: Int64) -> Future<APIResult<ESI.Character.Information>>
-	func blueprints() -> Future<APIResult<[ESI.Character.Blueprint]>>
-	func character() -> Future<APIResult<Character>>
+	func characterInformation(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Character.Information>>
+	func characterInformation(with characterID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Character.Information>>
+	func blueprints(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Character.Blueprint]>>
+	func character(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<Character>>
 }
 
 protocol SkillsAPI: class {
-	func characterAttributes() -> Future<APIResult<ESI.Skills.CharacterAttributes>>
-	func skillQueue() -> Future<APIResult<[ESI.Skills.SkillQueueItem]>>
-	func skills() -> Future<APIResult<ESI.Skills.CharacterSkills>>
+	func characterAttributes(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Skills.CharacterAttributes>>
+	func skillQueue(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Skills.SkillQueueItem]>>
+	func skills(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Skills.CharacterSkills>>
 }
 
 protocol ClonesAPI: class {
-	func clones() -> Future<APIResult<ESI.Clones.JumpClones>>
-	func implants() -> Future<APIResult<[Int]>>
+	func clones(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Clones.JumpClones>>
+	func implants(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[Int]>>
 }
 
 protocol ImageAPI: class {
-	func image(characterID: Int64, dimension: Int) -> Future<APIResult<UIImage>>
-	func image(corporationID: Int64, dimension: Int) -> Future<APIResult<UIImage>>
-	func image(allianceID: Int64, dimension: Int) -> Future<APIResult<UIImage>>
-	func image(typeID: Int, dimension: Int) -> Future<APIResult<UIImage>>
+	func image(characterID: Int64, dimension: Int, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<UIImage>>
+	func image(corporationID: Int64, dimension: Int, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<UIImage>>
+	func image(allianceID: Int64, dimension: Int, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<UIImage>>
+	func image(typeID: Int, dimension: Int, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<UIImage>>
 }
 
 protocol CorporationAPI: class {
-	func corporationInformation(corporationID: Int64) -> Future<APIResult<ESI.Corporation.Information>>
-	func divisions() -> Future<APIResult<ESI.Corporation.Divisions>>
+	func corporationInformation(corporationID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Corporation.Information>>
+	func divisions(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Corporation.Divisions>>
 }
 
 protocol AllianceAPI: class {
-	func allianceInformation(allianceID: Int64) -> Future<APIResult<ESI.Alliance.Information>>
+	func allianceInformation(allianceID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Alliance.Information>>
 }
 
 protocol LocationAPI: class {
-	func characterLocation() -> Future<APIResult<ESI.Location.CharacterLocation>>
-	func characterShip() -> Future<APIResult<ESI.Location.CharacterShip>>
+	func characterLocation(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Location.CharacterLocation>>
+	func characterShip(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Location.CharacterShip>>
 }
 
 protocol StatusAPI: class {
-	func serverStatus() -> Future<APIResult<ESI.Status.ServerStatus>>
+	func serverStatus(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Status.ServerStatus>>
 }
 
 protocol WalletAPI: class {
-	func walletBalance() -> Future<APIResult<Double>>
-	func walletJournal() -> Future<APIResult<[ESI.Wallet.WalletJournalItem]>>
-	func walletTransactions() -> Future<APIResult<[ESI.Wallet.Transaction]>>
+	func walletBalance(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<Double>>
+	func walletJournal(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Wallet.WalletJournalItem]>>
+	func walletTransactions(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Wallet.Transaction]>>
 }
 
 typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI
 
 class APIClient: API {
 	
-	var cache: Cache
-	var sde: SDE
-	var cachePolicy: URLRequest.CachePolicy
-	var server: ESI.Server
-	private var account: String?
-	private var oAuth2Token: OAuth2Token?
-	private var characterID: Int64?
+	private var characterID: Int64? {
+		return esi.token?.characterID
+	}
 	
-	private lazy var esi: ESI = ESI(token: self.oAuth2Token, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey, server: self.server, cachePolicy: self.cachePolicy)
+	let esi: ESI
 	
-	init(account: Account? = nil, server: ESI.Server = .tranquility, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, cache: Cache = CacheContainer.shared, sde: SDE = SDEContainer.shared) {
-		self.account = account?.uuid
-		self.cache = cache
-		self.sde = sde
-		self.cachePolicy = cachePolicy
-		self.server = server
-		self.oAuth2Token = account?.oAuth2Token
-		self.characterID = account?.characterID
+	init(esi: ESI) {
+		self.esi = esi
 	}
 	
 	//MARK: CharacterAPI
 
-	func characterInformation() -> Future<APIResult<ESI.Character.Information>> {
+	func characterInformation(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Character.Information>> {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
-		return characterInformation(with: id)
+		return characterInformation(with: id, cachePolicy: cachePolicy)
 	}
 	
-	func characterInformation(with characterID: Int64) -> Future<APIResult<ESI.Character.Information>> {
+	func characterInformation(with characterID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Character.Information>> {
 		let esi = self.esi
-		return load(for: "ESI.Character.Information.\(characterID)", account: account, loader: { etag in
-			return esi.character.getCharactersPublicInformation(characterID: Int(characterID), ifNoneMatch: etag)
-		})
+		return esi.character.getCharactersPublicInformation(characterID: Int(characterID), cachePolicy: cachePolicy)
 	}
 
-	func blueprints() -> Future<APIResult<[ESI.Character.Blueprint]>> {
+	func blueprints(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Character.Blueprint]>> {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
 		let esi = self.esi
-		return load(for: "ESI.Character.Blueprint", account: account, loader: { etag in
-			return esi.character.getBlueprints(characterID: Int(id), ifNoneMatch: etag)
-		})
+		return esi.character.getBlueprints(characterID: Int(id), cachePolicy: cachePolicy)
 	}
 	
-	func character() -> Future<APIResult<Character>> {
+	func character(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<Character>> {
 		
-		return self.sde.performBackgroundTask{ [weak self] context -> APIResult<Character> in
+		return Services.sde.performBackgroundTask{ [weak self] context -> ESI.Result<Character> in
 			guard let strongSelf = self else {throw NCError.cancelled(type: APIClient.self, function: #function)}
-			let (attributes, skills, skillQueue, implants) = try all(strongSelf.characterAttributes(),
-																	 strongSelf.skills(),
-																	 strongSelf.skillQueue(),
-																	 strongSelf.implants()).get()
+			let (attributes, skills, skillQueue, implants) = try all(strongSelf.characterAttributes(cachePolicy: cachePolicy),
+																	 strongSelf.skills(cachePolicy: cachePolicy),
+																	 strongSelf.skillQueue(cachePolicy: cachePolicy),
+																	 strongSelf.implants(cachePolicy: cachePolicy)).get()
 			
 			let characterAttributes = Character.Attributes(intelligence: attributes.value.intelligence,
 														   memory: attributes.value.memory,
@@ -164,246 +147,134 @@ class APIClient: API {
 									  augmentations: augmentations,
 									  trainedSkills: trainedSkills,
 									  skillQueue: sq)
-			let cachedUntil = [attributes.cachedUntil, skills.cachedUntil, skillQueue.cachedUntil, implants.cachedUntil].compactMap {$0}.min()
-			return APIResult(value: character, cachedUntil: cachedUntil)
+			let expires = [attributes.expires, skills.expires, skillQueue.expires, implants.expires].compactMap {$0}.min()
+			return ESI.Result(value: character, expires: expires)
 		}
 	}
 	
 	//MARK: SkillsAPI
 
-	func characterAttributes() -> Future<APIResult<ESI.Skills.CharacterAttributes>> {
+	func characterAttributes(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Skills.CharacterAttributes>> {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
-		let esi = self.esi
-		return load(for: "ESI.Skills.CharacterAttributes", account: account, loader: { etag in
-			return esi.skills.getCharacterAttributes(characterID: Int(id), ifNoneMatch: etag)
-		})
+		return esi.skills.getCharacterAttributes(characterID: Int(id), cachePolicy: cachePolicy)
 	}
 	
-	func skillQueue() -> Future<APIResult<[ESI.Skills.SkillQueueItem]>> {
+	func skillQueue(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Skills.SkillQueueItem]>> {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
-		let esi = self.esi
-		return load(for: "ESI.Skills.SkillQueueItem", account: account, loader: { etag in
-			return esi.skills.getCharactersSkillQueue(characterID: Int(id), ifNoneMatch: etag)
-		})
+		return esi.skills.getCharactersSkillQueue(characterID: Int(id), cachePolicy: cachePolicy)
 	}
 	
-	func skills() -> Future<APIResult<ESI.Skills.CharacterSkills>> {
+	func skills(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Skills.CharacterSkills>> {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
-		let esi = self.esi
-		return load(for: "ESI.Skills.CharacterSkills", account: account, loader: { etag in
-			return esi.skills.getCharacterSkills(characterID: Int(id), ifNoneMatch: etag)
-		})
+		return esi.skills.getCharacterSkills(characterID: Int(id), cachePolicy: cachePolicy)
 	}
 	
 	//MARK: ClonesAPI
 
-	func implants() -> Future<APIResult<[Int]>> {
+	func implants(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[Int]>> {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
-		let esi = self.esi
-		return load(for: "Implants", account: account, loader: { etag in
-			return esi.clones.getActiveImplants(characterID: Int(id), ifNoneMatch: etag)
-		})
+		return esi.clones.getActiveImplants(characterID: Int(id), cachePolicy: cachePolicy)
 	}
 	
-	func clones() -> Future<APIResult<ESI.Clones.JumpClones>> {
+	func clones(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Clones.JumpClones>> {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
-		let esi = self.esi
-		return load(for: "ESI.Clones.JumpClones", account: account, loader: { etag in
-			return esi.clones.getClones(characterID: Int(id), ifNoneMatch: etag)
-		})
+		return esi.clones.getClones(characterID: Int(id), cachePolicy: cachePolicy)
 	}
 
 	//MARK: ImageAPI
 
-	func image(characterID: Int64, dimension: Int) -> Future<APIResult<UIImage>> {
-		let esi = self.esi
-		return load(for: "image.character.\(characterID).\(dimension)", account: nil, loader: { (_) -> Future<ESI.Result<Data>> in
-			return esi.image(characterID: Int(characterID), dimension: dimension * Int(UIScreen.main.scale))
-		}).then { result -> APIResult<UIImage> in
-			return try result.map { value -> UIImage in
-				guard let image = UIImage(data: value) else {throw NCError.invalidImageFormat}
-				return image
-			}
+	func image(characterID: Int64, dimension: Int, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<UIImage>> {
+		return esi.image(characterID: Int(characterID), dimension: dimension * Int(UIScreen.main.scale), cachePolicy: cachePolicy)
+			.then { result -> ESI.Result<UIImage> in
+				return try result.map { value -> UIImage in
+					guard let image = UIImage(data: value) else {throw NCError.invalidImageFormat}
+					return image
+				}
 		}
 	}
 	
-	func image(corporationID: Int64, dimension: Int) -> Future<APIResult<UIImage>> {
-		let esi = self.esi
-		return load(for: "image.corporation.\(corporationID).\(dimension)", account: nil, loader: { (_) -> Future<ESI.Result<Data>> in
-			return esi.image(corporationID: Int(corporationID), dimension: dimension * Int(UIScreen.main.scale))
-		}).then { result -> APIResult<UIImage> in
-			return try result.map { value -> UIImage in
-				guard let image = UIImage(data: value) else {throw NCError.invalidImageFormat}
-				return image
-			}
+	func image(corporationID: Int64, dimension: Int, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<UIImage>> {
+		return esi.image(corporationID: Int(corporationID), dimension: dimension * Int(UIScreen.main.scale), cachePolicy: cachePolicy)
+			.then { result -> ESI.Result<UIImage> in
+				return try result.map { value -> UIImage in
+					guard let image = UIImage(data: value) else {throw NCError.invalidImageFormat}
+					return image
+				}
 		}
 	}
 	
-	func image(allianceID: Int64, dimension: Int) -> Future<APIResult<UIImage>> {
-		let esi = self.esi
-		return load(for: "image.alliance.\(allianceID).\(dimension)", account: nil, loader: { (_) -> Future<ESI.Result<Data>> in
-			return esi.image(allianceID: Int(allianceID), dimension: dimension * Int(UIScreen.main.scale))
-		}).then { result -> APIResult<UIImage> in
-			return try result.map { value -> UIImage in
-				guard let image = UIImage(data: value) else {throw NCError.invalidImageFormat}
-				return image
-			}
+	func image(allianceID: Int64, dimension: Int, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<UIImage>> {
+		return esi.image(allianceID: Int(allianceID), dimension: dimension * Int(UIScreen.main.scale), cachePolicy: cachePolicy)
+			.then { result -> ESI.Result<UIImage> in
+				return try result.map { value -> UIImage in
+					guard let image = UIImage(data: value) else {throw NCError.invalidImageFormat}
+					return image
+				}
 		}
 	}
 	
-	func image(typeID: Int, dimension: Int) -> Future<APIResult<UIImage>> {
-		let esi = self.esi
-		return load(for: "image.type.\(typeID).\(dimension)", account: nil, loader: { (_) -> Future<ESI.Result<Data>> in
-			return esi.image(typeID: typeID, dimension: dimension * Int(UIScreen.main.scale))
-		}).then { result -> APIResult<UIImage> in
-			return try result.map { value -> UIImage in
-				guard let image = UIImage(data: value) else {throw NCError.invalidImageFormat}
-				return image
-			}
+	func image(typeID: Int, dimension: Int, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<UIImage>> {
+		return esi.image(typeID: typeID, dimension: dimension * Int(UIScreen.main.scale), cachePolicy: cachePolicy)
+			.then { result -> ESI.Result<UIImage> in
+				return try result.map { value -> UIImage in
+					guard let image = UIImage(data: value) else {throw NCError.invalidImageFormat}
+					return image
+				}
 		}
 	}
 
 	//MARK: CorporationAPI
 
-	func corporationInformation(corporationID: Int64) -> Future<APIResult<ESI.Corporation.Information>> {
-		let esi = self.esi
-		return load(for: "ESI.Corporation.Information.\(corporationID)", account: account, loader: { etag in
-			return esi.corporation.getCorporationInformation(corporationID: Int(corporationID), ifNoneMatch: etag)
-		})
+	func corporationInformation(corporationID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Corporation.Information>> {
+		return esi.corporation.getCorporationInformation(corporationID: Int(corporationID), cachePolicy: cachePolicy)
 	}
 	
-	func divisions() -> Future<APIResult<ESI.Corporation.Divisions>> {
-		let esi = self.esi
-		return load(for: "ESI.Corporation.Division", account: account, loader: { etag in
-			return self.characterInformation().then { result in
-				return esi.corporation.getCorporationDivisions(corporationID: result.value.corporationID, ifNoneMatch: etag)
-			}
-		})
+	func divisions(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Corporation.Divisions>> {
+		return characterInformation(cachePolicy: cachePolicy).then { [weak self] result in
+			guard let strongSelf = self else { throw NCError.cancelled(type: APIClient.self, function: #function)}
+			return strongSelf.esi.corporation.getCorporationDivisions(corporationID: result.value.corporationID, cachePolicy: cachePolicy)
+		}
 	}
 	
 	//MARK: AllianceAPI
 	
-	func allianceInformation(allianceID: Int64) -> Future<APIResult<ESI.Alliance.Information>> {
-		let esi = self.esi
-		return load(for: "ESI.Alliance.Information.\(allianceID)", account: account, loader: { etag in
-			return esi.alliance.getAllianceInformation(allianceID: Int(allianceID), ifNoneMatch: etag)
-		})
+	func allianceInformation(allianceID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Alliance.Information>> {
+		return esi.alliance.getAllianceInformation(allianceID: Int(allianceID), cachePolicy: cachePolicy)
 	}
 	
 	//MARK: LocationAPI
 	
-	func characterLocation() -> Future<APIResult<ESI.Location.CharacterLocation>> {
+	func characterLocation(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Location.CharacterLocation>> {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
-		let esi = self.esi
-		return load(for: "ESI.Location.CharacterLocation", account: account, loader: { etag in
-			return esi.location.getCharacterLocation(characterID: Int(id), ifNoneMatch: etag)
-		})
+		return esi.location.getCharacterLocation(characterID: Int(id), cachePolicy: cachePolicy)
 	}
 	
-	func characterShip() -> Future<APIResult<ESI.Location.CharacterShip>> {
+	func characterShip(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Location.CharacterShip>> {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
-		let esi = self.esi
-		return load(for: "ESI.Location.CharacterShip", account: account, loader: { etag in
-			return esi.location.getCurrentShip(characterID: Int(id), ifNoneMatch: etag)
-		})
+		return esi.location.getCurrentShip(characterID: Int(id), cachePolicy: cachePolicy)
 	}
 
 	//MARK: StatusAPI
 
-	func serverStatus() -> Future<APIResult<ESI.Status.ServerStatus>> {
-		let esi = self.esi
-		return load(for: "ESI.Status.ServerStatus", account: account, loader: { etag in
-			return esi.status.retrieveTheUptimeAndPlayerCounts(ifNoneMatch: etag)
-		})
+	func serverStatus(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Status.ServerStatus>> {
+		return esi.status.retrieveTheUptimeAndPlayerCounts(cachePolicy: cachePolicy)
 	}
 	
 	//MARK: WalletAPI
 	
-	func walletBalance() -> Future<APIResult<Double>> {
+	func walletBalance(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<Double>> {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
-		let esi = self.esi
-		return load(for: "ESI.WalletBalance", account: account, loader: { etag in
-			return esi.wallet.getCharactersWalletBalance(characterID: Int(id), ifNoneMatch: etag)
-		})
+		return esi.wallet.getCharactersWalletBalance(characterID: Int(id), cachePolicy: cachePolicy)
 	}
 	
-	func walletJournal() -> Future<APIResult<[ESI.Wallet.WalletJournalItem]>> {
+	func walletJournal(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Wallet.WalletJournalItem]>> {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
-		let esi = self.esi
-		return load(for: "ESI.Wallet.WalletJournalItem", account: account, loader: { etag in
-			return esi.wallet.getCharacterWalletJournal(characterID: Int(id), ifNoneMatch: etag)
-		})
+		return esi.wallet.getCharacterWalletJournal(characterID: Int(id), cachePolicy: cachePolicy)
 	}
 	
-	func walletTransactions() -> Future<APIResult<[ESI.Wallet.Transaction]>> {
+	func walletTransactions(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Wallet.Transaction]>> {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
-		let esi = self.esi
-		return load(for: "ESI.Wallet.Transaction", account: account, loader: { etag in
-			return esi.wallet.getWalletTransactions(characterID: Int(id), ifNoneMatch: etag)
-		})
+		return esi.wallet.getWalletTransactions(characterID: Int(id), cachePolicy: cachePolicy)
 	}
 
-}
-
-extension APIClient {
-	func load<T: Codable>(for identifier: String, account: String?, loader: @escaping (_ etag: String?) -> Future<ESI.Result<T>>) -> Future<APIResult<T>> {
-		let cachePolicy = self.cachePolicy
-		let cache = self.cache
-		return cache.performBackgroundTask { (context) -> APIResult<T> in
-			var cacheRecord = context.record(identifier: identifier, account: account)
-			
-			func load(etag: String?) throws {
-				let result = try loader(etag).get()
-				if cacheRecord == nil {
-					cacheRecord = context.newRecord(identifier: identifier, account: account)
-				}
-				cacheRecord?.setValue(result.value)
-				cacheRecord?.date = Date()
-				cacheRecord?.cachedUntil = result.cached.map{Date(timeIntervalSinceNow: $0)}
-				cacheRecord?.etag = result.etag
-			}
-			
-			func makeResult() throws -> APIResult<T>{
-				try? context.save()
-				
-				guard let cacheRecord = cacheRecord,
-					let value: T = cacheRecord.getValue() else {throw NCError.noCachedResult(type: T.self, identifier: identifier)}
-				return APIResult(value: value, cachedUntil: cacheRecord.cachedUntil)
-//				return APIResult<T>(value: value, cachedUntil: cacheRecord.cachedUntil, observer: APICacheRecordObserver<APIResult<T>>(cacheRecord: cacheRecord, cache: cache))
-			}
-			
-			
-			switch cachePolicy {
-			case .useProtocolCachePolicy, .reloadRevalidatingCacheData:
-				if cacheRecord?.isExpired != false {
-					do {
-						try load(etag: cacheRecord?.etag)
-					}
-					catch {
-						if case AFError.responseValidationFailed(reason: .unacceptableStatusCode(code: 304)) = error {
-							return try makeResult()
-						}
-						else if let cachedUntil = cacheRecord?.cachedUntil, Date().timeIntervalSince(cachedUntil) < Config.current.maxCacheTime {
-							return try makeResult()
-						}
-						else {
-							throw error
-						}
-					}
-				}
-				return try makeResult()
-			case .reloadIgnoringLocalCacheData, .reloadIgnoringLocalAndRemoteCacheData:
-				try load(etag: nil)
-				return try makeResult()
-			case .returnCacheDataElseLoad:
-				do {
-					return try makeResult()
-				} catch { }
-				try load(etag: cacheRecord?.etag)
-				return try makeResult()
-			case .returnCacheDataDontLoad:
-				return try makeResult()
-			}
-		}
-	}
 }

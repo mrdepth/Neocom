@@ -15,11 +15,14 @@ import Futures
 class API_Tests: XCTestCase {
     
     override func setUp() {
+		Services.cache = cache
+		Services.sde = sde
+		Services.storage = storage
+
 		if storage.viewContext.account(with: oAuth2Token) == nil {
 			_ = storage.viewContext.newAccount(with: oAuth2Token)
 			try! storage.viewContext.save()
 		}
-		
 		
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -30,45 +33,14 @@ class API_Tests: XCTestCase {
         super.tearDown()
     }
     
-    func testAPIObserver() {
-		let account: Account? = storage.viewContext.accounts().first
-		XCTAssertNotNil(account)
-		
-		var api: API! = APIClient(account: account, cache: cache, sde: sde)
-		
-		let exp = expectation(description: "Wait")
-		
-		
-		var value: CachedValue<ESI.Character.Information>?
-		
-		let ci = api.characterInformation().then { result in
-			value = result
-			result.observer?.handler = { _ in
-				exp.fulfill()
-			}
-		}.catch { error in
-			XCTFail(error.localizedDescription)
-		}
-		
-		ci.finally(on: .main) {
-			api = APIClient(account: account, cachePolicy: .reloadIgnoringLocalCacheData, cache: cache, sde: sde)
-			_ = api.characterInformation().catch { error in
-				XCTFail(error.localizedDescription)
-			}
-		}
-		
-		wait(for: [exp], timeout: 10)
-		value = nil
-		api = nil
-    }
-	
 	func testCharacter() {
 		let account: Account? = storage.viewContext.accounts().first
 		XCTAssertNotNil(account)
-		var api: API! = APIClient(account: account, cache: cache, sde: sde)
+		
+		var api: API! = Services.api.make(for: account)
 		let exp = expectation(description: "Wait")
 		
-		api.character().then { result in
+		api.character(cachePolicy: .useProtocolCachePolicy).then { result in
 			XCTAssertFalse(result.value.trainedSkills.isEmpty)
 			
 			exp.fulfill()

@@ -111,7 +111,7 @@ extension TreePresenter {
 	func isItemExpanded<T: TreeItem>(_ item: T) -> Bool {
 		if let item = item as? ExpandableItem ?? (item as? AnyTreeItem)?.base as? ExpandableItem {
 			if let identifier = item.expandIdentifier?.description,
-				let state = interactor.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) {
+				let state = Services.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) {
 				return state.isExpanded
 			}
 			else {
@@ -126,8 +126,8 @@ extension TreePresenter {
 	func didExpand<T: TreeItem>(item: T) {
 		if var item = item as? ExpandableItem ?? (item as? AnyTreeItem)?.base as? ExpandableItem,
 			let identifier = item.expandIdentifier?.description {
-			let state = interactor.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) ??
-				interactor.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: View.self)
+			let state = Services.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) ??
+				Services.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: View.self)
 			state.isExpanded = true
 			item.isExpanded = true
 		}
@@ -137,8 +137,8 @@ extension TreePresenter {
 	func didCollapse<T: TreeItem>(item: T) {
 		if var item = item as? ExpandableItem ?? (item as? AnyTreeItem)?.base as? ExpandableItem,
 			let identifier = item.expandIdentifier?.description {
-			let state = interactor.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) ??
-				interactor.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: View.self)
+			let state = Services.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) ??
+				Services.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: View.self)
 			state.isExpanded = false
 			item.isExpanded = false
 		}

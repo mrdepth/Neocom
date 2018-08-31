@@ -9,6 +9,7 @@
 import Foundation
 import TreeController
 import Futures
+import EVEAPI
 
 struct Prototype: Hashable {
 	var nib: UINib?
@@ -130,11 +131,11 @@ extension Tree.Item {
 		}
 	}
 
-	class APIResultRow<Content: Hashable>: Row<Content> {
-		let value: Future<APIResult<Content>>
+	class ESIResultRow<Content: Hashable>: Row<Content> {
+		let value: Future<ESI.Result<Content>>
 		weak var treeController: TreeController?
 		
-		init<T: Hashable>(_ content: Content, value: Future<APIResult<Content>>, diffIdentifier: T, treeController: TreeController) {
+		init<T: Hashable>(_ content: Content, value: Future<ESI.Result<Content>>, diffIdentifier: T, treeController: TreeController) {
 			self.value = value
 			self.treeController = treeController
 			super.init(content, diffIdentifier: diffIdentifier)

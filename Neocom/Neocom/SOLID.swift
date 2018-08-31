@@ -20,13 +20,9 @@ protocol View: class {
 protocol Interactor: class {
 	associatedtype Presenter: Neocom.Presenter
 	var presenter: Presenter! {get set}
-	var cache: Cache! {get set}
-	var sde: SDE! {get set}
-	var storage: Storage! {get set}
 	
 	init(presenter: Presenter)
 	func configure() -> Void
-	func api(cachePolicy: URLRequest.CachePolicy) -> API
 }
 
 protocol Presenter: class {
@@ -98,12 +94,7 @@ extension Presenter where View: UIView {
 }
 
 extension Interactor {
-	func api(cachePolicy: URLRequest.CachePolicy) -> API {
-		return APIClient(account: storage.viewContext.currentAccount, cachePolicy: cachePolicy, cache: cache, sde: sde)
-	}
-
 	func configure() {
-
 	}
 }
 
@@ -173,11 +164,11 @@ extension ContentProviderPresenter where Interactor.Content == Void {
 	}
 }
 
-extension ContentProviderInteractor where Content: APIResultProtocol {
+extension ContentProviderInteractor where Content: ESIResultProtocol {
 	
 	func isExpired(_ content: Content) -> Bool {
-		guard let cachedUntil = content.cachedUntil else {return true}
-		return cachedUntil < Date()
+		guard let expires = content.expires else {return true}
+		return expires < Date()
 	}
 }
 

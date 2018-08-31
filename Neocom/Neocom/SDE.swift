@@ -91,7 +91,7 @@ class SDEContainer: SDE {
 		return promise.future
 	}
 	
-	static let shared = SDEContainer()
+//	static let shared = SDEContainer()
 }
 
 

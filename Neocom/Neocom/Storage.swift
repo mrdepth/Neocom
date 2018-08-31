@@ -95,7 +95,7 @@ class StorageContainer: Storage {
 		return promise.future
 	}
 	
-	static let shared = StorageContainer()
+//	static let shared = StorageContainer()
 }
 
 struct StorageContextBox: StorageContext {

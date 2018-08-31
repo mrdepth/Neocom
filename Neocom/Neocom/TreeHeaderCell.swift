@@ -51,7 +51,7 @@ extension Tree.Item {
 		
 		var expandIdentifier: CustomStringConvertible?
 		
-		init<T: Hashable>(_ content: Tree.Content.Section, diffIdentifier: T, expandIdentifier: CustomStringConvertible?, treeController: TreeController, children: Children? = nil) {
+		init<T: Hashable>(_ content: Tree.Content.Section, diffIdentifier: T, expandIdentifier: CustomStringConvertible?, treeController: TreeController?, children: Children? = nil) {
 			self.treeController = treeController
 			self.expandIdentifier = expandIdentifier
 			super.init(content, diffIdentifier: diffIdentifier, children: children)

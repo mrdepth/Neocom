@@ -24,26 +24,37 @@ protocol FetchedResultsTreeItemProtocol: class {
 
 
 extension Tree.Item {
-	class FetchedResultsController<Result: NSFetchRequestResult & Equatable, Section: FetchedResultsSection<Result, Item>, Item: FetchedResultsItem<Result>>: NSObject, TreeItem, NSFetchedResultsControllerDelegate, FetchedResultsControllerTreeItemProtocol {
+	class FetchedResultsController<Result: NSFetchRequestResult & Equatable, Child: FetchedResultsSection<Result, Item>, Item: FetchedResultsItem<Result>>: NSObject, TreeItem, NSFetchedResultsControllerDelegate, FetchedResultsControllerTreeItemProtocol {
 		var fetchedResultsController: NSFetchedResultsController<Result>
 		weak var treeController: TreeController?
 		
 		override var hash: Int {
-			return fetchedResultsController.hash
+			return fetchedResultsController.fetchRequest.hash
 		}
-		
+
+		typealias DiffIdentifier = AnyHashable
 		var diffIdentifier: AnyHashable
+//		typealias Child = Item
+//		var children: [Child]?
+		typealias Children = [Child]
 		
-		lazy var children: [Section]? = fetchedResultsController.sections?.map {Section($0, controller: self)}
+		lazy var children: [Child]? = {
+			try? fetchedResultsController.performFetch()
+			return fetchedResultsController.sections?.map {Child($0, controller: self)}
+		}()
 		
-		init<T: Hashable>(_ fetchedResultsController: NSFetchedResultsController<Result>, diffIdentifier: T, treeController: TreeController) {
+		init<T: Hashable>(_ fetchedResultsController: NSFetchedResultsController<Result>, diffIdentifier: T, treeController: TreeController?) {
 			self.fetchedResultsController = fetchedResultsController
 			self.diffIdentifier = AnyHashable(diffIdentifier)
 			self.treeController = treeController
 			super.init()
 		}
 		
-		static func == (lhs: Tree.Item.FetchedResultsController<Result, Section, Item>, rhs: Tree.Item.FetchedResultsController<Result, Section, Item>) -> Bool {
+		convenience init(_ fetchedResultsController: NSFetchedResultsController<Result>, treeController: TreeController?) {
+			self.init(fetchedResultsController, diffIdentifier: fetchedResultsController.fetchRequest, treeController: treeController)
+		}
+
+		static func == (lhs: Tree.Item.FetchedResultsController<Result, Child, Item>, rhs: Tree.Item.FetchedResultsController<Result, Child, Item>) -> Bool {
 			return lhs.fetchedResultsController == rhs.fetchedResultsController
 		}
 		
@@ -55,7 +66,7 @@ extension Tree.Item {
 		}
 		private var updates: Updates?
 		
-		func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+		/*func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 			updates = Updates()
 		}
 		
@@ -107,12 +118,12 @@ extension Tree.Item {
 			}
 			
 			treeController?.update(contentsOf: self, with: .fade)
-		}
+		}*/
 	}
 	
-	class FetchedResultsSection<Result: NSFetchRequestResult & Equatable, Item: FetchedResultsItem<Result>>: TreeItem, FetchedResultsSectionTreeItemProtocol {
-		static func == (lhs: Tree.Item.FetchedResultsSection<Result, Item>, rhs: Tree.Item.FetchedResultsSection<Result, Item>) -> Bool {
-			return (lhs.sectionInfo.objects as? [Result]) == (rhs.sectionInfo.objects as? [Result])
+	class FetchedResultsSection<Result: NSFetchRequestResult & Equatable, Child: FetchedResultsItem<Result>>: TreeItem, FetchedResultsSectionTreeItemProtocol {
+		static func == (lhs: Tree.Item.FetchedResultsSection<Result, Child>, rhs: Tree.Item.FetchedResultsSection<Result, Child>) -> Bool {
+			return lhs.sectionInfo.name == rhs.sectionInfo.name
 		}
 		
 		weak var controller: FetchedResultsControllerTreeItemProtocol?
@@ -121,12 +132,13 @@ extension Tree.Item {
 		var hashValue: Int {
 			return sectionInfo.name.hashValue
 		}
-		
+
 		var diffIdentifier: String {
 			return sectionInfo.name
 		}
 		
-		lazy var children: [Item]? = sectionInfo.objects?.map{Item($0 as! Result, section: self)}
+//		typealias Child = Item
+//		lazy var children: [Item]? = sectionInfo.objects?.map{Item($0 as! Result, section: self)}
 
 		
 		required init(_ sectionInfo: NSFetchedResultsSectionInfo, controller: FetchedResultsControllerTreeItemProtocol) {

@@ -11,11 +11,20 @@ import XCTest
 import TreeController
 import Futures
 import EVEAPI
+import Expressible
+import CoreData
 
 class SOLID_Tests: XCTestCase {
 
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+		Services.cache = cache
+		Services.sde = sde
+		Services.storage = storage
+
+		if storage.viewContext.account(with: oAuth2Token) == nil {
+			_ = storage.viewContext.newAccount(with: oAuth2Token)
+			try! storage.viewContext.save()
+		}
     }
 
     override func tearDown() {
@@ -33,23 +42,13 @@ class SOLID_Tests: XCTestCase {
 			XCTAssertEqual(view!.tableView.numberOfRows(inSection: 0), 1)
 			
 			
-			
-			var counter = 0
 			view!.didPresent = {
-				XCTAssertLessThan(counter, 2)
-				counter += 1
-				if  counter == 2 {
-					DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-						exp.fulfill()
-					})
-				}
+				exp.fulfill()
 			}
 			
 			DispatchQueue.main.async {
-				view!.presenter.interactor.load(cachePolicy: .reloadIgnoringLocalCacheData).finally(on: .main) {
-					view!.presenter.content!.cachedUntil = Date.init(timeIntervalSinceNow: -10)
-					view!.presenter.applicationWillEnterForeground()
-				}
+				view!.presenter.content!.expires = Date.init(timeIntervalSinceNow: -10)
+				view!.presenter.applicationWillEnterForeground()
 			}
 		}
 		
@@ -60,7 +59,25 @@ class SOLID_Tests: XCTestCase {
 		wait(for: [exp], timeout: 10)
 		view = nil
     }
+	
+	func testCoreData() {
+		let exp = expectation(description: "end")
+		
+		var view: SolidTestViewController2! = SolidTestViewController2()
+		
+		view.didPresent = { [weak view] in
+			XCTAssertNotNil(view)
+			XCTAssertEqual(view!.tableView.numberOfSections, 2)
+			XCTAssertEqual(view!.tableView.numberOfRows(inSection: 0), 1)
 
+			exp.fulfill()
+		}
+		view.loadViewIfNeeded()
+		view.viewWillAppear(true)
+		wait(for: [exp], timeout: 10)
+		view = nil
+	}
+	
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
@@ -106,15 +123,14 @@ class SolidTestViewController: UITableViewController, TreeView {
 	}
 	
 	func present(_ content: Array<Tree.Item.Row<Tree.Content.Default>>) -> Future<Void> {
-		return treeController.reload(content).finally { [weak self] in
+		return treeController.reloadData(content).finally { [weak self] in
 			self?.didPresent?()
 		}
 	}
 }
 
 class SolidTestPresenter: TreePresenter {
-	var content: CachedValue<ESI.Status.ServerStatus>?
-	
+	var content: ESI.Result<ESI.Status.ServerStatus>?
 	
 	typealias Item = Tree.Item.Row<Tree.Content.Default>
 	var presentation: [Item]?
@@ -134,43 +150,175 @@ class SolidTestPresenter: TreePresenter {
 		interactor.configure()
 	}
 	
-	func presentation(for content: CachedValue<ESI.Status.ServerStatus>) -> Future<[Item]> {
-		let result = [Tree.Item.Row(content: Tree.Content.Default(title: "\(content.value)"))]
+	func presentation(for content: ESI.Result<ESI.Status.ServerStatus>) -> Future<[Item]> {
+		let result = [Tree.Item.Row(Tree.Content.Default(title: "\(content.value)"))]
 		return .init(result)
 	}
 }
 
 class SolidTestInteractor: TreeInteractor {
-	typealias Content = CachedValue<ESI.Status.ServerStatus>
+	typealias Content = ESI.Result<ESI.Status.ServerStatus>
 	weak var presenter: SolidTestPresenter!
-	lazy var cache: Cache! = Neocom_II_Tests.cache
-	lazy var sde: SDE! = Neocom_II_Tests.sde
-	lazy var storage: Storage! = Neocom_II_Tests.storage
 	
 	required init(presenter: SolidTestPresenter) {
 		self.presenter = presenter
 	}
 	
 	
-	func load(cachePolicy: URLRequest.CachePolicy) -> Future<CachedValue<ESI.Status.ServerStatus>> {
-		var api: API! = self.api(cachePolicy: cachePolicy)
-		return api.serverStatus().finally {
+	func load(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Status.ServerStatus>> {
+		
+		var api: API! = APIMock(esi: ESI())
+		return api.serverStatus(cachePolicy: .useProtocolCachePolicy).finally {
 			api = nil
 		}
 	}
 	
-	func api(cachePolicy: URLRequest.CachePolicy) -> API {
-		return APIMock(account: storage.viewContext.currentAccount, server: .tranquility, cachePolicy: cachePolicy, cache: cache, sde: sde)
-	}
 }
 
 
 class APIMock: APIClient {
-	override func serverStatus() -> Future<CachedValue<ESI.Status.ServerStatus>> {
-		return load(for: "ESI.Status.ServerStatus", account: nil, loader: { etag in
-			let value = ESI.Status.ServerStatus(players: 0, serverVersion: "1", startTime: Date(), vip: false)
-			return .init(ESI.Result(value: value, cached: 60, etag: etag))
-//			return esi.status.retrieveTheUptimeAndPlayerCounts(ifNoneMatch: etag)
-		})
+	override func serverStatus(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Status.ServerStatus>> {
+		let value = ESI.Status.ServerStatus(players: 0, serverVersion: "1", startTime: Date(), vip: false)
+		return .init(ESI.Result(value: value, expires: Date.init(timeIntervalSinceNow: 60)))
+	}
+}
+
+class SolidTestViewController2: UITableViewController, TreeView {
+	lazy var presenter: SolidTestPresenter2! = SolidTestPresenter2(view: self)
+	lazy var treeController: TreeController! = TreeController()
+	
+	var didPresent: (() -> Void)?
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		treeController.delegate = self
+		treeController.tableView = tableView
+		presenter.configure()
+	}
+	
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		presenter.viewWillAppear(animated)
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		presenter.viewDidAppear(animated)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		presenter.viewWillDisappear(animated)
+	}
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		presenter.viewDidDisappear(animated)
+	}
+	
+	func present(_ content: Array<AnyTreeItem>) -> Future<Void> {
+		return treeController.reloadData(content).finally { [weak self] in
+			self?.didPresent?()
+		}
+	}
+}
+
+class SolidTestPresenter2: TreePresenter {
+	
+	typealias Item = AnyTreeItem
+	var presentation: [AnyTreeItem]?
+	var isLoading: Bool = false
+	
+	weak var view: SolidTestViewController2!
+	lazy var interactor: SolidTestInteractor2! = SolidTestInteractor2(presenter: self)
+	
+	required init(view: SolidTestViewController2) {
+		self.view = view
+	}
+	
+	func configure() {
+		view.tableView.register([Prototype.TreeHeaderCell.default,
+								 Prototype.TreeDefaultCell.default])
+		
+		interactor.configure()
+	}
+	
+	func presentation(for content: ()) -> Future<[Item]> {
+//		let result = [Tree.Item.Row(Tree.Content.Default(title: "\(content.value)"))]
+		let fetchRequest = storage.viewContext.managedObjectContext.from(AccountsFolder.self).sort(by: \AccountsFolder.name, ascending: true).fetchRequest
+		let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: storage.viewContext.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+		let defaultFolder = Tree.Item.SolidTestDefaultFolder(treeController: view.treeController)
+		let folders = Tree.Item.SolidTestFoldersResultsController(frc, treeController: view.treeController)
+		
+		return .init([defaultFolder.asAnyItem, folders.asAnyItem])
+	}
+}
+
+class SolidTestInteractor2: TreeInteractor {
+	weak var presenter: SolidTestPresenter2!
+	
+	required init(presenter: SolidTestPresenter2) {
+		self.presenter = presenter
+	}
+}
+
+extension Tree.Item {
+	class SolidTestFoldersResultsController: FetchedResultsController<AccountsFolder, FetchedResultsSection<AccountsFolder, SolidTestFolderItem>, SolidTestFolderItem> {
+	}
+	
+	class SolidTestFolderItem: FetchedResultsItem<AccountsFolder>, CellConfiguring {
+		typealias Child = SolidTestAccountsResultsController
+		lazy var children: [SolidTestAccountsResultsController]? = {
+			
+			let request = content.managedObjectContext!.from(Account.self)
+				.filter(\Account.folder == content)
+				.sort(by: \Account.folder, ascending: true).sort(by: \Account.characterName, ascending: true)
+				.fetchRequest
+			
+			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: content.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
+			return [SolidTestAccountsResultsController(frc, treeController: section?.controller?.treeController)]
+		}()
+		
+		var prototype: Prototype? {
+			return Prototype.TreeHeaderCell.default
+		}
+		
+		func configure(cell: UITableViewCell) {
+			guard let cell = cell as? TreeHeaderCell else {return}
+			cell.titleLabel?.text = content.name
+		}
+		
+	}
+	
+	class SolidTestAccountsResultsController: FetchedResultsController<Account, FetchedResultsSection<Account, SolidTestAccountItem>, SolidTestAccountItem> {
+	}
+	
+	class SolidTestDefaultFolder: Tree.Item.Section<SolidTestAccountsResultsController> {
+		
+		init(treeController: TreeController?) {
+			let managedObjectContext = Services.storage.viewContext.managedObjectContext
+			
+			let request = managedObjectContext.from(Account.self)
+				.filter(\Account.folder == nil)
+				.sort(by: \Account.folder, ascending: true).sort(by: \Account.characterName, ascending: true)
+				.fetchRequest
+			
+			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+			let children = [SolidTestAccountsResultsController(frc, treeController: treeController)]
+			
+			super.init(Tree.Content.Section(title: "asdf"), diffIdentifier: "defaultFolder", expandIdentifier: "defaultFolder", treeController: treeController, children: children)
+		}
+	}
+	
+	class SolidTestAccountItem: FetchedResultsItem<Account>, CellConfiguring {
+		var prototype: Prototype? {
+			return Prototype.TreeDefaultCell.default
+		}
+		
+		func configure(cell: UITableViewCell) {
+			guard let cell = cell as? TreeDefaultCell else {return}
+			cell.titleLabel?.text = content.characterName
+		}
 	}
 }

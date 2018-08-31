@@ -40,19 +40,20 @@ extension Prototype {
 }
 
 extension Tree.Item {
+	
 	class AccountsItem: FetchedResultsItem<Account>, CellConfiguring {
 		
 		var prototype: Prototype? { return Prototype.TreeHeaderCell.default }
-		lazy var api: API? = (section?.controller as? AccountsResultsController)?.presenter?.interactor.api(cachePolicy: .useProtocolCachePolicy)
+		lazy var api: API = Services.api.make(for: self.content)
 		
-		var character: Future<APIResult<ESI.Character.Information>>?
-		var corporation: Future<APIResult<ESI.Corporation.Information>>?
-		var skillQueue: Future<APIResult<[ESI.Skills.SkillQueueItem]>>?
-		var skills: Future<APIResult<ESI.Skills.CharacterSkills>>?
-		var walletBalance: Future<APIResult<Double>>?
-		var location: Future<APIResult<ESI.Location.CharacterLocation>>?
-		var ship: Future<APIResult<ESI.Location.CharacterShip>>?
-		var image: Future<APIResult<UIImage>>?
+		var character: Future<ESI.Result<ESI.Character.Information>>?
+		var corporation: Future<ESI.Result<ESI.Corporation.Information>>?
+		var skillQueue: Future<ESI.Result<[ESI.Skills.SkillQueueItem]>>?
+		var skills: Future<ESI.Result<ESI.Skills.CharacterSkills>>?
+		var walletBalance: Future<ESI.Result<Double>>?
+		var location: Future<ESI.Result<ESI.Location.CharacterLocation>>?
+		var ship: Future<ESI.Result<ESI.Location.CharacterShip>>?
+		var image: Future<ESI.Result<UIImage>>?
 		
 		var isOAuth2TokenInvalid: Bool {
 			return content.refreshToken?.isEmpty != false
@@ -152,12 +153,13 @@ extension Tree.Item {
 		
 		private var state = State.initial
 		private func load(options: LoadingOptions) {
-			guard let api = self.api, state == .initial else {return}
+			let cachePolicy = URLRequest.CachePolicy.useProtocolCachePolicy
+			guard state == .initial else {return}
 			state = .loading
 			
 			let progress: ProgressTask?
 			if let cell = section?.controller?.treeController?.cell(for: self) {
-				progress = (section?.controller as? AccountsResultsController)?.presenter?.beginTask(totalUnitCount: Int64(options.count), indicator: .progressBar(cell))
+				progress = ProgressTask(progress: Progress(totalUnitCount: Int64(options.count)), indicator: .progressBar(cell))
 			}
 			else {
 				progress = nil
@@ -176,7 +178,7 @@ extension Tree.Item {
 			let characterID = content.characterID
 
 			DispatchQueue.global(qos: .utility).async { [weak self, weak api] () -> Void in
-				guard let character = perform(using: {api?.characterInformation()}) else {return}
+				guard let character = perform(using: {api?.characterInformation(cachePolicy: cachePolicy)}) else {return}
 				
 				character.finally(on: .main) {
 					self?.character = character
@@ -184,7 +186,7 @@ extension Tree.Item {
 				}
 				
 				if options.contains(.corporationInfo), let corporationID = try? character.get().value.corporationID {
-					let corporation = perform{api?.corporationInformation(corporationID: Int64(corporationID))}
+					let corporation = perform{api?.corporationInformation(corporationID: Int64(corporationID), cachePolicy: cachePolicy)}
 					corporation?.finally(on: .main) {
 						self?.corporation = corporation
 						self?.update()
@@ -192,7 +194,7 @@ extension Tree.Item {
 				}
 				
 				if options.contains(.skillQueue) {
-					let skillQueue = perform{api?.skillQueue()}
+					let skillQueue = perform{api?.skillQueue(cachePolicy: cachePolicy)}
 					skillQueue?.finally(on: .main) {
 						self?.skillQueue = skillQueue
 						self?.update()
@@ -200,7 +202,7 @@ extension Tree.Item {
 				}
 				
 				if options.contains(.skills) {
-					let skills = perform{api?.skills()}
+					let skills = perform{api?.skills(cachePolicy: cachePolicy)}
 					skills?.finally(on: .main) {
 						self?.skills = skills
 						self?.update()
@@ -208,7 +210,7 @@ extension Tree.Item {
 				}
 
 				if options.contains(.walletBalance) {
-					let walletBalance = perform{api?.walletBalance()}
+					let walletBalance = perform{api?.walletBalance(cachePolicy: cachePolicy)}
 					walletBalance?.finally(on: .main) {
 						self?.walletBalance = walletBalance
 						self?.update()
@@ -216,7 +218,7 @@ extension Tree.Item {
 				}
 
 				if options.contains(.characterLocation) {
-					let characterLocation = perform{api?.characterLocation()}
+					let characterLocation = perform{api?.characterLocation(cachePolicy: cachePolicy)}
 					characterLocation?.finally(on: .main) {
 						self?.location = characterLocation
 						self?.update()
@@ -224,7 +226,7 @@ extension Tree.Item {
 				}
 
 				if options.contains(.characterLocation) {
-					let characterShip = perform{api?.characterShip()}
+					let characterShip = perform{api?.characterShip(cachePolicy: cachePolicy)}
 					characterShip?.finally(on: .main) {
 						self?.ship = characterShip
 						self?.update()
@@ -232,7 +234,7 @@ extension Tree.Item {
 				}
 
 				if options.contains(.image) {
-					let image = perform{api?.image(characterID: characterID, dimension: 64)}
+					let image = perform{api?.image(characterID: characterID, dimension: 64, cachePolicy: cachePolicy)}
 					image?.finally(on: .main) {
 						self?.image = image
 						self?.update()

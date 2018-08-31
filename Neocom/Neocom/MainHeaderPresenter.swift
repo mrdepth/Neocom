@@ -8,13 +8,14 @@
 
 import Foundation
 import Futures
+import EVEAPI
 
 class MainHeaderPresenter: ContentProviderPresenter {
-	var content: APIResult<MainHeaderInteractor.Info>?
+	var content: ESI.Result<MainHeaderInteractor.Info>?
 	var presentation: MainHeaderInteractor.Info?
 	var isLoading: Bool = false
 	
-	func presentation(for content: APIResult<MainHeaderInteractor.Info>) -> Future<MainHeaderInteractor.Info> {
+	func presentation(for content: ESI.Result<MainHeaderInteractor.Info>) -> Future<MainHeaderInteractor.Info> {
 		return .init(content.value)
 	}
 

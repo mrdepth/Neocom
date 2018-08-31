@@ -18,9 +18,6 @@ protocol Cache {
 }
 
 protocol CacheContext: PersistentContext {
-	func record(identifier: String, account: String?) -> CacheRecord?
-	func newRecord(identifier: String, account: String?) -> CacheRecord
-//	func sectionCollapseState(identifier: String, scope: String) -> SectionCollapseState?
 	func sectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState?
 	func newSectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState
 }
@@ -83,35 +80,15 @@ class CacheContainer: Cache {
 		return promise.future
 	}
 
-	static let shared = CacheContainer()
+//	static let shared = CacheContainer()
 }
 
 
 struct CacheContextBox: CacheContext {
 	
-	func record(identifier: String, account: String?) -> CacheRecord? {
-		return (try? managedObjectContext.from(CacheRecord.self).filter(\CacheRecord.account == account && \CacheRecord.identifier == identifier).first()) ?? nil
-	}
-	
-	func newRecord(identifier: String, account: String?) -> CacheRecord {
-		
-		let record = CacheRecord(context: managedObjectContext)
-		record.account = account
-		record.identifier = identifier
-		record.data = CacheRecordData(context: managedObjectContext)
-		return record
-	}
-	
-//	func sectionCollapseState(identifier: String, scope: String) -> SectionCollapseState? {
-//		return (try? managedObjectContext.from(SectionCollapseState.self).filter(\SectionCollapseState.scope == scope && \SectionCollapseState.identifier == identifier).first()) ?? nil
-//	}
-	
 	func sectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState? {
 		let scope = "\(scope)"
 		return (try? managedObjectContext.from(SectionCollapseState.self).filter(\SectionCollapseState.scope == scope && \SectionCollapseState.identifier == identifier).first()) ?? nil
-
-		
-//		return sectionCollapseState(identifier: identifier, scope: "\(scope)")
 	}
 
 	func newSectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState {
@@ -126,20 +103,3 @@ struct CacheContextBox: CacheContext {
 	
 }
 
-
-extension CacheRecord {
-	
-	func getValue<T: Codable>() -> T? {
-		return data?.value.flatMap{(try? JSONDecoder().decode([T].self, from: $0).first) ?? nil}
-	}
-	
-	func setValue<T: Codable>(_ value: T?) {
-		data?.value = value.flatMap {try? JSONEncoder().encode([$0])}
-	}
-	
-	var isExpired: Bool {
-		guard let cachedUntil = cachedUntil else {return true}
-		guard data?.value != nil else {return true}
-		return cachedUntil <= Date()
-	}
-}

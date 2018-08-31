@@ -11,9 +11,6 @@ import Futures
 
 class MainInteractor: TreeInteractor {
 	weak var presenter: MainPresenter!
-	lazy var cache: Cache! = CacheContainer.shared
-	lazy var sde: SDE! = SDEContainer.shared
-	lazy var storage: Storage! = StorageContainer.shared
 
 	required init(presenter: MainPresenter) {
 		self.presenter = presenter

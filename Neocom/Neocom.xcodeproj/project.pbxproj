@@ -80,6 +80,7 @@
 		128C5F9A1F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F991F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib */; };
 		128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128E32DF1E655D2C00E3B183 /* NCActionTableViewCell.xib */; };
 		12926F10212EDC66006A3D1C /* API_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12926F0F212EDC66006A3D1C /* API_Tests.swift */; };
+		1295A1AA2139242300047516 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1295A1A92139242300047516 /* Services.swift */; };
 		1298BA7120AEFB73002C941E /* MPUnmutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA5B20AEFB73002C941E /* MPUnmutedBtn.png */; };
 		1298BA7220AEFB73002C941E /* MRAID.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA5C20AEFB73002C941E /* MRAID.bundle */; };
 		1298BA7320AEFB73002C941E /* MPDAAIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA5D20AEFB73002C941E /* MPDAAIcon.png */; };
@@ -502,6 +503,7 @@
 		1293D7C82049813200A1F453 /* NCWealthBlueprintsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCWealthBlueprintsViewController.swift; sourceTree = "<group>"; };
 		1293D7CC20499B2900A1F453 /* NCWealthAssetsDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCWealthAssetsDetailsViewController.swift; sourceTree = "<group>"; };
 		1294AB311F161A15002B9BA8 /* NCMailAttachmentsStructuresViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailAttachmentsStructuresViewController.swift; sourceTree = "<group>"; };
+		1295A1A92139242300047516 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
 		12961DB71E0FBD41008A3F4D /* NCDatabaseMarketInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseMarketInfoViewController.swift; sourceTree = "<group>"; };
 		12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketInfoTableViewCell.swift; sourceTree = "<group>"; };
 		12961DBC1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateInfoViewController.swift; sourceTree = "<group>"; };
@@ -1509,6 +1511,7 @@
 				129DFE1F213486D900C85496 /* ProgressTask.swift */,
 				1279EFED213543B7005340C0 /* UnitFormatter.swift */,
 				12678BEE212BE32A00E7E427 /* AppDelegate.swift */,
+				1295A1A92139242300047516 /* Services.swift */,
 			);
 			name = Refactor;
 			sourceTree = "<group>";
@@ -2032,6 +2035,7 @@
 				125DF63C2133D30000B86AE0 /* TreeDefaultCell.swift in Sources */,
 				121F26EF2136EE9100AE1D70 /* AccountsPresenter.swift in Sources */,
 				12AFD46D211C1C3D00007423 /* SDE.swift in Sources */,
+				1295A1AA2139242300047516 /* Services.swift in Sources */,
 				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
 				121F26F12136F07200AE1D70 /* TreeItem+CoreData.swift in Sources */,
 				12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */,

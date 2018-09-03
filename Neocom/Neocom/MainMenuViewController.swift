@@ -1,5 +1,5 @@
 //
-//  MainViewController.swift
+//  MainMenuViewController.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 27.08.2018.
@@ -10,8 +10,9 @@ import Foundation
 import TreeController
 import Futures
 
-class MainViewController: UITableViewController, TreeView {
-	lazy var presenter: MainPresenter! = MainPresenter(view: self)
+class MainMenuViewController: UITableViewController, TreeView {
+	lazy var presenter: MainMenuPresenter! = MainMenuPresenter(view: self)
+	var unwinder: Unwinder?
 	lazy var treeController: TreeController! = TreeController()
 	
 	override func viewDidLoad() {

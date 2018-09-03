@@ -44,7 +44,7 @@ extension Tree.Item {
 	class AccountsItem: FetchedResultsRow<Account>, CellConfiguring {
 		
 		var prototype: Prototype? { return Prototype.TreeHeaderCell.default }
-		lazy var api: API = Services.api.make(for: self.content)
+		lazy var api: API = Services.api.make(for: self.result)
 		
 		var character: Future<ESI.Result<ESI.Character.Information>>?
 		var corporation: Future<ESI.Result<ESI.Corporation.Information>>?
@@ -56,14 +56,14 @@ extension Tree.Item {
 		var image: Future<ESI.Result<UIImage>>?
 		
 		var isOAuth2TokenInvalid: Bool {
-			return content.refreshToken?.isEmpty != false
+			return result.refreshToken?.isEmpty != false
 		}
 		
 		func configure(cell: UITableViewCell) {
 			guard let cell = cell as? AccountCell else {return}
 			
 			if isOAuth2TokenInvalid {
-				cell.characterNameLabel?.text = content.characterName
+				cell.characterNameLabel?.text = result.characterName
 				cell.corporationLabel?.text = NSLocalizedString("Access Token did become invalid", comment: "")
 				cell.corporationLabel?.textColor = .red
 				
@@ -85,7 +85,7 @@ extension Tree.Item {
 					load(options: [.image])
 				}
 				else {
-					cell.characterNameLabel?.text = (try? character?.tryGet()?.value.name) ?? content.characterName
+					cell.characterNameLabel?.text = (try? character?.tryGet()?.value.name) ?? result.characterName
 					
 					var options = LoadingOptions()
 					if cell.corporationLabel != nil {
@@ -158,7 +158,7 @@ extension Tree.Item {
 			state = .loading
 			
 			let progress: ProgressTask?
-			if let cell = section?.controller?.treeController?.cell(for: self) {
+			if let cell = section.controller.treeController?.cell(for: self) {
 				progress = ProgressTask(progress: Progress(totalUnitCount: Int64(options.count)), indicator: .progressBar(cell))
 			}
 			else {
@@ -175,7 +175,7 @@ extension Tree.Item {
 			}
 	
 
-			let characterID = content.characterID
+			let characterID = result.characterID
 
 			DispatchQueue.global(qos: .utility).async { [weak self, weak api] () -> Void in
 				guard let character = perform(using: {api?.characterInformation(cachePolicy: cachePolicy)}) else {return}
@@ -246,7 +246,7 @@ extension Tree.Item {
 		}
 		
 		private func update() {
-			section?.controller?.treeController?.reloadRow(for: self, with: .none)
+			section.controller.treeController?.reloadRow(for: self, with: .none)
 		}
 	}
 }

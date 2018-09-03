@@ -11,57 +11,71 @@ import CoreData
 import TreeController
 import Expressible
 
-protocol FetchedResultsControllerTreeItemProtocol: class {
+//protocol FetchedResultsControllerTreeItemProtocol: class {
+//	var treeController: TreeController? {get}
+//}
+//
+//
+//protocol FetchedResultsSectionTreeItemProtocol: class {
+//	var controller: FetchedResultsControllerTreeItemProtocol? {get}
+//}
+
+protocol FetchedResultsControllerProtocol: class {
 	var treeController: TreeController? {get}
 }
 
-protocol FetchedResultsSectionTreeItemProtocol: class {
-	var controller: FetchedResultsControllerTreeItemProtocol? {get}
+protocol FetchedResultsSectionProtocol: class {
+	/*unowned*/ var controller: FetchedResultsControllerProtocol {get}
+}
+
+protocol FetchedResultsSectionTreeItem: TreeItem, FetchedResultsSectionProtocol where Child: FetchedResultsTreeItem {
+	var sectionInfo: NSFetchedResultsSectionInfo {get}
+	var children: [Child]? {get set}
+	init(_ sectionInfo: NSFetchedResultsSectionInfo, controller: FetchedResultsControllerProtocol)
 }
 
 protocol FetchedResultsTreeItem: TreeItem {
 	associatedtype Result: NSFetchRequestResult & Equatable
-	var content: Result {get}
-	var section: FetchedResultsSectionTreeItemProtocol? {get set}
+	var result: Result {get}
+	/*unowned*/ var section: FetchedResultsSectionProtocol {get set}
 	
-	init(_ content: Result, section: FetchedResultsSectionTreeItemProtocol)
+	init(_ result: Result, section: FetchedResultsSectionProtocol)
 }
+
 
 extension FetchedResultsTreeItem {
 	var hashValue: Int {
-		return content.hash
+		return result.hash
 	}
 	
 	var diffIdentifier: Result {
-		return content
+		return result
 	}
 	
 	static func == (lhs: Self, rhs: Self) -> Bool {
-		return lhs.content == rhs.content
+		return lhs.result == rhs.result
 	}
 
 }
 
 extension Tree.Item {
-	class FetchedResultsController<Result: NSFetchRequestResult & Equatable, Section: FetchedResultsSection<Item>, Item: FetchedResultsTreeItem>: NSObject, TreeItem, NSFetchedResultsControllerDelegate, FetchedResultsControllerTreeItemProtocol where Item.Result == Result {
-		var fetchedResultsController: NSFetchedResultsController<Result>
+	class FetchedResultsController<Section: FetchedResultsSectionTreeItem>: NSObject, TreeItem, NSFetchedResultsControllerDelegate, FetchedResultsControllerProtocol {
+		var fetchedResultsController: NSFetchedResultsController<Section.Child.Result>
 		weak var treeController: TreeController?
 		
 		override var hash: Int {
-//			return diffIdentifier.hash
 			return fetchedResultsController.fetchRequest.hash
 		}
 
 		typealias DiffIdentifier = AnyHashable
 		var diffIdentifier: AnyHashable
-//		var children: [Child]?
 		
 		lazy var children: [Section]? = {
 			try? fetchedResultsController.performFetch()
 			return fetchedResultsController.sections?.map {Child($0, controller: self)}
 		}()
 		
-		init<T: Hashable>(_ fetchedResultsController: NSFetchedResultsController<Result>, diffIdentifier: T, treeController: TreeController?) {
+		init<T: Hashable>(_ fetchedResultsController: NSFetchedResultsController<Section.Child.Result>, diffIdentifier: T, treeController: TreeController?) {
 			self.fetchedResultsController = fetchedResultsController
 			self.diffIdentifier = AnyHashable(diffIdentifier)
 			self.treeController = treeController
@@ -69,11 +83,11 @@ extension Tree.Item {
 			fetchedResultsController.delegate = self
 		}
 		
-		convenience init(_ fetchedResultsController: NSFetchedResultsController<Result>, treeController: TreeController?) {
+		convenience init(_ fetchedResultsController: NSFetchedResultsController<Section.Child.Result>, treeController: TreeController?) {
 			self.init(fetchedResultsController, diffIdentifier: fetchedResultsController.fetchRequest, treeController: treeController)
 		}
 
-		static func == (lhs: Tree.Item.FetchedResultsController<Result, Section, Item>, rhs: Tree.Item.FetchedResultsController<Result, Section, Item>) -> Bool {
+		static func == (lhs: Tree.Item.FetchedResultsController<Section>, rhs: Tree.Item.FetchedResultsController<Section>) -> Bool {
 			return lhs.fetchedResultsController == rhs.fetchedResultsController
 		}
 		
@@ -126,12 +140,12 @@ extension Tree.Item {
 			updates?.itemInsertions.sorted {$0.0 < $1.0}.forEach { i in
 				let section = children![i.0.section]
 				
-				if var item = i.1 as? Item {
+				if var item = i.1 as? Section.Child {
 					item.section = section
 					section.children!.insert(item, at: i.0.item)
 				}
-				else if let result = i.1 as? Result {
-					let item = Item(result, section: section)
+				else if let result = i.1 as? Section.Child.Result {
+					let item = Section.Child(result, section: section)
 					section.children!.insert(item, at: i.0.item)
 				}
 			}
@@ -140,38 +154,32 @@ extension Tree.Item {
 		}
 	}
 	
-	class FetchedResultsSection<Item: FetchedResultsTreeItem>: TreeItem, FetchedResultsSectionTreeItemProtocol {
+	class FetchedResultsSection<Item: FetchedResultsTreeItem>: TreeItem, FetchedResultsSectionTreeItem {
 		static func == (lhs: Tree.Item.FetchedResultsSection<Item>, rhs: Tree.Item.FetchedResultsSection<Item>) -> Bool {
 			return lhs.sectionInfo.name == rhs.sectionInfo.name
 		}
 		
-		weak var controller: FetchedResultsControllerTreeItemProtocol?
+		unowned var controller: FetchedResultsControllerProtocol
 		var sectionInfo: NSFetchedResultsSectionInfo
 		
 		var hashValue: Int {
 			return sectionInfo.name.hashValue
 		}
 
-//		var diffIdentifier: String {
-//			return sectionInfo.name
-//		}
-		
-//		typealias Child = Item
 		lazy var children: [Item]? = sectionInfo.objects?.map{Item($0 as! Item.Result, section: self)}
-
 		
-		required init(_ sectionInfo: NSFetchedResultsSectionInfo, controller: FetchedResultsControllerTreeItemProtocol) {
+		required init(_ sectionInfo: NSFetchedResultsSectionInfo, controller: FetchedResultsControllerProtocol) {
 			self.sectionInfo = sectionInfo
 			self.controller = controller
 		}
 	}
 	
 	class FetchedResultsRow<Result: NSFetchRequestResult & Equatable>: FetchedResultsTreeItem {
-		var content: Result
-		weak var section: FetchedResultsSectionTreeItemProtocol?
+		var result: Result
+		unowned var section: FetchedResultsSectionProtocol
 		
-		required init(_ content: Result, section: FetchedResultsSectionTreeItemProtocol) {
-			self.content = content
+		required init(_ result: Result, section: FetchedResultsSectionProtocol) {
+			self.result = result
 			self.section = section
 		}
 	}

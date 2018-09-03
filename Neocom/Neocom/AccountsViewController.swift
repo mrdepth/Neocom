@@ -11,6 +11,7 @@ import TreeController
 
 class AccountsViewController: UITableViewController, TreeView {
 	lazy var presenter: AccountsPresenter! = AccountsPresenter(view: self)
+	var unwinder: Unwinder?
 	lazy var treeController: TreeController! = TreeController()
 	
 }

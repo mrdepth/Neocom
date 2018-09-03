@@ -1,5 +1,5 @@
 //
-//  MainInteractor.swift
+//  MainMenuInteractor.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 27.08.2018.
@@ -9,10 +9,10 @@
 import Foundation
 import Futures
 
-class MainInteractor: TreeInteractor {
-	weak var presenter: MainPresenter!
+class MainMenuInteractor: TreeInteractor {
+	weak var presenter: MainMenuPresenter!
 
-	required init(presenter: MainPresenter) {
+	required init(presenter: MainMenuPresenter) {
 		self.presenter = presenter
 	}
 	

@@ -1,5 +1,5 @@
 //
-//  MainHeaderInteractor.swift
+//  MainMenuHeaderInteractor.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 28.08.2018.
@@ -10,8 +10,8 @@ import Foundation
 import Futures
 import EVEAPI
 
-class MainHeaderInteractor: ContentProviderInteractor {
-	weak var presenter: MainHeaderPresenter!
+class MainMenuHeaderInteractor: ContentProviderInteractor {
+	weak var presenter: MainMenuHeaderPresenter!
 	
 	typealias Content = ESI.Result<Info>
 	
@@ -24,7 +24,7 @@ class MainHeaderInteractor: ContentProviderInteractor {
 		var allianceImage: UIImage?
 	}
 
-	required init(presenter: MainHeaderPresenter) {
+	required init(presenter: MainMenuHeaderPresenter) {
 		self.presenter = presenter
 	}
 	
@@ -32,19 +32,21 @@ class MainHeaderInteractor: ContentProviderInteractor {
 		guard let account = Services.storage.viewContext.currentAccount else {return .init(.failure(NCError.authenticationRequired))}
 		let progress = Progress(totalUnitCount: 6)
 		let api = Services.api.current
+		
+		let metrics = presenter.view.metrics
 
 		return DispatchQueue.global(qos: .utility).async { () -> ESI.Result<Info> in
 			let characterInfo =  try progress.performAsCurrent(withPendingUnitCount: 1) { try api.characterInformation(cachePolicy: cachePolicy).get() }
-			let characterImage = progress.performAsCurrent(withPendingUnitCount: 1) { try? api.image(characterID: account.characterID, dimension: 128, cachePolicy: cachePolicy).get() }
+			let characterImage = progress.performAsCurrent(withPendingUnitCount: 1) { try? api.image(characterID: account.characterID, dimension: metrics.characterImageDimension, cachePolicy: cachePolicy).get() }
 			let corporationInfo = progress.performAsCurrent(withPendingUnitCount: 1) { try? api.corporationInformation(corporationID: Int64(characterInfo.value.corporationID), cachePolicy: cachePolicy).get() }
-			let corporationImage = progress.performAsCurrent(withPendingUnitCount: 1) { try? api.image(corporationID: Int64(characterInfo.value.corporationID), dimension: 32, cachePolicy: cachePolicy).get() }
+			let corporationImage = progress.performAsCurrent(withPendingUnitCount: 1) { try? api.image(corporationID: Int64(characterInfo.value.corporationID), dimension: metrics.corporationImageDimension, cachePolicy: cachePolicy).get() }
 			
 			let allianceInformation: ESI.Result<ESI.Alliance.Information>?
 			let allianceImage: ESI.Result<UIImage>?
 			
 			if let allianceID = characterInfo.value.allianceID {
 				allianceInformation = progress.performAsCurrent(withPendingUnitCount: 1) { try? api.allianceInformation(allianceID: Int64(allianceID), cachePolicy: cachePolicy).get() }
-				allianceImage = progress.performAsCurrent(withPendingUnitCount: 1) { try? api.image(allianceID: Int64(allianceID), dimension: 32, cachePolicy: cachePolicy).get() }
+				allianceImage = progress.performAsCurrent(withPendingUnitCount: 1) { try? api.image(allianceID: Int64(allianceID), dimension: metrics.allianceImageDimension, cachePolicy: cachePolicy).get() }
 			}
 			else {
 				allianceInformation = nil

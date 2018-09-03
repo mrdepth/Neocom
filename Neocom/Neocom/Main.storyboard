@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="sUh-3c-8sa">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0zo-XV-3EL">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -79,7 +79,7 @@
         <!--Main Menu Container View Controller-->
         <scene sceneID="lAZ-MU-3q2">
             <objects>
-                <viewController definesPresentationContext="YES" id="0zo-XV-3EL" customClass="NCMainMenuContainerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainMenuContainerViewController" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="0zo-XV-3EL" customClass="MainMenuContainerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="04W-e4-wXp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -94,10 +94,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="xiO-UB-iBj" firstAttribute="top" secondItem="04W-e4-wXp" secondAttribute="top" id="Hjt-7y-dLC"/>
-                            <constraint firstItem="xiO-UB-iBj" firstAttribute="leading" secondItem="rpl-nH-22b" secondAttribute="leading" id="Rhf-xA-XaY"/>
-                            <constraint firstAttribute="bottom" secondItem="xiO-UB-iBj" secondAttribute="bottom" id="gyu-oj-YnI"/>
-                            <constraint firstItem="rpl-nH-22b" firstAttribute="trailing" secondItem="xiO-UB-iBj" secondAttribute="trailing" id="sv4-PA-2V6"/>
+                            <constraint firstAttribute="bottom" secondItem="xiO-UB-iBj" secondAttribute="bottom" id="1tk-wD-6xA"/>
+                            <constraint firstItem="xiO-UB-iBj" firstAttribute="trailing" secondItem="rpl-nH-22b" secondAttribute="trailing" id="Xn4-Ka-bXq"/>
+                            <constraint firstItem="xiO-UB-iBj" firstAttribute="leading" secondItem="rpl-nH-22b" secondAttribute="leading" id="cVG-40-6AI"/>
+                            <constraint firstItem="xiO-UB-iBj" firstAttribute="top" secondItem="04W-e4-wXp" secondAttribute="top" id="q2h-Lm-O1b"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="rpl-nH-22b"/>
                         <connections>
@@ -116,12 +116,12 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="353" y="-800"/>
+            <point key="canvasLocation" x="353" y="-922"/>
         </scene>
         <!--Main Menu Header View Controller-->
         <scene sceneID="ZQg-gz-Knu">
             <objects>
-                <viewController storyboardIdentifier="NCMainMenuCharacterHeaderViewController" id="uDW-QB-rGv" customClass="NCMainMenuHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainMenuCharacterHeaderViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uDW-QB-rGv" customClass="MainMenuHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zAk-bV-w0n" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -259,9 +259,6 @@
                                         <state key="normal" title="Logout">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <connections>
-                                            <action selector="onLogout:" destination="uDW-QB-rGv" eventType="touchUpInside" id="aMn-fb-Uk3"/>
-                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YI8-mz-cic" customClass="NCAutoHeightLabel" customModule="Neocom" customModuleProvider="target">
                                         <rect key="frame" x="15" y="126.5" width="290" height="37.5"/>
@@ -319,11 +316,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fH6-wy-bft" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="Ye3-m0-wfK">
-                    <connections>
-                        <segue destination="b5B-xp-I0c" kind="presentation" identifier="NCAccountsViewController" id="NgW-vJ-ZCI"/>
-                    </connections>
-                </tapGestureRecognizer>
+                <tapGestureRecognizer id="Ye3-m0-wfK"/>
             </objects>
             <point key="canvasLocation" x="1089" y="-828"/>
         </scene>
@@ -351,7 +344,7 @@
         <!--Banner Navigation View Controller-->
         <scene sceneID="j43-7O-0Kk">
             <objects>
-                <navigationController id="aKc-6p-ULR" customClass="BannerNavigationViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="BannerNavigationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="aKc-6p-ULR" customClass="BannerNavigationViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="9qV-1T-8Vh">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -382,7 +375,7 @@
         <!--Main Menu Header View Controller-->
         <scene sceneID="iZ5-Vc-nMS">
             <objects>
-                <viewController storyboardIdentifier="NCMainMenuHeaderViewController" id="zO0-hy-Pcb" customClass="NCMainMenuHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainMenuHeaderViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zO0-hy-Pcb" customClass="MainMenuHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4O2-gG-Atd" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="122"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -534,7 +527,7 @@
         <!--Main Menu Header View Controller-->
         <scene sceneID="ryu-mK-cD5">
             <objects>
-                <viewController storyboardIdentifier="NCMainMenuLoginHeaderViewController" id="oCk-jp-6fN" customClass="NCMainMenuHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainMenuLoginHeaderViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="oCk-jp-6fN" customClass="MainMenuHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="yBV-Xh-Ggp" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="122"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -592,11 +585,7 @@
                     <size key="freeformSize" width="320" height="122"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7D0-WE-eWW" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="mmc-wa-Z9i">
-                    <connections>
-                        <segue destination="b5B-xp-I0c" kind="presentation" identifier="NCAccountsViewController" id="N8o-qX-9ny"/>
-                    </connections>
-                </tapGestureRecognizer>
+                <tapGestureRecognizer id="mmc-wa-Z9i"/>
             </objects>
             <point key="canvasLocation" x="1800" y="-880"/>
         </scene>
@@ -1012,7 +1001,4 @@
         <image name="login" width="100" height="100"/>
         <image name="logo" width="440" height="115"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="Fa9-Rs-G2v"/>
-    </inferredMetricsTieBreakers>
 </document>

@@ -9,9 +9,21 @@
 import Foundation
 import Futures
 
+protocol Assembly {
+	associatedtype View: Neocom.View
+	func instantiate(_ input: View.Input) -> Future<View>
+}
+
+extension Assembly where View.Input == Void {
+	func instantiate() -> Future<View> {
+		return instantiate(())
+	}
+}
+
 protocol View: class {
 	associatedtype Presenter: Neocom.Presenter
 	var presenter: Presenter! {get set}
+	var unwinder: Unwinder? {get set}
 	
 	associatedtype Input = Void
 	var input: Input? {get set}
@@ -90,7 +102,6 @@ extension Presenter where View: UIView {
 	func beginTask(totalUnitCount: Int64) -> ProgressTask {
 		return beginTask(totalUnitCount: totalUnitCount, indicator: .progressBar(view))
 	}
-	
 }
 
 extension Interactor {

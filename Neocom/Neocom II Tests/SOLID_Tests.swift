@@ -84,9 +84,10 @@ class SOLID_Tests: XCTestCase {
 			XCTAssertEqual(view!.tableView.numberOfRows(inSection: 1), 2)
 			
 			view!.tableView.layoutIfNeeded()
-			self.add(view!.screenshot())
-
-			exp.fulfill()
+			DispatchQueue.main.async {
+				self.add(view!.screenshot())
+				exp.fulfill()
+			}
 
 		}
 		view.loadViewIfNeeded()
@@ -106,6 +107,8 @@ class SOLID_Tests: XCTestCase {
 
 
 class SolidTestViewController: UITableViewController, TreeView {
+	var unwinder: Unwinder?
+	
 	lazy var presenter: SolidTestPresenter! = SolidTestPresenter(view: self)
 	lazy var treeController: TreeController! = TreeController()
 	
@@ -201,6 +204,8 @@ class APIMock: APIClient {
 }
 
 class SolidTestViewController2: UITableViewController, TreeView {
+	var unwinder: Unwinder?
+	
 	lazy var presenter: SolidTestPresenter2! = SolidTestPresenter2(view: self)
 	lazy var treeController: TreeController! = TreeController()
 	
@@ -282,42 +287,41 @@ class SolidTestInteractor2: TreeInteractor {
 
 extension Tree.Item {
 	
-	class SolidTestFoldersResultsController: FetchedResultsController<AccountsFolder, FetchedResultsSection<SolidTestFolderItem>, SolidTestFolderItem> {
+	class SolidTestFoldersResultsController: FetchedResultsController<FetchedResultsSection<SolidTestFolderItem>> {
 	}
 	
-	class SolidTestFolderItem: FetchedResultsTreeItem, CellConfiguring {
-		var content: AccountsFolder
-		weak var section: FetchedResultsSectionTreeItemProtocol?
+	class SolidTestFolderItem: Tree.Item.Section<SolidTestAccountsResultsController>, FetchedResultsTreeItem {
+		var result: AccountsFolder
+		unowned var section: FetchedResultsSectionProtocol
 		
-		typealias Child = SolidTestAccountsResultsController
-		lazy var children: [SolidTestAccountsResultsController]? = {
-			
-			let request = content.managedObjectContext!.from(Account.self)
-				.filter(\Account.folder == content)
+		private lazy var _children: [SolidTestAccountsResultsController]? = {
+			let request = result.managedObjectContext!.from(Account.self)
+				.filter(\Account.folder == result)
 				.sort(by: \Account.folder, ascending: true).sort(by: \Account.characterName, ascending: true)
 				.fetchRequest
-			
-			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: content.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
-			return [SolidTestAccountsResultsController(frc, treeController: section?.controller?.treeController)]
+
+			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: result.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
+			return [SolidTestAccountsResultsController(frc, treeController: section.controller.treeController)]
 		}()
 		
-		var prototype: Prototype? {
-			return Prototype.TreeHeaderCell.default
+		override var children: [SolidTestAccountsResultsController]? {
+			get {
+				return _children
+			}
+			set {
+				_children = newValue
+			}
 		}
 		
-		func configure(cell: UITableViewCell) {
-			guard let cell = cell as? TreeHeaderCell else {return}
-			cell.titleLabel?.text = content.name
-		}
-		
-		required init(_ content: AccountsFolder, section: FetchedResultsSectionTreeItemProtocol) {
-			self.content = content
+		required init(_ result: AccountsFolder, section: FetchedResultsSectionProtocol) {
+			self.result = result
 			self.section = section
+			super.init(Tree.Content.Section(title: result.name), diffIdentifier: result, expandIdentifier: result.objectID, treeController: section.controller.treeController)
 		}
 		
 	}
 	
-	class SolidTestAccountsResultsController: FetchedResultsController<Account, FetchedResultsSection<SolidTestAccountItem>, SolidTestAccountItem> {
+	class SolidTestAccountsResultsController: FetchedResultsController<FetchedResultsSection<SolidTestAccountItem>> {
 	}
 	
 	class SolidTestDefaultFolder: Tree.Item.Section<SolidTestAccountsResultsController> {
@@ -338,8 +342,8 @@ extension Tree.Item {
 	}
 	
 	class SolidTestAccountItem: FetchedResultsTreeItem, CellConfiguring {
-		var content: Account
-		weak var section: FetchedResultsSectionTreeItemProtocol?
+		var result: Account
+		unowned var section: FetchedResultsSectionProtocol
 		
 		var prototype: Prototype? {
 			return Prototype.TreeDefaultCell.default
@@ -347,11 +351,11 @@ extension Tree.Item {
 		
 		func configure(cell: UITableViewCell) {
 			guard let cell = cell as? TreeDefaultCell else {return}
-			cell.titleLabel?.text = content.characterName
+			cell.titleLabel?.text = result.characterName
 		}
 		
-		required init(_ content: Account, section: FetchedResultsSectionTreeItemProtocol) {
-			self.content = content
+		required init(_ result: Account, section: FetchedResultsSectionProtocol) {
+			self.result = result
 			self.section = section
 		}
 		

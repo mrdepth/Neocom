@@ -1,5 +1,5 @@
 //
-//  MainHeaderViewController.swift
+//  MainMenuHeaderViewController.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 28.08.2018.
@@ -9,7 +9,7 @@
 import Foundation
 import Futures
 
-class MainHeaderViewController: UIViewController, ContentProviderView {
+class MainMenuHeaderViewController: UIViewController, ContentProviderView {
 	@IBOutlet weak var characterNameLabel: UILabel?
 	@IBOutlet weak var characterImageView: UIImageView?
 	@IBOutlet weak var corporationLabel: UILabel?
@@ -17,9 +17,10 @@ class MainHeaderViewController: UIViewController, ContentProviderView {
 	@IBOutlet weak var corporationImageView: UIImageView?
 	@IBOutlet weak var allianceImageView: UIImageView?
 
-	var presenter: MainHeaderPresenter!
+	lazy var presenter: MainMenuHeaderPresenter! = MainMenuHeaderPresenter(view: self)
+	var unwinder: Unwinder?
 	
-	func present(_ content: MainHeaderInteractor.Info) -> Future<Void> {
+	func present(_ content: MainMenuHeaderInteractor.Info) -> Future<Void> {
 		characterNameLabel?.text = content.characterName
 		characterImageView?.image = content.characterImage
 		corporationLabel?.text = content.corporation
@@ -32,4 +33,13 @@ class MainHeaderViewController: UIViewController, ContentProviderView {
 	func fail(_ error: Error) {
 	}
 
+	struct Metrics {
+		var characterImageDimension: Int
+		var corporationImageDimension: Int
+		var allianceImageDimension: Int
+	}
+	
+	var metrics: Metrics {
+		return Metrics(characterImageDimension: 128, corporationImageDimension: 32, allianceImageDimension: 32)
+	}
 }

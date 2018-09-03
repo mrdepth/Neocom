@@ -23,48 +23,60 @@ class AccountsPresenter: TreePresenter {
 	}
 
 	var presentation: [AnyTreeItem]?
-//	var content: NSFetchedResultsController<Account>?
 	
 	var isLoading: Bool = false
 	
 	func presentation(for content: ()) -> Future<[AnyTreeItem]> {
-		return .init([])
+		let folders = Tree.Item.AccountFoldersResultsController(context: Services.storage.viewContext, treeController: view.treeController)
+		let defaultFolder = Tree.Item.AccountsDefaultFolder(treeController: view.treeController)
+		return .init([defaultFolder.asAnyItem, folders.asAnyItem])
 	}
 }
 
 extension Tree.Item {
-	/*class AccountFoldersResultsController: FetchedResultsController<AccountsFolder, FetchedResultsSection<AccountsFolder, AccountsFolderItem>, AccountsFolderItem> {
+	
+	class AccountFoldersResultsController: FetchedResultsController<FetchedResultsSection<AccountsFolderItem>> {
+		convenience init(context: StorageContext, treeController: TreeController?) {
+			let fetchRequest = context.managedObjectContext.from(AccountsFolder.self).sort(by: \AccountsFolder.name, ascending: true).fetchRequest
+			let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+			self.init(frc, treeController: treeController)
+		}
 	}
 	
-	class AccountsFolderItem: FetchedResultsItem<AccountsFolder>, CellConfiguring {
-		typealias Child = AccountsResultsController
-		lazy var children: [AccountsResultsController]? = {
-			
-			let request = content.managedObjectContext!.from(Account.self)
-				.filter(\Account.folder == content)
+	class AccountsFolderItem: Tree.Item.Section<AccountsResultsController>, FetchedResultsTreeItem {
+		var result: AccountsFolder
+		unowned var section: FetchedResultsSectionProtocol
+		
+		private lazy var _children: [AccountsResultsController]? = {
+			let request = result.managedObjectContext!.from(Account.self)
+				.filter(\Account.folder == result)
 				.sort(by: \Account.folder, ascending: true).sort(by: \Account.characterName, ascending: true)
 				.fetchRequest
 			
-			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: content.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
-			return [AccountsResultsController(frc, treeController: section?.controller?.treeController)]
+			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: result.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
+			return [AccountsResultsController(frc, treeController: section.controller.treeController)]
 		}()
 		
-		var prototype: Prototype? {
-			return Prototype.TreeHeaderCell.default
+		override var children: [AccountsResultsController]? {
+			get {
+				return _children
+			}
+			set {
+				_children = newValue
+			}
 		}
 		
-		func configure(cell: UITableViewCell) {
-			guard let cell = cell as? TreeHeaderCell else {return}
-			cell.titleLabel?.text = content.name
+		required init(_ result: AccountsFolder, section: FetchedResultsSectionProtocol) {
+			self.result = result
+			self.section = section
+			super.init(Tree.Content.Section(title: result.name), diffIdentifier: result, expandIdentifier: result.objectID, treeController: section.controller.treeController)
 		}
-
-	}*/
+	}
 	
-//	class AccountsResultsController: FetchedResultsController<Account, FetchedResultsSection<Account, AccountsItem>, AccountsItem> {
-//	}
+	class AccountsResultsController: FetchedResultsController<FetchedResultsSection<AccountsItem>> {
+	}
 	
-	/*class AccountsDefaultFolder: Tree.Item.Collection<Tree.Content.Default, AccountsResultsController> {
-		weak var treeController: TreeController?
+	class AccountsDefaultFolder: Tree.Item.Section<AccountsResultsController> {
 		
 		init(treeController: TreeController?) {
 			let managedObjectContext = Services.storage.viewContext.managedObjectContext
@@ -77,8 +89,7 @@ extension Tree.Item {
 			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
 			let children = [AccountsResultsController(frc, treeController: treeController)]
 
-			self.treeController = treeController
-			super.init(Tree.Content.Default(title: "asdf"), diffIdentifier: "root", children: children)
+			super.init(Tree.Content.Section(title: "Default"), diffIdentifier: "defaultFolder", expandIdentifier: "defaultFolder", treeController: treeController, children: children)
 		}
-	}*/
+	}
 }

@@ -1,5 +1,5 @@
 //
-//  MainPresenter.swift
+//  MainMenuPresenter.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 27.08.2018.
@@ -12,17 +12,17 @@ import Futures
 import EVEAPI
 import CloudData
 
-class MainPresenter: TreePresenter {
+class MainMenuPresenter: TreePresenter {
 	typealias Item = AnyTreeItem
 
-	weak var view: MainViewController!
-	lazy var interactor: MainInteractor! = MainInteractor(presenter: self)
+	weak var view: MainMenuViewController!
+	lazy var interactor: MainMenuInteractor! = MainMenuInteractor(presenter: self)
 
 	var presentation: [AnyTreeItem]?
 	var isLoading: Bool = false
 	
 	
-	required init(view: MainViewController) {
+	required init(view: MainMenuViewController) {
 		self.view = view
 	}
 	

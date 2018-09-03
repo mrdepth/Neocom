@@ -48,8 +48,9 @@ class MainPresenter: TreePresenter {
 				return Tree.Content.Default(title:NSLocalizedString("Character Sheet", comment: ""), subtitle: subtitle, image: #imageLiteral(resourceName: "charactersheet"))
 			}}
 		}
+		return .init([])
 		
-		let menu = [
+		/*let menu = [
 			Tree.Item.Section<Tree.Item.MainMenuAPI>(Tree.Content.Section(title: NSLocalizedString("Character", comment: "")), diffIdentifier: "character", expandIdentifier: "character", treeController: view.treeController, children: [
 				Tree.Item.MainMenuAPI(Tree.Content.Default(title:NSLocalizedString("Character Sheet", comment: ""), image: #imageLiteral(resourceName: "charactersheet")),
 									  account: account,
@@ -76,7 +77,7 @@ class MainPresenter: TreePresenter {
 				]).asAnyItem
 		]
 		
-		return .init(menu)
+		return .init(menu)*/
 	}
 	
 }

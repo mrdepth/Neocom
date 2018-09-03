@@ -41,7 +41,7 @@ extension Prototype {
 
 extension Tree.Item {
 	
-	class AccountsItem: FetchedResultsItem<Account>, CellConfiguring {
+	class AccountsItem: FetchedResultsRow<Account>, CellConfiguring {
 		
 		var prototype: Prototype? { return Prototype.TreeHeaderCell.default }
 		lazy var api: API = Services.api.make(for: self.content)

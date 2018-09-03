@@ -107,3 +107,60 @@ let oAuth2Token = try! JSONDecoder().decode(OAuth2Token.self, from: "{\"scopes\"
     
 }
 */
+
+extension UIViewController {
+	func screenshot(size: Size = .iPhone6) -> UIImage {
+		view.frame = CGRect(origin: .zero, size: size.size)
+		view.layoutIfNeeded()
+		
+		UIGraphicsBeginImageContextWithOptions(view.frame.size, true, size.scale)
+		view.drawHierarchy(in: view.frame, afterScreenUpdates: true)
+		
+		let image = UIGraphicsGetImageFromCurrentImageContext()
+		XCTAssertNotNil(image)
+		
+		UIGraphicsEndImageContext()
+		return image!
+	}
+}
+
+extension XCTestCase {
+	func add(_ image: UIImage, name: String? = nil) {
+		let attachment = XCTAttachment(image: image)
+		attachment.lifetime = .keepAlways
+		attachment.name = name
+		add(attachment)
+	}
+}
+
+enum Size {
+	case iPhone4
+	case iPhone5
+	case iPhone6
+	case iPhone6Plus
+	case iPhoneX
+	
+	var size: CGSize {
+		switch self {
+		case .iPhone4:
+			return CGSize(width: 320, height: 480)
+		case .iPhone5:
+			return CGSize(width: 320, height: 568)
+		case .iPhone6:
+			return CGSize(width: 375, height: 667)
+		case .iPhone6Plus:
+			return CGSize(width: 414, height: 736)
+		case .iPhoneX:
+			return CGSize(width: 375, height: 812)
+		}
+	}
+	
+	var scale: CGFloat {
+		switch self {
+		case .iPhone4, .iPhone5, .iPhone6:
+			return 2
+		case .iPhone6Plus, .iPhoneX:
+			return 3
+		}
+	}
+}

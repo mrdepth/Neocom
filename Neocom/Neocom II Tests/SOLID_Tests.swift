@@ -64,13 +64,30 @@ class SOLID_Tests: XCTestCase {
 		let exp = expectation(description: "end")
 		
 		var view: SolidTestViewController2! = SolidTestViewController2()
+		try! XCTAssertEqual(storage.viewContext.managedObjectContext.from(Account.self).count(), 1)
 		
 		view.didPresent = { [weak view] in
+			
+			
 			XCTAssertNotNil(view)
 			XCTAssertEqual(view!.tableView.numberOfSections, 2)
-			XCTAssertEqual(view!.tableView.numberOfRows(inSection: 0), 1)
+			XCTAssertEqual(view!.tableView.numberOfRows(inSection: 0), 2)
+			XCTAssertEqual(view!.tableView.numberOfRows(inSection: 1), 0)
+			
+			let account = storage.viewContext.newAccount(with: oAuth2Token)
+			account.folder = AccountsFolder(context:storage.viewContext.managedObjectContext)
+			account.folder?.name = "Folder"
+			try! account.managedObjectContext?.save()
+
+			XCTAssertEqual(view!.tableView.numberOfSections, 2)
+			XCTAssertEqual(view!.tableView.numberOfRows(inSection: 0), 2)
+			XCTAssertEqual(view!.tableView.numberOfRows(inSection: 1), 2)
+			
+			view!.tableView.layoutIfNeeded()
+			self.add(view!.screenshot())
 
 			exp.fulfill()
+
 		}
 		view.loadViewIfNeeded()
 		view.viewWillAppear(true)
@@ -264,10 +281,14 @@ class SolidTestInteractor2: TreeInteractor {
 }
 
 extension Tree.Item {
-	class SolidTestFoldersResultsController: FetchedResultsController<AccountsFolder, FetchedResultsSection<AccountsFolder, SolidTestFolderItem>, SolidTestFolderItem> {
+	
+	class SolidTestFoldersResultsController: FetchedResultsController<AccountsFolder, FetchedResultsSection<SolidTestFolderItem>, SolidTestFolderItem> {
 	}
 	
-	class SolidTestFolderItem: FetchedResultsItem<AccountsFolder>, CellConfiguring {
+	class SolidTestFolderItem: FetchedResultsTreeItem, CellConfiguring {
+		var content: AccountsFolder
+		weak var section: FetchedResultsSectionTreeItemProtocol?
+		
 		typealias Child = SolidTestAccountsResultsController
 		lazy var children: [SolidTestAccountsResultsController]? = {
 			
@@ -289,9 +310,14 @@ extension Tree.Item {
 			cell.titleLabel?.text = content.name
 		}
 		
+		required init(_ content: AccountsFolder, section: FetchedResultsSectionTreeItemProtocol) {
+			self.content = content
+			self.section = section
+		}
+		
 	}
 	
-	class SolidTestAccountsResultsController: FetchedResultsController<Account, FetchedResultsSection<Account, SolidTestAccountItem>, SolidTestAccountItem> {
+	class SolidTestAccountsResultsController: FetchedResultsController<Account, FetchedResultsSection<SolidTestAccountItem>, SolidTestAccountItem> {
 	}
 	
 	class SolidTestDefaultFolder: Tree.Item.Section<SolidTestAccountsResultsController> {
@@ -307,11 +333,14 @@ extension Tree.Item {
 			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
 			let children = [SolidTestAccountsResultsController(frc, treeController: treeController)]
 			
-			super.init(Tree.Content.Section(title: "asdf"), diffIdentifier: "defaultFolder", expandIdentifier: "defaultFolder", treeController: treeController, children: children)
+			super.init(Tree.Content.Section(title: "Default"), diffIdentifier: "defaultFolder", expandIdentifier: "defaultFolder", treeController: treeController, children: children)
 		}
 	}
 	
-	class SolidTestAccountItem: FetchedResultsItem<Account>, CellConfiguring {
+	class SolidTestAccountItem: FetchedResultsTreeItem, CellConfiguring {
+		var content: Account
+		weak var section: FetchedResultsSectionTreeItemProtocol?
+		
 		var prototype: Prototype? {
 			return Prototype.TreeDefaultCell.default
 		}
@@ -320,5 +349,11 @@ extension Tree.Item {
 			guard let cell = cell as? TreeDefaultCell else {return}
 			cell.titleLabel?.text = content.characterName
 		}
+		
+		required init(_ content: Account, section: FetchedResultsSectionTreeItemProtocol) {
+			self.content = content
+			self.section = section
+		}
+		
 	}
 }

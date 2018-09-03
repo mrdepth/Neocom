@@ -79,12 +79,9 @@ extension Tree.Item {
 		}
 	}
 	
-	class Base<Content: Hashable, T: TreeItem>: TreeItem, CellConfiguring {
-		typealias Child = T
-		typealias Children = [Child]
-		
+	class Base<Content: Hashable, Child: TreeItem>: TreeItem, CellConfiguring {
 		var content: Content
-		var children: Children?
+		var children: [Child]?
 		
 		var hashValue: Int {
 			return content.hashValue
@@ -92,13 +89,13 @@ extension Tree.Item {
 		
 		var diffIdentifier: AnyHashable
 		
-		init<T: Hashable>(_ content: Content, diffIdentifier: T, children: Children? = nil) {
+		init<T: Hashable>(_ content: Content, diffIdentifier: T, children: [Child]? = nil) {
 			self.content = content
 			self.diffIdentifier = AnyHashable(diffIdentifier)
 			self.children = children
 		}
 		
-		init(_ content: Content, children: Children? = nil) {
+		init(_ content: Content, children: [Child]? = nil) {
 			self.content = content
 			self.diffIdentifier = AnyHashable(content)
 			self.children = children

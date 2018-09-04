@@ -27,6 +27,8 @@ protocol View: class {
 	
 	associatedtype Input = Void
 	var input: Input? {get set}
+	
+	func prepareToRoute<T: View>(to view: T) -> Void
 }
 
 protocol Interactor: class {
@@ -53,6 +55,11 @@ protocol Presenter: class {
 	func applicationWillEnterForeground() -> Void
 	func beginTask(totalUnitCount: Int64, indicator: ProgressTask.Indicator) -> ProgressTask
 	func beginTask(totalUnitCount: Int64) -> ProgressTask
+}
+
+extension View {
+	func prepareToRoute<T: View>(to view: T) -> Void {
+	}
 }
 
 extension View where Input == Void {

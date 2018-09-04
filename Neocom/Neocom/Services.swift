@@ -8,10 +8,13 @@
 
 import Foundation
 import EVEAPI
+import SafariServices
 
 protocol APIService {
 	func make(for account: Account?) -> API
 	var current: API {get}
+	
+	func performAuthorization(from controller: UIViewController)
 }
 
 struct Services {
@@ -29,7 +32,13 @@ class DefaultAPIService: APIService {
 	}
 	
 	var current: API {
-		let esi = ESI(token: nil, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey, server: .tranquility)
-		return APIClient(esi: esi)
+		return make(for: Services.storage.viewContext.currentAccount)
+//		let esi = ESI(token: Services.storage.viewContext.currentAccount?.oAuth2Token, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey, server: .tranquility)
+//		return APIClient(esi: esi)
+	}
+	
+	func performAuthorization(from controller: UIViewController) {
+		let url = OAuth2.authURL(clientID: Config.current.esi.clientID, callbackURL: Config.current.esi.callbackURL, scope: ESI.Scope.default, state: "esi")
+		controller.present(SFSafariViewController(url: url), animated: true, completion: nil)
 	}
 }

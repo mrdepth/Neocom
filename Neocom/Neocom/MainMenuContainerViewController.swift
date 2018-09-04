@@ -10,7 +10,10 @@ import Foundation
 import CoreData
 import Expressible
 
-class MainMenuContainerViewController: UIViewController {
+class MainMenuContainerViewController: UIViewController, View {
+	lazy var presenter: MainMenuContainerPresenter! = MainMenuContainerPresenter(view: self)
+	var unwinder: Unwinder?
+
 	lazy var mainMenuViewController: MainMenuViewController? = {
 		return self.children.first as? MainMenuViewController
 	}()
@@ -24,6 +27,8 @@ class MainMenuContainerViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		presenter.configure()
+		
 		updateHeader()
 		
 		boundsObserver = mainMenuViewController?.tableView.observe(\UITableView.bounds) { [weak self] (tableView, change) in
@@ -36,13 +41,35 @@ class MainMenuContainerViewController: UIViewController {
 //		NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextDidSave(_:)), name: .NSManagedObjectContextDidSave, object: nil)
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		presenter.viewWillAppear(animated)
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		presenter.viewDidAppear(animated)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		presenter.viewWillDisappear(animated)
+	}
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		presenter.viewDidDisappear(animated)
+	}
+	
 	@IBAction func onTap(_ sender: Any) {
-		if Services.storage.viewContext.currentAccount != nil {
-		}
-		else if let count = try? Services.storage.viewContext.managedObjectContext.from(Account.self).count(), count > 0 {
-		}
-		else {
-		}
+		presenter.onHeaderTap()
+	}
+	
+	@IBAction func onPan(_ sender: UIPanGestureRecognizer) {
+		presenter.onPan(sender)
+//		if sender.state == .began && sender.translation(in: view).y > 0 {
+//			mainMenuViewController?.performSegue(withIdentifier: "NCAccountsViewController", sender: self)
+//		}
 	}
 	
 	private var boundsObserver: NSKeyValueObservation?
@@ -80,6 +107,8 @@ class MainMenuContainerViewController: UIViewController {
 		}
 		
 		to.instantiate().then(on: .main) { to in
+			to.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.onTap(_:))))
+			
 			let headerMinHeight = to.view.systemLayoutSizeFitting(CGSize(width:self.view.bounds.size.width, height:0), withHorizontalFittingPriority:UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.defaultHigh).height
 			self.headerMaxHeight = to.view.systemLayoutSizeFitting(CGSize(width:self.view.bounds.size.width, height:0), withHorizontalFittingPriority:UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.fittingSizeLevel).height
 			
@@ -128,4 +157,45 @@ class MainMenuContainerViewController: UIViewController {
 			self.headerMaxHeightConstraint?.isActive = true
 		}
 	}
+	
+	func prepareToRoute<T>(to view: T) where T : View {
+		if let view = view as? AccountsViewController {
+			view.parent?.modalPresentationStyle = .currentContext
+			view.parent?.transitioningDelegate = self
+		}
+	}
+}
+
+extension MainMenuContainerViewController: UIViewControllerTransitioningDelegate {
+	func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+		return SlideDownAnimationController()
+	}
+	
+	func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+		let isInteractive = panGestureRecognizer.state == .changed || panGestureRecognizer.state == .began
+		return isInteractive ? SlideDownInteractiveTransition(panGestureRecognizer: panGestureRecognizer) : nil
+	}
+
+}
+
+extension MainMenuContainerViewController: UIGestureRecognizerDelegate {
+	
+	func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+		guard let t = (gestureRecognizer as? UIPanGestureRecognizer)?.translation(in: view) else {return true}
+		
+		if let tableView: UITableView = view.hitTest(gestureRecognizer.location(in: view), with: nil)?.ancestor() {
+			if tableView.contentOffset.y > -tableView.contentInset.top {
+				return false
+			}
+		}
+		return t.y > 0
+	}
+	
+	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+		return true
+	}
+	
+	//	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+	//		return true
+	//	}
 }

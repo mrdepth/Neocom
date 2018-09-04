@@ -19,3 +19,21 @@ extension UITableViewCell {
 		return ancestor(of: UITableView.self)
 	}
 }
+
+extension UIViewController {
+	@IBAction func dismissAnimated(_ sender: Any) {
+		dismiss(animated: true, completion: nil)
+	}
+	
+	var topMostPresentedViewController: UIViewController {
+		return presentedViewController?.topMostPresentedViewController ?? self
+	}
+}
+
+extension UIAlertController {
+	convenience init(title: String? = NSLocalizedString("Error", comment: ""), error: Error, handler: ((UIAlertAction) -> Void)? = nil) {
+		self.init(title: title, message: error.localizedDescription, preferredStyle: .alert)
+		self.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .default, handler: handler))
+	}
+}
+

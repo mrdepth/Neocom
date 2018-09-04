@@ -112,7 +112,6 @@ class NCMainMenuContainerViewController: UIViewController {
 		}
 		headerMaxHeightConstraint?.isActive = true
 	}
-	
 }
 
 extension NCMainMenuContainerViewController: UIViewControllerTransitioningDelegate {

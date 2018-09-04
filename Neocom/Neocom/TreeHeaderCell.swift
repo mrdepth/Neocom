@@ -37,7 +37,7 @@ extension Tree.Content {
 }
 
 extension Tree.Item {
-	class Section<Child: TreeItem>: Collection<Tree.Content.Section, Child>, ExpandableItem {
+	class Section<Element: TreeItem>: Collection<Tree.Content.Section, Element>, ExpandableItem {
 		weak var treeController: TreeController?
 		var isExpanded: Bool {
 			get {
@@ -51,10 +51,17 @@ extension Tree.Item {
 		
 		var expandIdentifier: CustomStringConvertible?
 		
-		init<T: Hashable>(_ content: Tree.Content.Section, diffIdentifier: T, expandIdentifier: CustomStringConvertible?, treeController: TreeController?, children: [Child]? = nil) {
+		init<T: Hashable>(_ content: Tree.Content.Section, diffIdentifier: T, expandIdentifier: CustomStringConvertible?, treeController: TreeController?, children: [Element]? = nil) {
 			self.treeController = treeController
 			self.expandIdentifier = expandIdentifier
 			super.init(content, diffIdentifier: diffIdentifier, children: children)
+		}
+	}
+	
+	class SimpleSection<Element: TreeItem>: Section<Element> {
+		init(title: String, treeController: TreeController?, children: [Element]? = nil) {
+			let identifier = "\(type(of: self)).\(title)"
+			super.init(Tree.Content.Section(title: title), diffIdentifier: identifier, expandIdentifier: identifier, treeController: treeController, children: children)
 		}
 	}
 }

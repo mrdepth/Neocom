@@ -11,6 +11,7 @@ import TreeController
 import CoreData
 import Futures
 import Expressible
+import CloudData
 
 class AccountsPresenter: TreePresenter {
 	typealias Item = AnyTreeItem
@@ -22,6 +23,18 @@ class AccountsPresenter: TreePresenter {
 		self.view = view
 	}
 
+	func configure() {
+		view.tableView.register([Prototype.TreeHeaderCell.default,
+								 Prototype.AccountCell.default])
+		
+		interactor.configure()
+		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
+			self?.applicationWillEnterForeground()
+		}
+	}
+	
+	private var applicationWillEnterForegroundObserver: NotificationObserver?
+	
 	var presentation: [AnyTreeItem]?
 	
 	var isLoading: Bool = false
@@ -31,6 +44,14 @@ class AccountsPresenter: TreePresenter {
 		let defaultFolder = Tree.Item.AccountsDefaultFolder(treeController: view.treeController)
 		return .init([defaultFolder.asAnyItem, folders.asAnyItem])
 	}
+	
+	func onPan(_ sender: UIPanGestureRecognizer) {
+		if sender.state == .began && sender.translation(in: view.view).y < 0 {
+			view.unwinder?.unwind()
+//			view.dismiss(animated: true, completion: nil)
+		}
+	}
+
 }
 
 extension Tree.Item {

@@ -43,7 +43,7 @@ extension Tree.Item {
 	
 	class AccountsItem: FetchedResultsRow<Account>, CellConfiguring {
 		
-		var prototype: Prototype? { return Prototype.TreeHeaderCell.default }
+		var prototype: Prototype? { return Prototype.AccountCell.default }
 		lazy var api: API = Services.api.make(for: self.result)
 		
 		var character: Future<ESI.Result<ESI.Character.Information>>?
@@ -111,7 +111,8 @@ extension Tree.Item {
 					load(options: options)
 				}
 			} else {
-				try? cell.characterImageView?.image = image?.tryGet()?.value
+				cell.characterNameLabel?.text = (try? character?.tryGet()?.value.name) ?? result.characterName
+				cell.characterImageView?.image = (try? image?.tryGet()?.value) ?? nil
 				
 				if !isOAuth2TokenInvalid {
 					do {

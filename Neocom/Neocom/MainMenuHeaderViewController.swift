@@ -16,6 +16,40 @@ class MainMenuHeaderViewController: UIViewController, ContentProviderView {
 	@IBOutlet weak var allianceLabel: UILabel?
 	@IBOutlet weak var corporationImageView: UIImageView?
 	@IBOutlet weak var allianceImageView: UIImageView?
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		characterNameLabel?.text = " "
+		characterImageView?.image = #imageLiteral(resourceName: "avatar")
+		corporationLabel?.text = " "
+		corporationImageView?.image = nil
+		allianceLabel?.text = " "
+		allianceImageView?.image = nil
+
+		
+		presenter.configure()
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		presenter.viewWillAppear(animated)
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		presenter.viewDidAppear(animated)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		presenter.viewWillDisappear(animated)
+	}
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		presenter.viewDidDisappear(animated)
+	}
 
 	lazy var presenter: MainMenuHeaderPresenter! = MainMenuHeaderPresenter(view: self)
 	var unwinder: Unwinder?
@@ -24,13 +58,21 @@ class MainMenuHeaderViewController: UIViewController, ContentProviderView {
 		characterNameLabel?.text = content.characterName
 		characterImageView?.image = content.characterImage
 		corporationLabel?.text = content.corporation
-		allianceLabel?.text = content.alliance
 		corporationImageView?.image = content.corporationImage
+		allianceLabel?.text = content.alliance
 		allianceImageView?.image = content.allianceImage
+		
+		characterImageView?.image = #imageLiteral(resourceName: "avatar")
 		return .init(())
 	}
 	
 	func fail(_ error: Error) {
+		characterNameLabel?.text = error.localizedDescription
+		characterImageView?.image = #imageLiteral(resourceName: "avatar")
+		corporationLabel?.text = " "
+		corporationImageView?.image = nil
+		allianceLabel?.text = " "
+		allianceImageView?.image = nil
 	}
 
 	struct Metrics {

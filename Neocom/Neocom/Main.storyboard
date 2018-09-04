@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0zo-XV-3EL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jOF-Zr-V9H">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -15,13 +15,13 @@
             <objects>
                 <viewController id="MZf-NS-74p" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Yds-xQ-UUS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lGm-gq-ayo" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lGm-gq-ayo" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <connections>
-                                    <segue destination="0zo-XV-3EL" kind="embed" id="3st-Ue-d7Z"/>
+                                    <segue destination="0zo-XV-3EL" kind="embed" id="O78-MC-iTD"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -50,15 +50,15 @@
             </objects>
             <point key="canvasLocation" x="388" y="723"/>
         </scene>
-        <!--Main View Controller-->
+        <!--Main Menu View Controller-->
         <scene sceneID="gW3-2N-pFo">
             <objects>
-                <tableViewController storyboardIdentifier="MainViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="sUh-3c-8sa" customClass="MainViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="zON-jb-B7E" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                <tableViewController storyboardIdentifier="MainMenuViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="sUh-3c-8sa" customClass="MainMenuViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="zON-jb-B7E" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <view key="tableHeaderView" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" id="jja-fc-6VT">
+                        <view key="tableHeaderView" userInteractionEnabled="NO" contentMode="scaleToFill" id="jja-fc-6VT">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -68,9 +68,6 @@
                             <outlet property="delegate" destination="sUh-3c-8sa" id="6fZ-J7-UK1"/>
                         </connections>
                     </tableView>
-                    <connections>
-                        <segue destination="b5B-xp-I0c" kind="presentation" identifier="NCAccountsViewController" id="Fa9-Rs-G2v"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0sr-6z-THP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -81,13 +78,13 @@
             <objects>
                 <viewController storyboardIdentifier="MainMenuContainerViewController" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="0zo-XV-3EL" customClass="MainMenuContainerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="04W-e4-wXp">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xiO-UB-iBj">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <connections>
-                                    <segue destination="sUh-3c-8sa" kind="embed" id="fCj-8c-arU"/>
+                                    <segue destination="sUh-3c-8sa" kind="embed" id="U5T-Ya-d4y"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -122,16 +119,17 @@
         <scene sceneID="ZQg-gz-Knu">
             <objects>
                 <viewController storyboardIdentifier="MainMenuCharacterHeaderViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uDW-QB-rGv" customClass="MainMenuHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="zAk-bV-w0n" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="zAk-bV-w0n" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jnE-t0-ZJ1">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="OH5-ud-gSv" customClass="NCRoundedImageView" customModule="Neocom" customModuleProvider="target">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" image="avatar" translatesAutoresizingMaskIntoConstraints="NO" id="OH5-ud-gSv" customClass="RoundedImageView" customModule="Neocom" customModuleProvider="target">
                                         <rect key="frame" x="103" y="4" width="114" height="114.5"/>
                                         <color key="backgroundColor" white="1" alpha="0.050000000000000003" colorSpace="calibratedWhite"/>
+                                        <color key="tintColor" red="1" green="1" blue="1" alpha="0.050000000000000003" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="OH5-ud-gSv" secondAttribute="height" id="dDo-lx-Xq4"/>
                                         </constraints>
@@ -289,9 +287,6 @@
                                     <constraint firstAttribute="trailing" secondItem="oVJ-WG-YA0" secondAttribute="trailing" id="muO-MY-9JZ"/>
                                     <constraint firstItem="OH5-ud-gSv" firstAttribute="top" secondItem="jnE-t0-ZJ1" secondAttribute="top" constant="4" id="p0N-o6-tKu"/>
                                 </constraints>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="Ye3-m0-wfK" appends="YES" id="5B8-2g-Ydw"/>
-                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -316,7 +311,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fH6-wy-bft" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="Ye3-m0-wfK"/>
             </objects>
             <point key="canvasLocation" x="1089" y="-828"/>
         </scene>
@@ -344,10 +338,9 @@
         <!--Banner Navigation View Controller-->
         <scene sceneID="j43-7O-0Kk">
             <objects>
-                <navigationController storyboardIdentifier="BannerNavigationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="aKc-6p-ULR" customClass="BannerNavigationViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="BannerNavigationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" navigationBarHidden="YES" id="aKc-6p-ULR" customClass="BannerNavigationViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="9qV-1T-8Vh">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -364,7 +357,6 @@
                 <splitViewController id="jOF-Zr-V9H" customClass="NCSplitViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <segue destination="jzY-fj-lmf" kind="relationship" relationship="detailViewController" id="r6L-FF-iza"/>
                         <segue destination="aKc-6p-ULR" kind="relationship" relationship="masterViewController" id="yKN-9Y-J0x"/>
                     </connections>
                 </splitViewController>
@@ -376,7 +368,7 @@
         <scene sceneID="iZ5-Vc-nMS">
             <objects>
                 <viewController storyboardIdentifier="MainMenuHeaderViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zO0-hy-Pcb" customClass="MainMenuHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="4O2-gG-Atd" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="4O2-gG-Atd" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="122"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -424,20 +416,12 @@
                             <constraint firstItem="4og-xS-tIe" firstAttribute="trailing" secondItem="RKI-G4-hKZ" secondAttribute="trailing" priority="999" id="fYN-bk-XX6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4og-xS-tIe"/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="XDf-8W-wKp" appends="YES" id="LaA-oE-WTv"/>
-                        </connections>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="122"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eUj-YX-9zG" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="XDf-8W-wKp">
-                    <connections>
-                        <action selector="onAddAccount:" destination="zO0-hy-Pcb" id="ag3-Ew-eyM"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2466" y="-880"/>
         </scene>
@@ -471,8 +455,8 @@
         <!--Accounts-->
         <scene sceneID="56w-hi-x3n">
             <objects>
-                <tableViewController clearsSelectionOnViewWillAppear="NO" id="CRE-3B-1kr" customClass="NCAccountsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="134" sectionHeaderHeight="18" sectionFooterHeight="18" id="wWz-29-sVj" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="AccountsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" clearsSelectionOnViewWillAppear="NO" id="CRE-3B-1kr" customClass="AccountsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="134" sectionHeaderHeight="18" sectionFooterHeight="18" id="wWz-29-sVj" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="436"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -495,13 +479,7 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Accounts" id="HVX-Wz-ALI">
-                        <barButtonItem key="leftBarButtonItem" title="Close" id="f4J-dV-ybU">
-                            <connections>
-                                <action selector="onClose:" destination="CRE-3B-1kr" id="t2g-s8-9BC"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Accounts" id="HVX-Wz-ALI"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="black" translucent="NO"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -528,7 +506,7 @@
         <scene sceneID="ryu-mK-cD5">
             <objects>
                 <viewController storyboardIdentifier="MainMenuLoginHeaderViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="oCk-jp-6fN" customClass="MainMenuHeaderViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="yBV-Xh-Ggp" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="yBV-Xh-Ggp" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="122"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -576,16 +554,12 @@
                             <constraint firstItem="x5P-wH-WNk" firstAttribute="leading" secondItem="YaY-wZ-udn" secondAttribute="leading" id="wPP-pH-a85"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="YaY-wZ-udn"/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="mmc-wa-Z9i" appends="YES" id="Zxt-W9-AZz"/>
-                        </connections>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="122"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7D0-WE-eWW" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="mmc-wa-Z9i"/>
             </objects>
             <point key="canvasLocation" x="1800" y="-880"/>
         </scene>
@@ -998,6 +972,7 @@
     </scenes>
     <resources>
         <image name="addAccount" width="100" height="100"/>
+        <image name="avatar" width="256" height="256"/>
         <image name="login" width="100" height="100"/>
         <image name="logo" width="440" height="115"/>
     </resources>

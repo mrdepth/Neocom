@@ -50,6 +50,15 @@ protocol ExpandableItem {
 	var expandIdentifier: CustomStringConvertible? {get}
 }
 
+protocol Routable {
+	var route: Routing? {get}
+	var secondaryRoute: Routing? {get}
+}
+
+extension Routable {
+	var secondaryRoute: Routing? { return nil }
+}
+
 extension ExpandableItem {
 	var initiallyExpanded: Bool {
 		return true
@@ -79,7 +88,8 @@ extension Tree.Item {
 		}
 	}
 	
-	class Base<Content: Hashable, Child: TreeItem>: TreeItem, CellConfiguring {
+	class Base<Content: Hashable, Element: TreeItem>: TreeItem, CellConfiguring {
+		typealias Child = Element
 		var content: Content
 		var children: [Child]?
 		
@@ -89,19 +99,19 @@ extension Tree.Item {
 		
 		var diffIdentifier: AnyHashable
 		
-		init<T: Hashable>(_ content: Content, diffIdentifier: T, children: [Child]? = nil) {
+		init<T: Hashable>(_ content: Content, diffIdentifier: T, children: [Element]? = nil) {
 			self.content = content
 			self.diffIdentifier = AnyHashable(diffIdentifier)
 			self.children = children
 		}
 		
-		init(_ content: Content, children: [Child]? = nil) {
+		init(_ content: Content, children: [Element]? = nil) {
 			self.content = content
 			self.diffIdentifier = AnyHashable(content)
 			self.children = children
 		}
 		
-		static func == (lhs: Base<Content, Child>, rhs: Base<Content, Child>) -> Bool {
+		static func == (lhs: Base<Content, Element>, rhs: Base<Content, Element>) -> Bool {
 			return lhs.content == rhs.content
 		}
 		

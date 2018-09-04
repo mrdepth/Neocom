@@ -10,6 +10,8 @@ import Foundation
 import Appodeal
 import CoreData
 import CloudData
+import EVEAPI
+import SafariServices
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -31,5 +33,40 @@ extension AppDelegate {
 		TableView.appearance().separatorColor = .separator
 		RowCell.appearance().backgroundColor = .cellBackground
 		HeaderCell.appearance().backgroundColor = .background
+		BackgroundView.appearance().backgroundColor = .background
+	}
+}
+
+
+extension AppDelegate {
+	func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+		
+		if OAuth2.handleOpenURL(url, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey, completionHandler: { (result) in
+			switch result {
+			case let .success(token):
+				
+				if let account = Services.storage.viewContext.account(with: token) {
+					account.oAuth2Token = token
+				}
+				else {
+					let account = Services.storage.viewContext.newAccount(with: token)
+				}
+				try? Services.storage.viewContext.save()
+
+			case let .failure(error):
+				let controller = self.window?.rootViewController?.topMostPresentedViewController
+				controller?.present(UIAlertController(error: error), animated: true, completion: nil)
+				break
+			}
+		}) {
+			if let controller = self.window?.rootViewController?.topMostPresentedViewController as? SFSafariViewController {
+				controller.dismiss(animated: true, completion: nil)
+			}
+			
+			return true
+		}
+		else {
+			return false
+		}
 	}
 }

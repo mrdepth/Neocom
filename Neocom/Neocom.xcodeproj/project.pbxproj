@@ -10,7 +10,6 @@
 		1203E8851F09350A009ADF8D /* rssFeeds.json in Resources */ = {isa = PBXBuildFile; fileRef = 1203E8841F09350A009ADF8D /* rssFeeds.json */; };
 		120A386D213D46970071ED72 /* MainMenuContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A386C213D46970071ED72 /* MainMenuContainerViewController.swift */; };
 		120A386F213D543E0071ED72 /* MainMenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A386E213D543E0071ED72 /* MainMenuHeader.swift */; };
-		120A3871213D559D0071ED72 /* UIStoryboard+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A3870213D559D0071ED72 /* UIStoryboard+NC.swift */; };
 		120A59EF1F10ABEC0053F94B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120A59EE1F10ABEC0053F94B /* StoreKit.framework */; };
 		120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */; };
 		1211A4631EEEC35A00364744 /* NCSkillTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */; };
@@ -35,6 +34,7 @@
 		12406A031F20F4B800A4DAE7 /* NCShipTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12406A021F20F4B800A4DAE7 /* NCShipTableViewCell.xib */; };
 		12415981212FF0AC001709F2 /* TreeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12415980212FF0AC001709F2 /* TreeItem.swift */; };
 		1248DB3A1F1C9DE9009625EC /* NCMailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1248DB391F1C9DE9009625EC /* NCMailTableViewCell.xib */; };
+		124C858F213E880200333636 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C858E213E880200333636 /* BackgroundView.swift */; };
 		1256BE551DF4728800A2A24B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE541DF4728800A2A24B /* Main.storyboard */; };
 		1256BEC81DF4770A00A2A24B /* charisma.png in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE611DF4770A00A2A24B /* charisma.png */; };
 		1256BEC91DF4770A00A2A24B /* intelligence.png in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE621DF4770A00A2A24B /* intelligence.png */; };
@@ -109,6 +109,9 @@
 		129DFE1B21347A6F00C85496 /* TableViewBackgroundLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129DFE1A21347A6F00C85496 /* TableViewBackgroundLabel.swift */; };
 		129DFE1E21347AFB00C85496 /* AccessibilityLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129DFE1D21347AFB00C85496 /* AccessibilityLabel.swift */; };
 		129DFE20213486D900C85496 /* ProgressTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129DFE1F213486D900C85496 /* ProgressTask.swift */; };
+		129E40A9213EA318002EDAF9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D951DEF58A100561A7A /* ViewController.swift */; };
+		129E40AB213EB001002EDAF9 /* UIView+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E314BB1E165D5D000A926D /* UIView+NC.swift */; };
+		129E40AD213ECE0E002EDAF9 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E40AC213ECE0E002EDAF9 /* RoundedImageView.swift */; };
 		12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9722212BEA6C00B30DD3 /* SDE.xcdatamodeld */; };
 		12AB9725212BF11400B30DD3 /* Appodeal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BFE4402017C8E80083AC2F /* Appodeal.framework */; };
 		12AB9726212BF11800B30DD3 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129DE4381FF628AD00A2C1CD /* FBSDKCoreKit.framework */; };
@@ -192,6 +195,11 @@
 		12E932201E6BFC650033D71A /* NCFittingCharacterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E9321F1E6BFC650033D71A /* NCFittingCharacterTableViewCell.xib */; };
 		12EE7CE5213D598F005CE68F /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7CE4213D598F005CE68F /* Router.swift */; };
 		12EE7D05213D79BB005CE68F /* Router_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D04213D79BB005CE68F /* Router_Tests.swift */; };
+		12EE7D08213E60C8005CE68F /* MainMenuContainerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D07213E60C8005CE68F /* MainMenuContainerPresenter.swift */; };
+		12EE7D0A213E60D1005CE68F /* MainMenuContainerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D09213E60D1005CE68F /* MainMenuContainerInteractor.swift */; };
+		12EE7D0C213E6282005CE68F /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D0B213E6282005CE68F /* Route.swift */; };
+		12EE7D0E213E62E8005CE68F /* Accounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D0D213E62E8005CE68F /* Accounts.swift */; };
+		12EE7D11213E6BD7005CE68F /* SlideDownAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D10213E6BD7005CE68F /* SlideDownAnimationController.swift */; };
 		12FE0E3621348F6B002F3507 /* Dark.clr in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DD51DF0AF6900561A7A /* Dark.clr */; };
 /* End PBXBuildFile section */
 
@@ -290,7 +298,6 @@
 		1205B8A01E558F45006D4CAD /* NCDamagePatternEditTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDamagePatternEditTableViewCell.swift; sourceTree = "<group>"; };
 		120A386C213D46970071ED72 /* MainMenuContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuContainerViewController.swift; sourceTree = "<group>"; };
 		120A386E213D543E0071ED72 /* MainMenuHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuHeader.swift; sourceTree = "<group>"; };
-		120A3870213D559D0071ED72 /* UIStoryboard+NC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+NC.swift"; sourceTree = "<group>"; };
 		120A59E71F0BFCB20053F94B /* NCShoppingListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCShoppingListViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		120A59EB1F0CAFEF0053F94B /* NCShoppingListAdditionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCShoppingListAdditionViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		120A59EE1F10ABEC0053F94B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -385,6 +392,7 @@
 		12498B031EFD63D800FEEE36 /* NCKillmailsPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailsPageViewController.swift; sourceTree = "<group>"; };
 		12498B051EFD680200FEEE36 /* NCKillmailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailTableViewCell.swift; sourceTree = "<group>"; };
 		124BD4B12018978E00816946 /* NCSubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSubscriptionViewController.swift; sourceTree = "<group>"; };
+		124C858E213E880200333636 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		1256BE331DF1C38200A2A24B /* NCStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorage.swift; sourceTree = "<group>"; };
 		1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorageExtensions.swift; sourceTree = "<group>"; };
 		1256BE381DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCBannerNavigationViewController.swift; sourceTree = "<group>"; };
@@ -547,6 +555,7 @@
 		129DFE1A21347A6F00C85496 /* TableViewBackgroundLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewBackgroundLabel.swift; sourceTree = "<group>"; };
 		129DFE1D21347AFB00C85496 /* AccessibilityLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityLabel.swift; sourceTree = "<group>"; };
 		129DFE1F213486D900C85496 /* ProgressTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressTask.swift; sourceTree = "<group>"; };
+		129E40AC213ECE0E002EDAF9 /* RoundedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
 		129E60ED1E0152A900B56EB8 /* NCAutoHeightLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAutoHeightLabel.swift; sourceTree = "<group>"; };
 		129E60EF1E01554F00B56EB8 /* NCTintImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTintImageView.swift; sourceTree = "<group>"; };
 		129E60F51E018BD400B56EB8 /* NCLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocation.swift; sourceTree = "<group>"; };
@@ -727,6 +736,11 @@
 		12EB47C3205FC2E300769B19 /* NCWalletTransactionsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCWalletTransactionsPageViewController.swift; sourceTree = "<group>"; };
 		12EE7CE4213D598F005CE68F /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		12EE7D04213D79BB005CE68F /* Router_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router_Tests.swift; sourceTree = "<group>"; };
+		12EE7D07213E60C8005CE68F /* MainMenuContainerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuContainerPresenter.swift; sourceTree = "<group>"; };
+		12EE7D09213E60D1005CE68F /* MainMenuContainerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuContainerInteractor.swift; sourceTree = "<group>"; };
+		12EE7D0B213E6282005CE68F /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
+		12EE7D0D213E62E8005CE68F /* Accounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accounts.swift; sourceTree = "<group>"; };
+		12EE7D10213E6BD7005CE68F /* SlideDownAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideDownAnimationController.swift; sourceTree = "<group>"; };
 		12EFE7EB1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCFittingModuleActionsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12EFE7F51E40C840007BF69B /* NCSheetPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSheetPresentationController.swift; sourceTree = "<group>"; };
 		12F8FF9E1E5DBC58008F79D5 /* NCFittingShipsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingShipsViewController.swift; sourceTree = "<group>"; };
@@ -807,6 +821,7 @@
 		120A385C213D3B280071ED72 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				12EE7D0F213E6BD0005CE68F /* SlideDownAnimationController */,
 				12B8906F213005350082D4A3 /* SOLID */,
 				1241597C212FEFCE001709F2 /* TreeView */,
 				12AB9738212C111800B30DD3 /* Character */,
@@ -819,8 +834,9 @@
 				1279EFED213543B7005340C0 /* UnitFormatter.swift */,
 				1295A1A92139242300047516 /* Services.swift */,
 				12E04180212D44360000CB4F /* Config.swift */,
-				120A3870213D559D0071ED72 /* UIStoryboard+NC.swift */,
+				12E314BB1E165D5D000A926D /* UIView+NC.swift */,
 				12EE7CE4213D598F005CE68F /* Router.swift */,
+				12EE7D0B213E6282005CE68F /* Route.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -855,6 +871,7 @@
 		121F26E92136EE5C00AE1D70 /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				12EE7D0D213E62E8005CE68F /* Accounts.swift */,
 				121F26EA2136EE6C00AE1D70 /* AccountsViewController.swift */,
 				121F26EE2136EE9100AE1D70 /* AccountsPresenter.swift */,
 				121F26EC2136EE8700AE1D70 /* AccountsInteractor.swift */,
@@ -1045,7 +1062,7 @@
 				121F26E92136EE5C00AE1D70 /* Accounts */,
 				1279EFFB21358F56005340C0 /* MainMenuHeader */,
 				120A385E213D3F000071ED72 /* MainMenu */,
-				120A386C213D46970071ED72 /* MainMenuContainerViewController.swift */,
+				12EE7D06213E60BC005CE68F /* MainMenuContainer */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -1155,6 +1172,8 @@
 				1279EFF821358922005340C0 /* TintImageView.swift */,
 				129DFE1D21347AFB00C85496 /* AccessibilityLabel.swift */,
 				129DFE1A21347A6F00C85496 /* TableViewBackgroundLabel.swift */,
+				124C858E213E880200333636 /* BackgroundView.swift */,
+				129E40AC213ECE0E002EDAF9 /* RoundedImageView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1474,7 +1493,6 @@
 				126157051E0095380041B817 /* NCProgressHandler.swift */,
 				129E60F71E0196AD00B56EB8 /* UIColor+NC.swift */,
 				1261570E1E01D3410041B817 /* NCManagedObjectObserver.swift */,
-				12E314BB1E165D5D000A926D /* UIView+NC.swift */,
 				121D10AF1E26345D00DD671B /* NSManagedObjectContext+NC.swift */,
 				125AB80E1E41D9F500B8A2A8 /* UIViewController+NC.swift */,
 				1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */,
@@ -1530,8 +1548,8 @@
 			isa = PBXGroup;
 			children = (
 				120A385C213D3B280071ED72 /* Utility */,
-				125DF62E2133CFAE00B86AE0 /* Main */,
 				121F26E22136EC2800AE1D70 /* Banner */,
+				125DF62E2133CFAE00B86AE0 /* Main */,
 				121F26E52136EC5700AE1D70 /* NavigationController.swift */,
 				121F26E72136ECA800AE1D70 /* SplitViewController.swift */,
 				12678BEE212BE32A00E7E427 /* AppDelegate.swift */,
@@ -1748,6 +1766,24 @@
 				12EA6B3F1E850BF300C571DF /* NCLoadoutActivityItem.swift */,
 			);
 			name = Activity;
+			sourceTree = "<group>";
+		};
+		12EE7D06213E60BC005CE68F /* MainMenuContainer */ = {
+			isa = PBXGroup;
+			children = (
+				120A386C213D46970071ED72 /* MainMenuContainerViewController.swift */,
+				12EE7D07213E60C8005CE68F /* MainMenuContainerPresenter.swift */,
+				12EE7D09213E60D1005CE68F /* MainMenuContainerInteractor.swift */,
+			);
+			name = MainMenuContainer;
+			sourceTree = "<group>";
+		};
+		12EE7D0F213E6BD0005CE68F /* SlideDownAnimationController */ = {
+			isa = PBXGroup;
+			children = (
+				12EE7D10213E6BD7005CE68F /* SlideDownAnimationController.swift */,
+			);
+			name = SlideDownAnimationController;
 			sourceTree = "<group>";
 		};
 		12EFE7F41E40C833007BF69B /* PresentationControllers */ = {
@@ -2048,12 +2084,12 @@
 			files = (
 				12FE0E3621348F6B002F3507 /* Dark.clr in Sources */,
 				12415981212FF0AC001709F2 /* TreeItem.swift in Sources */,
+				12EE7D0E213E62E8005CE68F /* Accounts.swift in Sources */,
 				12B8907F21300E610082D4A3 /* TreeView.swift in Sources */,
 				12AB9737212C0ECC00B30DD3 /* SDE+Constants.swift in Sources */,
 				12AB974F212C325E00B30DD3 /* ImageValueTransformer.swift in Sources */,
 				121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */,
 				12D3109A211C282100367440 /* PersistentContext.swift in Sources */,
-				120A3871213D559D0071ED72 /* UIStoryboard+NC.swift in Sources */,
 				12AFD473211C1E7D00007423 /* Cache.swift in Sources */,
 				1279EFF7213587D7005340C0 /* Cells.swift in Sources */,
 				12EE7CE5213D598F005CE68F /* Router.swift in Sources */,
@@ -2063,7 +2099,9 @@
 				12AFD46D211C1C3D00007423 /* SDE.swift in Sources */,
 				1295A1AA2139242300047516 /* Services.swift in Sources */,
 				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
+				12EE7D0A213E60D1005CE68F /* MainMenuContainerInteractor.swift in Sources */,
 				121F26F12136F07200AE1D70 /* TreeItem+CoreData.swift in Sources */,
+				129E40A9213EA318002EDAF9 /* ViewController.swift in Sources */,
 				12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */,
 				121F26ED2136EE8700AE1D70 /* AccountsInteractor.swift in Sources */,
 				1279EFF5213586D6005340C0 /* NCTableView.m in Sources */,
@@ -2074,10 +2112,14 @@
 				121F26E62136EC5700AE1D70 /* NavigationController.swift in Sources */,
 				12AB972A212BF60000B30DD3 /* Storage.xcdatamodeld in Sources */,
 				12AB9732212C0E4F00B30DD3 /* NCFleetConfiguration.swift in Sources */,
+				12EE7D08213E60C8005CE68F /* MainMenuContainerPresenter.swift in Sources */,
 				12B890722130054E0082D4A3 /* SOLID.swift in Sources */,
 				12AB972C212BF6A900B30DD3 /* Storage.swift in Sources */,
 				125DF6332133CFC700B86AE0 /* MainMenuViewController.swift in Sources */,
+				12EE7D11213E6BD7005CE68F /* SlideDownAnimationController.swift in Sources */,
+				129E40AB213EB001002EDAF9 /* UIView+NC.swift in Sources */,
 				121F26EB2136EE6C00AE1D70 /* AccountsViewController.swift in Sources */,
+				124C858F213E880200333636 /* BackgroundView.swift in Sources */,
 				129DFE1E21347AFB00C85496 /* AccessibilityLabel.swift in Sources */,
 				129DFE20213486D900C85496 /* ProgressTask.swift in Sources */,
 				12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */,
@@ -2089,10 +2131,12 @@
 				125DF6352133CFD000B86AE0 /* MainMenuPresenter.swift in Sources */,
 				120A386F213D543E0071ED72 /* MainMenuHeader.swift in Sources */,
 				12AB9735212C0E6E00B30DD3 /* NCImplantSetData.swift in Sources */,
+				12EE7D0C213E6282005CE68F /* Route.swift in Sources */,
 				12AB9733212C0E5C00B30DD3 /* NCFittingLoadout.swift in Sources */,
 				125DF6372133CFDB00B86AE0 /* MainMenuInteractor.swift in Sources */,
 				12E0417E212D3C4F0000CB4F /* API.swift in Sources */,
 				12AB9755212C488400B30DD3 /* TrainingQueue.swift in Sources */,
+				129E40AD213ECE0E002EDAF9 /* RoundedImageView.swift in Sources */,
 				120A386D213D46970071ED72 /* MainMenuContainerViewController.swift in Sources */,
 				1279EFEE213543B7005340C0 /* UnitFormatter.swift in Sources */,
 				1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */,

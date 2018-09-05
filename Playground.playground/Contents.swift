@@ -4,27 +4,24 @@ import UIKit
 import PlaygroundSupport
 import CoreData
 
-protocol P {
-	var a: Int? {get}
-	var b: Int? {get}
-}
-
-extension P {
-//	var b: Int? {
-//		return nil
-//	}
+protocol P: Equatable {
 }
 
 class A: P {
-	var a: Int? {
-		return 0
+	static func == (lhs: A, rhs: A) -> Bool {
+		return false
 	}
-	var b: Int? {
-		return 1
-	}
-
 }
 
-let a = A()
-print(a.a ?? -1)
-print(a.b ?? -1)
+class B: A {
+	static func == (lhs: B, rhs: B) -> Bool {
+		return true
+	}
+}
+
+func eq<T: P>(_ a: T, _ b: T) -> Bool {
+	return a == b
+}
+
+eq(A(), A())
+eq(B(), B())

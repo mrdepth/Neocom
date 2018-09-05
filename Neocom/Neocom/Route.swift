@@ -114,8 +114,8 @@ extension Route  where Assembly.View.Input == Void {
 protocol Unwinder {
 	var kind: RouteKind {get}
 	var previous: Unwinder? {get}
-	func unwind() -> Future<Bool>
-	func unwind<T: View>(to view: T) -> Future<Bool>
+	@discardableResult func unwind() -> Future<Bool>
+	@discardableResult func unwind<T: View>(to view: T) -> Future<Bool>
 	func canPerformUnwind<T: View>(to view: T) -> Bool
 }
 
@@ -127,7 +127,7 @@ fileprivate struct ViewControllerUnwinder<Source: View>: Unwinder where Source: 
 	
 	weak var source: Source?
 	
-	func unwind() -> Future<Bool> {
+	@discardableResult func unwind() -> Future<Bool> {
 		guard let source = source else {return .init(false)}
 		
 		
@@ -171,7 +171,7 @@ fileprivate struct ViewControllerUnwinder<Source: View>: Unwinder where Source: 
 		}
 	}
 	
-	func unwind<T: View>(to view: T) -> Future<Bool> {
+	@discardableResult func unwind<T: View>(to view: T) -> Future<Bool> {
 		return sequence(first: self as Unwinder, next: {$0.previous}).first(where: {$0.canPerformUnwind(to: view)})?.unwind() ?? .init(false)
 	}
 	

@@ -8,21 +8,35 @@
 
 import Foundation
 
-extension NSAttributedStringKey {
-	static let fontDescriptorSymbolicTraits = NSAttributedStringKey(rawValue: "UIFontDescriptorSymbolicTraits")
-	static let recipientID = NSAttributedStringKey(rawValue: "recipientID")
+extension Array where Element: NSAttributedString {
+
+	public func joined(separator: NSAttributedString = NSAttributedString(string: "")) -> NSAttributedString {
+		guard !isEmpty else {return NSAttributedString(string: "")}
+		let output = NSMutableAttributedString(attributedString: self[0])
+		for i in self[1...] {
+			output.append(separator)
+			output.append(i)
+		}
+		return output
+	}
+}
+
+extension NSAttributedString.Key {
+	static let fontDescriptorSymbolicTraits = NSAttributedString.Key(rawValue: "UIFontDescriptorSymbolicTraits")
+	static let recipientID = NSAttributedString.Key(rawValue: "recipientID")
 }
 
 extension NSAttributedString {
 	private static let roman = ["0","I","II","III","IV","V"]
 	
 	convenience init(skillName: String, level: Int) {
-		let s = NSMutableAttributedString(string: skillName, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+		let s = NSMutableAttributedString(string: skillName, attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
 		let level = level.clamped(to: 0...5)
 		if level > 0 {
-			s.append(NSAttributedString(string: " \(NSAttributedString.roman[level])", attributes: [NSAttributedStringKey.foregroundColor: UIColor.caption]))
+			s.append(NSAttributedString(string: " \(NSAttributedString.roman[level])", attributes: [NSAttributedString.Key.foregroundColor: UIColor.caption]))
 		}
 		self.init(attributedString: s)
+		
 	}
 	
 	func withFont(_ font: UIFont, textColor: UIColor) -> NSAttributedString {
@@ -34,15 +48,15 @@ extension NSAttributedString {
 			for (key, value) in attr {
 				switch key {
 				case .fontDescriptorSymbolicTraits:
-					if let traits = value as? UInt32, let fontDescriptor = font.fontDescriptor.withSymbolicTraits(UIFontDescriptorSymbolicTraits(rawValue: traits)) {
+					if let traits = value as? UInt32, let fontDescriptor = font.fontDescriptor.withSymbolicTraits(UIFontDescriptor.SymbolicTraits(rawValue: traits)) {
 						let theFont = UIFont(descriptor: fontDescriptor, size: font.pointSize)
-						s.addAttribute(NSAttributedStringKey.font, value: theFont, range: range)
+						s.addAttribute(NSAttributedString.Key.font, value: theFont, range: range)
 						hasFont = true
 					}
 				case .link:
 					if let fontDescriptor = font.fontDescriptor.withSymbolicTraits([.traitBold]) {
 						let theFont = UIFont(descriptor: fontDescriptor, size: font.pointSize)
-						s.addAttributes([NSAttributedStringKey.font: theFont, NSAttributedStringKey.foregroundColor: UIColor.caption], range: range)
+						s.addAttributes([NSAttributedString.Key.font: theFont, NSAttributedString.Key.foregroundColor: UIColor.caption], range: range)
 						hasFont = true
 						hasColor = true
 					}
@@ -56,10 +70,10 @@ extension NSAttributedString {
 			}
 			
 			if (!hasFont) {
-				s.addAttribute(NSAttributedStringKey.font, value: font, range: range)
+				s.addAttribute(NSAttributedString.Key.font, value: font, range: range)
 			}
 			if (!hasColor) {
-				s.addAttribute(NSAttributedStringKey.foregroundColor, value: textColor, range: range)
+				s.addAttribute(NSAttributedString.Key.foregroundColor, value: textColor, range: range)
 			}
 			
 		})
@@ -79,25 +93,25 @@ extension NSAttributedString {
 		self.init(attachment: NSTextAttachment(image: image, font: font))
 	}
 	
-	static func +  (_ lhs: NSAttributedString, _ rhs: NSAttributedString) -> NSAttributedString {
+	static func + (_ lhs: NSAttributedString, _ rhs: NSAttributedString) -> NSAttributedString {
 		let s = lhs.mutableCopy() as! NSMutableAttributedString
 		s.append(rhs)
 		return s
 	}
 
-	static func +  (_ lhs: NSAttributedString, _ rhs: String) -> NSAttributedString {
+	static func +<T: StringProtocol> (_ lhs: NSAttributedString, _ rhs: T) -> NSAttributedString {
 		let s = lhs.mutableCopy() as! NSMutableAttributedString
-		s.append(NSAttributedString(string: rhs))
+		s.append(NSAttributedString(string: String(rhs)))
 		return s
 	}
 	
-	static func +  (_ lhs: String, _ rhs: NSAttributedString) -> NSAttributedString {
-		let s = NSMutableAttributedString(string: lhs)
+	static func +<T: StringProtocol> (_ lhs: T, _ rhs: NSAttributedString) -> NSAttributedString {
+		let s = NSMutableAttributedString(string: String(lhs))
 		s.append(rhs)
 		return s
 	}
 
-	static func * (_ lhs: NSAttributedString, _ rhs: [NSAttributedStringKey: Any]) -> NSAttributedString {
+	static func * (_ lhs: NSAttributedString, _ rhs: [NSAttributedString.Key: Any]) -> NSAttributedString {
 		let s = lhs.mutableCopy() as! NSMutableAttributedString
 		let range = NSMakeRange(0, lhs.length)
 		s.addAttributes(rhs, range: range)
@@ -115,12 +129,9 @@ extension NSMutableAttributedString {
 	}
 }
 
-extension String {
-	//subscript(_ attr: [String: Any]) -> NSAttributedString {
-	//	return NSAttributedString(string: self, attributes: attr)
-	//}
-	static func * (_ lhs: String, _ rhs: [NSAttributedStringKey: Any]) -> NSAttributedString {
-		return NSAttributedString(string: lhs, attributes: rhs)
+extension StringProtocol {
+	static func * (_ lhs: Self, _ rhs: [NSAttributedString.Key: Any]) -> NSAttributedString {
+		return NSAttributedString(string: String(lhs), attributes: rhs)
 	}
 }
 
@@ -141,18 +152,15 @@ extension NSAttributedString {
 		enumerateAttributes(in: NSMakeRange(0, length), options: []) { (attributes, range, _) in
 			var s = attributedSubstring(from: range).string
 			s = s.replacingOccurrences(of: "\n", with: "<br>")
-			if let link = (attributes[NSAttributedStringKey.link] as? NSURL)?.absoluteString {
+			if let link = (attributes[NSAttributedString.Key.link] as? NSURL)?.absoluteString {
 				s = "<a href=\"\(link)\">\(s)</a>"
 			}
-			if let font = attributes[NSAttributedStringKey.font] as? UIFont {
-				if font.fontDescriptor.symbolicTraits.contains(UIFontDescriptorSymbolicTraits.traitBold) {
+			if let font = attributes[NSAttributedString.Key.font] as? UIFont {
+				if font.fontDescriptor.symbolicTraits.contains(UIFontDescriptor.SymbolicTraits.traitBold) {
 					s = "<b>\(s)</b>"
 				}
-//				if font.fontDescriptor.symbolicTraits.contains(UIFontDescriptorSymbolicTraits.traitItalic) {
-//					s = "<i>\(s)</i>"
-//				}
 			}
-			if let color = attributes[NSAttributedStringKey.foregroundColor] as? UIColor {
+			if let color = attributes[NSAttributedString.Key.foregroundColor] as? UIColor {
 				s = "<font color=\"\(color.css)ff\">\(s)</font>"
 			}
 			html.append(s)

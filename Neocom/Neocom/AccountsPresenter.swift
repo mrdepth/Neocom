@@ -14,19 +14,25 @@ import Expressible
 import CloudData
 
 class AccountsPresenter: TreePresenter {
-	typealias Item = AnyTreeItem
+	typealias View = AccountsViewController
+	typealias Interactor = AccountsInteractor
+	typealias Presentation = [AnyTreeItem]
 	
-	weak var view: AccountsViewController!
-	lazy var interactor: AccountsInteractor! = AccountsInteractor(presenter: self)
-
-	required init(view: AccountsViewController) {
+	weak var view: View!
+	lazy var interactor: Interactor! = Interactor(presenter: self)
+	
+	var content: Interactor.Content?
+	var presentation: Presentation?
+	var loading: Future<Void>?
+	
+	required init(view: View) {
 		self.view = view
 	}
-
+	
 	func configure() {
 		view.tableView.register([Prototype.TreeHeaderCell.default,
 								 Prototype.AccountCell.default])
-		
+
 		interactor.configure()
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
 			self?.applicationWillEnterForeground()
@@ -35,20 +41,15 @@ class AccountsPresenter: TreePresenter {
 	
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
 	
-	var presentation: [AnyTreeItem]?
-	
-	var isLoading: Bool = false
-	
-	func presentation(for content: ()) -> Future<[AnyTreeItem]> {
-		let folders = Tree.Item.AccountFoldersResultsController(context: Services.storage.viewContext, treeController: view.treeController)
-		let defaultFolder = Tree.Item.AccountsDefaultFolder(treeController: view.treeController)
+	func presentation(for content: Interactor.Content) -> Future<Presentation> {
+		let folders = Tree.Item.AccountFoldersResultsController(context: Services.storage.viewContext, treeController: view.treeController, cachePolicy: content)
+		let defaultFolder = Tree.Item.AccountsDefaultFolder(treeController: view.treeController, cachePolicy: content)
 		return .init([defaultFolder.asAnyItem, folders.asAnyItem])
 	}
 	
 	func onPan(_ sender: UIPanGestureRecognizer) {
 		if sender.state == .began && sender.translation(in: view.view).y < 0 {
 			view.unwinder?.unwind()
-//			view.dismiss(animated: true, completion: nil)
 		}
 	}
 
@@ -57,10 +58,13 @@ class AccountsPresenter: TreePresenter {
 extension Tree.Item {
 	
 	class AccountFoldersResultsController: FetchedResultsController<FetchedResultsSection<AccountsFolderItem>> {
-		convenience init(context: StorageContext, treeController: TreeController?) {
+		var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
+		
+		convenience init(context: StorageContext, treeController: TreeController?, cachePolicy: URLRequest.CachePolicy) {
 			let fetchRequest = context.managedObjectContext.from(AccountsFolder.self).sort(by: \AccountsFolder.name, ascending: true).fetchRequest
 			let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
 			self.init(frc, treeController: treeController)
+			self.cachePolicy = cachePolicy
 		}
 	}
 	
@@ -75,7 +79,7 @@ extension Tree.Item {
 				.fetchRequest
 			
 			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: result.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
-			return [AccountsResultsController(frc, treeController: section.controller.treeController)]
+			return [AccountsResultsController(frc, treeController: section.controller.treeController, cachePolicy: (section.controller as! AccountFoldersResultsController).cachePolicy)]
 		}()
 		
 		override var children: [AccountsResultsController]? {
@@ -95,11 +99,20 @@ extension Tree.Item {
 	}
 	
 	class AccountsResultsController: FetchedResultsController<FetchedResultsSection<AccountsItem>> {
+		var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
+		
+		convenience init(_ fetchedResultsController: NSFetchedResultsController<Account>, treeController: TreeController?, cachePolicy: URLRequest.CachePolicy) {
+			self.init(fetchedResultsController, diffIdentifier: fetchedResultsController.fetchRequest, treeController: treeController)
+			self.cachePolicy = cachePolicy
+		}
 	}
 	
 	class AccountsDefaultFolder: Tree.Item.Section<AccountsResultsController> {
+		var cachePolicy: URLRequest.CachePolicy
 		
-		init(treeController: TreeController?) {
+		init(treeController: TreeController?, cachePolicy: URLRequest.CachePolicy) {
+			self.cachePolicy = cachePolicy
+			
 			let managedObjectContext = Services.storage.viewContext.managedObjectContext
 			
 			let request = managedObjectContext.from(Account.self)
@@ -108,7 +121,7 @@ extension Tree.Item {
 				.fetchRequest
 			
 			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-			let children = [AccountsResultsController(frc, treeController: treeController)]
+			let children = [AccountsResultsController(frc, treeController: treeController, cachePolicy: cachePolicy)]
 
 			super.init(Tree.Content.Section(title: "Default"), diffIdentifier: "defaultFolder", expandIdentifier: "defaultFolder", treeController: treeController, children: children)
 		}

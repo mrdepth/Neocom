@@ -11,9 +11,9 @@ import Futures
 import EVEAPI
 
 class MainMenuHeaderInteractor: ContentProviderInteractor {
-	weak var presenter: MainMenuHeaderPresenter!
-	
+	typealias Presenter = MainMenuHeaderPresenter
 	typealias Content = ESI.Result<Info>
+	weak var presenter: Presenter!
 	
 	struct Info {
 		var characterName: String?
@@ -23,19 +23,19 @@ class MainMenuHeaderInteractor: ContentProviderInteractor {
 		var alliance: String?
 		var allianceImage: UIImage?
 	}
-
-	required init(presenter: MainMenuHeaderPresenter) {
+	
+	required init(presenter: Presenter) {
 		self.presenter = presenter
 	}
 	
-	func load(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<Info>> {
+	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Content> {
 		guard let account = Services.storage.viewContext.currentAccount else {return .init(.failure(NCError.authenticationRequired))}
 		let progress = Progress(totalUnitCount: 6)
 		let api = Services.api.current
 		
 		let metrics = presenter.view.metrics
 		let characterID = account.characterID
-
+		
 		return DispatchQueue.global(qos: .utility).async { () -> ESI.Result<Info> in
 			let characterInfo =  try progress.performAsCurrent(withPendingUnitCount: 1) { try api.characterInformation(cachePolicy: cachePolicy).get() }
 			let characterImage = progress.performAsCurrent(withPendingUnitCount: 1) { try? api.image(characterID: characterID, dimension: metrics.characterImageDimension, cachePolicy: cachePolicy).get() }
@@ -64,5 +64,4 @@ class MainMenuHeaderInteractor: ContentProviderInteractor {
 			return ESI.Result(value: value, expires: expires)
 		}
 	}
-	
 }

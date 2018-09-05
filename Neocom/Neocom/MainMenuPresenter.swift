@@ -13,23 +13,24 @@ import EVEAPI
 import CloudData
 
 class MainMenuPresenter: TreePresenter {
-	typealias Item = AnyTreeItem
-
-	weak var view: MainMenuViewController!
-	lazy var interactor: MainMenuInteractor! = MainMenuInteractor(presenter: self)
-
-	var presentation: [AnyTreeItem]?
-	var isLoading: Bool = false
+	typealias View = MainMenuViewController
+	typealias Interactor = MainMenuInteractor
+	typealias Presentation = [AnyTreeItem]
 	
+	weak var view: View!
+	lazy var interactor: Interactor! = Interactor(presenter: self)
 	
-	required init(view: MainMenuViewController) {
+	var presentation: Presentation?
+	var loading: Future<Void>?
+	
+	required init(view: View) {
 		self.view = view
 	}
 	
 	func configure() {
 		view.tableView.register([Prototype.TreeHeaderCell.default,
 								 Prototype.TreeDefaultCell.default])
-		
+
 		interactor.configure()
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
 			self?.applicationWillEnterForeground()
@@ -37,8 +38,8 @@ class MainMenuPresenter: TreePresenter {
 	}
 	
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
-
-	func presentation(for content: Void) -> Future<[Item]> {
+	
+	func presentation(for content: Interactor.Content) -> Future<Presentation> {
 		let account = Services.storage.viewContext.currentAccount
 		let api = Services.api.current
 		
@@ -48,7 +49,6 @@ class MainMenuPresenter: TreePresenter {
 				return Tree.Content.Default(title:NSLocalizedString("Character Sheet", comment: ""), subtitle: subtitle, image: #imageLiteral(resourceName: "charactersheet"))
 			}}
 		}
-//		return .init([])
 		
 		let menu = [Tree.Item.SimpleSection<Tree.Item.MainMenuAPIRow>(title: NSLocalizedString("Character", comment: ""),
 																   treeController: view.treeController,
@@ -127,37 +127,7 @@ class MainMenuPresenter: TreePresenter {
 						]).asAnyItem,
 					]
 		return .init(menu)
-		
-		/*let menu = [
-			Tree.Item.Section<Tree.Item.MainMenuAPI>(Tree.Content.Section(title: NSLocalizedString("Character", comment: "")), diffIdentifier: "character", expandIdentifier: "character", treeController: view.treeController, children: [
-				Tree.Item.MainMenuAPI(Tree.Content.Default(title:NSLocalizedString("Character Sheet", comment: ""), image: #imageLiteral(resourceName: "charactersheet")),
-									  account: account,
-									  value: characterSheet(),
-									  diffIdentifier: "characterSheet",
-									  treeController: view.treeController,
-									  require: [.esiWalletReadCharacterWalletV1,
-												.esiSkillsReadSkillsV1,
-												.esiLocationReadLocationV1,
-												.esiLocationReadShipTypeV1,
-												.esiClonesReadImplantsV1]),
-				Tree.Item.MainMenuAPI(Tree.Content.Default(title:NSLocalizedString("Jump Clones", comment: ""), image: #imageLiteral(resourceName: "jumpclones")),
-									  account: account,
-									  value: characterSheet(),
-									  diffIdentifier: "jumpClones",
-									  treeController: view.treeController,
-									  require: [.esiClonesReadClonesV1,
-												.esiClonesReadImplantsV1])
-				
-				].compactMap{$0}).asAnyItem,
-			
-			Tree.Item.Section<Tree.Item.MainMenu>(Tree.Content.Section(title: NSLocalizedString("Database", comment: "")), diffIdentifier: "database", expandIdentifier: "database", treeController: view.treeController, children: [
-				Tree.Item.MainMenu(Tree.Content.Default(title: NSLocalizedString("Database", comment: ""), image: #imageLiteral(resourceName: "items")))
-				]).asAnyItem
-		]
-		
-		return .init(menu)*/
 	}
-	
 }
 
 extension Tree.Item {

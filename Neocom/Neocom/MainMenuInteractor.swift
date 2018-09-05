@@ -10,10 +10,12 @@ import Foundation
 import Futures
 
 class MainMenuInteractor: TreeInteractor {
-	weak var presenter: MainMenuPresenter!
-
-	required init(presenter: MainMenuPresenter) {
+	typealias Presenter = MainMenuPresenter
+	weak var presenter: Presenter!
+	
+	required init(presenter: Presenter) {
 		self.presenter = presenter
 	}
 	
 }
+

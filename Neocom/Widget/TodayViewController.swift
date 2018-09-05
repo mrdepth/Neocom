@@ -20,7 +20,7 @@ class AccountCell: UITableViewCell {
 }
 
 class TodayViewController: UITableViewController, NCWidgetProviding {
-	private var data: WidgetData?
+	/*private var data: WidgetData?
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,6 +104,6 @@ class TodayViewController: UITableViewController, NCWidgetProviding {
 		guard let account = data?.accounts[indexPath.row] else {return}
 		guard let url = URL(string: "nc://account?uuid=\(account.uuid)") else {return}
 		extensionContext?.open(url, completionHandler: nil)
-	}
+	}*/
 	
 }

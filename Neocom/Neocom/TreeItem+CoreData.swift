@@ -43,20 +43,20 @@ protocol FetchedResultsTreeItem: TreeItem {
 }
 
 
-extension FetchedResultsTreeItem {
-	var hashValue: Int {
-		return result.hash
-	}
-	
-	var diffIdentifier: Result {
-		return result
-	}
-	
-	static func == (lhs: Self, rhs: Self) -> Bool {
-		return lhs.result == rhs.result
-	}
-
-}
+//extension FetchedResultsTreeItem {
+//	var hashValue: Int {
+//		return result.hash
+//	}
+//
+//	var diffIdentifier: Result {
+//		return result
+//	}
+//
+//	static func == (lhs: Self, rhs: Self) -> Bool {
+//		return lhs.result == rhs.result
+//	}
+//
+//}
 
 extension Tree.Item {
 	class FetchedResultsController<Section: FetchedResultsSectionTreeItem>: NSObject, TreeItem, NSFetchedResultsControllerDelegate, FetchedResultsControllerProtocol {
@@ -88,7 +88,12 @@ extension Tree.Item {
 		}
 
 		static func == (lhs: Tree.Item.FetchedResultsController<Section>, rhs: Tree.Item.FetchedResultsController<Section>) -> Bool {
-			return lhs.fetchedResultsController == rhs.fetchedResultsController
+			return lhs.fetchedResultsController.fetchRequest == rhs.fetchedResultsController.fetchRequest
+		}
+		
+		override func isEqual(_ object: Any?) -> Bool {
+			guard let rhs = object as? FetchedResultsController<Section> else {return false}
+			return fetchedResultsController.fetchRequest == rhs.fetchedResultsController.fetchRequest
 		}
 		
 		private struct Updates {
@@ -155,8 +160,12 @@ extension Tree.Item {
 	}
 	
 	class FetchedResultsSection<Item: FetchedResultsTreeItem>: TreeItem, FetchedResultsSectionTreeItem {
+		func isEqual(_ other: FetchedResultsSection<Item>) -> Bool {
+			return type(of: self) == type(of: other) && sectionInfo.name == other.sectionInfo.name
+		}
+		
 		static func == (lhs: Tree.Item.FetchedResultsSection<Item>, rhs: Tree.Item.FetchedResultsSection<Item>) -> Bool {
-			return lhs.sectionInfo.name == rhs.sectionInfo.name
+			return lhs.isEqual(rhs)
 		}
 		
 		unowned var controller: FetchedResultsControllerProtocol
@@ -174,13 +183,30 @@ extension Tree.Item {
 		}
 	}
 	
-	class FetchedResultsRow<Result: NSFetchRequestResult & Equatable>: FetchedResultsTreeItem {
+	class FetchedResultsRow<Result: NSFetchRequestResult & Equatable & Hashable>: FetchedResultsTreeItem {
 		var result: Result
 		unowned var section: FetchedResultsSectionProtocol
 		
 		required init(_ result: Result, section: FetchedResultsSectionProtocol) {
 			self.result = result
 			self.section = section
+		}
+		
+		var hashValue: Int {
+			return result.hash
+		}
+		
+		typealias DiffIdentifier = Result
+		var diffIdentifier: Result {
+			return result
+		}
+		
+		func isEqual(_ other: FetchedResultsRow<Result>) -> Bool {
+			return type(of: self) == type(of: other) && result == other.result
+		}
+
+		static func == (lhs: FetchedResultsRow<Result>, rhs: FetchedResultsRow<Result>) -> Bool {
+			return lhs.isEqual(rhs)
 		}
 	}
 }

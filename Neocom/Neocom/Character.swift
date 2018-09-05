@@ -205,6 +205,17 @@ extension Character.SkillQueueItem {
 			return false
 		}
 	}
+	
+	var trainingProgress: Float {
+		let level = queuedSkill.finishedLevel
+		guard level > 0 else {return 0}
+		
+		let start = Double(skill.skillPoints(at: level - 1))
+		let end = Double(skill.skillPoints(at: level))
+		let left = Double(skillPointsToLevelUp)
+		let progress = left / (end - start);
+		return Float(progress)
+	}
 }
 
 

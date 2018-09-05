@@ -12,21 +12,20 @@ import Expressible
 import Futures
 
 class AccountsInteractor: TreeInteractor {
-	weak var presenter: AccountsPresenter!
 	
-	required init(presenter: AccountsPresenter) {
+	typealias Presenter = AccountsPresenter
+	typealias Content = URLRequest.CachePolicy
+	weak var presenter: Presenter!
+	
+	required init(presenter: Presenter) {
 		self.presenter = presenter
 	}
 	
-//	typealias Content = NSFetchedResultsController<Account>
+	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Content> {
+		return .init(cachePolicy)
+	}
 	
-//	func load(cachePolicy: URLRequest.CachePolicy) -> Future<NSFetchedResultsController<Account>> {
-//		let request = Services.storage.viewContext.managedObjectContext.from(Account.self).sort(by: \Account.order, ascending: true).sort(by: \Account.characterName, ascending: true).fetchRequest
-//		
-//		return .init(NSFetchedResultsController(fetchRequest: request, managedObjectContext: Services.storage.viewContext.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil))
-//	}
-
-	func isExpired(_ content: NSFetchedResultsController<Account>) -> Bool {
+	func isExpired(_ content: URLRequest.CachePolicy) -> Bool {
 		return false
 	}
 

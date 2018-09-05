@@ -10,15 +10,21 @@ import Foundation
 import Futures
 
 class MainMenuHeaderViewController: UIViewController, ContentProviderView {
+	typealias Presenter = MainMenuHeaderPresenter
+	
+	lazy var presenter: Presenter! = Presenter(view: self)
+	var unwinder: Unwinder?
+	
 	@IBOutlet weak var characterNameLabel: UILabel?
 	@IBOutlet weak var characterImageView: UIImageView?
 	@IBOutlet weak var corporationLabel: UILabel?
 	@IBOutlet weak var allianceLabel: UILabel?
 	@IBOutlet weak var corporationImageView: UIImageView?
 	@IBOutlet weak var allianceImageView: UIImageView?
-	
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		presenter.configure()
 		
 		characterNameLabel?.text = " "
 		characterImageView?.image = #imageLiteral(resourceName: "avatar")
@@ -26,9 +32,6 @@ class MainMenuHeaderViewController: UIViewController, ContentProviderView {
 		corporationImageView?.image = nil
 		allianceLabel?.text = " "
 		allianceImageView?.image = nil
-
-		
-		presenter.configure()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -50,19 +53,14 @@ class MainMenuHeaderViewController: UIViewController, ContentProviderView {
 		super.viewDidDisappear(animated)
 		presenter.viewDidDisappear(animated)
 	}
-
-	lazy var presenter: MainMenuHeaderPresenter! = MainMenuHeaderPresenter(view: self)
-	var unwinder: Unwinder?
 	
-	func present(_ content: MainMenuHeaderInteractor.Info) -> Future<Void> {
+	func present(_ content: Presenter.Presentation, animated: Bool) -> Future<Void> {
 		characterNameLabel?.text = content.characterName
 		characterImageView?.image = content.characterImage
 		corporationLabel?.text = content.corporation
 		corporationImageView?.image = content.corporationImage
 		allianceLabel?.text = content.alliance
 		allianceImageView?.image = content.allianceImage
-		
-		characterImageView?.image = #imageLiteral(resourceName: "avatar")
 		return .init(())
 	}
 	
@@ -74,7 +72,7 @@ class MainMenuHeaderViewController: UIViewController, ContentProviderView {
 		allianceLabel?.text = " "
 		allianceImageView?.image = nil
 	}
-
+	
 	struct Metrics {
 		var characterImageDimension: Int
 		var corporationImageDimension: Int

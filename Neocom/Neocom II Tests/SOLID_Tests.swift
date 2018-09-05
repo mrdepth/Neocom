@@ -117,6 +117,7 @@ class SolidTestViewController: UITableViewController, TreeView {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		treeController.delegate = self
+		treeController.scrollViewDelegate = self
 		treeController.tableView = tableView
 		presenter.configure()
 	}
@@ -214,6 +215,7 @@ class SolidTestViewController2: UITableViewController, TreeView {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		treeController.delegate = self
+		treeController.scrollViewDelegate = self
 		treeController.tableView = tableView
 		presenter.configure()
 	}

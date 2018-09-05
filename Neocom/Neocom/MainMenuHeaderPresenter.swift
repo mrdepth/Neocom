@@ -9,20 +9,35 @@
 import Foundation
 import Futures
 import EVEAPI
+import CloudData
 
 class MainMenuHeaderPresenter: ContentProviderPresenter {
-	var content: ESI.Result<MainMenuHeaderInteractor.Info>?
-	var presentation: MainMenuHeaderInteractor.Info?
-	var isLoading: Bool = false
 	
-	func presentation(for content: ESI.Result<MainMenuHeaderInteractor.Info>) -> Future<MainMenuHeaderInteractor.Info> {
-		return .init(content.value)
-	}
-
-	weak var view: MainMenuHeaderViewController!
-	lazy var interactor: MainMenuHeaderInteractor! = MainMenuHeaderInteractor(presenter: self)
-
-	required init(view: MainMenuHeaderViewController) {
+	typealias View = MainMenuHeaderViewController
+	typealias Interactor = MainMenuHeaderInteractor
+	typealias Presentation = MainMenuHeaderInteractor.Info
+	
+	weak var view: View!
+	lazy var interactor: Interactor! = Interactor(presenter: self)
+	
+	var content: Interactor.Content?
+	var presentation: Presentation?
+	var loading: Future<Void>?
+	
+	required init(view: View) {
 		self.view = view
+	}
+	
+	func configure() {
+		interactor.configure()
+		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
+			self?.applicationWillEnterForeground()
+		}
+	}
+	
+	private var applicationWillEnterForegroundObserver: NotificationObserver?
+	
+	func presentation(for content: Interactor.Content) -> Future<Presentation> {
+		return .init(content.value)
 	}
 }

@@ -15,4 +15,5 @@ enum NCError: Error {
 	case cancelled(type: Any?, function: String)
 	case invalidImageFormat
 	case authenticationRequired
+	case reloadInProgress
 }

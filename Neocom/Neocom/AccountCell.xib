@@ -24,9 +24,10 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="YNe-RS-WZH">
                                 <rect key="frame" x="0.0" y="0.0" width="80" height="117"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="UFw-Mj-nIC" customClass="NCRoundedImageView" customModule="Neocom" customModuleProvider="target">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="UFw-Mj-nIC" customClass="RoundedImageView" customModule="Neocom" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                         <color key="backgroundColor" white="1" alpha="0.050000000000000003" colorSpace="calibratedWhite"/>
+                                        <color key="tintColor" red="1" green="1" blue="1" alpha="0.050000000000000003" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="UFw-Mj-nIC" secondAttribute="height" id="DlH-1S-feg"/>
                                             <constraint firstAttribute="width" constant="80" id="Pyz-Hb-BwY"/>

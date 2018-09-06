@@ -274,7 +274,7 @@ extension Tree.Item {
 			
 			let progress: ProgressTask?
 			if let cell = section.controller.treeController?.cell(for: self) {
-				progress = ProgressTask(progress: Progress(totalUnitCount: Int64(options.count)), indicator: .progressBar(cell))
+				progress = ProgressTask(totalUnitCount: Int64(options.count), indicator: .progressBar(cell))
 			}
 			else {
 				progress = nil

@@ -11,6 +11,10 @@ import Foundation
 class RowCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
+		selectedBackgroundView = UIView(frame: bounds)
+		selectedBackgroundView?.backgroundColor = UIColor.separator
+		tintColor = .caption
+
 //		backgroundColor = .cellBackground
 //		tintColor = .caption
 	}

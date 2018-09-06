@@ -23,7 +23,7 @@ class AccountsPresenter: TreePresenter {
 	
 	var content: Interactor.Content?
 	var presentation: Presentation?
-	var loading: Future<Void>?
+	var loading: Future<Presentation>?
 	
 	required init(view: View) {
 		self.view = view
@@ -53,6 +53,17 @@ class AccountsPresenter: TreePresenter {
 		}
 	}
 
+	func canEdit<T: TreeItem>(_ item: T) -> Bool {
+		return item is Tree.Item.AccountsItem
+	}
+	
+	func editingStyle<T: TreeItem>(for item: T) -> UITableViewCell.EditingStyle {
+		return item is Tree.Item.AccountsItem ? .delete : .none
+	}
+	
+	func commit<T: TreeItem>(editingStyle: UITableViewCell.EditingStyle, for item: T) {
+		
+	}
 }
 
 extension Tree.Item {

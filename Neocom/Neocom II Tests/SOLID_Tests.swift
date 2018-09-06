@@ -143,6 +143,7 @@ class SolidTestViewController: UITableViewController, TreeView {
 		presenter.viewDidDisappear(animated)
 	}
 	
+	@discardableResult
 	func present(_ content: Array<Tree.Item.Row<Tree.Content.Default>>) -> Future<Void> {
 		return treeController.reloadData(content).finally { [weak self] in
 			self?.didPresent?()
@@ -241,6 +242,7 @@ class SolidTestViewController2: UITableViewController, TreeView {
 		presenter.viewDidDisappear(animated)
 	}
 	
+	@discardableResult
 	func present(_ content: Array<AnyTreeItem>) -> Future<Void> {
 		return treeController.reloadData(content).finally { [weak self] in
 			self?.didPresent?()

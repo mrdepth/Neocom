@@ -40,12 +40,7 @@ class TreeViewController<Presenter: TreePresenter>: UITableViewController, View,
 		
 		if let refreshControl = refreshControl {
 			refreshHandler = ActionHandler(refreshControl, for: .valueChanged) { [weak self] (control) in
-				if self?.tableView.isDragging == true {
-					self?.shouldReload = true
-				}
-				else {
-					self?.reload()
-				}
+				self?.reload()
 			}
 		}
 	}
@@ -71,11 +66,16 @@ class TreeViewController<Presenter: TreePresenter>: UITableViewController, View,
 	}
 	
 	func fail(_ error: Error) -> Void {
-		tableView.backgroundView = TableViewBackgroundLabel(error: error)
+		if case NCError.reloadInProgress = error {
+			
+		}
+		else {
+			tableView.backgroundView = TableViewBackgroundLabel(error: error)
+		}
 	}
 
 	func treeController<T: TreeItem> (_ treeController: TreeController, cellIdentifierFor item: T) -> String? {
-		if let item = item as? CellConfiguring ?? (item as? AnyTreeItem)?.base as? CellConfiguring {
+		if let item = item as? CellConfiguring {
 			return item.prototype?.reuseIdentifier
 		}
 		else {
@@ -84,7 +84,7 @@ class TreeViewController<Presenter: TreePresenter>: UITableViewController, View,
 	}
 	
 	func treeController<T: TreeItem> (_ treeController: TreeController, configure cell: UITableViewCell, for item: T) -> Void {
-		if let item = item as? CellConfiguring ?? (item as? AnyTreeItem)?.base as? CellConfiguring {
+		if let item = item as? CellConfiguring {
 			return item.configure(cell: cell)
 		}
 	}
@@ -111,19 +111,71 @@ class TreeViewController<Presenter: TreePresenter>: UITableViewController, View,
 		presenter.didCollapse(item: item)
 	}
 	
+	func treeController<T>(_ treeController: TreeController, canEdit item: T) -> Bool where T : TreeItem {
+		return false
+	}
+	
+	func treeController<T>(_ treeController: TreeController, editingStyleFor item: T) -> UITableViewCell.EditingStyle where T : TreeItem {
+		return .none
+	}
+	
+	func treeController<T>(_ treeController: TreeController, commit editingStyle: UITableViewCell.EditingStyle, for item: T) where T : TreeItem {
+	}
+
+	func treeController<T: TreeItem> (_ treeController: TreeController, editActionsFor item: T) -> [UITableViewRowAction]? {
+		return nil
+	}
+	
+	func treeController<T: TreeItem> (_ treeController: TreeController, accessoryButtonTappedFor item: T) -> Void {
+	}
+
+	
 	override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-		if shouldReload {
-			shouldReload = false
-			reload()
+		guard !decelerate else {return}
+		if let presentation = pendingPresentation {
+			DispatchQueue.main.async {
+				self.presenter.view.present(presentation, animated: true)
+			}
+		}
+		if refreshControl?.isRefreshing == true && presenter.loading == nil {
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+				self.refreshControl?.endRefreshing()
+			}
+		}
+	}
+	
+	override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+		if let presentation = pendingPresentation {
+			DispatchQueue.main.async {
+				self.presenter.view.present(presentation, animated: true)
+			}
+		}
+		if refreshControl?.isRefreshing == true && presenter.loading == nil {
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+				self.refreshControl?.endRefreshing()
+			}
 		}
 	}
 	
 	private var refreshHandler: ActionHandler<UIRefreshControl>?
-	private var shouldReload = false
+	private var pendingPresentation: Presenter.Presentation?
 	private func reload() {
-		presenter.reload(cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, animated: true).finally(on: .main) { [weak self] in
-			DispatchQueue.main.async {
-				self?.refreshControl?.endRefreshing()
+		presenter.reload(cachePolicy: .reloadIgnoringLocalAndRemoteCacheData).then(on: .main) { [weak self] presentation in
+			guard let strongSelf = self else {return}
+			if strongSelf.tableView.isDragging {
+				self?.pendingPresentation = presentation
+			}
+			else {
+				strongSelf.presenter.view.present(presentation, animated: true)
+			}
+		}.catch(on: .main) { [weak self] error in
+			self?.presenter.view.fail(error)
+		}.finally(on: .main) { [weak self] in
+			guard let strongSelf = self else {return}
+			if !strongSelf.tableView.isDragging && strongSelf.refreshControl?.isRefreshing == true {
+				DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+					strongSelf.refreshControl?.endRefreshing()
+				}
 			}
 		}
 	}
@@ -150,6 +202,7 @@ extension TreeController {
 
 
 extension TreeView where Presenter.Presentation: Collection, Presenter.Presentation.Element: TreeItem {
+	@discardableResult
 	func present(_ content: Presenter.Presentation, animated: Bool) -> Future<Void> {
 		tableView.backgroundView = nil
 		return treeController.reloadData(content, with: animated ? .automatic : .none)
@@ -157,6 +210,7 @@ extension TreeView where Presenter.Presentation: Collection, Presenter.Presentat
 }
 
 extension TreeView where Presenter.Presentation: TreeItem {
+	@discardableResult
 	func present(_ content: Presenter.Presentation, animated: Bool) -> Future<Void> {
 		tableView.backgroundView = nil
 		return treeController.reloadData(from: content, with: animated ? .automatic : .none)
@@ -166,11 +220,11 @@ extension TreeView where Presenter.Presentation: TreeItem {
 extension TreePresenter {
 
 	func isItemExpandable<T: TreeItem>(_ item: T) -> Bool {
-		return item is ExpandableItem || (item as? AnyTreeItem)?.base is ExpandableItem
+		return item is ExpandableItem
 	}
 	
 	func isItemExpanded<T: TreeItem>(_ item: T) -> Bool {
-		if let item = item as? ExpandableItem ?? (item as? AnyTreeItem)?.base as? ExpandableItem {
+		if let item = item as? ExpandableItem {
 			if let identifier = item.expandIdentifier?.description,
 				let state = Services.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) {
 				return state.isExpanded
@@ -185,7 +239,7 @@ extension TreePresenter {
 	}
 	
 	func didExpand<T: TreeItem>(item: T) {
-		if var item = item as? ExpandableItem ?? (item as? AnyTreeItem)?.base as? ExpandableItem,
+		if var item = item as? ExpandableItem,
 			let identifier = item.expandIdentifier?.description {
 			let state = Services.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) ??
 				Services.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: View.self)
@@ -196,7 +250,7 @@ extension TreePresenter {
 	}
 	
 	func didCollapse<T: TreeItem>(item: T) {
-		if var item = item as? ExpandableItem ?? (item as? AnyTreeItem)?.base as? ExpandableItem,
+		if var item = item as? ExpandableItem,
 			let identifier = item.expandIdentifier?.description {
 			let state = Services.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) ??
 				Services.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: View.self)

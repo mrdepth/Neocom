@@ -22,7 +22,7 @@ class MainMenuHeaderPresenter: ContentProviderPresenter {
 	
 	var content: Interactor.Content?
 	var presentation: Presentation?
-	var loading: Future<Void>?
+	var loading: Future<Presentation>?
 	
 	required init(view: View) {
 		self.view = view

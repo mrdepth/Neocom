@@ -25,16 +25,17 @@ class ProgressTask {
 	private var observer: NSKeyValueObservation?
 	private var timer: Timer?
 
-	init(progress: Progress, indicator: Indicator) {
-		self.progress = progress
+	init(totalUnitCount unitCount: Int64, indicator: Indicator) {
 		self.indicator = indicator
 		
 		totalProgress = Progress(totalUnitCount:3)
 		totalProgress.becomeCurrent(withPendingUnitCount: 1)
 		fakeProgress = Progress(totalUnitCount:100)
 		totalProgress.resignCurrent()
-		totalProgress.addChild(progress, withPendingUnitCount: 2)
-		
+		totalProgress.becomeCurrent(withPendingUnitCount: 2)
+		progress = Progress(totalUnitCount: unitCount)
+		totalProgress.resignCurrent()
+
 		timer = Timer(timeInterval: 0.2, repeats: true) { [weak self] timer in
 			guard let strongSelf = self else {return}
 			strongSelf.fakeProgress.completedUnitCount += 10

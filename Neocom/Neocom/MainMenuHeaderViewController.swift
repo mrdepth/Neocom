@@ -54,6 +54,7 @@ class MainMenuHeaderViewController: UIViewController, ContentProviderView {
 		presenter.viewDidDisappear(animated)
 	}
 	
+	@discardableResult
 	func present(_ content: Presenter.Presentation, animated: Bool) -> Future<Void> {
 		characterNameLabel?.text = content.characterName
 		characterImageView?.image = content.characterImage

@@ -53,8 +53,8 @@ protocol Presenter: class {
 	func viewWillDisappear(_ animated: Bool) -> Void
 	func viewDidDisappear(_ animated: Bool) -> Void
 	func applicationWillEnterForeground() -> Void
-	func beginTask(totalUnitCount: Int64, indicator: ProgressTask.Indicator) -> ProgressTask
-	func beginTask(totalUnitCount: Int64) -> ProgressTask
+	func beginTask(totalUnitCount unitCount: Int64, indicator: ProgressTask.Indicator) -> ProgressTask
+	func beginTask(totalUnitCount unitCount: Int64) -> ProgressTask
 }
 
 extension View {
@@ -78,20 +78,20 @@ extension Presenter {
 }
 
 extension Presenter {
-	func beginTask(totalUnitCount: Int64, indicator: ProgressTask.Indicator) -> ProgressTask {
-		return ProgressTask(progress: Progress(totalUnitCount: totalUnitCount), indicator: indicator)
+	func beginTask(totalUnitCount unitCount: Int64, indicator: ProgressTask.Indicator) -> ProgressTask {
+		return ProgressTask(totalUnitCount: unitCount, indicator: indicator)
 	}
 }
 
 extension Presenter where View: UIViewController {
-	func beginTask(totalUnitCount: Int64) -> ProgressTask {
-		return beginTask(totalUnitCount: totalUnitCount, indicator: .progressBar(view))
+	func beginTask(totalUnitCount unitCount: Int64) -> ProgressTask {
+		return beginTask(totalUnitCount: unitCount, indicator: .progressBar(view))
 	}
 }
 
 extension Presenter where View: UIView {
-	func beginTask(totalUnitCount: Int64) -> ProgressTask {
-		return beginTask(totalUnitCount: totalUnitCount, indicator: .progressBar(view))
+	func beginTask(totalUnitCount unitCount: Int64) -> ProgressTask {
+		return beginTask(totalUnitCount: unitCount, indicator: .progressBar(view))
 	}
 }
 
@@ -100,6 +100,7 @@ extension Interactor {
 }
 
 protocol ContentProviderView: View where Presenter: ContentProviderPresenter {
+	@discardableResult
 	func present(_ content: Presenter.Presentation, animated: Bool) -> Future<Void>
 	func fail(_ error: Error) -> Void
 }
@@ -108,11 +109,9 @@ protocol ContentProviderPresenter: Presenter where View: ContentProviderView, In
 	associatedtype Presentation
 	var content: Interactor.Content? {get set}
 	var presentation: Presentation? {get set}
-	var loading: Future<Void>? {get set}
+	var loading: Future<Presentation>? {get set}
 	
-//	func reload(cachePolicy: URLRequest.CachePolicy) -> Future<Void>
 	func presentation(for content: Interactor.Content) -> Future<Presentation>
-//	func didChange(content: Interactor.Content) -> Void
 }
 
 protocol ContentProviderInteractor: Interactor where Presenter: ContentProviderPresenter {
@@ -123,30 +122,26 @@ protocol ContentProviderInteractor: Interactor where Presenter: ContentProviderP
 
 extension ContentProviderPresenter {
 	
-	@discardableResult
-	func reload(cachePolicy: URLRequest.CachePolicy, animated: Bool) -> Future<Void> {
+//	@discardableResult
+	func reload(cachePolicy: URLRequest.CachePolicy) -> Future<Presentation> {
+		guard self.loading == nil else {return .init(.failure(NCError.reloadInProgress))}
 		if let loading = self.loading {
 			return loading
 		}
-		let task = beginTask(totalUnitCount: 3)
+		let task = beginTask(totalUnitCount: 2)
 		let loading = task.performAsCurrent(withPendingUnitCount: 1) {
-			interactor.load(cachePolicy: cachePolicy).then { [weak self] content -> Future<Void> in
+			interactor.load(cachePolicy: cachePolicy).then { [weak self] content -> Future<Presentation> in
 				guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
 				return DispatchQueue.main.async {
 					task.performAsCurrent(withPendingUnitCount: 1) {
-						strongSelf.presentation(for: content).then(on: .main) { presentation -> Future<Void> in
+						strongSelf.presentation(for: content).then(on: .main) { presentation -> Presentation in
 							guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
 							strongSelf.content = content
 							strongSelf.presentation = presentation
-							return task.performAsCurrent(withPendingUnitCount: 1) {
-								strongSelf.view.present(presentation, animated: animated)
-							}
+							return presentation
 						}
 					}
 				}
-			}.catch(on: .main) { [weak self] error in
-				guard let strongSelf = self else {return}
-				strongSelf.view.fail(error)
 			}.finally(on: .main) { [weak self] in
 				self?.loading = nil
 			}
@@ -156,15 +151,6 @@ extension ContentProviderPresenter {
 		}
 		return loading
 	}
-	
-//	func didChange(content: Interactor.Content) -> Void {
-//		self.presentation(for: content).then(on: .main) { [weak self] presentation -> Future<Void> in
-//			guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
-//			strongSelf.content = content
-//			strongSelf.presentation = presentation
-//			return strongSelf.view.present(presentation, animated: true)
-//		}
-//	}
 }
 
 extension ContentProviderPresenter where Interactor.Content == Void {
@@ -188,7 +174,12 @@ extension ContentProviderPresenter {
 			return
 		}
 		else {
-			reload(cachePolicy: .useProtocolCachePolicy, animated: presentation != nil)
+			let animated = presentation != nil
+			reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { [weak self] presentation in
+				self?.view.present(presentation, animated: animated)
+			}.catch(on: .main) { [weak self] error in
+				self?.view.fail(error)
+			}
 		}
 	}
 	

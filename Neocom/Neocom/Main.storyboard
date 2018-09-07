@@ -466,9 +466,9 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem title="Folders" id="voE-7M-lJW">
+                        <barButtonItem title="New Folder" id="voE-7M-lJW">
                             <connections>
-                                <action selector="onFolders:" destination="CRE-3B-1kr" id="dBT-gX-c30"/>
+                                <action selector="onNewFolder:" destination="CRE-3B-1kr" id="u7U-QF-37d"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="yRP-PB-WHu"/>

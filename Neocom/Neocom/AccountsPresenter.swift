@@ -64,6 +64,39 @@ class AccountsPresenter: TreePresenter {
 	func commit<T: TreeItem>(editingStyle: UITableViewCell.EditingStyle, for item: T) {
 		
 	}
+	
+	func canMove<T: TreeItem>(_ item: T) -> Bool {
+		return item is Tree.Item.AccountsItem || item is Tree.Item.AccountsFolderItem
+	}
+
+	func canMove<T: TreeItem, S: TreeItem, D: TreeItem>(_ item: T, at fromIndex: Int, inParent oldParent: S?, to toIndex: Int, inParent newParent: D?) -> Bool {
+		return item is Tree.Item.AccountsItem && newParent is Tree.Item.FetchedResultsSection<Tree.Item.AccountsItem>
+	}
+
+	func move<T: TreeItem, S: TreeItem, D: TreeItem>(_ item: T, at fromIndex: Int, inParent oldParent: S?, to toIndex: Int, inParent newParent: D?) {
+		if let accountItem = item as? Tree.Item.AccountsItem, let section = newParent as? Tree.Item.FetchedResultsSection<Tree.Item.AccountsItem> {
+			accountItem.result.folder = (section.controller as? Tree.Item.AccountsResultsController)?.folder
+			try? Services.storage.viewContext.save()
+		}
+	}
+
+	func onNewFolder() {
+		let controller = UIAlertController(title: NSLocalizedString("Enter Folder Name", comment: ""), message: nil, preferredStyle: .alert)
+		
+		var textField: UITextField?
+		
+		controller.addTextField(configurationHandler: {
+			textField = $0
+		})
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Add Folder", comment: ""), style: .default, handler: { (action) in
+			_ = Services.storage.viewContext.newFolder(named: textField?.text ?? "")
+			try? Services.storage.viewContext.save()
+		}))
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+		view.present(controller, animated: true, completion: nil)
+	}
 }
 
 extension Tree.Item {
@@ -81,16 +114,16 @@ extension Tree.Item {
 	
 	class AccountsFolderItem: Tree.Item.Section<AccountsResultsController>, FetchedResultsTreeItem {
 		var result: AccountsFolder
-		unowned var section: FetchedResultsSectionProtocol
+		weak var section: FetchedResultsSectionProtocol?
 		
 		private lazy var _children: [AccountsResultsController]? = {
 			let request = result.managedObjectContext!.from(Account.self)
 				.filter(\Account.folder == result)
-				.sort(by: \Account.folder, ascending: true).sort(by: \Account.characterName, ascending: true)
+				.sort(by: \Account.order, ascending: true).sort(by: \Account.characterName, ascending: true)
 				.fetchRequest
 			
 			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: result.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
-			return [AccountsResultsController(frc, treeController: section.controller.treeController, cachePolicy: (section.controller as! AccountFoldersResultsController).cachePolicy)]
+			return [AccountsResultsController(frc, treeController: section?.controller?.treeController, cachePolicy: (section?.controller as? AccountFoldersResultsController)?.cachePolicy ?? .useProtocolCachePolicy, folder: result)]
 		}()
 		
 		override var children: [AccountsResultsController]? {
@@ -105,16 +138,18 @@ extension Tree.Item {
 		required init(_ result: AccountsFolder, section: FetchedResultsSectionProtocol) {
 			self.result = result
 			self.section = section
-			super.init(Tree.Content.Section(title: result.name), diffIdentifier: result, expandIdentifier: result.objectID, treeController: section.controller.treeController)
+			super.init(Tree.Content.Section(title: result.name), diffIdentifier: result, expandIdentifier: result.objectID, treeController: section.controller?.treeController)
 		}
 	}
 	
 	class AccountsResultsController: FetchedResultsController<FetchedResultsSection<AccountsItem>> {
 		var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
+		var folder: AccountsFolder?
 		
-		convenience init(_ fetchedResultsController: NSFetchedResultsController<Account>, treeController: TreeController?, cachePolicy: URLRequest.CachePolicy) {
+		convenience init(_ fetchedResultsController: NSFetchedResultsController<Account>, treeController: TreeController?, cachePolicy: URLRequest.CachePolicy, folder: AccountsFolder?) {
 			self.init(fetchedResultsController, diffIdentifier: fetchedResultsController.fetchRequest, treeController: treeController)
 			self.cachePolicy = cachePolicy
+			self.folder = folder
 		}
 	}
 	
@@ -128,11 +163,11 @@ extension Tree.Item {
 			
 			let request = managedObjectContext.from(Account.self)
 				.filter(\Account.folder == nil)
-				.sort(by: \Account.folder, ascending: true).sort(by: \Account.characterName, ascending: true)
+				.sort(by: \Account.order, ascending: true).sort(by: \Account.characterName, ascending: true)
 				.fetchRequest
 			
 			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-			let children = [AccountsResultsController(frc, treeController: treeController, cachePolicy: cachePolicy)]
+			let children = [AccountsResultsController(frc, treeController: treeController, cachePolicy: cachePolicy, folder: nil)]
 
 			super.init(Tree.Content.Section(title: "Default"), diffIdentifier: "defaultFolder", expandIdentifier: "defaultFolder", treeController: treeController, children: children)
 		}

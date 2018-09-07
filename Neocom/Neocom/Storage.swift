@@ -23,6 +23,7 @@ protocol StorageContext: PersistentContext {
 	func accounts() -> [Account]
 	func account(with token: OAuth2Token) -> Account?
 	func newAccount(with token: OAuth2Token) -> Account
+	func newFolder(named name: String) -> AccountsFolder
 	var currentAccount: Account? {get}
 }
 
@@ -114,6 +115,12 @@ struct StorageContextBox: StorageContext {
 		account.oAuth2Token = token
 		account.uuid = UUID().uuidString
 		return account
+	}
+	
+	func newFolder(named name: String) -> AccountsFolder {
+		let folder = AccountsFolder(context: managedObjectContext)
+		folder.name = name
+		return folder
 	}
 	
 	var currentAccount: Account? {

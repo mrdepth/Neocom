@@ -129,6 +129,18 @@ class TreeViewController<Presenter: TreePresenter>: UITableViewController, View,
 	func treeController<T: TreeItem> (_ treeController: TreeController, accessoryButtonTappedFor item: T) -> Void {
 	}
 
+	func treeController<T: TreeItem> (_ treeController: TreeController, canMove item: T) -> Bool {
+		return false
+	}
+	
+	func treeController<T: TreeItem, S: TreeItem, D: TreeItem> (_ treeController: TreeController, canMove item: T, at fromIndex: Int, inParent oldParent: S?, to toIndex: Int, inParent newParent: D?) -> Bool {
+		return false
+	}
+	
+	func treeController<T: TreeItem, S: TreeItem, D: TreeItem> (_ treeController: TreeController, move item: T, at fromIndex: Int, inParent oldParent: S?, to toIndex: Int, inParent newParent: D?) -> Void {
+		
+	}
+
 	
 	override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
 		guard !decelerate else {return}

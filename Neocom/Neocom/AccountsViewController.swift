@@ -32,14 +32,48 @@ class AccountsViewController: TreeViewController<AccountsPresenter>, TreeView, U
 		presenter.onPan(sender)
 	}
 
+	@IBAction func onDelete(_ sender: Any) {
+	}
+
+	@IBAction func onNewFolder(_ sender: Any) {
+		presenter.onNewFolder()
+	}
+
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		
 		if !editing {
+			try? Services.storage.viewContext.save()
 		}
 		navigationController?.setToolbarHidden(!editing, animated: true)
 		updateTitle()
 	}
+	
+	override func treeController<T>(_ treeController: TreeController, canEdit item: T) -> Bool where T : TreeItem {
+		return presenter.canEdit(item)
+	}
+	
+	
+	override func treeController<T>(_ treeController: TreeController, editingStyleFor item: T) -> UITableViewCell.EditingStyle where T : TreeItem {
+		return presenter.editingStyle(for: item)
+	}
+	
+	override func treeController<T>(_ treeController: TreeController, commit editingStyle: UITableViewCell.EditingStyle, for item: T) where T : TreeItem {
+		presenter.commit(editingStyle: editingStyle, for: item)
+	}
+	
+	override func treeController<T>(_ treeController: TreeController, canMove item: T) -> Bool where T : TreeItem {
+		return presenter.canMove(item)
+	}
+	
+	override func treeController<T, S, D>(_ treeController: TreeController, canMove item: T, at fromIndex: Int, inParent oldParent: S?, to toIndex: Int, inParent newParent: D?) -> Bool where T : TreeItem, S : TreeItem, D : TreeItem {
+		return presenter.canMove(item, at: fromIndex, inParent: oldParent, to: toIndex, inParent: newParent)
+	}
+	
+	override func treeController<T, S, D>(_ treeController: TreeController, move item: T, at fromIndex: Int, inParent oldParent: S?, to toIndex: Int, inParent newParent: D?) where T : TreeItem, S : TreeItem, D : TreeItem {
+		presenter.move(item, at: fromIndex, inParent: oldParent, to: toIndex, inParent: newParent)
+	}
+
 	
 	//MARK: - UIViewControllerTransitioningDelegate
 	func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
@@ -51,19 +85,6 @@ class AccountsViewController: TreeViewController<AccountsPresenter>, TreeView, U
 		return isInteractive ? SlideDownInteractiveTransition(panGestureRecognizer: panGestureRecognizer) : nil
 	}
 
-	override func treeController<T>(_ treeController: TreeController, canEdit item: T) -> Bool where T : TreeItem {
-		return presenter.canEdit(item)
-	}
-
-	
-	override func treeController<T>(_ treeController: TreeController, editingStyleFor item: T) -> UITableViewCell.EditingStyle where T : TreeItem {
-		return presenter.editingStyle(for: item)
-	}
-	
-	override func treeController<T>(_ treeController: TreeController, commit editingStyle: UITableViewCell.EditingStyle, for item: T) where T : TreeItem {
-		presenter.commit(editingStyle: editingStyle, for: item)
-	}
-	
 	//MARK: - UIGestureRecognizerDelegate
 	
 	func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -98,7 +119,7 @@ extension AccountsViewController {
 			//			toolbarItems?.first?.isEnabled = n > 0
 			//			toolbarItems?.last?.isEnabled = n > 0
 
-			toolbarItems?[0].title = n > 0 ? NSLocalizedString("Move To", comment: "") : NSLocalizedString("Folders", comment: "")
+//			toolbarItems?[0].title = n > 0 ? NSLocalizedString("Move To", comment: "") : NSLocalizedString("Folders", comment: "")
 		}
 		else {
 			title = NSLocalizedString("Accounts", comment: "")

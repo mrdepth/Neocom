@@ -55,7 +55,7 @@ extension Tree.Item {
 		var ship: Future<String?>?
 		var image: Future<ESI.Result<UIImage>>?
 		var cachePolicy: URLRequest.CachePolicy {
-			return (section.controller as! AccountsResultsController).cachePolicy
+			return (section?.controller as? AccountsResultsController)?.cachePolicy ?? .useProtocolCachePolicy
 		}
 		
 		override func isEqual(_ other: Tree.Item.FetchedResultsRow<Account>) -> Bool {
@@ -273,8 +273,8 @@ extension Tree.Item {
 			state = .loading
 			
 			let progress: ProgressTask?
-			if let cell = section.controller.treeController?.cell(for: self) {
-				progress = ProgressTask(totalUnitCount: Int64(options.count), indicator: .progressBar(cell))
+			if let cell = section?.controller?.treeController?.cell(for: self) {
+				progress = ProgressTask(totalUnitCount: Int64(options.count + 1), indicator: .progressBar(cell))
 			}
 			else {
 				progress = nil
@@ -376,7 +376,7 @@ extension Tree.Item {
 		}
 		
 		private func update() {
-			section.controller.treeController?.reloadRow(for: self, with: .none)
+			section?.controller?.treeController?.reloadRow(for: self, with: .none)
 		}
 	}
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,14 +20,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="BqY-Ly-TVL">
-                        <rect key="frame" x="8" y="15" width="297" height="16.5"/>
+                        <rect key="frame" x="8" y="15" width="296" height="16.5"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" image="expand" translatesAutoresizingMaskIntoConstraints="NO" id="6yH-cF-WLl" customClass="TintImageView" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.5" width="16" height="16"/>
                                 <color key="tintColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gkK-pd-whc">
-                                <rect key="frame" x="24" y="0.5" width="273" height="16"/>
+                                <rect key="frame" x="24" y="0.5" width="272" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -38,12 +38,13 @@
                 <constraints>
                     <constraint firstItem="BqY-Ly-TVL" firstAttribute="leading" secondItem="SQ4-QF-0zT" secondAttribute="leading" constant="8" id="Iis-vd-xcy"/>
                     <constraint firstAttribute="bottom" secondItem="BqY-Ly-TVL" secondAttribute="bottom" constant="8" id="SzY-hK-3zl"/>
-                    <constraint firstAttribute="trailing" secondItem="BqY-Ly-TVL" secondAttribute="trailing" constant="15" id="hhf-Ck-rPa"/>
-                    <constraint firstItem="BqY-Ly-TVL" firstAttribute="top" secondItem="SQ4-QF-0zT" secondAttribute="top" constant="15" id="tVN-XV-O4N"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="BqY-Ly-TVL" secondAttribute="trailing" id="hhf-Ck-rPa"/>
+                    <constraint firstItem="BqY-Ly-TVL" firstAttribute="top" secondItem="SQ4-QF-0zT" secondAttribute="topMargin" constant="4" id="tVN-XV-O4N"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <viewLayoutGuide key="safeArea" id="aJT-XM-lrL"/>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="expandIconView" destination="6yH-cF-WLl" id="UqH-2d-RZW"/>
                 <outlet property="titleLabel" destination="gkK-pd-whc" id="lUo-2e-SlS"/>

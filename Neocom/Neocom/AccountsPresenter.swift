@@ -54,11 +54,11 @@ class AccountsPresenter: TreePresenter {
 	}
 
 	func canEdit<T: TreeItem>(_ item: T) -> Bool {
-		return item is Tree.Item.AccountsItem
+		return item is Tree.Item.AccountsItem || item is Tree.Item.AccountsFolderItem
 	}
 	
 	func editingStyle<T: TreeItem>(for item: T) -> UITableViewCell.EditingStyle {
-		return item is Tree.Item.AccountsItem ? .delete : .none
+		return item is Tree.Item.AccountsItem || item is Tree.Item.AccountsFolderItem ? .delete : .none
 	}
 	
 	func commit<T: TreeItem>(editingStyle: UITableViewCell.EditingStyle, for item: T) {

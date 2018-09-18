@@ -102,6 +102,10 @@ extension Tree.Item {
 			var sectionDeletions = IndexSet()
 			var itemInsertions = [(IndexPath, Any)]()
 			var itemDeletions = [IndexPath]()
+			
+			var isEmpty: Bool {
+				return sectionInsertions.isEmpty && sectionDeletions.isEmpty && itemInsertions.isEmpty && itemDeletions.isEmpty
+			}
 //			var itemUpdates = [(IndexPath, Any)]()
 		}
 		private var updates: Updates?
@@ -164,8 +168,10 @@ extension Tree.Item {
 //				let item = Section.Child(i.1 as! Section.Child.Result, section: section)
 //				children![i.0.section].children!.insert(item, at: i.0.item)
 //			}
+			if updates?.isEmpty == false {
+				treeController?.update(contentsOf: self, with: .fade)
+			}
 			updates = nil
-			treeController?.update(contentsOf: self, with: .fade)
 		}
 	}
 	

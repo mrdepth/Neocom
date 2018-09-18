@@ -30,11 +30,11 @@ class Router_Tests: XCTestCase {
 		window?.rootViewController = navigationController
 		window?.makeKeyAndVisible()
 		
-		Route<RouterTests>(assembly: RouterTests.default).perform(from: root, kind: .push).then(on: .main) { result in
+		Route<RouterTests>(assembly: RouterTests.default, kind: .push).perform(from: root).then(on: .main) { result in
 			XCTAssertEqual(navigationController.viewControllers.count, 2)
 			let last = navigationController.viewControllers.last as! RouterTestsViewController
 			
-			Route<RouterTests>(assembly: RouterTests.default).perform(from: last, kind: .push).then(on: .main) { result in
+			Route<RouterTests>(assembly: RouterTests.default, kind: .push).perform(from: last).then(on: .main) { result in
 				XCTAssertEqual(navigationController.viewControllers.count, 3)
 				let last = navigationController.viewControllers.last as! RouterTestsViewController
 				last.unwinder!.unwind(to: root).then(on: .main) { _ in
@@ -58,12 +58,12 @@ class Router_Tests: XCTestCase {
 		window?.rootViewController = navigationController
 		window?.makeKeyAndVisible()
 		
-		Route<RouterTests>(assembly: RouterTests.default).perform(from: root, kind: .modal).then(on: .main) { result in
+		Route<RouterTests>(assembly: RouterTests.default, kind: .modal).perform(from: root).then(on: .main) { result in
 			let chain = sequence(first: navigationController, next: {$0.presentedViewController}).map{$0}
 			XCTAssertEqual(chain.count, 2)
 			let last = chain.last as! RouterTestsViewController
 			
-			Route<RouterTests>(assembly: RouterTests.default).perform(from: last, kind: .modal).then(on: .main) { result in
+			Route<RouterTests>(assembly: RouterTests.default, kind: .modal).perform(from: last).then(on: .main) { result in
 				let chain = sequence(first: navigationController, next: {$0.presentedViewController}).map{$0}
 				XCTAssertEqual(chain.count, 3)
 				let last = chain.last as! RouterTestsViewController
@@ -90,11 +90,11 @@ class Router_Tests: XCTestCase {
 		window?.rootViewController = navigationController
 		window?.makeKeyAndVisible()
 		
-		Route<RouterTests>(assembly: RouterTests.default).perform(from: root, kind: .push).then(on: .main) { result in
+		Route<RouterTests>(assembly: RouterTests.default, kind: .push).perform(from: root).then(on: .main) { result in
 			XCTAssertEqual(navigationController.viewControllers.count, 2)
 			let last = navigationController.viewControllers.last as! RouterTestsViewController
 
-			Route<RouterTests>(assembly: RouterTests.default).perform(from: last, kind: .modal).then(on: .main) { result in
+			Route<RouterTests>(assembly: RouterTests.default, kind: .modal).perform(from: last).then(on: .main) { result in
 				let chain = sequence(first: navigationController, next: {$0.presentedViewController}).map{$0}
 				XCTAssertEqual(chain.count, 2)
 				let last = chain.last as! RouterTestsViewController

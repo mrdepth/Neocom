@@ -106,57 +106,24 @@ class SOLID_Tests: XCTestCase {
 }
 
 
-class SolidTestViewController: UITableViewController, TreeView {
-	var unwinder: Unwinder?
-	
-	lazy var presenter: SolidTestPresenter! = SolidTestPresenter(view: self)
-	lazy var treeController: TreeController! = TreeController()
-	
+class SolidTestViewController: TreeViewController<SolidTestPresenter>, TreeView {
 	var didPresent: (() -> Void)?
 	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		treeController.delegate = self
-		treeController.scrollViewDelegate = self
-		treeController.tableView = tableView
-		presenter.configure()
-	}
-	
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		presenter.viewWillAppear(animated)
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		presenter.viewDidAppear(animated)
-	}
-	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		presenter.viewWillDisappear(animated)
-	}
-	
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
-		presenter.viewDidDisappear(animated)
-	}
-	
-	@discardableResult
-	func present(_ content: Array<Tree.Item.Row<Tree.Content.Default>>) -> Future<Void> {
+	func present(_ content: Array<Tree.Item.Row<Tree.Content.Default>>, animated: Bool) -> Future<Void> {
 		return treeController.reloadData(content).finally { [weak self] in
 			self?.didPresent?()
 		}
 	}
+	
 }
 
 class SolidTestPresenter: TreePresenter {
+	var loading: Future<Array<Tree.Item.Row<Tree.Content.Default>>>?
+	
 	var content: ESI.Result<ESI.Status.ServerStatus>?
 	
 	typealias Item = Tree.Item.Row<Tree.Content.Default>
 	var presentation: [Item]?
-	var isLoading: Bool = false
 	
 	weak var view: SolidTestViewController!
 	lazy var interactor: SolidTestInteractor! = SolidTestInteractor(presenter: self)
@@ -205,56 +172,23 @@ class APIMock: APIClient {
 	}
 }
 
-class SolidTestViewController2: UITableViewController, TreeView {
-	var unwinder: Unwinder?
-	
-	lazy var presenter: SolidTestPresenter2! = SolidTestPresenter2(view: self)
-	lazy var treeController: TreeController! = TreeController()
-	
+class SolidTestViewController2: TreeViewController<SolidTestPresenter2>, TreeView {
 	var didPresent: (() -> Void)?
 	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		treeController.delegate = self
-		treeController.scrollViewDelegate = self
-		treeController.tableView = tableView
-		presenter.configure()
-	}
-	
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		presenter.viewWillAppear(animated)
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		presenter.viewDidAppear(animated)
-	}
-	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		presenter.viewWillDisappear(animated)
-	}
-	
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
-		presenter.viewDidDisappear(animated)
-	}
-	
-	@discardableResult
-	func present(_ content: Array<AnyTreeItem>) -> Future<Void> {
+	func present(_ content: Array<AnyTreeItem>, animated: Bool) -> Future<Void> {
 		return treeController.reloadData(content).finally { [weak self] in
 			self?.didPresent?()
 		}
 	}
+	
 }
 
 class SolidTestPresenter2: TreePresenter {
+	var loading: Future<Array<AnyTreeItem>>?
+	
 	
 	typealias Item = AnyTreeItem
 	var presentation: [AnyTreeItem]?
-	var isLoading: Bool = false
 	
 	weak var view: SolidTestViewController2!
 	lazy var interactor: SolidTestInteractor2! = SolidTestInteractor2(presenter: self)
@@ -296,7 +230,7 @@ extension Tree.Item {
 	
 	class SolidTestFolderItem: Tree.Item.Section<SolidTestAccountsResultsController>, FetchedResultsTreeItem {
 		var result: AccountsFolder
-		unowned var section: FetchedResultsSectionProtocol
+		weak var section: FetchedResultsSectionProtocol?
 		
 		private lazy var _children: [SolidTestAccountsResultsController]? = {
 			let request = result.managedObjectContext!.from(Account.self)
@@ -305,7 +239,7 @@ extension Tree.Item {
 				.fetchRequest
 
 			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: result.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
-			return [SolidTestAccountsResultsController(frc, treeController: section.controller.treeController)]
+			return [SolidTestAccountsResultsController(frc, treeController: section?.controller?.treeController)]
 		}()
 		
 		override var children: [SolidTestAccountsResultsController]? {
@@ -320,7 +254,7 @@ extension Tree.Item {
 		required init(_ result: AccountsFolder, section: FetchedResultsSectionProtocol) {
 			self.result = result
 			self.section = section
-			super.init(Tree.Content.Section(title: result.name), diffIdentifier: result, expandIdentifier: result.objectID, treeController: section.controller.treeController)
+			super.init(Tree.Content.Section(title: result.name), diffIdentifier: result, expandIdentifier: result.objectID, treeController: section.controller?.treeController)
 		}
 		
 	}
@@ -346,8 +280,16 @@ extension Tree.Item {
 	}
 	
 	class SolidTestAccountItem: FetchedResultsTreeItem, CellConfiguring {
+		var hashValue: Int {
+			return result.hashValue
+		}
+		
+		static func == (lhs: Tree.Item.SolidTestAccountItem, rhs: Tree.Item.SolidTestAccountItem) -> Bool {
+			return lhs.result == rhs.result
+		}
+		
 		var result: Account
-		unowned var section: FetchedResultsSectionProtocol
+		weak var section: FetchedResultsSectionProtocol?
 		
 		var prototype: Prototype? {
 			return Prototype.TreeDefaultCell.default

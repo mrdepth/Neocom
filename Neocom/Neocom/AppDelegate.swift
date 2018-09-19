@@ -29,6 +29,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
 	fileprivate func setupAppearance() {
+		CSScheme.currentScheme = CSScheme.Dark
+		let navigationBar = UINavigationBar.appearance(whenContainedInInstancesOf: [NavigationController.self])
+		navigationBar.setBackgroundImage(UIImage.image(color: UIColor.background), for: UIBarMetrics.default)
+		navigationBar.shadowImage = UIImage.image(color: UIColor.background)
+		navigationBar.barTintColor = UIColor.background
+		navigationBar.tintColor = UIColor.white
+		navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+		navigationBar.barStyle = .black
+		navigationBar.isTranslucent = false
+
+		
 		TableView.appearance().tableBackgroundColor = .background
 		TableView.appearance().separatorColor = .separator
 		RowCell.appearance().backgroundColor = .cellBackground

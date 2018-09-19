@@ -213,7 +213,7 @@ extension Character.SkillQueueItem {
 		let start = Double(skill.skillPoints(at: level - 1))
 		let end = Double(skill.skillPoints(at: level))
 		let left = Double(skillPointsToLevelUp)
-		let progress = left / (end - start);
+		let progress = (1.0 - left / (end - start)).clamped(to: 0...1);
 		return Float(progress)
 	}
 }

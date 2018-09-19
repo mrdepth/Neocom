@@ -80,3 +80,23 @@ extension UIColor {
 		return String(format: "#%.2x%.2x%.2x", Int(r * 255.0), Int(g * 255.0), Int(b * 255.0))
 	}
 }
+
+extension UIImage {
+	class func image(color: UIColor, size: CGSize = CGSize(width: 1, height: 1), scale: CGFloat = 1) -> UIImage {
+		UIGraphicsBeginImageContextWithOptions(size, false, scale);
+		color.setFill()
+		UIBezierPath(rect: CGRect(origin: .zero, size: size)).fill()
+		let image = UIGraphicsGetImageFromCurrentImageContext()!;
+		UIGraphicsEndImageContext();
+		return image.resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .tile)
+	}
+	
+	class func searchFieldBackgroundImage(color: UIColor) -> UIImage {
+		UIGraphicsBeginImageContextWithOptions(CGSize(width: 28, height: 28), false, UIScreen.main.scale);
+		color.setFill()
+		UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 28, height: 28), cornerRadius: 5).fill()
+		let image = UIGraphicsGetImageFromCurrentImageContext()!;
+		UIGraphicsEndImageContext();
+		return image.resizableImage(withCapInsets: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5), resizingMode: .stretch)
+	}
+}

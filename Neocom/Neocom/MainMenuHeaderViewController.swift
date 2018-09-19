@@ -54,6 +54,10 @@ class MainMenuHeaderViewController: UIViewController, ContentProviderView {
 		presenter.viewDidDisappear(animated)
 	}
 	
+	@IBAction func onLogout(_ sender: Any) {
+		presenter.onLogout()
+	}
+	
 	@discardableResult
 	func present(_ content: Presenter.Presentation, animated: Bool) -> Future<Void> {
 		characterNameLabel?.text = content.characterName

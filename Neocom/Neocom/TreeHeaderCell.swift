@@ -12,11 +12,28 @@ import TreeController
 class TreeHeaderCell: HeaderCell {
 	@IBOutlet var titleLabel: UILabel?
 	@IBOutlet var expandIconView: UIImageView?
+
+	var action: ActionHandler<UIButton>?
+	var button: UIButton? { return accessoryView as? UIButton }
+
+	var editingAction: ActionHandler<UIButton>?
+	var editingButton: UIButton? { return editingAccessoryView as? UIButton }
+}
+
+class TreeHeaderEditingActionCell: TreeHeaderCell {
+	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		editingAccessoryView = UIButton(type: .custom)
+		(editingAccessoryView as? UIButton)?.setImage(#imageLiteral(resourceName: "actionsItem.pdf"), for: .normal)
+		editingAccessoryView?.sizeToFit()
+	}
 }
 
 extension Prototype {
 	enum TreeHeaderCell {
 		static let `default` = Prototype(nib: UINib(nibName: "TreeHeaderCell", bundle: nil), reuseIdentifier: "TreeHeaderCell")
+		static let editingAction = Prototype(nib: UINib(nibName: "TreeHeaderEditingActionCell", bundle: nil), reuseIdentifier: "TreeHeaderEditingActionCell")
 	}
 }
 

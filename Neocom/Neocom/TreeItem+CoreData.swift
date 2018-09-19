@@ -43,7 +43,6 @@ protocol FetchedResultsTreeItem: TreeItem {
 	init(_ result: Result, section: FetchedResultsSectionProtocol)
 }
 
-
 //extension FetchedResultsTreeItem {
 //	var hashValue: Int {
 //		return result.hash
@@ -104,9 +103,9 @@ extension Tree.Item {
 			var itemDeletions = [IndexPath]()
 			
 			var isEmpty: Bool {
-				return sectionInsertions.isEmpty && sectionDeletions.isEmpty && itemInsertions.isEmpty && itemDeletions.isEmpty
+				return sectionInsertions.isEmpty && sectionDeletions.isEmpty && itemInsertions.isEmpty && itemDeletions.isEmpty && itemUpdates.isEmpty
 			}
-//			var itemUpdates = [(IndexPath, Any)]()
+			var itemUpdates = [(IndexPath, Any)]()
 		}
 		private var updates: Updates?
 		
@@ -122,10 +121,9 @@ extension Tree.Item {
 				updates?.itemDeletions.append(indexPath!)
 			case .move:
 				updates?.itemDeletions.append(indexPath!)
-				updates?.itemInsertions.append((newIndexPath!, children![indexPath!.section].children![indexPath!.item]))
+				updates?.itemInsertions.append((newIndexPath!, anObject))
 			case .update:
-				break
-//				updates?.itemUpdates.append((newIndexPath!, anObject))
+				updates?.itemUpdates.append((newIndexPath!, anObject))
 			}
 		}
 		
@@ -161,13 +159,14 @@ extension Tree.Item {
 					section.children!.insert(item, at: i.0.item)
 				}
 			}
-//			updates?.itemUpdates.forEach { i in
-//				let section = children![i.0.section]
-//				section.children!.remove(at: i.0.item)
-//				
-//				let item = Section.Child(i.1 as! Section.Child.Result, section: section)
-//				children![i.0.section].children!.insert(item, at: i.0.item)
-//			}
+			updates?.itemUpdates.forEach { i in
+				let section = children![i.0.section]
+				section.children!.remove(at: i.0.item)
+				
+				let item = Section.Child(i.1 as! Section.Child.Result, section: section)
+				children![i.0.section].children!.insert(item, at: i.0.item)
+			}
+			
 			if updates?.isEmpty == false {
 				treeController?.update(contentsOf: self, with: .fade)
 			}
@@ -201,7 +200,15 @@ extension Tree.Item {
 		}
 	}
 	
-	class FetchedResultsRow<Result: NSFetchRequestResult & Equatable & Hashable>: FetchedResultsTreeItem {
+	class FetchedResultsRow<Result: NSFetchRequestResult & Equatable & Hashable>: FetchedResultsTreeItem, CellConfiguring {
+		var prototype: Prototype? {
+			return (result as? CellConfiguring)?.prototype
+		}
+		
+		func configure(cell: UITableViewCell) {
+			(result as? CellConfiguring)?.configure(cell: cell)
+		}
+		
 		var result: Result
 		weak var section: FetchedResultsSectionProtocol?
 		
@@ -228,6 +235,5 @@ extension Tree.Item {
 		}
 	}
 }
-
 
 

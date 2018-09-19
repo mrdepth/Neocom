@@ -12,17 +12,17 @@ class RowCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		selectedBackgroundView = UIView(frame: bounds)
-		selectedBackgroundView?.backgroundColor = UIColor.separator
+		selectedBackgroundView?.backgroundColor = .separator
 		tintColor = .caption
-
-//		backgroundColor = .cellBackground
-//		tintColor = .caption
 	}
 }
 
 class HeaderCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
-//		backgroundColor = .background
+		selectedBackgroundView = UIView(frame: bounds)
+		selectedBackgroundView?.backgroundColor = .cellBackground
+		tintColor = .caption
 	}
+	
 }

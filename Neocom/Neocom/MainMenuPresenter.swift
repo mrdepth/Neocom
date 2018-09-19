@@ -41,8 +41,7 @@ class MainMenuPresenter: TreePresenter {
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
 		let account = Services.storage.viewContext.currentAccount
-		let api = Services.api.current
-		
+		let api = interactor.api
 		func characterSheet() -> Future<ESI.Result<Tree.Content.Default>> {
 			return api.skills(cachePolicy: .useProtocolCachePolicy).then {$0.map { skills -> Tree.Content.Default in
 				let subtitle = UnitFormatter.localizedString(from: skills.totalSP, unit: .skillPoints, style: .long)
@@ -50,7 +49,7 @@ class MainMenuPresenter: TreePresenter {
 			}}
 		}
 		
-		let menu = [Tree.Item.SimpleSection<Tree.Item.MainMenuAPIRow>(title: NSLocalizedString("Character", comment: ""),
+		let menu = [Tree.Item.SimpleSection<Tree.Item.MainMenuAPIRow>(title: NSLocalizedString("Character", comment: "").uppercased(),
 																   treeController: view.treeController,
 																   children: [
 																	Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Character Sheet", comment: ""),
@@ -67,7 +66,7 @@ class MainMenuPresenter: TreePresenter {
 																	Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Jump Clones", comment: ""),
 																							 image: #imageLiteral(resourceName: "jumpclones"),
 																							 account: account,
-																							 value: characterSheet(),
+//																							 value: characterSheet(),
 																							 treeController: view.treeController,
 																							 route: nil,
 																							 require: [.esiClonesReadClonesV1,
@@ -75,7 +74,7 @@ class MainMenuPresenter: TreePresenter {
 																	Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Skills", comment: ""),
 																							 image: #imageLiteral(resourceName: "skills"),
 																							 account: account,
-																							 value: characterSheet(),
+//																							 value: characterSheet(),
 																							 treeController: view.treeController,
 																							 route: nil,
 																							 require: [.esiSkillsReadSkillqueueV1,
@@ -84,7 +83,7 @@ class MainMenuPresenter: TreePresenter {
 																	Tree.Item.MainMenuAPIRow(title: NSLocalizedString("EVE Mail", comment: ""),
 																							 image: #imageLiteral(resourceName: "evemail"),
 																							 account: account,
-																							 value: characterSheet(),
+//																							 value: characterSheet(),
 																							 treeController: view.treeController,
 																							 route: nil,
 																							 require: [.esiMailReadMailV1,
@@ -93,7 +92,7 @@ class MainMenuPresenter: TreePresenter {
 																	Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Calendar", comment: ""),
 																							 image: #imageLiteral(resourceName: "calendar"),
 																							 account: account,
-																							 value: characterSheet(),
+//																							 value: characterSheet(),
 																							 treeController: view.treeController,
 																							 route: nil,
 																							 require: [.esiCalendarReadCalendarEventsV1,
@@ -101,7 +100,7 @@ class MainMenuPresenter: TreePresenter {
 																	Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Wealth", comment: ""),
 																							 image: #imageLiteral(resourceName: "folder"),
 																							 account: account,
-																							 value: characterSheet(),
+//																							 value: characterSheet(),
 																							 treeController: view.treeController,
 																							 route: nil,
 																							 require: [.esiWalletReadCharacterWalletV1,
@@ -109,16 +108,16 @@ class MainMenuPresenter: TreePresenter {
 																	Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Loyalty Points", comment: ""),
 																							 image: #imageLiteral(resourceName: "lpstore"),
 																							 account: account,
-																							 value: characterSheet(),
+//																							 value: characterSheet(),
 																							 treeController: view.treeController,
 																							 route: nil,
 																							 require: [.esiCharactersReadLoyaltyV1])
 
 																	].compactMap{$0}).asAnyItem,
-					Tree.Item.SimpleSection<Tree.Item.MainMenuRow>(title: NSLocalizedString("Database", comment: ""),
+					Tree.Item.SimpleSection<Tree.Item.MainMenuRow>(title: NSLocalizedString("Database", comment: "").uppercased(),
 																   treeController: view.treeController,
 																   children: [
-																	Tree.Item.MainMenuRow(title: NSLocalizedString("Database", comment: ""), image: #imageLiteral(resourceName: "items"), route: nil),
+																	Tree.Item.MainMenuRow(title: NSLocalizedString("Database", comment: ""), image: #imageLiteral(resourceName: "items"), route: Router.SDE.invCategories()),
 																	Tree.Item.MainMenuRow(title: NSLocalizedString("Certificates", comment: ""), image: #imageLiteral(resourceName: "certificates"), route: nil),
 																	Tree.Item.MainMenuRow(title: NSLocalizedString("Market", comment: ""), image: #imageLiteral(resourceName: "market"), route: nil),
 																	Tree.Item.MainMenuRow(title: NSLocalizedString("NPC", comment: ""), image: #imageLiteral(resourceName: "criminal"), route: nil),
@@ -126,6 +125,7 @@ class MainMenuPresenter: TreePresenter {
 																	Tree.Item.MainMenuRow(title: NSLocalizedString("Incursions", comment: ""), image: #imageLiteral(resourceName: "incursions"), route: nil)
 						]).asAnyItem,
 					]
+
 		return .init(menu)
 	}
 }
@@ -141,8 +141,10 @@ extension Tree.Item {
 		}
 	}
 
-	class MainMenuAPIRow: ESIResultRow<Tree.Content.Default>, Routable {
+	class MainMenuAPIRow: Row<Tree.Content.Default>, Routable {
+		weak var treeController: TreeController?
 		let route: Routing?
+		
 		init?(title: String, image: UIImage, account: Account?, value: @autoclosure () -> Future<ESI.Result<Tree.Content.Default>>, treeController: TreeController, route: Routing?, require scopes: [ESI.Scope]) {
 			if !scopes.isEmpty {
 				let scopes = Set(scopes)
@@ -150,15 +152,30 @@ extension Tree.Item {
 				guard scopes.isSubset(of: current) else {return nil}
 			}
 			self.route = route
-			super.init(Tree.Content.Default(title: title, image: image),
-					   value: value(),
-					   diffIdentifier: title,
-					   treeController: treeController)
+			self.treeController = treeController
+			super.init(Tree.Content.Default(title: title, image: image), diffIdentifier: title)
+			
+			value().then(on: .main) { [weak self] value -> Void in
+				guard let strongSelf = self else {return}
+				strongSelf.content = value.value
+				strongSelf.treeController?.reloadRow(for: strongSelf, with: .fade)
+			}.catch(on: .main) {  [weak self] error in
+				guard let strongSelf = self else {return}
+				strongSelf.content.subtitle = error.localizedDescription
+				strongSelf.treeController?.reloadRow(for: strongSelf, with: .fade)
+			}
+
 		}
-		
-		override func didFail(_ error: Error) {
-			content.subtitle = error.localizedDescription
-			treeController?.reloadRow(for: self, with: .fade)
+
+		init?(title: String, image: UIImage, account: Account?, treeController: TreeController, route: Routing?, require scopes: [ESI.Scope]) {
+			if !scopes.isEmpty {
+				let scopes = Set(scopes)
+				let current = account?.scopes?.compactMap {($0 as? Scope)?.name}.compactMap {ESI.Scope($0)} ?? []
+				guard scopes.isSubset(of: current) else {return nil}
+			}
+			self.route = route
+			self.treeController = treeController
+			super.init(Tree.Content.Default(title: title, image: image), diffIdentifier: title)
 		}
 	}
 

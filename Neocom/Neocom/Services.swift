@@ -33,8 +33,6 @@ class DefaultAPIService: APIService {
 	
 	var current: API {
 		return make(for: Services.storage.viewContext.currentAccount)
-//		let esi = ESI(token: Services.storage.viewContext.currentAccount?.oAuth2Token, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey, server: .tranquility)
-//		return APIClient(esi: esi)
 	}
 	
 	func performAuthorization(from controller: UIViewController) {
@@ -42,3 +40,8 @@ class DefaultAPIService: APIService {
 		controller.present(SFSafariViewController(url: url), animated: true, completion: nil)
 	}
 }
+
+extension Notification.Name {
+	static let didChangeAccount = Notification.Name(rawValue: "didChangeAccount")
+}
+

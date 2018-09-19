@@ -31,7 +31,8 @@ class AccountsPresenter: TreePresenter {
 	
 	func configure() {
 		view.tableView.register([Prototype.TreeHeaderCell.default,
-								 Prototype.AccountCell.default])
+								 Prototype.AccountCell.default,
+								 Prototype.TreeHeaderCell.editingAction])
 
 		interactor.configure()
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
@@ -61,12 +62,37 @@ class AccountsPresenter: TreePresenter {
 		return item is Tree.Item.AccountsItem || item is Tree.Item.AccountsFolderItem ? .delete : .none
 	}
 	
+	func editActions<T: TreeItem>(for item: T) -> [UITableViewRowAction]? {
+		switch item {
+		case let item as Tree.Item.AccountsItem:
+			return [UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { (_, _) in
+				item.result.managedObjectContext?.delete(item.result)
+				if item.result.managedObjectContext?.hasChanges == true {
+					try? item.result.managedObjectContext?.save()
+				}
+			})]
+		case let item as Tree.Item.AccountsFolderItem:
+			return [
+				UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: ""), handler: { (_, _) in
+					item.result.managedObjectContext?.delete(item.result)
+					if item.result.managedObjectContext?.hasChanges == true {
+						try? item.result.managedObjectContext?.save()
+					}
+				}),
+				UITableViewRowAction(style: .normal, title: NSLocalizedString("Rename", comment: ""), handler: { [weak self] (_, _) in
+					self?.performRename(folder: item.result)
+				})
+			]
+		default:
+			return nil
+		}
+	}
+	
 	func commit<T: TreeItem>(editingStyle: UITableViewCell.EditingStyle, for item: T) {
-		
 	}
 	
 	func canMove<T: TreeItem>(_ item: T) -> Bool {
-		return item is Tree.Item.AccountsItem || item is Tree.Item.AccountsFolderItem
+		return item is Tree.Item.AccountsItem
 	}
 
 	func canMove<T: TreeItem, S: TreeItem, D: TreeItem>(_ item: T, at fromIndex: Int, inParent oldParent: S?, to toIndex: Int, inParent newParent: D?) -> Bool {
@@ -95,6 +121,84 @@ class AccountsPresenter: TreePresenter {
 		}))
 		
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+		view.present(controller, animated: true, completion: nil)
+	}
+	
+	func onFolderActions(_ folder: AccountsFolder) {
+		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { [weak self] (_) in
+			self?.performRename(folder: folder)
+		}))
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive, handler: { (_) in
+			folder.managedObjectContext?.delete(folder)
+			if folder.managedObjectContext?.hasChanges == true {
+				try? folder.managedObjectContext?.save()
+			}
+		}))
+
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: { (_) in
+			
+		}))
+
+		view.present(controller, animated: true, completion: nil)
+	}
+	
+	func didSelect<T: TreeItem>(item: T) -> Void {
+		guard !view.isEditing else {return}
+		guard let item = item as? Tree.Item.AccountsItem else {return}
+		Services.storage.viewContext.setCurrentAccount(item.result)
+		view.unwinder?.unwind()
+	}
+	
+	func onDelete(items: [NSManagedObject]) -> Future<Void> {
+		guard !items.isEmpty else {return .init(())}
+		let promise = Promise<Void>()
+		
+		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		controller.addAction(UIAlertAction(title: String.localizedStringWithFormat(NSLocalizedString("Delete %d Items", comment: ""), items.count), style: .destructive) { _ in
+			items.forEach {
+				$0.managedObjectContext?.delete($0)
+			}
+			if let context = items.first?.managedObjectContext, context.hasChanges {
+				try? context.save()
+			}
+			try? promise.fulfill(())
+		})
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel) { _ in
+			try? promise.fail(NCError.cancelled(type: AccountsPresenter.self, function: #function))
+		})
+		
+		view.present(controller, animated: true, completion: nil)
+		controller.popoverPresentationController?.barButtonItem = view.toolbarItems?.last
+		
+		return promise.future
+	}
+	
+	private func performRename(folder: AccountsFolder) {
+		let controller = UIAlertController(title: NSLocalizedString("Rename", comment: ""), message: nil, preferredStyle: .alert)
+		
+		var textField: UITextField?
+		
+		controller.addTextField(configurationHandler: {
+			textField = $0
+			textField?.text = folder.name
+			textField?.clearButtonMode = .always
+		})
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { (action) in
+			if textField?.text?.isEmpty == false && folder.name != textField?.text {
+				folder.name = textField?.text
+				if folder.managedObjectContext?.hasChanges == true {
+					try? folder.managedObjectContext?.save()
+				}
+			}
+		}))
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+		
 		view.present(controller, animated: true, completion: nil)
 	}
 }
@@ -138,7 +242,7 @@ extension Tree.Item {
 		required init(_ result: AccountsFolder, section: FetchedResultsSectionProtocol) {
 			self.result = result
 			self.section = section
-			super.init(Tree.Content.Section(title: result.name), diffIdentifier: result, expandIdentifier: result.objectID, treeController: section.controller?.treeController)
+			super.init(Tree.Content.Section(prototype: Prototype.TreeHeaderCell.editingAction, title: result.name?.uppercased()), diffIdentifier: result, expandIdentifier: result.objectID, treeController: section.controller?.treeController)
 		}
 	}
 	
@@ -168,8 +272,8 @@ extension Tree.Item {
 			
 			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
 			let children = [AccountsResultsController(frc, treeController: treeController, cachePolicy: cachePolicy, folder: nil)]
-
-			super.init(Tree.Content.Section(title: "Default"), diffIdentifier: "defaultFolder", expandIdentifier: "defaultFolder", treeController: treeController, children: children)
+			
+			super.init(Tree.Content.Section(title: NSLocalizedString("Default", comment: "Folder Name").uppercased()), diffIdentifier: "defaultFolder", expandIdentifier: "defaultFolder", treeController: treeController, children: children)
 		}
 	}
 }

@@ -8,40 +8,7 @@
 
 import Foundation
 
-class <#T##View#>: UITableViewController, TreeView {
-	typealias Presenter = <#T##Presenter#>
-	
-	lazy var presenter: Presenter! = Presenter(view: self)
-	var unwinder: Unwinder?
-	lazy var treeController: TreeController! = TreeController()
-	
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		treeController.delegate = self
-		treeController.scrollViewDelegate = self
-		treeController.tableView = tableView
-		presenter.configure()
-	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		presenter.viewWillAppear(animated)
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		presenter.viewDidAppear(animated)
-	}
-	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		presenter.viewWillDisappear(animated)
-	}
-	
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
-		presenter.viewDidDisappear(animated)
-	}
+class <#T##View#>: TreeViewController<<#T##Presenter#>>, TreeView {
 }
 
 class <#T##Presenter#>: TreePresenter {
@@ -54,7 +21,7 @@ class <#T##Presenter#>: TreePresenter {
 	
 	var content: Interactor.Content?
 	var presentation: Presentation?
-	var loading: Future<Void>?
+	var loading: Future<Presentation>?
 	
 	required init(view: View) {
 		self.view = view
@@ -87,5 +54,15 @@ class <#T##Interactor#>: TreeInteractor {
 	
 	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Content> {
 		return .init(<#content#>)
+	}
+	
+	private var didChangeAccountObserver: NotificationObserver?
+	
+	func configure() {
+		didChangeAccountObserver = NotificationCenter.default.addNotificationObserver(forName: .didChangeAccount, object: nil, queue: .main) { [weak self] _ in
+			_ = self?.presenter.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { presentation in
+				self?.presenter.view.present(presentation, animated: true)
+			}
+		}
 	}
 }

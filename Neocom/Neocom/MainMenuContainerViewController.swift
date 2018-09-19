@@ -91,7 +91,7 @@ class MainMenuContainerViewController: UIViewController, View {
 	
 	private var headerMaxHeight: CGFloat = 0
 	
-	private func updateHeader() {
+	func updateHeader() {
 		let from = self.headerViewController
 
 		let to: MainMenuHeader

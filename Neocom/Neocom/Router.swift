@@ -23,5 +23,11 @@ enum Router {
 			return Route<Accounts>(assembly: Accounts.default, kind: .adaptiveModal)
 		}
 	}
+	
+	enum SDE {
+		static func invCategories() -> Route<InvCategories> {
+			return Route<InvCategories>(assembly: InvCategories.default, kind: .detail)
+		}
+	}
 }
 

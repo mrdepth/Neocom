@@ -14,23 +14,27 @@ import EVEAPI
 import Expressible
 
 protocol Storage {
+	func managedObjectID(forURIRepresentation url: URL) -> NSManagedObjectID?
 	var viewContext: StorageContext {get}
 	@discardableResult func performBackgroundTask<T>(_ block: @escaping (StorageContext) throws -> T) -> Future<T>
 	@discardableResult func performBackgroundTask<T>(_ block: @escaping (StorageContext) throws -> Future<T>) -> Future<T>
 }
 
 protocol StorageContext: PersistentContext {
-	func accounts() -> [Account]
+	var accounts: [Account] {get}
 	func account(with token: OAuth2Token) -> Account?
 	func newAccount(with token: OAuth2Token) -> Account
 	func newFolder(named name: String) -> AccountsFolder
 	var currentAccount: Account? {get}
+	func setCurrentAccount(_ account: Account?) -> Void
 }
 
 class StorageContainer: Storage {
 	
 	lazy var viewContext: StorageContext = StorageContextBox(managedObjectContext: persistentContainer.viewContext)
 	var persistentContainer: NSPersistentContainer
+	
+	private var oAuth2TokenDidRefreshObserver: NotificationObserver?
 	
 	init(persistentContainer: NSPersistentContainer? = nil) {
 		self.persistentContainer = persistentContainer ?? {
@@ -60,8 +64,18 @@ class StorageContainer: Storage {
 			}
 			return container
 		}()
+		
+		oAuth2TokenDidRefreshObserver = NotificationCenter.default.addNotificationObserver(forName: .OAuth2TokenDidRefresh, object: nil, queue: .main) { [weak self] (note) in
+			guard let token = note.object as? OAuth2Token else {return}
+			guard let account = self?.viewContext.account(with: token) else {return}
+			account.oAuth2Token = token
+			try? self?.viewContext.save()
+		}
 	}
 	
+	func managedObjectID(forURIRepresentation url: URL) -> NSManagedObjectID? {
+		return persistentContainer.persistentStoreCoordinator.managedObjectID(forURIRepresentation: url)
+	}
 	
 	@discardableResult
 	func performBackgroundTask<T>(_ block: @escaping (StorageContext) throws -> T) -> Future<T> {
@@ -102,7 +116,7 @@ class StorageContainer: Storage {
 struct StorageContextBox: StorageContext {
 	var managedObjectContext: NSManagedObjectContext
 	
-	func accounts() -> [Account] {
+	var accounts: [Account] {
 		return (try? managedObjectContext.from(Account.self).all()) ?? []
 	}
 	
@@ -124,9 +138,15 @@ struct StorageContextBox: StorageContext {
 	}
 	
 	var currentAccount: Account? {
-		return accounts().first
+		guard let url = UserDefaults.standard.url(forKey: UserDefaults.Key.currentAccount) else {return nil}
+		guard let objectID = Services.storage.managedObjectID(forURIRepresentation: url) else {return nil}
+		return (try? existingObject(with: objectID)) ?? nil
 	}
-	
+
+	func setCurrentAccount(_ account: Account?) -> Void {
+		UserDefaults.standard.set(account?.objectID.uriRepresentation(), forKey: UserDefaults.Key.currentAccount)
+		NotificationCenter.default.post(name: .didChangeAccount, object: account)
+	}
 }
 
 extension Account {

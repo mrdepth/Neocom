@@ -41,9 +41,9 @@ extension Prototype {
 
 extension Tree.Item {
 	
-	class AccountsItem: FetchedResultsRow<Account>, CellConfiguring {
+	class AccountsItem: FetchedResultsRow<Account> {
 		
-		var prototype: Prototype? { return Prototype.AccountCell.default }
+		override var prototype: Prototype? { return Prototype.AccountCell.default }
 		lazy var api: API = Services.api.make(for: self.result)
 		
 		var character: Future<ESI.Result<ESI.Character.Information>>?
@@ -67,7 +67,7 @@ extension Tree.Item {
 			return result.refreshToken?.isEmpty != false
 		}
 		
-		func configure(cell: UITableViewCell) {
+		override func configure(cell: UITableViewCell) {
 			guard let cell = cell as? AccountCell else {return}
 			
 			if isOAuth2TokenInvalid {

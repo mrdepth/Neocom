@@ -23,3 +23,13 @@ struct Config: Hashable {
 extension Config {
 	static let current = Config()
 }
+
+extension UserDefaults {
+	struct Key {
+		static let currentAccount = "com.shimanski.neocom.currentAccount"
+		static let marketRegion = "com.shimanski.neocom.marketRegion"
+		static let firstLaunchDate = "com.shimanski.neocom.firstLaunchDate"
+		static let lastReviewDate = "com.shimanski.neocom.lastReviewDate"
+		static let consent = "com.shimanski.neocom.consent"
+	}
+}

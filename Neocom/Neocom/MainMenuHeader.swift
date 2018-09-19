@@ -27,5 +27,4 @@ enum MainMenuHeader: Assembly {
 		return .init(result)
 	}
 	
-//	func instantiate
 }

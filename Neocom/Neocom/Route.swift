@@ -35,7 +35,7 @@ extension Routing {
 
 }
 
-struct Route<Assembly: Neocom.Assembly> {
+struct Route<Assembly: Neocom.Assembly>: Routing where Assembly.View: UIViewController {
 	var assembly: Assembly
 	var input: Assembly.View.Input
 	var kind: RouteKind
@@ -47,7 +47,7 @@ struct Route<Assembly: Neocom.Assembly> {
 	}
 	
 	@discardableResult
-	func perform<T: View>(from view: T, sender: Any? = nil, kind: RouteKind? = nil) -> Future<Bool> where T: UIViewController, Assembly.View: UIViewController {
+	func perform<T: View>(from view: T, sender: Any? = nil, kind: RouteKind? = nil) -> Future<Bool> where T: UIViewController {
 		let kind = kind ?? self.kind
 		return assembly.instantiate(input).then(on: .main) { destination -> Future<Bool> in
 			let promise = Promise<Bool>()
@@ -92,7 +92,9 @@ struct Route<Assembly: Neocom.Assembly> {
 				view.present(dst, animated: true) {
 					try! promise.fulfill(true)
 				}
-
+			case .detail:
+				let dst = destination as? UINavigationController ?? NavigationController(rootViewController: destination)
+				view.showDetailViewController(dst, sender: sender)
 			default:
 				try! promise.fulfill(false)
 			}

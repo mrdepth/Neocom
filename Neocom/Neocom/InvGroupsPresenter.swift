@@ -1,21 +1,19 @@
 //
-//  MainMenuHeaderPresenter.swift
+//  InvGroupsPresenter.swift
 //  Neocom
 //
-//  Created by Artem Shimanski on 28.08.2018.
+//  Created by Artem Shimanski on 19.09.2018.
 //  Copyright © 2018 Artem Shimanski. All rights reserved.
 //
 
 import Foundation
 import Futures
-import EVEAPI
 import CloudData
 
-class MainMenuHeaderPresenter: ContentProviderPresenter {
-	
-	typealias View = MainMenuHeaderViewController
-	typealias Interactor = MainMenuHeaderInteractor
-	typealias Presentation = MainMenuHeaderInteractor.Info
+class InvGroupsPresenter: TreePresenter {
+	typealias View = InvGroupsViewController
+	typealias Interactor = InvGroupsInteractor
+	typealias Presentation = [Tree.Item.Row<Tree.Content.Default>]
 	
 	weak var view: View!
 	lazy var interactor: Interactor! = Interactor(presenter: self)
@@ -29,6 +27,8 @@ class MainMenuHeaderPresenter: ContentProviderPresenter {
 	}
 	
 	func configure() {
+		view.tableView.register([Prototype.TreeDefaultCell.default, Prototype.TreeHeaderCell.default])
+		
 		interactor.configure()
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
 			self?.applicationWillEnterForeground()
@@ -38,10 +38,6 @@ class MainMenuHeaderPresenter: ContentProviderPresenter {
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
-		return .init(content.value)
-	}
-	
-	func onLogout() {
-		Services.storage.viewContext.setCurrentAccount(nil)
+		return .init([])
 	}
 }

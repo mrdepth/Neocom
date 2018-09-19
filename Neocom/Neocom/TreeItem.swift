@@ -138,27 +138,27 @@ extension Tree.Item {
 		}
 	}
 
-	class ESIResultRow<Content: Hashable>: Row<Content> {
-		let value: Future<ESI.Result<Content>>
-		weak var treeController: TreeController?
-		
-		init<T: Hashable>(_ content: Content, value: Future<ESI.Result<Content>>, diffIdentifier: T, treeController: TreeController) {
-			self.value = value
-			self.treeController = treeController
-			super.init(content, diffIdentifier: diffIdentifier)
-
-			value.then(on: .main) { [weak self] value -> Void in
-				self?.didUpdate(value.value)
-			}
-		}
-		
-		func didUpdate(_ content: Content) {
-			self.content = content
-			treeController?.reloadRow(for: self, with: .fade)
-		}
-		
-		func didFail(_ error: Error) {
-			
-		}
-	}
+//	class ESIResultRow<Content: Hashable>: Row<Content> {
+//		let value: Future<ESI.Result<Content>>
+//		weak var treeController: TreeController?
+//		
+//		init<T: Hashable>(_ content: Content, value: Future<ESI.Result<Content>>, diffIdentifier: T, treeController: TreeController) {
+//			self.value = value
+//			self.treeController = treeController
+//			super.init(content, diffIdentifier: diffIdentifier)
+//
+//			value.then(on: .main) { [weak self] value -> Void in
+//				self?.didUpdate(value.value)
+//			}
+//		}
+//		
+//		func didUpdate(_ content: Content) {
+//			self.content = content
+//			treeController?.reloadRow(for: self, with: .fade)
+//		}
+//		
+//		func didFail(_ error: Error) {
+//			
+//		}
+//	}
 }

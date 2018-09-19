@@ -8,6 +8,7 @@
 
 import Foundation
 import Futures
+import CloudData
 
 class MainMenuInteractor: TreeInteractor {
 	typealias Presenter = MainMenuPresenter
@@ -15,6 +16,18 @@ class MainMenuInteractor: TreeInteractor {
 	
 	required init(presenter: Presenter) {
 		self.presenter = presenter
+	}
+	
+	private var didChangeAccountObserver: NotificationObserver?
+	var api: API = Services.api.current
+	
+	func configure() {
+		didChangeAccountObserver = NotificationCenter.default.addNotificationObserver(forName: .didChangeAccount, object: nil, queue: .main) { [weak self] _ in
+			self?.api = Services.api.current
+			_ = self?.presenter.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { presentation in
+				self?.presenter.view.present(presentation, animated: true)
+			}
+		}
 	}
 	
 }

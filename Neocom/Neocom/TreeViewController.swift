@@ -90,6 +90,9 @@ class TreeViewController<Presenter: TreePresenter>: UITableViewController, View,
 	}
 	
 	func treeController<T: TreeItem> (_ treeController: TreeController, didSelectRowFor item: T) -> Void {
+		guard !isEditing else {return}
+		guard let route = (item as? Routable)?.route else {return}
+		_ = route.perform(from: self)
 	}
 	
 	func treeController<T: TreeItem> (_ treeController: TreeController, didDeselectRowFor item: T) -> Void {
@@ -251,24 +254,23 @@ extension TreePresenter {
 	}
 	
 	func didExpand<T: TreeItem>(item: T) {
-		if var item = item as? ExpandableItem,
-			let identifier = item.expandIdentifier?.description {
+		guard var item = item as? ExpandableItem else {return}
+		if let identifier = item.expandIdentifier?.description {
 			let state = Services.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) ??
 				Services.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: View.self)
 			state.isExpanded = true
-			item.isExpanded = true
 		}
-
+		item.isExpanded = true
 	}
 	
 	func didCollapse<T: TreeItem>(item: T) {
-		if var item = item as? ExpandableItem,
-			let identifier = item.expandIdentifier?.description {
+		guard var item = item as? ExpandableItem else {return}
+		if let identifier = item.expandIdentifier?.description {
 			let state = Services.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) ??
 				Services.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: View.self)
 			state.isExpanded = false
-			item.isExpanded = false
 		}
+		item.isExpanded = false
 	}
 }
 

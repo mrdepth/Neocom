@@ -8,6 +8,9 @@
 
 import Foundation
 
-class InvGroupsViewController: TreeViewController<InvGroupsPresenter>, TreeView {
+class InvGroupsViewController: TreeViewController<InvGroupsPresenter, InvGroupsViewController.Input>, TreeView {
+	enum Input {
+		case category (SDEInvCategory)
+	}
 }
 

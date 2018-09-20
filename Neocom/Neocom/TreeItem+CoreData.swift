@@ -71,7 +71,9 @@ extension Tree.Item {
 		var diffIdentifier: AnyHashable
 		
 		lazy var children: [Section]? = {
-			try? fetchedResultsController.performFetch()
+			if fetchedResultsController.fetchedObjects == nil {
+				try? fetchedResultsController.performFetch()
+			}
 			return fetchedResultsController.sections?.map {Child($0, controller: self)}
 		}()
 		
@@ -234,6 +236,31 @@ extension Tree.Item {
 			return lhs.isEqual(rhs)
 		}
 	}
+	
+	class FetchedResultsNamedSection<Item: FetchedResultsTreeItem>: FetchedResultsSection<Item>, CellConfiguring, ExpandableItem {
+		
+		var isExpanded: Bool = true {
+			didSet {
+				controller?.treeController?.reloadRow(for: self, with: .none)
+			}
+		}
+		
+		var prototype: Prototype? {
+			return Prototype.TreeHeaderCell.default
+		}
+		
+		var expandIdentifier: CustomStringConvertible?
+		var name: String {
+			return sectionInfo.name.uppercased()
+		}
+		
+		func configure(cell: UITableViewCell) {
+			guard let cell = cell as? TreeHeaderCell else {return}
+			
+			cell.titleLabel?.text = sectionInfo.name
+			cell.expandIconView?.image = isExpanded ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
+		}
+		
+	}
 }
-
 

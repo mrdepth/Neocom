@@ -7,7 +7,12 @@
 //
 
 import Foundation
+import TreeController
 
-class InvCategoriesViewController: TreeViewController<InvCategoriesPresenter>, TreeView {
+class InvCategoriesViewController: TreeViewController<InvCategoriesPresenter, Void>, TreeView {
+	
+	override func treeController<T>(_ treeController: TreeController, didSelectRowFor item: T) where T : TreeItem {
+		presenter.didSelect(item: item)
+	}
 }
 

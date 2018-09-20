@@ -10,7 +10,7 @@ import Foundation
 import TreeController
 import Futures
 
-class MainMenuViewController: TreeViewController<MainMenuPresenter>, TreeView {
+class MainMenuViewController: TreeViewController<MainMenuPresenter, Void>, TreeView {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)

@@ -10,7 +10,7 @@ import Foundation
 import TreeController
 import CoreData
 
-class AccountsViewController: TreeViewController<AccountsPresenter>, TreeView, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate {
+class AccountsViewController: TreeViewController<AccountsPresenter, Void>, TreeView, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate {
 	
 	@IBOutlet var panGestureRecognizer: UIPanGestureRecognizer!
 

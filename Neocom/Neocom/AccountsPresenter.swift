@@ -168,7 +168,7 @@ class AccountsPresenter: TreePresenter {
 		})
 		
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel) { _ in
-			try? promise.fail(NCError.cancelled(type: AccountsPresenter.self, function: #function))
+			try? promise.fail(NCError.cancelled(type: type(of: self), function: #function))
 		})
 		
 		view.present(controller, animated: true, completion: nil)

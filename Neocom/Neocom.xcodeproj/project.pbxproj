@@ -121,6 +121,15 @@
 		129E40A9213EA318002EDAF9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D951DEF58A100561A7A /* ViewController.swift */; };
 		129E40AB213EB001002EDAF9 /* UIKit+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E314BB1E165D5D000A926D /* UIKit+NC.swift */; };
 		129E40AD213ECE0E002EDAF9 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E40AC213ECE0E002EDAF9 /* RoundedImageView.swift */; };
+		12A843012153871300570A95 /* InvTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A843002153871300570A95 /* InvTypes.swift */; };
+		12A843032153871C00570A95 /* InvTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A843022153871C00570A95 /* InvTypesViewController.swift */; };
+		12A843052153872500570A95 /* InvTypesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A843042153872500570A95 /* InvTypesPresenter.swift */; };
+		12A843072153872D00570A95 /* InvTypesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A843062153872D00570A95 /* InvTypesInteractor.swift */; };
+		12A8432C2153C5D200570A95 /* InvTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8432B2153C5D200570A95 /* InvTypeCell.swift */; };
+		12A8432E2153C63900570A95 /* InvTypeModuleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A8432D2153C63900570A95 /* InvTypeModuleCell.xib */; };
+		12A843302153CA9600570A95 /* DamageTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8432F2153CA9600570A95 /* DamageTypeLabel.swift */; };
+		12A843322153CB5D00570A95 /* InvTypeShipCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A843312153CB5D00570A95 /* InvTypeShipCell.xib */; };
+		12A843342153CBB000570A95 /* InvTypeChargeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A843332153CBB000570A95 /* InvTypeChargeCell.xib */; };
 		12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9722212BEA6C00B30DD3 /* SDE.xcdatamodeld */; };
 		12AB9725212BF11400B30DD3 /* Appodeal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BFE4402017C8E80083AC2F /* Appodeal.framework */; };
 		12AB9726212BF11800B30DD3 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129DE4381FF628AD00A2C1CD /* FBSDKCoreKit.framework */; };
@@ -588,6 +597,15 @@
 		12A2374A1EFFB39800BE7404 /* NCKillmailInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCKillmailInfoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12A2DE4F202C312A00ADF0D6 /* NCSkillQueueNotificationSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSkillQueueNotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		12A3C4CD1F6BC115007FD291 /* NCMainMenuContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCMainMenuContainerViewController.swift; sourceTree = "<group>"; };
+		12A843002153871300570A95 /* InvTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypes.swift; sourceTree = "<group>"; };
+		12A843022153871C00570A95 /* InvTypesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypesViewController.swift; sourceTree = "<group>"; };
+		12A843042153872500570A95 /* InvTypesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypesPresenter.swift; sourceTree = "<group>"; };
+		12A843062153872D00570A95 /* InvTypesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypesInteractor.swift; sourceTree = "<group>"; };
+		12A8432B2153C5D200570A95 /* InvTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeCell.swift; sourceTree = "<group>"; };
+		12A8432D2153C63900570A95 /* InvTypeModuleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvTypeModuleCell.xib; sourceTree = "<group>"; };
+		12A8432F2153CA9600570A95 /* DamageTypeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamageTypeLabel.swift; sourceTree = "<group>"; };
+		12A843312153CB5D00570A95 /* InvTypeShipCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvTypeShipCell.xib; sourceTree = "<group>"; };
+		12A843332153CBB000570A95 /* InvTypeChargeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvTypeChargeCell.xib; sourceTree = "<group>"; };
 		12AB9723212BEA6C00B30DD3 /* SDE.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SDE.xcdatamodel; sourceTree = "<group>"; };
 		12AB9729212BF60000B30DD3 /* Storage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Storage.xcdatamodel; sourceTree = "<group>"; };
 		12AB972B212BF6A900B30DD3 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
@@ -846,6 +864,7 @@
 			children = (
 				1204D06B2152719C0070AF92 /* InvCategories */,
 				1204D06C215289EC0070AF92 /* InvGroups */,
+				12A842FE215386C900570A95 /* InvTypes */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -1130,6 +1149,7 @@
 			isa = PBXGroup;
 			children = (
 				1279EFF6213587D7005340C0 /* Cells.swift */,
+				12A843292153C5C500570A95 /* InvTypeCell */,
 				1259639321381E8E00B3A53C /* AccountCell */,
 				1279EFF221355DE2005340C0 /* TreeDefaultCell */,
 				1259639221381E8800B3A53C /* TreeHeaderCell */,
@@ -1233,6 +1253,7 @@
 				129DFE1A21347A6F00C85496 /* TableViewBackgroundLabel.swift */,
 				124C858E213E880200333636 /* BackgroundView.swift */,
 				129E40AC213ECE0E002EDAF9 /* RoundedImageView.swift */,
+				12A8432F2153CA9600570A95 /* DamageTypeLabel.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1417,6 +1438,28 @@
 				12B89080213023280082D4A3 /* CachedValue.swift */,
 			);
 			name = API;
+			sourceTree = "<group>";
+		};
+		12A842FE215386C900570A95 /* InvTypes */ = {
+			isa = PBXGroup;
+			children = (
+				12A843002153871300570A95 /* InvTypes.swift */,
+				12A843022153871C00570A95 /* InvTypesViewController.swift */,
+				12A843042153872500570A95 /* InvTypesPresenter.swift */,
+				12A843062153872D00570A95 /* InvTypesInteractor.swift */,
+			);
+			name = InvTypes;
+			sourceTree = "<group>";
+		};
+		12A843292153C5C500570A95 /* InvTypeCell */ = {
+			isa = PBXGroup;
+			children = (
+				12A8432B2153C5D200570A95 /* InvTypeCell.swift */,
+				12A8432D2153C63900570A95 /* InvTypeModuleCell.xib */,
+				12A843312153CB5D00570A95 /* InvTypeShipCell.xib */,
+				12A843332153CBB000570A95 /* InvTypeChargeCell.xib */,
+			);
+			name = InvTypeCell;
 			sourceTree = "<group>";
 		};
 		12AB9727212BF5D200B30DD3 /* Storage */ = {
@@ -2034,6 +2077,7 @@
 				1256BE551DF4728800A2A24B /* Main.storyboard in Resources */,
 				1256BECE1DF4770A00A2A24B /* Fitting.xcassets in Resources */,
 				1279A2F12023193300DD7A46 /* NCStaticHeaderTableViewCell.xib in Resources */,
+				12A8432E2153C63900570A95 /* InvTypeModuleCell.xib in Resources */,
 				1298BA8420AEFB73002C941E /* MPMutedBtn.png in Resources */,
 				12D930ED1E656EAD00CBAE1C /* NCDamageTypeCompactTableViewCell.xib in Resources */,
 				12E6AE561F18F703001E829D /* NCKillmailAttackerTableViewCell.xib in Resources */,
@@ -2075,6 +2119,7 @@
 				1298BA7620AEFB73002C941E /* MPPlayBtn@2x.png in Resources */,
 				128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */,
 				12E9321C1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib in Resources */,
+				12A843322153CB5D00570A95 /* InvTypeShipCell.xib in Resources */,
 				1298BA8520AEFB73002C941E /* MPMutedBtn@2x.png in Resources */,
 				12DA88261EB8696F00FB1922 /* NCPlaceholderTableViewCell.xib in Resources */,
 				120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */,
@@ -2108,6 +2153,7 @@
 				1298BA8220AEFB73002C941E /* StartApp.bundle in Resources */,
 				129B316E1E53527C00B9A88D /* damagePatterns.plist in Resources */,
 				12D930E91E656B7E00CBAE1C /* NCChargeCompactTableViewCell.xib in Resources */,
+				12A843342153CBB000570A95 /* InvTypeChargeCell.xib in Resources */,
 				1256BF2B1DF4770B00A2A24B /* MainMenu.xcassets in Resources */,
 				12CFDAEC1F03F8F700CC0762 /* NCKillmailTableViewCell.xib in Resources */,
 				1298BA8020AEFB73002C941E /* MPDAAIcon@3x.png in Resources */,
@@ -2153,6 +2199,8 @@
 				12D3109A211C282100367440 /* PersistentContext.swift in Sources */,
 				12AFD473211C1E7D00007423 /* Cache.swift in Sources */,
 				1279EFF7213587D7005340C0 /* Cells.swift in Sources */,
+				12A843012153871300570A95 /* InvTypes.swift in Sources */,
+				12A843032153871C00570A95 /* InvTypesViewController.swift in Sources */,
 				12EE7CE5213D598F005CE68F /* Router.swift in Sources */,
 				12AB974D212C30E300B30DD3 /* SDEVersion.swift in Sources */,
 				125DF63C2133D30000B86AE0 /* TreeDefaultCell.swift in Sources */,
@@ -2162,6 +2210,7 @@
 				1204D066215271370070AF92 /* InvCategoriesPresenter.swift in Sources */,
 				1295A1AA2139242300047516 /* Services.swift in Sources */,
 				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
+				12A843302153CA9600570A95 /* DamageTypeLabel.swift in Sources */,
 				12EE7D0A213E60D1005CE68F /* MainMenuContainerInteractor.swift in Sources */,
 				12B03DA4213FC44200DCBD64 /* NSAttributedString+NC.swift in Sources */,
 				121F26F12136F07200AE1D70 /* TreeItem+CoreData.swift in Sources */,
@@ -2189,10 +2238,13 @@
 				121F26EB2136EE6C00AE1D70 /* AccountsViewController.swift in Sources */,
 				124C858F213E880200333636 /* BackgroundView.swift in Sources */,
 				129DFE1E21347AFB00C85496 /* AccessibilityLabel.swift in Sources */,
+				12A843072153872D00570A95 /* InvTypesInteractor.swift in Sources */,
 				129DFE20213486D900C85496 /* ProgressTask.swift in Sources */,
 				12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */,
 				12B03DA8213FEE1B00DCBD64 /* ActionHandler.swift in Sources */,
+				12A843052153872500570A95 /* InvTypesPresenter.swift in Sources */,
 				12E04181212D44360000CB4F /* Config.swift in Sources */,
+				12A8432C2153C5D200570A95 /* InvTypeCell.swift in Sources */,
 				12AFD476211C1EA800007423 /* Cache.xcdatamodeld in Sources */,
 				1279EFF921358922005340C0 /* TintImageView.swift in Sources */,
 				1259639521381EA100B3A53C /* AccountCell.swift in Sources */,

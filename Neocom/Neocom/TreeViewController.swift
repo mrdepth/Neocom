@@ -25,11 +25,17 @@ protocol TreePresenter: ContentProviderPresenter where View: TreeView, Interacto
 protocol TreeInteractor: ContentProviderInteractor where Presenter: TreePresenter {
 }
 
+protocol SearchableViewController {
+	func searchResultsController() -> UIViewController & UISearchResultsUpdating
+}
 
-class TreeViewController<Presenter: TreePresenter>: UITableViewController, View, TreeControllerDelegate {
+class TreeViewController<Presenter: TreePresenter, Input>: UITableViewController, View, TreeControllerDelegate {
 	lazy var presenter: Presenter! = Presenter(view: self as! Presenter.View)
 	var unwinder: Unwinder?
+	var input: Input?
 	lazy var treeController: TreeController! = TreeController()
+	
+	var searchController: UISearchController?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -42,6 +48,19 @@ class TreeViewController<Presenter: TreePresenter>: UITableViewController, View,
 			refreshHandler = ActionHandler(refreshControl, for: .valueChanged) { [weak self] (control) in
 				self?.reload()
 			}
+		}
+		
+		if let `self` = (self as? SearchableViewController) {
+			let searchResultsController = self.searchResultsController()
+			searchController = UISearchController(searchResultsController: searchResultsController)
+			searchController?.searchBar.searchBarStyle = UISearchBar.Style.default
+			searchController?.searchResultsUpdater = searchResultsController
+			searchController?.searchBar.barStyle = UIBarStyle.black
+			searchController?.searchBar.isTranslucent = false
+			searchController?.hidesNavigationBarDuringPresentation = false
+			tableView.backgroundView = UIView()
+			tableView.tableHeaderView = searchController?.searchBar
+			definesPresentationContext = true
 		}
 	}
 	

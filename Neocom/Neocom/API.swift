@@ -108,7 +108,7 @@ class APIClient: API {
 	func character(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<Character>> {
 		
 		return Services.sde.performBackgroundTask{ [weak self] context -> ESI.Result<Character> in
-			guard let strongSelf = self else {throw NCError.cancelled(type: APIClient.self, function: #function)}
+			guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
 			let (attributes, skills, skillQueue, implants) = try all(strongSelf.characterAttributes(cachePolicy: cachePolicy),
 																	 strongSelf.skills(cachePolicy: cachePolicy),
 																	 strongSelf.skillQueue(cachePolicy: cachePolicy),
@@ -231,7 +231,7 @@ class APIClient: API {
 	
 	func divisions(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Corporation.Divisions>> {
 		return characterInformation(cachePolicy: cachePolicy).then { [weak self] result in
-			guard let strongSelf = self else { throw NCError.cancelled(type: APIClient.self, function: #function)}
+			guard let strongSelf = self else { throw NCError.cancelled(type: type(of: self), function: #function)}
 			return strongSelf.esi.corporation.getCorporationDivisions(corporationID: result.value.corporationID, cachePolicy: cachePolicy)
 		}
 	}

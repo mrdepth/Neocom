@@ -9,11 +9,13 @@
 import Foundation
 import Futures
 import CloudData
+import CoreData
+import Expressible
 
 class InvGroupsPresenter: TreePresenter {
 	typealias View = InvGroupsViewController
 	typealias Interactor = InvGroupsInteractor
-	typealias Presentation = [Tree.Item.Row<Tree.Content.Default>]
+	typealias Presentation = Tree.Item.FetchedResultsController<Tree.Item.InvPublishedSection<Tree.Item.FetchedResultsRow<SDEInvGroup>>>
 	
 	weak var view: View!
 	lazy var interactor: Interactor! = Interactor(presenter: self)
@@ -38,6 +40,34 @@ class InvGroupsPresenter: TreePresenter {
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
-		return .init([])
+		guard let input = view.input else { return .init(.failure(NCError.invalidInput(type: type(of: self))))}
+		
+		var request = Services.sde.viewContext.managedObjectContext
+			.from(SDEInvGroup.self)
+			.sort(by: \SDEInvGroup.published, ascending: false)
+			.sort(by: \SDEInvGroup.groupName, ascending: true)
+		
+		switch input {
+		case let .category(category):
+			request = request.filter(\SDEInvGroup.category == category)
+		}
+		
+		let controller = request.fetchedResultsController(sectionName: \SDEInvGroup.published)
+		
+		let result = Presentation(controller, treeController: view.treeController)
+		return .init(result)
+	}
+}
+
+extension SDEInvGroup: CellConfiguring {
+	var prototype: Prototype? {
+		return Prototype.TreeDefaultCell.default
+	}
+	
+	func configure(cell: UITableViewCell) {
+		guard let cell = cell as? TreeDefaultCell else {return}
+		cell.titleLabel?.text = groupName
+		cell.subtitleLabel?.isHidden = true
+		cell.iconView?.image = icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultGroup)?.image?.image
 	}
 }

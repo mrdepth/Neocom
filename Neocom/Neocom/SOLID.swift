@@ -11,6 +11,7 @@ import Futures
 
 protocol Assembly {
 	associatedtype View: Neocom.View
+//	typealias Input = View.Input
 	func instantiate(_ input: View.Input) -> Future<View>
 }
 

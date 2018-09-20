@@ -16,4 +16,5 @@ enum NCError: Error {
 	case invalidImageFormat
 	case authenticationRequired
 	case reloadInProgress
+	case invalidInput(type: Any?)
 }

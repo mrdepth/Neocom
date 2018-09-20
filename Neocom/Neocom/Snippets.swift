@@ -8,7 +8,7 @@
 
 import Foundation
 
-class <#T##View#>: TreeViewController<<#T##Presenter#>>, TreeView {
+class <#T##View#>: TreeViewController<<#T##Presenter#>, <#T##Input#>>, TreeView {
 }
 
 class <#T##Presenter#>: TreePresenter {

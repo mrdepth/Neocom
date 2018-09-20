@@ -11,6 +11,7 @@ import Futures
 import CloudData
 import Expressible
 import CoreData
+import TreeController
 
 class InvCategoriesPresenter: TreePresenter {
 	typealias View = InvCategoriesViewController
@@ -40,35 +41,29 @@ class InvCategoriesPresenter: TreePresenter {
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
-		let request = Services.sde.viewContext.managedObjectContext.from(SDEInvCategory.self).sort(by: \SDEInvCategory.published, ascending: false).sort(by: \SDEInvCategory.categoryName, ascending: true).fetchRequest
-		let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: Services.sde.viewContext.managedObjectContext, sectionNameKeyPath: "published", cacheName: nil)
+		let controller = Services.sde.viewContext.managedObjectContext
+			.from(SDEInvCategory.self)
+			.sort(by: \SDEInvCategory.published, ascending: false)
+			.sort(by: \SDEInvCategory.categoryName, ascending: true)
+			.fetchedResultsController(sectionName: \SDEInvCategory.published)
 		
 		let result = Presentation(controller, treeController: view.treeController)
 		return .init(result)
 	}
+	
+	func didSelect<T: TreeItem>(item: T) -> Void {
+		guard let item = item as? Tree.Item.FetchedResultsRow<SDEInvCategory> else {return}
+		Router.SDE.invGroups(.category(item.result)).perform(from: view)
+	}
+	
 }
 
 extension Tree.Item {
 	
-	class InvPublishedSection<Item: FetchedResultsTreeItem>: FetchedResultsSection<Item>, CellConfiguring, ExpandableItem {
+	class InvPublishedSection<Item: FetchedResultsTreeItem>: FetchedResultsNamedSection<Item> {
 		
-		var isExpanded: Bool = true {
-			didSet {
-				controller?.treeController?.reloadRow(for: self, with: .none)
-			}
-		}
-		
-		var prototype: Prototype? {
-			return Prototype.TreeHeaderCell.default
-		}
-		
-		var expandIdentifier: CustomStringConvertible?
-		
-		func configure(cell: UITableViewCell) {
-			guard let cell = cell as? TreeHeaderCell else {return}
-			
-			cell.titleLabel?.text = (sectionInfo.name == "0" ? NSLocalizedString("Unpublished", comment: "") : NSLocalizedString("Published", comment: "")).uppercased()
-			cell.expandIconView?.image = isExpanded ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
+		override var name: String {
+			return (sectionInfo.name == "0" ? NSLocalizedString("Unpublished", comment: "") : NSLocalizedString("Published", comment: "")).uppercased()
 		}
 	}
 }
@@ -84,5 +79,4 @@ extension SDEInvCategory: CellConfiguring {
 		cell.subtitleLabel?.isHidden = true
 		cell.iconView?.image = icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultCategory)?.image?.image
 	}
-	
 }

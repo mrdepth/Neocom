@@ -9,11 +9,22 @@
 import Foundation
 import Expressible
 
-class InvTypesViewController: TreeViewController<InvTypesPresenter, Predictable>, TreeView, UISearchResultsUpdating {
+class InvTypesViewController: TreeViewController<InvTypesPresenter, InvTypesViewController.Input>, TreeView, UISearchResultsUpdating, SearchableViewController {
+	enum Input {
+		case none
+		case group(SDEInvGroup)
+		case category(SDEInvCategory)
+	}
 	
 	func updateSearchResults(for searchController: UISearchController) {
 		presenter.updateSearchResults(with: searchController.searchBar.text ?? "")
 	}
+	
+	func searchResultsController() -> UIViewController & UISearchResultsUpdating {
+		guard let input = input else {return try! InvTypes.default.instantiate(.none).get()}
+		return try! InvTypes.default.instantiate(input).get()
+	}
+
 }
 
 

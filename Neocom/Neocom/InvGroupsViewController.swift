@@ -7,10 +7,26 @@
 //
 
 import Foundation
+import TreeController
+import Expressible
 
-class InvGroupsViewController: TreeViewController<InvGroupsPresenter, InvGroupsViewController.Input>, TreeView {
+class InvGroupsViewController: TreeViewController<InvGroupsPresenter, InvGroupsViewController.Input>, TreeView, SearchableViewController {
 	enum Input {
 		case category (SDEInvCategory)
 	}
+	
+	override func treeController<T>(_ treeController: TreeController, didSelectRowFor item: T) where T : TreeItem {
+		presenter.didSelect(item: item)
+	}
+
+	func searchResultsController() -> UIViewController & UISearchResultsUpdating {
+		switch input {
+		case let .category(category)?:
+			return try! InvTypes.default.instantiate(.category(category)).get()
+		default:
+			return try! InvTypes.default.instantiate(.none).get()
+		}
+	}
+
 }
 

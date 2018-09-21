@@ -82,7 +82,9 @@ extension Tree.Item {
 			self.diffIdentifier = AnyHashable(diffIdentifier)
 			self.treeController = treeController
 			super.init()
-			fetchedResultsController.delegate = self
+			if fetchedResultsController.fetchRequest.resultType == .managedObjectResultType {
+				fetchedResultsController.delegate = self
+			}
 		}
 		
 		convenience init(_ fetchedResultsController: NSFetchedResultsController<Section.Child.Result>, treeController: TreeController?) {
@@ -241,7 +243,10 @@ extension Tree.Item {
 		
 		var isExpanded: Bool = true {
 			didSet {
-				controller?.treeController?.reloadRow(for: self, with: .none)
+				if let cell = controller?.treeController?.cell(for: self) {
+					configure(cell: cell)
+				}
+				controller?.treeController?.deselectCell(for: self, animated: true)
 			}
 		}
 		
@@ -257,7 +262,7 @@ extension Tree.Item {
 		func configure(cell: UITableViewCell) {
 			guard let cell = cell as? TreeHeaderCell else {return}
 			
-			cell.titleLabel?.text = sectionInfo.name
+			cell.titleLabel?.text = name
 			cell.expandIconView?.image = isExpanded ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
 		}
 		

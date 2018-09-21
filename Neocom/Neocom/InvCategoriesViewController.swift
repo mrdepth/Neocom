@@ -9,10 +9,20 @@
 import Foundation
 import TreeController
 
-class InvCategoriesViewController: TreeViewController<InvCategoriesPresenter, Void>, TreeView {
+class InvCategoriesViewController: TreeViewController<InvCategoriesPresenter, Void>, TreeView, SearchableViewController {
+	
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+	}
 	
 	override func treeController<T>(_ treeController: TreeController, didSelectRowFor item: T) where T : TreeItem {
 		presenter.didSelect(item: item)
 	}
+	
+	func searchResultsController() -> UIViewController & UISearchResultsUpdating {
+		return try! InvTypes.default.instantiate(.none).get()
+	}
+
 }
 

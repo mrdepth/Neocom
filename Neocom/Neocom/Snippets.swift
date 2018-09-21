@@ -8,6 +8,21 @@
 
 import Foundation
 
+enum <#T##Assembly#>: Assembly {
+	typealias View = <#T##View#>
+	case `default`
+	
+	func instantiate(_ input: View.Input) -> Future<View> {
+		switch self {
+		case .default:
+			let controller = UIStoryboard.database.instantiateViewController(withIdentifier: <#identifier#>) as! View
+			controller.input = input
+			return .init(controller)
+		}
+	}
+}
+
+
 class <#T##View#>: TreeViewController<<#T##Presenter#>, <#T##Input#>>, TreeView {
 }
 

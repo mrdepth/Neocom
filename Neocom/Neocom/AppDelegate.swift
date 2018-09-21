@@ -18,10 +18,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	var window: UIWindow?
 	
+	func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+		setupAppearance()
+		return true
+	}
+	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 		NSPersistentStoreCoordinator.registerStoreClass(CloudStore.self, forStoreType: CloudStoreType)
 		
-		setupAppearance()
 		return true
 	}
 }
@@ -30,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
 	fileprivate func setupAppearance() {
 		CSScheme.currentScheme = CSScheme.Dark
+		
 		let navigationBar = UINavigationBar.appearance(whenContainedInInstancesOf: [NavigationController.self])
 		navigationBar.setBackgroundImage(UIImage.image(color: UIColor.background), for: UIBarMetrics.default)
 		navigationBar.shadowImage = UIImage.image(color: UIColor.background)
@@ -45,6 +50,18 @@ extension AppDelegate {
 		RowCell.appearance().backgroundColor = .cellBackground
 		HeaderCell.appearance().backgroundColor = .background
 		BackgroundView.appearance().backgroundColor = .background
+		
+		let searchBar = UISearchBar.appearance(whenContainedInInstancesOf: [TableView.self])
+		searchBar.barTintColor = .background
+		searchBar.tintColor = .white
+		searchBar.setSearchFieldBackgroundImage(UIImage.searchFieldBackgroundImage(color: .separator), for: UIControl.State.normal)
+
+		let toolbar = UIToolbar.appearance(whenContainedInInstancesOf: [NavigationController.self])
+		toolbar.tintColor = .white
+		toolbar.barStyle = .black
+		toolbar.barTintColor = .background
+		toolbar.isTranslucent = false
+
 	}
 }
 

@@ -31,6 +31,10 @@ enum Router {
 		static func invGroups(_ input: InvGroups.View.Input) -> Route<InvGroups> {
 			return Route<InvGroups>(assembly: InvGroups.default, input: input, kind: .push)
 		}
+		static func invTypes(_ input: InvTypes.View.Input) -> Route<InvTypes> {
+			return Route<InvTypes>(assembly: InvTypes.default, input: input, kind: .push)
+		}
+
 	}
 }
 

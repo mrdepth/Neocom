@@ -186,6 +186,29 @@ public enum SDEIndActivityID: Int32 {
 	case reactions = 11
 }
 
+public enum SDERigSize: Int, CustomStringConvertible {
+	case none = 0
+	case small = 1
+	case medium = 2
+	case large = 3
+	case xLarge = 4
+	
+	public var description: String {
+		switch self {
+		case .none:
+			return NSLocalizedString("N/A", comment: "")
+		case .small:
+			return  NSLocalizedString("Small", comment: "")
+		case .medium:
+			return  NSLocalizedString("Medium", comment: "")
+		case .large:
+			return  NSLocalizedString("Large", comment: "")
+		case .xLarge:
+			return  NSLocalizedString("X-Large", comment: "")
+		}
+	}
+}
+
 extension SDEEveIcon {
 	enum Name {
 		case defaultCategory

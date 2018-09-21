@@ -111,8 +111,12 @@ extension Tree.Item {
 			self.children = children
 		}
 		
+		func isEqual(_ other: Base<Content, Element>) -> Bool {
+			return type(of: self) == type(of: other) && content == other.content
+		}
+		
 		static func == (lhs: Base<Content, Element>, rhs: Base<Content, Element>) -> Bool {
-			return lhs.content == rhs.content
+			return lhs.isEqual(rhs)
 		}
 		
 		var prototype: Prototype? {
@@ -122,6 +126,8 @@ extension Tree.Item {
 		func configure(cell: UITableViewCell) {
 			(content as? CellConfiguring)?.configure(cell: cell)
 		}
+		
+		
 
 	}
 	
@@ -137,28 +143,23 @@ extension Tree.Item {
 			super.init(content)
 		}
 	}
+	
+	class RoutableRow<Content: Hashable>: Row<Content>, Routable {
+		var route: Routing?
+		var secondaryRoute: Routing?
+		
+		init<T: Hashable>(_ content: Content, diffIdentifier: T, route: Routing? = nil, secondaryRoute: Routing? = nil) {
+			self.route = route
+			self.secondaryRoute = secondaryRoute
+			super.init(content, diffIdentifier: diffIdentifier)
+		}
+		
+		init(_ content: Content, route: Routing? = nil, secondaryRoute: Routing? = nil) {
+			self.route = route
+			self.secondaryRoute = secondaryRoute
+			super.init(content)
+		}
 
-//	class ESIResultRow<Content: Hashable>: Row<Content> {
-//		let value: Future<ESI.Result<Content>>
-//		weak var treeController: TreeController?
-//		
-//		init<T: Hashable>(_ content: Content, value: Future<ESI.Result<Content>>, diffIdentifier: T, treeController: TreeController) {
-//			self.value = value
-//			self.treeController = treeController
-//			super.init(content, diffIdentifier: diffIdentifier)
-//
-//			value.then(on: .main) { [weak self] value -> Void in
-//				self?.didUpdate(value.value)
-//			}
-//		}
-//		
-//		func didUpdate(_ content: Content) {
-//			self.content = content
-//			treeController?.reloadRow(for: self, with: .fade)
-//		}
-//		
-//		func didFail(_ error: Error) {
-//			
-//		}
-//	}
+	}
+
 }

@@ -343,7 +343,7 @@
             <objects>
                 <navigationController storyboardIdentifier="BannerNavigationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" navigationBarHidden="YES" id="aKc-6p-ULR" customClass="BannerNavigationViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="9qV-1T-8Vh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="9qV-1T-8Vh">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -360,7 +360,7 @@
                 <splitViewController id="jOF-Zr-V9H" customClass="NCSplitViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <segue destination="aKc-6p-ULR" kind="relationship" relationship="masterViewController" id="yKN-9Y-J0x"/>
+                        <segue destination="aKc-6p-ULR" kind="relationship" relationship="masterViewController" id="sYB-U2-LcH"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bb8-GB-8B6" userLabel="First Responder" sceneMemberID="firstResponder"/>

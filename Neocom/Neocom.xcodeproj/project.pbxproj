@@ -193,6 +193,11 @@
 		12D404471F31C010007F1715 /* NCSwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D404461F31C010007F1715 /* NCSwitchTableViewCell.xib */; };
 		12D404561F3460BE007F1715 /* NCAccountTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D404551F3460BE007F1715 /* NCAccountTableViewCell.xib */; };
 		12D7A4402068DDBD00F78560 /* openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1293D7C72049807E00A1F453 /* openssl.framework */; };
+		12D8144C2154D9BA00313DAF /* ThinLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8144B2154D9BA00313DAF /* ThinLineView.swift */; };
+		12D8147021550E0F00313DAF /* InvTypeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8146F21550E0F00313DAF /* InvTypeInfo.swift */; };
+		12D8147221550EC200313DAF /* InvTypeInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8147121550EC200313DAF /* InvTypeInfoViewController.swift */; };
+		12D8147421550ED100313DAF /* InvTypeInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8147321550ED100313DAF /* InvTypeInfoPresenter.swift */; };
+		12D8147621550EDA00313DAF /* InvTypeInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8147521550EDA00313DAF /* InvTypeInfoInteractor.swift */; };
 		12D85125201A86DA009485D0 /* NCSubscriptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D85124201A86DA009485D0 /* NCSubscriptionTableViewCell.xib */; };
 		12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E21E65689500CBAE1C /* NCFittingModuleTableViewCell.xib */; };
 		12D930E51E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E41E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib */; };
@@ -733,6 +738,11 @@
 		12D404551F3460BE007F1715 /* NCAccountTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCAccountTableViewCell.xib; sourceTree = "<group>"; };
 		12D404571F34BA70007F1715 /* NCAccountsFoldersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountsFoldersViewController.swift; sourceTree = "<group>"; };
 		12D404591F34BAD6007F1715 /* NCAccountsFolderPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountsFolderPickerViewController.swift; sourceTree = "<group>"; };
+		12D8144B2154D9BA00313DAF /* ThinLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThinLineView.swift; sourceTree = "<group>"; };
+		12D8146F21550E0F00313DAF /* InvTypeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeInfo.swift; sourceTree = "<group>"; };
+		12D8147121550EC200313DAF /* InvTypeInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeInfoViewController.swift; sourceTree = "<group>"; };
+		12D8147321550ED100313DAF /* InvTypeInfoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeInfoPresenter.swift; sourceTree = "<group>"; };
+		12D8147521550EDA00313DAF /* InvTypeInfoInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeInfoInteractor.swift; sourceTree = "<group>"; };
 		12D85124201A86DA009485D0 /* NCSubscriptionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCSubscriptionTableViewCell.xib; sourceTree = "<group>"; };
 		12D85127201A8793009485D0 /* NCSubscriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSubscriptionTableViewCell.swift; sourceTree = "<group>"; };
 		12D930E21E65689500CBAE1C /* NCFittingModuleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFittingModuleTableViewCell.xib; sourceTree = "<group>"; };
@@ -865,6 +875,7 @@
 				1204D06B2152719C0070AF92 /* InvCategories */,
 				1204D06C215289EC0070AF92 /* InvGroups */,
 				12A842FE215386C900570A95 /* InvTypes */,
+				12D8146E21550DFE00313DAF /* InvTypeInfo */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -1254,6 +1265,7 @@
 				124C858E213E880200333636 /* BackgroundView.swift */,
 				129E40AC213ECE0E002EDAF9 /* RoundedImageView.swift */,
 				12A8432F2153CA9600570A95 /* DamageTypeLabel.swift */,
+				12D8144B2154D9BA00313DAF /* ThinLineView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1778,6 +1790,17 @@
 			name = Database;
 			sourceTree = "<group>";
 		};
+		12D8146E21550DFE00313DAF /* InvTypeInfo */ = {
+			isa = PBXGroup;
+			children = (
+				12D8146F21550E0F00313DAF /* InvTypeInfo.swift */,
+				12D8147121550EC200313DAF /* InvTypeInfoViewController.swift */,
+				12D8147321550ED100313DAF /* InvTypeInfoPresenter.swift */,
+				12D8147521550EDA00313DAF /* InvTypeInfoInteractor.swift */,
+			);
+			name = InvTypeInfo;
+			sourceTree = "<group>";
+		};
 		12D930F41E658E8400CBAE1C /* Prototypes */ = {
 			isa = PBXGroup;
 			children = (
@@ -2192,6 +2215,7 @@
 				12415981212FF0AC001709F2 /* TreeItem.swift in Sources */,
 				12EE7D0E213E62E8005CE68F /* Accounts.swift in Sources */,
 				12B8907F21300E610082D4A3 /* TreeViewController.swift in Sources */,
+				12D8147221550EC200313DAF /* InvTypeInfoViewController.swift in Sources */,
 				12AB9737212C0ECC00B30DD3 /* SDE+Constants.swift in Sources */,
 				12AB974F212C325E00B30DD3 /* ImageValueTransformer.swift in Sources */,
 				121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */,
@@ -2219,6 +2243,7 @@
 				121F26ED2136EE8700AE1D70 /* AccountsInteractor.swift in Sources */,
 				1279EFF5213586D6005340C0 /* NCTableView.m in Sources */,
 				1279F00121358F7C005340C0 /* MainMenuHeaderInteractor.swift in Sources */,
+				12D8144C2154D9BA00313DAF /* ThinLineView.swift in Sources */,
 				1279EFF121355DC9005340C0 /* TreeHeaderCell.swift in Sources */,
 				12B03DA6213FEBF400DCBD64 /* TimeIntervalFormatter.swift in Sources */,
 				1204D064215270780070AF92 /* InvCategoriesViewController.swift in Sources */,
@@ -2250,6 +2275,7 @@
 				1259639521381EA100B3A53C /* AccountCell.swift in Sources */,
 				12AB973E212C162A00B30DD3 /* Character.swift in Sources */,
 				125DF6352133CFD000B86AE0 /* MainMenuPresenter.swift in Sources */,
+				12D8147021550E0F00313DAF /* InvTypeInfo.swift in Sources */,
 				120A386F213D543E0071ED72 /* MainMenuHeader.swift in Sources */,
 				12AB9735212C0E6E00B30DD3 /* NCImplantSetData.swift in Sources */,
 				12EE7D0C213E6282005CE68F /* Route.swift in Sources */,
@@ -2257,6 +2283,7 @@
 				125DF6372133CFDB00B86AE0 /* MainMenuInteractor.swift in Sources */,
 				1204D07021528A140070AF92 /* InvGroupsViewController.swift in Sources */,
 				12E0417E212D3C4F0000CB4F /* API.swift in Sources */,
+				12D8147421550ED100313DAF /* InvTypeInfoPresenter.swift in Sources */,
 				12AB9755212C488400B30DD3 /* TrainingQueue.swift in Sources */,
 				129E40AD213ECE0E002EDAF9 /* RoundedImageView.swift in Sources */,
 				120A386D213D46970071ED72 /* MainMenuContainerViewController.swift in Sources */,
@@ -2264,6 +2291,7 @@
 				1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */,
 				12E0419C212D77530000CB4F /* Error.swift in Sources */,
 				1204D07221528A1C0070AF92 /* InvGroupsPresenter.swift in Sources */,
+				12D8147621550EDA00313DAF /* InvTypeInfoInteractor.swift in Sources */,
 				12B03DA3213FC32300DCBD64 /* Math.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

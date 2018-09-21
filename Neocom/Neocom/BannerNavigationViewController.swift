@@ -9,5 +9,7 @@
 import Foundation
 
 class BannerNavigationViewController: NavigationController {
-	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+	}
 }

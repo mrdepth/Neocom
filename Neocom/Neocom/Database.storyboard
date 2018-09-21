@@ -136,12 +136,13 @@
         <scene sceneID="9kZ-nN-NrS">
             <objects>
                 <tableViewController storyboardIdentifier="InvCategoriesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="d0p-H6-hLd" customClass="InvCategoriesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="wTc-Sj-UoI" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="wTc-Sj-UoI" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </tableView>
                     <navigationItem key="navigationItem" title="Categories" id="gvX-U8-QTj"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <connections>
                         <segue destination="eAd-4s-ogN" kind="show" identifier="NCDatabaseGroupsViewController" id="e8X-0w-sbV"/>
                     </connections>
@@ -150,28 +151,12 @@
             </objects>
             <point key="canvasLocation" x="5079" y="1771"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="niI-sp-c4x">
-            <objects>
-                <navigationController storyboardIdentifier="NCDatabaseNavigationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="eSn-ea-6q8" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="YGT-R9-hFj">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="d0p-H6-hLd" kind="relationship" relationship="rootViewController" id="u0G-Bu-xQh"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="obR-21-xry" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4369" y="1772"/>
-        </scene>
         <!--Groups-->
         <scene sceneID="ZwS-NC-eed">
             <objects>
                 <tableViewController storyboardIdentifier="InvGroupsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="eAd-4s-ogN" customClass="InvGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="1Jt-rR-dQx" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="1Jt-rR-dQx" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </tableView>
@@ -187,9 +172,9 @@
         <!--Items-->
         <scene sceneID="13y-4c-DQ6">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseTypesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="n7O-kB-ADS" customClass="NCDatabaseTypesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="sB6-Pc-zE5" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                <tableViewController storyboardIdentifier="InvTypesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="n7O-kB-ADS" customClass="InvTypesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="sB6-Pc-zE5" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </tableView>

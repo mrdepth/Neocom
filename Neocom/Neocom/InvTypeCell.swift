@@ -88,6 +88,52 @@ extension Tree.Item {
 		}
 		
 		override func configure(cell: UITableViewCell) {
+			switch cell {
+			case let cell as InvTypeModuleCell:
+				cell.titleLabel?.text = type?.typeName
+				cell.iconView?.image = type?.icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultType)?.image?.image
+				cell.cpuLabel.text = UnitFormatter.localizedString(from: requirements?.cpu ?? 0, unit: .teraflops, style: .long)
+				cell.powerGridLabel.text = UnitFormatter.localizedString(from: requirements?.powerGrid ?? 0, unit: .megaWatts, style: .long)
+			case let cell as InvTypeShipCell:
+				cell.titleLabel?.text = type?.typeName
+				cell.iconView?.image = type?.icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultType)?.image?.image
+				cell.hiSlotsLabel.text = "\(shipResources?.hiSlots ?? 0)"
+				cell.medSlotsLabel.text = "\(shipResources?.medSlots ?? 0)"
+				cell.lowSlotsLabel.text = "\(shipResources?.lowSlots ?? 0)"
+				cell.rigSlotsLabel.text = "\(shipResources?.rigSlots ?? 0)"
+				cell.turretsLabel.text = "\(shipResources?.turrets ?? 0)"
+				cell.launchersLabel.text = "\(shipResources?.launchers ?? 0)"
+			case let cell as InvTypeChargeCell:
+				cell.titleLabel?.text = type?.typeName
+				cell.iconView?.image = type?.icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultType)?.image?.image
+				
+				let em = damage?.emAmount ?? 0
+				let kinetic = damage?.kineticAmount ?? 0
+				let thermal = damage?.thermalAmount ?? 0
+				let explosive = damage?.explosiveAmount ?? 0
+				var total = em + kinetic + thermal + explosive
+				if total == 0 {
+					total = 1
+				}
+				
+				cell.emLabel.progress = em / total
+				cell.emLabel.text = UnitFormatter.localizedString(from: em, unit: .none, style: .short)
+				
+				cell.kineticLabel.progress = kinetic / total
+				cell.kineticLabel.text = UnitFormatter.localizedString(from: kinetic, unit: .none, style: .short)
+				
+				cell.thermalLabel.progress = thermal / total
+				cell.thermalLabel.text = UnitFormatter.localizedString(from: thermal, unit: .none, style: .short)
+				
+				cell.explosiveLabel.progress = explosive / total
+				cell.explosiveLabel.text = UnitFormatter.localizedString(from: explosive, unit: .none, style: .short)
+			case let cell as InvTypeCell:
+				cell.titleLabel?.text = type?.typeName
+				cell.iconView?.image = type?.icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultType)?.image?.image
+				cell.subtitleLabel?.isHidden = true
+			default:
+				break
+			}
 		}
 	}
 	

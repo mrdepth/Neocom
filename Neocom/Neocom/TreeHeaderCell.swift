@@ -62,7 +62,10 @@ extension Tree.Item {
 			}
 			set {
 				content.isExpanded = newValue
-				treeController?.reloadRow(for: self, with: .none)
+				if let cell = treeController?.cell(for: self) {
+					content.configure(cell: cell)
+				}
+				treeController?.deselectCell(for: self, animated: true)
 			}
 		}
 		

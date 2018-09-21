@@ -50,12 +50,17 @@ class TreeViewController<Presenter: TreePresenter, Input>: UITableViewController
 			}
 		}
 		
+	}
+	
+	override func willMove(toParent parent: UIViewController?) {
+		super.willMove(toParent: parent)
+		guard !(parent is UISearchController) else {return}
 		if let `self` = (self as? SearchableViewController) {
 			let searchResultsController = self.searchResultsController()
 			searchController = UISearchController(searchResultsController: searchResultsController)
-			searchController?.searchBar.searchBarStyle = UISearchBar.Style.default
+			searchController?.searchBar.searchBarStyle = .default
 			searchController?.searchResultsUpdater = searchResultsController
-			searchController?.searchBar.barStyle = UIBarStyle.black
+			searchController?.searchBar.barStyle = .black
 			searchController?.searchBar.isTranslucent = false
 			searchController?.hidesNavigationBarDuringPresentation = false
 			tableView.backgroundView = UIView()

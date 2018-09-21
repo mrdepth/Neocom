@@ -38,7 +38,7 @@
                     <constraint firstItem="BqY-Ly-TVL" firstAttribute="leading" secondItem="SQ4-QF-0zT" secondAttribute="leading" constant="8" id="Iis-vd-xcy"/>
                     <constraint firstAttribute="bottom" secondItem="BqY-Ly-TVL" secondAttribute="bottom" constant="8" id="SzY-hK-3zl"/>
                     <constraint firstAttribute="trailingMargin" secondItem="BqY-Ly-TVL" secondAttribute="trailing" id="hhf-Ck-rPa"/>
-                    <constraint firstItem="BqY-Ly-TVL" firstAttribute="top" secondItem="SQ4-QF-0zT" secondAttribute="topMargin" constant="4" id="tVN-XV-O4N"/>
+                    <constraint firstItem="BqY-Ly-TVL" firstAttribute="top" secondItem="SQ4-QF-0zT" secondAttribute="top" constant="15" id="tVN-XV-O4N"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>

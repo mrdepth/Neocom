@@ -11,6 +11,7 @@ import Futures
 import CloudData
 import CoreData
 import Expressible
+import TreeController
 
 class InvGroupsPresenter: TreePresenter {
 	typealias View = InvGroupsViewController
@@ -35,6 +36,13 @@ class InvGroupsPresenter: TreePresenter {
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
 			self?.applicationWillEnterForeground()
 		}
+		
+		switch view.input {
+		case let .category(category)?:
+			view.title = category.categoryName
+		default:
+			break
+		}
 	}
 	
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
@@ -57,6 +65,12 @@ class InvGroupsPresenter: TreePresenter {
 		let result = Presentation(controller, treeController: view.treeController)
 		return .init(result)
 	}
+	
+	func didSelect<T: TreeItem>(item: T) -> Void {
+		guard let item = item as? Tree.Item.FetchedResultsRow<SDEInvGroup> else {return}
+		Router.SDE.invTypes(.group(item.result)).perform(from: view)
+	}
+
 }
 
 extension SDEInvGroup: CellConfiguring {

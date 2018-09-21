@@ -36,7 +36,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailingMargin" secondItem="Pix-Fg-nIS" secondAttribute="trailing" id="EQg-Wg-crv"/>
-                    <constraint firstItem="Pix-Fg-nIS" firstAttribute="top" secondItem="3K8-8j-Upa" secondAttribute="topMargin" constant="4" id="bun-J1-z9M"/>
+                    <constraint firstItem="Pix-Fg-nIS" firstAttribute="top" secondItem="3K8-8j-Upa" secondAttribute="top" constant="15" id="bun-J1-z9M"/>
                     <constraint firstAttribute="bottom" secondItem="Pix-Fg-nIS" secondAttribute="bottom" constant="8" id="jac-f0-PJ4"/>
                     <constraint firstItem="Pix-Fg-nIS" firstAttribute="leading" secondItem="3K8-8j-Upa" secondAttribute="leading" constant="8" id="sjq-zp-I4D"/>
                 </constraints>

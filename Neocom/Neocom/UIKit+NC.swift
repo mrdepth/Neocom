@@ -100,3 +100,32 @@ extension UIImage {
 		return image.resizableImage(withCapInsets: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5), resizingMode: .stretch)
 	}
 }
+
+extension CGRect: Hashable {
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(origin)
+		hasher.combine(size)
+	}
+}
+
+extension CGPoint: Hashable {
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(x)
+		hasher.combine(y)
+	}
+}
+
+extension CGSize: Hashable {
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(width)
+		hasher.combine(height)
+	}
+}
+
+extension String {
+	private static let numbers = ["0","I","II","III","IV","V"]
+	
+	init(romanNumber: Int) {
+		self = String.numbers[romanNumber.clamped(to: 0...5)]
+	}
+}

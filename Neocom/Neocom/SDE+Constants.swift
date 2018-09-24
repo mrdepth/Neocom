@@ -229,3 +229,4 @@ extension SDEEveIcon {
 		}
 	}
 }
+

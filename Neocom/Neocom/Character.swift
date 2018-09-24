@@ -37,7 +37,7 @@ struct Character: Codable {
 	
 	var attributes: Attributes
 	var augmentations: Attributes
-	var trainedSkills: [Int: Int]
+	var trainedSkills: [Int: ESI.Skills.CharacterSkills.Skill]
 	var skillQueue: [SkillQueueItem]
 	
 	

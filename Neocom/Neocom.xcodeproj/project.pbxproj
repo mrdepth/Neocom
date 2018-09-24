@@ -44,6 +44,14 @@
 		12415981212FF0AC001709F2 /* TreeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12415980212FF0AC001709F2 /* TreeItem.swift */; };
 		1248DB3A1F1C9DE9009625EC /* NCMailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1248DB391F1C9DE9009625EC /* NCMailTableViewCell.xib */; };
 		124C858F213E880200333636 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C858E213E880200333636 /* BackgroundView.swift */; };
+		1253C62521590744007DEA16 /* DamageTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62421590744007DEA16 /* DamageTypeCell.swift */; };
+		1253C6272159078C007DEA16 /* DamageTypeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C6262159078C007DEA16 /* DamageTypeCell.xib */; };
+		1253C6292159081A007DEA16 /* DamageTypeCompactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C6282159081A007DEA16 /* DamageTypeCompactCell.xib */; };
+		1253C62C21591036007DEA16 /* MarketHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C62B21591036007DEA16 /* MarketHistoryCell.xib */; };
+		1253C62E21591066007DEA16 /* MarketHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62D21591066007DEA16 /* MarketHistoryCell.swift */; };
+		1253C6302159108F007DEA16 /* MarketHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62F2159108F007DEA16 /* MarketHistoryView.swift */; };
+		1253C64A21592B80007DEA16 /* DgmAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C64921592B80007DEA16 /* DgmAttributeCell.swift */; };
+		1253C64C21592BA4007DEA16 /* DgmAttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C64B21592BA4007DEA16 /* DgmAttributeCell.xib */; };
 		1256BE551DF4728800A2A24B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE541DF4728800A2A24B /* Main.storyboard */; };
 		1256BEC81DF4770A00A2A24B /* charisma.png in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE611DF4770A00A2A24B /* charisma.png */; };
 		1256BEC91DF4770A00A2A24B /* intelligence.png in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE621DF4770A00A2A24B /* intelligence.png */; };
@@ -427,6 +435,14 @@
 		12498B051EFD680200FEEE36 /* NCKillmailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailTableViewCell.swift; sourceTree = "<group>"; };
 		124BD4B12018978E00816946 /* NCSubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSubscriptionViewController.swift; sourceTree = "<group>"; };
 		124C858E213E880200333636 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
+		1253C62421590744007DEA16 /* DamageTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamageTypeCell.swift; sourceTree = "<group>"; };
+		1253C6262159078C007DEA16 /* DamageTypeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DamageTypeCell.xib; sourceTree = "<group>"; };
+		1253C6282159081A007DEA16 /* DamageTypeCompactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DamageTypeCompactCell.xib; sourceTree = "<group>"; };
+		1253C62B21591036007DEA16 /* MarketHistoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MarketHistoryCell.xib; sourceTree = "<group>"; };
+		1253C62D21591066007DEA16 /* MarketHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketHistoryCell.swift; sourceTree = "<group>"; };
+		1253C62F2159108F007DEA16 /* MarketHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketHistoryView.swift; sourceTree = "<group>"; };
+		1253C64921592B80007DEA16 /* DgmAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmAttributeCell.swift; sourceTree = "<group>"; };
+		1253C64B21592BA4007DEA16 /* DgmAttributeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DgmAttributeCell.xib; sourceTree = "<group>"; };
 		1256BE331DF1C38200A2A24B /* NCStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorage.swift; sourceTree = "<group>"; };
 		1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorageExtensions.swift; sourceTree = "<group>"; };
 		1256BE381DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCBannerNavigationViewController.swift; sourceTree = "<group>"; };
@@ -909,7 +925,6 @@
 				12B8906F213005350082D4A3 /* SOLID */,
 				1241597C212FEFCE001709F2 /* TreeViewController */,
 				12AB9738212C111800B30DD3 /* Character */,
-				125DF63A2133D2CD00B86AE0 /* Cells */,
 				12A374ED211C2BC900259593 /* API */,
 				12D3109C211C2B7B00367440 /* Database */,
 				1279EFFA21358E14005340C0 /* Views */,
@@ -1018,6 +1033,35 @@
 				121F26F02136F07200AE1D70 /* TreeItem+CoreData.swift */,
 			);
 			name = TreeViewController;
+			sourceTree = "<group>";
+		};
+		1253C62321590738007DEA16 /* DamageTypeCell */ = {
+			isa = PBXGroup;
+			children = (
+				1253C62421590744007DEA16 /* DamageTypeCell.swift */,
+				1253C6262159078C007DEA16 /* DamageTypeCell.xib */,
+				1253C6282159081A007DEA16 /* DamageTypeCompactCell.xib */,
+			);
+			name = DamageTypeCell;
+			sourceTree = "<group>";
+		};
+		1253C62A2159102A007DEA16 /* MarketHistoryCell */ = {
+			isa = PBXGroup;
+			children = (
+				1253C62D21591066007DEA16 /* MarketHistoryCell.swift */,
+				1253C62F2159108F007DEA16 /* MarketHistoryView.swift */,
+				1253C62B21591036007DEA16 /* MarketHistoryCell.xib */,
+			);
+			name = MarketHistoryCell;
+			sourceTree = "<group>";
+		};
+		1253C64821592B72007DEA16 /* DgmAttributeCell */ = {
+			isa = PBXGroup;
+			children = (
+				1253C64921592B80007DEA16 /* DgmAttributeCell.swift */,
+				1253C64B21592BA4007DEA16 /* DgmAttributeCell.xib */,
+			);
+			name = DgmAttributeCell;
 			sourceTree = "<group>";
 		};
 		1256BE371DF1EF6600A2A24B /* ViewControllers */ = {
@@ -1160,6 +1204,9 @@
 			isa = PBXGroup;
 			children = (
 				1279EFF6213587D7005340C0 /* Cells.swift */,
+				1253C64821592B72007DEA16 /* DgmAttributeCell */,
+				1253C62A2159102A007DEA16 /* MarketHistoryCell */,
+				1253C62321590738007DEA16 /* DamageTypeCell */,
 				12A843292153C5C500570A95 /* InvTypeCell */,
 				1259639321381E8E00B3A53C /* AccountCell */,
 				1279EFF221355DE2005340C0 /* TreeDefaultCell */,
@@ -1659,6 +1706,7 @@
 		12AFD46A211C1C1D00007423 /* Refactor */ = {
 			isa = PBXGroup;
 			children = (
+				125DF63A2133D2CD00B86AE0 /* Cells */,
 				120A385C213D3B280071ED72 /* Utility */,
 				121F26E22136EC2800AE1D70 /* Banner */,
 				125DF62E2133CFAE00B86AE0 /* Main */,
@@ -2123,10 +2171,13 @@
 				1256BECC1DF4770A00A2A24B /* willpower.png in Resources */,
 				128130411F3B01230039D46B /* dropzone.css in Resources */,
 				1248DB3A1F1C9DE9009625EC /* NCMailTableViewCell.xib in Resources */,
+				1253C6292159081A007DEA16 /* DamageTypeCompactCell.xib in Resources */,
 				1298BA7F20AEFB73002C941E /* MPCloseButtonX.png in Resources */,
+				1253C64C21592BA4007DEA16 /* DgmAttributeCell.xib in Resources */,
 				12AC8D9E1DEF58A100561A7A /* LaunchScreen.storyboard in Resources */,
 				1259639721381ECD00B3A53C /* AccountCell.xib in Resources */,
 				1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */,
+				1253C6272159078C007DEA16 /* DamageTypeCell.xib in Resources */,
 				128130451F3B08600039D46B /* main.js in Resources */,
 				1298BA7E20AEFB73002C941E /* MPCloseButtonX@3x.png in Resources */,
 				1298BA7D20AEFB73002C941E /* MPCloseButtonX@2x.png in Resources */,
@@ -2142,6 +2193,7 @@
 				1298BA7620AEFB73002C941E /* MPPlayBtn@2x.png in Resources */,
 				128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */,
 				12E9321C1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib in Resources */,
+				1253C62C21591036007DEA16 /* MarketHistoryCell.xib in Resources */,
 				12A843322153CB5D00570A95 /* InvTypeShipCell.xib in Resources */,
 				1298BA8520AEFB73002C941E /* MPMutedBtn@2x.png in Resources */,
 				12DA88261EB8696F00FB1922 /* NCPlaceholderTableViewCell.xib in Resources */,
@@ -2231,14 +2283,17 @@
 				121F26EF2136EE9100AE1D70 /* AccountsPresenter.swift in Sources */,
 				12AFD46D211C1C3D00007423 /* SDE.swift in Sources */,
 				1204D07421528A270070AF92 /* InvGroupsInteractor.swift in Sources */,
+				1253C62E21591066007DEA16 /* MarketHistoryCell.swift in Sources */,
 				1204D066215271370070AF92 /* InvCategoriesPresenter.swift in Sources */,
 				1295A1AA2139242300047516 /* Services.swift in Sources */,
 				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
 				12A843302153CA9600570A95 /* DamageTypeLabel.swift in Sources */,
+				1253C64A21592B80007DEA16 /* DgmAttributeCell.swift in Sources */,
 				12EE7D0A213E60D1005CE68F /* MainMenuContainerInteractor.swift in Sources */,
 				12B03DA4213FC44200DCBD64 /* NSAttributedString+NC.swift in Sources */,
 				121F26F12136F07200AE1D70 /* TreeItem+CoreData.swift in Sources */,
 				129E40A9213EA318002EDAF9 /* ViewController.swift in Sources */,
+				1253C6302159108F007DEA16 /* MarketHistoryView.swift in Sources */,
 				12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */,
 				121F26ED2136EE8700AE1D70 /* AccountsInteractor.swift in Sources */,
 				1279EFF5213586D6005340C0 /* NCTableView.m in Sources */,
@@ -2271,6 +2326,7 @@
 				12E04181212D44360000CB4F /* Config.swift in Sources */,
 				12A8432C2153C5D200570A95 /* InvTypeCell.swift in Sources */,
 				12AFD476211C1EA800007423 /* Cache.xcdatamodeld in Sources */,
+				1253C62521590744007DEA16 /* DamageTypeCell.swift in Sources */,
 				1279EFF921358922005340C0 /* TintImageView.swift in Sources */,
 				1259639521381EA100B3A53C /* AccountCell.swift in Sources */,
 				12AB973E212C162A00B30DD3 /* Character.swift in Sources */,

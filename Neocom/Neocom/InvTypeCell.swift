@@ -38,7 +38,6 @@ class InvTypeChargeCell: RowCell {
 	@IBOutlet weak var explosiveLabel: DamageTypeLabel!
 }
 
-
 extension Prototype {
 	enum InvTypeCell {
 		static let `default` = Prototype.TreeDefaultCell.default

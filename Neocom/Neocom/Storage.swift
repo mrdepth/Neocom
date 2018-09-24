@@ -202,4 +202,24 @@ extension Account {
 			}
 		}
 	}
+	
+	var activeSkillPlan: SkillPlan? {
+		if let skillPlan = (try? managedObjectContext?.from(SkillPlan.self).filter(\SkillPlan.account == self && \SkillPlan.active == true).first()) ?? nil {
+			return skillPlan
+		}
+		else if let skillPlan = skillPlans?.anyObject() as? SkillPlan {
+			skillPlan.active = true
+			return skillPlan
+		}
+		else if let managedObjectContext = managedObjectContext {
+			let skillPlan = SkillPlan(context: managedObjectContext)
+			skillPlan.active = true
+			skillPlan.account = self
+			skillPlan.name = NSLocalizedString("Default", comment: "")
+			return skillPlan
+		}
+		else {
+			return nil
+		}
+	}
 }

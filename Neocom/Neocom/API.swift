@@ -129,13 +129,18 @@ class APIClient: API {
 				augmentations[value.0] += value.1
 			}
 			
-			var trainedSkills = Dictionary(skills.value.skills.map { ($0.skillID, $0.trainedSkillLevel)}, uniquingKeysWith: max)
+			var trainedSkills = Dictionary(skills.value.skills.map { ($0.skillID, $0)}, uniquingKeysWith: {
+				$0.trainedSkillLevel > $1.trainedSkillLevel ? $0 : $1
+			})
 			
 			let currentDate = Date()
 			var validSkillQueue = skillQueue.value.filter{$0.finishDate != nil}
 			let i = validSkillQueue.partition(by: {$0.finishDate! > currentDate})
 			for skill in validSkillQueue[..<i] {
-				trainedSkills[skill.skillID] = max(trainedSkills[skill.skillID] ?? 0, skill.finishedLevel)
+				guard let endSP = skill.levelEndSP ?? context.invType(skill.skillID).flatMap({Character.Skill(type: $0)})?.skillPoints(at: skill.finishedLevel) else {continue}
+				
+				let skill = ESI.Skills.CharacterSkills.Skill(activeSkillLevel: skill.finishedLevel, skillID: skill.skillID, skillpointsInSkill: Int64(endSP), trainedSkillLevel: skill.finishedLevel)
+				trainedSkills[skill.skillID] = trainedSkills[skill.skillID].map {$0.trainedSkillLevel > skill.trainedSkillLevel ? $0 : skill} ?? skill
 			}
 			
 			let sq = validSkillQueue[i...].sorted{$0.queuePosition < $1.queuePosition}.compactMap { i -> Character.SkillQueueItem? in

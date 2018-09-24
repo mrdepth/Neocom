@@ -27,7 +27,7 @@ class TrainingQueue {
 		addRequiredSkills(for: skillType)
 		
 		let typeID = Int(skillType.typeID)
-		let trainedLevel = character.trainedSkills[typeID] ?? 0
+		let trainedLevel = character.trainedSkills[typeID]?.trainedSkillLevel ?? 0
 		
 		guard trainedLevel < level else {return}
 		
@@ -86,8 +86,9 @@ extension TrainingQueue.Item {
 	init(skill: Character.Skill, targetLevel: Int, startSP: Int?) {
 		self.skill = skill
 		self.targetLevel = targetLevel
-		self.startSP = startSP ?? skill.skillPoints(at: targetLevel - 1)
-		finishSP = skill.skillPoints(at: targetLevel)
+		let finishSP = skill.skillPoints(at: targetLevel)
+		self.startSP = min(startSP ?? skill.skillPoints(at: targetLevel - 1), finishSP)
+		self.finishSP = finishSP
 	}
 	
 	func trainingTime(with attributes: Character.Attributes) -> TimeInterval {

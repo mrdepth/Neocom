@@ -13,7 +13,7 @@ import CloudData
 class InvCategoriesInteractor: TreeInteractor {
 	typealias Presenter = InvCategoriesPresenter
 	typealias Content = Void
-	weak var presenter: Presenter!
+	weak var presenter: Presenter?
 	
 	required init(presenter: Presenter) {
 		self.presenter = presenter

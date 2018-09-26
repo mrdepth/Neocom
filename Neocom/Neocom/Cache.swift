@@ -20,6 +20,9 @@ protocol Cache {
 protocol CacheContext: PersistentContext {
 	func sectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState?
 	func newSectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState
+	func price(for typeID: Int) -> Price?
+	func price(for typeIDs: Set<Int>) -> [Int: Double]?
+	func prices() -> [Price]?
 }
 
 
@@ -52,7 +55,10 @@ class CacheContainer: Cache {
 		let promise = Promise<T>()
 		persistentContainer.performBackgroundTask { (context) in
 			do {
-				try promise.fulfill(block(CacheContextBox(managedObjectContext: context)))
+				let ctx = CacheContextBox(managedObjectContext: context)
+				let result = try block(ctx)
+				try ctx.save()
+				try promise.fulfill(result)
 			}
 			catch {
 				try? promise.fail(error)
@@ -67,8 +73,17 @@ class CacheContainer: Cache {
 		
 		persistentContainer.performBackgroundTask { (context) in
 			do {
-				try block(CacheContextBox(managedObjectContext: context)).then {
-					try? promise.fulfill($0)
+				let ctx = CacheContextBox(managedObjectContext: context)
+				try block(ctx).then { result in
+					ctx.managedObjectContext.perform {
+						do {
+							try ctx.save()
+							try promise.fulfill(result)
+						}
+						catch {
+							try? promise.fail(error)
+						}
+					}
 				}.catch {
 					try? promise.fail($0)
 				}
@@ -80,7 +95,6 @@ class CacheContainer: Cache {
 		return promise.future
 	}
 
-//	static let shared = CacheContainer()
 }
 
 
@@ -97,6 +111,19 @@ struct CacheContextBox: CacheContext {
 		state.scope = scope
 		state.identifier = identifier
 		return state
+	}
+	
+	func price(for typeID: Int) -> Price? {
+		return (try? managedObjectContext.from(Price.self).filter(\Price.typeID == typeID).first()) ?? nil
+	}
+	
+	func price(for typeIDs: Set<Int>) -> [Int: Double]? {
+		guard let prices = (try? managedObjectContext.from(Price.self).filter((\Price.typeID).in(typeIDs)).all()) ?? nil else {return nil}
+		return Dictionary(prices.map{(Int($0.typeID), $0.price)}, uniquingKeysWith: {lhs, _ in lhs})
+	}
+	
+	func prices() -> [Price]? {
+		return (try? managedObjectContext.from(Price.self).all()) ?? nil
 	}
 	
 	var managedObjectContext: NSManagedObjectContext

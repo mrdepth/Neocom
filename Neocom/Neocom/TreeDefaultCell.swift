@@ -29,19 +29,22 @@ extension Tree.Content {
 		var attributedTitle: NSAttributedString?
 		var attributedSubtitle: NSAttributedString?
 		var image: UIImage?
+		var accessoryType: UITableViewCell.AccessoryType
 		
 		init(prototype: Prototype = Prototype.TreeDefaultCell.default,
 			 title: String? = nil,
 			 subtitle: String? = nil,
 			 attributedTitle: NSAttributedString? = nil,
 			 attributedSubtitle: NSAttributedString? = nil,
-			 image: UIImage? = nil) {
+			 image: UIImage? = nil,
+			 accessoryType: UITableViewCell.AccessoryType = .none) {
 			self.prototype = prototype
 			self.title = title
 			self.subtitle = subtitle
 			self.attributedTitle = attributedTitle
 			self.attributedSubtitle = attributedSubtitle
 			self.image = image
+			self.accessoryType = accessoryType
 		}
 	}
 }
@@ -84,6 +87,8 @@ extension Tree.Content.Default: CellConfiguring {
 			cell.iconView?.image = nil
 			cell.iconView?.isHidden = true
 		}
+		
+		cell.accessoryType = accessoryType
 	}
 }
 

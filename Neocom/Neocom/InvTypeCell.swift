@@ -130,6 +130,7 @@ extension Tree.Item {
 				cell.titleLabel?.text = type?.typeName
 				cell.iconView?.image = type?.icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultType)?.image?.image
 				cell.subtitleLabel?.isHidden = true
+				cell.accessoryType = .disclosureIndicator
 			default:
 				break
 			}

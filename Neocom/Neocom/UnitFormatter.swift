@@ -160,6 +160,7 @@ extension UnitFormatter {
 		}
 		
 		func suffix(scale: Scale) -> String {
+			
 			switch self {
 			case .none:
 				switch scale {
@@ -174,7 +175,20 @@ extension UnitFormatter {
 				case .tera:
 					return "T"
 				}
-			case .isk, .skillPoints, .gigaJoule, .gigaJoulePerSecond, .megaWatts, .teraflops, .kilogram, .millimeter, .megaBitsPerSecond, .cubicMeter, .auPerSecond, .hpPerSecond:
+			case .isk:
+				switch scale {
+				case .natural:
+					return " \(symbol)"
+				case .kilo:
+					return "k \(symbol)"
+				case .mega:
+					return "M \(symbol)"
+				case .giga:
+					return "B \(symbol)"
+				case .tera:
+					return "T \(symbol)"
+				}
+			case .skillPoints, .gigaJoule, .gigaJoulePerSecond, .megaWatts, .teraflops, .kilogram, .millimeter, .megaBitsPerSecond, .cubicMeter, .auPerSecond, .hpPerSecond:
 				switch scale {
 				case .natural:
 					return symbol

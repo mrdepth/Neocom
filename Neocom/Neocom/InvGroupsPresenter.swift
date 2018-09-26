@@ -18,7 +18,7 @@ class InvGroupsPresenter: TreePresenter {
 	typealias Interactor = InvGroupsInteractor
 	typealias Presentation = Tree.Item.FetchedResultsController<Tree.Item.InvPublishedSection<Tree.Item.FetchedResultsRow<SDEInvGroup>>>
 	
-	weak var view: View!
+	weak var view: View?
 	lazy var interactor: Interactor! = Interactor(presenter: self)
 	
 	var content: Interactor.Content?
@@ -30,16 +30,16 @@ class InvGroupsPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view.tableView.register([Prototype.TreeDefaultCell.default, Prototype.TreeHeaderCell.default])
+		view?.tableView.register([Prototype.TreeDefaultCell.default, Prototype.TreeHeaderCell.default])
 		
 		interactor.configure()
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
 			self?.applicationWillEnterForeground()
 		}
 		
-		switch view.input {
+		switch view?.input {
 		case let .category(category)?:
-			view.title = category.categoryName
+			view?.title = category.categoryName
 		default:
 			break
 		}
@@ -48,7 +48,7 @@ class InvGroupsPresenter: TreePresenter {
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
-		guard let input = view.input else { return .init(.failure(NCError.invalidInput(type: type(of: self))))}
+		guard let input = view?.input else { return .init(.failure(NCError.invalidInput(type: type(of: self))))}
 		
 		var request = Services.sde.viewContext.managedObjectContext
 			.from(SDEInvGroup.self)
@@ -62,12 +62,12 @@ class InvGroupsPresenter: TreePresenter {
 		
 		let controller = request.fetchedResultsController(sectionName: \SDEInvGroup.published)
 		
-		let result = Presentation(controller, treeController: view.treeController)
+		let result = Presentation(controller, treeController: view?.treeController)
 		return .init(result)
 	}
 	
 	func didSelect<T: TreeItem>(item: T) -> Void {
-		guard let item = item as? Tree.Item.FetchedResultsRow<SDEInvGroup> else {return}
+		guard let item = item as? Tree.Item.FetchedResultsRow<SDEInvGroup>, let view = view else {return}
 		Router.SDE.invTypes(.group(item.result)).perform(from: view)
 	}
 
@@ -83,5 +83,6 @@ extension SDEInvGroup: CellConfiguring {
 		cell.titleLabel?.text = groupName
 		cell.subtitleLabel?.isHidden = true
 		cell.iconView?.image = icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultGroup)?.image?.image
+		cell.accessoryType = .disclosureIndicator
 	}
 }

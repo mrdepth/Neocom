@@ -8,6 +8,7 @@
 
 import Foundation
 import Expressible
+import TreeController
 
 class InvTypesViewController: TreeViewController<InvTypesPresenter, InvTypesViewController.Input>, TreeView, UISearchResultsUpdating, SearchableViewController {
 	enum Input {
@@ -23,6 +24,10 @@ class InvTypesViewController: TreeViewController<InvTypesPresenter, InvTypesView
 	func searchResultsController() -> UIViewController & UISearchResultsUpdating {
 		guard let input = input else {return try! InvTypes.default.instantiate(.none).get()}
 		return try! InvTypes.default.instantiate(input).get()
+	}
+	
+	override func treeController<T>(_ treeController: TreeController, didSelectRowFor item: T) where T : TreeItem {
+		presenter.didSelect(item: item)
 	}
 
 }

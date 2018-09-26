@@ -18,7 +18,7 @@ class InvTypesPresenter: TreePresenter {
 	typealias Interactor = InvTypesPresenterInteractor
 	typealias Presentation = Tree.Item.FetchedResultsController<Tree.Item.FetchedResultsNamedSection<Tree.Item.InvType>>
 	
-	weak var view: View!
+	weak var view: View?
 	lazy var interactor: Interactor! = Interactor(presenter: self)
 	
 	var content: Interactor.Content?
@@ -30,7 +30,7 @@ class InvTypesPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view.tableView.register([Prototype.TreeHeaderCell.default,
+		view?.tableView.register([Prototype.TreeHeaderCell.default,
 								 Prototype.InvTypeCell.charge,
 								 Prototype.InvTypeCell.default,
 								 Prototype.InvTypeCell.module,
@@ -41,11 +41,11 @@ class InvTypesPresenter: TreePresenter {
 			self?.applicationWillEnterForeground()
 		}
 		
-		switch view.input {
+		switch view?.input {
 		case let .category(category)?:
-			view.title = category.categoryName
+			view?.title = category.categoryName
 		case let .group(group)?:
-			view.title = group.groupName
+			view?.title = group.groupName
 		default:
 			break
 		}
@@ -56,8 +56,8 @@ class InvTypesPresenter: TreePresenter {
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
 		
-		guard let input = view.input else { return .init(.failure(NCError.invalidInput(type: type(of: self))))}
-		let treeController = view.treeController
+		guard let input = view?.input else { return .init(.failure(NCError.invalidInput(type: type(of: self))))}
+		let treeController = view?.treeController
 		
 		var filter: Predictable
 		
@@ -70,7 +70,7 @@ class InvTypesPresenter: TreePresenter {
 			filter = true
 		}
 		
-		if view.parent is UISearchController {
+		if view?.parent is UISearchController {
 			let string = searchString ?? ""
 			filter = string.count > 2 ? filter && (\SDEInvType.typeName).caseInsensitive.contains(string) : false
 			searchString = nil
@@ -97,6 +97,13 @@ class InvTypesPresenter: TreePresenter {
 		}
 	}
 	
+	func didSelect<T: TreeItem>(item: T) -> Void {
+		guard let item = item as? Tree.Item.InvType, let type = item.type, let view = view else {return}
+		
+		Router.SDE.invTypeInfo(.type(type)).perform(from: view)
+	}
+
+	
 	private var searchString: String?
 	
 	func updateSearchResults(with string: String) {
@@ -104,14 +111,16 @@ class InvTypesPresenter: TreePresenter {
 			searchString = string
 			if let loading = loading {
 				loading.then(on: .main) { [weak self] _ in
-					self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) {
-						self?.view.present($0, animated: false)
+					DispatchQueue.main.async {
+						self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) {
+							self?.view?.present($0, animated: false)
+						}
 					}
 				}
 			}
 			else {
 				reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { [weak self] in
-					self?.view.present($0, animated: false)
+					self?.view?.present($0, animated: false)
 				}
 			}
 		}

@@ -15,5 +15,6 @@ class InvTypeInfoViewController: TreeViewController<InvTypeInfoPresenter, InvTyp
 		case typeID(Int)
 		case objectID(NSManagedObjectID)
 	}
+	
 }
 

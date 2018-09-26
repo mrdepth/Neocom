@@ -82,7 +82,10 @@ class StorageContainer: Storage {
 		let promise = Promise<T>()
 		persistentContainer.performBackgroundTask { (context) in
 			do {
-				try promise.fulfill(block(StorageContextBox(managedObjectContext: context)))
+				let ctx = StorageContextBox(managedObjectContext: context)
+				let result = try block(ctx)
+				try ctx.save()
+				try promise.fulfill(result)
 			}
 			catch {
 				try? promise.fail(error)
@@ -97,10 +100,19 @@ class StorageContainer: Storage {
 		
 		persistentContainer.performBackgroundTask { (context) in
 			do {
-				try block(StorageContextBox(managedObjectContext: context)).then {
-					try? promise.fulfill($0)
-					}.catch {
-						try? promise.fail($0)
+				let ctx = StorageContextBox(managedObjectContext: context)
+				try block(ctx).then { result in
+					ctx.managedObjectContext.perform {
+						do {
+							try ctx.save()
+							try promise.fulfill(result)
+						}
+						catch {
+							try? promise.fail(error)
+						}
+					}
+				}.catch {
+					try? promise.fail($0)
 				}
 			}
 			catch {

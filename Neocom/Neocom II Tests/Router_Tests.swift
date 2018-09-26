@@ -135,7 +135,7 @@ class RouterTestsViewController: UIViewController, View {
 }
 
 class RouterTestsPresenter: Presenter {
-	weak var view: RouterTestsViewController!
+	weak var view: RouterTestsViewController?
 	lazy var interactor: RouterTestsInteractor! = RouterTestsInteractor(presenter: self)
 	required init(view: RouterTestsViewController) {
 		self.view = view
@@ -143,7 +143,7 @@ class RouterTestsPresenter: Presenter {
 }
 
 class RouterTestsInteractor: Interactor {
-	weak var presenter: RouterTestsPresenter!
+	weak var presenter: RouterTestsPresenter?
 	required init(presenter: RouterTestsPresenter) {
 		self.presenter = presenter
 	}

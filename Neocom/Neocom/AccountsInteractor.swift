@@ -15,7 +15,7 @@ class AccountsInteractor: TreeInteractor {
 	
 	typealias Presenter = AccountsPresenter
 	typealias Content = URLRequest.CachePolicy
-	weak var presenter: Presenter!
+	weak var presenter: Presenter?
 	
 	required init(presenter: Presenter) {
 		self.presenter = presenter

@@ -31,7 +31,7 @@ class <#T##Presenter#>: TreePresenter {
 	typealias Interactor = <#T##Interactor#>
 	typealias Presentation = <#T##Presentation#>
 	
-	weak var view: View!
+	weak var view: View?
 	lazy var interactor: Interactor! = Interactor(presenter: self)
 	
 	var content: Interactor.Content?
@@ -43,7 +43,7 @@ class <#T##Presenter#>: TreePresenter {
 	}
 	
 	func configure() {
-		view.tableView.register([<#T##Prototype#>])
+		view?.tableView.register([<#T##Prototype#>])
 		
 		interactor.configure()
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
@@ -61,7 +61,7 @@ class <#T##Presenter#>: TreePresenter {
 class <#T##Interactor#>: TreeInteractor {
 	typealias Presenter = <#T##Presenter#>
 	typealias Content = <#T##Content#>
-	weak var presenter: Presenter!
+	weak var presenter: Presenter?
 	
 	required init(presenter: Presenter) {
 		self.presenter = presenter

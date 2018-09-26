@@ -187,8 +187,8 @@
         <!--Type Info-->
         <scene sceneID="6Ay-a7-Mjg">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseTypeInfoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="NJt-Bk-fsb" customClass="NCDatabaseTypeInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="vmn-b2-cH5" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="InvTypeInfoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="NJt-Bk-fsb" customClass="InvTypeInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="vmn-b2-cH5" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>

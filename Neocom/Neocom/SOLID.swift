@@ -34,7 +34,7 @@ protocol View: class {
 
 protocol Interactor: class {
 	associatedtype Presenter: Neocom.Presenter
-	var presenter: Presenter! {get set}
+	var presenter: Presenter? {get set}
 	
 	init(presenter: Presenter)
 	func configure() -> Void
@@ -43,7 +43,7 @@ protocol Interactor: class {
 protocol Presenter: class {
 	associatedtype View: Neocom.View
 	associatedtype Interactor: Neocom.Interactor
-	var view: View! {get set}
+	var view: View? {get set}
 	var interactor: Interactor! {get set}
 	
 	init(view: View)
@@ -86,13 +86,13 @@ extension Presenter {
 
 extension Presenter where View: UIViewController {
 	func beginTask(totalUnitCount unitCount: Int64) -> ProgressTask {
-		return beginTask(totalUnitCount: unitCount, indicator: .progressBar(view))
+		return beginTask(totalUnitCount: unitCount, indicator: .progressBar(view!))
 	}
 }
 
 extension Presenter where View: UIView {
 	func beginTask(totalUnitCount unitCount: Int64) -> ProgressTask {
-		return beginTask(totalUnitCount: unitCount, indicator: .progressBar(view))
+		return beginTask(totalUnitCount: unitCount, indicator: .progressBar(view!))
 	}
 }
 
@@ -129,24 +129,28 @@ extension ContentProviderPresenter {
 		if let loading = self.loading {
 			return loading
 		}
-		let task = beginTask(totalUnitCount: 2)
-		let loading = task.performAsCurrent(withPendingUnitCount: 1) {
-			interactor.load(cachePolicy: cachePolicy).then { [weak self] content -> Future<Presentation> in
+		var task: ProgressTask! = beginTask(totalUnitCount: 2)
+		
+		let progress1 = task.performAsCurrent(withPendingUnitCount: 1) { Progress(totalUnitCount: 1)}
+		let progress2 = task.performAsCurrent(withPendingUnitCount: 1) { Progress(totalUnitCount: 1)}
+		
+		let loading = progress1.performAsCurrent(withPendingUnitCount: 1) {
+			interactor.load(cachePolicy: cachePolicy).then(on: .main) { [weak self] content -> Future<Presentation> in
 				guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
-				return DispatchQueue.main.async {
-					task.performAsCurrent(withPendingUnitCount: 1) {
-						strongSelf.presentation(for: content).then(on: .main) { presentation -> Presentation in
-							guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
-							strongSelf.content = content
-							strongSelf.presentation = presentation
-							return presentation
-						}
+				return progress2.performAsCurrent(withPendingUnitCount: 1) {
+					strongSelf.presentation(for: content).then(on: .main) { presentation -> Presentation in
+						guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
+						strongSelf.content = content
+						strongSelf.presentation = presentation
+						return presentation
 					}
 				}
 			}.finally(on: .main) { [weak self] in
 				self?.loading = nil
+				task = nil
 			}
 		}
+		
 		if case .pending = loading.state {
 			self.loading = loading
 		}
@@ -177,9 +181,9 @@ extension ContentProviderPresenter {
 		else {
 			let animated = presentation != nil
 			reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { [weak self] presentation in
-				self?.view.present(presentation, animated: animated)
+				self?.view?.present(presentation, animated: animated)
 			}.catch(on: .main) { [weak self] error in
-				self?.view.fail(error)
+				self?.view?.fail(error)
 			}
 		}
 	}

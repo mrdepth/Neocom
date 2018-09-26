@@ -37,11 +37,17 @@
 		122A7CAA1F4B617E00537467 /* Fitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA91F4B617E00537467 /* Fitting.storyboard */; };
 		122DB9AB1E804DF200E8E2C4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */; };
 		122DB9AF1E806DB000E8E2C4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DB9AE1E806DB000E8E2C4 /* libz.tbd */; };
-		122E950E21521E1E001BB72A /* TreeHeaderEditingActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 122E950D21521E1E001BB72A /* TreeHeaderEditingActionCell.xib */; };
 		124069FF1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124069FE1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib */; };
 		12406A011F20F49500A4DAE7 /* NCModuleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12406A001F20F49500A4DAE7 /* NCModuleTableViewCell.xib */; };
 		12406A031F20F4B800A4DAE7 /* NCShipTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12406A021F20F4B800A4DAE7 /* NCShipTableViewCell.xib */; };
 		12415981212FF0AC001709F2 /* TreeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12415980212FF0AC001709F2 /* TreeItem.swift */; };
+		12484C34215B8E080083AE17 /* InvTypeMarketOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C33215B8E080083AE17 /* InvTypeMarketOrders.swift */; };
+		12484C36215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C35215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift */; };
+		12484C38215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C37215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift */; };
+		12484C3A215B8E230083AE17 /* InvTypeMarketOrdersInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C39215B8E230083AE17 /* InvTypeMarketOrdersInteractor.swift */; };
+		12484C65215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C64215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift */; };
+		12484C67215BB0F60083AE17 /* InvTypeMarketOrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12484C66215BB0F60083AE17 /* InvTypeMarketOrderCell.xib */; };
+		12484C69215BB24E0083AE17 /* EVELocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C68215BB24E0083AE17 /* EVELocation.swift */; };
 		1248DB3A1F1C9DE9009625EC /* NCMailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1248DB391F1C9DE9009625EC /* NCMailTableViewCell.xib */; };
 		124C858F213E880200333636 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C858E213E880200333636 /* BackgroundView.swift */; };
 		1253C62521590744007DEA16 /* DamageTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62421590744007DEA16 /* DamageTypeCell.swift */; };
@@ -218,6 +224,9 @@
 		12DA88261EB8696F00FB1922 /* NCPlaceholderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12DA88251EB8696F00FB1922 /* NCPlaceholderTableViewCell.xib */; };
 		12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		12DBEAAE1E1D3B710088A486 /* Dgmpp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		12DE75DF215A7199006FC1BF /* InvTypeInfoDescriptionCompactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12DE75DE215A7199006FC1BF /* InvTypeInfoDescriptionCompactCell.xib */; };
+		12DE75E1215A7554006FC1BF /* InvTypeInfoDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE75E0215A7554006FC1BF /* InvTypeInfoDescriptionCell.swift */; };
+		12DE75E3215A75F4006FC1BF /* InvTypeInfoDescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12DE75E2215A75F4006FC1BF /* InvTypeInfoDescriptionCell.xib */; };
 		12E0417E212D3C4F0000CB4F /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0417D212D3C4F0000CB4F /* API.swift */; };
 		12E04181212D44360000CB4F /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E04180212D44360000CB4F /* Config.swift */; };
 		12E0419C212D77530000CB4F /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0419B212D77530000CB4F /* Error.swift */; };
@@ -390,7 +399,6 @@
 		122B55601EB73E3500E46536 /* NCAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountsViewController.swift; sourceTree = "<group>"; };
 		122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		122DB9AE1E806DB000E8E2C4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		122E950D21521E1E001BB72A /* TreeHeaderEditingActionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TreeHeaderEditingActionCell.xib; sourceTree = "<group>"; };
 		122FFDF41E4B7D630066D45E /* NCFittingStatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingStatsViewController.swift; sourceTree = "<group>"; };
 		1230A3111DFFE2CF00627D92 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		1230A3131DFFE2CF00627D92 /* NCDatabaseCategoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDatabaseCategoriesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -428,6 +436,13 @@
 		12424E3D1E3642430078AB0F /* NCFittingFleet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingFleet.swift; sourceTree = "<group>"; };
 		12424E411E3651DC0078AB0F /* NCFittingEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingEditorViewController.swift; sourceTree = "<group>"; };
 		1243DC1E1E0BDE1700F00B9A /* NCMarketHistoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketHistoryView.swift; sourceTree = "<group>"; };
+		12484C33215B8E080083AE17 /* InvTypeMarketOrders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeMarketOrders.swift; sourceTree = "<group>"; };
+		12484C35215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeMarketOrdersViewController.swift; sourceTree = "<group>"; };
+		12484C37215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeMarketOrdersPresenter.swift; sourceTree = "<group>"; };
+		12484C39215B8E230083AE17 /* InvTypeMarketOrdersInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeMarketOrdersInteractor.swift; sourceTree = "<group>"; };
+		12484C64215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeMarketOrderCell.swift; sourceTree = "<group>"; };
+		12484C66215BB0F60083AE17 /* InvTypeMarketOrderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvTypeMarketOrderCell.xib; sourceTree = "<group>"; };
+		12484C68215BB24E0083AE17 /* EVELocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EVELocation.swift; sourceTree = "<group>"; };
 		1248DB371F1C9D40009625EC /* NCMailDraftsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailDraftsViewController.swift; sourceTree = "<group>"; };
 		1248DB391F1C9DE9009625EC /* NCMailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCMailTableViewCell.xib; sourceTree = "<group>"; };
 		1248DB601F2093D4009625EC /* NCActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCActionHandler.swift; sourceTree = "<group>"; };
@@ -782,6 +797,9 @@
 		12DC567C1EFBE8520088F45E /* NCIncursionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCIncursionsViewController.swift; sourceTree = "<group>"; };
 		12DC567E1EFBEA1F0088F45E /* NCIncursionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCIncursionTableViewCell.swift; sourceTree = "<group>"; };
 		12DE67201E715D46005CA44C /* NCSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSegmentedControl.swift; sourceTree = "<group>"; };
+		12DE75DE215A7199006FC1BF /* InvTypeInfoDescriptionCompactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvTypeInfoDescriptionCompactCell.xib; sourceTree = "<group>"; };
+		12DE75E0215A7554006FC1BF /* InvTypeInfoDescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeInfoDescriptionCell.swift; sourceTree = "<group>"; };
+		12DE75E2215A75F4006FC1BF /* InvTypeInfoDescriptionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvTypeInfoDescriptionCell.xib; sourceTree = "<group>"; };
 		12E0417D212D3C4F0000CB4F /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		12E04180212D44360000CB4F /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		12E0419B212D77530000CB4F /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
@@ -892,6 +910,7 @@
 				1204D06C215289EC0070AF92 /* InvGroups */,
 				12A842FE215386C900570A95 /* InvTypes */,
 				12D8146E21550DFE00313DAF /* InvTypeInfo */,
+				12484C31215B8DF10083AE17 /* InvTypeMarketOrders */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -940,6 +959,7 @@
 				1230A3211DFFE2CF00627D92 /* NSAttributedString+NC.swift */,
 				1230A3111DFFE2CF00627D92 /* Math.swift */,
 				12B03DA7213FEE1B00DCBD64 /* ActionHandler.swift */,
+				12484C68215BB24E0083AE17 /* EVELocation.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -1033,6 +1053,26 @@
 				121F26F02136F07200AE1D70 /* TreeItem+CoreData.swift */,
 			);
 			name = TreeViewController;
+			sourceTree = "<group>";
+		};
+		12484C31215B8DF10083AE17 /* InvTypeMarketOrders */ = {
+			isa = PBXGroup;
+			children = (
+				12484C33215B8E080083AE17 /* InvTypeMarketOrders.swift */,
+				12484C35215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift */,
+				12484C37215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift */,
+				12484C39215B8E230083AE17 /* InvTypeMarketOrdersInteractor.swift */,
+			);
+			name = InvTypeMarketOrders;
+			sourceTree = "<group>";
+		};
+		12484C63215BB0DC0083AE17 /* InvTypeMarketOrderCell */ = {
+			isa = PBXGroup;
+			children = (
+				12484C64215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift */,
+				12484C66215BB0F60083AE17 /* InvTypeMarketOrderCell.xib */,
+			);
+			name = InvTypeMarketOrderCell;
 			sourceTree = "<group>";
 		};
 		1253C62321590738007DEA16 /* DamageTypeCell */ = {
@@ -1175,7 +1215,6 @@
 			children = (
 				1279EFF021355DC9005340C0 /* TreeHeaderCell.swift */,
 				1279EFF321355DFD005340C0 /* TreeHeaderCell.xib */,
-				122E950D21521E1E001BB72A /* TreeHeaderEditingActionCell.xib */,
 			);
 			name = TreeHeaderCell;
 			sourceTree = "<group>";
@@ -1211,6 +1250,8 @@
 				1259639321381E8E00B3A53C /* AccountCell */,
 				1279EFF221355DE2005340C0 /* TreeDefaultCell */,
 				1259639221381E8800B3A53C /* TreeHeaderCell */,
+				12DE75DD215A7186006FC1BF /* InvTypeInfoDescriptionCell */,
+				12484C63215BB0DC0083AE17 /* InvTypeMarketOrderCell */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1925,6 +1966,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		12DE75DD215A7186006FC1BF /* InvTypeInfoDescriptionCell */ = {
+			isa = PBXGroup;
+			children = (
+				12DE75E0215A7554006FC1BF /* InvTypeInfoDescriptionCell.swift */,
+				12DE75E2215A75F4006FC1BF /* InvTypeInfoDescriptionCell.xib */,
+				12DE75DE215A7199006FC1BF /* InvTypeInfoDescriptionCompactCell.xib */,
+			);
+			name = InvTypeInfoDescriptionCell;
+			sourceTree = "<group>";
+		};
 		12E745521E830922004AA646 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2142,17 +2193,18 @@
 				1203E8851F09350A009ADF8D /* rssFeeds.json in Resources */,
 				12D930E51E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib in Resources */,
 				122A7CA81F4B601E00537467 /* KillReports.storyboard in Resources */,
-				122E950E21521E1E001BB72A /* TreeHeaderEditingActionCell.xib in Resources */,
 				1256BECD1DF4770A00A2A24B /* Attributes.xcassets in Resources */,
 				12406A011F20F49500A4DAE7 /* NCModuleTableViewCell.xib in Resources */,
 				1256BE551DF4728800A2A24B /* Main.storyboard in Resources */,
 				1256BECE1DF4770A00A2A24B /* Fitting.xcassets in Resources */,
 				1279A2F12023193300DD7A46 /* NCStaticHeaderTableViewCell.xib in Resources */,
+				12DE75DF215A7199006FC1BF /* InvTypeInfoDescriptionCompactCell.xib in Resources */,
 				12A8432E2153C63900570A95 /* InvTypeModuleCell.xib in Resources */,
 				1298BA8420AEFB73002C941E /* MPMutedBtn.png in Resources */,
 				12D930ED1E656EAD00CBAE1C /* NCDamageTypeCompactTableViewCell.xib in Resources */,
 				12E6AE561F18F703001E829D /* NCKillmailAttackerTableViewCell.xib in Resources */,
 				1298BA7520AEFB73002C941E /* MPUnmutedBtn@3x.png in Resources */,
+				12DE75E3215A75F4006FC1BF /* InvTypeInfoDescriptionCell.xib in Resources */,
 				12406A031F20F4B800A4DAE7 /* NCShipTableViewCell.xib in Resources */,
 				1256BF2C1DF4770B00A2A24B /* UI.xcassets in Resources */,
 				1298BA7120AEFB73002C941E /* MPUnmutedBtn.png in Resources */,
@@ -2222,6 +2274,7 @@
 				12C967101F9614B200B141CC /* GoogleService-Info.plist in Resources */,
 				128C5F9A1F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib in Resources */,
 				128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */,
+				12484C67215BB0F60083AE17 /* InvTypeMarketOrderCell.xib in Resources */,
 				1263C50D1E64BE9D003D002D /* NCDefaultTableViewCell.xib in Resources */,
 				122A7CA41F4B589200537467 /* Character.storyboard in Resources */,
 				128C5F711F418CF30038FE7D /* NCFacilityChartTableViewCell.xib in Resources */,
@@ -2277,10 +2330,12 @@
 				1279EFF7213587D7005340C0 /* Cells.swift in Sources */,
 				12A843012153871300570A95 /* InvTypes.swift in Sources */,
 				12A843032153871C00570A95 /* InvTypesViewController.swift in Sources */,
+				12484C65215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift in Sources */,
 				12EE7CE5213D598F005CE68F /* Router.swift in Sources */,
 				12AB974D212C30E300B30DD3 /* SDEVersion.swift in Sources */,
 				125DF63C2133D30000B86AE0 /* TreeDefaultCell.swift in Sources */,
 				121F26EF2136EE9100AE1D70 /* AccountsPresenter.swift in Sources */,
+				12484C36215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift in Sources */,
 				12AFD46D211C1C3D00007423 /* SDE.swift in Sources */,
 				1204D07421528A270070AF92 /* InvGroupsInteractor.swift in Sources */,
 				1253C62E21591066007DEA16 /* MarketHistoryCell.swift in Sources */,
@@ -2290,6 +2345,7 @@
 				12A843302153CA9600570A95 /* DamageTypeLabel.swift in Sources */,
 				1253C64A21592B80007DEA16 /* DgmAttributeCell.swift in Sources */,
 				12EE7D0A213E60D1005CE68F /* MainMenuContainerInteractor.swift in Sources */,
+				12484C69215BB24E0083AE17 /* EVELocation.swift in Sources */,
 				12B03DA4213FC44200DCBD64 /* NSAttributedString+NC.swift in Sources */,
 				121F26F12136F07200AE1D70 /* TreeItem+CoreData.swift in Sources */,
 				129E40A9213EA318002EDAF9 /* ViewController.swift in Sources */,
@@ -2301,6 +2357,7 @@
 				12D8144C2154D9BA00313DAF /* ThinLineView.swift in Sources */,
 				1279EFF121355DC9005340C0 /* TreeHeaderCell.swift in Sources */,
 				12B03DA6213FEBF400DCBD64 /* TimeIntervalFormatter.swift in Sources */,
+				12484C34215B8E080083AE17 /* InvTypeMarketOrders.swift in Sources */,
 				1204D064215270780070AF92 /* InvCategoriesViewController.swift in Sources */,
 				129DFE1B21347A6F00C85496 /* TableViewBackgroundLabel.swift in Sources */,
 				1204D06E215289FC0070AF92 /* InvGroups.swift in Sources */,
@@ -2312,6 +2369,7 @@
 				12B890722130054E0082D4A3 /* SOLID.swift in Sources */,
 				12AB972C212BF6A900B30DD3 /* Storage.swift in Sources */,
 				125DF6332133CFC700B86AE0 /* MainMenuViewController.swift in Sources */,
+				12484C3A215B8E230083AE17 /* InvTypeMarketOrdersInteractor.swift in Sources */,
 				12EE7D11213E6BD7005CE68F /* SlideDownAnimationController.swift in Sources */,
 				1204D06A215271670070AF92 /* InvCategories.swift in Sources */,
 				129E40AB213EB001002EDAF9 /* UIKit+NC.swift in Sources */,
@@ -2332,6 +2390,7 @@
 				12AB973E212C162A00B30DD3 /* Character.swift in Sources */,
 				125DF6352133CFD000B86AE0 /* MainMenuPresenter.swift in Sources */,
 				12D8147021550E0F00313DAF /* InvTypeInfo.swift in Sources */,
+				12484C38215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift in Sources */,
 				120A386F213D543E0071ED72 /* MainMenuHeader.swift in Sources */,
 				12AB9735212C0E6E00B30DD3 /* NCImplantSetData.swift in Sources */,
 				12EE7D0C213E6282005CE68F /* Route.swift in Sources */,
@@ -2343,6 +2402,7 @@
 				12AB9755212C488400B30DD3 /* TrainingQueue.swift in Sources */,
 				129E40AD213ECE0E002EDAF9 /* RoundedImageView.swift in Sources */,
 				120A386D213D46970071ED72 /* MainMenuContainerViewController.swift in Sources */,
+				12DE75E1215A7554006FC1BF /* InvTypeInfoDescriptionCell.swift in Sources */,
 				1279EFEE213543B7005340C0 /* UnitFormatter.swift in Sources */,
 				1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */,
 				12E0419C212D77530000CB4F /* Error.swift in Sources */,

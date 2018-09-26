@@ -108,6 +108,7 @@ class TreeViewController<Presenter: TreePresenter, Input>: UITableViewController
 	}
 	
 	func treeController<T: TreeItem> (_ treeController: TreeController, configure cell: UITableViewCell, for item: T) -> Void {
+		cell.indentationLevel = treeController.indentationLevel(for: item)
 		if let item = item as? CellConfiguring {
 			return item.configure(cell: cell)
 		}
@@ -173,7 +174,7 @@ class TreeViewController<Presenter: TreePresenter, Input>: UITableViewController
 		guard !decelerate else {return}
 		if let presentation = pendingPresentation {
 			DispatchQueue.main.async {
-				self.presenter.view.present(presentation, animated: true)
+				self.presenter.view?.present(presentation, animated: true)
 			}
 		}
 		if refreshControl?.isRefreshing == true && presenter.loading == nil {
@@ -186,7 +187,7 @@ class TreeViewController<Presenter: TreePresenter, Input>: UITableViewController
 	override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
 		if let presentation = pendingPresentation {
 			DispatchQueue.main.async {
-				self.presenter.view.present(presentation, animated: true)
+				self.presenter.view?.present(presentation, animated: true)
 			}
 		}
 		if refreshControl?.isRefreshing == true && presenter.loading == nil {
@@ -205,10 +206,10 @@ class TreeViewController<Presenter: TreePresenter, Input>: UITableViewController
 				self?.pendingPresentation = presentation
 			}
 			else {
-				strongSelf.presenter.view.present(presentation, animated: true)
+				strongSelf.presenter.view?.present(presentation, animated: true)
 			}
 		}.catch(on: .main) { [weak self] error in
-			self?.presenter.view.fail(error)
+			self?.presenter.view?.fail(error)
 		}.finally(on: .main) { [weak self] in
 			guard let strongSelf = self else {return}
 			if !strongSelf.tableView.isDragging && strongSelf.refreshControl?.isRefreshing == true {

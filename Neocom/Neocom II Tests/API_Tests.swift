@@ -34,7 +34,7 @@ class API_Tests: XCTestCase {
     }
     
 	func testCharacter() {
-		let account: Account? = storage.viewContext.accounts().first
+		let account: Account? = storage.viewContext.accounts.first
 		XCTAssertNotNil(account)
 		
 		var api: API! = Services.api.make(for: account)

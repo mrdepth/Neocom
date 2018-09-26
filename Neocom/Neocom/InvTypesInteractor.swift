@@ -11,7 +11,7 @@ import Foundation
 class InvTypesPresenterInteractor: TreeInteractor {
 	typealias Presenter = InvTypesPresenter
 	typealias Content = Void
-	weak var presenter: Presenter!
+	weak var presenter: Presenter?
 	
 	required init(presenter: Presenter) {
 		self.presenter = presenter

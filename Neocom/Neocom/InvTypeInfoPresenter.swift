@@ -19,7 +19,7 @@ class InvTypeInfoPresenter: TreePresenter {
 	typealias Interactor = InvTypeInfoInteractor
 	typealias Presentation = [AnyTreeItem]
 	
-	weak var view: View!
+	weak var view: View?
 	lazy var interactor: Interactor! = Interactor(presenter: self)
 	
 	var content: Interactor.Content?
@@ -31,7 +31,13 @@ class InvTypeInfoPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view.tableView.register([Prototype.TreeHeaderCell.default])
+		view?.tableView.register([Prototype.TreeHeaderCell.default,
+								 Prototype.DgmAttributeCell.default,
+								 Prototype.DamageTypeCell.compact,
+								 Prototype.TreeDefaultCell.default,
+								 Prototype.InvTypeInfoDescriptionCell.default,
+								 Prototype.InvTypeInfoDescriptionCell.compact,
+								 Prototype.MarketHistoryCell.default])
 		
 		interactor.configure()
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
@@ -42,7 +48,9 @@ class InvTypeInfoPresenter: TreePresenter {
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
-		guard let input = view.input else { return .init(.failure(NCError.invalidInput(type: type(of: self))))}
+		guard let input = view?.input else { return .init(.failure(NCError.invalidInput(type: type(of: self))))}
+		
+		let progress = Progress(totalUnitCount: 2)
 		
 		return Services.sde.performBackgroundTask { (context) -> Presentation in
 			let type: SDEInvType
@@ -58,7 +66,51 @@ class InvTypeInfoPresenter: TreePresenter {
 				type = invType
 			}
 			
-			return []
+			var presentation = progress.performAsCurrent(withPendingUnitCount: 1) {self.typeInfoPresentation(for: type, character: content.value, context: context, attributeValues: nil)}
+			
+			if type.marketGroup != nil {
+				let marketSection = Tree.Item.Section<AnyTreeItem>(Tree.Content.Section(title: NSLocalizedString("Market", comment: "").uppercased()), diffIdentifier: "MarketSection", expandIdentifier: "MarketSection", treeController: self.view?.treeController, children: [])
+				
+				presentation.insert(marketSection.asAnyItem, at: 0)
+				
+				self.interactor.price(typeID: Int(type.typeID)).then(on: .main) { result in
+					let subtitle = UnitFormatter.localizedString(from: result, unit: .isk, style: .long)
+					
+					let price = Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+															   title: NSLocalizedString("PRICE", comment: ""),
+															   subtitle: subtitle,
+															   image: #imageLiteral(resourceName: "wallet"),
+															   accessoryType: .disclosureIndicator),
+										  diffIdentifier: "Price")
+					marketSection.children?.insert(price.asAnyItem, at: 0)
+					self.view?.treeController.update(contentsOf: marketSection)
+				}
+				
+				self.interactor.marketHistory(typeID: Int(type.typeID)).then(on: .global(qos: .utility)) { result in
+					return Tree.Item.Row(Tree.Content.MarketHistory(history: result), diffIdentifier: "MarketHistory")
+				}.then(on: .main) { history in
+					marketSection.children?.append(history.asAnyItem)
+					self.view?.treeController.update(contentsOf: marketSection)
+				}
+			}
+			
+			let image = type.icon?.image?.image ?? context.eveIcon(.defaultType)?.image?.image
+			
+			let subtitle = type.marketGroup.map { sequence(first: $0, next: {$0.parentGroup})}?.compactMap { $0.marketGroupName }.joined(separator: " / ")
+			
+			var description = Tree.Content.InvTypeInfoDescription(prototype: Prototype.InvTypeInfoDescriptionCell.compact, title: type.typeName ?? "", subtitle: subtitle, image: image, typeDescription: type.typeDescription?.text)
+			let descriptionRow = Tree.Item.Row<Tree.Content.InvTypeInfoDescription>(description, diffIdentifier: "Description")
+			
+			presentation.insert(descriptionRow.asAnyItem, at: 0)
+			
+			self.interactor.fullSizeImage(typeID: Int(type.typeID), dimension: 512).then(on: .main) { result in
+				description.image = result
+				description.prototype = Prototype.InvTypeInfoDescriptionCell.default
+				presentation[0] = Tree.Item.Row<Tree.Content.InvTypeInfoDescription>(description, diffIdentifier: "Description").asAnyItem
+				self.view?.treeController.reloadRow(for: presentation[0], with: .fade)
+			}
+			
+			return presentation
 		}
 	}
 }
@@ -96,6 +148,7 @@ extension Tree.Item {
 				let type = context.invType(Int(value))
 				subtitle = type?.typeName
 				image = type?.icon?.image?.image ?? attribute.attributeType?.icon?.image?.image
+				route = Router.SDE.invTypeInfo(.typeID(Int(value)))
 			case .sizeClass:
 				subtitle = SDERigSize(rawValue: Int(value))?.description ?? String(describing: Int(value))
 			case .bonus:
@@ -126,7 +179,7 @@ extension Tree.Item {
 				title = "\(attribute.attributeType?.attributeID ?? 0)"
 			}
 			
-			let content = Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: title, subtitle: subtitle, image: image ?? attribute.attributeType?.icon?.image?.image)
+			let content = Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: title.uppercased(), subtitle: subtitle, image: image ?? attribute.attributeType?.icon?.image?.image, accessoryType: route == nil ? .none : .disclosureIndicator)
 			
 			super.init(content, diffIdentifier: attribute.objectID, route: route)
 		}
@@ -223,15 +276,16 @@ extension Tree.Item {
 			
 			let attributedTitle: NSAttributedString
 			if trainingTime > 0 {
-				attributedTitle = title + TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) * [NSAttributedString.Key.foregroundColor: UIColor.white]
+				attributedTitle = title + " " + TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) * [NSAttributedString.Key.foregroundColor: UIColor.white]
 			}
 			else {
 				attributedTitle = NSAttributedString(string: title)
 			}
 			
-			let prototype = character == nil ? Prototype.TreeHeaderCell.default : Prototype.TreeHeaderCell.editingAction
-			let content = Tree.Content.Section(prototype: prototype, attributedTitle: attributedTitle, isExpanded: true)
-
+//			let actions: Tree.Content.Section.Actions = character == nil || trainingTime == 0 ? [] : [.normal]
+			let content = Tree.Content.Section(attributedTitle: attributedTitle, isExpanded: true)
+			//TODO: Add SkillQueue handler
+			
 			super.init(content, diffIdentifier: identifier, expandIdentifier: identifier, treeController: treeController, children: children)
 		}
 		
@@ -239,7 +293,7 @@ extension Tree.Item {
 }
 
 extension InvTypeInfoPresenter {
-	func typeInfoPresentation(for type: SDEInvType, character: Character?, context: SDEContext) -> [AnyTreeItem] {
+	func typeInfoPresentation(for type: SDEInvType, character: Character?, context: SDEContext, attributeValues: [Int: Double]?) -> [AnyTreeItem] {
 		var sections = [AnyTreeItem]()
 		
 		if let section = skillPlanPresentation(for: type, character: character, context: context) {
@@ -249,8 +303,138 @@ extension InvTypeInfoPresenter {
 		if let section = masteriesPresentation(for: type, character: character, context: context) {
 			sections.append(section.asAnyItem)
 		}
+		
+		if let section = variationsPresentation(for: type, context: context) {
+			sections.append(section.asAnyItem)
+		}
 
+		if let section = requiredForPresentation(for: type, context: context) {
+			sections.append(section.asAnyItem)
+		}
+
+		let results = context.managedObjectContext.from(SDEDgmTypeAttribute.self)
+			.filter(\SDEDgmTypeAttribute.type == type && \SDEDgmTypeAttribute.attributeType?.published == true)
+			.sort(by: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, ascending: true)
+			.sort(by: \SDEDgmTypeAttribute.attributeType?.attributeID, ascending: true)
+			.fetchedResultsController(sectionName: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, cacheName: nil)
+		
+		do {
+			try results.performFetch()
+			sections.append(contentsOf:
+				results.sections?.compactMap { section -> AnyTreeItem? in
+					guard let attributeCategory = (section.objects?.first as? SDEDgmTypeAttribute)?.attributeType?.attributeCategory else {return nil}
+					
+					if SDEAttributeCategoryID(rawValue: attributeCategory.categoryID) == .requiredSkills {
+						guard let section = requiredSkillsPresentation(for: type, character: character, context: context) else {return nil}
+						return section.asAnyItem
+					}
+					else {
+						let sectionTitle: String = SDEAttributeCategoryID(rawValue: attributeCategory.categoryID) == .null ? NSLocalizedString("Other", comment: "") : attributeCategory.categoryName ?? NSLocalizedString("Other", comment: "")
+						
+						var rows = [AnyTreeItem]()
+						
+						var damageRow: Tree.Item.DamageTypeRow?
+						func damage() -> Tree.Item.DamageTypeRow? {
+							if damageRow == nil {
+								damageRow = Tree.Item.DamageTypeRow(Tree.Content.DamageType(prototype: Prototype.DamageTypeCell.compact, unit: .none, em: 0, thermal: 0, kinetic: 0, explosive: 0))
+							}
+							return damageRow
+						}
+						
+						var resistanceRow: Tree.Item.DamageTypeRow?
+						func resistance() -> Tree.Item.DamageTypeRow? {
+							if resistanceRow == nil {
+								resistanceRow = Tree.Item.DamageTypeRow(Tree.Content.DamageType(prototype: Prototype.DamageTypeCell.compact, unit: .percent, em: 0, thermal: 0, kinetic: 0, explosive: 0))
+							}
+							return resistanceRow
+						}
+						
+						(section.objects as? [SDEDgmTypeAttribute])?.forEach { attribute in
+							let value = attributeValues?[Int(attribute.attributeType!.attributeID)] ?? attribute.value
+							
+							switch SDEAttributeID(rawValue: attribute.attributeType!.attributeID) {
+							case .emDamageResonance?, .armorEmDamageResonance?, .shieldEmDamageResonance?,
+								 .hullEmDamageResonance?, .passiveArmorEmDamageResonance?, .passiveShieldEmDamageResonance?:
+								guard let row = resistance() else {return}
+								row.content.em = max(row.content.em, 1 - value)
+							case .thermalDamageResonance?, .armorThermalDamageResonance?, .shieldThermalDamageResonance?,
+								 .hullThermalDamageResonance?, .passiveArmorThermalDamageResonance?, .passiveShieldThermalDamageResonance?:
+								guard let row = resistance() else {return}
+								row.content.thermal = max(row.content.thermal, 1 - value)
+							case .kineticDamageResonance?, .armorKineticDamageResonance?, .shieldKineticDamageResonance?,
+								 .hullKineticDamageResonance?, .passiveArmorKineticDamageResonance?, .passiveShieldKineticDamageResonance?:
+								guard let row = resistance() else {return}
+								row.content.kinetic = max(row.content.kinetic, 1 - value)
+							case .explosiveDamageResonance?, .armorExplosiveDamageResonance?, .shieldExplosiveDamageResonance?,
+								 .hullExplosiveDamageResonance?, .passiveArmorExplosiveDamageResonance?, .passiveShieldExplosiveDamageResonance?:
+								guard let row = resistance() else {return}
+								row.content.explosive = max(row.content.explosive, 1 - value)
+							case .emDamage?:
+								damage()?.content.em = value
+							case .thermalDamage?:
+								damage()?.content.thermal = value
+							case .kineticDamage?:
+								damage()?.content.kinetic = value
+							case .explosiveDamage?:
+								damage()?.content.explosive = value
+								
+							case .warpSpeedMultiplier?:
+								guard let attributeType = attribute.attributeType else {return}
+								
+								
+								let baseWarpSpeed =  attributeValues?[Int(SDEAttributeID.baseWarpSpeed.rawValue)] ??
+									(try? context.managedObjectContext.from(SDEDgmTypeAttribute.self).filter(\SDEDgmTypeAttribute.type == type && \SDEDgmTypeAttribute.attributeType?.attributeID == SDEAttributeID.baseWarpSpeed.rawValue).first())??.value
+									?? 1.0
+								var s = UnitFormatter.localizedString(from: Double(value * baseWarpSpeed), unit: .none, style: .long)
+								s += " " + NSLocalizedString("AU/sec", comment: "")
+								let row = Tree.Item.Row<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: NSLocalizedString("Warp Speed", comment: "").uppercased(), subtitle: s, image: attributeType.icon?.image?.image), diffIdentifier: "WarpSpeed")
+								rows.append(row.asAnyItem)
+							default:
+								let row = Tree.Item.DgmAttributeRow(attribute: attribute, value: value, context: context)
+								rows.append(row.asAnyItem)
+							}
+						}
+						
+						if let resistanceRow = resistanceRow {
+							rows.append(resistanceRow.asAnyItem)
+							
+						}
+						if let damageRow = damageRow {
+							rows.append(damageRow.asAnyItem)
+						}
+						guard !rows.isEmpty else {return nil}
+						
+						return Tree.Item.Section(Tree.Content.Section(title: sectionTitle.uppercased()),
+												 diffIdentifier: attributeCategory.objectID,
+												 expandIdentifier: attributeCategory.objectID,
+												 treeController: view?.treeController,
+												 children: rows).asAnyItem
+						
+					}
+				} ?? [])
+		}
+		catch {
+		}
+		
+		
 		return sections
+	}
+	
+	func variationsPresentation(for type: SDEInvType, context: SDEContext) -> Tree.Item.Section<Tree.Item.Row<Tree.Content.Default>>? {
+		guard type.parentType != nil || (type.variations?.count ?? 0) > 0 else {return nil}
+		let n = max(type.variations?.count ?? 0, type.parentType?.variations?.count ?? 0) + 1
+		let row = Tree.Item.Row<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																		   title: String.localizedStringWithFormat("%d types", n).uppercased()), diffIdentifier: "Variations")
+		let section = Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Variations", comment: "").uppercased(), isExpanded: true), diffIdentifier: "VariationsSection", expandIdentifier: "VariationsSection", treeController: view?.treeController, children: [row])
+		return section
+	}
+	
+	func requiredForPresentation(for type: SDEInvType, context: SDEContext) -> Tree.Item.Section<Tree.Item.Row<Tree.Content.Default>>? {
+		guard let n = type.requiredForSkill?.count, n > 0 else { return nil }
+		let row = Tree.Item.Row<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																		   title: String.localizedStringWithFormat("%d types", n).uppercased()), diffIdentifier: "RequiredFor")
+		let section = Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Required for", comment: "").uppercased(), isExpanded: true), diffIdentifier: "RequiredForSection", expandIdentifier: "RequiredForSection", treeController: view?.treeController, children: [row])
+		return section
 	}
 	
 	func skillPlanPresentation(for type: SDEInvType, character: Character?, context: SDEContext) -> Tree.Item.Section<Tree.Item.InvTypeRequiredSkillRow>? {
@@ -258,8 +442,8 @@ extension InvTypeInfoPresenter {
 
 		let rows = (1...5).compactMap {Tree.Item.InvTypeRequiredSkillRow(type: type, level: $0, character: character)}.filter {$0.trainingTime > 0}
 		guard !rows.isEmpty else {return nil}
-
-		return Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Skill Plan", comment: "").uppercased(), isExpanded: true), diffIdentifier: "SkillPlan", expandIdentifier: "SkillPlan", treeController: view.treeController, children: rows)
+		
+		return Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Skill Plan", comment: "").uppercased(), isExpanded: true), diffIdentifier: "SkillPlan", expandIdentifier: "SkillPlan", treeController: view?.treeController, children: rows)
 	}
 	
 	func masteriesPresentation(for type: SDEInvType, character: Character?, context: SDEContext) -> Tree.Item.Section<Tree.Item.Row<Tree.Content.Default>>? {
@@ -273,7 +457,7 @@ extension InvTypeInfoPresenter {
 		
 		let unclaimedIcon = context.eveIcon(.mastery(nil))
 		
-		let character = character ?? Character.empty
+		let character = character ?? .empty
 		
 		let rows = masteries.sorted {$0.key < $1.key}.compactMap { (key, array) -> Tree.Item.Row<Tree.Content.Default>? in
 			guard let mastery = array.first else {return nil}
@@ -293,6 +477,27 @@ extension InvTypeInfoPresenter {
 		}
 		
 		guard !rows.isEmpty else {return nil}
-		return Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Mastery", comment: "").uppercased(), isExpanded: true), diffIdentifier: "Mastery", expandIdentifier: "Mastery", treeController: view.treeController, children: rows)
+		return Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Mastery", comment: "").uppercased(), isExpanded: true), diffIdentifier: "Mastery", expandIdentifier: "Mastery", treeController: view?.treeController, children: rows)
+	}
+	
+	func requiredSkillsPresentation(for type: SDEInvType, character: Character?, context: SDEContext) -> Tree.Item.InvTypeSkillsSection? {
+		guard let rows = requiredSkills(for: type, character: character, context: context), !rows.isEmpty else {return nil}
+		let trainingQueue = TrainingQueue(character: character ?? .empty)
+		trainingQueue.addRequiredSkills(for: type)
+		return Tree.Item.InvTypeSkillsSection(title: NSLocalizedString("Required Skills", comment: "").uppercased(),
+									   trainingQueue: trainingQueue,
+									   character: character,
+									   identifier: "RequiredSkills",
+									   treeController: view?.treeController,
+									   children: rows)
+	}
+	
+	private func requiredSkills(for type: SDEInvType, character: Character?, context: SDEContext) -> [Tree.Item.InvTypeRequiredSkillRow]? {
+		return (type.requiredSkills?.array as? [SDEInvTypeRequiredSkill])?.compactMap { requiredSkill -> Tree.Item.InvTypeRequiredSkillRow? in
+			guard let type = requiredSkill.skillType else {return nil}
+			guard let row = Tree.Item.InvTypeRequiredSkillRow(requiredSkill, character: character) else {return nil}
+			row.children = requiredSkills(for: type, character: character, context: context)
+			return row
+		}
 	}
 }

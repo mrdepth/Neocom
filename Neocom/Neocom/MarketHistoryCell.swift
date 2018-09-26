@@ -63,7 +63,7 @@ extension Tree.Content {
 			
 			
 			let volume = UIBezierPath()
-			volume.move(to: CGPoint(x: 0, y: 0))
+//			volume.move(to: CGPoint(x: 0, y: 0))
 			
 			let donchian = UIBezierPath()
 			let avg = UIBezierPath()

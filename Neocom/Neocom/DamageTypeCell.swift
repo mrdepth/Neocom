@@ -42,18 +42,18 @@ extension Tree.Content {
 		var prototype: Prototype?
 		var title: String?
 		var unit: Unit
-		var em: Float
-		var thermal: Float
-		var kinetic: Float
-		var explosive: Float
+		var em: Double
+		var thermal: Double
+		var kinetic: Double
+		var explosive: Double
 		
 		init(prototype: Prototype = Prototype.DamageTypeCell.default,
 			 title: String? = nil,
 			 unit: Unit = .none,
-			 em: Float,
-			 thermal: Float,
-			 kinetic: Float,
-			 explosive: Float) {
+			 em: Double,
+			 thermal: Double,
+			 kinetic: Double,
+			 explosive: Double) {
 			self.prototype = prototype
 			self.title = title
 			self.unit = unit

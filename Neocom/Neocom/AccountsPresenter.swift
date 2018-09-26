@@ -18,7 +18,7 @@ class AccountsPresenter: TreePresenter {
 	typealias Interactor = AccountsInteractor
 	typealias Presentation = [AnyTreeItem]
 	
-	weak var view: View!
+	weak var view: View?
 	lazy var interactor: Interactor! = Interactor(presenter: self)
 	
 	var content: Interactor.Content?
@@ -30,9 +30,8 @@ class AccountsPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view.tableView.register([Prototype.TreeHeaderCell.default,
-								 Prototype.AccountCell.default,
-								 Prototype.TreeHeaderCell.editingAction])
+		view?.tableView.register([Prototype.TreeHeaderCell.default,
+								 Prototype.AccountCell.default])
 
 		interactor.configure()
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
@@ -43,14 +42,14 @@ class AccountsPresenter: TreePresenter {
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
-		let folders = Tree.Item.AccountFoldersResultsController(context: Services.storage.viewContext, treeController: view.treeController, cachePolicy: content)
-		let defaultFolder = Tree.Item.AccountsDefaultFolder(treeController: view.treeController, cachePolicy: content)
+		let folders = Tree.Item.AccountFoldersResultsController(context: Services.storage.viewContext, treeController: view?.treeController, cachePolicy: content)
+		let defaultFolder = Tree.Item.AccountsDefaultFolder(treeController: view?.treeController, cachePolicy: content)
 		return .init([defaultFolder.asAnyItem, folders.asAnyItem])
 	}
 	
 	func onPan(_ sender: UIPanGestureRecognizer) {
-		if sender.state == .began && sender.translation(in: view.view).y < 0 {
-			view.unwinder?.unwind()
+		if sender.state == .began && sender.translation(in: view?.view).y < 0 {
+			view?.unwinder?.unwind()
 		}
 	}
 
@@ -121,7 +120,7 @@ class AccountsPresenter: TreePresenter {
 		}))
 		
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
-		view.present(controller, animated: true, completion: nil)
+		view?.present(controller, animated: true, completion: nil)
 	}
 	
 	func onFolderActions(_ folder: AccountsFolder) {
@@ -142,11 +141,11 @@ class AccountsPresenter: TreePresenter {
 			
 		}))
 
-		view.present(controller, animated: true, completion: nil)
+		view?.present(controller, animated: true, completion: nil)
 	}
 	
 	func didSelect<T: TreeItem>(item: T) -> Void {
-		guard !view.isEditing else {return}
+		guard let view = view, !view.isEditing else {return}
 		guard let item = item as? Tree.Item.AccountsItem else {return}
 		Services.storage.viewContext.setCurrentAccount(item.result)
 		view.unwinder?.unwind()
@@ -171,8 +170,8 @@ class AccountsPresenter: TreePresenter {
 			try? promise.fail(NCError.cancelled(type: type(of: self), function: #function))
 		})
 		
-		view.present(controller, animated: true, completion: nil)
-		controller.popoverPresentationController?.barButtonItem = view.toolbarItems?.last
+		view?.present(controller, animated: true, completion: nil)
+		controller.popoverPresentationController?.barButtonItem = view?.toolbarItems?.last
 		
 		return promise.future
 	}
@@ -199,7 +198,7 @@ class AccountsPresenter: TreePresenter {
 		
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
 		
-		view.present(controller, animated: true, completion: nil)
+		view?.present(controller, animated: true, completion: nil)
 	}
 }
 
@@ -242,7 +241,14 @@ extension Tree.Item {
 		required init(_ result: AccountsFolder, section: FetchedResultsSectionProtocol) {
 			self.result = result
 			self.section = section
-			super.init(Tree.Content.Section(prototype: Prototype.TreeHeaderCell.editingAction, title: result.name?.uppercased()), diffIdentifier: result, expandIdentifier: result.objectID, treeController: section.controller?.treeController)
+			
+			let presenter = (section.controller as? AccountsViewController)?.presenter
+			
+			let handler: (UIControl) -> Void = { [weak presenter] _ in
+				presenter?.onFolderActions(result)
+			}
+			
+			super.init(Tree.Content.Section(title: result.name?.uppercased()), diffIdentifier: result, expandIdentifier: result.objectID, treeController: section.controller?.treeController, editingAction: handler)
 		}
 	}
 	

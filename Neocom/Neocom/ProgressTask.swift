@@ -27,7 +27,6 @@ class ProgressTask {
 
 	init(totalUnitCount unitCount: Int64, indicator: Indicator) {
 		self.indicator = indicator
-		
 		totalProgress = Progress(totalUnitCount:3)
 		totalProgress.becomeCurrent(withPendingUnitCount: 1)
 		fakeProgress = Progress(totalUnitCount:100)
@@ -68,18 +67,21 @@ class ProgressTask {
 	}
 	
 	public func performAsCurrent<ReturnType>(withPendingUnitCount unitCount: Int64, using work: () throws -> ReturnType) rethrows -> ReturnType {
-		if Progress.current() == totalProgress {
-			totalProgress.resignCurrent()
-		}
-		totalProgress.becomeCurrent(withPendingUnitCount: unitCount)
-
-		defer {
-			if Progress.current() == totalProgress {
-				totalProgress.resignCurrent()
-			}
-		}
-		let result = try work()
-		return result
+//		return try work()
+		assert(Progress.current() != totalProgress)
+		return try totalProgress.performAsCurrent(withPendingUnitCount: unitCount, using: work)
+//		if Progress.current() == totalProgress {
+//			totalProgress.resignCurrent()
+//		}
+//		totalProgress.becomeCurrent(withPendingUnitCount: unitCount)
+//
+//		defer {
+//			if Progress.current() == totalProgress {
+//				totalProgress.resignCurrent()
+//			}
+//		}
+//		let result = try work()
+//		return result
 	}
 	
 	deinit {
@@ -87,7 +89,8 @@ class ProgressTask {
 	}
 	
 	private func finalize() {
-		let timer = self.timer
+		observer?.invalidate()
+		self.timer?.invalidate()
 		self.timer = nil
 		let progressView = _progressView
 		_progressView = nil
@@ -95,13 +98,11 @@ class ProgressTask {
 		self.activityIndicatorView = nil
 
 		if Thread.isMainThread {
-			timer?.invalidate()
 			progressView?.removeFromSuperview()
 			activityIndicatorView?.removeFromSuperview()
 		}
 		else {
 			DispatchQueue.main.async {
-				timer?.invalidate()
 				progressView?.removeFromSuperview()
 				activityIndicatorView?.removeFromSuperview()
 			}

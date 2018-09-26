@@ -10,17 +10,18 @@ import Foundation
 import CloudData
 
 class MainMenuContainerInteractor: Interactor {
-	weak var presenter: MainMenuContainerPresenter!
+	typealias Presenter = MainMenuContainerPresenter
+	weak var presenter: MainMenuContainerPresenter?
 	
 	private var didChangeAccountObserver: NotificationObserver?
 
-	required init(presenter: MainMenuContainerPresenter) {
+	required init(presenter: Presenter) {
 		self.presenter = presenter
 	}
 	
 	func configure() {
 		didChangeAccountObserver = NotificationCenter.default.addNotificationObserver(forName: .didChangeAccount, object: nil, queue: .main) { [weak self] _ in
-			self?.presenter.view.updateHeader()
+			self?.presenter?.view?.updateHeader()
 		}
 	}
 

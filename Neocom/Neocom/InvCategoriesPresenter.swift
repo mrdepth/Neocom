@@ -18,7 +18,7 @@ class InvCategoriesPresenter: TreePresenter {
 	typealias Interactor = InvCategoriesInteractor
 	typealias Presentation = Tree.Item.FetchedResultsController<Tree.Item.InvPublishedSection<Tree.Item.FetchedResultsRow<SDEInvCategory>>>
 	
-	weak var view: View!
+	weak var view: View?
 	lazy var interactor: Interactor! = Interactor(presenter: self)
 	
 	var content: Interactor.Content?
@@ -30,7 +30,7 @@ class InvCategoriesPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view.tableView.register([Prototype.TreeDefaultCell.default, Prototype.TreeHeaderCell.default])
+		view?.tableView.register([Prototype.TreeDefaultCell.default, Prototype.TreeHeaderCell.default])
 		
 		interactor.configure()
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
@@ -47,12 +47,13 @@ class InvCategoriesPresenter: TreePresenter {
 			.sort(by: \SDEInvCategory.categoryName, ascending: true)
 			.fetchedResultsController(sectionName: \SDEInvCategory.published)
 		
-		let result = Presentation(controller, treeController: view.treeController)
+		let result = Presentation(controller, treeController: view?.treeController)
 		return .init(result)
 	}
 	
 	func didSelect<T: TreeItem>(item: T) -> Void {
 		guard let item = item as? Tree.Item.FetchedResultsRow<SDEInvCategory> else {return}
+		guard let view = view else {return}
 		Router.SDE.invGroups(.category(item.result)).perform(from: view)
 	}
 	
@@ -78,5 +79,6 @@ extension SDEInvCategory: CellConfiguring {
 		cell.titleLabel?.text = categoryName
 		cell.subtitleLabel?.isHidden = true
 		cell.iconView?.image = icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultCategory)?.image?.image
+		cell.accessoryType = .disclosureIndicator
 	}
 }

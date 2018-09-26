@@ -34,6 +34,9 @@ enum Router {
 		static func invTypes(_ input: InvTypes.View.Input) -> Route<InvTypes> {
 			return Route<InvTypes>(assembly: InvTypes.default, input: input, kind: .push)
 		}
+		static func invTypeInfo(_ input: InvTypeInfo.View.Input) -> Route<InvTypeInfo> {
+			return Route<InvTypeInfo>(assembly: InvTypeInfo.default, input: input, kind: .adaptiveModal)
+		}
 
 	}
 }

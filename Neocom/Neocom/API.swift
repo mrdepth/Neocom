@@ -61,6 +61,7 @@ protocol AllianceAPI: class {
 protocol LocationAPI: class {
 	func characterLocation(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Location.CharacterLocation>>
 	func characterShip(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Location.CharacterShip>>
+	func locations(ids: Set<Int64>) -> Future<[Int64: EVELocation]>
 }
 
 protocol StatusAPI: class {
@@ -73,7 +74,19 @@ protocol WalletAPI: class {
 	func walletTransactions(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Wallet.Transaction]>>
 }
 
-typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI
+protocol MarketAPI: class {
+	func updateMarketPrices() -> Future<Bool>
+	func prices(typeIDs: Set<Int>) -> Future<[Int: Double]>
+	func marketHistory(typeID: Int, regionID: Int, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Market.History]>>
+	func marketOrders(typeID: Int, regionID: Int, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Market.Order]>>
+}
+
+protocol UniverseAPI: class {
+	func universeNames(ids: Set<Int64>) -> Future<ESI.Result<[ESI.Universe.Name]>>
+	func universeStructure(structureID: Int64) -> Future<ESI.Result<ESI.Universe.StructureInformation>>
+}
+
+typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI
 
 class APIClient: API {
 	
@@ -258,7 +271,85 @@ class APIClient: API {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
 		return esi.location.getCurrentShip(characterID: Int(id), cachePolicy: cachePolicy)
 	}
+	
+	private var cachedLocations: [Int64: EVELocation]?
 
+	func locations(ids: Set<Int64>) -> Future<[Int64: EVELocation]> {
+		guard !ids.isEmpty else { return .init([:]) }
+		
+		var cachedLocations = self.cachedLocations ?? [:]
+		
+		let progress = Progress(totalUnitCount: Int64(ids.count))
+		
+		return Services.sde.performBackgroundTask{ [weak self] context -> [Int64: EVELocation] in
+			guard let strongSelf = self else {return [:]}
+			
+			var locations = [Int64: EVELocation]()
+			var missing = Set<Int64>()
+			var structures = Set<Int64>()
+
+			for id in ids {
+				if let location = cachedLocations[id] {
+					locations[id] = location
+					progress.completedUnitCount += 1
+				}
+				else if id > Int64(Int32.max) {
+					structures.insert(id)
+				}
+				else if (66000000 < id && id < 66014933) { //staStations
+					if let id = Int(exactly: id), let station = context.staStation(id - 6000001) {
+						let location = EVELocation(station)
+						locations[Int64(id)] = location
+						cachedLocations[Int64(id)] = location
+						progress.completedUnitCount += 1
+					}
+					else {
+						missing.insert(id)
+					}
+				}
+				else if (60000000 < id && id < 61000000) { //staStations
+					if let id = Int(exactly: id), let station = context.staStation(id) {
+						let location = EVELocation(station)
+						locations[Int64(id)] = location
+						cachedLocations[Int64(id)] = location
+						progress.completedUnitCount += 1
+					}
+					else {
+						missing.insert(id)
+					}
+				}
+				else {
+					missing.insert(id)
+				}
+			}
+			
+			if !missing.isEmpty {
+				progress.performAsCurrent(withPendingUnitCount: Int64(missing.count)) {
+					try? strongSelf.universeNames(ids: missing).get().value.forEach { name in
+						guard let location = EVELocation(name) else {return}
+						locations[Int64(name.id)] = location
+						cachedLocations[Int64(name.id)] = location
+					}
+				}
+			}
+			
+			if !structures.isEmpty {
+				let structures = Array(structures)
+				let futures = any(structures.map { id in progress.performAsCurrent(withPendingUnitCount: 1) { strongSelf.universeStructure(structureID: id) } })
+				try? zip(structures, futures.get()).forEach { (id, value) in
+					guard let value = value?.value else {return}
+					let location = EVELocation(value)
+					locations[id] = location
+					cachedLocations[id] = location
+				}
+			}
+			return locations
+		}.finally(on: .main) { [weak self] in
+			self?.cachedLocations = cachedLocations
+		}
+	}
+	
+	
 	//MARK: StatusAPI
 
 	func serverStatus(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Status.ServerStatus>> {
@@ -281,5 +372,82 @@ class APIClient: API {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
 		return esi.wallet.getWalletTransactions(characterID: Int(id), cachePolicy: cachePolicy)
 	}
+
+	//MARK: MarketAPI
+	
+	func updateMarketPrices() -> Future<Bool> {
+		let esi = self.esi
+		return Services.cache.performBackgroundTask { context -> Bool in
+			let prices = try? esi.market.listMarketPrices(cachePolicy: .returnCacheDataDontLoad).get()
+			if let expires = prices?.expires, expires > Date() {
+				return false
+			}
+			else {
+				let prices = try esi.market.listMarketPrices(cachePolicy: .reloadIgnoringLocalCacheData).get()
+				
+				let new = Dictionary(prices.value.map {(Int32($0.typeID), $0)}, uniquingKeysWith: {lhs, _ in lhs})
+				let old = (context.prices()?.map {($0.typeID, $0)}).map { Dictionary($0, uniquingKeysWith: {lhs, _ in lhs}) } ?? [:]
+				
+				let newKeys = Set(new.keys)
+				let oldkeys = Set(old.keys)
+				
+				for key in oldkeys.subtracting(newKeys) {
+					guard let object = old[key] else {continue}
+					context.managedObjectContext.delete(object)
+				}
+				
+				for key in newKeys.subtracting(oldkeys) {
+					let price = Price(context: context.managedObjectContext)
+					price.typeID = key
+					price.price = new[key]?.averagePrice ?? 0
+				}
+				
+				for key in newKeys.intersection(oldkeys) {
+					let price = old[key]
+					price?.price = new[key]?.averagePrice ?? 0
+				}
+				
+				return true
+			}
+		}
+	}
+	
+	func prices(typeIDs: Set<Int>) -> Future<[Int: Double]> {
+		return Services.cache.performBackgroundTask { context -> Future<[Int: Double]> in
+			if let prices = context.price(for: typeIDs), !prices.isEmpty {
+				return .init(prices)
+			}
+			else if try context.managedObjectContext.from(Price.self).count() == 0 {
+				return self.updateMarketPrices().then { _ in
+					return Services.cache.performBackgroundTask { context -> [Int: Double] in
+						return context.price(for: typeIDs) ?? [:]
+					}
+				}
+			}
+			else {
+				return .init([:])
+			}
+		}
+	}
+	
+	func marketHistory(typeID: Int, regionID: Int, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Market.History]>> {
+		return esi.market.listHistoricalMarketStatisticsInRegion(regionID: regionID, typeID: typeID, cachePolicy: cachePolicy)
+	}
+	
+	func marketOrders(typeID: Int, regionID: Int, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Market.Order]>> {
+		return esi.market.listOrdersInRegion(orderType: .all, regionID: regionID, typeID: typeID, cachePolicy: cachePolicy)
+	}
+	
+	//MARK: UniverseAPI
+	
+	func universeNames(ids: Set<Int64>) -> Future<ESI.Result<[ESI.Universe.Name]>> {
+		let ids = ids.map{Int($0)}.sorted()
+		return esi.universe.getNamesAndCategoriesForSetOfIDs(ids: ids)
+	}
+	
+	func universeStructure(structureID: Int64) -> Future<ESI.Result<ESI.Universe.StructureInformation>> {
+		return esi.universe.getStructureInformation(structureID: structureID)
+	}
+
 
 }

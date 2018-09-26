@@ -15,6 +15,12 @@ class RowCell: UITableViewCell {
 		selectedBackgroundView?.backgroundColor = .separator
 		tintColor = .caption
 	}
+	
+	override var indentationLevel: Int {
+		didSet {
+			layoutMargins.left = layoutMargins.right + indentationWidth * max(CGFloat(indentationLevel - 1), 0)
+		}
+	}
 }
 
 class HeaderCell: UITableViewCell {

@@ -13,7 +13,7 @@ import EVEAPI
 class MainMenuHeaderInteractor: ContentProviderInteractor {
 	typealias Presenter = MainMenuHeaderPresenter
 	typealias Content = ESI.Result<Info>
-	weak var presenter: Presenter!
+	weak var presenter: Presenter?
 	
 	struct Info {
 		var characterName: String?
@@ -30,10 +30,10 @@ class MainMenuHeaderInteractor: ContentProviderInteractor {
 	
 	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Content> {
 		guard let account = Services.storage.viewContext.currentAccount else {return .init(.failure(NCError.authenticationRequired))}
+		guard let metrics = presenter?.view?.metrics else {return .init(.failure(NCError.cancelled(type: type(of: self), function: #function)))}
 		let progress = Progress(totalUnitCount: 6)
 		let api = Services.api.current
 		
-		let metrics = presenter.view.metrics
 		let characterID = account.characterID
 		
 		return DispatchQueue.global(qos: .utility).async { () -> ESI.Result<Info> in

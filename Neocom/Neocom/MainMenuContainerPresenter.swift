@@ -10,16 +10,20 @@ import Foundation
 import EVEAPI
 
 class MainMenuContainerPresenter: Presenter {
-	weak var view: MainMenuContainerViewController!
-	lazy var interactor: MainMenuContainerInteractor! = MainMenuContainerInteractor(presenter: self)
-	
-	required init(view: MainMenuContainerViewController) {
+	typealias View = MainMenuContainerViewController
+	typealias Interactor = MainMenuContainerInteractor
+
+	weak var view: View?
+	lazy var interactor: Interactor! = Interactor(presenter: self)
+
+	required init(view: View) {
 		self.view = view
 	}
 	
 	func onHeaderTap() {
+		guard let view = view else {return}
 		if let count = try? Services.storage.viewContext.managedObjectContext.from(Account.self).count(), count == 0 {
-			Services.api.performAuthorization(from: self.view)
+			Services.api.performAuthorization(from: view)
 		}
 		else {
 			Router.MainMenu.accounts().perform(from: view)
@@ -27,6 +31,7 @@ class MainMenuContainerPresenter: Presenter {
 	}
 	
 	func onPan(_ sender: UIPanGestureRecognizer) {
+		guard let view = view else {return}
 		if sender.state == .began && sender.translation(in: view.view).y > 0 {
 			Router.MainMenu.accounts().perform(from: view)
 		}

@@ -106,7 +106,7 @@ class SOLID_Tests: XCTestCase {
 }
 
 
-class SolidTestViewController: TreeViewController<SolidTestPresenter>, TreeView {
+class SolidTestViewController: TreeViewController<SolidTestPresenter, Void>, TreeView {
 	var didPresent: (() -> Void)?
 	
 	func present(_ content: Array<Tree.Item.Row<Tree.Content.Default>>, animated: Bool) -> Future<Void> {
@@ -125,7 +125,7 @@ class SolidTestPresenter: TreePresenter {
 	typealias Item = Tree.Item.Row<Tree.Content.Default>
 	var presentation: [Item]?
 	
-	weak var view: SolidTestViewController!
+	weak var view: SolidTestViewController?
 	lazy var interactor: SolidTestInteractor! = SolidTestInteractor(presenter: self)
 	
 	required init(view: SolidTestViewController) {
@@ -133,7 +133,7 @@ class SolidTestPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view.tableView.register([Prototype.TreeHeaderCell.default,
+		view?.tableView.register([Prototype.TreeHeaderCell.default,
 								 Prototype.TreeDefaultCell.default])
 		
 		interactor.configure()
@@ -147,7 +147,7 @@ class SolidTestPresenter: TreePresenter {
 
 class SolidTestInteractor: TreeInteractor {
 	typealias Content = ESI.Result<ESI.Status.ServerStatus>
-	weak var presenter: SolidTestPresenter!
+	weak var presenter: SolidTestPresenter?
 	
 	required init(presenter: SolidTestPresenter) {
 		self.presenter = presenter
@@ -172,7 +172,7 @@ class APIMock: APIClient {
 	}
 }
 
-class SolidTestViewController2: TreeViewController<SolidTestPresenter2>, TreeView {
+class SolidTestViewController2: TreeViewController<SolidTestPresenter2, Void>, TreeView {
 	var didPresent: (() -> Void)?
 	
 	func present(_ content: Array<AnyTreeItem>, animated: Bool) -> Future<Void> {
@@ -190,7 +190,7 @@ class SolidTestPresenter2: TreePresenter {
 	typealias Item = AnyTreeItem
 	var presentation: [AnyTreeItem]?
 	
-	weak var view: SolidTestViewController2!
+	weak var view: SolidTestViewController2?
 	lazy var interactor: SolidTestInteractor2! = SolidTestInteractor2(presenter: self)
 	
 	required init(view: SolidTestViewController2) {
@@ -198,7 +198,7 @@ class SolidTestPresenter2: TreePresenter {
 	}
 	
 	func configure() {
-		view.tableView.register([Prototype.TreeHeaderCell.default,
+		view?.tableView.register([Prototype.TreeHeaderCell.default,
 								 Prototype.TreeDefaultCell.default])
 		
 		interactor.configure()
@@ -208,15 +208,15 @@ class SolidTestPresenter2: TreePresenter {
 //		let result = [Tree.Item.Row(Tree.Content.Default(title: "\(content.value)"))]
 		let fetchRequest = storage.viewContext.managedObjectContext.from(AccountsFolder.self).sort(by: \AccountsFolder.name, ascending: true).fetchRequest
 		let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: storage.viewContext.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-		let defaultFolder = Tree.Item.SolidTestDefaultFolder(treeController: view.treeController)
-		let folders = Tree.Item.SolidTestFoldersResultsController(frc, treeController: view.treeController)
+		let defaultFolder = Tree.Item.SolidTestDefaultFolder(treeController: view?.treeController)
+		let folders = Tree.Item.SolidTestFoldersResultsController(frc, treeController: view?.treeController)
 		
 		return .init([defaultFolder.asAnyItem, folders.asAnyItem])
 	}
 }
 
 class SolidTestInteractor2: TreeInteractor {
-	weak var presenter: SolidTestPresenter2!
+	weak var presenter: SolidTestPresenter2?
 	
 	required init(presenter: SolidTestPresenter2) {
 		self.presenter = presenter

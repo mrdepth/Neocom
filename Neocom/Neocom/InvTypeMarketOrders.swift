@@ -7,3 +7,18 @@
 //
 
 import Foundation
+import Futures
+
+enum InvTypeMarketOrders: Assembly {
+	typealias View = InvTypeMarketOrdersViewController
+	case `default`
+	
+	func instantiate(_ input: View.Input) -> Future<View> {
+		switch self {
+		case .default:
+			let controller = UIStoryboard.database.instantiateViewController(withIdentifier: "InvTypeMarketOrdersViewController") as! View
+			controller.input = input
+			return .init(controller)
+		}
+	}
+}

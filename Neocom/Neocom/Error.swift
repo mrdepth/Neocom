@@ -17,4 +17,5 @@ enum NCError: Error {
 	case authenticationRequired
 	case reloadInProgress
 	case invalidInput(type: Any?)
+	case noResults
 }

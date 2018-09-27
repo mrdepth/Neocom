@@ -4,5 +4,8 @@ import UIKit
 import PlaygroundSupport
 import CoreData
 
-let p = NSPredicate(format: "TRUEPREDICATE")
-type(of: p)
+var a = [true, true, false, true, false]
+
+let i = a.partition(by: {$0})
+
+print(a)

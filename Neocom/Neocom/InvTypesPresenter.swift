@@ -16,7 +16,7 @@ import Expressible
 class InvTypesPresenter: TreePresenter {
 	typealias View = InvTypesViewController
 	typealias Interactor = InvTypesPresenterInteractor
-	typealias Presentation = Tree.Item.FetchedResultsController<Tree.Item.FetchedResultsNamedSection<Tree.Item.InvType>>
+	typealias Presentation = Tree.Item.FetchedResultsController<Tree.Item.NamedFetchedResultsSection<Tree.Item.InvType>>
 	
 	weak var view: View?
 	lazy var interactor: Interactor! = Interactor(presenter: self)

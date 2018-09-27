@@ -7,18 +7,29 @@
 //
 
 import Foundation
+import Futures
 
 struct Atomic<Value> {
-	private var value: Value
+	private var _value: Value
 	private var lock = NSLock()
 	
 	init(_ value: Value) {
-		self.value = value
+		_value = value
 	}
 	
+	var value: Value {
+		get {
+			return lock.performCritical { _value }
+		}
+		set {
+			lock.performCritical { _value = newValue }
+		}
+	}
+
+	
 	mutating func perform<T>(_ execute:(inout Value) throws -> T ) rethrows -> T{
-		return try lock.perform {
-			return try execute(&value)
+		return try lock.performCritical {
+			return try execute(&_value)
 		}
 	}
 }

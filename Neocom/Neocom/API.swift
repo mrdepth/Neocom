@@ -272,12 +272,12 @@ class APIClient: API {
 		return esi.location.getCurrentShip(characterID: Int(id), cachePolicy: cachePolicy)
 	}
 	
-	private var cachedLocations: [Int64: EVELocation]?
+	lazy var cachedLocations: Atomic<[Int64: EVELocation]> = Atomic([:])
 
 	func locations(ids: Set<Int64>) -> Future<[Int64: EVELocation]> {
 		guard !ids.isEmpty else { return .init([:]) }
 		
-		var cachedLocations = self.cachedLocations ?? [:]
+		var cachedLocations = self.cachedLocations.value
 		
 		let progress = Progress(totalUnitCount: Int64(ids.count))
 		
@@ -345,7 +345,7 @@ class APIClient: API {
 			}
 			return locations
 		}.finally(on: .main) { [weak self] in
-			self?.cachedLocations = cachedLocations
+			self?.cachedLocations.value = cachedLocations
 		}
 	}
 	

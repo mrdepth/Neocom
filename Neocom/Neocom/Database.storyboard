@@ -646,79 +646,16 @@
         <!--Orders-->
         <scene sceneID="9OF-Nz-AJP">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseMarketInfoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3OT-vI-xEu" customClass="NCDatabaseMarketInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="eZv-WH-apA" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="InvTypeMarketOrdersViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3OT-vI-xEu" customClass="InvTypeMarketOrdersViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="eZv-WH-apA" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCMarketInfoTableViewCell" id="bB6-ro-r6t" customClass="NCMarketInfoTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="375" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bB6-ro-r6t" id="Zed-pT-xs0">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="40.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="2e6-Xv-c3v">
-                                            <rect key="frame" x="15" y="4" width="345" height="32.5"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="c1G-J1-J5E">
-                                                    <rect key="frame" x="0.0" y="0.0" width="345" height="16.5"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Z4O-fR-6Gh">
-                                                            <rect key="frame" x="0.0" y="0.0" width="170.5" height="16.5"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="N6y-2a-5c0">
-                                                            <rect key="frame" x="174.5" y="0.0" width="170.5" height="16.5"/>
-                                                            <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Quantity:" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="8Dy-JP-bct">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="55.5" height="16.5"/>
-                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                                    <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="n2h-rM-TTg">
-                                                                    <rect key="frame" x="59.5" y="0.0" width="111" height="16.5"/>
-                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                            </subviews>
-                                                        </stackView>
-                                                    </subviews>
-                                                </stackView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SRx-XU-H1H">
-                                                    <rect key="frame" x="0.0" y="16.5" width="345" height="16"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </stackView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="2e6-Xv-c3v" firstAttribute="leading" secondItem="Zed-pT-xs0" secondAttribute="leading" constant="15" id="2Ha-di-PvU"/>
-                                        <constraint firstAttribute="bottom" secondItem="2e6-Xv-c3v" secondAttribute="bottom" priority="999" constant="4" id="bkH-Nc-jNY"/>
-                                        <constraint firstItem="2e6-Xv-c3v" firstAttribute="top" secondItem="Zed-pT-xs0" secondAttribute="top" constant="4" id="ntN-ie-FWa"/>
-                                        <constraint firstAttribute="trailing" secondItem="2e6-Xv-c3v" secondAttribute="trailing" constant="15" id="tqz-Pi-sen"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="locationLabel" destination="SRx-XU-H1H" id="TXw-LX-GOu"/>
-                                    <outlet property="priceLabel" destination="Z4O-fR-6Gh" id="X8D-ol-zGz"/>
-                                    <outlet property="quantityLabel" destination="n2h-rM-TTg" id="cZD-45-pzM"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" title="Orders" id="mup-wN-NjS">
                         <barButtonItem key="rightBarButtonItem" title="Region" id="5c9-r8-7a4">
                             <connections>
-                                <action selector="onRegions:" destination="3OT-vI-xEu" id="3jg-j2-9iv"/>
+                                <action selector="onRegions:" destination="3OT-vI-xEu" id="e5m-J8-JaH"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -931,8 +868,8 @@
         <!--Browse-->
         <scene sceneID="0vB-jU-Tyv">
             <objects>
-                <tableViewController storyboardIdentifier="NCRegionsViewController" title="Browse" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="R8Z-aE-Hao" customClass="NCRegionsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="fHK-NU-HWA" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="MapLocationPickerRegionsViewController" title="Browse" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="R8Z-aE-Hao" customClass="MapLocationPickerRegionsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="30" sectionHeaderHeight="18" sectionFooterHeight="18" id="fHK-NU-HWA" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -942,10 +879,10 @@
             </objects>
             <point key="canvasLocation" x="5849" y="4614"/>
         </scene>
-        <!--Location Picker View Controller-->
+        <!--Map Location Picker View Controller-->
         <scene sceneID="cOs-LU-rOo">
             <objects>
-                <navigationController storyboardIdentifier="NCLocationPickerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ycC-wd-gP6" customClass="NCLocationPickerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MapLocationPickerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ycC-wd-gP6" customClass="MapLocationPickerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="mGy-Ky-B0b">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -961,8 +898,8 @@
         <!--Solar Systems-->
         <scene sceneID="uqF-BC-VWU">
             <objects>
-                <tableViewController storyboardIdentifier="NCSolarSystemsViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1h3-58-fb3" customClass="NCSolarSystemsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="JIs-ez-GqC" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="MapLocationPickerSolarSystemsViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1h3-58-fb3" customClass="MapLocationPickerSolarSystemsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="30" sectionHeaderHeight="18" sectionFooterHeight="18" id="JIs-ez-GqC" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -978,7 +915,7 @@
         <scene sceneID="UJb-zO-BVC">
             <objects>
                 <tableViewController storyboardIdentifier="NCLocationSearchResultsViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nnZ-jY-A6j" customClass="NCLocationSearchResultsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="HH6-Oa-BbR" customClass="NCTableView">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="30" sectionHeaderHeight="18" sectionFooterHeight="18" id="HH6-Oa-BbR" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -993,8 +930,8 @@
         <!--Regions-->
         <scene sceneID="Rrc-x0-4KA">
             <objects>
-                <viewController storyboardIdentifier="NCLocationPickerContainerViewContrller" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="TQl-rd-3tn" customClass="NCLocationPickerContainerViewContrller" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="mlY-ze-WdZ" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                <viewController storyboardIdentifier="MapLocationPickerPageViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="TQl-rd-3tn" customClass="MapLocationPickerPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mlY-ze-WdZ" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1010,8 +947,8 @@
         <!--Recent-->
         <scene sceneID="IZn-kY-q98">
             <objects>
-                <tableViewController storyboardIdentifier="NCLocationPickerRecentViewContrller" title="Recent" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XLm-7n-xjn" customClass="NCLocationPickerRecentViewContrller" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="JmJ-rF-G1h" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="MapLocationPickerRecentsViewController" title="Recent" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XLm-7n-xjn" customClass="MapLocationPickerRecentsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="30" sectionHeaderHeight="18" sectionFooterHeight="18" id="JmJ-rF-G1h" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>

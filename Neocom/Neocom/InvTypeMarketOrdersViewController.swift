@@ -7,10 +7,15 @@
 //
 
 import Foundation
+import CoreData
 
 class InvTypeMarketOrdersViewController: TreeViewController<InvTypeMarketOrdersPresenter, InvTypeMarketOrdersViewController.Input>, TreeView {
 	enum Input {
-		case type(SDEInvType)
+		case typeID(Int)
+	}
+	
+	@IBAction func onRegions(_ sender: Any) {
+		presenter.onRegions(sender)
 	}
 }
 

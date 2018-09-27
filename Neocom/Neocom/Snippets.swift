@@ -75,8 +75,8 @@ class <#T##Interactor#>: TreeInteractor {
 	
 	func configure() {
 		didChangeAccountObserver = NotificationCenter.default.addNotificationObserver(forName: .didChangeAccount, object: nil, queue: .main) { [weak self] _ in
-			_ = self?.presenter.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { presentation in
-				self?.presenter.view.present(presentation, animated: true)
+			_ = self?.presenter?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { presentation in
+				self?.presenter?.view?.present(presentation, animated: true)
 			}
 		}
 	}

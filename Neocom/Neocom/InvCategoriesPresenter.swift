@@ -61,7 +61,7 @@ class InvCategoriesPresenter: TreePresenter {
 
 extension Tree.Item {
 	
-	class InvPublishedSection<Item: FetchedResultsTreeItem>: FetchedResultsNamedSection<Item> {
+	class InvPublishedSection<Item: FetchedResultsTreeItem>: NamedFetchedResultsSection<Item> {
 		
 		override var name: String {
 			return (sectionInfo.name == "0" ? NSLocalizedString("Unpublished", comment: "") : NSLocalizedString("Published", comment: "")).uppercased()

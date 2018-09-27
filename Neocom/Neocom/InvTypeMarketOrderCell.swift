@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import EVEAPI
 
 class InvTypeMarketOrderCell: RowCell {
 	@IBOutlet weak var priceLabel: UILabel!
@@ -23,9 +24,18 @@ extension Prototype {
 
 extension Tree.Content {
 	struct InvTypeMarketOrder: Hashable {
-		var prototype: Prototype = Prototype.InvTypeMarketOrderCell.default
-		var price: Double
-		var location: NSAttributedString
-		var quantity: Int64
+		var prototype: Prototype? = Prototype.InvTypeMarketOrderCell.default
+		var order: ESI.Market.Order
+		var location: NSAttributedString?
+	}
+}
+
+extension Tree.Content.InvTypeMarketOrder: CellConfiguring {
+	func configure(cell: UITableViewCell) {
+		guard let cell = cell as? InvTypeMarketOrderCell else {return}
+		
+		cell.priceLabel.text = UnitFormatter.localizedString(from: order.price, unit: .isk, style: .long)
+		cell.quantityLabel.text = UnitFormatter.localizedString(from: order.volumeRemain, unit: .none, style: .long)
+		cell.locationLabel.attributedText = location ?? NSAttributedString(string: NSLocalizedString("Unknown location", comment: ""))
 	}
 }

@@ -30,6 +30,8 @@ class InvTypeInfoPresenter: TreePresenter {
 		self.view = view
 	}
 	
+	private var invType: SDEInvType?
+	
 	func configure() {
 		view?.tableView.register([Prototype.TreeHeaderCell.default,
 								 Prototype.DgmAttributeCell.default,
@@ -43,28 +45,29 @@ class InvTypeInfoPresenter: TreePresenter {
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
 			self?.applicationWillEnterForeground()
 		}
+		
+		switch view?.input {
+		case let .objectID(objectID)?:
+			invType = (try? Services.sde.viewContext.existingObject(with: objectID)) ?? nil
+		case let .type(type)?:
+			invType = type
+		case let .typeID(typeID)?:
+			invType = Services.sde.viewContext.invType(typeID)
+		default:
+			break
+		}
+		view?.title = invType?.typeName ?? NSLocalizedString("Type Info", comment: "")
 	}
 	
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
-		guard let input = view?.input else { return .init(.failure(NCError.invalidInput(type: type(of: self))))}
+		guard let objectID = invType?.objectID else { return .init(.failure(NCError.invalidInput(type: type(of: self))))}
 		
 		let progress = Progress(totalUnitCount: 2)
 		
 		return Services.sde.performBackgroundTask { (context) -> Presentation in
-			let type: SDEInvType
-			switch input {
-			case let .objectID(objectID):
-				guard let invType: SDEInvType = try context.existingObject(with: objectID) else {throw NCError.invalidInput(type: Swift.type(of: self))}
-				type = invType
-			case let .type(invType):
-				guard let invType: SDEInvType = try context.existingObject(with: invType.objectID) else {throw NCError.invalidInput(type: Swift.type(of: self))}
-				type = invType
-			case let .typeID(typeID):
-				guard let invType = context.invType(typeID) else {throw NCError.invalidInput(type: Swift.type(of: self))}
-				type = invType
-			}
+			let type: SDEInvType = try context.existingObject(with: objectID)!
 			
 			var presentation = progress.performAsCurrent(withPendingUnitCount: 1) {self.typeInfoPresentation(for: type, character: content.value, context: context, attributeValues: nil)}
 			
@@ -73,21 +76,23 @@ class InvTypeInfoPresenter: TreePresenter {
 				
 				presentation.insert(marketSection.asAnyItem, at: 0)
 				
+				let marketRoute = Router.SDE.invTypeMarketOrders(.typeID(Int(type.typeID)))
+				
 				self.interactor.price(typeID: Int(type.typeID)).then(on: .main) { result in
 					let subtitle = UnitFormatter.localizedString(from: result, unit: .isk, style: .long)
-					
-					let price = Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
-															   title: NSLocalizedString("PRICE", comment: ""),
-															   subtitle: subtitle,
-															   image: #imageLiteral(resourceName: "wallet"),
-															   accessoryType: .disclosureIndicator),
-										  diffIdentifier: "Price")
+					let price = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																		   title: NSLocalizedString("PRICE", comment: ""),
+																		   subtitle: subtitle,
+																		   image: #imageLiteral(resourceName: "wallet"),
+																		   accessoryType: .disclosureIndicator),
+													  diffIdentifier: "Price",
+													  route: marketRoute )
 					marketSection.children?.insert(price.asAnyItem, at: 0)
 					self.view?.treeController.update(contentsOf: marketSection)
 				}
 				
 				self.interactor.marketHistory(typeID: Int(type.typeID)).then(on: .global(qos: .utility)) { result in
-					return Tree.Item.Row(Tree.Content.MarketHistory(history: result), diffIdentifier: "MarketHistory")
+					return Tree.Item.RoutableRow(Tree.Content.MarketHistory(history: result), diffIdentifier: "MarketHistory", route: marketRoute)
 				}.then(on: .main) { history in
 					marketSection.children?.append(history.asAnyItem)
 					self.view?.treeController.update(contentsOf: marketSection)

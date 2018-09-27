@@ -21,27 +21,20 @@ class InvTypeMarketOrdersInteractor: TreeInteractor {
 	}
 	
 	private var api: API = Services.api.current
-	private var regionID: Int = (UserDefaults.standard.value(forKey: UserDefaults.Key.marketRegion) as? Int) ?? SDERegionID.theForge.rawValue
+	private(set) var regionID: Int = (UserDefaults.standard.value(forKey: UserDefaults.Key.marketRegion) as? Int) ?? SDERegionID.theForge.rawValue
 	
 	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Content> {
 		guard let input = presenter?.view?.input else { return .init(.failure(NCError.invalidInput(type: type(of: self)))) }
 		let typeID: Int
 		switch input {
-		case let .type(type):
-			typeID = Int(type.typeID)
+		case let .typeID(id):
+			typeID = id
 		}
 		
 		return api.marketOrders(typeID: typeID, regionID: regionID, cachePolicy: cachePolicy)
 	}
 	
-	private var didChangeAccountObserver: NotificationObserver?
-	
 	func configure() {
-		didChangeAccountObserver = NotificationCenter.default.addNotificationObserver(forName: .didChangeAccount, object: nil, queue: .main) { [weak self] _ in
-			_ = self?.presenter?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { presentation in
-				self?.presenter?.view?.present(presentation, animated: true)
-			}
-		}
 	}
 	
 	func isExpired(_ content: Content) -> Bool {
@@ -53,5 +46,9 @@ class InvTypeMarketOrdersInteractor: TreeInteractor {
 		guard let expires = content.expires else {return true}
 		return expires < Date()
 	}
-
+	
+	func locations(ids: Set<Int64>) -> Future<[Int64: EVELocation]> {
+		return api.locations(ids: ids)
+	}
+	
 }

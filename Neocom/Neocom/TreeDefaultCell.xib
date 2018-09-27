@@ -46,6 +46,9 @@
                                 </subviews>
                             </stackView>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="eyO-mW-vIp"/>
+                        </constraints>
                     </stackView>
                 </subviews>
                 <constraints>

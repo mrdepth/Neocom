@@ -48,20 +48,20 @@ extension Comparable {
 
 
 
-//extension CGRect {
-//	func lerp(to: CGRect, t: CGFloat) -> CGRect {
-//		func lerp(_ a: CGFloat, _ b: CGFloat, _ t: CGFloat) -> CGFloat {
-//			return a + (b - a) * t
-//		}
-//
-//		var r = CGRect.zero
-//		r.origin.x = lerp(self.origin.x, to.origin.x, t)
-//		r.origin.y = lerp(self.origin.y, to.origin.y, t)
-//		r.size.width = lerp(self.size.width, to.size.width, t)
-//		r.size.height = lerp(self.size.height, to.size.height, t)
-//		return r
-//	}
-//}
+extension CGRect {
+	func lerp(to: CGRect, t: CGFloat) -> CGRect {
+		func lerp(_ a: CGFloat, _ b: CGFloat, _ t: CGFloat) -> CGFloat {
+			return a + (b - a) * t
+		}
+
+		var r = CGRect.zero
+		r.origin.x = lerp(self.origin.x, to.origin.x, t)
+		r.origin.y = lerp(self.origin.y, to.origin.y, t)
+		r.size.width = lerp(self.size.width, to.size.width, t)
+		r.size.height = lerp(self.size.height, to.size.height, t)
+		return r
+	}
+}
 
 //
 //

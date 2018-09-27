@@ -20,22 +20,31 @@ extension UIStoryboard {
 enum Router {
 	enum MainMenu {
 		static func accounts() -> Route<Accounts> {
-			return Route<Accounts>(assembly: Accounts.default, kind: .adaptiveModal)
+			return Route(assembly: Accounts.default, kind: .adaptiveModal)
 		}
 	}
 	
 	enum SDE {
 		static func invCategories() -> Route<InvCategories> {
-			return Route<InvCategories>(assembly: InvCategories.default, kind: .detail)
+			return Route(assembly: InvCategories.default, kind: .detail)
 		}
 		static func invGroups(_ input: InvGroups.View.Input) -> Route<InvGroups> {
-			return Route<InvGroups>(assembly: InvGroups.default, input: input, kind: .push)
+			return Route(assembly: InvGroups.default, input: input, kind: .push)
 		}
 		static func invTypes(_ input: InvTypes.View.Input) -> Route<InvTypes> {
-			return Route<InvTypes>(assembly: InvTypes.default, input: input, kind: .push)
+			return Route(assembly: InvTypes.default, input: input, kind: .push)
 		}
 		static func invTypeInfo(_ input: InvTypeInfo.View.Input) -> Route<InvTypeInfo> {
-			return Route<InvTypeInfo>(assembly: InvTypeInfo.default, input: input, kind: .adaptiveModal)
+			return Route(assembly: InvTypeInfo.default, input: input, kind: .adaptiveModal)
+		}
+		static func invTypeMarketOrders(_ input: InvTypeMarketOrders.View.Input) -> Route<InvTypeMarketOrders> {
+			return Route(assembly: InvTypeMarketOrders.default, input: input, kind: .push)
+		}
+		static func mapLocationPicker(_ input: MapLocationPicker.View.Input) -> Route<MapLocationPicker> {
+			return Route(assembly: MapLocationPicker.default, input: input, kind: .adaptiveModal)
+		}
+		static func mapLocationPickerSolarSystems(_ input: MapLocationPickerSolarSystems.View.Input) -> Route<MapLocationPickerSolarSystems> {
+			return Route(assembly: MapLocationPickerSolarSystems.default, input: input, kind: .push)
 		}
 
 	}

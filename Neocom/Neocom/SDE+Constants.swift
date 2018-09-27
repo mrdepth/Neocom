@@ -230,3 +230,18 @@ extension SDEEveIcon {
 	}
 }
 
+
+extension SDEMapRegion {
+	@objc public var securityClassDisplayName: String {
+		switch securityClass {
+		case 1:
+			return NSLocalizedString("High-Sec", comment: "")
+		case 0.5:
+			return NSLocalizedString("Low-Sec", comment: "")
+		case 0:
+			return NSLocalizedString("Null-Sec", comment: "")
+		default:
+			return NSLocalizedString("WH-Space", comment: "")
+		}
+	}
+}

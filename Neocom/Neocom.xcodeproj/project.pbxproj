@@ -48,6 +48,29 @@
 		12484C65215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C64215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift */; };
 		12484C67215BB0F60083AE17 /* InvTypeMarketOrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12484C66215BB0F60083AE17 /* InvTypeMarketOrderCell.xib */; };
 		12484C69215BB24E0083AE17 /* EVELocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C68215BB24E0083AE17 /* EVELocation.swift */; };
+		12484C6A215CB3700083AE17 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12841BEB2059464D00B30582 /* Atomic.swift */; };
+		12484C6D215CC0780083AE17 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C6C215CC0780083AE17 /* PageViewController.swift */; };
+		12484C6F215CC0B70083AE17 /* SegmentedPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C6E215CC0B70083AE17 /* SegmentedPageControl.swift */; };
+		12484C72215CC6610083AE17 /* MapLocationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C71215CC6610083AE17 /* MapLocationPicker.swift */; };
+		12484C74215CC6910083AE17 /* MapLocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C73215CC6910083AE17 /* MapLocationPickerViewController.swift */; };
+		12484C76215CC69D0083AE17 /* MapLocationPickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C75215CC69D0083AE17 /* MapLocationPickerPresenter.swift */; };
+		12484C78215CC6A70083AE17 /* MapLocationPickerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C77215CC6A70083AE17 /* MapLocationPickerInteractor.swift */; };
+		12484C7D215CCF100083AE17 /* MapLocationPickerRegions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C7C215CCF100083AE17 /* MapLocationPickerRegions.swift */; };
+		12484C7F215CCF1B0083AE17 /* MapLocationPickerRegionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C7E215CCF1B0083AE17 /* MapLocationPickerRegionsViewController.swift */; };
+		12484C81215CCF260083AE17 /* MapLocationPickerRegionsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C80215CCF260083AE17 /* MapLocationPickerRegionsPresenter.swift */; };
+		12484C83215CCF2E0083AE17 /* MapLocationPickerRegionsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C82215CCF2E0083AE17 /* MapLocationPickerRegionsInteractor.swift */; };
+		12484C85215CD5560083AE17 /* MapLocationPickerSolarSystems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C84215CD5560083AE17 /* MapLocationPickerSolarSystems.swift */; };
+		12484C87215CD55F0083AE17 /* MapLocationPickerSolarSystemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C86215CD55F0083AE17 /* MapLocationPickerSolarSystemsViewController.swift */; };
+		12484C89215CD56A0083AE17 /* MapLocationPickerSolarSystemsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C88215CD56A0083AE17 /* MapLocationPickerSolarSystemsPresenter.swift */; };
+		12484C8B215CD5740083AE17 /* MapLocationPickerSolarSystemsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C8A215CD5740083AE17 /* MapLocationPickerSolarSystemsInteractor.swift */; };
+		12484C8D215CD5970083AE17 /* MapLocationPickerRecents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C8C215CD5970083AE17 /* MapLocationPickerRecents.swift */; };
+		12484C8F215CD5A10083AE17 /* MapLocationPickerRecentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C8E215CD5A10083AE17 /* MapLocationPickerRecentsViewController.swift */; };
+		12484C91215CD5AA0083AE17 /* MapLocationPickerRecentsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C90215CD5AA0083AE17 /* MapLocationPickerRecentsPresenter.swift */; };
+		12484C93215CD5B30083AE17 /* MapLocationPickerRecentsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C92215CD5B30083AE17 /* MapLocationPickerRecentsInteractor.swift */; };
+		12484CA3215D20EC0083AE17 /* MapLocationPickerSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484CA2215D20EC0083AE17 /* MapLocationPickerSearchResults.swift */; };
+		12484CA5215D20F60083AE17 /* MapLocationPickerSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484CA4215D20F60083AE17 /* MapLocationPickerSearchResultsViewController.swift */; };
+		12484CA7215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484CA6215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift */; };
+		12484CA9215D21080083AE17 /* MapLocationPickerSearchResultsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484CA8215D21080083AE17 /* MapLocationPickerSearchResultsInteractor.swift */; };
 		1248DB3A1F1C9DE9009625EC /* NCMailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1248DB391F1C9DE9009625EC /* NCMailTableViewCell.xib */; };
 		124C858F213E880200333636 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C858E213E880200333636 /* BackgroundView.swift */; };
 		1253C62521590744007DEA16 /* DamageTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62421590744007DEA16 /* DamageTypeCell.swift */; };
@@ -443,6 +466,28 @@
 		12484C64215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeMarketOrderCell.swift; sourceTree = "<group>"; };
 		12484C66215BB0F60083AE17 /* InvTypeMarketOrderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvTypeMarketOrderCell.xib; sourceTree = "<group>"; };
 		12484C68215BB24E0083AE17 /* EVELocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EVELocation.swift; sourceTree = "<group>"; };
+		12484C6C215CC0780083AE17 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
+		12484C6E215CC0B70083AE17 /* SegmentedPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedPageControl.swift; sourceTree = "<group>"; };
+		12484C71215CC6610083AE17 /* MapLocationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPicker.swift; sourceTree = "<group>"; };
+		12484C73215CC6910083AE17 /* MapLocationPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerViewController.swift; sourceTree = "<group>"; };
+		12484C75215CC69D0083AE17 /* MapLocationPickerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerPresenter.swift; sourceTree = "<group>"; };
+		12484C77215CC6A70083AE17 /* MapLocationPickerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerInteractor.swift; sourceTree = "<group>"; };
+		12484C7C215CCF100083AE17 /* MapLocationPickerRegions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerRegions.swift; sourceTree = "<group>"; };
+		12484C7E215CCF1B0083AE17 /* MapLocationPickerRegionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerRegionsViewController.swift; sourceTree = "<group>"; };
+		12484C80215CCF260083AE17 /* MapLocationPickerRegionsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerRegionsPresenter.swift; sourceTree = "<group>"; };
+		12484C82215CCF2E0083AE17 /* MapLocationPickerRegionsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerRegionsInteractor.swift; sourceTree = "<group>"; };
+		12484C84215CD5560083AE17 /* MapLocationPickerSolarSystems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerSolarSystems.swift; sourceTree = "<group>"; };
+		12484C86215CD55F0083AE17 /* MapLocationPickerSolarSystemsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerSolarSystemsViewController.swift; sourceTree = "<group>"; };
+		12484C88215CD56A0083AE17 /* MapLocationPickerSolarSystemsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerSolarSystemsPresenter.swift; sourceTree = "<group>"; };
+		12484C8A215CD5740083AE17 /* MapLocationPickerSolarSystemsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerSolarSystemsInteractor.swift; sourceTree = "<group>"; };
+		12484C8C215CD5970083AE17 /* MapLocationPickerRecents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerRecents.swift; sourceTree = "<group>"; };
+		12484C8E215CD5A10083AE17 /* MapLocationPickerRecentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerRecentsViewController.swift; sourceTree = "<group>"; };
+		12484C90215CD5AA0083AE17 /* MapLocationPickerRecentsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerRecentsPresenter.swift; sourceTree = "<group>"; };
+		12484C92215CD5B30083AE17 /* MapLocationPickerRecentsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerRecentsInteractor.swift; sourceTree = "<group>"; };
+		12484CA2215D20EC0083AE17 /* MapLocationPickerSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerSearchResults.swift; sourceTree = "<group>"; };
+		12484CA4215D20F60083AE17 /* MapLocationPickerSearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerSearchResultsViewController.swift; sourceTree = "<group>"; };
+		12484CA6215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerSearchResultsPresenter.swift; sourceTree = "<group>"; };
+		12484CA8215D21080083AE17 /* MapLocationPickerSearchResultsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapLocationPickerSearchResultsInteractor.swift; sourceTree = "<group>"; };
 		1248DB371F1C9D40009625EC /* NCMailDraftsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailDraftsViewController.swift; sourceTree = "<group>"; };
 		1248DB391F1C9DE9009625EC /* NCMailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCMailTableViewCell.xib; sourceTree = "<group>"; };
 		1248DB601F2093D4009625EC /* NCActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCActionHandler.swift; sourceTree = "<group>"; };
@@ -911,6 +956,7 @@
 				12A842FE215386C900570A95 /* InvTypes */,
 				12D8146E21550DFE00313DAF /* InvTypeInfo */,
 				12484C31215B8DF10083AE17 /* InvTypeMarketOrders */,
+				12484C70215CC6360083AE17 /* MapLocationPicker */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -960,6 +1006,7 @@
 				1230A3111DFFE2CF00627D92 /* Math.swift */,
 				12B03DA7213FEE1B00DCBD64 /* ActionHandler.swift */,
 				12484C68215BB24E0083AE17 /* EVELocation.swift */,
+				12841BEB2059464D00B30582 /* Atomic.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -1073,6 +1120,73 @@
 				12484C66215BB0F60083AE17 /* InvTypeMarketOrderCell.xib */,
 			);
 			name = InvTypeMarketOrderCell;
+			sourceTree = "<group>";
+		};
+		12484C6B215CC05D0083AE17 /* PageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				12484C6C215CC0780083AE17 /* PageViewController.swift */,
+			);
+			name = PageViewController;
+			sourceTree = "<group>";
+		};
+		12484C70215CC6360083AE17 /* MapLocationPicker */ = {
+			isa = PBXGroup;
+			children = (
+				12484C79215CCE4A0083AE17 /* MapLocationPickerRegions */,
+				12484C7A215CCE5D0083AE17 /* MapLocationPickerSolarSystems */,
+				12484C7B215CCE6B0083AE17 /* MapLocationPickerRecents */,
+				12484CA1215D20C90083AE17 /* MapLocationPickerSearchResults */,
+				12484C71215CC6610083AE17 /* MapLocationPicker.swift */,
+				12484C73215CC6910083AE17 /* MapLocationPickerViewController.swift */,
+				12484C75215CC69D0083AE17 /* MapLocationPickerPresenter.swift */,
+				12484C77215CC6A70083AE17 /* MapLocationPickerInteractor.swift */,
+			);
+			name = MapLocationPicker;
+			sourceTree = "<group>";
+		};
+		12484C79215CCE4A0083AE17 /* MapLocationPickerRegions */ = {
+			isa = PBXGroup;
+			children = (
+				12484C7C215CCF100083AE17 /* MapLocationPickerRegions.swift */,
+				12484C7E215CCF1B0083AE17 /* MapLocationPickerRegionsViewController.swift */,
+				12484C80215CCF260083AE17 /* MapLocationPickerRegionsPresenter.swift */,
+				12484C82215CCF2E0083AE17 /* MapLocationPickerRegionsInteractor.swift */,
+			);
+			name = MapLocationPickerRegions;
+			sourceTree = "<group>";
+		};
+		12484C7A215CCE5D0083AE17 /* MapLocationPickerSolarSystems */ = {
+			isa = PBXGroup;
+			children = (
+				12484C84215CD5560083AE17 /* MapLocationPickerSolarSystems.swift */,
+				12484C86215CD55F0083AE17 /* MapLocationPickerSolarSystemsViewController.swift */,
+				12484C88215CD56A0083AE17 /* MapLocationPickerSolarSystemsPresenter.swift */,
+				12484C8A215CD5740083AE17 /* MapLocationPickerSolarSystemsInteractor.swift */,
+			);
+			name = MapLocationPickerSolarSystems;
+			sourceTree = "<group>";
+		};
+		12484C7B215CCE6B0083AE17 /* MapLocationPickerRecents */ = {
+			isa = PBXGroup;
+			children = (
+				12484C8C215CD5970083AE17 /* MapLocationPickerRecents.swift */,
+				12484C8E215CD5A10083AE17 /* MapLocationPickerRecentsViewController.swift */,
+				12484C90215CD5AA0083AE17 /* MapLocationPickerRecentsPresenter.swift */,
+				12484C92215CD5B30083AE17 /* MapLocationPickerRecentsInteractor.swift */,
+			);
+			name = MapLocationPickerRecents;
+			sourceTree = "<group>";
+		};
+		12484CA1215D20C90083AE17 /* MapLocationPickerSearchResults */ = {
+			isa = PBXGroup;
+			children = (
+				12484CA2215D20EC0083AE17 /* MapLocationPickerSearchResults.swift */,
+				12484CA4215D20F60083AE17 /* MapLocationPickerSearchResultsViewController.swift */,
+				12484CA6215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift */,
+				12484CA8215D21080083AE17 /* MapLocationPickerSearchResultsInteractor.swift */,
+			);
+			name = MapLocationPickerSearchResults;
 			sourceTree = "<group>";
 		};
 		1253C62321590738007DEA16 /* DamageTypeCell */ = {
@@ -1354,6 +1468,7 @@
 				129E40AC213ECE0E002EDAF9 /* RoundedImageView.swift */,
 				12A8432F2153CA9600570A95 /* DamageTypeLabel.swift */,
 				12D8144B2154D9BA00313DAF /* ThinLineView.swift */,
+				12484C6E215CC0B70083AE17 /* SegmentedPageControl.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1702,7 +1817,6 @@
 				12D20EB31EBCBD3C00BEC926 /* EVEAPI+NC.swift */,
 				1235F3DB1F39BC90000E0FD9 /* UIDevice+NC.swift */,
 				12CD2CAB1F581B6600367606 /* NCNotificationManager.swift */,
-				12841BEB2059464D00B30582 /* Atomic.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -1754,6 +1868,7 @@
 				1204D061215270410070AF92 /* Database */,
 				121F26E52136EC5700AE1D70 /* NavigationController.swift */,
 				121F26E72136ECA800AE1D70 /* SplitViewController.swift */,
+				12484C6B215CC05D0083AE17 /* PageViewController */,
 				12678BEE212BE32A00E7E427 /* AppDelegate.swift */,
 				129E40B2213FB44B002EDAF9 /* Snippets.swift */,
 			);
@@ -2318,10 +2433,15 @@
 			files = (
 				12FE0E3621348F6B002F3507 /* Dark.clr in Sources */,
 				12415981212FF0AC001709F2 /* TreeItem.swift in Sources */,
+				12484C83215CCF2E0083AE17 /* MapLocationPickerRegionsInteractor.swift in Sources */,
+				12484CA5215D20F60083AE17 /* MapLocationPickerSearchResultsViewController.swift in Sources */,
+				12484C76215CC69D0083AE17 /* MapLocationPickerPresenter.swift in Sources */,
 				12EE7D0E213E62E8005CE68F /* Accounts.swift in Sources */,
 				12B8907F21300E610082D4A3 /* TreeViewController.swift in Sources */,
 				12D8147221550EC200313DAF /* InvTypeInfoViewController.swift in Sources */,
+				12484C93215CD5B30083AE17 /* MapLocationPickerRecentsInteractor.swift in Sources */,
 				12AB9737212C0ECC00B30DD3 /* SDE+Constants.swift in Sources */,
+				12484C6A215CB3700083AE17 /* Atomic.swift in Sources */,
 				12AB974F212C325E00B30DD3 /* ImageValueTransformer.swift in Sources */,
 				121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */,
 				1204D068215271420070AF92 /* InvCategoriesInteractor.swift in Sources */,
@@ -2329,8 +2449,10 @@
 				12AFD473211C1E7D00007423 /* Cache.swift in Sources */,
 				1279EFF7213587D7005340C0 /* Cells.swift in Sources */,
 				12A843012153871300570A95 /* InvTypes.swift in Sources */,
+				12484C89215CD56A0083AE17 /* MapLocationPickerSolarSystemsPresenter.swift in Sources */,
 				12A843032153871C00570A95 /* InvTypesViewController.swift in Sources */,
 				12484C65215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift in Sources */,
+				12484CA9215D21080083AE17 /* MapLocationPickerSearchResultsInteractor.swift in Sources */,
 				12EE7CE5213D598F005CE68F /* Router.swift in Sources */,
 				12AB974D212C30E300B30DD3 /* SDEVersion.swift in Sources */,
 				125DF63C2133D30000B86AE0 /* TreeDefaultCell.swift in Sources */,
@@ -2341,17 +2463,22 @@
 				1253C62E21591066007DEA16 /* MarketHistoryCell.swift in Sources */,
 				1204D066215271370070AF92 /* InvCategoriesPresenter.swift in Sources */,
 				1295A1AA2139242300047516 /* Services.swift in Sources */,
+				12484C8F215CD5A10083AE17 /* MapLocationPickerRecentsViewController.swift in Sources */,
 				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
+				12484C78215CC6A70083AE17 /* MapLocationPickerInteractor.swift in Sources */,
 				12A843302153CA9600570A95 /* DamageTypeLabel.swift in Sources */,
 				1253C64A21592B80007DEA16 /* DgmAttributeCell.swift in Sources */,
 				12EE7D0A213E60D1005CE68F /* MainMenuContainerInteractor.swift in Sources */,
+				12484CA7215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift in Sources */,
 				12484C69215BB24E0083AE17 /* EVELocation.swift in Sources */,
 				12B03DA4213FC44200DCBD64 /* NSAttributedString+NC.swift in Sources */,
 				121F26F12136F07200AE1D70 /* TreeItem+CoreData.swift in Sources */,
 				129E40A9213EA318002EDAF9 /* ViewController.swift in Sources */,
 				1253C6302159108F007DEA16 /* MarketHistoryView.swift in Sources */,
+				12484C7D215CCF100083AE17 /* MapLocationPickerRegions.swift in Sources */,
 				12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */,
 				121F26ED2136EE8700AE1D70 /* AccountsInteractor.swift in Sources */,
+				12484C8D215CD5970083AE17 /* MapLocationPickerRecents.swift in Sources */,
 				1279EFF5213586D6005340C0 /* NCTableView.m in Sources */,
 				1279F00121358F7C005340C0 /* MainMenuHeaderInteractor.swift in Sources */,
 				12D8144C2154D9BA00313DAF /* ThinLineView.swift in Sources */,
@@ -2362,6 +2489,7 @@
 				129DFE1B21347A6F00C85496 /* TableViewBackgroundLabel.swift in Sources */,
 				1204D06E215289FC0070AF92 /* InvGroups.swift in Sources */,
 				1279EFFF21358F73005340C0 /* MainMenuHeaderPresenter.swift in Sources */,
+				12484C6F215CC0B70083AE17 /* SegmentedPageControl.swift in Sources */,
 				121F26E62136EC5700AE1D70 /* NavigationController.swift in Sources */,
 				12AB972A212BF60000B30DD3 /* Storage.xcdatamodeld in Sources */,
 				12AB9732212C0E4F00B30DD3 /* NCFleetConfiguration.swift in Sources */,
@@ -2370,6 +2498,7 @@
 				12AB972C212BF6A900B30DD3 /* Storage.swift in Sources */,
 				125DF6332133CFC700B86AE0 /* MainMenuViewController.swift in Sources */,
 				12484C3A215B8E230083AE17 /* InvTypeMarketOrdersInteractor.swift in Sources */,
+				12484C74215CC6910083AE17 /* MapLocationPickerViewController.swift in Sources */,
 				12EE7D11213E6BD7005CE68F /* SlideDownAnimationController.swift in Sources */,
 				1204D06A215271670070AF92 /* InvCategories.swift in Sources */,
 				129E40AB213EB001002EDAF9 /* UIKit+NC.swift in Sources */,
@@ -2380,15 +2509,19 @@
 				129DFE20213486D900C85496 /* ProgressTask.swift in Sources */,
 				12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */,
 				12B03DA8213FEE1B00DCBD64 /* ActionHandler.swift in Sources */,
+				12484C91215CD5AA0083AE17 /* MapLocationPickerRecentsPresenter.swift in Sources */,
 				12A843052153872500570A95 /* InvTypesPresenter.swift in Sources */,
 				12E04181212D44360000CB4F /* Config.swift in Sources */,
+				12484CA3215D20EC0083AE17 /* MapLocationPickerSearchResults.swift in Sources */,
 				12A8432C2153C5D200570A95 /* InvTypeCell.swift in Sources */,
 				12AFD476211C1EA800007423 /* Cache.xcdatamodeld in Sources */,
 				1253C62521590744007DEA16 /* DamageTypeCell.swift in Sources */,
 				1279EFF921358922005340C0 /* TintImageView.swift in Sources */,
+				12484C6D215CC0780083AE17 /* PageViewController.swift in Sources */,
 				1259639521381EA100B3A53C /* AccountCell.swift in Sources */,
 				12AB973E212C162A00B30DD3 /* Character.swift in Sources */,
 				125DF6352133CFD000B86AE0 /* MainMenuPresenter.swift in Sources */,
+				12484C81215CCF260083AE17 /* MapLocationPickerRegionsPresenter.swift in Sources */,
 				12D8147021550E0F00313DAF /* InvTypeInfo.swift in Sources */,
 				12484C38215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift in Sources */,
 				120A386F213D543E0071ED72 /* MainMenuHeader.swift in Sources */,
@@ -2396,13 +2529,18 @@
 				12EE7D0C213E6282005CE68F /* Route.swift in Sources */,
 				12AB9733212C0E5C00B30DD3 /* NCFittingLoadout.swift in Sources */,
 				125DF6372133CFDB00B86AE0 /* MainMenuInteractor.swift in Sources */,
+				12484C72215CC6610083AE17 /* MapLocationPicker.swift in Sources */,
 				1204D07021528A140070AF92 /* InvGroupsViewController.swift in Sources */,
+				12484C85215CD5560083AE17 /* MapLocationPickerSolarSystems.swift in Sources */,
+				12484C8B215CD5740083AE17 /* MapLocationPickerSolarSystemsInteractor.swift in Sources */,
 				12E0417E212D3C4F0000CB4F /* API.swift in Sources */,
 				12D8147421550ED100313DAF /* InvTypeInfoPresenter.swift in Sources */,
 				12AB9755212C488400B30DD3 /* TrainingQueue.swift in Sources */,
 				129E40AD213ECE0E002EDAF9 /* RoundedImageView.swift in Sources */,
 				120A386D213D46970071ED72 /* MainMenuContainerViewController.swift in Sources */,
+				12484C7F215CCF1B0083AE17 /* MapLocationPickerRegionsViewController.swift in Sources */,
 				12DE75E1215A7554006FC1BF /* InvTypeInfoDescriptionCell.swift in Sources */,
+				12484C87215CD55F0083AE17 /* MapLocationPickerSolarSystemsViewController.swift in Sources */,
 				1279EFEE213543B7005340C0 /* UnitFormatter.swift in Sources */,
 				1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */,
 				12E0419C212D77530000CB4F /* Error.swift in Sources */,
@@ -2665,7 +2803,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shimanski.Neocom-II-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Neocom.app/Neocom";
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../ThirdParty/Firebase";
@@ -2694,7 +2832,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shimanski.Neocom-II-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Neocom.app/Neocom";
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../ThirdParty/Firebase";

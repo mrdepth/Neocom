@@ -60,10 +60,6 @@ extension Routable {
 }
 
 extension ExpandableItem {
-	var initiallyExpanded: Bool {
-		return true
-	}
-	
 	var expandIdentifier: CustomStringConvertible? {
 		return nil
 	}

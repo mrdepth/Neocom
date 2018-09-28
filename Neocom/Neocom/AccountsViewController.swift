@@ -88,6 +88,7 @@ class AccountsViewController: TreeViewController<AccountsPresenter, Void>, TreeV
 	}
 	
 	override func treeController<T>(_ treeController: TreeController, didSelectRowFor item: T) where T : TreeItem {
+		super.treeController(treeController, didSelectRowFor: item)
 		if isEditing {
 			updateSelection()
 		}

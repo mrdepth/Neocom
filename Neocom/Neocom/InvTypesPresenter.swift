@@ -55,7 +55,6 @@ class InvTypesPresenter: TreePresenter {
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
-		
 		guard let input = view?.input else { return .init(.failure(NCError.invalidInput(type: type(of: self))))}
 		let treeController = view?.treeController
 		

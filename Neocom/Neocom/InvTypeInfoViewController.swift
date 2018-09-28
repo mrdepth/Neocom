@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import TreeController
 
 class InvTypeInfoViewController: TreeViewController<InvTypeInfoPresenter, InvTypeInfoViewController.Input>, TreeView {
 	enum Input {

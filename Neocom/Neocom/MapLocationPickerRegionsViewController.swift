@@ -9,7 +9,7 @@
 import Foundation
 import TreeController
 
-class MapLocationPickerRegionsViewController: TreeViewController<MapLocationPickerRegionsPresenter, MapLocationPickerViewController.Mode>, TreeView {
+class MapLocationPickerRegionsViewController: TreeViewController<MapLocationPickerRegionsPresenter, MapLocationPickerViewController.Mode>, TreeView, SearchableViewController {
 	
 	override func treeController<T>(_ treeController: TreeController, configure cell: UITableViewCell, for item: T) where T : TreeItem {
 		super.treeController(treeController, configure: cell, for: item)
@@ -18,6 +18,7 @@ class MapLocationPickerRegionsViewController: TreeViewController<MapLocationPick
 	}
 	
 	override func treeController<T>(_ treeController: TreeController, didSelectRowFor item: T) where T : TreeItem {
+		super.treeController(treeController, didSelectRowFor: item)
 		guard let item = item as? Tree.Item.FetchedResultsRow<SDEMapRegion> else {return}
 		if input?.contains(.solarSystems) == true {
 			presenter.didOpen(item.result)
@@ -31,5 +32,11 @@ class MapLocationPickerRegionsViewController: TreeViewController<MapLocationPick
 		guard let item = item as? Tree.Item.FetchedResultsRow<SDEMapRegion> else {return}
 		presenter.didSelect(item.result)
 	}
+	
+	func searchResultsController() -> UIViewController & UISearchResultsUpdating {
+		guard let input = input else {return try! MapLocationPickerSearchResults.default.instantiate(.init(mode: [.regions], region: nil)).get()}
+		return try! MapLocationPickerSearchResults.default.instantiate(.init(mode: input, region: nil)).get()
+	}
+
 }
 

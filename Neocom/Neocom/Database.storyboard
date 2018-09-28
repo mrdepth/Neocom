@@ -486,8 +486,8 @@
         <!--Groups-->
         <scene sceneID="cAt-9p-n6m">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseCertificateGroupsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="KqU-s1-kgm" customClass="NCDatabaseCertificateGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="j6w-3n-70F" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="CertGroupsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="KqU-s1-kgm" customClass="CertGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="j6w-3n-70F" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -517,8 +517,8 @@
         <!--Certificates-->
         <scene sceneID="3Rk-hx-TXS">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseCertificatesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="07u-aW-c1k" customClass="NCDatabaseCertificatesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="aQf-Km-dOJ" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="CertCertificatesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="07u-aW-c1k" customClass="CertCertificatesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="aQf-Km-dOJ" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -601,8 +601,8 @@
         <!--Certificate-->
         <scene sceneID="w8a-f9-ZmR">
             <objects>
-                <viewController storyboardIdentifier="NCDatabaseCertificateInfoViewController" title="Certificate" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JYW-Ra-jdp" customClass="NCDatabaseCertificateInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5vK-0V-RAh" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                <viewController storyboardIdentifier="CertCertificateInfoViewController" title="Certificate" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JYW-Ra-jdp" customClass="CertCertificateInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5vK-0V-RAh" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -616,8 +616,8 @@
         <!--Mastery-->
         <scene sceneID="3Fl-5w-DVi">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseCertificateMasteryViewController" title="Mastery" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="f9N-s7-WfW" customClass="NCDatabaseCertificateMasteryViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="Oou-wa-Jhi" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="CertCertificateMasteryInfoViewController" title="Mastery" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="f9N-s7-WfW" customClass="CertCertificateMasteryInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="Oou-wa-Jhi" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -631,8 +631,8 @@
         <!--Required for-->
         <scene sceneID="NLE-tg-Hc1">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseCertificateRequirementsViewController" title="Required for" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vLa-dT-7pi" customClass="NCDatabaseCertificateRequirementsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="7lr-XU-b5j" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="CertCertificateRequirementsInfoViewController" title="Required for" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vLa-dT-7pi" customClass="CertCertificateRequirementsInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="7lr-XU-b5j" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -688,8 +688,8 @@
         <!--Variations-->
         <scene sceneID="MCu-YD-Jfr">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseTypeVariationsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rey-mh-Whl" customClass="NCDatabaseTypeVariationsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="UUJ-X2-hZE" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="InvTypeVariationsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rey-mh-Whl" customClass="InvTypeVariationsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="UUJ-X2-hZE" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -914,7 +914,7 @@
         <!--Solar Systems-->
         <scene sceneID="UJb-zO-BVC">
             <objects>
-                <tableViewController storyboardIdentifier="NCLocationSearchResultsViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nnZ-jY-A6j" customClass="NCLocationSearchResultsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="MapLocationPickerSearchResultsViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nnZ-jY-A6j" customClass="MapLocationPickerSearchResultsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="30" sectionHeaderHeight="18" sectionFooterHeight="18" id="HH6-Oa-BbR" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

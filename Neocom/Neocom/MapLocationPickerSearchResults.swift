@@ -7,3 +7,18 @@
 //
 
 import Foundation
+import Futures
+
+enum MapLocationPickerSearchResults: Assembly {
+	typealias View = MapLocationPickerSearchResultsViewController
+	case `default`
+	
+	func instantiate(_ input: View.Input) -> Future<View> {
+		switch self {
+		case .default:
+			let controller = UIStoryboard.database.instantiateViewController(withIdentifier: "MapLocationPickerSearchResultsViewController") as! View
+			controller.input = input
+			return .init(controller)
+		}
+	}
+}

@@ -94,7 +94,7 @@ extension Tree.Item {
 		
 		var expandIdentifier: CustomStringConvertible?
 		
-		init<T: Hashable>(_ content: Tree.Content.Section, diffIdentifier: T, expandIdentifier: CustomStringConvertible?, treeController: TreeController?, children: [Element]? = nil, action: ((UIControl) -> Void)? = nil, editingAction: ((UIControl) -> Void)? = nil) {
+		init<T: Hashable>(_ content: Tree.Content.Section, diffIdentifier: T, expandIdentifier: CustomStringConvertible? = nil, treeController: TreeController?, children: [Element]? = nil, action: ((UIControl) -> Void)? = nil, editingAction: ((UIControl) -> Void)? = nil) {
 			self.action = action
 			self.editingAction = editingAction
 			self.treeController = treeController

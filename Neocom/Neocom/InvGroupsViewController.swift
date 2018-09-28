@@ -16,6 +16,7 @@ class InvGroupsViewController: TreeViewController<InvGroupsPresenter, InvGroupsV
 	}
 	
 	override func treeController<T>(_ treeController: TreeController, didSelectRowFor item: T) where T : TreeItem {
+		super.treeController(treeController, didSelectRowFor: item)
 		presenter.didSelect(item: item)
 	}
 

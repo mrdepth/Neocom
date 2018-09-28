@@ -28,7 +28,7 @@ extension Tree.Content {
 		var subtitle: String?
 		var attributedTitle: NSAttributedString?
 		var attributedSubtitle: NSAttributedString?
-		var image: UIImage?
+		var image: Image?
 		var accessoryType: UITableViewCell.AccessoryType
 		
 		init(prototype: Prototype = Prototype.TreeDefaultCell.default,
@@ -36,7 +36,7 @@ extension Tree.Content {
 			 subtitle: String? = nil,
 			 attributedTitle: NSAttributedString? = nil,
 			 attributedSubtitle: NSAttributedString? = nil,
-			 image: UIImage? = nil,
+			 image: Image? = nil,
 			 accessoryType: UITableViewCell.AccessoryType = .none) {
 			self.prototype = prototype
 			self.title = title
@@ -80,7 +80,7 @@ extension Tree.Content.Default: CellConfiguring {
 		}
 		
 		if let image = image {
-			cell.iconView?.image = image
+			cell.iconView?.image = image.value
 			cell.iconView?.isHidden = false
 		}
 		else {

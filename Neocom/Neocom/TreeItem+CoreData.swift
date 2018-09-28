@@ -59,7 +59,8 @@ protocol FetchedResultsTreeItem: TreeItem {
 //}
 
 extension Tree.Item {
-	class FetchedResultsController<Section: FetchedResultsSectionTreeItem>: NSObject, TreeItem, NSFetchedResultsControllerDelegate, FetchedResultsControllerProtocol {
+	class FetchedResultsController<T: FetchedResultsSectionTreeItem>: NSObject, TreeItem, NSFetchedResultsControllerDelegate, FetchedResultsControllerProtocol {
+		typealias Section = T
 		var fetchedResultsController: NSFetchedResultsController<Section.Child.Result>
 		weak var treeController: TreeController?
 		

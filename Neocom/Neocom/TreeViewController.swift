@@ -94,6 +94,8 @@ class TreeViewController<Presenter: TreePresenter, Input>: UITableViewController
 			
 		}
 		else {
+			presenter.presentation = nil
+			_ = treeController.reloadData([] as [AnyTreeItem])
 			tableView.backgroundView = TableViewBackgroundLabel(error: error)
 		}
 	}
@@ -173,6 +175,7 @@ class TreeViewController<Presenter: TreePresenter, Input>: UITableViewController
 	override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
 		guard !decelerate else {return}
 		if let presentation = pendingPresentation {
+			self.pendingPresentation = nil
 			DispatchQueue.main.async {
 				self.presenter.view?.present(presentation, animated: true)
 			}
@@ -186,6 +189,7 @@ class TreeViewController<Presenter: TreePresenter, Input>: UITableViewController
 	
 	override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
 		if let presentation = pendingPresentation {
+			self.pendingPresentation = nil
 			DispatchQueue.main.async {
 				self.presenter.view?.present(presentation, animated: true)
 			}
@@ -270,7 +274,7 @@ extension TreePresenter {
 				return state.isExpanded
 			}
 			else {
-				return item.initiallyExpanded
+				return item.isExpanded
 			}
 		}
 		else {

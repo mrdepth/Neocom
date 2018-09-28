@@ -37,6 +37,9 @@ enum Router {
 		static func invTypeInfo(_ input: InvTypeInfo.View.Input) -> Route<InvTypeInfo> {
 			return Route(assembly: InvTypeInfo.default, input: input, kind: .adaptiveModal)
 		}
+		static func invTypeVariations(_ input: InvTypeVariations.View.Input) -> Route<InvTypeVariations> {
+			return Route(assembly: InvTypeVariations.default, input: input, kind: .push)
+		}
 		static func invTypeMarketOrders(_ input: InvTypeMarketOrders.View.Input) -> Route<InvTypeMarketOrders> {
 			return Route(assembly: InvTypeMarketOrders.default, input: input, kind: .push)
 		}
@@ -46,6 +49,16 @@ enum Router {
 		static func mapLocationPickerSolarSystems(_ input: MapLocationPickerSolarSystems.View.Input) -> Route<MapLocationPickerSolarSystems> {
 			return Route(assembly: MapLocationPickerSolarSystems.default, input: input, kind: .push)
 		}
+		static func certGroups() -> Route<CertGroups> {
+			return Route(assembly: CertGroups.default, kind: .detail)
+		}
+		static func certCertificates(_ input: CertCertificates.View.Input) -> Route<CertCertificates> {
+			return Route(assembly: CertCertificates.default, input: input, kind: .push)
+		}
+		static func certCertificateInfo(_ input: CertCertificateInfo.View.Input) -> Route<CertCertificateInfo> {
+			return Route(assembly: CertCertificateInfo.default, input: input, kind: .push)
+		}
+
 
 	}
 }

@@ -30,7 +30,8 @@ class MapLocationPickerSearchResultsPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view?.tableView.register([])
+		view?.tableView.register([Prototype.TreeHeaderCell.default,
+								  Prototype.TreeDefaultCell.default])
 		
 		interactor.configure()
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
@@ -43,10 +44,14 @@ class MapLocationPickerSearchResultsPresenter: TreePresenter {
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
 		guard let input = view?.input else { return .init(.failure(NCError.invalidInput(type: type(of: self))))}
 		
-		guard let searchString = searchString, !searchString.isEmpty else { return .init([]) }
+		guard let searchString = searchString, !searchString.isEmpty else {
+			self.searchString = nil
+			return .init([])
+		}
+		self.searchString = nil
 		
-		Services.sde.performBackgroundTask { [weak self] context in
-			var sections = [AnyTreeItem]()
+		return Services.sde.performBackgroundTask { [weak self] context -> Presentation in
+			var sections = Presentation()
 			
 			if let region = input.region {
 				let controller = context.managedObjectContext
@@ -80,12 +85,47 @@ class MapLocationPickerSearchResultsPresenter: TreePresenter {
 						let section = Tree.Item.FetchedResultsController<Tree.Item.FetchedResultsSection<Tree.Item.MapRegionSearchResultsRow>>(controller, treeController: self?.view?.treeController)
 						sections.append(section.asAnyItem)
 					}
-
+					
+					if !input.mode.contains(.solarSystems) {
+						let controller = context.managedObjectContext
+							.from(SDEMapSolarSystem.self)
+							.filter(\SDEMapSolarSystem.constellation?.region?.regionID < SDERegionID.whSpace.rawValue &&
+								(\SDEMapSolarSystem.solarSystemName).caseInsensitive.contains(searchString))
+							.sort(by: \SDEMapSolarSystem.constellation?.region?.regionName, ascending: true)
+							.objectIDs
+							.fetchedResultsController()
+						
+						try controller.performFetch()
+						
+						if controller.fetchedObjects?.isEmpty == false {
+							let section = Tree.Item.FetchedResultsController<Tree.Item.FetchedResultsSection<Tree.Item.MapRegionBySolarSystemSearchResultsRow>>(controller, treeController: self?.view?.treeController)
+							sections.append(section.asAnyItem)
+						}
+					}
 				}
+				
+				if input.mode.contains(.solarSystems) {
+					let controller = context.managedObjectContext
+						.from(SDEMapSolarSystem.self)
+						.filter((\SDEMapSolarSystem.solarSystemName).caseInsensitive.contains(searchString))
+						.sort(by: \SDEMapSolarSystem.solarSystemName, ascending: true)
+						.objectIDs
+						.fetchedResultsController()
+					try controller.performFetch()
+					
+					if controller.fetchedObjects?.isEmpty == false {
+						let section: Tree.Item.NamedFetchedResultsController<Tree.Item.FetchedResultsSection<Tree.Item.MapSolarSystemSearchResultsRow>> =
+							Tree.Item.NamedFetchedResultsController(Tree.Content.Section(title: NSLocalizedString("Solar Systems", comment: "")),
+																	fetchedResultsController: controller,
+																	treeController: self?.view?.treeController)
+						sections.append(section.asAnyItem)
+					}
+				}
+				
 			}
+			
+			return sections
 		}
-		
-		return .init([])
 	}
 	
 	private var searchString: String?
@@ -112,6 +152,17 @@ class MapLocationPickerSearchResultsPresenter: TreePresenter {
 			searchString = string
 		}
 	}
+	
+	func didSelect(_ region: SDEMapRegion) {
+		guard let controller = view?.presentingViewController?.navigationController as? MapLocationPickerViewController else {return}
+		controller.input?.completion(controller, .region(region))
+	}
+
+	func didSelect(_ solarSystem: SDEMapSolarSystem) {
+		guard let controller = view?.presentingViewController?.navigationController as? MapLocationPickerViewController else {return}
+		controller.input?.completion(controller, .solarSystem(solarSystem))
+	}
+
 }
 
 extension Tree.Item {
@@ -138,4 +189,21 @@ extension Tree.Item {
 			region.configure(cell: cell)
 		}
 	}
+	
+	class MapRegionBySolarSystemSearchResultsRow: FetchedResultsRow<NSManagedObjectID> {
+		lazy var solarSytem: SDEMapSolarSystem = try! Services.sde.viewContext.existingObject(with: self.result)!
+		
+		override var prototype: Prototype? {
+			return Prototype.TreeDefaultCell.default
+		}
+		
+		override func configure(cell: UITableViewCell) {
+			guard let cell = cell as? TreeDefaultCell else {return}
+			cell.titleLabel?.text = solarSytem.constellation?.region?.regionName
+			cell.subtitleLabel?.text = solarSytem.solarSystemName
+			cell.subtitleLabel?.isHidden = false
+			cell.iconView?.isHidden = true
+		}
+	}
+
 }

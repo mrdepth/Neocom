@@ -50,6 +50,12 @@ class MapLocationPickerSolarSystemsPresenter: TreePresenter {
 		
 		return .init(Presentation(controller, treeController: view?.treeController))
 	}
+	
+	func didSelect(_ solarSystem: SDEMapSolarSystem) {
+		guard let controller = view?.navigationController as? MapLocationPickerViewController else {return}
+		controller.input?.completion(controller, .solarSystem(solarSystem))
+	}
+
 }
 
 extension SDEMapSolarSystem: CellConfiguring {

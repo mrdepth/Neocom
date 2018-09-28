@@ -83,7 +83,7 @@ class InvTypeInfoPresenter: TreePresenter {
 					let price = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
 																		   title: NSLocalizedString("PRICE", comment: ""),
 																		   subtitle: subtitle,
-																		   image: #imageLiteral(resourceName: "wallet"),
+																		   image: Image( #imageLiteral(resourceName: "wallet")),
 																		   accessoryType: .disclosureIndicator),
 													  diffIdentifier: "Price",
 													  route: marketRoute )
@@ -137,7 +137,7 @@ extension Tree.Item {
 			let value = value ?? attribute.value
 			
 			var route: Routing?
-			var image: UIImage?
+			var icon: SDEEveIcon?
 			var subtitle: String?
 			
 			switch unitID {
@@ -147,18 +147,18 @@ extension Tree.Item {
 			case .groupID:
 				let group = context.invGroup(Int(value))
 				subtitle = group?.groupName
-				image = attribute.attributeType?.icon?.image?.image ?? group?.icon?.image?.image
+				icon = attribute.attributeType?.icon ?? group?.icon
 				route = group.map{Router.SDE.invTypes(.group($0))}
 			case .typeID:
 				let type = context.invType(Int(value))
 				subtitle = type?.typeName
-				image = type?.icon?.image?.image ?? attribute.attributeType?.icon?.image?.image
+				icon = type?.icon ?? attribute.attributeType?.icon
 				route = Router.SDE.invTypeInfo(.typeID(Int(value)))
 			case .sizeClass:
 				subtitle = SDERigSize(rawValue: Int(value))?.description ?? String(describing: Int(value))
 			case .bonus:
 				subtitle = "+" + UnitFormatter.localizedString(from: value, unit: .none, style: .long)
-				image = attribute.attributeType?.icon?.image?.image
+				icon = attribute.attributeType?.icon
 			case .boolean:
 				subtitle = Int(value) == 0 ? NSLocalizedString("No", comment: "") : NSLocalizedString("Yes", comment: "")
 			case .inverseAbsolutePercent, .inversedModifierPercent:
@@ -184,13 +184,13 @@ extension Tree.Item {
 				title = "\(attribute.attributeType?.attributeID ?? 0)"
 			}
 			
-			let content = Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: title.uppercased(), subtitle: subtitle, image: image ?? attribute.attributeType?.icon?.image?.image, accessoryType: route == nil ? .none : .disclosureIndicator)
+			let content = Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: title.uppercased(), subtitle: subtitle, image: Image(icon ?? attribute.attributeType?.icon), accessoryType: route == nil ? .none : .disclosureIndicator)
 			
 			super.init(content, diffIdentifier: attribute.objectID, route: route)
 		}
 	}
 	
-	class InvTypeRequiredSkillRow: TreeItem, CellConfiguring {
+	class InvTypeRequiredSkillRow: TreeItem, CellConfiguring, Routable {
 		var prototype: Prototype? { return Prototype.TreeDefaultCell.default}
 		let skill: TrainingQueue.Item
 		let level: Int
@@ -199,6 +199,7 @@ extension Tree.Item {
 		let subtitle: String?
 		let tintColor: UIColor
 		let trainingTime: TimeInterval
+		let route: Routing?
 		
 		init?(type: SDEInvType, level: Int, character: Character?) {
 			guard let skill = Character.Skill(type: type) else {return nil}
@@ -230,6 +231,7 @@ extension Tree.Item {
 				tintColor = .white
 				trainingTime = 0
 			}
+			route = Router.SDE.invTypeInfo(.objectID(type.objectID))
 		}
 		
 		convenience init?(_ skill: SDEInvTypeRequiredSkill, character: Character?) {
@@ -266,6 +268,7 @@ extension Tree.Item {
 			if item != nil {
 				cell.iconView?.image = #imageLiteral(resourceName: "skillRequirementQueued")
 			}
+			cell.accessoryType = .disclosureIndicator
 		}
 		
 		var hashValue: Int {
@@ -276,8 +279,8 @@ extension Tree.Item {
 	}
 	
 	class InvTypeSkillsSection: Section<Tree.Item.InvTypeRequiredSkillRow> {
-		init<T: Hashable & CustomStringConvertible>(title: String, trainingQueue: TrainingQueue, character: Character?, identifier: T, treeController: TreeController?, children: [Tree.Item.InvTypeRequiredSkillRow]?) {
-			let trainingTime = trainingQueue.trainingTime(with: character?.attributes ?? .default)
+		init<T: Hashable>(title: String, trainingQueue: TrainingQueue, character: Character?, diffIdentifier: T, expandIdentifier: CustomStringConvertible? = nil, treeController: TreeController?, isExpanded: Bool = true, children: [Tree.Item.InvTypeRequiredSkillRow]?) {
+			let trainingTime = trainingQueue.trainingTime()
 			
 			let attributedTitle: NSAttributedString
 			if trainingTime > 0 {
@@ -288,10 +291,10 @@ extension Tree.Item {
 			}
 			
 //			let actions: Tree.Content.Section.Actions = character == nil || trainingTime == 0 ? [] : [.normal]
-			let content = Tree.Content.Section(attributedTitle: attributedTitle, isExpanded: true)
+			let content = Tree.Content.Section(attributedTitle: attributedTitle, isExpanded: isExpanded)
 			//TODO: Add SkillQueue handler
 			
-			super.init(content, diffIdentifier: identifier, expandIdentifier: identifier, treeController: treeController, children: children)
+			super.init(content, diffIdentifier: diffIdentifier, expandIdentifier: expandIdentifier, treeController: treeController, children: children)
 		}
 		
 	}
@@ -386,13 +389,10 @@ extension InvTypeInfoPresenter {
 							case .warpSpeedMultiplier?:
 								guard let attributeType = attribute.attributeType else {return}
 								
-								
-								let baseWarpSpeed =  attributeValues?[Int(SDEAttributeID.baseWarpSpeed.rawValue)] ??
-									(try? context.managedObjectContext.from(SDEDgmTypeAttribute.self).filter(\SDEDgmTypeAttribute.type == type && \SDEDgmTypeAttribute.attributeType?.attributeID == SDEAttributeID.baseWarpSpeed.rawValue).first())??.value
-									?? 1.0
+								let baseWarpSpeed =  attributeValues?[Int(SDEAttributeID.baseWarpSpeed.rawValue)] ?? type[SDEAttributeID.baseWarpSpeed]?.value ?? 1.0
 								var s = UnitFormatter.localizedString(from: Double(value * baseWarpSpeed), unit: .none, style: .long)
 								s += " " + NSLocalizedString("AU/sec", comment: "")
-								let row = Tree.Item.Row<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: NSLocalizedString("Warp Speed", comment: "").uppercased(), subtitle: s, image: attributeType.icon?.image?.image), diffIdentifier: "WarpSpeed")
+								let row = Tree.Item.Row<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: NSLocalizedString("Warp Speed", comment: "").uppercased(), subtitle: s, image: Image(attributeType.icon)), diffIdentifier: "WarpSpeed")
 								rows.append(row.asAnyItem)
 							default:
 								let row = Tree.Item.DgmAttributeRow(attribute: attribute, value: value, context: context)
@@ -425,11 +425,12 @@ extension InvTypeInfoPresenter {
 		return sections
 	}
 	
-	func variationsPresentation(for type: SDEInvType, context: SDEContext) -> Tree.Item.Section<Tree.Item.Row<Tree.Content.Default>>? {
+	func variationsPresentation(for type: SDEInvType, context: SDEContext) -> Tree.Item.Section<Tree.Item.RoutableRow<Tree.Content.Default>>? {
 		guard type.parentType != nil || (type.variations?.count ?? 0) > 0 else {return nil}
 		let n = max(type.variations?.count ?? 0, type.parentType?.variations?.count ?? 0) + 1
-		let row = Tree.Item.Row<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
-																		   title: String.localizedStringWithFormat("%d types", n).uppercased()), diffIdentifier: "Variations")
+		let row = Tree.Item.RoutableRow<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: String.localizedStringWithFormat("%d types", n).uppercased(), accessoryType: .disclosureIndicator),
+															  diffIdentifier: "Variations",
+															  route: Router.SDE.invTypeVariations(.objectID(type.objectID)))
 		let section = Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Variations", comment: "").uppercased(), isExpanded: true), diffIdentifier: "VariationsSection", expandIdentifier: "VariationsSection", treeController: view?.treeController, children: [row])
 		return section
 	}
@@ -476,7 +477,7 @@ extension InvTypeInfoPresenter {
 			let subtitle = trainingTime > 0 ? TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
 			let icon = trainingTime > 0 ? unclaimedIcon : level.icon
 			
-			return Tree.Item.Row<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: title, subtitle: subtitle, image: icon?.image?.image), diffIdentifier: mastery.objectID)
+			return Tree.Item.Row<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: title, subtitle: subtitle, image: Image(icon)), diffIdentifier: level.objectID)
 
 			//TODO: AddRoute
 		}
@@ -492,7 +493,8 @@ extension InvTypeInfoPresenter {
 		return Tree.Item.InvTypeSkillsSection(title: NSLocalizedString("Required Skills", comment: "").uppercased(),
 									   trainingQueue: trainingQueue,
 									   character: character,
-									   identifier: "RequiredSkills",
+									   diffIdentifier: "RequiredSkills",
+									   expandIdentifier: "RequiredSkills",
 									   treeController: view?.treeController,
 									   children: rows)
 	}

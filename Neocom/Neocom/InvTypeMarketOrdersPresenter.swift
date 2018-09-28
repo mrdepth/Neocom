@@ -35,12 +35,10 @@ class InvTypeMarketOrdersPresenter: TreePresenter {
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
 			self?.applicationWillEnterForeground()
 		}
-	}
-	
-	func viewWillAppear(_ animated: Bool) {
-		reloadIfNeeded()
+		
 		let region = Services.sde.viewContext.mapRegion(interactor.regionID)
 		view?.title = region?.regionName ?? NSLocalizedString("Market Orders", comment: "")
+
 	}
 	
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
@@ -84,10 +82,13 @@ class InvTypeMarketOrdersPresenter: TreePresenter {
 		Router.SDE.mapLocationPicker(MapLocationPicker.View.Input(mode: [.regions], completion: { [weak self] (controller, location) in
 			if case let .region(region) = location {
 				UserDefaults.standard.set(region.regionID, forKey: UserDefaults.Key.marketRegion)
+				self?.view?.title = region.regionName ?? NSLocalizedString("Market Orders", comment: "")
+				self?.reloadIfNeeded()
 			}
 
 			guard let view = self?.view else {return}
 			controller.unwinder?.unwind(to: view)
+			
 		})).perform(from: view)
 	}
 }

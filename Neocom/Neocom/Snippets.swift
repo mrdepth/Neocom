@@ -15,7 +15,7 @@ enum <#T##Assembly#>: Assembly {
 	func instantiate(_ input: View.Input) -> Future<View> {
 		switch self {
 		case .default:
-			let controller = UIStoryboard.database.instantiateViewController(withIdentifier: <#identifier#>) as! View
+			let controller = UIStoryboard.<#storyboard#>.instantiateViewController(withIdentifier: <#identifier#>) as! View
 			controller.input = input
 			return .init(controller)
 		}

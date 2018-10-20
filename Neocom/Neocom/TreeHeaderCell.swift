@@ -123,7 +123,7 @@ extension Tree.Item {
 				cell.editingButton = UIButton(type: .custom)
 				cell.editingButton?.setImage(#imageLiteral(resourceName: "actionsItem.pdf"), for: .normal)
 				cell.editingButton?.sizeToFit()
-				cell.editingAction = ActionHandler(cell.button!, for: .touchUpInside, handler: handler)
+				cell.editingAction = ActionHandler(cell.editingButton!, for: .touchUpInside, handler: handler)
 			}
 			else {
 				cell.editingButton = nil

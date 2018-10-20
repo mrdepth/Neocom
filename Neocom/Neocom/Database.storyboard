@@ -672,11 +672,11 @@
         <!--Mastery-->
         <scene sceneID="SNn-5K-PVs">
             <objects>
-                <tableViewController storyboardIdentifier="NCDatabaseTypeMasteryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="10h-KR-Mg2" customClass="NCDatabaseTypeMasteryViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="eEX-Bn-OCp" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="InvTypeMasteryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="10h-KR-Mg2" customClass="InvTypeMasteryViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="28" id="eEX-Bn-OCp" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tableView>
                     <navigationItem key="navigationItem" title="Mastery" id="IeR-oM-Jb8"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>

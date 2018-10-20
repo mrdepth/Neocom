@@ -25,11 +25,6 @@ struct Character: Codable {
 		var charisma: Int
 	}
 	
-//	struct TrainedSkill: Codable {
-//		var skill: Skill
-//		var characterSkill: ESI.Skills.CharacterSkills.Skill
-//	}
-	
 	struct SkillQueueItem: Codable {
 		var skill: Skill
 		var queuedSkill: ESI.Skills.SkillQueueItem
@@ -43,9 +38,6 @@ struct Character: Codable {
 	
 	static let empty = Character(attributes: .default, augmentations: .none, trainedSkills: [:], skillQueue: [])
 	
-//	init(attributes: ESI.Skills.CharacterAttributes, skills: ESI.Skills.CharacterSkills, skillQueue: [ESI.Skills.SkillQueueItem]) {
-//		
-//	}
 }
 
 

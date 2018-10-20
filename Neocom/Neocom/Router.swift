@@ -40,6 +40,9 @@ enum Router {
 		static func invTypeVariations(_ input: InvTypeVariations.View.Input) -> Route<InvTypeVariations> {
 			return Route(assembly: InvTypeVariations.default, input: input, kind: .push)
 		}
+		static func invTypeMastery(_ input: InvTypeMastery.View.Input) -> Route<InvTypeMastery> {
+			return Route(assembly: InvTypeMastery.default, input: input, kind: .push)
+		}
 		static func invTypeMarketOrders(_ input: InvTypeMarketOrders.View.Input) -> Route<InvTypeMarketOrders> {
 			return Route(assembly: InvTypeMarketOrders.default, input: input, kind: .push)
 		}

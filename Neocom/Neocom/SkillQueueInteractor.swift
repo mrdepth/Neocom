@@ -1,8 +1,8 @@
 //
-//  CertCertificateMasteryInfoInteractor.swift
+//  SkillQueueInteractor.swift
 //  Neocom
 //
-//  Created by Artem Shimanski on 9/28/18.
+//  Created by Artem Shimanski on 19/10/2018.
 //  Copyright © 2018 Artem Shimanski. All rights reserved.
 //
 
@@ -11,9 +11,9 @@ import Futures
 import CloudData
 import EVEAPI
 
-class CertCertificateMasteryInfoInteractor: TreeInteractor {
-	typealias Presenter = CertCertificateMasteryInfoPresenter
-	typealias Content = ESI.Result<Character?>
+class SkillQueueInteractor: TreeInteractor {
+	typealias Presenter = SkillQueuePresenter
+	typealias Content = ESI.Result<Character>
 	weak var presenter: Presenter?
 	
 	required init(presenter: Presenter) {
@@ -22,14 +22,7 @@ class CertCertificateMasteryInfoInteractor: TreeInteractor {
 	
 	private var api = Services.api.current
 	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Content> {
-		let promise = Promise<ESI.Result<Character?>>()
-		
-		api.character(cachePolicy: cachePolicy).then { result in
-			try! promise.fulfill(result.map {$0 as Character?})
-			}.catch { _ in
-				try! promise.fulfill(ESI.Result(value: nil, expires: nil))
-		}
-		return promise.future
+		return api.character(cachePolicy: cachePolicy)
 	}
 	
 	private var didChangeAccountObserver: NotificationObserver?

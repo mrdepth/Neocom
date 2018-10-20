@@ -1,8 +1,8 @@
 //
-//  CertCertificateMasteryInfoInteractor.swift
+//  InvTypeMasteryInteractor.swift
 //  Neocom
 //
-//  Created by Artem Shimanski on 9/28/18.
+//  Created by Artem Shimanski on 17/10/2018.
 //  Copyright © 2018 Artem Shimanski. All rights reserved.
 //
 
@@ -11,8 +11,8 @@ import Futures
 import CloudData
 import EVEAPI
 
-class CertCertificateMasteryInfoInteractor: TreeInteractor {
-	typealias Presenter = CertCertificateMasteryInfoPresenter
+class InvTypeMasteryInteractor: TreeInteractor {
+	typealias Presenter = InvTypeMasteryPresenter
 	typealias Content = ESI.Result<Character?>
 	weak var presenter: Presenter?
 	

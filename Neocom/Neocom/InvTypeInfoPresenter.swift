@@ -477,7 +477,9 @@ extension InvTypeInfoPresenter {
 			let subtitle = trainingTime > 0 ? TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
 			let icon = trainingTime > 0 ? unclaimedIcon : level.icon
 			
-			return Tree.Item.Row<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: title, subtitle: subtitle, image: Image(icon)), diffIdentifier: level.objectID)
+			let route = Router.SDE.invTypeMastery(InvTypeMastery.View.Input(typeObjectID: type.objectID, masteryLevelObjectID: level.objectID))
+			
+			return Tree.Item.RoutableRow<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: title, subtitle: subtitle, image: Image(icon)), diffIdentifier: level.objectID, route: route)
 
 			//TODO: AddRoute
 		}

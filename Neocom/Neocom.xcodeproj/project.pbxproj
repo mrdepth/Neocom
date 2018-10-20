@@ -120,6 +120,18 @@
 		1256BF2C1DF4770B00A2A24B /* UI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BEC71DF4770A00A2A24B /* UI.xcassets */; };
 		1259639521381EA100B3A53C /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1259639421381EA100B3A53C /* AccountCell.swift */; };
 		1259639721381ECD00B3A53C /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259639621381ECD00B3A53C /* AccountCell.xib */; };
+		125B2CB32176FEB500D34CFB /* InvTypeMasteryPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CAF2176FEB500D34CFB /* InvTypeMasteryPresenter.swift */; };
+		125B2CB42176FEB500D34CFB /* InvTypeMasteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CB02176FEB500D34CFB /* InvTypeMasteryViewController.swift */; };
+		125B2CB52176FEB500D34CFB /* InvTypeMasteryInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CB12176FEB500D34CFB /* InvTypeMasteryInteractor.swift */; };
+		125B2CB62176FEB500D34CFB /* InvTypeMastery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CB22176FEB500D34CFB /* InvTypeMastery.swift */; };
+		125B2CBD217A7BDF00D34CFB /* SkillsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CB9217A7BDF00D34CFB /* SkillsPresenter.swift */; };
+		125B2CBE217A7BDF00D34CFB /* SkillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CBA217A7BDF00D34CFB /* SkillsViewController.swift */; };
+		125B2CBF217A7BDF00D34CFB /* SkillsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CBB217A7BDF00D34CFB /* SkillsInteractor.swift */; };
+		125B2CC0217A7BDF00D34CFB /* Skills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CBC217A7BDF00D34CFB /* Skills.swift */; };
+		125B2CC6217A7C9400D34CFB /* SkillQueuePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CC2217A7C9400D34CFB /* SkillQueuePresenter.swift */; };
+		125B2CC7217A7C9400D34CFB /* SkillQueueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CC3217A7C9400D34CFB /* SkillQueueViewController.swift */; };
+		125B2CC8217A7C9400D34CFB /* SkillQueueInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CC4217A7C9400D34CFB /* SkillQueueInteractor.swift */; };
+		125B2CC9217A7C9400D34CFB /* SkillQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CC5217A7C9400D34CFB /* SkillQueue.swift */; };
 		125DF6332133CFC700B86AE0 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6322133CFC700B86AE0 /* MainMenuViewController.swift */; };
 		125DF6352133CFD000B86AE0 /* MainMenuPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6342133CFD000B86AE0 /* MainMenuPresenter.swift */; };
 		125DF6372133CFDB00B86AE0 /* MainMenuInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6362133CFDB00B86AE0 /* MainMenuInteractor.swift */; };
@@ -590,6 +602,18 @@
 		125AB80E1E41D9F500B8A2A8 /* UIViewController+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+NC.swift"; sourceTree = "<group>"; };
 		125AB8101E41DEE600B8A2A8 /* NCChargeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCChargeTableViewCell.swift; sourceTree = "<group>"; };
 		125AB8131E42033200B8A2A8 /* NCFittingAmmoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCFittingAmmoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		125B2CAF2176FEB500D34CFB /* InvTypeMasteryPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeMasteryPresenter.swift; sourceTree = "<group>"; };
+		125B2CB02176FEB500D34CFB /* InvTypeMasteryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeMasteryViewController.swift; sourceTree = "<group>"; };
+		125B2CB12176FEB500D34CFB /* InvTypeMasteryInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeMasteryInteractor.swift; sourceTree = "<group>"; };
+		125B2CB22176FEB500D34CFB /* InvTypeMastery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeMastery.swift; sourceTree = "<group>"; };
+		125B2CB9217A7BDF00D34CFB /* SkillsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillsPresenter.swift; sourceTree = "<group>"; };
+		125B2CBA217A7BDF00D34CFB /* SkillsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillsViewController.swift; sourceTree = "<group>"; };
+		125B2CBB217A7BDF00D34CFB /* SkillsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillsInteractor.swift; sourceTree = "<group>"; };
+		125B2CBC217A7BDF00D34CFB /* Skills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skills.swift; sourceTree = "<group>"; };
+		125B2CC2217A7C9400D34CFB /* SkillQueuePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillQueuePresenter.swift; sourceTree = "<group>"; };
+		125B2CC3217A7C9400D34CFB /* SkillQueueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillQueueViewController.swift; sourceTree = "<group>"; };
+		125B2CC4217A7C9400D34CFB /* SkillQueueInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillQueueInteractor.swift; sourceTree = "<group>"; };
+		125B2CC5217A7C9400D34CFB /* SkillQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillQueue.swift; sourceTree = "<group>"; };
 		125CE1351E9FF0E7007B8B6B /* NCNewMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCNewMailViewController.swift; sourceTree = "<group>"; };
 		125CE1371E9FFE5A007B8B6B /* NCContactsSearchResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContactsSearchResultViewController.swift; sourceTree = "<group>"; };
 		125CE13B1EA1275C007B8B6B /* NCMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMailViewController.swift; sourceTree = "<group>"; };
@@ -1090,8 +1114,9 @@
 				1204D06C215289EC0070AF92 /* InvGroups */,
 				12A842FE215386C900570A95 /* InvTypes */,
 				12D8146E21550DFE00313DAF /* InvTypeInfo */,
-				12484C31215B8DF10083AE17 /* InvTypeMarketOrders */,
 				12133C28215E28EE00646937 /* InvTypeVariations */,
+				12484C31215B8DF10083AE17 /* InvTypeMarketOrders */,
+				125B2CAE2176FE9400D34CFB /* InvTypeMastery */,
 			);
 			name = InvTypes;
 			sourceTree = "<group>";
@@ -1492,6 +1517,47 @@
 				1259639621381ECD00B3A53C /* AccountCell.xib */,
 			);
 			name = AccountCell;
+			sourceTree = "<group>";
+		};
+		125B2CAE2176FE9400D34CFB /* InvTypeMastery */ = {
+			isa = PBXGroup;
+			children = (
+				125B2CB22176FEB500D34CFB /* InvTypeMastery.swift */,
+				125B2CB02176FEB500D34CFB /* InvTypeMasteryViewController.swift */,
+				125B2CAF2176FEB500D34CFB /* InvTypeMasteryPresenter.swift */,
+				125B2CB12176FEB500D34CFB /* InvTypeMasteryInteractor.swift */,
+			);
+			name = InvTypeMastery;
+			sourceTree = "<group>";
+		};
+		125B2CB7217A7B0E00D34CFB /* CharacterInfo */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = CharacterInfo;
+			sourceTree = "<group>";
+		};
+		125B2CB8217A7BCE00D34CFB /* Skills */ = {
+			isa = PBXGroup;
+			children = (
+				125B2CC1217A7C8000D34CFB /* SkillQueue */,
+				125B2CBC217A7BDF00D34CFB /* Skills.swift */,
+				125B2CBA217A7BDF00D34CFB /* SkillsViewController.swift */,
+				125B2CB9217A7BDF00D34CFB /* SkillsPresenter.swift */,
+				125B2CBB217A7BDF00D34CFB /* SkillsInteractor.swift */,
+			);
+			name = Skills;
+			sourceTree = "<group>";
+		};
+		125B2CC1217A7C8000D34CFB /* SkillQueue */ = {
+			isa = PBXGroup;
+			children = (
+				125B2CC5217A7C9400D34CFB /* SkillQueue.swift */,
+				125B2CC3217A7C9400D34CFB /* SkillQueueViewController.swift */,
+				125B2CC2217A7C9400D34CFB /* SkillQueuePresenter.swift */,
+				125B2CC4217A7C9400D34CFB /* SkillQueueInteractor.swift */,
+			);
+			name = SkillQueue;
 			sourceTree = "<group>";
 		};
 		125DF62E2133CFAE00B86AE0 /* Main */ = {
@@ -2019,9 +2085,11 @@
 				121F26E22136EC2800AE1D70 /* Banner */,
 				125DF62E2133CFAE00B86AE0 /* Main */,
 				1204D061215270410070AF92 /* Database */,
+				125B2CB8217A7BCE00D34CFB /* Skills */,
+				125B2CB7217A7B0E00D34CFB /* CharacterInfo */,
+				12484C6B215CC05D0083AE17 /* PageViewController */,
 				121F26E52136EC5700AE1D70 /* NavigationController.swift */,
 				121F26E72136ECA800AE1D70 /* SplitViewController.swift */,
-				12484C6B215CC05D0083AE17 /* PageViewController */,
 				12678BEE212BE32A00E7E427 /* AppDelegate.swift */,
 				129E40B2213FB44B002EDAF9 /* Snippets.swift */,
 			);
@@ -2587,6 +2655,7 @@
 			files = (
 				12FE0E3621348F6B002F3507 /* Dark.clr in Sources */,
 				12133C53215E56AD00646937 /* CertCertificateMasteryInfoViewController.swift in Sources */,
+				125B2CC8217A7C9400D34CFB /* SkillQueueInteractor.swift in Sources */,
 				12133C37215E39A600646937 /* CertGroupsViewController.swift in Sources */,
 				12415981212FF0AC001709F2 /* TreeItem.swift in Sources */,
 				12484C83215CCF2E0083AE17 /* MapLocationPickerRegionsInteractor.swift in Sources */,
@@ -2595,6 +2664,7 @@
 				12484C76215CC69D0083AE17 /* MapLocationPickerPresenter.swift in Sources */,
 				12133C44215E3B7700646937 /* CertCertificatesInteractor.swift in Sources */,
 				12EE7D0E213E62E8005CE68F /* Accounts.swift in Sources */,
+				125B2CBE217A7BDF00D34CFB /* SkillsViewController.swift in Sources */,
 				12133C7C215E6F1900646937 /* CertCertificateDescriptionCell.swift in Sources */,
 				12B8907F21300E610082D4A3 /* TreeViewController.swift in Sources */,
 				12D8147221550EC200313DAF /* InvTypeInfoViewController.swift in Sources */,
@@ -2616,6 +2686,7 @@
 				12484C65215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift in Sources */,
 				12484CA9215D21080083AE17 /* MapLocationPickerSearchResultsInteractor.swift in Sources */,
 				12133C3B215E39B700646937 /* CertGroupsInteractor.swift in Sources */,
+				125B2CBD217A7BDF00D34CFB /* SkillsPresenter.swift in Sources */,
 				12EE7CE5213D598F005CE68F /* Router.swift in Sources */,
 				12AB974D212C30E300B30DD3 /* SDEVersion.swift in Sources */,
 				125DF63C2133D30000B86AE0 /* TreeDefaultCell.swift in Sources */,
@@ -2646,6 +2717,7 @@
 				12484C7D215CCF100083AE17 /* MapLocationPickerRegions.swift in Sources */,
 				12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */,
 				121F26ED2136EE8700AE1D70 /* AccountsInteractor.swift in Sources */,
+				125B2CB62176FEB500D34CFB /* InvTypeMastery.swift in Sources */,
 				12484C8D215CD5970083AE17 /* MapLocationPickerRecents.swift in Sources */,
 				1279EFF5213586D6005340C0 /* NCTableView.m in Sources */,
 				1279F00121358F7C005340C0 /* MainMenuHeaderInteractor.swift in Sources */,
@@ -2664,6 +2736,7 @@
 				12AB972A212BF60000B30DD3 /* Storage.xcdatamodeld in Sources */,
 				12AB9732212C0E4F00B30DD3 /* NCFleetConfiguration.swift in Sources */,
 				12EE7D08213E60C8005CE68F /* MainMenuContainerPresenter.swift in Sources */,
+				125B2CBF217A7BDF00D34CFB /* SkillsInteractor.swift in Sources */,
 				12B890722130054E0082D4A3 /* SOLID.swift in Sources */,
 				12AB972C212BF6A900B30DD3 /* Storage.swift in Sources */,
 				125DF6332133CFC700B86AE0 /* MainMenuViewController.swift in Sources */,
@@ -2678,6 +2751,7 @@
 				121F26EB2136EE6C00AE1D70 /* AccountsViewController.swift in Sources */,
 				124C858F213E880200333636 /* BackgroundView.swift in Sources */,
 				129DFE1E21347AFB00C85496 /* AccessibilityLabel.swift in Sources */,
+				125B2CB52176FEB500D34CFB /* InvTypeMasteryInteractor.swift in Sources */,
 				12133C35215E399C00646937 /* CertGroups.swift in Sources */,
 				12A843072153872D00570A95 /* InvTypesInteractor.swift in Sources */,
 				129DFE20213486D900C85496 /* ProgressTask.swift in Sources */,
@@ -2700,6 +2774,7 @@
 				12D8147021550E0F00313DAF /* InvTypeInfo.swift in Sources */,
 				12484C38215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift in Sources */,
 				12133C5F215E56E100646937 /* CertCertificateRequirementsInfoInteractor.swift in Sources */,
+				125B2CC9217A7C9400D34CFB /* SkillQueue.swift in Sources */,
 				12133C30215E292D00646937 /* InvTypeVariationsInteractor.swift in Sources */,
 				120A386F213D543E0071ED72 /* MainMenuHeader.swift in Sources */,
 				12AB9735212C0E6E00B30DD3 /* NCImplantSetData.swift in Sources */,
@@ -2711,7 +2786,11 @@
 				12484C85215CD5560083AE17 /* MapLocationPickerSolarSystems.swift in Sources */,
 				12484C8B215CD5740083AE17 /* MapLocationPickerSolarSystemsInteractor.swift in Sources */,
 				12E0417E212D3C4F0000CB4F /* API.swift in Sources */,
+				125B2CB32176FEB500D34CFB /* InvTypeMasteryPresenter.swift in Sources */,
+				125B2CC6217A7C9400D34CFB /* SkillQueuePresenter.swift in Sources */,
 				12D8147421550ED100313DAF /* InvTypeInfoPresenter.swift in Sources */,
+				125B2CC0217A7BDF00D34CFB /* Skills.swift in Sources */,
+				125B2CB42176FEB500D34CFB /* InvTypeMasteryViewController.swift in Sources */,
 				12AB9755212C488400B30DD3 /* TrainingQueue.swift in Sources */,
 				129E40AD213ECE0E002EDAF9 /* RoundedImageView.swift in Sources */,
 				12133C59215E56C600646937 /* CertCertificateRequirementsInfo.swift in Sources */,
@@ -2724,6 +2803,7 @@
 				12E0419C212D77530000CB4F /* Error.swift in Sources */,
 				1204D07221528A1C0070AF92 /* InvGroupsPresenter.swift in Sources */,
 				12D8147621550EDA00313DAF /* InvTypeInfoInteractor.swift in Sources */,
+				125B2CC7217A7C9400D34CFB /* SkillQueueViewController.swift in Sources */,
 				12B03DA3213FC32300DCBD64 /* Math.swift in Sources */,
 				12133C4B215E55BE00646937 /* CertCertificateInfoPresenter.swift in Sources */,
 				12133C2A215E290500646937 /* InvTypeVariations.swift in Sources */,

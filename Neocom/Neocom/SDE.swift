@@ -179,3 +179,26 @@ extension SDEInvType {
 		return (try? self.managedObjectContext?.from(SDEDgmTypeAttribute.self).filter(\SDEDgmTypeAttribute.type == self && \SDEDgmTypeAttribute.attributeType?.attributeID == key.rawValue).first()) ?? nil
 	}
 }
+
+extension SDEWhType {
+	var targetSystemClassDisplayName: String? {
+		switch targetSystemClass {
+		case 0:
+			return NSLocalizedString("Exit WH", comment: "")
+		case 1...6:
+			return String(format: NSLocalizedString("W-Space Class %d", comment: ""), targetSystemClass)
+		case 7:
+			return NSLocalizedString("High-Sec", comment: "")
+		case 8:
+			return NSLocalizedString("Low-Sec", comment: "")
+		case 9:
+			return NSLocalizedString("0.0 System", comment: "")
+		case 12:
+			return NSLocalizedString("Thera", comment: "")
+		case 13:
+			return NSLocalizedString("W-Frig", comment: "")
+		default:
+			return String(format: NSLocalizedString("Unknown Class %d", comment: ""), targetSystemClass)
+		}
+	}
+}

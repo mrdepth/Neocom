@@ -68,8 +68,24 @@ class InvTypeInfoPresenter: TreePresenter {
 		
 		return Services.sde.performBackgroundTask { (context) -> Presentation in
 			let type: SDEInvType = try context.existingObject(with: objectID)!
+			let categoryID = (type.group?.category?.categoryID).flatMap { SDECategoryID(rawValue: $0)}
 			
-			var presentation = progress.performAsCurrent(withPendingUnitCount: 1) {self.typeInfoPresentation(for: type, character: content.value, context: context, attributeValues: nil)}
+			var presentation: [AnyTreeItem] = progress.performAsCurrent(withPendingUnitCount: 1) {
+				switch categoryID {
+				case .blueprint?:
+					return self.blueprintInfoPresentation(for: type, character: content.value, context: context)
+				case .entity?:
+					return self.npcInfoPresentation(for: type, character: content.value, context: context)
+				default:
+					if type.wormhole != nil {
+						return self.whInfoPresentation(for: type, character: content.value, context: context)
+
+					}
+					else {
+						return self.typeInfoPresentation(for: type, character: content.value, context: context, attributeValues: nil)
+					}
+				}
+			}
 			
 			if type.marketGroup != nil {
 				let marketSection = Tree.Item.Section<AnyTreeItem>(Tree.Content.Section(title: NSLocalizedString("Market", comment: "").uppercased()), diffIdentifier: "MarketSection", expandIdentifier: "MarketSection", treeController: self.view?.treeController, children: [])
@@ -255,6 +271,10 @@ extension Tree.Item {
 
 		func configure(cell: UITableViewCell) {
 			guard let cell = cell as? TreeDefaultCell else {return}
+			cell.titleLabel?.isHidden = false
+			cell.subtitleLabel?.isHidden = false
+			cell.iconView?.isHidden = false
+			
 			cell.titleLabel?.attributedText = title
 			cell.subtitleLabel?.text = subtitle
 			cell.iconView?.image = image
@@ -301,6 +321,7 @@ extension Tree.Item {
 }
 
 extension InvTypeInfoPresenter {
+	
 	func typeInfoPresentation(for type: SDEInvType, character: Character?, context: SDEContext, attributeValues: [Int: Double]?) -> [AnyTreeItem] {
 		var sections = [AnyTreeItem]()
 		
@@ -507,6 +528,376 @@ extension InvTypeInfoPresenter {
 			guard let row = Tree.Item.InvTypeRequiredSkillRow(requiredSkill, character: character) else {return nil}
 			row.children = requiredSkills(for: type, character: character, context: context)
 			return row
+		}
+	}
+
+	func requiredSkillsPresentation(for activity: SDEIndActivity, character: Character?, context: SDEContext) -> Tree.Item.InvTypeSkillsSection? {
+		guard let rows = requiredSkills(for: activity, character: character, context: context), !rows.isEmpty else {return nil}
+		let trainingQueue = TrainingQueue(character: character ?? .empty)
+		trainingQueue.addRequiredSkills(for: activity)
+		return Tree.Item.InvTypeSkillsSection(title: NSLocalizedString("Required Skills", comment: "").uppercased(),
+											  trainingQueue: trainingQueue,
+											  character: character,
+											  diffIdentifier: "\(activity.objectID).requiredSkills",
+											  expandIdentifier: "\(activity.objectID).requiredSkills",
+											  treeController: view?.treeController,
+											  children: rows)
+	}
+
+	
+	private func requiredSkills(for activity: SDEIndActivity, character: Character?, context: SDEContext) -> [Tree.Item.InvTypeRequiredSkillRow]? {
+		return (activity.requiredSkills?.allObjects as? [SDEIndRequiredSkill])?.filter {$0.skillType?.typeName != nil}.sorted {$0.skillType!.typeName! < $1.skillType!.typeName!}.compactMap { requiredSkill -> Tree.Item.InvTypeRequiredSkillRow? in
+			guard let type = requiredSkill.skillType else {return nil}
+			guard let row = Tree.Item.InvTypeRequiredSkillRow(requiredSkill, character: character) else {return nil}
+			row.children = requiredSkills(for: type, character: character, context: context)
+			return row
+		}
+	}
+
+	func blueprintInfoPresentation(for type: SDEInvType, character: Character?, context: SDEContext) -> [AnyTreeItem] {
+		
+		let activities = (type.blueprintType?.activities?.allObjects as? [SDEIndActivity])?.sorted {$0.activity!.activityID < $1.activity!.activityID}
+
+		return activities?.map { activity -> AnyTreeItem in
+			var rows = [AnyTreeItem]()
+			let time = TimeIntervalFormatter.localizedString(from: TimeInterval(activity.time), precision: .seconds)
+			let row = Tree.Item.Row(Tree.Content.Default(subtitle: time, image: Image( #imageLiteral(resourceName: "skillRequirementQueued"))), diffIdentifier: "\(activity.activity!.activityID).time")
+			rows.append(row.asAnyItem)
+			
+			let products = (activity.products?.allObjects as? [SDEIndProduct])?.filter {$0.productType?.typeName != nil}.sorted {$0.productType!.typeName! < $1.productType!.typeName!}.map { product -> AnyTreeItem in
+				let title = NSLocalizedString("PRODUCT", comment: "")
+				let image = Image(product.productType?.icon)
+				let row = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: title, subtitle: product.productType!.typeName!, image: image, accessoryType: .disclosureIndicator), diffIdentifier: product.objectID, route: Router.SDE.invTypeInfo(.objectID(product.productType!.objectID)))
+				return row.asAnyItem
+			}
+			if let products = products {
+				rows.append(contentsOf: products)
+			}
+			
+			let materials = (activity.requiredMaterials?.allObjects as? [SDEIndRequiredMaterial])?.filter {$0.materialType?.typeName != nil}.sorted {$0.materialType!.typeName! < $1.materialType!.typeName!}.map { material -> AnyTreeItem in
+				let subtitle = UnitFormatter.localizedString(from: material.quantity, unit: .none, style: .long)
+				let image = Image(material.materialType?.icon)
+				
+				let row = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: material.materialType?.typeName, subtitle: subtitle, image: image, accessoryType: .disclosureIndicator), diffIdentifier: material.objectID, route: Router.SDE.invTypeInfo(.objectID(material.materialType!.objectID)))
+				return row.asAnyItem
+			}
+			
+			if let materials = materials, !materials.isEmpty {
+				rows.append(Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("MATERIALS", comment: "")),
+											  diffIdentifier: "\(activity.objectID).materials", treeController: view?.treeController, children: materials).asAnyItem)
+			}
+			
+			if let requiredSkills = requiredSkillsPresentation(for: activity, character: character, context: context) {
+				rows.append(requiredSkills.asAnyItem)
+			}
+			
+			return Tree.Item.Section(Tree.Content.Section(title: activity.activity?.activityName?.uppercased()), diffIdentifier: activity.objectID, treeController: view?.treeController, children: rows).asAnyItem
+		} ?? []
+	}
+	
+	func whInfoPresentation(for type: SDEInvType, character: Character?, context: SDEContext) -> [AnyTreeItem] {
+		guard let wh = type.wormhole else {return []}
+		var rows = [AnyTreeItem]()
+		
+		if wh.targetSystemClass >= 0 {
+			rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+														   title: NSLocalizedString("Leads Into", comment: "").uppercased(),
+														   subtitle: wh.targetSystemClassDisplayName,
+														   image: Image(#imageLiteral(resourceName: "systems"))),
+									  diffIdentifier: "LeadsInto").asAnyItem)
+		}
+		
+		if wh.maxStableTime > 0 {
+			rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+														   title: NSLocalizedString("Maximum Stable Time", comment: "").uppercased(),
+														   subtitle: TimeIntervalFormatter.localizedString(from: TimeInterval(wh.maxStableTime * 60), precision: .hours),
+														   image: Image(context.eveIcon("22_32_16"))),
+									  diffIdentifier: "MaximumStableTime").asAnyItem)
+		}
+
+		if wh.maxStableMass > 0 {
+			rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+														   title: NSLocalizedString("Maximum Stable Mass", comment: "").uppercased(),
+														   subtitle: UnitFormatter.localizedString(from: wh.maxStableMass, unit: .kilogram, style: .long),
+														   image: Image(context.eveIcon("2_64_10"))),
+									  diffIdentifier: "MaximumStableMass").asAnyItem)
+		}
+		
+		if wh.maxJumpMass > 0 {
+			let frc = context.managedObjectContext
+				.from(SDEInvType.self)
+				.filter(\SDEInvType.mass <= wh.maxJumpMass && \SDEInvType.group?.category?.categoryID == SDECategoryID.ship.rawValue && \SDEInvType.published == true)
+				.sort(by: \SDEInvType.group?.groupName, ascending: true)
+				.sort(by: \SDEInvType.typeName, ascending: true)
+				.select([Self.as(NSManagedObjectID.self, name: "objectID"),
+						 (\SDEInvType.group?.groupName).as(String.self, name: "groupName")])
+				.fetchedResultsController(sectionName: (\SDEInvType.group?.groupName).as(String.self, name: "groupName"), cacheName: nil)
+			try? frc.performFetch()
+			let children = Tree.Item.FetchedResultsController<Tree.Item.NamedFetchedResultsSection<Tree.Item.InvType>>(frc, treeController: view?.treeController)
+			
+			rows.append (Tree.Item.ExpandableRow(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																	  title: NSLocalizedString("Maximum Jump Mass", comment: "").uppercased(),
+																	  subtitle: UnitFormatter.localizedString(from: wh.maxStableMass, unit: .kilogram, style: .long),
+																	  image: Image(context.eveIcon("36_64_13"))),
+												 diffIdentifier: "MaximumJumpMass",
+												 isExpanded: false,
+												 children: [children]).asAnyItem)
+		}
+		
+		if wh.maxRegeneration > 0 {
+			rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+														   title: NSLocalizedString("Maximum Mass Regeneration", comment: "").uppercased(),
+														   subtitle: UnitFormatter.localizedString(from: wh.maxRegeneration, unit: .kilogram, style: .long),
+														   image: Image(context.eveIcon("23_64_3"))),
+									  diffIdentifier: "MaximumMassRegeneration").asAnyItem)
+		}
+		return [Tree.Item.Virtual(children: rows).asAnyItem]
+	}
+	
+	func npcInfoPresentation(for type: SDEInvType, character: Character?, context: SDEContext) -> [AnyTreeItem] {
+		
+		let results = context.managedObjectContext.from(SDEDgmTypeAttribute.self)
+			.filter(\SDEDgmTypeAttribute.type == type && \SDEDgmTypeAttribute.attributeType?.published == true)
+			.sort(by: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, ascending: true)
+			.sort(by: \SDEDgmTypeAttribute.attributeType?.attributeID, ascending: true)
+			.fetchedResultsController(sectionName: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, cacheName: nil)
+		
+		do {
+			try results.performFetch()
+
+			var sections = [AnyTreeItem]()
+			
+			results.sections?.forEach { section in
+				guard let attributeCategory = (section.objects?.first as? SDEDgmTypeAttribute)?.attributeType?.attributeCategory else {return}
+				
+				let categoryID = SDEAttributeCategoryID(rawValue: attributeCategory.categoryID)
+				
+				let sectionTitle: String = categoryID == .null ? NSLocalizedString("Other", comment: "") : attributeCategory.categoryName ?? NSLocalizedString("Other", comment: "")
+				
+				var rows = [AnyTreeItem]()
+				
+				switch categoryID {
+				case .turrets?:
+					guard let speed = type[SDEAttributeID.speed] else {break}
+					let damageMultiplier = type[SDEAttributeID.damageMultiplier]?.value ?? 1
+					let maxRange = type[SDEAttributeID.maxRange]?.value ?? 0
+					let falloff = type[SDEAttributeID.falloff]?.value ?? 0
+					let duration: Double = speed.value / 1000
+					
+					let em = type[SDEAttributeID.emDamage]?.value ?? 0
+					let explosive = type[SDEAttributeID.explosiveDamage]?.value ?? 0
+					let kinetic = type[SDEAttributeID.kineticDamage]?.value ?? 0
+					let thermal = type[SDEAttributeID.thermalDamage]?.value ?? 0
+					let total = (em + explosive + kinetic + thermal) * damageMultiplier
+					
+					let interval = duration > 0 ? duration : 1
+					let dps = total / interval
+					
+					rows.append(Tree.Item.DamageTypeRow(Tree.Content.DamageType(prototype: Prototype.DamageTypeCell.compact,
+																				em: em * damageMultiplier,
+																				thermal: thermal * damageMultiplier,
+																				kinetic: kinetic * damageMultiplier,
+																				explosive: explosive * damageMultiplier), diffIdentifier: "Turrets").asAnyItem)
+					
+					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																   title: NSLocalizedString("Damage per Second", comment: "").uppercased(),
+																   subtitle: UnitFormatter.localizedString(from: dps, unit: .none, style: .long),
+																   image: Image(#imageLiteral(resourceName: "turrets"))),
+											  diffIdentifier: "TurretDamage").asAnyItem)
+					
+					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																   title: NSLocalizedString("Rate of Fire", comment: "").uppercased(),
+																   subtitle: TimeIntervalFormatter.localizedString(from: TimeInterval(duration), precision: .seconds),
+																   image: Image(#imageLiteral(resourceName: "rateOfFire"))),
+											  diffIdentifier: "TurretRoF").asAnyItem)
+					
+					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																   title: NSLocalizedString("Optimal Range", comment: "").uppercased(),
+																   subtitle: UnitFormatter.localizedString(from: maxRange, unit: .meter, style: .long),
+																   image: Image(#imageLiteral(resourceName: "targetingRange"))),
+											  diffIdentifier: "TurretOptimal").asAnyItem)
+					
+					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																   title: NSLocalizedString("Falloff", comment: "").uppercased(),
+																   subtitle: UnitFormatter.localizedString(from: falloff, unit: .meter, style: .long),
+																   image: Image(#imageLiteral(resourceName: "falloff"))),
+											  diffIdentifier: "TurretFalloff").asAnyItem)
+					
+				case .missile?:
+					guard let attribute = type[SDEAttributeID.entityMissileTypeID], let missile = context.invType(Int(attribute.value)) else {break}
+					
+					rows.append(Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																		   title: NSLocalizedString("Missile", comment: "").uppercased(),
+																		   subtitle: missile.typeName,
+																		   image: Image(missile.icon),
+																		   accessoryType: .disclosureIndicator),
+													  diffIdentifier: attribute.objectID,
+													  route: Router.SDE.invTypeInfo(.objectID(missile.objectID))).asAnyItem)
+					
+					let duration: Double = (type[SDEAttributeID.missileLaunchDuration]?.value ?? 1000) / 1000
+					let damageMultiplier = type[SDEAttributeID.missileDamageMultiplier]?.value ?? 1
+					let velocityMultiplier = type[SDEAttributeID.missileEntityVelocityMultiplier]?.value ?? 1
+					let flightTimeMultiplier = type[SDEAttributeID.missileEntityFlightTimeMultiplier]?.value ?? 1
+					
+					let em = missile[SDEAttributeID.emDamage]?.value ?? 0
+					let explosive = missile[SDEAttributeID.explosiveDamage]?.value ?? 0
+					let kinetic = missile[SDEAttributeID.kineticDamage]?.value ?? 0
+					let thermal = missile[SDEAttributeID.thermalDamage]?.value ?? 0
+					let total = (em + explosive + kinetic + thermal) * damageMultiplier
+					
+					let velocity: Double = (missile[SDEAttributeID.maxVelocity]?.value ?? 0) * velocityMultiplier
+					let flightTime: Double = (missile[SDEAttributeID.explosionDelay]?.value ?? 1) * flightTimeMultiplier / 1000
+					let agility: Double = missile[SDEAttributeID.agility]?.value ?? 0
+					let mass = missile.mass
+					
+					let accelTime = min(flightTime, mass * agility / 1000000.0)
+					let duringAcceleration = velocity / 2 * accelTime
+					let fullSpeed = velocity * (flightTime - accelTime)
+					let optimal = duringAcceleration + fullSpeed;
+					
+					let interval = duration > 0 ? duration : 1
+					let dps = total / interval
+
+					rows.append(Tree.Item.DamageTypeRow(Tree.Content.DamageType(prototype: Prototype.DamageTypeCell.compact,
+																				em: em * damageMultiplier,
+																				thermal: thermal * damageMultiplier,
+																				kinetic: kinetic * damageMultiplier,
+																				explosive: explosive * damageMultiplier), diffIdentifier: "Missile").asAnyItem)
+
+					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																   title: NSLocalizedString("Damage per Second", comment: "").uppercased(),
+																   subtitle: UnitFormatter.localizedString(from: dps, unit: .none, style: .long),
+																   image: Image(#imageLiteral(resourceName: "launchers"))),
+											  diffIdentifier: "MissileDamage").asAnyItem)
+
+					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																   title: NSLocalizedString("Rate of Fire", comment: "").uppercased(),
+																   subtitle: TimeIntervalFormatter.localizedString(from: TimeInterval(duration), precision: .seconds),
+																   image: Image(#imageLiteral(resourceName: "rateOfFire"))),
+											  diffIdentifier: "MissileRoF").asAnyItem)
+
+					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																   title: NSLocalizedString("Optimal Range", comment: "").uppercased(),
+																   subtitle: UnitFormatter.localizedString(from: optimal, unit: .meter, style: .long),
+																   image: Image(#imageLiteral(resourceName: "targetingRange"))),
+											  diffIdentifier: "MissileOptimal").asAnyItem)
+
+					
+				default:
+					
+					var resistanceRow: Tree.Item.DamageTypeRow?
+					func resistance() -> Tree.Item.DamageTypeRow? {
+						if resistanceRow == nil {
+							resistanceRow = Tree.Item.DamageTypeRow(Tree.Content.DamageType(prototype: Prototype.DamageTypeCell.compact, unit: .percent, em: 0, thermal: 0, kinetic: 0, explosive: 0))
+						}
+						return resistanceRow
+					}
+					
+					(section.objects as? [SDEDgmTypeAttribute])?.forEach { attribute in
+						let value = attribute.value
+						
+						switch SDEAttributeID(rawValue: attribute.attributeType!.attributeID) {
+						case .emDamageResonance?, .armorEmDamageResonance?, .shieldEmDamageResonance?,
+							 .hullEmDamageResonance?, .passiveArmorEmDamageResonance?, .passiveShieldEmDamageResonance?:
+							guard let row = resistance() else {return}
+							row.content.em = max(row.content.em, 1 - value)
+						case .thermalDamageResonance?, .armorThermalDamageResonance?, .shieldThermalDamageResonance?,
+							 .hullThermalDamageResonance?, .passiveArmorThermalDamageResonance?, .passiveShieldThermalDamageResonance?:
+							guard let row = resistance() else {return}
+							row.content.thermal = max(row.content.thermal, 1 - value)
+						case .kineticDamageResonance?, .armorKineticDamageResonance?, .shieldKineticDamageResonance?,
+							 .hullKineticDamageResonance?, .passiveArmorKineticDamageResonance?, .passiveShieldKineticDamageResonance?:
+							guard let row = resistance() else {return}
+							row.content.kinetic = max(row.content.kinetic, 1 - value)
+						case .explosiveDamageResonance?, .armorExplosiveDamageResonance?, .shieldExplosiveDamageResonance?,
+							 .hullExplosiveDamageResonance?, .passiveArmorExplosiveDamageResonance?, .passiveShieldExplosiveDamageResonance?:
+							guard let row = resistance() else {return}
+							row.content.explosive = max(row.content.explosive, 1 - value)
+						default:
+							let row = Tree.Item.DgmAttributeRow(attribute: attribute, value: value, context: context)
+							rows.append(row.asAnyItem)
+						}
+					}
+					
+					if let resistanceRow = resistanceRow {
+						rows.append(resistanceRow.asAnyItem)
+					}
+					
+					if categoryID == .shield {
+						if let capacity = type[SDEAttributeID.shieldCapacity]?.value,
+							let rechargeRate = type[SDEAttributeID.shieldRechargeRate]?.value,
+							rechargeRate > 0 && capacity > 0 {
+							let passive = 10.0 / (rechargeRate / 1000.0) * 0.5 * (1 - 0.5) * capacity
+						
+							rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																		   title: NSLocalizedString("Passive Recharge Rate", comment: "").uppercased(),
+																		   subtitle: UnitFormatter.localizedString(from: passive, unit: .hpPerSecond, style: .long),
+																		   image: Image(#imageLiteral(resourceName: "shieldRecharge"))),
+													  diffIdentifier: "ShieldRecharge").asAnyItem)
+
+						}
+						
+						if let amount = type[SDEAttributeID.entityShieldBoostAmount]?.value,
+							let duration = type[SDEAttributeID.entityShieldBoostDuration]?.value,
+							duration > 0 && amount > 0 {
+							
+							let chance = (type[SDEAttributeID.entityShieldBoostDelayChance] ??
+								type[SDEAttributeID.entityShieldBoostDelayChanceSmall] ??
+								type[SDEAttributeID.entityShieldBoostDelayChanceMedium] ??
+								type[SDEAttributeID.entityShieldBoostDelayChanceLarge])?.value ?? 0
+							
+							let repair = amount / (duration * (1 + chance) / 1000.0)
+
+							rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																		   title: NSLocalizedString("Repair Rate", comment: "").uppercased(),
+																		   subtitle: UnitFormatter.localizedString(from: repair, unit: .hpPerSecond, style: .long),
+																		   image: Image(#imageLiteral(resourceName: "shieldBooster"))),
+													  diffIdentifier: "ShieldBooster").asAnyItem)
+
+						}
+					}
+					else if categoryID == .armor {
+						if let amount = type[SDEAttributeID.entityArmorRepairAmount]?.value,
+							let duration = type[SDEAttributeID.entityArmorRepairDuration]?.value,
+							duration > 0 && amount > 0 {
+							
+							let chance = (type[SDEAttributeID.entityArmorRepairDelayChance] ??
+								type[SDEAttributeID.entityArmorRepairDelayChanceSmall] ??
+								type[SDEAttributeID.entityArmorRepairDelayChanceMedium] ??
+								type[SDEAttributeID.entityArmorRepairDelayChanceLarge])?.value ?? 0
+							
+							let repair = amount / (duration * (1 + chance) / 1000.0)
+							
+							rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+																		   title: NSLocalizedString("Repair Rate", comment: "").uppercased(),
+																		   subtitle: UnitFormatter.localizedString(from: repair, unit: .hpPerSecond, style: .long),
+																		   image: Image(#imageLiteral(resourceName: "armorRepairer"))),
+													  diffIdentifier: "ArmorRepair").asAnyItem)
+							
+						}
+					}
+				}
+				
+				guard !rows.isEmpty else {return}
+				
+				let section = Tree.Item.Section(Tree.Content.Section(title: sectionTitle.uppercased()),
+												diffIdentifier: attributeCategory.objectID,
+												treeController: view?.treeController,
+												children: rows).asAnyItem
+				
+				if categoryID == .entityRewards {
+					sections.insert(section, at: 0)
+				}
+				else {
+					sections.append(section)
+				}
+
+			}
+			
+			return sections
+		}
+		catch {
+			return []
 		}
 	}
 }

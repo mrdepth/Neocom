@@ -9,6 +9,7 @@
 import Foundation
 import TreeController
 import Futures
+import CloudData
 
 protocol TreeView: ContentProviderView, TreeControllerDelegate where Presenter: TreePresenter {
 	var tableView: UITableView! {get}
@@ -302,4 +303,3 @@ extension TreePresenter {
 		item.isExpanded = false
 	}
 }
-

@@ -74,6 +74,7 @@ extension Tree.Content {
 }
 
 extension Tree.Item {
+	
 	class Section<Element: TreeItem>: Collection<Tree.Content.Section, Element>, ExpandableItem {
 		var action: ((UIControl) -> Void)?
 		var editingAction: ((UIControl) -> Void)?

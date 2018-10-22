@@ -49,7 +49,9 @@ extension Prototype {
 
 
 extension Tree.Item {
-	class InvType: Tree.Item.FetchedResultsRow<NSDictionary> {
+	class InvType: Tree.Item.FetchedResultsRow<NSDictionary>, Routable {
+		
+		lazy var route: Routing? = (self.result["objectID"] as? NSManagedObjectID).map{Router.SDE.invTypeInfo(.objectID($0))}
 		
 		lazy var type: SDEInvType? = {
 			guard let objectID = result["objectID"] as? NSManagedObjectID else {return nil}
@@ -72,13 +74,13 @@ extension Tree.Item {
 		}()
 		
 		override var prototype: Prototype? {
-			if shipResources != nil {
+			if result["shipResources"] != nil {
 				return Prototype.InvTypeCell.ship
 			}
-			else if damage != nil {
+			else if result["damage"] != nil {
 				return Prototype.InvTypeCell.charge
 			}
-			else if requirements != nil {
+			else if result["requirements"] != nil {
 				return Prototype.InvTypeCell.module
 			}
 			else {

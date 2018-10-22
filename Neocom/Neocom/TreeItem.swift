@@ -155,6 +155,22 @@ extension Tree.Item {
 			self.secondaryRoute = secondaryRoute
 			super.init(content)
 		}
+	}
+	
+	class ExpandableRow<Content: Hashable, Element: TreeItem>: Base<Content, Element>, ExpandableItem {
+		
+		var isExpanded: Bool
+		var expandIdentifier: CustomStringConvertible?
+		
+		init<T: Hashable>(_ content: Content, diffIdentifier: T, isExpanded: Bool = true, expandIdentifier: CustomStringConvertible? = nil, children: [Element]? = nil) {
+			self.isExpanded = isExpanded
+			super.init(content, diffIdentifier: diffIdentifier, children: children)
+		}
+		
+		init(_ content: Content, isExpanded: Bool = true, children: [Element]? = nil) {
+			self.isExpanded = isExpanded
+			super.init(content, children: children)
+		}
 
 	}
 

@@ -61,7 +61,13 @@ enum Router {
 		static func certCertificateInfo(_ input: CertCertificateInfo.View.Input) -> Route<CertCertificateInfo> {
 			return Route(assembly: CertCertificateInfo.default, input: input, kind: .push)
 		}
-
+	}
+	
+	enum Character {
+		static func skills() -> Route<SkillQueue> {
+			return Route(assembly: SkillQueue.default, kind: .detail)
+//			return Route(assembly: Skills.default, kind: .detail)
+		}
 
 	}
 }

@@ -76,7 +76,7 @@ class MainMenuPresenter: TreePresenter {
 																							 account: account,
 //																							 value: characterSheet(),
 																							 treeController: view?.treeController,
-																							 route: nil,
+																							 route: Router.Character.skills(),
 																							 require: [.esiSkillsReadSkillqueueV1,
 																									   .esiSkillsReadSkillsV1,
 																									   .esiClonesReadImplantsV1]),

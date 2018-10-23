@@ -244,8 +244,6 @@ extension TreeController {
 	}
 }
 
-
-
 extension TreeView where Presenter.Presentation: Collection, Presenter.Presentation.Element: TreeItem {
 	@discardableResult
 	func present(_ content: Presenter.Presentation, animated: Bool) -> Future<Void> {

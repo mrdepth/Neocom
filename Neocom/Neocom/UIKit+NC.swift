@@ -8,6 +8,8 @@
 
 import Foundation
 
+let ThinnestLineWidth = 1.0 / UIScreen.main.scale
+
 extension UIView {
 	func ancestor<T:UIView>(of type: T.Type = T.self) -> T? {
 		return self as? T ?? self.superview?.ancestor(of: type)
@@ -129,3 +131,4 @@ extension String {
 		self = String.numbers[romanNumber.clamped(to: 0...5)]
 	}
 }
+

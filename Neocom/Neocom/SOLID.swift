@@ -9,6 +9,7 @@
 import Foundation
 import Futures
 
+
 protocol Assembly {
 	associatedtype View: Neocom.View
 //	typealias Input = View.Input

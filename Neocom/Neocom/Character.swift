@@ -17,7 +17,7 @@ struct Character: Codable {
 		let rank: Double
 	}
 	
-	struct Attributes: Codable {
+	struct Attributes: Hashable, Codable {
 		var intelligence: Int
 		var memory: Int
 		var perception: Int
@@ -25,7 +25,7 @@ struct Character: Codable {
 		var charisma: Int
 	}
 	
-	struct SkillQueueItem: Codable {
+	struct SkillQueueItem: Hashable, Codable {
 		var skill: Skill
 		var queuedSkill: ESI.Skills.SkillQueueItem
 	}

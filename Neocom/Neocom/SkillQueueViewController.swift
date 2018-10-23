@@ -10,4 +10,8 @@ import Foundation
 import TreeController
 
 class SkillQueueViewController: TreeViewController<SkillQueuePresenter, Void>, TreeView {
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+	}
 }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -28,7 +27,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="O7w-nV-CYa">
-                                            <rect key="frame" x="71.5" y="0.0" width="232" height="232"/>
+                                            <rect key="frame" x="71.5" y="0.0" width="232.5" height="232.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="512" id="fhE-ra-rLD"/>
                                                 <constraint firstAttribute="width" secondItem="O7w-nV-CYa" secondAttribute="height" id="oEb-BR-nx8"/>
@@ -58,7 +57,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="LABEL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ivj-qF-LD2">
-                                            <rect key="frame" x="15" y="4" width="345" height="32"/>
+                                            <rect key="frame" x="15" y="4" width="345" height="32.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="Gnm-OM-8AZ"/>
                                             </constraints>
@@ -147,8 +146,8 @@
         <!--Skill Queue-->
         <scene sceneID="ZWp-f6-G6E">
             <objects>
-                <tableViewController storyboardIdentifier="NCSkillQueueViewController" id="nG7-Ib-3hW" customClass="NCSkillQueueViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="tkU-W3-1fP" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="SkillQueueViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nG7-Ib-3hW" customClass="SkillQueueViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="tkU-W3-1fP" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -247,7 +246,7 @@
         <!--Skills View Controller-->
         <scene sceneID="HV9-1H-1dH">
             <objects>
-                <splitViewController id="3ca-0i-5xO" customClass="NCSkillsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <splitViewController storyboardIdentifier="SkillsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3ca-0i-5xO" customClass="SkillsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <connections>
                         <segue destination="nG7-Ib-3hW" kind="relationship" relationship="masterViewController" id="8VR-UX-yuK"/>
                     </connections>
@@ -550,13 +549,13 @@
                                                 <rect key="frame" x="0.0" y="34" width="345" height="18"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" text="From:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tDi-uq-jCW">
-                                                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="18"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="39.5" height="18"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                         <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMl-Zq-rzy">
-                                                        <rect key="frame" x="4" y="0.0" width="341" height="18"/>
+                                                        <rect key="frame" x="43.5" y="0.0" width="301.5" height="18"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                         <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -620,7 +619,7 @@
                                     <outletCollection property="gestureRecognizers" destination="yQq-PW-9g9" appends="YES" id="qsh-hK-dHT"/>
                                 </connections>
                             </scrollView>
-                            <containerView opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9nX-y8-EQq">
+                            <containerView opaque="NO" alpha="0.0" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9nX-y8-EQq">
                                 <rect key="frame" x="0.0" y="96" width="375" height="571"/>
                                 <connections>
                                     <segue destination="zam-Il-kne" kind="embed" id="xaL-eT-Aib"/>
@@ -805,22 +804,22 @@
                                             <rect key="frame" x="15" y="4" width="326" height="35.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ERm-cf-16C">
-                                                    <rect key="frame" x="0.0" y="9" width="0.0" height="18"/>
+                                                    <rect key="frame" x="0.0" y="9" width="285" height="18"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Izp-Sc-xeS">
-                                                    <rect key="frame" x="-15" y="2" width="0.0" height="32"/>
+                                                    <rect key="frame" x="293" y="2" width="33" height="32"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="900" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Nd-Wi-GF8">
-                                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="16"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="33" height="16"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="900" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G9K-vZ-PZn">
-                                                            <rect key="frame" x="0.0" y="16" width="0.0" height="16"/>
+                                                            <rect key="frame" x="0.0" y="16" width="33" height="16"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                             <nil key="highlightedColor"/>

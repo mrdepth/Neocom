@@ -16,9 +16,6 @@ class UnitFormatter: Formatter {
 		numberFormatter.groupingSize = 3
 		numberFormatter.groupingSeparator = " "
 		numberFormatter.decimalSeparator = "."
-		numberFormatter.minimumSignificantDigits = 0
-		numberFormatter.maximumSignificantDigits = 2
-		numberFormatter.usesSignificantDigits = true
 		return numberFormatter
 	}()
 	
@@ -44,7 +41,20 @@ class UnitFormatter: Formatter {
 				scale = .natural
 			}
 		}
-		return (numberFormatter.string(from: NSNumber(value: value / scale.divider)) ?? "") + unit.suffix(scale: scale)
+		
+		let value = value / scale.divider
+		
+		switch fabs(value) {
+		case ..<10:
+			numberFormatter.maximumFractionDigits = 2
+		case 10..<100:
+			numberFormatter.maximumFractionDigits = 1
+		default:
+			numberFormatter.maximumFractionDigits = 0
+		}
+		
+		
+		return (numberFormatter.string(from: NSNumber(value: value)) ?? "") + unit.suffix(scale: scale)
 	}
 	
 	override func string(for obj: Any?) -> String? {

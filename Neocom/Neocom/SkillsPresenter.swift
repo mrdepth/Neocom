@@ -28,4 +28,5 @@ class SkillsPresenter: Presenter {
 	}
 	
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
+	
 }

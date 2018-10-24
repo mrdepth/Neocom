@@ -164,6 +164,11 @@ extension Tree.Item {
 					section.children!.insert(item, at: i.0.item)
 				}
 			}
+			
+			if updates?.isEmpty == false {
+				treeController?.update(contentsOf: self, with: .fade)
+			}
+
 			updates?.itemUpdates.forEach { i in
 				let section = children![i.0.section]
 				section.children!.remove(at: i.0.item)
@@ -175,6 +180,11 @@ extension Tree.Item {
 			if updates?.isEmpty == false {
 				treeController?.update(contentsOf: self, with: .fade)
 			}
+			
+			updates?.itemUpdates.forEach { i in
+				treeController?.reloadRow(for: children![i.0.section].children![i.0.item], with: .fade)
+			}
+
 			updates = nil
 		}
 	}

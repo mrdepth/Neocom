@@ -60,23 +60,101 @@ class SkillQueuePresenter: TreePresenter {
 		let skillQueueSection = Tree.Item.Section(Tree.Content.Section(title: title), diffIdentifier: "SkillQueue", expandIdentifier: "SkillQueue", treeController: view?.treeController, children: rows)
 		
 		sections.append(skillQueueSection.asAnyItem)
+		sections.append(Tree.Item.SkillPlansResultsController(account: account, treeController: view?.treeController, presenter: self).asAnyItem)
 		
-		let controller = Services.storage.viewContext.managedObjectContext
-			.from(SkillPlan.self)
-			.filter(\SkillPlan.account == account)
-			.sort(by: \SkillPlan.active, ascending: false)
-			.sort(by: \SkillPlan.name, ascending: true)
-			.fetchedResultsController()
-		
-		let skillPlans = Tree.Item.NamedFetchedResultsController<Tree.Item.FetchedResultsSection<Tree.Item.SkillPlanRow>>(Tree.Content.Section(title: NSLocalizedString("Skill Plans", comment: "").uppercased()), fetchedResultsController: controller, treeController: view?.treeController)
-		
-		sections.append(skillPlans.asAnyItem)
 
 		return .init(sections)
+	}
+	
+	func onSkillPlansAction(sender: UIControl) {
+		guard let account = Services.storage.viewContext.currentAccount else {return}
+		
+		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Add Skill Plan", comment: ""), style: .default, handler: { _ in
+			
+			account.skillPlans?.forEach {
+				($0 as? SkillPlan)?.active = false
+			}
+			
+			let skillPlan = SkillPlan(context: account.managedObjectContext!)
+			skillPlan.name = NSLocalizedString("Unnamed", comment: "")
+			skillPlan.account = account
+			skillPlan.active = true
+			try? Services.storage.viewContext.save()
+		}))
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+		view?.present(controller, animated: true, completion: nil)
+	}
+	
+	func onSkillPlanAction(_ skillPlan: SkillPlan, sender: UIControl) {
+		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+		if (skillPlan.skills?.count ?? 0) > 0 {
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Clear", comment: ""), style: .default, handler: { _ in
+				(skillPlan.skills?.allObjects as? [SkillPlanSkill])?.forEach { skill in
+					skill.managedObjectContext?.delete(skill)
+					skill.skillPlan = nil
+				}
+				
+				try? Services.storage.viewContext.save()
+			}))
+		}
+		
+		if !skillPlan.active {
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Make Active", comment: ""), style: .default, handler: { _ in
+				skillPlan.account?.skillPlans?.forEach {
+					($0 as? SkillPlan)?.active = false
+				}
+				skillPlan.active = true
+				try? Services.storage.viewContext.save()
+			}))
+		}
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { [weak self] (action) in
+			let controller = UIAlertController(title: NSLocalizedString("Rename", comment: ""), message: nil, preferredStyle: .alert)
+			
+			var textField: UITextField?
+			
+			controller.addTextField(configurationHandler: {
+				textField = $0
+				textField?.text = skillPlan.name
+				textField?.clearButtonMode = .always
+			})
+			
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { (action) in
+				if textField?.text?.count ?? 0 > 0 && skillPlan.name != textField?.text {
+					skillPlan.name = textField?.text
+					try? Services.storage.viewContext.save()
+				}
+			}))
+			
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+			
+			self?.view?.present(controller, animated: true, completion: nil)
+		}))
+		
+		if (skillPlan.account?.skillPlans?.count ?? 0) > 1 {
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive, handler: { _ in
+				
+				if skillPlan.active {
+					if let item = (skillPlan.account?.skillPlans?.sortedArray(using: [NSSortDescriptor(key: "name", ascending: true)]) as? [SkillPlan])?.first(where: { $0 !== skillPlan }) {
+						item.active = true
+					}
+				}
+				skillPlan.managedObjectContext?.delete(skillPlan)
+				try? Services.storage.viewContext.save()
+			}))
+		}
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
+		view?.present(controller, animated: true, completion: nil)
+
 	}
 }
 
 extension Tree.Item {
+	
 	class SkillQueueItem: RoutableRow<Character.SkillQueueItem> {
 		override var prototype: Prototype? {
 			return Prototype.SkillCell.default
@@ -119,16 +197,105 @@ extension Tree.Item {
 		}
 	}
 	
-	class SkillPlanRow: FetchedResultsRow<SkillPlan> {
-		override var prototype: Prototype? {
-			return Prototype.TreeHeaderCell.default
+	class SkillPlansResultsController: NamedFetchedResultsController<FetchedResultsSection<SkillPlanRow>> {
+		weak var presenter: SkillQueuePresenter?
+		private var section: Tree.Item.Section<Child>
+		
+		init(account: Account, treeController: TreeController?, presenter: SkillQueuePresenter?) {
+			self.presenter = presenter
+
+			let frc = Services.storage.viewContext.managedObjectContext
+				.from(SkillPlan.self)
+				.filter(\SkillPlan.account == account)
+				.sort(by: \SkillPlan.active, ascending: false)
+				.sort(by: \SkillPlan.name, ascending: true)
+				.fetchedResultsController()
+
+			section = Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Skill Plans", comment: "").uppercased()),
+										diffIdentifier: frc.fetchRequest,
+										treeController: treeController,
+										action: { [weak presenter] (control) in
+											presenter?.onSkillPlansAction(sender: control)
+											
+			})
+			
+			super.init(Tree.Content.Section(title: NSLocalizedString("Skill Plans", comment: "").uppercased()), fetchedResultsController: frc, diffIdentifier: frc.fetchRequest, expandIdentifier: "SkillPlans", treeController: treeController)
 		}
 		
 		override func configure(cell: UITableViewCell) {
-			guard let cell = cell as? TreeHeaderCell else {return}
-			cell.titleLabel?.text = result.name
+			section.configure(cell: cell)
 		}
 	}
+	
+	class SkillPlanSkillsResultsController: FetchedResultsController<FetchedResultsSection<SkillPlanSkillRow>> {
+		weak var presenter: SkillQueuePresenter?
+		
+		init(skillPlan: SkillPlan, treeController: TreeController?, presenter: SkillQueuePresenter?) {
+			self.presenter = presenter
+			
+			let frc = skillPlan.managedObjectContext!.from(SkillPlanSkill.self)
+				.filter(\SkillPlanSkill.skillPlan == skillPlan)
+				.sort(by: \SkillPlanSkill.position, ascending: true)
+				.fetchedResultsController()
+
+			super.init(frc, diffIdentifier: frc.fetchRequest, treeController: treeController)
+		}
+	}
+	
+	class SkillPlanRow: Section<SkillPlanSkillsResultsController>, FetchedResultsTreeItem {
+		typealias Result = SkillPlan
+		
+		private lazy var _children: [Child]? = {
+			return [SkillPlanSkillsResultsController(skillPlan: result, treeController: section?.controller?.treeController, presenter: (section?.controller as? SkillPlansResultsController)?.presenter)]
+		}()
+
+		
+		override var children: [Child]? {
+			get {
+				return _children
+			}
+			set {
+				_children = newValue
+			}
+		}
+		
+		var result: Result
+		weak var section: FetchedResultsSectionProtocol?
+		
+		required init(_ result: Result, section: FetchedResultsSectionProtocol) {
+			self.result = result
+			self.section = section
+			let presenter = (section.controller as? SkillPlansResultsController)?.presenter
+			super.init(Tree.Content.Section(title: result.name?.uppercased(), isExpanded: result.active), diffIdentifier: result, treeController: section.controller?.treeController)
+			action = { [weak presenter] (control) in
+				presenter?.onSkillPlanAction(result, sender: control)
+			}
+		}
+		
+//		override var hashValue: Int {
+//			return result.hash
+//		}
+		
+//		override func isEqual(_ other: Tree.Item.Base<Tree.Content.Section, Child>) -> Bool {
+//			return type(of: self) == type(of: other) && result == (other as? SkillPlanRow)?.result
+//		}
+//
+//		static func == (lhs: SkillPlanRow, rhs: SkillPlanRow) -> Bool {
+//			return lhs.isEqual(rhs)
+//		}
+		
+		override func configure(cell: UITableViewCell) {
+			super.configure(cell: cell)
+			guard let cell = cell as? TreeHeaderCell else {return}
+			cell.titleLabel?.text = result.name?.uppercased()
+		}
+
+	}
+	
+	class SkillPlanSkillRow: FetchedResultsRow<SkillPlanSkill> {
+		
+	}
 }
+
 
 

@@ -220,12 +220,11 @@ extension Tree.Item {
 		weak var section: FetchedResultsSectionProtocol?
 		
 		private lazy var _children: [AccountsResultsController]? = {
-			let request = result.managedObjectContext!.from(Account.self)
+			let frc = result.managedObjectContext!.from(Account.self)
 				.filter(\Account.folder == result)
 				.sort(by: \Account.order, ascending: true).sort(by: \Account.characterName, ascending: true)
-				.fetchRequest
+				.fetchedResultsController()
 			
-			let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: result.managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
 			return [AccountsResultsController(frc, treeController: section?.controller?.treeController, cachePolicy: (section?.controller as? AccountFoldersResultsController)?.cachePolicy ?? .useProtocolCachePolicy, folder: result)]
 		}()
 		

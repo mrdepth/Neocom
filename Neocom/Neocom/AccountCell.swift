@@ -9,6 +9,7 @@
 import Foundation
 import Futures
 import EVEAPI
+import TreeController
 
 class AccountCell: RowCell {
 	@IBOutlet weak var characterNameLabel: UILabel?
@@ -67,7 +68,7 @@ extension Tree.Item {
 			return result.refreshToken?.isEmpty != false
 		}
 		
-		override func configure(cell: UITableViewCell) {
+		override func configure(cell: UITableViewCell, treeController: TreeController?) {
 			guard let cell = cell as? AccountCell else {return}
 			
 			if isOAuth2TokenInvalid {

@@ -76,6 +76,7 @@ extension Tree.Content {
 extension Tree.Item {
 	
 	class Section<Element: TreeItem>: Collection<Tree.Content.Section, Element>, ExpandableItem {
+		
 		var action: ((UIControl) -> Void)?
 		var editingAction: ((UIControl) -> Void)?
 
@@ -87,7 +88,7 @@ extension Tree.Item {
 			set {
 				content.isExpanded = newValue
 				if let cell = treeController?.cell(for: self) {
-					content.configure(cell: cell)
+					configure(cell: cell, treeController: treeController)
 				}
 				treeController?.deselectCell(for: self, animated: true)
 			}
@@ -106,8 +107,15 @@ extension Tree.Item {
 			super.init(content, diffIdentifier: diffIdentifier, children: children)
 		}
 		
-		override func configure(cell: UITableViewCell) {
-			super.configure(cell: cell)
+		override func configure(cell: UITableViewCell, treeController: TreeController?) {
+			super.configure(cell: cell, treeController: treeController)
+			configureActions(for: cell, treeController: treeController)
+			guard let cell = cell as? TreeHeaderCell else {return}
+			
+			cell.expandIconView?.image = treeController?.isItemExpanded(self) == true ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
+		}
+		
+		func configureActions(for cell: UITableViewCell, treeController: TreeController?) {
 			guard let cell = cell as? TreeHeaderCell else {return}
 			
 			if let handler = action {
@@ -142,7 +150,7 @@ extension Tree.Item {
 
 extension Tree.Content.Section: CellConfiguring {
 	
-	func configure(cell: UITableViewCell) {
+	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? TreeHeaderCell else {return}
 		if let attributedTitle = attributedTitle {
 			cell.titleLabel?.attributedText = attributedTitle
@@ -156,9 +164,6 @@ extension Tree.Content.Section: CellConfiguring {
 			cell.titleLabel?.text = nil
 			cell.titleLabel?.isHidden = true
 		}
-		cell.expandIconView?.image = isExpanded ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
-		
-
 	}
 	
 	

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import TreeController
 
 class InvTypeInfoDescriptionCell: HeaderCell {
 	@IBOutlet var titleLabel: UILabel?
@@ -42,7 +43,7 @@ extension Tree.Content {
 }
 
 extension Tree.Content.InvTypeInfoDescription: CellConfiguring {
-	func configure(cell: UITableViewCell) {
+	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? InvTypeInfoDescriptionCell else {return}
 		cell.titleLabel?.text = title
 		cell.subtitleLabel?.text = subtitle

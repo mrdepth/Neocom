@@ -55,7 +55,15 @@ class CertCertificateMasteryInfoPresenter: TreePresenter {
 				let trainingQueue = TrainingQueue(character: character)
 				trainingQueue.add(mastery)
 				let title = NSLocalizedString("Level", comment: "").uppercased() + " \(String(romanNumber: Int(mastery.level!.level + 1)))"
-				let section = Tree.Item.InvTypeSkillsSection(title: title, trainingQueue: trainingQueue, character: content.value, diffIdentifier: mastery.objectID, treeController: self?.view?.treeController, isExpanded: trainingQueue.trainingTime() > 0, children: rows)
+				let section = Tree.Item.InvTypeSkillsSection(title: title,
+															 trainingQueue: trainingQueue,
+															 character: content.value,
+															 diffIdentifier: mastery.objectID,
+															 treeController: self?.view?.treeController,
+															 isExpanded: trainingQueue.trainingTime() > 0,
+															 children: rows,
+															 action: { [weak self] control in
+				})
 				return section.asAnyItem
 			} ?? []
 			

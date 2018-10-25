@@ -113,7 +113,7 @@ class TreeViewController<Presenter: TreePresenter, Input>: UITableViewController
 	func treeController<T: TreeItem> (_ treeController: TreeController, configure cell: UITableViewCell, for item: T) -> Void {
 		cell.indentationLevel = treeController.indentationLevel(for: item)
 		if let item = item as? CellConfiguring {
-			return item.configure(cell: cell)
+			return item.configure(cell: cell, treeController: treeController)
 		}
 	}
 	

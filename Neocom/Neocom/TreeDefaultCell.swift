@@ -51,7 +51,7 @@ extension Tree.Content {
 
 extension Tree.Content.Default: CellConfiguring {
 	
-	func configure(cell: UITableViewCell) {
+	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? TreeDefaultCell else {return}
 		if let attributedTitle = attributedTitle {
 			cell.titleLabel?.attributedText = attributedTitle

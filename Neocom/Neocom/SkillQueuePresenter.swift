@@ -168,7 +168,7 @@ extension Tree.Item {
 			super.init(skill, route: Router.SDE.invTypeInfo(.typeID(skill.skill.typeID)))
 		}
 		
-		override func configure(cell: UITableViewCell) {
+		override func configure(cell: UITableViewCell, treeController: TreeController?) {
 			guard let cell = cell as? SkillCell else {return}
 			let level = min(1 + content.queuedSkill.finishedLevel, 5)
 
@@ -222,8 +222,9 @@ extension Tree.Item {
 			super.init(Tree.Content.Section(title: NSLocalizedString("Skill Plans", comment: "").uppercased()), fetchedResultsController: frc, diffIdentifier: frc.fetchRequest, expandIdentifier: "SkillPlans", treeController: treeController)
 		}
 		
-		override func configure(cell: UITableViewCell) {
-			section.configure(cell: cell)
+		override func configure(cell: UITableViewCell, treeController: TreeController?) {
+			super.configure(cell: cell, treeController: treeController)
+			section.configure(cell: cell, treeController: treeController)
 		}
 	}
 	
@@ -272,20 +273,8 @@ extension Tree.Item {
 			}
 		}
 		
-//		override var hashValue: Int {
-//			return result.hash
-//		}
-		
-//		override func isEqual(_ other: Tree.Item.Base<Tree.Content.Section, Child>) -> Bool {
-//			return type(of: self) == type(of: other) && result == (other as? SkillPlanRow)?.result
-//		}
-//
-//		static func == (lhs: SkillPlanRow, rhs: SkillPlanRow) -> Bool {
-//			return lhs.isEqual(rhs)
-//		}
-		
-		override func configure(cell: UITableViewCell) {
-			super.configure(cell: cell)
+		override func configure(cell: UITableViewCell, treeController: TreeController?) {
+			super.configure(cell: cell, treeController: treeController)
 			guard let cell = cell as? TreeHeaderCell else {return}
 			cell.titleLabel?.text = result.name?.uppercased()
 		}

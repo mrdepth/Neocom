@@ -77,7 +77,7 @@ extension Tree.Item {
 			return Prototype.TreeDefaultCell.default
 		}
 		
-		override func configure(cell: UITableViewCell) {
+		override func configure(cell: UITableViewCell, treeController: TreeController?) {
 			guard let cell = cell as? TreeDefaultCell else {return}
 			if let character = (section?.controller as? CertificatesFetchedResultsController)?.character, subtitle == nil {
 				

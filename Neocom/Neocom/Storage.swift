@@ -235,3 +235,36 @@ extension Account {
 		}
 	}
 }
+
+struct Pair<A, B> {
+	var a: A
+	var b: B
+	
+	init(_ a: A, _ b: B) {
+		self.a = a
+		self.b = b
+	}
+}
+
+extension Pair: Equatable where A: Equatable, B: Equatable {}
+extension Pair: Hashable where A: Hashable, B: Hashable {}
+
+extension SkillPlan {
+	func add(_ trainingQueue: TrainingQueue) {
+		let skills = self.skills?.allObjects as? [SkillPlanSkill]
+		var position: Int32 = (skills?.map{$0.position}.max()).map{$0 + 1} ?? 0
+		var queued = (skills?.map{Pair(Int($0.typeID), Int($0.level))}).map{Set($0)} ?? Set()
+		
+		for i in trainingQueue.queue {
+			let key = Pair(i.skill.typeID, i.targetLevel)
+			guard !queued.contains(key) else {continue}
+			queued.insert(key)
+			let skill = SkillPlanSkill(context: managedObjectContext!)
+			skill.skillPlan = self
+			skill.typeID = Int32(key.a)
+			skill.level = Int16(key.b)
+			skill.position = position
+			position += 1
+		}
+	}
+}

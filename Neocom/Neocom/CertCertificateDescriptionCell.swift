@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import TreeController
 
 class CertCertificateDescriptionCell: HeaderCell {
 	@IBOutlet var titleLabel: UILabel?
@@ -39,7 +40,7 @@ extension Tree.Content {
 }
 
 extension Tree.Content.CertCertificateDescription: CellConfiguring {
-	func configure(cell: UITableViewCell) {
+	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? CertCertificateDescriptionCell else {return}
 		cell.titleLabel?.text = title
 		cell.iconView?.image = image

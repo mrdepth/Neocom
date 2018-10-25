@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Futures
 
 extension UIStoryboard {
 	static var main: UIStoryboard { return UIStoryboard(name: "Main", bundle: nil) }
@@ -18,6 +19,18 @@ extension UIStoryboard {
 }
 
 enum Router {
+	
+	static func custom(_ block: @escaping (UIViewController, Any?) -> Future<Bool>) -> RouteCustom {
+		return RouteCustom(block)
+	}
+
+	static func custom(_ block: @escaping (UIViewController, Any?) -> Void) -> RouteCustom {
+		return RouteCustom( {
+			block($0, $1)
+			return .init(true)
+		})
+	}
+
 	enum MainMenu {
 		static func accounts() -> Route<Accounts> {
 			return Route(assembly: Accounts.default, kind: .adaptiveModal)

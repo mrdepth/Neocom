@@ -64,7 +64,19 @@ class InvTypeMasteryPresenter: TreePresenter {
 				let trainingQueue = TrainingQueue(character: character)
 				trainingQueue.add(mastery)
 				let title = mastery.certificate?.certificateName?.uppercased() ?? ""
-				let section = Tree.Item.InvTypeSkillsSection(title: title, trainingQueue: trainingQueue, character: content.value, diffIdentifier: mastery.objectID, treeController: self?.view?.treeController, isExpanded: trainingQueue.trainingTime() > 0, children: rows)
+				
+				let action: ((UIControl) -> Void)? = content.value == nil || trainingQueue.queue.isEmpty ? nil : { [weak self] sender in
+					self?.onAddToSkillPlan(trainingQueue: trainingQueue, sender: sender)
+				}
+
+				let section = Tree.Item.InvTypeSkillsSection(title: title,
+															 trainingQueue: trainingQueue,
+															 character: content.value,
+															 diffIdentifier: mastery.objectID,
+															 treeController: self?.view?.treeController,
+															 isExpanded: trainingQueue.trainingTime() > 0,
+															 children: rows,
+															 action: action)
 				return section
 			}
 			
@@ -72,5 +84,26 @@ class InvTypeMasteryPresenter: TreePresenter {
 			return sections
 
 		}
+	}
+	
+	func onAddToSkillPlan(trainingQueue: TrainingQueue, sender: Any?) {
+		guard let account = Services.storage.viewContext.currentAccount, let skillPlan = account.activeSkillPlan else {return}
+		
+		let trainingTime = trainingQueue.trainingTime()
+		guard trainingTime > 0 else {return}
+		
+		let message = String(format: NSLocalizedString("Total Training Time: %@", comment: ""), TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds))
+		
+		let controller = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Add to Skill Plan", comment: ""), style: .default) { [weak self] _ in
+			skillPlan.add(trainingQueue)
+			try? Services.sde.viewContext.save()
+			self?.view?.tableView.reloadData()
+		})
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
+		view?.present(controller, animated: true)
+		
 	}
 }

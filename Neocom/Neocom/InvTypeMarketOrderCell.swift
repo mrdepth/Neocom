@@ -8,6 +8,7 @@
 
 import Foundation
 import EVEAPI
+import TreeController
 
 class InvTypeMarketOrderCell: RowCell {
 	@IBOutlet weak var priceLabel: UILabel!
@@ -31,7 +32,7 @@ extension Tree.Content {
 }
 
 extension Tree.Content.InvTypeMarketOrder: CellConfiguring {
-	func configure(cell: UITableViewCell) {
+	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? InvTypeMarketOrderCell else {return}
 		
 		cell.priceLabel.text = UnitFormatter.localizedString(from: order.price, unit: .isk, style: .long)

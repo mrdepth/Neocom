@@ -134,6 +134,27 @@ class InvTypeInfoPresenter: TreePresenter {
 			return presentation
 		}
 	}
+	
+	func onAddToSkillPlan(trainingQueue: TrainingQueue, sender: Any?) {
+		guard let account = Services.storage.viewContext.currentAccount, let skillPlan = account.activeSkillPlan else {return}
+		
+		let trainingTime = trainingQueue.trainingTime()
+		guard trainingTime > 0 else {return}
+		
+		let message = String(format: NSLocalizedString("Total Training Time: %@", comment: ""), TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds))
+		
+		let controller = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Add to Skill Plan", comment: ""), style: .default) { [weak self] _ in
+			skillPlan.add(trainingQueue)
+			try? Services.sde.viewContext.save()
+			self?.view?.tableView.reloadData()
+		})
+		
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
+		view?.present(controller, animated: true)
+
+	}
 }
 
 extension Tree.Item {
@@ -216,8 +237,9 @@ extension Tree.Item {
 		let tintColor: UIColor
 		let trainingTime: TimeInterval
 		let route: Routing?
+		let accessoryType: UITableViewCell.AccessoryType
 		
-		init?(type: SDEInvType, level: Int, character: Character?) {
+		init?(type: SDEInvType, level: Int, character: Character?, route: Routing?, accessoryType: UITableViewCell.AccessoryType) {
 			guard let skill = Character.Skill(type: type) else {return nil}
 			title = NSAttributedString(skillName: type.typeName ?? "", level: level)
 			self.level = level
@@ -247,29 +269,31 @@ extension Tree.Item {
 				tintColor = .white
 				trainingTime = 0
 			}
-			route = Router.SDE.invTypeInfo(.objectID(type.objectID))
+			self.route = route
+			self.accessoryType = accessoryType
+//			route = Router.SDE.invTypeInfo(.objectID(type.objectID))
 		}
 		
 		convenience init?(_ skill: SDEInvTypeRequiredSkill, character: Character?) {
 			guard let type = skill.skillType else {return nil}
-			self.init(type: type, level: Int(skill.skillLevel), character: character)
+			self.init(type: type, level: Int(skill.skillLevel), character: character, route: Router.SDE.invTypeInfo(.objectID(type.objectID)), accessoryType: .disclosureIndicator)
 		}
 		
 		convenience init?(_ skill: SDEIndRequiredSkill, character: Character?) {
 			guard let type = skill.skillType else {return nil}
-			self.init(type: type, level: Int(skill.skillLevel), character: character)
+			self.init(type: type, level: Int(skill.skillLevel), character: character, route: Router.SDE.invTypeInfo(.objectID(type.objectID)), accessoryType: .disclosureIndicator)
 		}
 		
 		convenience init?(_ skill: SDECertSkill, character: Character?) {
 			guard let type = skill.type else {return nil}
-			self.init(type: type, level: Int(skill.skillLevel), character: character)
+			self.init(type: type, level: Int(skill.skillLevel), character: character, route: Router.SDE.invTypeInfo(.objectID(type.objectID)), accessoryType: .disclosureIndicator)
 		}
 
 		static func == (lhs: Tree.Item.InvTypeRequiredSkillRow, rhs: Tree.Item.InvTypeRequiredSkillRow) -> Bool {
 			return lhs === rhs
 		}
 
-		func configure(cell: UITableViewCell) {
+		func configure(cell: UITableViewCell, treeController: TreeController?) {
 			guard let cell = cell as? TreeDefaultCell else {return}
 			cell.titleLabel?.isHidden = false
 			cell.subtitleLabel?.isHidden = false
@@ -288,7 +312,7 @@ extension Tree.Item {
 			if item != nil {
 				cell.iconView?.image = #imageLiteral(resourceName: "skillRequirementQueued")
 			}
-			cell.accessoryType = .disclosureIndicator
+			cell.accessoryType = accessoryType
 		}
 		
 		var hashValue: Int {
@@ -299,7 +323,7 @@ extension Tree.Item {
 	}
 	
 	class InvTypeSkillsSection: Section<Tree.Item.InvTypeRequiredSkillRow> {
-		init<T: Hashable>(title: String, trainingQueue: TrainingQueue, character: Character?, diffIdentifier: T, expandIdentifier: CustomStringConvertible? = nil, treeController: TreeController?, isExpanded: Bool = true, children: [Tree.Item.InvTypeRequiredSkillRow]?) {
+		init<T: Hashable>(title: String, trainingQueue: TrainingQueue, character: Character?, diffIdentifier: T, expandIdentifier: CustomStringConvertible? = nil, treeController: TreeController?, isExpanded: Bool = true, children: [Tree.Item.InvTypeRequiredSkillRow]?, action: ((UIControl) -> Void)?) {
 			let trainingTime = trainingQueue.trainingTime()
 			
 			let attributedTitle: NSAttributedString
@@ -313,8 +337,7 @@ extension Tree.Item {
 //			let actions: Tree.Content.Section.Actions = character == nil || trainingTime == 0 ? [] : [.normal]
 			let content = Tree.Content.Section(attributedTitle: attributedTitle, isExpanded: isExpanded)
 			//TODO: Add SkillQueue handler
-			
-			super.init(content, diffIdentifier: diffIdentifier, expandIdentifier: expandIdentifier, treeController: treeController, children: children)
+			super.init(content, diffIdentifier: diffIdentifier, expandIdentifier: expandIdentifier, treeController: treeController, children: children, action: action)
 		}
 		
 	}
@@ -466,8 +489,23 @@ extension InvTypeInfoPresenter {
 	
 	func skillPlanPresentation(for type: SDEInvType, character: Character?, context: SDEContext) -> Tree.Item.Section<Tree.Item.InvTypeRequiredSkillRow>? {
 		guard (type.group?.category?.categoryID).flatMap({SDECategoryID(rawValue: $0)}) == .skill else {return nil}
+		
 
-		let rows = (1...5).compactMap {Tree.Item.InvTypeRequiredSkillRow(type: type, level: $0, character: character)}.filter {$0.trainingTime > 0}
+		let rows = (1...5).compactMap { level -> Tree.Item.InvTypeRequiredSkillRow? in
+			let route: Routing?
+			if let character = character {
+				let trainingQueue = TrainingQueue(character: character)
+				trainingQueue.add(type, level: level)
+				route = Router.custom { [weak self] (_, sender) in
+					self?.onAddToSkillPlan(trainingQueue: trainingQueue, sender: sender)
+				}
+			}
+			else {
+				route = nil
+			}
+
+			return Tree.Item.InvTypeRequiredSkillRow(type: type, level: level, character: character, route: route, accessoryType: .none)
+		}.filter {$0.trainingTime > 0}
 		guard !rows.isEmpty else {return nil}
 		
 		return Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Skill Plan", comment: "").uppercased(), isExpanded: true), diffIdentifier: "SkillPlan", expandIdentifier: "SkillPlan", treeController: view?.treeController, children: rows)
@@ -513,13 +551,19 @@ extension InvTypeInfoPresenter {
 		guard let rows = requiredSkills(for: type, character: character, context: context), !rows.isEmpty else {return nil}
 		let trainingQueue = TrainingQueue(character: character ?? .empty)
 		trainingQueue.addRequiredSkills(for: type)
+		
+		let action: ((UIControl) -> Void)? = character == nil || trainingQueue.queue.isEmpty ? nil : { [weak self] sender in
+			self?.onAddToSkillPlan(trainingQueue: trainingQueue, sender: sender)
+		}
+		
 		return Tree.Item.InvTypeSkillsSection(title: NSLocalizedString("Required Skills", comment: "").uppercased(),
 									   trainingQueue: trainingQueue,
 									   character: character,
 									   diffIdentifier: "RequiredSkills",
 									   expandIdentifier: "RequiredSkills",
 									   treeController: view?.treeController,
-									   children: rows)
+									   children: rows,
+									   action: action)
 	}
 	
 	private func requiredSkills(for type: SDEInvType, character: Character?, context: SDEContext) -> [Tree.Item.InvTypeRequiredSkillRow]? {
@@ -535,13 +579,19 @@ extension InvTypeInfoPresenter {
 		guard let rows = requiredSkills(for: activity, character: character, context: context), !rows.isEmpty else {return nil}
 		let trainingQueue = TrainingQueue(character: character ?? .empty)
 		trainingQueue.addRequiredSkills(for: activity)
+		
+		let action: ((UIControl) -> Void)? = character == nil || trainingQueue.queue.isEmpty ? nil : { [weak self] sender in
+			self?.onAddToSkillPlan(trainingQueue: trainingQueue, sender: sender)
+		}
+
 		return Tree.Item.InvTypeSkillsSection(title: NSLocalizedString("Required Skills", comment: "").uppercased(),
 											  trainingQueue: trainingQueue,
 											  character: character,
 											  diffIdentifier: "\(activity.objectID).requiredSkills",
 											  expandIdentifier: "\(activity.objectID).requiredSkills",
 											  treeController: view?.treeController,
-											  children: rows)
+											  children: rows,
+											  action: action)
 	}
 
 	

@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import TreeController
 
 typealias InvTypeCell = TreeDefaultCell
 
@@ -88,7 +89,7 @@ extension Tree.Item {
 			}
 		}
 		
-		override func configure(cell: UITableViewCell) {
+		override func configure(cell: UITableViewCell, treeController: TreeController?) {
 			switch cell {
 			case let cell as InvTypeModuleCell:
 				cell.titleLabel?.text = type?.typeName

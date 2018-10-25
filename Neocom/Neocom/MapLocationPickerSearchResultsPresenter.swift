@@ -173,8 +173,8 @@ extension Tree.Item {
 			return solarSytem.prototype
 		}
 		
-		override func configure(cell: UITableViewCell) {
-			solarSytem.configure(cell: cell)
+		override func configure(cell: UITableViewCell, treeController: TreeController?) {
+			solarSytem.configure(cell: cell, treeController: treeController)
 		}
 	}
 
@@ -185,8 +185,8 @@ extension Tree.Item {
 			return region.prototype
 		}
 		
-		override func configure(cell: UITableViewCell) {
-			region.configure(cell: cell)
+		override func configure(cell: UITableViewCell, treeController: TreeController?) {
+			region.configure(cell: cell, treeController: treeController)
 		}
 	}
 	
@@ -197,7 +197,7 @@ extension Tree.Item {
 			return Prototype.TreeDefaultCell.default
 		}
 		
-		override func configure(cell: UITableViewCell) {
+		override func configure(cell: UITableViewCell, treeController: TreeController?) {
 			guard let cell = cell as? TreeDefaultCell else {return}
 			cell.titleLabel?.text = solarSytem.constellation?.region?.regionName
 			cell.subtitleLabel?.text = solarSytem.solarSystemName

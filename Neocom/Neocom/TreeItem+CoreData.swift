@@ -11,15 +11,6 @@ import CoreData
 import TreeController
 import Expressible
 
-//protocol FetchedResultsControllerTreeItemProtocol: class {
-//	var treeController: TreeController? {get}
-//}
-//
-//
-//protocol FetchedResultsSectionTreeItemProtocol: class {
-//	var controller: FetchedResultsControllerTreeItemProtocol? {get}
-//}
-
 protocol FetchedResultsControllerProtocol: class {
 	var treeController: TreeController? {get}
 	var diffIdentifier: AnyHashable {get}
@@ -43,20 +34,6 @@ protocol FetchedResultsTreeItem: TreeItem {
 	init(_ result: Result, section: FetchedResultsSectionProtocol)
 }
 
-//extension FetchedResultsTreeItem {
-//	var hashValue: Int {
-//		return result.hash
-//	}
-//
-//	var diffIdentifier: Result {
-//		return result
-//	}
-//
-//	static func == (lhs: Self, rhs: Self) -> Bool {
-//		return lhs.result == rhs.result
-//	}
-//
-//}
 
 extension Tree.Item {
 	class FetchedResultsController<T: FetchedResultsSectionTreeItem>: NSObject, TreeItem, NSFetchedResultsControllerDelegate, FetchedResultsControllerProtocol {
@@ -220,8 +197,8 @@ extension Tree.Item {
 			return (result as? CellConfiguring)?.prototype
 		}
 		
-		func configure(cell: UITableViewCell) {
-			(result as? CellConfiguring)?.configure(cell: cell)
+		func configure(cell: UITableViewCell, treeController: TreeController?) {
+			(result as? CellConfiguring)?.configure(cell: cell, treeController: treeController)
 		}
 		
 		var result: Result
@@ -258,7 +235,7 @@ extension Tree.Item {
 			set {
 				content.isExpanded = newValue
 				if let cell = treeController?.cell(for: self) {
-					content.configure(cell: cell)
+					configure(cell: cell, treeController: treeController)
 				}
 				treeController?.deselectCell(for: self, animated: true)
 			}
@@ -281,8 +258,10 @@ extension Tree.Item {
 			self.init(content, fetchedResultsController: fetchedResultsController, diffIdentifier: fetchedResultsController.fetchRequest, expandIdentifier: expandIdentifier, treeController: treeController)
 		}
 
-		func configure(cell: UITableViewCell) {
-			content.configure(cell: cell)
+		func configure(cell: UITableViewCell, treeController: TreeController?) {
+			content.configure(cell: cell, treeController: treeController)
+			guard let cell = cell as? TreeHeaderCell else {return}
+			cell.expandIconView?.image = treeController?.isItemExpanded(self) == true ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
 		}
 	}
 	
@@ -291,7 +270,7 @@ extension Tree.Item {
 		var isExpanded: Bool = true {
 			didSet {
 				if let cell = controller?.treeController?.cell(for: self) {
-					configure(cell: cell)
+					configure(cell: cell, treeController: controller?.treeController)
 				}
 				controller?.treeController?.deselectCell(for: self, animated: true)
 			}
@@ -306,11 +285,11 @@ extension Tree.Item {
 			return sectionInfo.name.uppercased()
 		}
 		
-		func configure(cell: UITableViewCell) {
+		func configure(cell: UITableViewCell, treeController: TreeController?) {
 			guard let cell = cell as? TreeHeaderCell else {return}
 			
 			cell.titleLabel?.text = name
-			cell.expandIconView?.image = isExpanded ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
+			cell.expandIconView?.image = treeController?.isItemExpanded(self) == true ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
 		}
 		
 	}

@@ -8,6 +8,7 @@
 
 import Foundation
 import EVEAPI
+import TreeController
 
 class MarketHistoryCell: RowCell {
 	@IBOutlet weak var marketHistoryView: MarketHistoryView!
@@ -129,7 +130,7 @@ extension Tree.Content {
 }
 
 extension Tree.Content.MarketHistory: CellConfiguring {
-	func configure(cell: UITableViewCell) {
+	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? MarketHistoryCell else {return}
 		cell.marketHistoryView.volume = volume
 		cell.marketHistoryView.median = median

@@ -42,7 +42,7 @@ extension UICollectionView {
 
 protocol CellConfiguring {
 	var prototype: Prototype? {get}
-	func configure(cell: UITableViewCell) -> Void
+	func configure(cell: UITableViewCell, treeController: TreeController?) -> Void
 }
 
 protocol ExpandableItem {
@@ -70,7 +70,6 @@ enum Tree {
 		
 	}
 	enum Content {
-		
 	}
 }
 
@@ -119,8 +118,8 @@ extension Tree.Item {
 			return (content as? CellConfiguring)?.prototype
 		}
 		
-		func configure(cell: UITableViewCell) {
-			(content as? CellConfiguring)?.configure(cell: cell)
+		func configure(cell: UITableViewCell, treeController: TreeController?) {
+			(content as? CellConfiguring)?.configure(cell: cell, treeController: treeController)
 		}
 		
 		

@@ -17,5 +17,9 @@ class InvTypeInfoViewController: TreeViewController<InvTypeInfoPresenter, InvTyp
 		case objectID(NSManagedObjectID)
 	}
 	
+	override func treeController<T>(_ treeController: TreeController, didSelectRowFor item: T) where T : TreeItem {
+		super.treeController(treeController, didSelectRowFor: item)
+		presenter.didSelect(item: item)
+	}
 }
 

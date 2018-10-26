@@ -135,7 +135,19 @@ class InvTypeInfoPresenter: TreePresenter {
 		}
 	}
 	
+	func didSelect<T: TreeItem>(item: T) -> Void {
+		guard let character = content?.value else {return}
+		guard let item = item as? Tree.Item.InvTypeRequiredSkillRow else {return}
+		guard let type = Services.sde.viewContext.invType(item.skill.skill.typeID) else {return}
+		let trainingQueue = TrainingQueue(character: character)
+		trainingQueue.add(type, level: item.level)
+		guard trainingQueue.queue.count > 0 else {return}
+		
+		onAddToSkillPlan(trainingQueue: trainingQueue, sender: view?.treeController.cell(for: item))
+	}
+
 	func onAddToSkillPlan(trainingQueue: TrainingQueue, sender: Any?) {
+		
 		guard let account = Services.storage.viewContext.currentAccount, let skillPlan = account.activeSkillPlan else {return}
 		
 		let trainingTime = trainingQueue.trainingTime()
@@ -147,7 +159,7 @@ class InvTypeInfoPresenter: TreePresenter {
 		
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Add to Skill Plan", comment: ""), style: .default) { [weak self] _ in
 			skillPlan.add(trainingQueue)
-			try? Services.sde.viewContext.save()
+			try? Services.storage.viewContext.save()
 			self?.view?.tableView.reloadData()
 		})
 		
@@ -244,7 +256,9 @@ extension Tree.Item {
 			title = NSAttributedString(skillName: type.typeName ?? "", level: level)
 			self.level = level
 
+			
 			let trainedSkill = character?.trainedSkills[Int(type.typeID)]
+			
 			let item = TrainingQueue.Item(skill: skill, targetLevel: level, startSP: Int(trainedSkill?.skillpointsInSkill ?? 0))
 			self.skill = item
 			
@@ -491,21 +505,8 @@ extension InvTypeInfoPresenter {
 		guard (type.group?.category?.categoryID).flatMap({SDECategoryID(rawValue: $0)}) == .skill else {return nil}
 		
 
-		let rows = (1...5).compactMap { level -> Tree.Item.InvTypeRequiredSkillRow? in
-			let route: Routing?
-			if let character = character {
-				let trainingQueue = TrainingQueue(character: character)
-				trainingQueue.add(type, level: level)
-				route = Router.custom { [weak self] (_, sender) in
-					self?.onAddToSkillPlan(trainingQueue: trainingQueue, sender: sender)
-				}
-			}
-			else {
-				route = nil
-			}
-
-			return Tree.Item.InvTypeRequiredSkillRow(type: type, level: level, character: character, route: route, accessoryType: .none)
-		}.filter {$0.trainingTime > 0}
+		let rows = (1...5).compactMap { Tree.Item.InvTypeRequiredSkillRow(type: type, level: $0, character: character, route: nil, accessoryType: .none) }
+			.filter {$0.trainingTime > 0}
 		guard !rows.isEmpty else {return nil}
 		
 		return Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Skill Plan", comment: "").uppercased(), isExpanded: true), diffIdentifier: "SkillPlan", expandIdentifier: "SkillPlan", treeController: view?.treeController, children: rows)

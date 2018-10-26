@@ -98,7 +98,7 @@ class InvTypeMasteryPresenter: TreePresenter {
 		
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Add to Skill Plan", comment: ""), style: .default) { [weak self] _ in
 			skillPlan.add(trainingQueue)
-			try? Services.sde.viewContext.save()
+			try? Services.storage.viewContext.save()
 			self?.view?.tableView.reloadData()
 		})
 		

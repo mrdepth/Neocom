@@ -295,7 +295,7 @@ extension Tree.Item {
 			return Prototype.TreeDefaultCell.default
 		}
 		
-		func configure(cell: UITableViewCell) {
+		func configure(cell: UITableViewCell, treeController: TreeController?) {
 			guard let cell = cell as? TreeDefaultCell else {return}
 			cell.titleLabel?.text = result.characterName
 		}

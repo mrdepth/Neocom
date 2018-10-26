@@ -141,10 +141,6 @@ extension Tree.Item {
 					section.children!.insert(item, at: i.0.item)
 				}
 			}
-			
-			if updates?.isEmpty == false {
-				treeController?.update(contentsOf: self, with: .fade)
-			}
 
 			updates?.itemUpdates.forEach { i in
 				let section = children![i.0.section]
@@ -153,13 +149,14 @@ extension Tree.Item {
 				let item = Section.Child(i.1 as! Section.Child.Result, section: section)
 				children![i.0.section].children!.insert(item, at: i.0.item)
 			}
-			
+
 			if updates?.isEmpty == false {
 				treeController?.update(contentsOf: self, with: .fade)
 			}
 			
 			updates?.itemUpdates.forEach { i in
-				treeController?.reloadRow(for: children![i.0.section].children![i.0.item], with: .fade)
+				let item = children![i.0.section].children![i.0.item]
+				treeController?.reloadRow(for: item, with: .fade)
 			}
 
 			updates = nil

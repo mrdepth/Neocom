@@ -242,16 +242,17 @@ class NavigationControllerDelegate: NSObject, UINavigationControllerDelegate {
 	}
 }
 
-struct RouteCustom: Routing {
-	var block: (UIViewController, Any?) -> Future<Bool>
-	
-	init(_ block: @escaping (UIViewController, Any?) -> Future<Bool>) {
-		self.block = block
-	}
-	
-	
-	@discardableResult
-	func perform<T: View>(from view: T, sender: Any? = nil, kind: RouteKind? = nil) -> Future<Bool> where T: UIViewController {
-		return block(view, sender)
-	}
-}
+//struct CustomRoute: Routing {
+//	var block: (UIViewController, Any?) -> Future<Bool>
+//	
+//	init(_ block: @escaping (UIViewController, Any?) -> Future<Bool>) {
+//		self.block = block
+//	}
+//	
+//	
+//	@discardableResult
+//	func perform<T: View>(from view: T, sender: Any? = nil, kind: RouteKind? = nil) -> Future<Bool> where T: UIViewController {
+//		return block(view, sender)
+//	}
+//}
+//

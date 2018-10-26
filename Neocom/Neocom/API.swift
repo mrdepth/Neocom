@@ -158,7 +158,9 @@ class APIClient: API {
 			
 			let sq = validSkillQueue[i...].sorted{$0.queuePosition < $1.queuePosition}.compactMap { i -> Character.SkillQueueItem? in
 				guard let type = context.invType(i.skillID), let skill = Character.Skill(type: type) else {return nil}
-				return Character.SkillQueueItem(skill: skill, queuedSkill: i)
+				let item = Character.SkillQueueItem(skill: skill, queuedSkill: i)
+				trainedSkills[i.skillID]?.skillpointsInSkill = Int64(item.skillPoints)
+				return item
 			}
 			
 			let character = Character(attributes: characterAttributes,

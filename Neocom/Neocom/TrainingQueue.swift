@@ -35,7 +35,7 @@ class TrainingQueue {
 		
 		for i in (trainedLevel + 1)...level {
 			if !queuedLevels.contains(i) {
-				let sp = character.skillQueue.first(where: {$0.skill.typeID == skill.typeID && $0.queuedSkill.finishedLevel == i})?.queuedSkill.trainingStartSP
+				let sp = character.skillQueue.first(where: {$0.skill.typeID == skill.typeID && $0.queuedSkill.finishedLevel == i})?.skillPoints
 				queue.append(Item(skill: skill, targetLevel: i, startSP: sp))
 			}
 		}

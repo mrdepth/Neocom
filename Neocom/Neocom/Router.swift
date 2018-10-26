@@ -20,16 +20,16 @@ extension UIStoryboard {
 
 enum Router {
 	
-	static func custom(_ block: @escaping (UIViewController, Any?) -> Future<Bool>) -> RouteCustom {
-		return RouteCustom(block)
-	}
-
-	static func custom(_ block: @escaping (UIViewController, Any?) -> Void) -> RouteCustom {
-		return RouteCustom( {
-			block($0, $1)
-			return .init(true)
-		})
-	}
+//	static func custom(_ block: @escaping (UIViewController, Any?) -> Future<Bool>) -> CustomRoute {
+//		return CustomRoute(block)
+//	}
+//
+//	static func custom(_ block: @escaping (UIViewController, Any?) -> Void) -> CustomRoute {
+//		return CustomRoute( {
+//			block($0, $1)
+//			return .init(true)
+//		})
+//	}
 
 	enum MainMenu {
 		static func accounts() -> Route<Accounts> {
@@ -81,7 +81,6 @@ enum Router {
 			return Route(assembly: SkillQueue.default, kind: .detail)
 //			return Route(assembly: Skills.default, kind: .detail)
 		}
-
 	}
 }
 

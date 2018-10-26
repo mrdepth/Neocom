@@ -169,8 +169,9 @@ extension Tree.Item {
 		}
 		
 		override func configure(cell: UITableViewCell, treeController: TreeController?) {
+			super.configure(cell: cell, treeController: treeController)
 			guard let cell = cell as? SkillCell else {return}
-			let level = min(1 + content.queuedSkill.finishedLevel, 5)
+			let level = content.queuedSkill.finishedLevel
 
 			cell.iconView?.isHidden = true
 			cell.titleLabel?.text = "\(type?.typeName ?? "") (x\(Int(content.skill.rank)))"
@@ -181,8 +182,6 @@ extension Tree.Item {
 
 			let a = UnitFormatter.localizedString(from: content.skillPoints, unit: .none, style: .long)
 			let b = UnitFormatter.localizedString(from: content.skill.skillPoints(at: level), unit: .skillPoints, style: .long)
-			
-			
 			
 			let sph = Int((content.skill.skillpointsPerSecond(with: character.attributes) * 3600).rounded())
 			cell.spLabel?.text = "\(a) / \(b) (\(UnitFormatter.localizedString(from: sph, unit: .skillPointsPerSecond, style: .long)))"
@@ -282,7 +281,59 @@ extension Tree.Item {
 	}
 	
 	class SkillPlanSkillRow: FetchedResultsRow<SkillPlanSkill> {
+		override var prototype: Prototype? {
+			return Prototype.SkillCell.default
+		}
+
+		lazy var type: SDEInvType? = Services.sde.viewContext.invType(Int(result.typeID))
+		lazy var skill: Character.Skill? = skillQueueItem?.skill ?? self.type.flatMap{Character.Skill(type: $0)}
+		lazy var item: TrainingQueue.Item? = skill.map { TrainingQueue.Item(skill: $0, targetLevel: Int(result.level), startSP: skillQueueItem?.skillPoints) }
 		
+		lazy var skillQueueItem: Character.SkillQueueItem? = {
+			let typeID = Int(result.typeID)
+			let level = Int(result.level)
+			return character.skillQueue.first {$0.skill.typeID == typeID && $0.queuedSkill.finishedLevel == level}
+		}()
+		
+		let character: Character
+		
+		required init(_ result: Result, section: FetchedResultsSectionProtocol) {
+			character = (section.controller as? SkillPlanSkillsResultsController)?.presenter?.content?.value ?? Character.empty
+			super.init(result, section: section)
+		}
+
+		override func configure(cell: UITableViewCell, treeController: TreeController?) {
+			super.configure(cell: cell, treeController: treeController)
+			guard let cell = cell as? SkillCell else {return}
+			
+			if let item = item, let skill = skill, let type = type {
+				let level = item.targetLevel
+				
+				cell.titleLabel?.text = "\(type.typeName ?? "") (x\(Int(skill.rank)))"
+				cell.skillLevelView?.level = level
+				cell.skillLevelView?.isActive = skillQueueItem?.isActive == true
+				cell.progressView?.progress = skillQueueItem?.trainingProgress ?? 0
+				cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber: level)
+				
+				let a = UnitFormatter.localizedString(from: item.startSP, unit: .none, style: .long)
+				let b = UnitFormatter.localizedString(from: item.finishSP, unit: .skillPoints, style: .long)
+				
+				let sph = Int((skill.skillpointsPerSecond(with: character.attributes) * 3600).rounded())
+				cell.spLabel?.text = "\(a) / \(b) (\(UnitFormatter.localizedString(from: sph, unit: .skillPointsPerSecond, style: .long)))"
+				
+				let t = item.trainingTime(with: character.attributes)
+				cell.trainingTimeLabel?.text = TimeIntervalFormatter.localizedString(from: t, precision: .minutes)
+			}
+			else {
+				cell.titleLabel?.text =	NSLocalizedString("Unknown Type", comment: "")
+				cell.levelLabel?.text = nil
+				cell.trainingTimeLabel?.text = " "
+				cell.spLabel?.text = " "
+				cell.skillLevelView?.level = 0
+				cell.skillLevelView?.isActive = false
+			}
+			cell.iconView?.image = #imageLiteral(resourceName: "skillRequirementQueued")
+		}
 	}
 }
 

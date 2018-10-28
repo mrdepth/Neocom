@@ -2555,7 +2555,7 @@
 					"${PROJECT_DIR}/../ThirdParty/Appodeal",
 				);
 				INFOPLIST_FILE = Neocom/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
@@ -2583,7 +2583,7 @@
 					"${PROJECT_DIR}/../ThirdParty/Appodeal",
 				);
 				INFOPLIST_FILE = Neocom/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
@@ -2662,7 +2662,7 @@
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Widget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2684,7 +2684,7 @@
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Widget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";

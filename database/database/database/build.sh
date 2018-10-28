@@ -27,6 +27,7 @@ if [[ -z $version ]]; then
 	echo "error: version not found"
 fi
 
+mkdir -p $out
 cd $out
 if [ ! -d "${version}" ]; then
 	sdename=$(basename "${sde}")

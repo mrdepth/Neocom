@@ -204,9 +204,9 @@ extension NCCacheRecord {
 }
 
 extension NCContact {
-	var recipientType: ESI.Mail.Recipient.RecipientType? {
+	var recipientType: ESI.Mail.RecipientType? {
 		guard let type = self.type else {return nil}
-		return ESI.Mail.Recipient.RecipientType(rawValue: type)
+		return ESI.Mail.RecipientType(rawValue: type)
 	}
 }
 

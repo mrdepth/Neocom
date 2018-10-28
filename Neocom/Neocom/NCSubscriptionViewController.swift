@@ -121,7 +121,7 @@ class NCSubscriptionViewController: NCTreeViewController {
 			priceFormatter.locale = products[0].priceLocale
 //			let footer = String(format: NSLocalizedString("Payment will be charged to your credit card through your iTunes Account at confirmation purchase. 1 Month Subscription will be charged as %@ per month. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period. Auto-renew option can be turned off in iTunes Account Settings.", comment: ""), priceFormatter.string(from: products[0].price) ?? "")
 			
-			let footer = NSLocalizedString("Payment will be charged to your credit card through your iTunes Account at confirmation purchase. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period. Auto-renew option can be turned off in iTunes Account Settings.", comment: "")
+			let footer = NSLocalizedString("Payment will be charged to iTunes Account at confirmation of purchase.\nSubscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period.\nAccount will be charged for renewal within 24-hours prior to the end of the current period.\nAuto-renew option can be turned off in iTunes Account Settings.", comment: "")
 
 			rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
 				NCFooterRow(nodeIdentifier: "Footer", title: footer),

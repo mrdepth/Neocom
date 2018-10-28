@@ -30,7 +30,10 @@ extension CommandLine {
 	static var input: String! = args["-i"]!
 }
 
+
 guard CommandLine.output != nil && CommandLine.input != nil else {exit(EXIT_FAILURE)}
+
+try? FileManager.default.createDirectory(at: URL(fileURLWithPath: CommandLine.output).deletingLastPathComponent(), withIntermediateDirectories: true, attributes: nil) 
 
 let managedObjectModel = NSManagedObjectModel.mergedModel(from: nil)!
 let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
@@ -309,6 +312,12 @@ do {
 			case "eve":
 				universe.name = universes.first {$0.universeID == 9}!.universeName
 				universe.universeID = 9
+			case "abyssal":
+				universe.name = "Abyssal"
+				universe.universeID = 9100001
+			case "penalty":
+				universe.name = "Penalty"
+				universe.universeID = 9100002
 			default:
 				throw DumpError.invalidUniverse($0.0)
 			}

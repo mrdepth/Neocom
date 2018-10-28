@@ -1,1 +1,1 @@
-extension NCDatabase { static let version = "Into_The_Abyss_1.0" }
+extension NCDatabase { static let version = "October_Release_2018_1.0" }

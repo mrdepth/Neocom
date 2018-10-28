@@ -123,6 +123,9 @@ struct Certificate: Codable {
 struct IconID: Codable {
 	var description: String?
 	var iconFile: String
+	var backgrounds: [String]?
+	var foregrounds: [String]?
+	var obsolete: Bool?
 }
 
 struct Ancestry: Codable {
@@ -153,7 +156,7 @@ struct Bloodline: Codable {
 	var shortDescription: String
 	var shortFemaleDescription: String
 	var shortMaleDescription: String
-
+	
 	var corporationID: Int
 	var iconID: Int?
 	var shipTypeID: Int
@@ -430,7 +433,7 @@ struct SolarSystem: Codable {
 			var typeID: Int
 			var useOperationName: Bool
 		}
-
+		
 		var celestialIndex: Int
 		var planetAttributes: Attributes
 		var position: [Double]
@@ -441,7 +444,7 @@ struct SolarSystem: Codable {
 		var asteroidBelts: [Int: AsteroidBelt]?
 		var npcStations: [Int: Station]?
 		var planetNameID: Int?
-
+		
 	}
 	
 	struct Star: Codable {
@@ -526,8 +529,8 @@ struct TypeAttribute: Codable {
 	var attributeID: Int
 	var typeID: Int
 	var value: Double?
-//	var valueInt: Int?
-//	var valueFloat: Double?
+	//	var valueInt: Int?
+	//	var valueFloat: Double?
 }
 
 struct Effect: Codable {
@@ -563,7 +566,7 @@ struct TypeEffect: Codable {
 	var effectID: Int
 	var isDefault: Bool
 	var typeID: Int
-
+	
 }
 
 struct NPCGroup: Codable {

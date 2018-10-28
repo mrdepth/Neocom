@@ -396,11 +396,11 @@ class NCDataManager {
 		return loadFromCache(forKey: "ESI.Market.Order.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.market.listOrdersInRegion(orderType: .all, regionID: regionID, typeID: typeID))
 	}
 	
-	func search(_ string: String, categories: [ESI.Search.Categories], strict: Bool = false) -> Future<CachedValue<ESI.Search.SearchResult>> {
+	func search(_ string: String, categories: [ESI.Search.SearchCategories], strict: Bool = false) -> Future<CachedValue<ESI.Search.SearchResult>> {
 		return loadFromCache(forKey: "ESI.Search.SearchResult.\(categories.hashValue).\(string.lowercased().hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.search.search(categories: categories, search: string, strict: strict))
 	}
 
-	func searchNames(_ string: String, categories: [ESI.Search.Categories], strict: Bool = false) -> Future<[Int64: NSManagedObjectID]> {
+	func searchNames(_ string: String, categories: [ESI.Search.SearchCategories], strict: Bool = false) -> Future<[Int64: NSManagedObjectID]> {
 		return self.search(string, categories: categories).then(on: .global(qos: .utility)) { result -> [Int64: NSManagedObjectID] in
 			if let searchResult = result.value {
 				var ids = Set<Int>()
@@ -588,7 +588,7 @@ class NCDataManager {
 				
 				
 				var result = names?.map{($0.id, $0.name, $0.category.rawValue)} ?? []
-				result.append(contentsOf: mailingLists?.map {($0.mailingListID, $0.name, ESI.Mail.Recipient.RecipientType.mailingList.rawValue)} ?? [])
+				result.append(contentsOf: mailingLists?.map {($0.mailingListID, $0.name, ESI.Mail.RecipientType.mailingList.rawValue)} ?? [])
 				
 				for name in result {
 					let contact = NCContact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: managedObjectContext)!, insertInto: managedObjectContext)
@@ -705,8 +705,8 @@ class NCDataManager {
 		return loadFromCache(forKey: "ESI.PlanetaryInteraction.ColonyLayout.\(planetID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.planetaryInteraction.getColonyLayout(characterID: Int(self.characterID), planetID: planetID))
 	}
 
-	func killmails(maxKillID: Int64? = nil) -> Future<CachedValue<[ESI.Killmails.Recent]>> {
-		return loadFromCache(forKey: "ESI.Killmails.Recent.\(maxKillID ?? 0)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.killmails.getCharacterKillsAndLosses(characterID: Int(self.characterID), maxKillID: maxKillID != nil ? Int(maxKillID!) : nil))
+	func killmails(page: Int? = nil) -> Future<CachedValue<[ESI.Killmails.Recent]>> {
+		return loadFromCache(forKey: "ESI.Killmails.Recent.\(page ?? 0)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.killmails.getCharactersRecentKillsAndLosses(characterID: Int(self.characterID), page: page))
 	}
 	
 	func killmailInfo(killmailHash: String, killmailID: Int64) -> Future<CachedValue<ESI.Killmails.Killmail>> {

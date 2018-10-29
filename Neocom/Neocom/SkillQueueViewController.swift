@@ -13,5 +13,19 @@ class SkillQueueViewController: TreeViewController<SkillQueuePresenter, Void>, T
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		navigationItem.rightBarButtonItem = editButtonItem
 	}
+	
+	override func treeController<T>(_ treeController: TreeController, editingStyleFor item: T) -> UITableViewCell.EditingStyle where T : TreeItem {
+		return presenter.editingStyle(for: item)
+	}
+	
+	override func treeController<T>(_ treeController: TreeController, canEdit item: T) -> Bool where T : TreeItem {
+		return presenter.canEdit(item)
+	}
+	
+	override func treeController<T>(_ treeController: TreeController, commit editingStyle: UITableViewCell.EditingStyle, for item: T) where T : TreeItem {
+		presenter.commit(editingStyle: editingStyle, for: item)
+	}
+	
 }

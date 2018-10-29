@@ -34,7 +34,7 @@ class InvTypeInfoPresenter: TreePresenter {
 	
 	func configure() {
 		view?.tableView.register([Prototype.TreeHeaderCell.default,
-								 Prototype.DgmAttributeCell.default,
+								 Prototype.TreeDefaultCell.attribute,
 								 Prototype.DamageTypeCell.compact,
 								 Prototype.TreeDefaultCell.default,
 								 Prototype.InvTypeInfoDescriptionCell.default,
@@ -96,7 +96,7 @@ class InvTypeInfoPresenter: TreePresenter {
 				
 				self.interactor.price(typeID: Int(type.typeID)).then(on: .main) { result in
 					let subtitle = UnitFormatter.localizedString(from: result, unit: .isk, style: .long)
-					let price = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+					let price = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																		   title: NSLocalizedString("PRICE", comment: ""),
 																		   subtitle: subtitle,
 																		   image: Image( #imageLiteral(resourceName: "wallet")),
@@ -153,19 +153,13 @@ class InvTypeInfoPresenter: TreePresenter {
 		let trainingTime = trainingQueue.trainingTime()
 		guard trainingTime > 0 else {return}
 		
-		let message = String(format: NSLocalizedString("Total Training Time: %@", comment: ""), TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds))
-		
-		let controller = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
-		
-		controller.addAction(UIAlertAction(title: NSLocalizedString("Add to Skill Plan", comment: ""), style: .default) { [weak self] _ in
+		let controller = UIAlertController(add: trainingQueue, to: skillPlan) { [weak self] _ in
 			skillPlan.add(trainingQueue)
 			try? Services.storage.viewContext.save()
 			self?.view?.tableView.reloadData()
-		})
+		}
 		
-		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
 		view?.present(controller, animated: true)
-
 	}
 }
 
@@ -233,7 +227,7 @@ extension Tree.Item {
 				title = "\(attribute.attributeType?.attributeID ?? 0)"
 			}
 			
-			let content = Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: title.uppercased(), subtitle: subtitle, image: Image(icon ?? attribute.attributeType?.icon), accessoryType: route == nil ? .none : .disclosureIndicator)
+			let content = Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute, title: title.uppercased(), subtitle: subtitle, image: Image(icon ?? attribute.attributeType?.icon), accessoryType: route == nil ? .none : .disclosureIndicator)
 			
 			super.init(content, diffIdentifier: attribute.objectID, route: route)
 		}
@@ -450,7 +444,7 @@ extension InvTypeInfoPresenter {
 								let baseWarpSpeed =  attributeValues?[Int(SDEAttributeID.baseWarpSpeed.rawValue)] ?? type[SDEAttributeID.baseWarpSpeed]?.value ?? 1.0
 								var s = UnitFormatter.localizedString(from: Double(value * baseWarpSpeed), unit: .none, style: .long)
 								s += " " + NSLocalizedString("AU/sec", comment: "")
-								let row = Tree.Item.Row<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: NSLocalizedString("Warp Speed", comment: "").uppercased(), subtitle: s, image: Image(attributeType.icon)), diffIdentifier: "WarpSpeed")
+								let row = Tree.Item.Row<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute, title: NSLocalizedString("Warp Speed", comment: "").uppercased(), subtitle: s, image: Image(attributeType.icon)), diffIdentifier: "WarpSpeed")
 								rows.append(row.asAnyItem)
 							default:
 								let row = Tree.Item.DgmAttributeRow(attribute: attribute, value: value, context: context)
@@ -486,7 +480,7 @@ extension InvTypeInfoPresenter {
 	func variationsPresentation(for type: SDEInvType, context: SDEContext) -> Tree.Item.Section<Tree.Item.RoutableRow<Tree.Content.Default>>? {
 		guard type.parentType != nil || (type.variations?.count ?? 0) > 0 else {return nil}
 		let n = max(type.variations?.count ?? 0, type.parentType?.variations?.count ?? 0) + 1
-		let row = Tree.Item.RoutableRow<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: String.localizedStringWithFormat("%d types", n).uppercased(), accessoryType: .disclosureIndicator),
+		let row = Tree.Item.RoutableRow<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute, title: String.localizedStringWithFormat("%d types", n).uppercased(), accessoryType: .disclosureIndicator),
 															  diffIdentifier: "Variations",
 															  route: Router.SDE.invTypeVariations(.objectID(type.objectID)))
 		let section = Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Variations", comment: "").uppercased(), isExpanded: true), diffIdentifier: "VariationsSection", expandIdentifier: "VariationsSection", treeController: view?.treeController, children: [row])
@@ -495,7 +489,7 @@ extension InvTypeInfoPresenter {
 	
 	func requiredForPresentation(for type: SDEInvType, context: SDEContext) -> Tree.Item.Section<Tree.Item.Row<Tree.Content.Default>>? {
 		guard let n = type.requiredForSkill?.count, n > 0 else { return nil }
-		let row = Tree.Item.Row<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+		let row = Tree.Item.Row<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																		   title: String.localizedStringWithFormat("%d types", n).uppercased()), diffIdentifier: "RequiredFor")
 		let section = Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Required for", comment: "").uppercased(), isExpanded: true), diffIdentifier: "RequiredForSection", expandIdentifier: "RequiredForSection", treeController: view?.treeController, children: [row])
 		return section
@@ -539,7 +533,7 @@ extension InvTypeInfoPresenter {
 			
 			let route = Router.SDE.invTypeMastery(InvTypeMastery.View.Input(typeObjectID: type.objectID, masteryLevelObjectID: level.objectID))
 			
-			return Tree.Item.RoutableRow<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: title, subtitle: subtitle, image: Image(icon)), diffIdentifier: level.objectID, route: route)
+			return Tree.Item.RoutableRow<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute, title: title, subtitle: subtitle, image: Image(icon)), diffIdentifier: level.objectID, route: route)
 
 			//TODO: AddRoute
 		}
@@ -618,7 +612,7 @@ extension InvTypeInfoPresenter {
 			let products = (activity.products?.allObjects as? [SDEIndProduct])?.filter {$0.productType?.typeName != nil}.sorted {$0.productType!.typeName! < $1.productType!.typeName!}.map { product -> AnyTreeItem in
 				let title = NSLocalizedString("PRODUCT", comment: "")
 				let image = Image(product.productType?.icon)
-				let row = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: title, subtitle: product.productType!.typeName!, image: image, accessoryType: .disclosureIndicator), diffIdentifier: product.objectID, route: Router.SDE.invTypeInfo(.objectID(product.productType!.objectID)))
+				let row = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute, title: title, subtitle: product.productType!.typeName!, image: image, accessoryType: .disclosureIndicator), diffIdentifier: product.objectID, route: Router.SDE.invTypeInfo(.objectID(product.productType!.objectID)))
 				return row.asAnyItem
 			}
 			if let products = products {
@@ -629,7 +623,7 @@ extension InvTypeInfoPresenter {
 				let subtitle = UnitFormatter.localizedString(from: material.quantity, unit: .none, style: .long)
 				let image = Image(material.materialType?.icon)
 				
-				let row = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default, title: material.materialType?.typeName, subtitle: subtitle, image: image, accessoryType: .disclosureIndicator), diffIdentifier: material.objectID, route: Router.SDE.invTypeInfo(.objectID(material.materialType!.objectID)))
+				let row = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute, title: material.materialType?.typeName, subtitle: subtitle, image: image, accessoryType: .disclosureIndicator), diffIdentifier: material.objectID, route: Router.SDE.invTypeInfo(.objectID(material.materialType!.objectID)))
 				return row.asAnyItem
 			}
 			
@@ -651,7 +645,7 @@ extension InvTypeInfoPresenter {
 		var rows = [AnyTreeItem]()
 		
 		if wh.targetSystemClass >= 0 {
-			rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+			rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 														   title: NSLocalizedString("Leads Into", comment: "").uppercased(),
 														   subtitle: wh.targetSystemClassDisplayName,
 														   image: Image(#imageLiteral(resourceName: "systems"))),
@@ -659,7 +653,7 @@ extension InvTypeInfoPresenter {
 		}
 		
 		if wh.maxStableTime > 0 {
-			rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+			rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 														   title: NSLocalizedString("Maximum Stable Time", comment: "").uppercased(),
 														   subtitle: TimeIntervalFormatter.localizedString(from: TimeInterval(wh.maxStableTime * 60), precision: .hours),
 														   image: Image(context.eveIcon("22_32_16"))),
@@ -667,7 +661,7 @@ extension InvTypeInfoPresenter {
 		}
 
 		if wh.maxStableMass > 0 {
-			rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+			rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 														   title: NSLocalizedString("Maximum Stable Mass", comment: "").uppercased(),
 														   subtitle: UnitFormatter.localizedString(from: wh.maxStableMass, unit: .kilogram, style: .long),
 														   image: Image(context.eveIcon("2_64_10"))),
@@ -686,7 +680,7 @@ extension InvTypeInfoPresenter {
 			try? frc.performFetch()
 			let children = Tree.Item.FetchedResultsController<Tree.Item.NamedFetchedResultsSection<Tree.Item.InvType>>(frc, treeController: view?.treeController)
 			
-			rows.append (Tree.Item.ExpandableRow(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+			rows.append (Tree.Item.ExpandableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																	  title: NSLocalizedString("Maximum Jump Mass", comment: "").uppercased(),
 																	  subtitle: UnitFormatter.localizedString(from: wh.maxStableMass, unit: .kilogram, style: .long),
 																	  image: Image(context.eveIcon("36_64_13"))),
@@ -696,7 +690,7 @@ extension InvTypeInfoPresenter {
 		}
 		
 		if wh.maxRegeneration > 0 {
-			rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+			rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 														   title: NSLocalizedString("Maximum Mass Regeneration", comment: "").uppercased(),
 														   subtitle: UnitFormatter.localizedString(from: wh.maxRegeneration, unit: .kilogram, style: .long),
 														   image: Image(context.eveIcon("23_64_3"))),
@@ -750,25 +744,25 @@ extension InvTypeInfoPresenter {
 																				kinetic: kinetic * damageMultiplier,
 																				explosive: explosive * damageMultiplier), diffIdentifier: "Turrets").asAnyItem)
 					
-					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																   title: NSLocalizedString("Damage per Second", comment: "").uppercased(),
 																   subtitle: UnitFormatter.localizedString(from: dps, unit: .none, style: .long),
 																   image: Image(#imageLiteral(resourceName: "turrets"))),
 											  diffIdentifier: "TurretDamage").asAnyItem)
 					
-					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																   title: NSLocalizedString("Rate of Fire", comment: "").uppercased(),
 																   subtitle: TimeIntervalFormatter.localizedString(from: TimeInterval(duration), precision: .seconds),
 																   image: Image(#imageLiteral(resourceName: "rateOfFire"))),
 											  diffIdentifier: "TurretRoF").asAnyItem)
 					
-					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																   title: NSLocalizedString("Optimal Range", comment: "").uppercased(),
 																   subtitle: UnitFormatter.localizedString(from: maxRange, unit: .meter, style: .long),
 																   image: Image(#imageLiteral(resourceName: "targetingRange"))),
 											  diffIdentifier: "TurretOptimal").asAnyItem)
 					
-					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																   title: NSLocalizedString("Falloff", comment: "").uppercased(),
 																   subtitle: UnitFormatter.localizedString(from: falloff, unit: .meter, style: .long),
 																   image: Image(#imageLiteral(resourceName: "falloff"))),
@@ -777,7 +771,7 @@ extension InvTypeInfoPresenter {
 				case .missile?:
 					guard let attribute = type[SDEAttributeID.entityMissileTypeID], let missile = context.invType(Int(attribute.value)) else {break}
 					
-					rows.append(Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+					rows.append(Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																		   title: NSLocalizedString("Missile", comment: "").uppercased(),
 																		   subtitle: missile.typeName,
 																		   image: Image(missile.icon),
@@ -815,19 +809,19 @@ extension InvTypeInfoPresenter {
 																				kinetic: kinetic * damageMultiplier,
 																				explosive: explosive * damageMultiplier), diffIdentifier: "Missile").asAnyItem)
 
-					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																   title: NSLocalizedString("Damage per Second", comment: "").uppercased(),
 																   subtitle: UnitFormatter.localizedString(from: dps, unit: .none, style: .long),
 																   image: Image(#imageLiteral(resourceName: "launchers"))),
 											  diffIdentifier: "MissileDamage").asAnyItem)
 
-					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																   title: NSLocalizedString("Rate of Fire", comment: "").uppercased(),
 																   subtitle: TimeIntervalFormatter.localizedString(from: TimeInterval(duration), precision: .seconds),
 																   image: Image(#imageLiteral(resourceName: "rateOfFire"))),
 											  diffIdentifier: "MissileRoF").asAnyItem)
 
-					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+					rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																   title: NSLocalizedString("Optimal Range", comment: "").uppercased(),
 																   subtitle: UnitFormatter.localizedString(from: optimal, unit: .meter, style: .long),
 																   image: Image(#imageLiteral(resourceName: "targetingRange"))),
@@ -880,7 +874,7 @@ extension InvTypeInfoPresenter {
 							rechargeRate > 0 && capacity > 0 {
 							let passive = 10.0 / (rechargeRate / 1000.0) * 0.5 * (1 - 0.5) * capacity
 						
-							rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+							rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																		   title: NSLocalizedString("Passive Recharge Rate", comment: "").uppercased(),
 																		   subtitle: UnitFormatter.localizedString(from: passive, unit: .hpPerSecond, style: .long),
 																		   image: Image(#imageLiteral(resourceName: "shieldRecharge"))),
@@ -899,7 +893,7 @@ extension InvTypeInfoPresenter {
 							
 							let repair = amount / (duration * (1 + chance) / 1000.0)
 
-							rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+							rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																		   title: NSLocalizedString("Repair Rate", comment: "").uppercased(),
 																		   subtitle: UnitFormatter.localizedString(from: repair, unit: .hpPerSecond, style: .long),
 																		   image: Image(#imageLiteral(resourceName: "shieldBooster"))),
@@ -919,7 +913,7 @@ extension InvTypeInfoPresenter {
 							
 							let repair = amount / (duration * (1 + chance) / 1000.0)
 							
-							rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.DgmAttributeCell.default,
+							rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																		   title: NSLocalizedString("Repair Rate", comment: "").uppercased(),
 																		   subtitle: UnitFormatter.localizedString(from: repair, unit: .hpPerSecond, style: .long),
 																		   image: Image(#imageLiteral(resourceName: "armorRepairer"))),

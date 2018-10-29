@@ -36,7 +36,7 @@ class Character_Tests: XCTestCase {
 		XCTAssertEqual(skill.skillpointsPerSecond(with: attributes), ((25 + 15 / 2.0) / 60.0), accuracy: 0.001)
     }
 	
-	func testSkillQueue() {
+	func testTrainingQueue() {
 		let context = sde.viewContext
 		let character = Character(attributes: .default, augmentations: .none, trainedSkills: [:], skillQueue: [])
 		let trainingQueue = TrainingQueue(character: character)

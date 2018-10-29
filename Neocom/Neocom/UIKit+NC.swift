@@ -132,3 +132,17 @@ extension String {
 	}
 }
 
+
+extension UIAlertController {
+	convenience init(add trainingQueue: TrainingQueue, to skillPlan: SkillPlan, handler: ((UIAlertAction) -> Void)? = nil) {
+		let trainingTime = trainingQueue.trainingTime()
+		let message = String(format: NSLocalizedString("Total Training Time: %@", comment: ""), TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds))
+		self.init(title: NSLocalizedString("Add to Skill Plan", comment: ""), message: message, preferredStyle: .actionSheet)
+		
+		addAction(UIAlertAction(title: NSLocalizedString("Add to Skill Plan", comment: ""), style: .default) { action in
+			handler?(action)
+		})
+		
+		addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
+	}
+}

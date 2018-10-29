@@ -67,20 +67,9 @@ class SkillQueuePresenter: TreePresenter {
 	}
 	
 	func onSkillPlansAction(sender: UIControl) {
-		guard let account = Services.storage.viewContext.currentAccount else {return}
-		
 		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-		controller.addAction(UIAlertAction(title: NSLocalizedString("Add Skill Plan", comment: ""), style: .default, handler: { _ in
-			
-			account.skillPlans?.forEach {
-				($0 as? SkillPlan)?.active = false
-			}
-			
-			let skillPlan = SkillPlan(context: account.managedObjectContext!)
-			skillPlan.name = NSLocalizedString("Unnamed", comment: "")
-			skillPlan.account = account
-			skillPlan.active = true
-			try? Services.storage.viewContext.save()
+		controller.addAction(UIAlertAction(title: NSLocalizedString("Add Skill Plan", comment: ""), style: .default, handler: { [weak self] _ in
+			self?.interactor.addNewSkillPlan()
 		}))
 		
 		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
@@ -91,23 +80,14 @@ class SkillQueuePresenter: TreePresenter {
 		let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
 		if (skillPlan.skills?.count ?? 0) > 0 {
-			controller.addAction(UIAlertAction(title: NSLocalizedString("Clear", comment: ""), style: .default, handler: { _ in
-				(skillPlan.skills?.allObjects as? [SkillPlanSkill])?.forEach { skill in
-					skill.managedObjectContext?.delete(skill)
-					skill.skillPlan = nil
-				}
-				
-				try? Services.storage.viewContext.save()
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Clear", comment: ""), style: .default, handler: { [weak self] _ in
+				self?.interactor.clear(skillPlan)
 			}))
 		}
 		
 		if !skillPlan.active {
-			controller.addAction(UIAlertAction(title: NSLocalizedString("Make Active", comment: ""), style: .default, handler: { _ in
-				skillPlan.account?.skillPlans?.forEach {
-					($0 as? SkillPlan)?.active = false
-				}
-				skillPlan.active = true
-				try? Services.storage.viewContext.save()
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Make Active", comment: ""), style: .default, handler: { [weak self] _ in
+				self?.interactor.makeActive(skillPlan)
 			}))
 		}
 		
@@ -122,11 +102,8 @@ class SkillQueuePresenter: TreePresenter {
 				textField?.clearButtonMode = .always
 			})
 			
-			controller.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { (action) in
-				if textField?.text?.count ?? 0 > 0 && skillPlan.name != textField?.text {
-					skillPlan.name = textField?.text
-					try? Services.storage.viewContext.save()
-				}
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Rename", comment: ""), style: .default, handler: { [weak self] _ in
+				self?.interactor.rename(skillPlan, with: textField?.text ?? "")
 			}))
 			
 			controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil))
@@ -135,15 +112,8 @@ class SkillQueuePresenter: TreePresenter {
 		}))
 		
 		if (skillPlan.account?.skillPlans?.count ?? 0) > 1 {
-			controller.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive, handler: { _ in
-				
-				if skillPlan.active {
-					if let item = (skillPlan.account?.skillPlans?.sortedArray(using: [NSSortDescriptor(key: "name", ascending: true)]) as? [SkillPlan])?.first(where: { $0 !== skillPlan }) {
-						item.active = true
-					}
-				}
-				skillPlan.managedObjectContext?.delete(skillPlan)
-				try? Services.storage.viewContext.save()
+			controller.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive, handler: { [weak self] _ in
+				self?.interactor.delete(skillPlan)
 			}))
 		}
 		
@@ -151,6 +121,26 @@ class SkillQueuePresenter: TreePresenter {
 		view?.present(controller, animated: true, completion: nil)
 
 	}
+	
+	func canEdit<T: TreeItem>(_ item: T) -> Bool {
+		return item is Tree.Item.SkillPlanSkillRow || item is Tree.Item.SkillPlanRow
+	}
+	
+	func editingStyle<T: TreeItem>(for item: T) -> UITableViewCell.EditingStyle {
+		return .delete
+	}
+
+	func commit<T: TreeItem>(editingStyle: UITableViewCell.EditingStyle, for item: T) {
+		switch item {
+		case let item as Tree.Item.SkillPlanSkillRow:
+			interactor.delete(item.result)
+		case let item as Tree.Item.SkillPlanRow:
+			interactor.delete(item.result)
+		default:
+			break
+		}
+	}
+
 }
 
 extension Tree.Item {

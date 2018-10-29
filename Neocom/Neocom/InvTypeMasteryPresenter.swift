@@ -92,18 +92,12 @@ class InvTypeMasteryPresenter: TreePresenter {
 		let trainingTime = trainingQueue.trainingTime()
 		guard trainingTime > 0 else {return}
 		
-		let message = String(format: NSLocalizedString("Total Training Time: %@", comment: ""), TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds))
-		
-		let controller = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
-		
-		controller.addAction(UIAlertAction(title: NSLocalizedString("Add to Skill Plan", comment: ""), style: .default) { [weak self] _ in
+		let controller = UIAlertController(add: trainingQueue, to: skillPlan) { [weak self] _ in
 			skillPlan.add(trainingQueue)
 			try? Services.storage.viewContext.save()
 			self?.view?.tableView.reloadData()
-		})
+		}
 		
-		controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
 		view?.present(controller, animated: true)
-		
 	}
 }

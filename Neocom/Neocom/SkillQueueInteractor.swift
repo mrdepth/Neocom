@@ -35,4 +35,59 @@ class SkillQueueInteractor: TreeInteractor {
 			}
 		}
 	}
+	
+	func addNewSkillPlan() {
+		guard let account = Services.storage.viewContext.currentAccount else {return}
+		account.skillPlans?.forEach {
+			($0 as? SkillPlan)?.active = false
+		}
+		
+		let skillPlan = SkillPlan(context: account.managedObjectContext!)
+		skillPlan.name = NSLocalizedString("Unnamed", comment: "")
+		skillPlan.account = account
+		skillPlan.active = true
+		try? Services.storage.viewContext.save()
+	}
+	
+	func clear(_ skillPlan: SkillPlan) {
+		(skillPlan.skills?.allObjects as? [SkillPlanSkill])?.forEach {
+			$0.managedObjectContext?.delete($0)
+		}
+		
+		try? Services.storage.viewContext.save()
+	}
+	
+	func makeActive(_ skillPlan: SkillPlan) {
+		skillPlan.account?.skillPlans?.forEach {
+			($0 as? SkillPlan)?.active = false
+		}
+		skillPlan.active = true
+		try? Services.storage.viewContext.save()
+	}
+	
+	func rename(_ skillPlan: SkillPlan, with name: String) {
+		if !name.isEmpty && skillPlan.name != name {
+			skillPlan.name = name
+			try? Services.storage.viewContext.save()
+		}
+	}
+	
+	func delete(_ skillPlan: SkillPlan) {
+		if skillPlan.active {
+			if let item = (skillPlan.account?.skillPlans?.sortedArray(using: [NSSortDescriptor(key: "name", ascending: true)]) as? [SkillPlan])?.first(where: { $0 !== skillPlan }) {
+				item.active = true
+			}
+		}
+		skillPlan.managedObjectContext?.delete(skillPlan)
+		try? Services.storage.viewContext.save()
+	}
+	
+	func delete(_ skill: SkillPlanSkill) {
+		(skill.skillPlan?.skills?.allObjects as? [SkillPlanSkill])?.filter {
+			$0.level >= skill.level && $0.typeID == skill.typeID
+		}.forEach {
+			$0.managedObjectContext?.delete($0)
+		}
+		try? Services.storage.viewContext.save()
+	}
 }

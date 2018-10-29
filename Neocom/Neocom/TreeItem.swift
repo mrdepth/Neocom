@@ -107,7 +107,7 @@ extension Tree.Item {
 		}
 		
 		func isEqual(_ other: Base<Content, Element>) -> Bool {
-			return type(of: self) == type(of: other) && content == other.content
+			return type(of: self) == type(of: other) && content == other.content && prototype == other.prototype
 		}
 		
 		static func == (lhs: Base<Content, Element>, rhs: Base<Content, Element>) -> Bool {

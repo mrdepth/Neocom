@@ -81,6 +81,7 @@ enum Router {
 			return Route(assembly: SkillQueue.default, kind: .detail)
 //			return Route(assembly: Skills.default, kind: .detail)
 		}
+		
 	}
 }
 

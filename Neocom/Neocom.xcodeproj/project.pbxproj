@@ -106,8 +106,7 @@
 		1253C62C21591036007DEA16 /* MarketHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C62B21591036007DEA16 /* MarketHistoryCell.xib */; };
 		1253C62E21591066007DEA16 /* MarketHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62D21591066007DEA16 /* MarketHistoryCell.swift */; };
 		1253C6302159108F007DEA16 /* MarketHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62F2159108F007DEA16 /* MarketHistoryView.swift */; };
-		1253C64A21592B80007DEA16 /* DgmAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C64921592B80007DEA16 /* DgmAttributeCell.swift */; };
-		1253C64C21592BA4007DEA16 /* DgmAttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C64B21592BA4007DEA16 /* DgmAttributeCell.xib */; };
+		1253C64C21592BA4007DEA16 /* TreeDefaultAttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C64B21592BA4007DEA16 /* TreeDefaultAttributeCell.xib */; };
 		1256BE551DF4728800A2A24B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE541DF4728800A2A24B /* Main.storyboard */; };
 		1256BEC81DF4770A00A2A24B /* charisma.png in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE611DF4770A00A2A24B /* charisma.png */; };
 		1256BEC91DF4770A00A2A24B /* intelligence.png in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE621DF4770A00A2A24B /* intelligence.png */; };
@@ -570,8 +569,7 @@
 		1253C62B21591036007DEA16 /* MarketHistoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MarketHistoryCell.xib; sourceTree = "<group>"; };
 		1253C62D21591066007DEA16 /* MarketHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketHistoryCell.swift; sourceTree = "<group>"; };
 		1253C62F2159108F007DEA16 /* MarketHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketHistoryView.swift; sourceTree = "<group>"; };
-		1253C64921592B80007DEA16 /* DgmAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmAttributeCell.swift; sourceTree = "<group>"; };
-		1253C64B21592BA4007DEA16 /* DgmAttributeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DgmAttributeCell.xib; sourceTree = "<group>"; };
+		1253C64B21592BA4007DEA16 /* TreeDefaultAttributeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TreeDefaultAttributeCell.xib; sourceTree = "<group>"; };
 		1256BE331DF1C38200A2A24B /* NCStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorage.swift; sourceTree = "<group>"; };
 		1256BE351DF1ED3F00A2A24B /* NCStorageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCStorageExtensions.swift; sourceTree = "<group>"; };
 		1256BE381DF1EF8C00A2A24B /* NCBannerNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCBannerNavigationViewController.swift; sourceTree = "<group>"; };
@@ -1392,15 +1390,6 @@
 			name = MarketHistoryCell;
 			sourceTree = "<group>";
 		};
-		1253C64821592B72007DEA16 /* DgmAttributeCell */ = {
-			isa = PBXGroup;
-			children = (
-				1253C64921592B80007DEA16 /* DgmAttributeCell.swift */,
-				1253C64B21592BA4007DEA16 /* DgmAttributeCell.xib */,
-			);
-			name = DgmAttributeCell;
-			sourceTree = "<group>";
-		};
 		1256BE371DF1EF6600A2A24B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1582,7 +1571,6 @@
 			children = (
 				1279EFF6213587D7005340C0 /* Cells.swift */,
 				12EA7793217F4416009C8288 /* SkillCell */,
-				1253C64821592B72007DEA16 /* DgmAttributeCell */,
 				1253C62A2159102A007DEA16 /* MarketHistoryCell */,
 				1253C62321590738007DEA16 /* DamageTypeCell */,
 				12A843292153C5C500570A95 /* InvTypeCell */,
@@ -1678,6 +1666,7 @@
 			children = (
 				125DF63B2133D30000B86AE0 /* TreeDefaultCell.swift */,
 				1284C1502133F84800AF52C2 /* TreeDefaultCell.xib */,
+				1253C64B21592BA4007DEA16 /* TreeDefaultAttributeCell.xib */,
 			);
 			name = TreeDefaultCell;
 			sourceTree = "<group>";
@@ -2580,7 +2569,7 @@
 				1248DB3A1F1C9DE9009625EC /* NCMailTableViewCell.xib in Resources */,
 				1253C6292159081A007DEA16 /* DamageTypeCompactCell.xib in Resources */,
 				1298BA7F20AEFB73002C941E /* MPCloseButtonX.png in Resources */,
-				1253C64C21592BA4007DEA16 /* DgmAttributeCell.xib in Resources */,
+				1253C64C21592BA4007DEA16 /* TreeDefaultAttributeCell.xib in Resources */,
 				12AC8D9E1DEF58A100561A7A /* LaunchScreen.storyboard in Resources */,
 				1259639721381ECD00B3A53C /* AccountCell.xib in Resources */,
 				1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */,
@@ -2723,7 +2712,6 @@
 				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
 				12484C78215CC6A70083AE17 /* MapLocationPickerInteractor.swift in Sources */,
 				12A843302153CA9600570A95 /* DamageTypeLabel.swift in Sources */,
-				1253C64A21592B80007DEA16 /* DgmAttributeCell.swift in Sources */,
 				12EE7D0A213E60D1005CE68F /* MainMenuContainerInteractor.swift in Sources */,
 				12484CA7215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift in Sources */,
 				12484C69215BB24E0083AE17 /* EVELocation.swift in Sources */,

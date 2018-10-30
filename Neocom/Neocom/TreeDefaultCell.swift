@@ -19,6 +19,7 @@ extension Prototype {
 	enum TreeDefaultCell {
 		static let `default` = Prototype(nib: UINib(nibName: "TreeDefaultCell", bundle: nil), reuseIdentifier: "TreeDefaultCell")
 		static let attribute = Prototype(nib: UINib(nibName: "TreeDefaultAttributeCell", bundle: nil), reuseIdentifier: "TreeDefaultAttributeCell")
+		static let placeholder = Prototype(nib: UINib(nibName: "TreeDefaultPlaceholderCell", bundle: nil), reuseIdentifier: "TreeDefaultPlaceholderCell")
 	}
 }
 

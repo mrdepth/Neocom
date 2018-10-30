@@ -11,6 +11,7 @@ import Futures
 import CloudData
 import TreeController
 import Expressible
+import CoreData
 
 class SkillQueuePresenter: TreePresenter {
 	typealias View = SkillQueueViewController
@@ -30,7 +31,9 @@ class SkillQueuePresenter: TreePresenter {
 	
 	func configure() {
 		view?.tableView.register([Prototype.TreeHeaderCell.default,
-								  Prototype.SkillCell.default])
+								  Prototype.SkillCell.default,
+								  Prototype.TreeDefaultCell.default,
+								  Prototype.TreeDefaultCell.placeholder])
 		
 		interactor.configure()
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
@@ -59,6 +62,9 @@ class SkillQueuePresenter: TreePresenter {
 		
 		let skillQueueSection = Tree.Item.Section(Tree.Content.Section(title: title), diffIdentifier: "SkillQueue", expandIdentifier: "SkillQueue", treeController: view?.treeController, children: rows)
 		
+		let attributesSection = Tree.Item.OptimalAttributesSection(character: content.value, account: account, treeController: view?.treeController)
+		
+		sections.append(attributesSection.asAnyItem)
 		sections.append(skillQueueSection.asAnyItem)
 		sections.append(Tree.Item.SkillPlansResultsController(account: account, treeController: view?.treeController, presenter: self).asAnyItem)
 		
@@ -325,7 +331,93 @@ extension Tree.Item {
 			cell.iconView?.image = #imageLiteral(resourceName: "skillRequirementQueued")
 		}
 	}
-}
+	
+	class OptimalAttributesSection: Section<Tree.Item.Row<Tree.Content.Default>> {
+		var account: Account
+		var character: Character
+		var skillPlan: SkillPlan?
+		private var notificationObserver: NotificationObserver? = nil
+		
+		init(character: Character, account: Account, treeController: TreeController?) {
+			self.account = account
+			self.character = character
+			super.init(Tree.Content.Section(title: NSLocalizedString("Attributes", comment: "").uppercased(), isExpanded: false),
+					   diffIdentifier: "Attributes",
+					   expandIdentifier: "Attributes",
+					   treeController: treeController,
+					   children: [])
 
+			skillPlan = account.activeSkillPlan
+
+			getChildren().then(on: .main) { [weak self] result in
+				guard let strongSelf = self else {return}
+				strongSelf.children = result
+				strongSelf.treeController?.update(contentsOf: strongSelf, with: .fade)
+			}
+			
+			
+			notificationObserver = NotificationCenter.default.addNotificationObserver(forName: .NSManagedObjectContextObjectsDidChange, object: account.managedObjectContext, queue: nil) { [weak self] note in
+				guard let strongSelf = self else {return}
+				let updated = (note.userInfo?[NSUpdatedObjectsKey] as? NSSet)?.compactMap {$0 as? SkillPlan}
+				guard updated?.contains(where: {$0 == strongSelf.skillPlan}) == true else {return}
+				strongSelf.skillPlan = strongSelf.account.activeSkillPlan
+				
+				strongSelf.getChildren().then(on: .main) { [weak self] result in
+					guard let strongSelf = self else {return}
+					strongSelf.children = result
+					strongSelf.treeController?.update(contentsOf: strongSelf, with: .fade)
+				}
+			}
+		}
+		
+		private func getChildren() -> Future<[Tree.Item.Row<Tree.Content.Default>]> {
+			let objectID = skillPlan?.objectID
+			let character = self.character
+			
+			return Services.storage.performBackgroundTask { context in
+				let skillPlan: SkillPlan? = try objectID.flatMap{ try context.existingObject(with: $0)}
+				let trainingQueue = TrainingQueue(character: character)
+				var skills = [Int: Int]()
+				(skillPlan?.skills as? Set<SkillPlanSkill>)?.forEach {
+					let typeID = Int($0.typeID)
+					skills[typeID] = max(skills[typeID] ?? 0, Int($0.level))
+				}
+				
+				for i in character.skillQueue {
+					skills[i.skill.typeID] = max(skills[i.skill.typeID] ?? 0, i.queuedSkill.finishedLevel)
+				}
+				
+				return Services.sde.performBackgroundTask { context -> [Tree.Item.Row<Tree.Content.Default>] in
+					for (typeID, level) in skills {
+						guard let type = context.invType(typeID) else {continue}
+						trainingQueue.add(type, level: Int(level))
+					}
+					let current = character.attributes
+					let optimal = Character.Attributes(optimalFor: trainingQueue)
+					var rows = [("Intelligence", NSLocalizedString("Intelligence", comment: ""), #imageLiteral(resourceName: "intelligence"), current.intelligence, optimal.intelligence),
+								("Memory", NSLocalizedString("Memory", comment: ""), #imageLiteral(resourceName: "memory"), current.memory, optimal.memory),
+								("Perception", NSLocalizedString("Perception", comment: ""), #imageLiteral(resourceName: "perception"), current.perception, optimal.perception),
+								("Willpower", NSLocalizedString("Willpower", comment: ""), #imageLiteral(resourceName: "willpower"), current.willpower, optimal.willpower),
+								("Charisma", NSLocalizedString("Charisma", comment: ""), #imageLiteral(resourceName: "charisma"), current.charisma, optimal.charisma)].map { i in
+									
+									Tree.Item.Row(Tree.Content.Default(title: i.1,
+																	   subtitle: String.localizedStringWithFormat(NSLocalizedString("Optimal: %d \t Current: %d", comment: ""), i.4, i.3),
+																	   image: Image(i.2)),
+												  diffIdentifier: i.0)
+					}
+					
+					let t0 = trainingQueue.trainingTime()
+					let t1 = trainingQueue.trainingTime(with: optimal)
+					let dt = t0 - t1
+					if dt > 0 {
+						let s = TimeIntervalFormatter.localizedString(from: dt, precision: .seconds)
+						rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.placeholder, title: String.localizedStringWithFormat(NSLocalizedString("%@ better than current", comment: ""), s)), diffIdentifier: "Better"))
+					}
+					return rows
+				}
+			}
+		}
+	}
+}
 
 

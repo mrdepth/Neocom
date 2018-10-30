@@ -183,7 +183,7 @@
         <!--Skills-->
         <scene sceneID="ahG-u5-4cE">
             <objects>
-                <viewController storyboardIdentifier="NCSkillsPageViewController" title="Skills" automaticallyAdjustsScrollViewInsets="NO" id="xT2-JQ-e71" customClass="NCSkillsPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MySkillsViewController" title="Skills" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xT2-JQ-e71" customClass="MySkillsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ifb-Ym-jmB" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -212,10 +212,10 @@
             </objects>
             <point key="canvasLocation" x="5241" y="1650"/>
         </scene>
-        <!--View Controller-->
+        <!--Skills Container View Controller-->
         <scene sceneID="4mM-IN-la7">
             <objects>
-                <viewController storyboardIdentifier="NCSkillsContainerViewController" id="QPL-C0-XeF" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SkillsContainerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="QPL-C0-XeF" customClass="SkillsContainerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6vB-I1-2cA" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

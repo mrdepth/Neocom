@@ -140,6 +140,7 @@
 		12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12678BEE212BE32A00E7E427 /* AppDelegate.swift */; };
 		126AF8EF211ADD8E008ED515 /* TreeController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 126AF8EE211ADD8E008ED515 /* TreeController.framework */; };
 		126AF8F0211ADD8E008ED515 /* TreeController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 126AF8EE211ADD8E008ED515 /* TreeController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1278B8D8218844DF003C9A99 /* TreeDefaultPlaceholderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1278B8D7218844DF003C9A99 /* TreeDefaultPlaceholderCell.xib */; };
 		1279A2F12023193300DD7A46 /* NCStaticHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1279A2F02023193300DD7A46 /* NCStaticHeaderTableViewCell.xib */; };
 		1279A2F32023332500DD7A46 /* NCFooterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1279A2F22023332500DD7A46 /* NCFooterTableViewCell.xib */; };
 		1279EFEE213543B7005340C0 /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFED213543B7005340C0 /* UnitFormatter.swift */; };
@@ -226,6 +227,14 @@
 		12AC8D9E1DEF58A100561A7A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12AC8D9C1DEF58A100561A7A /* LaunchScreen.storyboard */; };
 		12AC8DA61DEF597400561A7A /* EVEAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12AC8DA51DEF597400561A7A /* EVEAPI.framework */; };
 		12AC8DA71DEF597400561A7A /* EVEAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12AC8DA51DEF597400561A7A /* EVEAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		12AF2FC92188930300813DFD /* SkillsContainerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FC52188930300813DFD /* SkillsContainerPresenter.swift */; };
+		12AF2FCA2188930300813DFD /* SkillsContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FC62188930300813DFD /* SkillsContainerViewController.swift */; };
+		12AF2FCB2188930300813DFD /* SkillsContainerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FC72188930300813DFD /* SkillsContainerInteractor.swift */; };
+		12AF2FCC2188930300813DFD /* SkillsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FC82188930300813DFD /* SkillsContainer.swift */; };
+		12AF2FD12188943900813DFD /* MySkillsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FCD2188943900813DFD /* MySkillsPresenter.swift */; };
+		12AF2FD22188943900813DFD /* MySkillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FCE2188943900813DFD /* MySkillsViewController.swift */; };
+		12AF2FD32188943900813DFD /* MySkillsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FCF2188943900813DFD /* MySkillsInteractor.swift */; };
+		12AF2FD42188943900813DFD /* MySkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FD02188943900813DFD /* MySkills.swift */; };
 		12AFD46D211C1C3D00007423 /* SDE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AFD46C211C1C3D00007423 /* SDE.swift */; };
 		12AFD46F211C1CFD00007423 /* Expressible.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12AFD46E211C1CFD00007423 /* Expressible.framework */; };
 		12AFD470211C1CFD00007423 /* Expressible.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12AFD46E211C1CFD00007423 /* Expressible.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -644,6 +653,7 @@
 		126C9D4C1F30A9270071E792 /* NCLocationSearchResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocationSearchResultsViewController.swift; sourceTree = "<group>"; };
 		126E183A1F6133710008C081 /* NCSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSettingsViewController.swift; sourceTree = "<group>"; };
 		12709D4F1FF2954800D6CE22 /* dgmpp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dgmpp.swift; sourceTree = "<group>"; };
+		1278B8D7218844DF003C9A99 /* TreeDefaultPlaceholderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TreeDefaultPlaceholderCell.xib; sourceTree = "<group>"; };
 		1279A2F02023193300DD7A46 /* NCStaticHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCStaticHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		1279A2F22023332500DD7A46 /* NCFooterTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFooterTableViewCell.xib; sourceTree = "<group>"; };
 		1279A2F420233CBA00DD7A46 /* NCBugreportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCBugreportViewController.swift; sourceTree = "<group>"; };
@@ -795,6 +805,14 @@
 		12AC8DCD1DF08D9B00561A7A /* NCCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCCache.xcdatamodel; sourceTree = "<group>"; };
 		12AC8DD11DF090A600561A7A /* NCCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCCache.swift; sourceTree = "<group>"; };
 		12AC8DD51DF0AF6900561A7A /* Dark.clr */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Dark.clr; sourceTree = "<group>"; };
+		12AF2FC52188930300813DFD /* SkillsContainerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillsContainerPresenter.swift; sourceTree = "<group>"; };
+		12AF2FC62188930300813DFD /* SkillsContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillsContainerViewController.swift; sourceTree = "<group>"; };
+		12AF2FC72188930300813DFD /* SkillsContainerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillsContainerInteractor.swift; sourceTree = "<group>"; };
+		12AF2FC82188930300813DFD /* SkillsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillsContainer.swift; sourceTree = "<group>"; };
+		12AF2FCD2188943900813DFD /* MySkillsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySkillsPresenter.swift; sourceTree = "<group>"; };
+		12AF2FCE2188943900813DFD /* MySkillsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySkillsViewController.swift; sourceTree = "<group>"; };
+		12AF2FCF2188943900813DFD /* MySkillsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySkillsInteractor.swift; sourceTree = "<group>"; };
+		12AF2FD02188943900813DFD /* MySkills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySkills.swift; sourceTree = "<group>"; };
 		12AFD46C211C1C3D00007423 /* SDE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDE.swift; sourceTree = "<group>"; };
 		12AFD46E211C1CFD00007423 /* Expressible.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Expressible.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12AFD472211C1E7D00007423 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
@@ -1535,7 +1553,9 @@
 		125B2CB8217A7BCE00D34CFB /* Skills */ = {
 			isa = PBXGroup;
 			children = (
+				12AF2FC4218892F100813DFD /* SkillsContainer */,
 				125B2CC1217A7C8000D34CFB /* SkillQueue */,
+				1278B8DE2188840E003C9A99 /* MySkills */,
 				125B2CBC217A7BDF00D34CFB /* Skills.swift */,
 				125B2CBA217A7BDF00D34CFB /* SkillsViewController.swift */,
 				125B2CB9217A7BDF00D34CFB /* SkillsPresenter.swift */,
@@ -1661,12 +1681,24 @@
 			name = Actions;
 			sourceTree = "<group>";
 		};
+		1278B8DE2188840E003C9A99 /* MySkills */ = {
+			isa = PBXGroup;
+			children = (
+				12AF2FD02188943900813DFD /* MySkills.swift */,
+				12AF2FCE2188943900813DFD /* MySkillsViewController.swift */,
+				12AF2FCD2188943900813DFD /* MySkillsPresenter.swift */,
+				12AF2FCF2188943900813DFD /* MySkillsInteractor.swift */,
+			);
+			name = MySkills;
+			sourceTree = "<group>";
+		};
 		1279EFF221355DE2005340C0 /* TreeDefaultCell */ = {
 			isa = PBXGroup;
 			children = (
 				125DF63B2133D30000B86AE0 /* TreeDefaultCell.swift */,
 				1284C1502133F84800AF52C2 /* TreeDefaultCell.xib */,
 				1253C64B21592BA4007DEA16 /* TreeDefaultAttributeCell.xib */,
+				1278B8D7218844DF003C9A99 /* TreeDefaultPlaceholderCell.xib */,
 			);
 			name = TreeDefaultCell;
 			sourceTree = "<group>";
@@ -2071,6 +2103,17 @@
 				12AC8DD11DF090A600561A7A /* NCCache.swift */,
 			);
 			name = NCCache;
+			sourceTree = "<group>";
+		};
+		12AF2FC4218892F100813DFD /* SkillsContainer */ = {
+			isa = PBXGroup;
+			children = (
+				12AF2FC82188930300813DFD /* SkillsContainer.swift */,
+				12AF2FC62188930300813DFD /* SkillsContainerViewController.swift */,
+				12AF2FC52188930300813DFD /* SkillsContainerPresenter.swift */,
+				12AF2FC72188930300813DFD /* SkillsContainerInteractor.swift */,
+			);
+			name = SkillsContainer;
 			sourceTree = "<group>";
 		};
 		12AFD46A211C1C1D00007423 /* Refactor */ = {
@@ -2603,6 +2646,7 @@
 				1256BECA1DF4770A00A2A24B /* memory.png in Resources */,
 				12E932201E6BFC650033D71A /* NCFittingCharacterTableViewCell.xib in Resources */,
 				128130431F3B01230039D46B /* main.css in Resources */,
+				1278B8D8218844DF003C9A99 /* TreeDefaultPlaceholderCell.xib in Resources */,
 				1298BA7920AEFB73002C941E /* MPCloseBtn.png in Resources */,
 				12E6AE5A1F18FB3B001E829D /* NCKillmailAttackerNPCTableViewCell.xib in Resources */,
 				128130421F3B01230039D46B /* dropzone.js in Resources */,
@@ -2667,6 +2711,7 @@
 				12415981212FF0AC001709F2 /* TreeItem.swift in Sources */,
 				12484C83215CCF2E0083AE17 /* MapLocationPickerRegionsInteractor.swift in Sources */,
 				12484CA5215D20F60083AE17 /* MapLocationPickerSearchResultsViewController.swift in Sources */,
+				12AF2FCC2188930300813DFD /* SkillsContainer.swift in Sources */,
 				12133C5D215E56D800646937 /* CertCertificateRequirementsInfoPresenter.swift in Sources */,
 				12484C76215CC69D0083AE17 /* MapLocationPickerPresenter.swift in Sources */,
 				12133C44215E3B7700646937 /* CertCertificatesInteractor.swift in Sources */,
@@ -2705,6 +2750,7 @@
 				12133C39215E39AE00646937 /* CertGroupsPresenter.swift in Sources */,
 				1204D07421528A270070AF92 /* InvGroupsInteractor.swift in Sources */,
 				1253C62E21591066007DEA16 /* MarketHistoryCell.swift in Sources */,
+				12AF2FCB2188930300813DFD /* SkillsContainerInteractor.swift in Sources */,
 				1204D066215271370070AF92 /* InvCategoriesPresenter.swift in Sources */,
 				1295A1AA2139242300047516 /* Services.swift in Sources */,
 				12484C8F215CD5A10083AE17 /* MapLocationPickerRecentsViewController.swift in Sources */,
@@ -2757,8 +2803,10 @@
 				12133C3E215E3B5A00646937 /* CertCertificates.swift in Sources */,
 				121F26EB2136EE6C00AE1D70 /* AccountsViewController.swift in Sources */,
 				124C858F213E880200333636 /* BackgroundView.swift in Sources */,
+				12AF2FCA2188930300813DFD /* SkillsContainerViewController.swift in Sources */,
 				129DFE1E21347AFB00C85496 /* AccessibilityLabel.swift in Sources */,
 				125B2CB52176FEB500D34CFB /* InvTypeMasteryInteractor.swift in Sources */,
+				12AF2FD12188943900813DFD /* MySkillsPresenter.swift in Sources */,
 				12133C35215E399C00646937 /* CertGroups.swift in Sources */,
 				12A843072153872D00570A95 /* InvTypesInteractor.swift in Sources */,
 				129DFE20213486D900C85496 /* ProgressTask.swift in Sources */,
@@ -2766,6 +2814,7 @@
 				12B03DA8213FEE1B00DCBD64 /* ActionHandler.swift in Sources */,
 				12484C91215CD5AA0083AE17 /* MapLocationPickerRecentsPresenter.swift in Sources */,
 				12A843052153872500570A95 /* InvTypesPresenter.swift in Sources */,
+				12AF2FD22188943900813DFD /* MySkillsViewController.swift in Sources */,
 				12E04181212D44360000CB4F /* Config.swift in Sources */,
 				12484CA3215D20EC0083AE17 /* MapLocationPickerSearchResults.swift in Sources */,
 				12A8432C2153C5D200570A95 /* InvTypeCell.swift in Sources */,
@@ -2791,7 +2840,9 @@
 				12484C72215CC6610083AE17 /* MapLocationPicker.swift in Sources */,
 				1204D07021528A140070AF92 /* InvGroupsViewController.swift in Sources */,
 				12484C85215CD5560083AE17 /* MapLocationPickerSolarSystems.swift in Sources */,
+				12AF2FD32188943900813DFD /* MySkillsInteractor.swift in Sources */,
 				12484C8B215CD5740083AE17 /* MapLocationPickerSolarSystemsInteractor.swift in Sources */,
+				12AF2FC92188930300813DFD /* SkillsContainerPresenter.swift in Sources */,
 				12E0417E212D3C4F0000CB4F /* API.swift in Sources */,
 				125B2CB32176FEB500D34CFB /* InvTypeMasteryPresenter.swift in Sources */,
 				125B2CC6217A7C9400D34CFB /* SkillQueuePresenter.swift in Sources */,
@@ -2802,6 +2853,7 @@
 				129E40AD213ECE0E002EDAF9 /* RoundedImageView.swift in Sources */,
 				12133C59215E56C600646937 /* CertCertificateRequirementsInfo.swift in Sources */,
 				120A386D213D46970071ED72 /* MainMenuContainerViewController.swift in Sources */,
+				12AF2FD42188943900813DFD /* MySkills.swift in Sources */,
 				12484C7F215CCF1B0083AE17 /* MapLocationPickerRegionsViewController.swift in Sources */,
 				12DE75E1215A7554006FC1BF /* InvTypeInfoDescriptionCell.swift in Sources */,
 				12484C87215CD55F0083AE17 /* MapLocationPickerSolarSystemsViewController.swift in Sources */,

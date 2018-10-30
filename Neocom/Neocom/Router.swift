@@ -77,9 +77,9 @@ enum Router {
 	}
 	
 	enum Character {
-		static func skills() -> Route<SkillQueue> {
-			return Route(assembly: SkillQueue.default, kind: .detail)
-//			return Route(assembly: Skills.default, kind: .detail)
+		static func skills() -> Route<SkillsContainer> {
+//			return Route(assembly: SkillQueue.default, kind: .detail)
+			return Route(assembly: SkillsContainer.default, kind: .detail)
 		}
 		
 	}

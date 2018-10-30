@@ -24,7 +24,7 @@ class SkillsViewController: UISplitViewController, View {
 		maximumPrimaryColumnWidth = max(UIScreen.main.bounds.width, UIScreen.main.bounds.height) / 2.0
 		
 		if traitCollection.horizontalSizeClass == .regular {
-//			viewControllers.append(storyboard!.instantiateViewController(withIdentifier: "NCSkillsPageViewController"))
+			try! viewControllers.append(MySkills.default.instantiate().get())
 		}
 		parent?.navigationItem.title = NSLocalizedString("Skills", comment: "")
 	}
@@ -60,6 +60,7 @@ class SkillsViewController: UISplitViewController, View {
 		
 		if traitCollection.horizontalSizeClass == .regular {
 			if viewControllers.count == 1 {
+				try! viewControllers.append(MySkills.default.instantiate().get())
 //				viewControllers.append(storyboard!.instantiateViewController(withIdentifier: "NCSkillsPageViewController"))
 			}
 			parent?.navigationItem.title = NSLocalizedString("Skills", comment: "")

@@ -165,6 +165,11 @@
 		128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F821F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib */; };
 		128C5F9A1F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F991F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib */; };
 		128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128E32DF1E655D2C00E3B183 /* NCActionTableViewCell.xib */; };
+		12925B762189E8DB00F6216C /* MySkillsPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12925B722189E8DB00F6216C /* MySkillsPagePresenter.swift */; };
+		12925B772189E8DB00F6216C /* MySkillsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12925B732189E8DB00F6216C /* MySkillsPageViewController.swift */; };
+		12925B782189E8DB00F6216C /* MySkillsPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12925B742189E8DB00F6216C /* MySkillsPageInteractor.swift */; };
+		12925B792189E8DB00F6216C /* MySkillsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12925B752189E8DB00F6216C /* MySkillsPage.swift */; };
+		12925B7B2189EE6F00F6216C /* TreeDefaultActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12925B7A2189EE6F00F6216C /* TreeDefaultActionCell.xib */; };
 		12926F10212EDC66006A3D1C /* API_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12926F0F212EDC66006A3D1C /* API_Tests.swift */; };
 		1295A1AA2139242300047516 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1295A1A92139242300047516 /* Services.swift */; };
 		1298BA7120AEFB73002C941E /* MPUnmutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA5B20AEFB73002C941E /* MPUnmutedBtn.png */; };
@@ -701,6 +706,11 @@
 		1291194A1E3918CC00870428 /* NCFittingModulesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCFittingModulesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		129171151F4DAD6B00EED981 /* NCSlideDownDismissalInteractiveTransitioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSlideDownDismissalInteractiveTransitioning.swift; sourceTree = "<group>"; };
 		1291711D1F4F01FC00EED981 /* NCFittingEditorPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingEditorPageViewController.swift; sourceTree = "<group>"; };
+		12925B722189E8DB00F6216C /* MySkillsPagePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySkillsPagePresenter.swift; sourceTree = "<group>"; };
+		12925B732189E8DB00F6216C /* MySkillsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySkillsPageViewController.swift; sourceTree = "<group>"; };
+		12925B742189E8DB00F6216C /* MySkillsPageInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySkillsPageInteractor.swift; sourceTree = "<group>"; };
+		12925B752189E8DB00F6216C /* MySkillsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySkillsPage.swift; sourceTree = "<group>"; };
+		12925B7A2189EE6F00F6216C /* TreeDefaultActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TreeDefaultActionCell.xib; sourceTree = "<group>"; };
 		12926F0F212EDC66006A3D1C /* API_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API_Tests.swift; sourceTree = "<group>"; };
 		1293BC101E49F1F30099FD75 /* NCFittingDroneActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCFittingDroneActionsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1293BC121E4A0F6E0099FD75 /* NCCountTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCCountTableViewCell.swift; sourceTree = "<group>"; };
@@ -1684,6 +1694,7 @@
 		1278B8DE2188840E003C9A99 /* MySkills */ = {
 			isa = PBXGroup;
 			children = (
+				12925B702189E8C800F6216C /* MySkillsPage */,
 				12AF2FD02188943900813DFD /* MySkills.swift */,
 				12AF2FCE2188943900813DFD /* MySkillsViewController.swift */,
 				12AF2FCD2188943900813DFD /* MySkillsPresenter.swift */,
@@ -1699,6 +1710,7 @@
 				1284C1502133F84800AF52C2 /* TreeDefaultCell.xib */,
 				1253C64B21592BA4007DEA16 /* TreeDefaultAttributeCell.xib */,
 				1278B8D7218844DF003C9A99 /* TreeDefaultPlaceholderCell.xib */,
+				12925B7A2189EE6F00F6216C /* TreeDefaultActionCell.xib */,
 			);
 			name = TreeDefaultCell;
 			sourceTree = "<group>";
@@ -1789,6 +1801,17 @@
 				1203E87E1F043A86009ADF8D /* NCZKillboardSummaryViewController.swift */,
 			);
 			name = KillReports;
+			sourceTree = "<group>";
+		};
+		12925B702189E8C800F6216C /* MySkillsPage */ = {
+			isa = PBXGroup;
+			children = (
+				12925B752189E8DB00F6216C /* MySkillsPage.swift */,
+				12925B732189E8DB00F6216C /* MySkillsPageViewController.swift */,
+				12925B722189E8DB00F6216C /* MySkillsPagePresenter.swift */,
+				12925B742189E8DB00F6216C /* MySkillsPageInteractor.swift */,
+			);
+			name = MySkillsPage;
 			sourceTree = "<group>";
 		};
 		1298BA5A20AEFB73002C941E /* Resources */ = {
@@ -2582,6 +2605,7 @@
 				12406A011F20F49500A4DAE7 /* NCModuleTableViewCell.xib in Resources */,
 				1256BE551DF4728800A2A24B /* Main.storyboard in Resources */,
 				1256BECE1DF4770A00A2A24B /* Fitting.xcassets in Resources */,
+				12925B7B2189EE6F00F6216C /* TreeDefaultActionCell.xib in Resources */,
 				1279A2F12023193300DD7A46 /* NCStaticHeaderTableViewCell.xib in Resources */,
 				12DE75DF215A7199006FC1BF /* InvTypeInfoDescriptionCompactCell.xib in Resources */,
 				12A8432E2153C63900570A95 /* InvTypeModuleCell.xib in Resources */,
@@ -2734,6 +2758,7 @@
 				12484C89215CD56A0083AE17 /* MapLocationPickerSolarSystemsPresenter.swift in Sources */,
 				12133C26215E1F9500646937 /* Image.swift in Sources */,
 				12A843032153871C00570A95 /* InvTypesViewController.swift in Sources */,
+				12925B772189E8DB00F6216C /* MySkillsPageViewController.swift in Sources */,
 				12133C42215E3B6D00646937 /* CertCertificatesPresenter.swift in Sources */,
 				12484C65215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift in Sources */,
 				12484CA9215D21080083AE17 /* MapLocationPickerSearchResultsInteractor.swift in Sources */,
@@ -2755,6 +2780,7 @@
 				1295A1AA2139242300047516 /* Services.swift in Sources */,
 				12484C8F215CD5A10083AE17 /* MapLocationPickerRecentsViewController.swift in Sources */,
 				12133C2C215E291500646937 /* InvTypeVariationsViewController.swift in Sources */,
+				12925B792189E8DB00F6216C /* MySkillsPage.swift in Sources */,
 				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
 				12484C78215CC6A70083AE17 /* MapLocationPickerInteractor.swift in Sources */,
 				12A843302153CA9600570A95 /* DamageTypeLabel.swift in Sources */,
@@ -2786,6 +2812,7 @@
 				12133C55215E56B500646937 /* CertCertificateMasteryInfoPresenter.swift in Sources */,
 				12484C6F215CC0B70083AE17 /* SegmentedPageControl.swift in Sources */,
 				121F26E62136EC5700AE1D70 /* NavigationController.swift in Sources */,
+				12925B782189E8DB00F6216C /* MySkillsPageInteractor.swift in Sources */,
 				12AB972A212BF60000B30DD3 /* Storage.xcdatamodeld in Sources */,
 				12AB9732212C0E4F00B30DD3 /* NCFleetConfiguration.swift in Sources */,
 				12EE7D08213E60C8005CE68F /* MainMenuContainerPresenter.swift in Sources */,
@@ -2843,6 +2870,7 @@
 				12AF2FD32188943900813DFD /* MySkillsInteractor.swift in Sources */,
 				12484C8B215CD5740083AE17 /* MapLocationPickerSolarSystemsInteractor.swift in Sources */,
 				12AF2FC92188930300813DFD /* SkillsContainerPresenter.swift in Sources */,
+				12925B762189E8DB00F6216C /* MySkillsPagePresenter.swift in Sources */,
 				12E0417E212D3C4F0000CB4F /* API.swift in Sources */,
 				125B2CB32176FEB500D34CFB /* InvTypeMasteryPresenter.swift in Sources */,
 				125B2CC6217A7C9400D34CFB /* SkillQueuePresenter.swift in Sources */,

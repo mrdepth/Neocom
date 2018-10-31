@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -184,7 +184,7 @@
         <scene sceneID="ahG-u5-4cE">
             <objects>
                 <viewController storyboardIdentifier="MySkillsViewController" title="Skills" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xT2-JQ-e71" customClass="MySkillsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Ifb-Ym-jmB" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="Ifb-Ym-jmB" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -198,11 +198,11 @@
         <!--Skills-->
         <scene sceneID="0ao-DG-Ufy">
             <objects>
-                <tableViewController storyboardIdentifier="NCSkillsContentViewController" id="fwb-1K-qOC" customClass="NCSkillsContentViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="42" sectionHeaderHeight="18" sectionFooterHeight="18" id="o2d-aE-JRs" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="MySkillsPageViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fwb-1K-qOC" customClass="MySkillsPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="28" id="o2d-aE-JRs" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tableView>
                     <navigationItem key="navigationItem" title="Skills" id="Kph-ko-fyR">
                         <barButtonItem key="backBarButtonItem" title="Back" id="tGF-B1-Nrq"/>
@@ -216,7 +216,7 @@
         <scene sceneID="4mM-IN-la7">
             <objects>
                 <viewController storyboardIdentifier="SkillsContainerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="QPL-C0-XeF" customClass="SkillsContainerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="6vB-I1-2cA" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="6vB-I1-2cA" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -619,7 +619,7 @@
                                     <outletCollection property="gestureRecognizers" destination="yQq-PW-9g9" appends="YES" id="qsh-hK-dHT"/>
                                 </connections>
                             </scrollView>
-                            <containerView opaque="NO" alpha="0.0" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9nX-y8-EQq">
+                            <containerView opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9nX-y8-EQq">
                                 <rect key="frame" x="0.0" y="96" width="375" height="571"/>
                                 <connections>
                                     <segue destination="zam-Il-kne" kind="embed" id="xaL-eT-Aib"/>

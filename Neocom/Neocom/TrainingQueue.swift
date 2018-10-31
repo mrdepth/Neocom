@@ -92,6 +92,6 @@ extension TrainingQueue.Item {
 	}
 	
 	func trainingTime(with attributes: Character.Attributes) -> TimeInterval {
-		return Double(finishSP - startSP) / skill.skillpointsPerSecond(with: attributes)
+		return Double(finishSP - startSP) / skill.skillPointsPerSecond(with: attributes)
 	}
 }

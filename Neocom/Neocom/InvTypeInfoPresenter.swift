@@ -305,7 +305,6 @@ extension Tree.Item {
 			guard let cell = cell as? TreeDefaultCell else {return}
 			cell.titleLabel?.isHidden = false
 			cell.subtitleLabel?.isHidden = false
-			cell.iconView?.isHidden = false
 			
 			cell.titleLabel?.attributedText = title
 			cell.subtitleLabel?.text = subtitle
@@ -319,6 +318,11 @@ extension Tree.Item {
 			})
 			if item != nil {
 				cell.iconView?.image = #imageLiteral(resourceName: "skillRequirementQueued")
+				cell.iconView?.isHidden = false
+			}
+			else {
+				cell.iconView?.image = nil
+				cell.iconView?.isHidden = true
 			}
 			cell.accessoryType = accessoryType
 		}

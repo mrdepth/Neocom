@@ -60,15 +60,15 @@ extension Character.Skill {
 		return Int(sp.rounded(.up))
 	}
 	
-	func level(with skillpoints: Int) -> Int {
-		if (skillpoints == 0 || rank == 0) {
+	func level(with skillPoints: Int) -> Int {
+		if (skillPoints == 0 || rank == 0) {
 			return 0
 		}
-		let level = (log(Double(skillpoints)/(250.0 * Double(rank))) / log(2.0) + 2.5) / 2.5;
+		let level = (log(Double(skillPoints)/(250.0 * Double(rank))) / log(2.0) + 2.5) / 2.5;
 		return Int(level.rounded(.down))
 	}
 	
-	func skillpointsPerSecond(with attributes: Character.Attributes) -> Double {
+	func skillPointsPerSecond(with attributes: Character.Attributes) -> Double {
 		let primary = attributes[primaryAttributeID]
 		let secondary = attributes[secondaryAttributeID]
 		return (Double(primary) + Double(secondary) / 2.0) / 60.0;
@@ -178,7 +178,7 @@ extension Character.SkillQueueItem {
 //	}
 
 	func trainingTimeToLevelUp(with attributes: Character.Attributes) -> TimeInterval {
-		return Double(skillPointsToLevelUp) / skill.skillpointsPerSecond(with: attributes)
+		return Double(skillPointsToLevelUp) / skill.skillPointsPerSecond(with: attributes)
 //		return trainingTime(to: queuedSkill.finishedLevel, with: attributes)
 	}
 	

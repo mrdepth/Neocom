@@ -33,7 +33,8 @@ class SkillQueuePresenter: TreePresenter {
 		view?.tableView.register([Prototype.TreeHeaderCell.default,
 								  Prototype.SkillCell.default,
 								  Prototype.TreeDefaultCell.default,
-								  Prototype.TreeDefaultCell.placeholder])
+								  Prototype.TreeDefaultCell.placeholder,
+								  Prototype.TreeDefaultCell.action])
 		
 		interactor.configure()
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
@@ -42,13 +43,14 @@ class SkillQueuePresenter: TreePresenter {
 	}
 	
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
+	private var skillQueueRows: [Tree.Item.SkillRow]?
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
 		guard let account = Services.storage.viewContext.currentAccount else {return .init(.failure(NCError.authenticationRequired))}
 		
 		var sections = Presentation()
 		
-		let rows = content.value.skillQueue.map { Tree.Item.SkillQueueItem(character: content.value, skill: $0) }
+		let rows = content.value.skillQueue.map { Tree.Item.SkillRow(.skillQueueItem($0), character: content.value) }
 		let finishDate = content.value.skillQueue.compactMap {$0.queuedSkill.finishDate}.max()
 		
 		let title: String
@@ -61,15 +63,27 @@ class SkillQueuePresenter: TreePresenter {
 		}
 		
 		let skillQueueSection = Tree.Item.Section(Tree.Content.Section(title: title), diffIdentifier: "SkillQueue", expandIdentifier: "SkillQueue", treeController: view?.treeController, children: rows)
+		skillQueueRows = rows
 		
 		let attributesSection = Tree.Item.OptimalAttributesSection(character: content.value, account: account, treeController: view?.treeController)
 		
+		let mySkills = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.action,
+												   title: NSLocalizedString("Skills Browser", comment: "").uppercased()),
+												   route: Router.Character.mySkills())
+		
+		sections.append(mySkills.asAnyItem)
 		sections.append(attributesSection.asAnyItem)
 		sections.append(skillQueueSection.asAnyItem)
 		sections.append(Tree.Item.SkillPlansResultsController(account: account, treeController: view?.treeController, presenter: self).asAnyItem)
 		
 
 		return .init(sections)
+	}
+	
+	func didUpdateSkillPlan() {
+		skillQueueRows?.forEach {
+			view?.treeController.reloadRow(for: $0, with: .fade)
+		}
 	}
 	
 	func onSkillPlansAction(sender: UIControl) {
@@ -151,7 +165,7 @@ class SkillQueuePresenter: TreePresenter {
 
 extension Tree.Item {
 	
-	class SkillQueueItem: RoutableRow<Character.SkillQueueItem> {
+	/*class SkillQueueItem: RoutableRow<Character.SkillQueueItem> {
 		override var prototype: Prototype? {
 			return Prototype.SkillCell.default
 		}
@@ -190,7 +204,7 @@ extension Tree.Item {
 			}
 
 		}
-	}
+	}*/
 	
 	class SkillPlansResultsController: NamedFetchedResultsController<FetchedResultsSection<SkillPlanRow>> {
 		weak var presenter: SkillQueuePresenter?
@@ -314,7 +328,7 @@ extension Tree.Item {
 				let a = UnitFormatter.localizedString(from: item.startSP, unit: .none, style: .long)
 				let b = UnitFormatter.localizedString(from: item.finishSP, unit: .skillPoints, style: .long)
 				
-				let sph = Int((skill.skillpointsPerSecond(with: character.attributes) * 3600).rounded())
+				let sph = Int((skill.skillPointsPerSecond(with: character.attributes) * 3600).rounded())
 				cell.spLabel?.text = "\(a) / \(b) (\(UnitFormatter.localizedString(from: sph, unit: .skillPointsPerSecond, style: .long)))"
 				
 				let t = item.trainingTime(with: character.attributes)

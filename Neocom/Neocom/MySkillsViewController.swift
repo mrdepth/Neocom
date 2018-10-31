@@ -10,7 +10,7 @@ import Foundation
 import TreeController
 import Futures
 
-class MySkillsViewController: UIViewController, ContentProviderView {
+class MySkillsViewController: PageViewController, ContentProviderView {
 	typealias Presenter = MySkillsPresenter
 	lazy var presenter: Presenter! = Presenter(view: self)
 	
@@ -18,6 +18,13 @@ class MySkillsViewController: UIViewController, ContentProviderView {
 	
 	
 	func present(_ content: MySkillsViewController.Presenter.Presentation, animated: Bool) -> Future<Void> {
+		let pages = viewControllers as? [MySkillsPageViewController]
+		
+		zip((0..<4), [content.all, content.canTrain, content.notKnown, content.all]).forEach {
+			pages?[$0].input = $1
+			pages?[$0].presenter.reloadIfNeeded()
+		}
+
 		return .init(())
 	}
 	
@@ -27,6 +34,16 @@ class MySkillsViewController: UIViewController, ContentProviderView {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		presenter.configure()
+		
+		
+		try! viewControllers = [NSLocalizedString("My", comment: ""),
+								NSLocalizedString("Can Train", comment: ""),
+								NSLocalizedString("Not Known", comment: ""),
+								NSLocalizedString("All", comment: "")].map { title -> UIViewController in
+									let view = try MySkillsPage.default.instantiate([]).get()
+									view.title = title
+									return view
+		}
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

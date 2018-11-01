@@ -40,6 +40,51 @@ struct Character: Codable {
 	
 }
 
+extension Character {
+	init(attributes: ESI.Skills.CharacterAttributes, skills: ESI.Skills.CharacterSkills, skillQueue: [ESI.Skills.SkillQueueItem], implants: [Int], context: SDEContext) {
+		let characterAttributes = Character.Attributes(intelligence: attributes.intelligence,
+													   memory: attributes.memory,
+													   perception: attributes.perception,
+													   willpower: attributes.willpower,
+													   charisma: attributes.charisma)
+		
+		var augmentations = Character.Attributes.none
+		
+		for implant in implants {
+			guard let type = context.invType(implant) else {continue}
+			let attributes = [SDEAttributeID.intelligenceBonus, SDEAttributeID.memoryBonus, SDEAttributeID.perceptionBonus, SDEAttributeID.willpowerBonus, SDEAttributeID.charismaBonus].lazy.map({($0, Int(type[$0]?.value ?? 0))})
+			guard let value = attributes.first(where: {$0.1 > 0}) else {continue}
+			augmentations[value.0] += value.1
+		}
+		
+		var trainedSkills = Dictionary(skills.skills.map { ($0.skillID, $0)}, uniquingKeysWith: {
+			$0.trainedSkillLevel > $1.trainedSkillLevel ? $0 : $1
+		})
+		
+		let currentDate = Date()
+		var validSkillQueue = skillQueue.filter{$0.finishDate != nil}
+		let i = validSkillQueue.partition(by: {$0.finishDate! > currentDate})
+		for skill in validSkillQueue[..<i] {
+			guard let endSP = skill.levelEndSP ?? context.invType(skill.skillID).flatMap({Character.Skill(type: $0)})?.skillPoints(at: skill.finishedLevel) else {continue}
+			
+			let skill = ESI.Skills.CharacterSkills.Skill(activeSkillLevel: skill.finishedLevel, skillID: skill.skillID, skillpointsInSkill: Int64(endSP), trainedSkillLevel: skill.finishedLevel)
+			trainedSkills[skill.skillID] = trainedSkills[skill.skillID].map {$0.trainedSkillLevel > skill.trainedSkillLevel ? $0 : skill} ?? skill
+		}
+		
+		let sq = validSkillQueue[i...].sorted{$0.queuePosition < $1.queuePosition}.compactMap { i -> Character.SkillQueueItem? in
+			guard let type = context.invType(i.skillID), let skill = Character.Skill(type: type) else {return nil}
+			let item = Character.SkillQueueItem(skill: skill, queuedSkill: i)
+			trainedSkills[i.skillID]?.skillpointsInSkill = Int64(item.skillPoints)
+			return item
+		}
+		
+		self.attributes = characterAttributes
+		self.augmentations = augmentations
+		self.trainedSkills = trainedSkills
+		self.skillQueue = sq
+	}
+}
+
 
 extension Character.Skill {
 	init?(type: SDEInvType) {

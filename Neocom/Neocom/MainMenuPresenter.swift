@@ -57,7 +57,7 @@ class MainMenuPresenter: TreePresenter {
 																							 account: account,
 																							 value: characterSheet(),
 																							 treeController: view?.treeController,
-																							 route: nil,
+																							 route: Router.Character.characterInfo(),
 																							 require: [.esiWalletReadCharacterWalletV1,
 																									   .esiSkillsReadSkillsV1,
 																									   .esiLocationReadLocationV1,

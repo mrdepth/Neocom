@@ -53,6 +53,11 @@
 		121B28C2218AEA24000D392C /* InvTypeRequiredForViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28BE218AEA24000D392C /* InvTypeRequiredForViewController.swift */; };
 		121B28C3218AEA24000D392C /* InvTypeRequiredForInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28BF218AEA24000D392C /* InvTypeRequiredForInteractor.swift */; };
 		121B28C4218AEA24000D392C /* InvTypeRequiredFor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C0218AEA24000D392C /* InvTypeRequiredFor.swift */; };
+		121B28C9218AF1E8000D392C /* CharacterInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C5218AF1E8000D392C /* CharacterInfoPresenter.swift */; };
+		121B28CA218AF1E8000D392C /* CharacterInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C6218AF1E8000D392C /* CharacterInfoViewController.swift */; };
+		121B28CB218AF1E8000D392C /* CharacterInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C7218AF1E8000D392C /* CharacterInfoInteractor.swift */; };
+		121B28CC218AF1E8000D392C /* CharacterInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C8218AF1E8000D392C /* CharacterInfo.swift */; };
+		121B28CE218B00BB000D392C /* TreeDefaultPortraitCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121B28CD218B00BB000D392C /* TreeDefaultPortraitCell.xib */; };
 		121F26E02136BD9400AE1D70 /* SOLID_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26DF2136BD9400AE1D70 /* SOLID_Tests.swift */; };
 		121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26E32136EC3800AE1D70 /* BannerNavigationViewController.swift */; };
 		121F26E62136EC5700AE1D70 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26E52136EC5700AE1D70 /* NavigationController.swift */; };
@@ -477,6 +482,11 @@
 		121B28BE218AEA24000D392C /* InvTypeRequiredForViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeRequiredForViewController.swift; sourceTree = "<group>"; };
 		121B28BF218AEA24000D392C /* InvTypeRequiredForInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeRequiredForInteractor.swift; sourceTree = "<group>"; };
 		121B28C0218AEA24000D392C /* InvTypeRequiredFor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeRequiredFor.swift; sourceTree = "<group>"; };
+		121B28C5218AF1E8000D392C /* CharacterInfoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfoPresenter.swift; sourceTree = "<group>"; };
+		121B28C6218AF1E8000D392C /* CharacterInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfoViewController.swift; sourceTree = "<group>"; };
+		121B28C7218AF1E8000D392C /* CharacterInfoInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfoInteractor.swift; sourceTree = "<group>"; };
+		121B28C8218AF1E8000D392C /* CharacterInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfo.swift; sourceTree = "<group>"; };
+		121B28CD218B00BB000D392C /* TreeDefaultPortraitCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TreeDefaultPortraitCell.xib; sourceTree = "<group>"; };
 		121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerViewController.swift; sourceTree = "<group>"; };
 		121D10AD1E262F8900DD671B /* NCTypePickerGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCTypePickerGroupsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		121D10AF1E26345D00DD671B /* NSManagedObjectContext+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+NC.swift"; sourceTree = "<group>"; };
@@ -1576,6 +1586,10 @@
 		125B2CB7217A7B0E00D34CFB /* CharacterInfo */ = {
 			isa = PBXGroup;
 			children = (
+				121B28C8218AF1E8000D392C /* CharacterInfo.swift */,
+				121B28C6218AF1E8000D392C /* CharacterInfoViewController.swift */,
+				121B28C5218AF1E8000D392C /* CharacterInfoPresenter.swift */,
+				121B28C7218AF1E8000D392C /* CharacterInfoInteractor.swift */,
 			);
 			name = CharacterInfo;
 			sourceTree = "<group>";
@@ -1731,6 +1745,7 @@
 				1253C64B21592BA4007DEA16 /* TreeDefaultAttributeCell.xib */,
 				1278B8D7218844DF003C9A99 /* TreeDefaultPlaceholderCell.xib */,
 				12925B7A2189EE6F00F6216C /* TreeDefaultActionCell.xib */,
+				121B28CD218B00BB000D392C /* TreeDefaultPortraitCell.xib */,
 			);
 			name = TreeDefaultCell;
 			sourceTree = "<group>";
@@ -2678,6 +2693,7 @@
 				12E9321C1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib in Resources */,
 				1253C62C21591036007DEA16 /* MarketHistoryCell.xib in Resources */,
 				12A843322153CB5D00570A95 /* InvTypeShipCell.xib in Resources */,
+				121B28CE218B00BB000D392C /* TreeDefaultPortraitCell.xib in Resources */,
 				1298BA8520AEFB73002C941E /* MPMutedBtn@2x.png in Resources */,
 				12DA88261EB8696F00FB1922 /* NCPlaceholderTableViewCell.xib in Resources */,
 				120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */,
@@ -2815,6 +2831,7 @@
 				129E40A9213EA318002EDAF9 /* ViewController.swift in Sources */,
 				1253C6302159108F007DEA16 /* MarketHistoryView.swift in Sources */,
 				12484C7D215CCF100083AE17 /* MapLocationPickerRegions.swift in Sources */,
+				121B28CB218AF1E8000D392C /* CharacterInfoInteractor.swift in Sources */,
 				12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */,
 				121F26ED2136EE8700AE1D70 /* AccountsInteractor.swift in Sources */,
 				125B2CB62176FEB500D34CFB /* InvTypeMastery.swift in Sources */,
@@ -2872,9 +2889,11 @@
 				1279EFF921358922005340C0 /* TintImageView.swift in Sources */,
 				12484C6D215CC0780083AE17 /* PageViewController.swift in Sources */,
 				1259639521381EA100B3A53C /* AccountCell.swift in Sources */,
+				121B28C9218AF1E8000D392C /* CharacterInfoPresenter.swift in Sources */,
 				12AB973E212C162A00B30DD3 /* Character.swift in Sources */,
 				12133C40215E3B6400646937 /* CertCertificatesViewController.swift in Sources */,
 				125DF6352133CFD000B86AE0 /* MainMenuPresenter.swift in Sources */,
+				121B28CA218AF1E8000D392C /* CharacterInfoViewController.swift in Sources */,
 				12484C81215CCF260083AE17 /* MapLocationPickerRegionsPresenter.swift in Sources */,
 				121B28C3218AEA24000D392C /* InvTypeRequiredForInteractor.swift in Sources */,
 				12D8147021550E0F00313DAF /* InvTypeInfo.swift in Sources */,
@@ -2910,6 +2929,7 @@
 				12484C87215CD55F0083AE17 /* MapLocationPickerSolarSystemsViewController.swift in Sources */,
 				1279EFEE213543B7005340C0 /* UnitFormatter.swift in Sources */,
 				121B28C2218AEA24000D392C /* InvTypeRequiredForViewController.swift in Sources */,
+				121B28CC218AF1E8000D392C /* CharacterInfo.swift in Sources */,
 				1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */,
 				12E0419C212D77530000CB4F /* Error.swift in Sources */,
 				1204D07221528A1C0070AF92 /* InvGroupsPresenter.swift in Sources */,

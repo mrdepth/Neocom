@@ -13,73 +13,11 @@
         <!--Character Sheet-->
         <scene sceneID="liY-ZH-hXX">
             <objects>
-                <tableViewController storyboardIdentifier="NCCharacterSheetViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ZAk-hW-APc" customClass="NCCharacterSheetViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="NLb-Gs-C4b" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="CharacterInfoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ZAk-hW-APc" customClass="CharacterInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="NLb-Gs-C4b" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCImageTableViewCell" rowHeight="233" id="6aV-Y7-ehq" customClass="NCDefaultTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="375" height="233"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6aV-Y7-ehq" id="7RM-SO-2tx">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="232.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="O7w-nV-CYa">
-                                            <rect key="frame" x="71.5" y="0.0" width="232.5" height="232.5"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="512" id="fhE-ra-rLD"/>
-                                                <constraint firstAttribute="width" secondItem="O7w-nV-CYa" secondAttribute="height" id="oEb-BR-nx8"/>
-                                            </constraints>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="O7w-nV-CYa" firstAttribute="top" secondItem="7RM-SO-2tx" secondAttribute="top" id="2zt-UR-nNb"/>
-                                        <constraint firstAttribute="bottom" secondItem="O7w-nV-CYa" secondAttribute="bottom" id="7e5-Dp-7Qr"/>
-                                        <constraint firstItem="O7w-nV-CYa" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7RM-SO-2tx" secondAttribute="leading" id="Ao1-qL-HhF"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="O7w-nV-CYa" secondAttribute="trailing" id="cap-Jf-IxX"/>
-                                        <constraint firstItem="O7w-nV-CYa" firstAttribute="centerX" secondItem="7RM-SO-2tx" secondAttribute="centerX" id="hV7-Q2-ft0"/>
-                                        <constraint firstItem="O7w-nV-CYa" firstAttribute="leading" secondItem="7RM-SO-2tx" secondAttribute="leading" priority="750" id="m5u-go-eOw"/>
-                                        <constraint firstAttribute="trailing" secondItem="O7w-nV-CYa" secondAttribute="trailing" priority="750" id="o29-pz-PB3"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="iconView" destination="O7w-nV-CYa" id="x5o-YN-jdi"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCPlaceholderTableViewCell" id="L05-Pc-tqs" customClass="NCDefaultTableViewCell">
-                                <rect key="frame" x="0.0" y="288.5" width="375" height="41"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L05-Pc-tqs" id="7sC-xU-dgn">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="40.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="LABEL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ivj-qF-LD2">
-                                            <rect key="frame" x="15" y="4" width="345" height="32.5"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="Gnm-OM-8AZ"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
-                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="ivj-qF-LD2" secondAttribute="trailing" constant="15" id="8i4-RJ-j3q"/>
-                                        <constraint firstItem="ivj-qF-LD2" firstAttribute="leading" secondItem="7sC-xU-dgn" secondAttribute="leading" constant="15" id="OB1-6k-D0Q"/>
-                                        <constraint firstAttribute="bottom" secondItem="ivj-qF-LD2" secondAttribute="bottom" priority="750" constant="4" id="QyC-7W-zIp"/>
-                                        <constraint firstItem="ivj-qF-LD2" firstAttribute="centerY" secondItem="7sC-xU-dgn" secondAttribute="centerY" id="Yde-7A-lZ4"/>
-                                        <constraint firstItem="ivj-qF-LD2" firstAttribute="top" secondItem="7sC-xU-dgn" secondAttribute="top" priority="750" constant="4" id="hUv-ma-tPl"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="titleLabel" destination="ivj-qF-LD2" id="zXc-aU-yg0"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" title="Character Sheet" id="kt1-3Y-z3b"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="YDe-U8-Dhd">

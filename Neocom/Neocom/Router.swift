@@ -86,6 +86,9 @@ enum Router {
 		static func mySkills() -> Route<MySkills> {
 			return Route(assembly: MySkills.default, kind: .push)
 		}
+		static func characterInfo() -> Route<CharacterInfo> {
+			return Route(assembly: CharacterInfo.default, kind: .detail)
+		}
 
 	}
 }

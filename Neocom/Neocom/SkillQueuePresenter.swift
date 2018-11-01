@@ -165,47 +165,6 @@ class SkillQueuePresenter: TreePresenter {
 
 extension Tree.Item {
 	
-	/*class SkillQueueItem: RoutableRow<Character.SkillQueueItem> {
-		override var prototype: Prototype? {
-			return Prototype.SkillCell.default
-		}
-		
-		lazy var type: SDEInvType? = Services.sde.viewContext.invType(content.skill.typeID)
-		let character: Character
-		
-		init(character: Character, skill: Character.SkillQueueItem) {
-			self.character = character
-			super.init(skill, route: Router.SDE.invTypeInfo(.typeID(skill.skill.typeID)))
-		}
-		
-		override func configure(cell: UITableViewCell, treeController: TreeController?) {
-			super.configure(cell: cell, treeController: treeController)
-			guard let cell = cell as? SkillCell else {return}
-			let level = content.queuedSkill.finishedLevel
-
-			cell.iconView?.isHidden = true
-			cell.titleLabel?.text = "\(type?.typeName ?? "") (x\(Int(content.skill.rank)))"
-			cell.skillLevelView?.level = level
-			cell.skillLevelView?.isActive = content.isActive
-			cell.progressView?.progress = content.trainingProgress
-			cell.levelLabel?.text = NSLocalizedString("LEVEL", comment: "") + " " + String(romanNumber:level)
-
-			let a = UnitFormatter.localizedString(from: content.skillPoints, unit: .none, style: .long)
-			let b = UnitFormatter.localizedString(from: content.skill.skillPoints(at: level), unit: .skillPoints, style: .long)
-			
-			let sph = Int((content.skill.skillpointsPerSecond(with: character.attributes) * 3600).rounded())
-			cell.spLabel?.text = "\(a) / \(b) (\(UnitFormatter.localizedString(from: sph, unit: .skillPointsPerSecond, style: .long)))"
-			
-			if let from = content.queuedSkill.startDate, let to = content.queuedSkill.finishDate {
-				cell.trainingTimeLabel?.text = TimeIntervalFormatter.localizedString(from: max(to.timeIntervalSince(max(from, Date())), 0), precision: .minutes)
-			}
-			else {
-				cell.trainingTimeLabel?.text = nil
-			}
-
-		}
-	}*/
-	
 	class SkillPlansResultsController: NamedFetchedResultsController<FetchedResultsSection<SkillPlanRow>> {
 		weak var presenter: SkillQueuePresenter?
 		private var section: Tree.Item.Section<Child>

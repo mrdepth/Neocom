@@ -10,6 +10,7 @@ import Foundation
 import Futures
 import CloudData
 import EVEAPI
+import CoreData
 
 class MySkillsInteractor: ContentProviderInteractor {
 	typealias Presenter = MySkillsPresenter
@@ -26,6 +27,7 @@ class MySkillsInteractor: ContentProviderInteractor {
 	}
 	
 	private var didChangeAccountObserver: NotificationObserver?
+	private var managedObjectContextObjectsDidChangeObserver: NotificationObserver?
 	
 	func configure() {
 		didChangeAccountObserver = NotificationCenter.default.addNotificationObserver(forName: .didChangeAccount, object: nil, queue: .main) { [weak self] _ in
@@ -34,5 +36,16 @@ class MySkillsInteractor: ContentProviderInteractor {
 				self?.presenter?.view?.present(presentation, animated: true)
 			}
 		}
+		
+		managedObjectContextObjectsDidChangeObserver = NotificationCenter.default.addNotificationObserver(forName: .NSManagedObjectContextObjectsDidChange, object: Services.storage.viewContext.managedObjectContext, queue: nil) { [weak self] (note) in
+			self?.managedObjectContextObjectsDidChange(note)
+		}
 	}
+	
+	private func managedObjectContextObjectsDidChange(_ note: Notification) {
+		guard let skillPlan = Services.storage.viewContext.currentAccount?.activeSkillPlan else {return}
+		guard skillPlan.changedValues().keys.contains(where: {$0 == "active" || $0 == "skills"}) else {return}
+		presenter?.didUpdateSkillPlan()
+	}
+
 }

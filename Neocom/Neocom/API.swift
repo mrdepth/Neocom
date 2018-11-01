@@ -137,7 +137,7 @@ class APIClient: API {
 			
 			for implant in implants.value {
 				guard let type = context.invType(implant) else {continue}
-				let attributes = [SDEAttributeID.intelligence, SDEAttributeID.memory, SDEAttributeID.perception, SDEAttributeID.willpower, SDEAttributeID.charisma].lazy.map({($0, Int(type[$0]?.value ?? 0))})
+				let attributes = [SDEAttributeID.intelligenceBonus, SDEAttributeID.memoryBonus, SDEAttributeID.perceptionBonus, SDEAttributeID.willpowerBonus, SDEAttributeID.charismaBonus].lazy.map({($0, Int(type[$0]?.value ?? 0))})
 				guard let value = attributes.first(where: {$0.1 > 0}) else {continue}
 				augmentations[value.0] += value.1
 			}

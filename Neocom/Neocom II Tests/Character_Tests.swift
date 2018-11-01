@@ -33,7 +33,7 @@ class Character_Tests: XCTestCase {
 		}
 
 		let attributes = Character.Attributes(intelligence: 25, memory: 20, perception: 15, willpower: 20, charisma: 19)
-		XCTAssertEqual(skill.skillpointsPerSecond(with: attributes), ((25 + 15 / 2.0) / 60.0), accuracy: 0.001)
+		XCTAssertEqual(skill.skillPointsPerSecond(with: attributes), ((25 + 15 / 2.0) / 60.0), accuracy: 0.001)
     }
 	
 	func testTrainingQueue() {

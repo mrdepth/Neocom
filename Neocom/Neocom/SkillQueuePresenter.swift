@@ -343,6 +343,7 @@ extension Tree.Item {
 				cell.skillLevelView?.isActive = false
 			}
 			cell.iconView?.image = #imageLiteral(resourceName: "skillRequirementQueued")
+			cell.iconView?.isHidden = false
 		}
 	}
 	
@@ -407,7 +408,7 @@ extension Tree.Item {
 						trainingQueue.add(type, level: Int(level))
 					}
 					let current = character.attributes
-					let optimal = Character.Attributes(optimalFor: trainingQueue)
+					let optimal = Character.Attributes(optimalFor: trainingQueue) + character.augmentations
 					var rows = [("Intelligence", NSLocalizedString("Intelligence", comment: ""), #imageLiteral(resourceName: "intelligence"), current.intelligence, optimal.intelligence),
 								("Memory", NSLocalizedString("Memory", comment: ""), #imageLiteral(resourceName: "memory"), current.memory, optimal.memory),
 								("Perception", NSLocalizedString("Perception", comment: ""), #imageLiteral(resourceName: "perception"), current.perception, optimal.perception),

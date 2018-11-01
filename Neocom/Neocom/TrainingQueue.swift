@@ -72,7 +72,7 @@ class TrainingQueue {
 	}
 
 	func trainingTime() -> TimeInterval {
-		return trainingTime(with: character.attributes + character.augmentations)
+		return trainingTime(with: character.attributes)
 	}
 
 	func trainingTime(with attributes: Character.Attributes) -> TimeInterval {

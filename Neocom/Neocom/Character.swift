@@ -82,15 +82,15 @@ extension Character.Attributes {
 	subscript(key: SDEAttributeID) -> Int {
 		get {
 			switch key {
-			case .intelligence:
+			case .intelligence, .intelligenceBonus:
 				return intelligence
-			case .memory:
+			case .memory, .memoryBonus:
 				return memory
-			case .perception:
+			case .perception, .perceptionBonus:
 				return perception
-			case .willpower:
+			case .willpower, .willpowerBonus:
 				return willpower
-			case .charisma:
+			case .charisma, .charismaBonus:
 				return charisma
 			default:
 				return 0
@@ -98,15 +98,15 @@ extension Character.Attributes {
 		}
 		set {
 			switch key {
-			case .intelligence:
+			case .intelligence, .intelligenceBonus:
 				intelligence = newValue
-			case .memory:
+			case .memory, .memoryBonus:
 				memory = newValue
-			case .perception:
+			case .perception, .perceptionBonus:
 				perception = newValue
-			case .willpower:
+			case .willpower, .willpowerBonus:
 				willpower = newValue
-			case .charisma:
+			case .charisma, .charismaBonus:
 				charisma = newValue
 			default:
 				break

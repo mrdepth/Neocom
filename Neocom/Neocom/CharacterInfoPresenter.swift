@@ -10,11 +10,12 @@ import Foundation
 import Futures
 import CloudData
 import TreeController
+import CoreData
 
 class CharacterInfoPresenter: TreePresenter {
 	typealias View = CharacterInfoViewController
 	typealias Interactor = CharacterInfoInteractor
-	typealias Presentation = [Tree.Item.SimpleSection<Tree.Item.Row<Tree.Content.Default>>]
+	typealias Presentation = [Tree.Item.Section<Tree.Item.Row<Tree.Content.Default>>]
 	
 	weak var view: View?
 	lazy var interactor: Interactor! = Interactor(presenter: self)
@@ -200,46 +201,61 @@ class CharacterInfoPresenter: TreePresenter {
 													children: rows))
 		}
 		
-		if let implants = content.value.implants, !implants.isEmpty {
+		if let implants = content.value.implants {
+			sections.append(Tree.Item.ImplantsSection(implants, title: NSLocalizedString("Implants", comment: "").uppercased(), diffIdentifier: "Implants", treeController: view?.treeController))
+		}
+		
+		return .init(sections)
+	}
+}
+
+extension Tree.Item {
+	class ImplantsSection: Section<Tree.Item.Row<Tree.Content.Default>> {
+		
+		convenience init<T: Hashable>(_ implants: [Int], title: String?, diffIdentifier: T, treeController: TreeController?) {
+			self.init(implants, attributedTitle: title.map{ NSAttributedString(string: $0) }, diffIdentifier: diffIdentifier, treeController: treeController)
+		}
+
+		init<T: Hashable>(_ implants: [Int], attributedTitle: NSAttributedString?, diffIdentifier: T, treeController: TreeController?) {
+			
 			let attributes = [SDEAttributeID.intelligenceBonus: NSLocalizedString("Intelligence", comment: ""),
 							  SDEAttributeID.memoryBonus: NSLocalizedString("Memory", comment: ""),
 							  SDEAttributeID.perceptionBonus: NSLocalizedString("Perception", comment: ""),
 							  SDEAttributeID.willpowerBonus: NSLocalizedString("Willpower", comment: ""),
 							  SDEAttributeID.charismaBonus: NSLocalizedString("Charisma", comment: "")]
 			
-			rows = implants.compactMap { i -> (SDEInvType, Int)? in
+			var rows = implants.compactMap { i -> (SDEInvType, Int)? in
 				guard let type = Services.sde.viewContext.invType(i) else {return nil}
+
 				let slot = Int(type[SDEAttributeID.implantness]?.value ?? 100)
 				return (type, slot)
-			}.sorted {$0.1 < $1.1}.map { (type, _) in
+			}.sorted {$0.1 < $1.1}.map { (type, _) -> Tree.Item.Row<Tree.Content.Default> in
+				
+
 				if let enhancer = attributes.first(where: { (type[$0.key]?.value ?? 0) > 0 }) {
-					return Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
-																	  title: type.typeName?.uppercased(),
-																	  subtitle: "\(enhancer.value) +\(Int(type[enhancer.key]?.value ?? 0))",
-																	  image: Image(type.icon)),
-												 diffIdentifier: type.objectID,
-												 route: Router.SDE.invTypeInfo(.type(type)))
-				}
-				else {
-					return Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
-																	  title: type.typeName?.uppercased(),
-																	  image: Image(type.icon)),
-												 diffIdentifier: type.objectID,
-												 route: Router.SDE.invTypeInfo(.type(type)))
-				}
+						return Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
+																		  title: type.typeName?.uppercased(),
+																		  subtitle: "\(enhancer.value) +\(Int(type[enhancer.key]?.value ?? 0))",
+																		  image: Image(type.icon),
+																		  accessoryType: .disclosureIndicator),
+													 diffIdentifier: Pair(diffIdentifier, type.objectID),
+													 route: Router.SDE.invTypeInfo(.type(type)))
+					}
+					else {
+						return Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
+																		  title: type.typeName?.uppercased(),
+																		  image: Image(type.icon),
+																		  accessoryType: .disclosureIndicator),
+													 diffIdentifier: Pair(diffIdentifier, type.objectID),
+													 route: Router.SDE.invTypeInfo(.type(type)))
+					}
 			}
 			if rows.isEmpty {
 				rows.append(Tree.Item.Row(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.placeholder,
 															   title: NSLocalizedString("No Implants Installed", comment: "").uppercased()),
-										  diffIdentifier: "NoImplants"))
+										  diffIdentifier: Pair(diffIdentifier, "NoImplants")))
 			}
-			
-			sections.append(Tree.Item.SimpleSection(title: NSLocalizedString("Implants", comment: "").uppercased(),
-													treeController: view?.treeController,
-													children: rows))
-			
+			super.init(Tree.Content.Section(attributedTitle: attributedTitle), diffIdentifier: diffIdentifier, treeController: treeController, children: rows)
 		}
-		
-		return .init(sections)
 	}
 }

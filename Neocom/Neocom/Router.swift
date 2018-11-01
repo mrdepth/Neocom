@@ -89,6 +89,9 @@ enum Router {
 		static func characterInfo() -> Route<CharacterInfo> {
 			return Route(assembly: CharacterInfo.default, kind: .detail)
 		}
+		static func jumpClones() -> Route<JumpClones> {
+			return Route(assembly: JumpClones.default, kind: .detail)
+		}
 
 	}
 }

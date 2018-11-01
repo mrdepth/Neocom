@@ -290,7 +290,7 @@ extension Tree.Item {
 
 	}
 	
-	class SkillPlanSkillRow: FetchedResultsRow<SkillPlanSkill> {
+	class SkillPlanSkillRow: FetchedResultsRow<SkillPlanSkill>, Routable {
 		override var prototype: Prototype? {
 			return Prototype.SkillCell.default
 		}
@@ -307,8 +307,11 @@ extension Tree.Item {
 		
 		let character: Character
 		
+		var route: Routing?
+		
 		required init(_ result: Result, section: FetchedResultsSectionProtocol) {
 			character = (section.controller as? SkillPlanSkillsResultsController)?.presenter?.content?.value ?? Character.empty
+			route = Router.SDE.invTypeInfo(.typeID(Int(result.typeID)))
 			super.init(result, section: section)
 		}
 

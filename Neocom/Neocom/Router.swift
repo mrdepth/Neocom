@@ -59,6 +59,9 @@ enum Router {
 		static func invTypeMarketOrders(_ input: InvTypeMarketOrders.View.Input) -> Route<InvTypeMarketOrders> {
 			return Route(assembly: InvTypeMarketOrders.default, input: input, kind: .push)
 		}
+		static func invTypeRequiredFor(_ input: InvTypeRequiredFor.View.Input) -> Route<InvTypeRequiredFor> {
+			return Route(assembly: InvTypeRequiredFor.default, input: input, kind: .push)
+		}
 		static func mapLocationPicker(_ input: MapLocationPicker.View.Input) -> Route<MapLocationPicker> {
 			return Route(assembly: MapLocationPicker.default, input: input, kind: .adaptiveModal)
 		}

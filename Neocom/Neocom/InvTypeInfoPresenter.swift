@@ -491,10 +491,12 @@ extension InvTypeInfoPresenter {
 		return section
 	}
 	
-	func requiredForPresentation(for type: SDEInvType, context: SDEContext) -> Tree.Item.Section<Tree.Item.Row<Tree.Content.Default>>? {
+	func requiredForPresentation(for type: SDEInvType, context: SDEContext) -> Tree.Item.Section<Tree.Item.RoutableRow<Tree.Content.Default>>? {
 		guard let n = type.requiredForSkill?.count, n > 0 else { return nil }
-		let row = Tree.Item.Row<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
-																		   title: String.localizedStringWithFormat("%d types", n).uppercased()), diffIdentifier: "RequiredFor")
+		let row = Tree.Item.RoutableRow<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
+																		   title: String.localizedStringWithFormat("%d types", n).uppercased()),
+															  diffIdentifier: "RequiredFor",
+															  route: Router.SDE.invTypeRequiredFor(.objectID(type.objectID)))
 		let section = Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Required for", comment: "").uppercased(), isExpanded: true), diffIdentifier: "RequiredForSection", expandIdentifier: "RequiredForSection", treeController: view?.treeController, children: [row])
 		return section
 	}
@@ -538,8 +540,6 @@ extension InvTypeInfoPresenter {
 			let route = Router.SDE.invTypeMastery(InvTypeMastery.View.Input(typeObjectID: type.objectID, masteryLevelObjectID: level.objectID))
 			
 			return Tree.Item.RoutableRow<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute, title: title, subtitle: subtitle, image: Image(icon)), diffIdentifier: level.objectID, route: route)
-
-			//TODO: AddRoute
 		}
 		
 		guard !rows.isEmpty else {return nil}

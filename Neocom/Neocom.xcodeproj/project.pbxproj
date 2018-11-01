@@ -49,6 +49,10 @@
 		12133C5F215E56E100646937 /* CertCertificateRequirementsInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C5E215E56E100646937 /* CertCertificateRequirementsInfoInteractor.swift */; };
 		12133C7C215E6F1900646937 /* CertCertificateDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C7B215E6F1900646937 /* CertCertificateDescriptionCell.swift */; };
 		12133C7E215E6F2400646937 /* CertCertificateDescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12133C7D215E6F2400646937 /* CertCertificateDescriptionCell.xib */; };
+		121B28C1218AEA24000D392C /* InvTypeRequiredForPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28BD218AEA24000D392C /* InvTypeRequiredForPresenter.swift */; };
+		121B28C2218AEA24000D392C /* InvTypeRequiredForViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28BE218AEA24000D392C /* InvTypeRequiredForViewController.swift */; };
+		121B28C3218AEA24000D392C /* InvTypeRequiredForInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28BF218AEA24000D392C /* InvTypeRequiredForInteractor.swift */; };
+		121B28C4218AEA24000D392C /* InvTypeRequiredFor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C0218AEA24000D392C /* InvTypeRequiredFor.swift */; };
 		121F26E02136BD9400AE1D70 /* SOLID_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26DF2136BD9400AE1D70 /* SOLID_Tests.swift */; };
 		121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26E32136EC3800AE1D70 /* BannerNavigationViewController.swift */; };
 		121F26E62136EC5700AE1D70 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26E52136EC5700AE1D70 /* NavigationController.swift */; };
@@ -469,6 +473,10 @@
 		12133C7D215E6F2400646937 /* CertCertificateDescriptionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CertCertificateDescriptionCell.xib; sourceTree = "<group>"; };
 		1217B3C81EA63EB5005A8157 /* NCMailBodyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCMailBodyViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1217B4B81EAA0DE1005A8157 /* UIAlertController+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+NC.swift"; sourceTree = "<group>"; };
+		121B28BD218AEA24000D392C /* InvTypeRequiredForPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeRequiredForPresenter.swift; sourceTree = "<group>"; };
+		121B28BE218AEA24000D392C /* InvTypeRequiredForViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeRequiredForViewController.swift; sourceTree = "<group>"; };
+		121B28BF218AEA24000D392C /* InvTypeRequiredForInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeRequiredForInteractor.swift; sourceTree = "<group>"; };
+		121B28C0218AEA24000D392C /* InvTypeRequiredFor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeRequiredFor.swift; sourceTree = "<group>"; };
 		121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerViewController.swift; sourceTree = "<group>"; };
 		121D10AD1E262F8900DD671B /* NCTypePickerGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCTypePickerGroupsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		121D10AF1E26345D00DD671B /* NSManagedObjectContext+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+NC.swift"; sourceTree = "<group>"; };
@@ -1149,6 +1157,7 @@
 				12133C28215E28EE00646937 /* InvTypeVariations */,
 				12484C31215B8DF10083AE17 /* InvTypeMarketOrders */,
 				125B2CAE2176FE9400D34CFB /* InvTypeMastery */,
+				121B28BB218AEA0E000D392C /* InvTypeRequiredFor */,
 			);
 			name = InvTypes;
 			sourceTree = "<group>";
@@ -1227,6 +1236,17 @@
 				12133C7D215E6F2400646937 /* CertCertificateDescriptionCell.xib */,
 			);
 			name = CertCertificateDescriptionCell;
+			sourceTree = "<group>";
+		};
+		121B28BB218AEA0E000D392C /* InvTypeRequiredFor */ = {
+			isa = PBXGroup;
+			children = (
+				121B28C0218AEA24000D392C /* InvTypeRequiredFor.swift */,
+				121B28BE218AEA24000D392C /* InvTypeRequiredForViewController.swift */,
+				121B28BD218AEA24000D392C /* InvTypeRequiredForPresenter.swift */,
+				121B28BF218AEA24000D392C /* InvTypeRequiredForInteractor.swift */,
+			);
+			name = InvTypeRequiredFor;
 			sourceTree = "<group>";
 		};
 		121D10B31E265D4600DD671B /* Loadouts */ = {
@@ -2741,6 +2761,7 @@
 				12133C44215E3B7700646937 /* CertCertificatesInteractor.swift in Sources */,
 				12EE7D0E213E62E8005CE68F /* Accounts.swift in Sources */,
 				125B2CBE217A7BDF00D34CFB /* SkillsViewController.swift in Sources */,
+				121B28C1218AEA24000D392C /* InvTypeRequiredForPresenter.swift in Sources */,
 				12133C7C215E6F1900646937 /* CertCertificateDescriptionCell.swift in Sources */,
 				12B8907F21300E610082D4A3 /* TreeViewController.swift in Sources */,
 				12D8147221550EC200313DAF /* InvTypeInfoViewController.swift in Sources */,
@@ -2783,6 +2804,7 @@
 				12925B792189E8DB00F6216C /* MySkillsPage.swift in Sources */,
 				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
 				12484C78215CC6A70083AE17 /* MapLocationPickerInteractor.swift in Sources */,
+				121B28C4218AEA24000D392C /* InvTypeRequiredFor.swift in Sources */,
 				12A843302153CA9600570A95 /* DamageTypeLabel.swift in Sources */,
 				12EE7D0A213E60D1005CE68F /* MainMenuContainerInteractor.swift in Sources */,
 				12484CA7215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift in Sources */,
@@ -2854,6 +2876,7 @@
 				12133C40215E3B6400646937 /* CertCertificatesViewController.swift in Sources */,
 				125DF6352133CFD000B86AE0 /* MainMenuPresenter.swift in Sources */,
 				12484C81215CCF260083AE17 /* MapLocationPickerRegionsPresenter.swift in Sources */,
+				121B28C3218AEA24000D392C /* InvTypeRequiredForInteractor.swift in Sources */,
 				12D8147021550E0F00313DAF /* InvTypeInfo.swift in Sources */,
 				12484C38215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift in Sources */,
 				12133C5F215E56E100646937 /* CertCertificateRequirementsInfoInteractor.swift in Sources */,
@@ -2886,6 +2909,7 @@
 				12DE75E1215A7554006FC1BF /* InvTypeInfoDescriptionCell.swift in Sources */,
 				12484C87215CD55F0083AE17 /* MapLocationPickerSolarSystemsViewController.swift in Sources */,
 				1279EFEE213543B7005340C0 /* UnitFormatter.swift in Sources */,
+				121B28C2218AEA24000D392C /* InvTypeRequiredForViewController.swift in Sources */,
 				1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */,
 				12E0419C212D77530000CB4F /* Error.swift in Sources */,
 				1204D07221528A1C0070AF92 /* InvGroupsPresenter.swift in Sources */,

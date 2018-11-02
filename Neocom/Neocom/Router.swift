@@ -35,6 +35,9 @@ enum Router {
 		static func accounts() -> Route<Accounts> {
 			return Route(assembly: Accounts.default, kind: .adaptiveModal)
 		}
+		static func mail() -> Route<Neocom.Mail> {
+			return Route(assembly: Neocom.Mail.default, kind: .detail)
+		}
 	}
 	
 	enum SDE {
@@ -92,7 +95,12 @@ enum Router {
 		static func jumpClones() -> Route<JumpClones> {
 			return Route(assembly: JumpClones.default, kind: .detail)
 		}
-
+	}
+	
+	enum Mail {
+		static func mailBody(_ input: MailBody.View.Input) -> Route<MailBody> {
+			return Route(assembly: MailBody.default, input: input, kind: .push)
+		}
 	}
 }
 

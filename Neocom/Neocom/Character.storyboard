@@ -201,8 +201,8 @@
         <!--Mail-->
         <scene sceneID="nD4-EK-Uu2">
             <objects>
-                <viewController storyboardIdentifier="NCMailPageViewController" automaticallyAdjustsScrollViewInsets="NO" id="cRP-gC-plC" customClass="NCMailPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="UJp-GE-qMw" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                <viewController storyboardIdentifier="MailViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cRP-gC-plC" customClass="MailViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="UJp-GE-qMw" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="579"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -226,7 +226,7 @@
         <!--Mail-->
         <scene sceneID="7GA-e7-S8f">
             <objects>
-                <viewController storyboardIdentifier="NCMailContainerViewController" title="Mail" id="141-6m-S1I" customClass="NCMailContainerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MailContainerViewController" title="Mail" useStoryboardIdentifierAsRestorationIdentifier="YES" id="141-6m-S1I" customClass="MailContainerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vcQ-D3-pZU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -267,14 +267,14 @@
             </objects>
             <point key="canvasLocation" x="-340" y="3134"/>
         </scene>
-        <!--Mail View Controller-->
+        <!--Mail Page View Controller-->
         <scene sceneID="YXz-BV-fQl">
             <objects>
-                <tableViewController storyboardIdentifier="NCMailViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="L9e-B4-Tlb" customClass="NCMailViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="eSI-Mg-mnF" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="MailPageViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="L9e-B4-Tlb" customClass="MailPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="68" sectionHeaderHeight="28" sectionFooterHeight="28" id="eSI-Mg-mnF" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="S5K-9A-flC">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -295,7 +295,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </refreshControl>
                     <connections>
-                        <outlet property="activityIndicator" destination="ZAb-OK-w1e" id="UKT-9d-qL9"/>
+                        <outlet property="activityIndicator" destination="ZAb-OK-w1e" id="80a-v7-B6g"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A44-Pq-EhX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -305,8 +305,8 @@
         <!--Mail-->
         <scene sceneID="rN1-2A-Hm8">
             <objects>
-                <viewController storyboardIdentifier="NCMailBodyViewController" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fPU-Id-8NR" customClass="NCMailBodyViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="JdG-7c-Spq" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                <viewController storyboardIdentifier="MailBodyViewController" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fPU-Id-8NR" customClass="MailBodyViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="JdG-7c-Spq" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -314,7 +314,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="B8i-Oq-ELq">
-                                        <rect key="frame" x="15" y="8" width="345" height="326.5"/>
+                                        <rect key="frame" x="15" y="8" width="345" height="124.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="D3a-tC-hlv">
                                                 <rect key="frame" x="0.0" y="0.0" width="345" height="18"/>
@@ -358,13 +358,13 @@
                                                     <constraint firstAttribute="height" constant="1" id="SUa-DB-2CK"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iW4-sM-V4M">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text=" " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iW4-sM-V4M">
                                                 <rect key="frame" x="0.0" y="43" width="345" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ntI-6L-RIO">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ntI-6L-RIO">
                                                 <rect key="frame" x="0.0" y="65.5" width="345" height="16"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
@@ -378,8 +378,8 @@
                                                     <constraint firstAttribute="height" constant="1" id="Ok3-yu-Z98"/>
                                                 </constraints>
                                             </view>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="906-dj-keX">
-                                                <rect key="frame" x="0.0" y="86.5" width="345" height="240"/>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text=" " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="906-dj-keX">
+                                                <rect key="frame" x="0.0" y="86.5" width="345" height="38"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" priority="750" constant="240" id="drg-jG-4wg"/>
@@ -387,6 +387,11 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="drg-jG-4wg"/>
+                                                    </mask>
+                                                </variation>
                                             </textView>
                                         </subviews>
                                     </stackView>

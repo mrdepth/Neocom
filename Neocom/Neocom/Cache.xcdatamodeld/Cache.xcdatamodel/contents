@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="18A391" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18A391" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Contact" representedClassName="Contact" syncable="YES" codeGenerationType="class">
+        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="lastUse" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <fetchIndex name="byContactIDIndex">
+            <fetchIndexElement property="contactID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="contactID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="LocationPickerRecent" representedClassName="LocationPickerRecent" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="locationID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -31,8 +45,9 @@
         </fetchIndex>
     </entity>
     <elements>
+        <element name="LocationPickerRecent" positionX="-36" positionY="72" width="128" height="90"/>
         <element name="Price" positionX="-27" positionY="81" width="128" height="75"/>
         <element name="SectionCollapseState" positionX="-45" positionY="36" width="128" height="90"/>
-        <element name="LocationPickerRecent" positionX="-36" positionY="72" width="128" height="90"/>
+        <element name="Contact" positionX="-36" positionY="81" width="128" height="105"/>
     </elements>
 </model>

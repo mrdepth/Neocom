@@ -271,6 +271,20 @@
 		12C727B6218B33CD00A78ADF /* JumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B2218B33CD00A78ADF /* JumpClonesViewController.swift */; };
 		12C727B7218B33CD00A78ADF /* JumpClonesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B3218B33CD00A78ADF /* JumpClonesInteractor.swift */; };
 		12C727B8218B33CD00A78ADF /* JumpClones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B4218B33CD00A78ADF /* JumpClones.swift */; };
+		12C727BE218C255600A78ADF /* MailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727BA218C255600A78ADF /* MailPresenter.swift */; };
+		12C727BF218C255600A78ADF /* MailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727BB218C255600A78ADF /* MailViewController.swift */; };
+		12C727C0218C255600A78ADF /* MailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727BC218C255600A78ADF /* MailInteractor.swift */; };
+		12C727C1218C255600A78ADF /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727BD218C255600A78ADF /* Mail.swift */; };
+		12C727C7218C2BBF00A78ADF /* MailPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727C3218C2BBF00A78ADF /* MailPagePresenter.swift */; };
+		12C727C8218C2BBF00A78ADF /* MailPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727C4218C2BBF00A78ADF /* MailPageViewController.swift */; };
+		12C727C9218C2BBF00A78ADF /* MailPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727C5218C2BBF00A78ADF /* MailPageInteractor.swift */; };
+		12C727CA218C2BBF00A78ADF /* MailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727C6218C2BBF00A78ADF /* MailPage.swift */; };
+		12C727CD218C5EF700A78ADF /* MailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C727CC218C5EF700A78ADF /* MailCell.xib */; };
+		12C727CF218C5F9D00A78ADF /* MailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727CE218C5F9D00A78ADF /* MailCell.swift */; };
+		12C727DE218C8B7B00A78ADF /* MailBodyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727DA218C8B7B00A78ADF /* MailBodyPresenter.swift */; };
+		12C727DF218C8B7B00A78ADF /* MailBodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727DB218C8B7B00A78ADF /* MailBodyViewController.swift */; };
+		12C727E0218C8B7B00A78ADF /* MailBodyInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727DC218C8B7B00A78ADF /* MailBodyInteractor.swift */; };
+		12C727E1218C8B7B00A78ADF /* MailBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727DD218C8B7B00A78ADF /* MailBody.swift */; };
 		12C967001F96111900B141CC /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F71F9610DE00B141CC /* FirebaseCore.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12C967011F96111900B141CC /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F81F9610DE00B141CC /* FirebaseCoreDiagnostics.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12C967021F96111900B141CC /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F91F9610DE00B141CC /* FirebaseInstanceID.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -878,6 +892,20 @@
 		12C727B2218B33CD00A78ADF /* JumpClonesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpClonesViewController.swift; sourceTree = "<group>"; };
 		12C727B3218B33CD00A78ADF /* JumpClonesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpClonesInteractor.swift; sourceTree = "<group>"; };
 		12C727B4218B33CD00A78ADF /* JumpClones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpClones.swift; sourceTree = "<group>"; };
+		12C727BA218C255600A78ADF /* MailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailPresenter.swift; sourceTree = "<group>"; };
+		12C727BB218C255600A78ADF /* MailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailViewController.swift; sourceTree = "<group>"; };
+		12C727BC218C255600A78ADF /* MailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailInteractor.swift; sourceTree = "<group>"; };
+		12C727BD218C255600A78ADF /* Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mail.swift; sourceTree = "<group>"; };
+		12C727C3218C2BBF00A78ADF /* MailPagePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailPagePresenter.swift; sourceTree = "<group>"; };
+		12C727C4218C2BBF00A78ADF /* MailPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailPageViewController.swift; sourceTree = "<group>"; };
+		12C727C5218C2BBF00A78ADF /* MailPageInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailPageInteractor.swift; sourceTree = "<group>"; };
+		12C727C6218C2BBF00A78ADF /* MailPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailPage.swift; sourceTree = "<group>"; };
+		12C727CC218C5EF700A78ADF /* MailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MailCell.xib; sourceTree = "<group>"; };
+		12C727CE218C5F9D00A78ADF /* MailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailCell.swift; sourceTree = "<group>"; };
+		12C727DA218C8B7B00A78ADF /* MailBodyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailBodyPresenter.swift; sourceTree = "<group>"; };
+		12C727DB218C8B7B00A78ADF /* MailBodyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailBodyViewController.swift; sourceTree = "<group>"; };
+		12C727DC218C8B7B00A78ADF /* MailBodyInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailBodyInteractor.swift; sourceTree = "<group>"; };
+		12C727DD218C8B7B00A78ADF /* MailBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailBody.swift; sourceTree = "<group>"; };
 		12C966D61F95E02D00B141CC /* NCTransferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCTransferViewController.swift; sourceTree = "<group>"; };
 		12C966DC1F95F56700B141CC /* NCAboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCAboutViewController.swift; sourceTree = "<group>"; };
 		12C966EE1F9610D800B141CC /* clrconvert.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = clrconvert.xcodeproj; path = clrconvert/clrconvert.xcodeproj; sourceTree = "<group>"; };
@@ -1642,6 +1670,7 @@
 			isa = PBXGroup;
 			children = (
 				1279EFF6213587D7005340C0 /* Cells.swift */,
+				12C727CB218C5EE600A78ADF /* MailCell */,
 				12EA7793217F4416009C8288 /* SkillCell */,
 				1253C62A2159102A007DEA16 /* MarketHistoryCell */,
 				1253C62321590738007DEA16 /* DamageTypeCell */,
@@ -2192,6 +2221,7 @@
 				1204D061215270410070AF92 /* Database */,
 				12C727AE218B32E200A78ADF /* Character */,
 				12484C6B215CC05D0083AE17 /* PageViewController */,
+				12C727E2218C95E400A78ADF /* Mail */,
 				121F26E52136EC5700AE1D70 /* NavigationController.swift */,
 				121F26E72136ECA800AE1D70 /* SplitViewController.swift */,
 				12678BEE212BE32A00E7E427 /* AppDelegate.swift */,
@@ -2256,6 +2286,50 @@
 				12C727B3218B33CD00A78ADF /* JumpClonesInteractor.swift */,
 			);
 			name = JumpClones;
+			sourceTree = "<group>";
+		};
+		12C727C2218C2BB300A78ADF /* MailPage */ = {
+			isa = PBXGroup;
+			children = (
+				12C727C6218C2BBF00A78ADF /* MailPage.swift */,
+				12C727C4218C2BBF00A78ADF /* MailPageViewController.swift */,
+				12C727C3218C2BBF00A78ADF /* MailPagePresenter.swift */,
+				12C727C5218C2BBF00A78ADF /* MailPageInteractor.swift */,
+			);
+			name = MailPage;
+			sourceTree = "<group>";
+		};
+		12C727CB218C5EE600A78ADF /* MailCell */ = {
+			isa = PBXGroup;
+			children = (
+				12C727CC218C5EF700A78ADF /* MailCell.xib */,
+				12C727CE218C5F9D00A78ADF /* MailCell.swift */,
+			);
+			name = MailCell;
+			sourceTree = "<group>";
+		};
+		12C727D9218C8B6600A78ADF /* MailBody */ = {
+			isa = PBXGroup;
+			children = (
+				12C727DD218C8B7B00A78ADF /* MailBody.swift */,
+				12C727DB218C8B7B00A78ADF /* MailBodyViewController.swift */,
+				12C727DA218C8B7B00A78ADF /* MailBodyPresenter.swift */,
+				12C727DC218C8B7B00A78ADF /* MailBodyInteractor.swift */,
+			);
+			name = MailBody;
+			sourceTree = "<group>";
+		};
+		12C727E2218C95E400A78ADF /* Mail */ = {
+			isa = PBXGroup;
+			children = (
+				12C727D9218C8B6600A78ADF /* MailBody */,
+				12C727C2218C2BB300A78ADF /* MailPage */,
+				12C727BD218C255600A78ADF /* Mail.swift */,
+				12C727BB218C255600A78ADF /* MailViewController.swift */,
+				12C727BA218C255600A78ADF /* MailPresenter.swift */,
+				12C727BC218C255600A78ADF /* MailInteractor.swift */,
+			);
+			name = Mail;
 			sourceTree = "<group>";
 		};
 		12C966ED1F9610CC00B141CC /* ThirdParty */ = {
@@ -2693,6 +2767,7 @@
 				1298BA7C20AEFB73002C941E /* MPUnmutedBtn@2x.png in Resources */,
 				122A7CA61F4B5DD800537467 /* Business.storyboard in Resources */,
 				1256BEC91DF4770A00A2A24B /* intelligence.png in Resources */,
+				12C727CD218C5EF700A78ADF /* MailCell.xib in Resources */,
 				12133C7E215E6F2400646937 /* CertCertificateDescriptionCell.xib in Resources */,
 				1256BECC1DF4770A00A2A24B /* willpower.png in Resources */,
 				128130411F3B01230039D46B /* dropzone.css in Resources */,
@@ -2809,16 +2884,20 @@
 				12133C7C215E6F1900646937 /* CertCertificateDescriptionCell.swift in Sources */,
 				12B8907F21300E610082D4A3 /* TreeViewController.swift in Sources */,
 				12D8147221550EC200313DAF /* InvTypeInfoViewController.swift in Sources */,
+				12C727E1218C8B7B00A78ADF /* MailBody.swift in Sources */,
 				12133C51215E56A500646937 /* CertCertificateMasteryInfo.swift in Sources */,
 				12484C93215CD5B30083AE17 /* MapLocationPickerRecentsInteractor.swift in Sources */,
 				12C727B8218B33CD00A78ADF /* JumpClones.swift in Sources */,
 				12AB9737212C0ECC00B30DD3 /* SDE+Constants.swift in Sources */,
+				12C727C9218C2BBF00A78ADF /* MailPageInteractor.swift in Sources */,
 				12484C6A215CB3700083AE17 /* Atomic.swift in Sources */,
+				12C727CA218C2BBF00A78ADF /* MailPage.swift in Sources */,
 				12AB974F212C325E00B30DD3 /* ImageValueTransformer.swift in Sources */,
 				121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */,
 				1204D068215271420070AF92 /* InvCategoriesInteractor.swift in Sources */,
 				12D3109A211C282100367440 /* PersistentContext.swift in Sources */,
 				12AFD473211C1E7D00007423 /* Cache.swift in Sources */,
+				12C727BE218C255600A78ADF /* MailPresenter.swift in Sources */,
 				1279EFF7213587D7005340C0 /* Cells.swift in Sources */,
 				12A843012153871300570A95 /* InvTypes.swift in Sources */,
 				12484C89215CD56A0083AE17 /* MapLocationPickerSolarSystemsPresenter.swift in Sources */,
@@ -2865,8 +2944,10 @@
 				12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */,
 				121F26ED2136EE8700AE1D70 /* AccountsInteractor.swift in Sources */,
 				125B2CB62176FEB500D34CFB /* InvTypeMastery.swift in Sources */,
+				12C727C1218C255600A78ADF /* Mail.swift in Sources */,
 				12484C8D215CD5970083AE17 /* MapLocationPickerRecents.swift in Sources */,
 				1279EFF5213586D6005340C0 /* NCTableView.m in Sources */,
+				12C727DE218C8B7B00A78ADF /* MailBodyPresenter.swift in Sources */,
 				1279F00121358F7C005340C0 /* MainMenuHeaderInteractor.swift in Sources */,
 				12D8144C2154D9BA00313DAF /* ThinLineView.swift in Sources */,
 				12EA7798217F447A009C8288 /* SkillCell.swift in Sources */,
@@ -2875,6 +2956,7 @@
 				12B03DA6213FEBF400DCBD64 /* TimeIntervalFormatter.swift in Sources */,
 				12484C34215B8E080083AE17 /* InvTypeMarketOrders.swift in Sources */,
 				1204D064215270780070AF92 /* InvCategoriesViewController.swift in Sources */,
+				12C727C0218C255600A78ADF /* MailInteractor.swift in Sources */,
 				129DFE1B21347A6F00C85496 /* TableViewBackgroundLabel.swift in Sources */,
 				1204D06E215289FC0070AF92 /* InvGroups.swift in Sources */,
 				1279EFFF21358F73005340C0 /* MainMenuHeaderPresenter.swift in Sources */,
@@ -2885,6 +2967,7 @@
 				12AB972A212BF60000B30DD3 /* Storage.xcdatamodeld in Sources */,
 				12AB9732212C0E4F00B30DD3 /* NCFleetConfiguration.swift in Sources */,
 				12C727B5218B33CD00A78ADF /* JumpClonesPresenter.swift in Sources */,
+				12C727E0218C8B7B00A78ADF /* MailBodyInteractor.swift in Sources */,
 				12EE7D08213E60C8005CE68F /* MainMenuContainerPresenter.swift in Sources */,
 				125B2CBF217A7BDF00D34CFB /* SkillsInteractor.swift in Sources */,
 				12B890722130054E0082D4A3 /* SOLID.swift in Sources */,
@@ -2902,6 +2985,7 @@
 				124C858F213E880200333636 /* BackgroundView.swift in Sources */,
 				12AF2FCA2188930300813DFD /* SkillsContainerViewController.swift in Sources */,
 				129DFE1E21347AFB00C85496 /* AccessibilityLabel.swift in Sources */,
+				12C727DF218C8B7B00A78ADF /* MailBodyViewController.swift in Sources */,
 				125B2CB52176FEB500D34CFB /* InvTypeMasteryInteractor.swift in Sources */,
 				12AF2FD12188943900813DFD /* MySkillsPresenter.swift in Sources */,
 				12133C35215E399C00646937 /* CertGroups.swift in Sources */,
@@ -2909,6 +2993,7 @@
 				129DFE20213486D900C85496 /* ProgressTask.swift in Sources */,
 				12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */,
 				12B03DA8213FEE1B00DCBD64 /* ActionHandler.swift in Sources */,
+				12C727C7218C2BBF00A78ADF /* MailPagePresenter.swift in Sources */,
 				12484C91215CD5AA0083AE17 /* MapLocationPickerRecentsPresenter.swift in Sources */,
 				12A843052153872500570A95 /* InvTypesPresenter.swift in Sources */,
 				12AF2FD22188943900813DFD /* MySkillsViewController.swift in Sources */,
@@ -2940,17 +3025,20 @@
 				125DF6372133CFDB00B86AE0 /* MainMenuInteractor.swift in Sources */,
 				12484C72215CC6610083AE17 /* MapLocationPicker.swift in Sources */,
 				1204D07021528A140070AF92 /* InvGroupsViewController.swift in Sources */,
+				12C727BF218C255600A78ADF /* MailViewController.swift in Sources */,
 				12484C85215CD5560083AE17 /* MapLocationPickerSolarSystems.swift in Sources */,
 				12AF2FD32188943900813DFD /* MySkillsInteractor.swift in Sources */,
 				12484C8B215CD5740083AE17 /* MapLocationPickerSolarSystemsInteractor.swift in Sources */,
 				12AF2FC92188930300813DFD /* SkillsContainerPresenter.swift in Sources */,
 				12925B762189E8DB00F6216C /* MySkillsPagePresenter.swift in Sources */,
+				12C727C8218C2BBF00A78ADF /* MailPageViewController.swift in Sources */,
 				12E0417E212D3C4F0000CB4F /* API.swift in Sources */,
 				125B2CB32176FEB500D34CFB /* InvTypeMasteryPresenter.swift in Sources */,
 				125B2CC6217A7C9400D34CFB /* SkillQueuePresenter.swift in Sources */,
 				12D8147421550ED100313DAF /* InvTypeInfoPresenter.swift in Sources */,
 				125B2CC0217A7BDF00D34CFB /* Skills.swift in Sources */,
 				125B2CB42176FEB500D34CFB /* InvTypeMasteryViewController.swift in Sources */,
+				12C727CF218C5F9D00A78ADF /* MailCell.swift in Sources */,
 				12AB9755212C488400B30DD3 /* TrainingQueue.swift in Sources */,
 				129E40AD213ECE0E002EDAF9 /* RoundedImageView.swift in Sources */,
 				12133C59215E56C600646937 /* CertCertificateRequirementsInfo.swift in Sources */,

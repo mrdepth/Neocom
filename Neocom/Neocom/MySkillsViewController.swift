@@ -17,7 +17,7 @@ class MySkillsViewController: PageViewController, ContentProviderView {
 	var unwinder: Unwinder?
 	
 	
-	func present(_ content: MySkillsViewController.Presenter.Presentation, animated: Bool) -> Future<Void> {
+	func present(_ content: Presenter.Presentation, animated: Bool) -> Future<Void> {
 		let pages = viewControllers as? [MySkillsPageViewController]
 		
 		zip((0..<4), [content.all, content.canTrain, content.notKnown, content.all]).forEach {
@@ -29,6 +29,10 @@ class MySkillsViewController: PageViewController, ContentProviderView {
 	}
 	
 	func fail(_ error: Error) {
+		let pages = viewControllers as? [MySkillsPageViewController]
+		pages?.forEach {
+			$0.fail(error)
+		}
 	}
 	
 	override func viewDidLoad() {

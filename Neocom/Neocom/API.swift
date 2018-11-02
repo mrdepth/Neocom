@@ -11,6 +11,7 @@ import Futures
 import EVEAPI
 import Alamofire
 import Expressible
+import CoreData
 
 protocol ESIResultProtocol {
 	associatedtype Value
@@ -86,7 +87,21 @@ protocol UniverseAPI: class {
 	func universeStructure(structureID: Int64) -> Future<ESI.Result<ESI.Universe.StructureInformation>>
 }
 
-typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI
+protocol MailAPI: class {
+	func sendMail(body: String, subject: String, recipients: [ESI.Mail.Recipient]) -> Future<ESI.Result<Int>>
+	func mailHeaders(lastMailID: Int64?, labels: [Int64]?, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Mail.Header]>>
+	func mailBody(mailID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Mail.MailBody>>
+	func mailingLists(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Mail.Subscription]>>
+	func mailLabels(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Mail.MailLabelsAndUnreadCounts>>
+	func markRead(mail: ESI.Mail.Header) -> Future<ESI.Result<String>>
+	func delete(mailID: Int64) -> Future<ESI.Result<String>>
+}
+
+protocol ContactsAPI: class {
+	func contacts(with ids: Set<Int64>) -> Future<[Int64: Contact]>
+}
+
+typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & ContactsAPI
 
 class APIClient: API {
 	
@@ -240,7 +255,7 @@ class APIClient: API {
 		return esi.location.getCurrentShip(characterID: Int(id), cachePolicy: cachePolicy)
 	}
 	
-	lazy var cachedLocations: Atomic<[Int64: EVELocation]> = Atomic([:])
+	private lazy var cachedLocations: Atomic<[Int64: EVELocation]> = Atomic([:])
 
 	func locations(ids: Set<Int64>) -> Future<[Int64: EVELocation]> {
 		guard !ids.isEmpty else { return .init([:]) }
@@ -417,5 +432,105 @@ class APIClient: API {
 		return esi.universe.getStructureInformation(structureID: structureID)
 	}
 
+	//MARK: MailAPI
+	
+	func sendMail(body: String, subject: String, recipients: [ESI.Mail.Recipient]) -> Future<ESI.Result<Int>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+		let mail = ESI.Mail.NewMail(approvedCost: nil, body: body, recipients: recipients, subject: subject)
+		return esi.mail.sendNewMail(characterID: Int(id), mail: mail)
+	}
+	
+	func mailHeaders(lastMailID: Int64?, labels: [Int64]?, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Mail.Header]>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+		return esi.mail.returnMailHeaders(characterID: Int(id), labels: labels?.map{Int($0)}, lastMailID: lastMailID.map{Int($0)}, cachePolicy: cachePolicy)
+	}
+	
+	func mailBody(mailID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Mail.MailBody>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+		return esi.mail.returnMail(characterID: Int(id), mailID: Int(mailID), cachePolicy: cachePolicy)
+	}
+	
+	func mailingLists(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Mail.Subscription]>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+		return esi.mail.returnMailingListSubscriptions(characterID: Int(id), cachePolicy: cachePolicy)
+	}
+	
+	func mailLabels(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Mail.MailLabelsAndUnreadCounts>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+		return esi.mail.getMailLabelsAndUnreadCounts(characterID: Int(id), cachePolicy: cachePolicy)
+	}
+
+	func markRead(mail: ESI.Mail.Header) -> Future<ESI.Result<String>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+		guard let mailID = mail.mailID else { return .init(.failure(NCError.invalidArgument(type: type(of: self), function: #function, argument: "mail", value: mail))) }
+		let contents = ESI.Mail.UpdateContents(labels: mail.labels, read: true)
+		return esi.mail.updateMetadataAboutMail(characterID: Int(id), contents: contents, mailID: mailID)
+	}
+	
+	func delete(mailID: Int64) -> Future<ESI.Result<String>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+		return esi.mail.deleteMail(characterID: Int(id), mailID: Int(mailID))
+	}
+	
+	//MARK: ContactsAPI
+	private lazy var cachedContacts = [Int64: Contact]()
+	private lazy var invalidIDs = Atomic<Set<Int64>>(Set())
+	
+	func contacts(with ids: Set<Int64>) -> Future<[Int64: Contact]> {
+		let ids = ids.subtracting(invalidIDs.value)
+		var result = Dictionary(ids.compactMap {cachedContacts[$0]}.map{($0.contactID, $0)}, uniquingKeysWith: {(a, _) in a})
+		var missing = ids.subtracting(Set(result.keys))
+		
+		if missing.isEmpty {
+			return .init(result)
+		}
+		else {
+			return Services.cache.performBackgroundTask { [weak self] context -> [NSManagedObjectID] in
+				var contacts = context.contacts(with: missing) ?? [:]
+				missing.subtract(contacts.keys)
+				
+				if !missing.isEmpty, let mailingLists = (try? self?.mailingLists(cachePolicy: .useProtocolCachePolicy).get().value) ?? nil {
+					mailingLists.filter {missing.contains(Int64($0.mailingListID))}.forEach { i in
+						let contact = Contact(context: context.managedObjectContext)
+						contact.contactID = Int64(i.mailingListID)
+						contact.category = ESI.Mail.RecipientType.mailingList.rawValue
+						contact.name = i.name
+						contacts[contact.contactID] = contact
+						missing.remove(contact.contactID)
+					}
+				}
+
+				
+				if !missing.isEmpty {
+					do {
+						let universeNames = try self?.universeNames(ids: missing).get().value
+						universeNames?.forEach { name in
+							let contact = Contact(context: context.managedObjectContext)
+							contact.contactID = Int64(name.id)
+							contact.category = name.category.rawValue
+							contact.name = name.name
+							contacts[contact.contactID] = contact
+							missing.remove(contact.contactID)
+						}
+					}
+					catch {
+						if (error as? AFError)?.responseCode == 404 {
+							self?.invalidIDs.perform {$0.formUnion(missing)}
+						}
+					}
+				}
+				try? context.save()
+				return contacts.values.map{$0.objectID}
+			}.then(on: .main) { [weak self] ids -> [Int64: Contact] in
+				let context = Services.cache.viewContext
+				let contacts = ids.compactMap { objectID -> Contact? in (try? context.existingObject(with: objectID)) ?? nil }
+				contacts.forEach {
+					result[$0.contactID] = $0
+					self?.cachedContacts[$0.contactID] = $0
+				}
+				return result
+			}
+		}
+	}
 
 }

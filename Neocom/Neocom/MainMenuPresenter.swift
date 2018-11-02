@@ -85,7 +85,7 @@ class MainMenuPresenter: TreePresenter {
 																							 account: account,
 //																							 value: characterSheet(),
 																							 treeController: view?.treeController,
-																							 route: nil,
+																							 route: Router.MainMenu.mail(),
 																							 require: [.esiMailReadMailV1,
 																									   .esiMailSendMailV1,
 																									   .esiMailOrganizeMailV1]),

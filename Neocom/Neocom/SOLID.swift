@@ -114,6 +114,7 @@ protocol ContentProviderPresenter: Presenter where View: ContentProviderView, In
 	var loading: Future<Presentation>? {get set}
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation>
+	func reloadIfNeeded()
 }
 
 protocol ContentProviderInteractor: Interactor where Presenter: ContentProviderPresenter {

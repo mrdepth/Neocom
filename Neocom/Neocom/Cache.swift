@@ -23,6 +23,7 @@ protocol CacheContext: PersistentContext {
 	func price(for typeID: Int) -> Price?
 	func price(for typeIDs: Set<Int>) -> [Int: Double]?
 	func prices() -> [Price]?
+	func contacts(with ids: Set<Int64>) -> [Int64: Contact]?
 }
 
 
@@ -124,6 +125,13 @@ struct CacheContextBox: CacheContext {
 	
 	func prices() -> [Price]? {
 		return (try? managedObjectContext.from(Price.self).all()) ?? nil
+	}
+	
+	func contacts(with ids: Set<Int64>) -> [Int64: Contact]? {
+		let request = managedObjectContext
+			.from(Contact.self)
+			.filter((\Contact.contactID).in(ids))
+		return try? Dictionary(request.all().map {($0.contactID, $0)}, uniquingKeysWith: { (a, _) in a})
 	}
 	
 	var managedObjectContext: NSManagedObjectContext

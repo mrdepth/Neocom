@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import Futures
 import Expressible
+import EVEAPI
 
 protocol Cache {
 	var viewContext: CacheContext {get}
@@ -138,3 +139,9 @@ struct CacheContextBox: CacheContext {
 	
 }
 
+
+extension Contact {
+	var recipientType: ESI.Mail.RecipientType? {
+		return category.flatMap {ESI.Mail.RecipientType(rawValue: $0)}
+	}
+}

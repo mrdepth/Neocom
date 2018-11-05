@@ -101,6 +101,10 @@ enum Router {
 		static func mailBody(_ input: MailBody.View.Input) -> Route<MailBody> {
 			return Route(assembly: MailBody.default, input: input, kind: .push)
 		}
+		static func newMail(_ input: NewMail.View.Input) -> Route<NewMail> {
+			return Route(assembly: NewMail.default, input: input, kind: .adaptiveModal)
+		}
+
 	}
 }
 

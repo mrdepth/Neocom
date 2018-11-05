@@ -23,4 +23,8 @@ class MainMenuViewController: TreeViewController<MainMenuPresenter, Void>, TreeV
 			self.navigationController?.setNavigationBarHidden(false, animated: animated)
 		}
 	}
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+	}
 }

@@ -169,6 +169,15 @@
 		12845CB8218346D000E693D3 /* Skills_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12845CB7218346D000E693D3 /* Skills_Tests.swift */; };
 		1284C1512133F84800AF52C2 /* TreeDefaultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1284C1502133F84800AF52C2 /* TreeDefaultCell.xib */; };
 		1285FB351EB8DD350025331A /* NCAttributeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1285FB341EB8DD350025331A /* NCAttributeTableViewCell.xib */; };
+		1287FB7F2190241C00A505FC /* NewMailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB7B2190241C00A505FC /* NewMailPresenter.swift */; };
+		1287FB802190241C00A505FC /* NewMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB7C2190241C00A505FC /* NewMailViewController.swift */; };
+		1287FB812190241C00A505FC /* NewMailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB7D2190241C00A505FC /* NewMailInteractor.swift */; };
+		1287FB822190241C00A505FC /* NewMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB7E2190241C00A505FC /* NewMail.swift */; };
+		1287FB882190276B00A505FC /* ContactsSearchResultsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB842190276B00A505FC /* ContactsSearchResultsPresenter.swift */; };
+		1287FB892190276B00A505FC /* ContactsSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB852190276B00A505FC /* ContactsSearchResultsViewController.swift */; };
+		1287FB8A2190276B00A505FC /* ContactsSearchResultsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB862190276B00A505FC /* ContactsSearchResultsInteractor.swift */; };
+		1287FB8B2190276B00A505FC /* ContactsSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB872190276B00A505FC /* ContactsSearchResults.swift */; };
+		1287FB8D21903C2E00A505FC /* TreeDefaultContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1287FB8C21903C2E00A505FC /* TreeDefaultContactCell.xib */; };
 		128C5F711F418CF30038FE7D /* NCFacilityChartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F701F418CF30038FE7D /* NCFacilityChartTableViewCell.xib */; };
 		128C5F761F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F751F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib */; };
 		128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F821F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib */; };
@@ -726,6 +735,15 @@
 		1285FB321EB8DBFA0025331A /* NCImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCImageView.swift; sourceTree = "<group>"; };
 		1285FB341EB8DD350025331A /* NCAttributeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCAttributeTableViewCell.xib; sourceTree = "<group>"; };
 		1285FB391EB9C5700025331A /* NCWealthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCWealthViewController.swift; sourceTree = "<group>"; };
+		1287FB7B2190241C00A505FC /* NewMailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMailPresenter.swift; sourceTree = "<group>"; };
+		1287FB7C2190241C00A505FC /* NewMailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMailViewController.swift; sourceTree = "<group>"; };
+		1287FB7D2190241C00A505FC /* NewMailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMailInteractor.swift; sourceTree = "<group>"; };
+		1287FB7E2190241C00A505FC /* NewMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMail.swift; sourceTree = "<group>"; };
+		1287FB842190276B00A505FC /* ContactsSearchResultsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsSearchResultsPresenter.swift; sourceTree = "<group>"; };
+		1287FB852190276B00A505FC /* ContactsSearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsSearchResultsViewController.swift; sourceTree = "<group>"; };
+		1287FB862190276B00A505FC /* ContactsSearchResultsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsSearchResultsInteractor.swift; sourceTree = "<group>"; };
+		1287FB872190276B00A505FC /* ContactsSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsSearchResults.swift; sourceTree = "<group>"; };
+		1287FB8C21903C2E00A505FC /* TreeDefaultContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TreeDefaultContactCell.xib; sourceTree = "<group>"; };
 		128AE8161E360FF1002E3A1E /* NCRangeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRangeFormatter.swift; sourceTree = "<group>"; };
 		128C5F701F418CF30038FE7D /* NCFacilityChartTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFacilityChartTableViewCell.xib; sourceTree = "<group>"; };
 		128C5F721F41AE170038FE7D /* NCFacilityChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFacilityChartTableViewCell.swift; sourceTree = "<group>"; };
@@ -1779,6 +1797,7 @@
 			children = (
 				125DF63B2133D30000B86AE0 /* TreeDefaultCell.swift */,
 				1284C1502133F84800AF52C2 /* TreeDefaultCell.xib */,
+				1287FB8C21903C2E00A505FC /* TreeDefaultContactCell.xib */,
 				1253C64B21592BA4007DEA16 /* TreeDefaultAttributeCell.xib */,
 				1278B8D7218844DF003C9A99 /* TreeDefaultPlaceholderCell.xib */,
 				12925B7A2189EE6F00F6216C /* TreeDefaultActionCell.xib */,
@@ -1873,6 +1892,29 @@
 				1203E87E1F043A86009ADF8D /* NCZKillboardSummaryViewController.swift */,
 			);
 			name = KillReports;
+			sourceTree = "<group>";
+		};
+		1287FB792190240800A505FC /* NewMail */ = {
+			isa = PBXGroup;
+			children = (
+				1287FB832190249600A505FC /* ContactsSearchResults */,
+				1287FB7E2190241C00A505FC /* NewMail.swift */,
+				1287FB7C2190241C00A505FC /* NewMailViewController.swift */,
+				1287FB7B2190241C00A505FC /* NewMailPresenter.swift */,
+				1287FB7D2190241C00A505FC /* NewMailInteractor.swift */,
+			);
+			name = NewMail;
+			sourceTree = "<group>";
+		};
+		1287FB832190249600A505FC /* ContactsSearchResults */ = {
+			isa = PBXGroup;
+			children = (
+				1287FB872190276B00A505FC /* ContactsSearchResults.swift */,
+				1287FB852190276B00A505FC /* ContactsSearchResultsViewController.swift */,
+				1287FB842190276B00A505FC /* ContactsSearchResultsPresenter.swift */,
+				1287FB862190276B00A505FC /* ContactsSearchResultsInteractor.swift */,
+			);
+			name = ContactsSearchResults;
 			sourceTree = "<group>";
 		};
 		12925B702189E8C800F6216C /* MySkillsPage */ = {
@@ -2324,6 +2366,7 @@
 			children = (
 				12C727D9218C8B6600A78ADF /* MailBody */,
 				12C727C2218C2BB300A78ADF /* MailPage */,
+				1287FB792190240800A505FC /* NewMail */,
 				12C727BD218C255600A78ADF /* Mail.swift */,
 				12C727BB218C255600A78ADF /* MailViewController.swift */,
 				12C727BA218C255600A78ADF /* MailPresenter.swift */,
@@ -2815,6 +2858,7 @@
 				128130421F3B01230039D46B /* dropzone.js in Resources */,
 				12AB974C212C30E300B30DD3 /* SDE.sqlite in Resources */,
 				12D930EB1E656EA300CBAE1C /* NCDamageTypeTableViewCell.xib in Resources */,
+				1287FB8D21903C2E00A505FC /* TreeDefaultContactCell.xib in Resources */,
 				124069FF1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib in Resources */,
 				1298BA7420AEFB73002C941E /* TapjoyResources.bundle in Resources */,
 				12C37D301EFA9D070070F055 /* NCContactCompactTableViewCell.xib in Resources */,
@@ -2989,6 +3033,8 @@
 				125B2CB52176FEB500D34CFB /* InvTypeMasteryInteractor.swift in Sources */,
 				12AF2FD12188943900813DFD /* MySkillsPresenter.swift in Sources */,
 				12133C35215E399C00646937 /* CertGroups.swift in Sources */,
+				1287FB882190276B00A505FC /* ContactsSearchResultsPresenter.swift in Sources */,
+				1287FB892190276B00A505FC /* ContactsSearchResultsViewController.swift in Sources */,
 				12A843072153872D00570A95 /* InvTypesInteractor.swift in Sources */,
 				129DFE20213486D900C85496 /* ProgressTask.swift in Sources */,
 				12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */,
@@ -3015,8 +3061,10 @@
 				121B28C3218AEA24000D392C /* InvTypeRequiredForInteractor.swift in Sources */,
 				12D8147021550E0F00313DAF /* InvTypeInfo.swift in Sources */,
 				12484C38215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift in Sources */,
+				1287FB812190241C00A505FC /* NewMailInteractor.swift in Sources */,
 				12133C5F215E56E100646937 /* CertCertificateRequirementsInfoInteractor.swift in Sources */,
 				125B2CC9217A7C9400D34CFB /* SkillQueue.swift in Sources */,
+				1287FB7F2190241C00A505FC /* NewMailPresenter.swift in Sources */,
 				12133C30215E292D00646937 /* InvTypeVariationsInteractor.swift in Sources */,
 				120A386F213D543E0071ED72 /* MainMenuHeader.swift in Sources */,
 				12AB9735212C0E6E00B30DD3 /* NCImplantSetData.swift in Sources */,
@@ -3025,6 +3073,7 @@
 				125DF6372133CFDB00B86AE0 /* MainMenuInteractor.swift in Sources */,
 				12484C72215CC6610083AE17 /* MapLocationPicker.swift in Sources */,
 				1204D07021528A140070AF92 /* InvGroupsViewController.swift in Sources */,
+				1287FB8B2190276B00A505FC /* ContactsSearchResults.swift in Sources */,
 				12C727BF218C255600A78ADF /* MailViewController.swift in Sources */,
 				12484C85215CD5560083AE17 /* MapLocationPickerSolarSystems.swift in Sources */,
 				12AF2FD32188943900813DFD /* MySkillsInteractor.swift in Sources */,
@@ -3043,17 +3092,20 @@
 				129E40AD213ECE0E002EDAF9 /* RoundedImageView.swift in Sources */,
 				12133C59215E56C600646937 /* CertCertificateRequirementsInfo.swift in Sources */,
 				120A386D213D46970071ED72 /* MainMenuContainerViewController.swift in Sources */,
+				1287FB822190241C00A505FC /* NewMail.swift in Sources */,
 				12AF2FD42188943900813DFD /* MySkills.swift in Sources */,
 				12484C7F215CCF1B0083AE17 /* MapLocationPickerRegionsViewController.swift in Sources */,
 				12DE75E1215A7554006FC1BF /* InvTypeInfoDescriptionCell.swift in Sources */,
 				12484C87215CD55F0083AE17 /* MapLocationPickerSolarSystemsViewController.swift in Sources */,
 				1279EFEE213543B7005340C0 /* UnitFormatter.swift in Sources */,
+				1287FB8A2190276B00A505FC /* ContactsSearchResultsInteractor.swift in Sources */,
 				121B28C2218AEA24000D392C /* InvTypeRequiredForViewController.swift in Sources */,
 				121B28CC218AF1E8000D392C /* CharacterInfo.swift in Sources */,
 				1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */,
 				12E0419C212D77530000CB4F /* Error.swift in Sources */,
 				1204D07221528A1C0070AF92 /* InvGroupsPresenter.swift in Sources */,
 				12D8147621550EDA00313DAF /* InvTypeInfoInteractor.swift in Sources */,
+				1287FB802190241C00A505FC /* NewMailViewController.swift in Sources */,
 				125B2CC7217A7C9400D34CFB /* SkillQueueViewController.swift in Sources */,
 				12B03DA3213FC32300DCBD64 /* Math.swift in Sources */,
 				12133C4B215E55BE00646937 /* CertCertificateInfoPresenter.swift in Sources */,

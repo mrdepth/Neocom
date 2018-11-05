@@ -451,14 +451,19 @@
             </objects>
             <point key="canvasLocation" x="-111" y="3863"/>
         </scene>
-        <!--Contacts Search Result View Controller-->
+        <!--Contacts Search Results View Controller-->
         <scene sceneID="wNr-Ni-JjJ">
             <objects>
-                <tableViewController modalPresentationStyle="overCurrentContext" id="zam-Il-kne" customClass="NCContactsSearchResultViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="w8a-oR-jqW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="571"/>
+                <tableViewController storyboardIdentifier="ContactsSearchResultsViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zam-Il-kne" customClass="ContactsSearchResultsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="28" id="w8a-oR-jqW" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="V1B-vH-EDp">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                     </tableView>
                     <navigationItem key="navigationItem" id="f1x-wp-hQe"/>
                 </tableViewController>
@@ -469,8 +474,8 @@
         <!--New Message-->
         <scene sceneID="25x-XE-cj5">
             <objects>
-                <viewController storyboardIdentifier="NCNewMailViewController" definesPresentationContext="YES" id="noG-GH-n4m" customClass="NCNewMailViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="awn-nA-eRG" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                <viewController storyboardIdentifier="NewMailViewController" definesPresentationContext="YES" id="noG-GH-n4m" customClass="NewMailViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="awn-nA-eRG" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -478,23 +483,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="fZ4-sB-qOB">
-                                        <rect key="frame" x="15" y="0.0" width="345" height="334"/>
+                                        <rect key="frame" x="15" y="36" width="345" height="304"/>
                                         <subviews>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Fum-Ju-umX">
-                                                <rect key="frame" x="0.0" y="0.0" width="345" height="32"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="32" id="yus-PM-rko"/>
-                                                </constraints>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                <connections>
-                                                    <outlet property="delegate" destination="noG-GH-n4m" id="EtC-y0-pGx"/>
-                                                </connections>
-                                            </textView>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="cug-yX-h1s">
-                                                <rect key="frame" x="0.0" y="34" width="345" height="18"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="345" height="18"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" text="From:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tDi-uq-jCW">
                                                         <rect key="frame" x="0.0" y="0.0" width="39.5" height="18"/>
@@ -511,19 +503,16 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PWO-f2-qgf" customClass="NCThinLineView" customModule="Neocom" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="54" width="345" height="1"/>
+                                                <rect key="frame" x="0.0" y="20" width="345" height="1"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <color key="tintColor" red="0.14901960780000001" green="0.2156862745" blue="0.25098039220000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="KxD-3k-LZa"/>
                                                 </constraints>
                                             </view>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kpv-am-FIV">
-                                                <rect key="frame" x="0.0" y="57" width="345" height="32"/>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kpv-am-FIV">
+                                                <rect key="frame" x="0.0" y="23" width="345" height="36"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="32" id="5Hu-Fp-rmq"/>
-                                                </constraints>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -532,18 +521,18 @@
                                                 </connections>
                                             </textView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ppN-he-STt" customClass="NCThinLineView" customModule="Neocom" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="91" width="345" height="1"/>
+                                                <rect key="frame" x="0.0" y="61" width="345" height="1"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <color key="tintColor" red="0.14901960780000001" green="0.2156862745" blue="0.25098039220000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="qdR-UV-EXt"/>
                                                 </constraints>
                                             </view>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="VJ0-AD-wbj">
-                                                <rect key="frame" x="0.0" y="94" width="345" height="240"/>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="249" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="VJ0-AD-wbj">
+                                                <rect key="frame" x="0.0" y="64" width="345" height="240"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" priority="750" constant="240" id="fDW-We-aoS"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="240" id="ZEw-xQ-X8Q"/>
                                                 </constraints>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
@@ -554,25 +543,39 @@
                                             </textView>
                                         </subviews>
                                     </stackView>
+                                    <containerView opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9nX-y8-EQq">
+                                        <rect key="frame" x="0.0" y="36" width="375" height="567"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </containerView>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Fum-Ju-umX">
+                                        <rect key="frame" x="15" y="0.0" width="345" height="36"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="noG-GH-n4m" id="EtC-y0-pGx"/>
+                                        </connections>
+                                    </textView>
                                 </subviews>
                                 <gestureRecognizers/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="9nX-y8-EQq" secondAttribute="trailing" id="3HP-Hx-E1O"/>
+                                    <constraint firstItem="9nX-y8-EQq" firstAttribute="leading" secondItem="jN8-Iq-4fu" secondAttribute="leading" id="468-vC-7z1"/>
+                                    <constraint firstItem="9nX-y8-EQq" firstAttribute="top" secondItem="Fum-Ju-umX" secondAttribute="bottom" id="K3y-BN-WM1"/>
                                     <constraint firstAttribute="trailing" secondItem="fZ4-sB-qOB" secondAttribute="trailing" constant="15" id="aCg-yT-fBf"/>
+                                    <constraint firstItem="fZ4-sB-qOB" firstAttribute="trailing" secondItem="Fum-Ju-umX" secondAttribute="trailing" id="cnc-J5-ncd"/>
                                     <constraint firstItem="fZ4-sB-qOB" firstAttribute="width" secondItem="jN8-Iq-4fu" secondAttribute="width" constant="-30" id="cwV-7x-Dm8"/>
+                                    <constraint firstItem="fZ4-sB-qOB" firstAttribute="leading" secondItem="Fum-Ju-umX" secondAttribute="leading" id="gNU-cx-MIi"/>
+                                    <constraint firstItem="fZ4-sB-qOB" firstAttribute="top" secondItem="Fum-Ju-umX" secondAttribute="bottom" id="iOX-5x-g1c"/>
                                     <constraint firstItem="fZ4-sB-qOB" firstAttribute="leading" secondItem="jN8-Iq-4fu" secondAttribute="leading" constant="15" id="nq8-Vy-0JI"/>
+                                    <constraint firstItem="Fum-Ju-umX" firstAttribute="top" secondItem="jN8-Iq-4fu" secondAttribute="top" id="q1s-nP-P1D"/>
                                     <constraint firstAttribute="bottom" secondItem="fZ4-sB-qOB" secondAttribute="bottom" id="rev-mk-DNP"/>
-                                    <constraint firstItem="fZ4-sB-qOB" firstAttribute="top" secondItem="jN8-Iq-4fu" secondAttribute="top" id="ru3-Dx-hHz"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="yQq-PW-9g9" appends="YES" id="qsh-hK-dHT"/>
                                 </connections>
                             </scrollView>
-                            <containerView opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9nX-y8-EQq">
-                                <rect key="frame" x="0.0" y="96" width="375" height="571"/>
-                                <connections>
-                                    <segue destination="zam-Il-kne" kind="embed" id="xaL-eT-Aib"/>
-                                </connections>
-                            </containerView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="unu-vj-1E6">
                                 <rect key="frame" x="0.0" y="667" width="375" height="0.0"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -583,15 +586,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="unu-vj-1E6" firstAttribute="top" secondItem="9nX-y8-EQq" secondAttribute="bottom" priority="750" id="7DI-Rg-R8a"/>
                             <constraint firstItem="KnL-ao-wAr" firstAttribute="trailing" secondItem="jN8-Iq-4fu" secondAttribute="trailing" id="Jcm-qr-Jtn"/>
-                            <constraint firstItem="9nX-y8-EQq" firstAttribute="top" secondItem="Fum-Ju-umX" secondAttribute="bottom" id="VXA-0y-e98"/>
                             <constraint firstItem="unu-vj-1E6" firstAttribute="top" secondItem="jN8-Iq-4fu" secondAttribute="bottom" id="XZ0-dc-Z2h"/>
+                            <constraint firstItem="unu-vj-1E6" firstAttribute="top" secondItem="9nX-y8-EQq" secondAttribute="bottom" id="YgD-Dx-PqL"/>
                             <constraint firstItem="jN8-Iq-4fu" firstAttribute="leading" secondItem="KnL-ao-wAr" secondAttribute="leading" id="YuT-Vv-81X"/>
                             <constraint firstItem="unu-vj-1E6" firstAttribute="leading" secondItem="KnL-ao-wAr" secondAttribute="leading" id="chI-um-ckb"/>
                             <constraint firstItem="KnL-ao-wAr" firstAttribute="trailing" secondItem="unu-vj-1E6" secondAttribute="trailing" id="jyF-1i-VAd"/>
-                            <constraint firstItem="KnL-ao-wAr" firstAttribute="trailing" secondItem="9nX-y8-EQq" secondAttribute="trailing" id="kCF-aD-0hn"/>
-                            <constraint firstItem="9nX-y8-EQq" firstAttribute="leading" secondItem="KnL-ao-wAr" secondAttribute="leading" id="lQu-HP-B3V"/>
                             <constraint firstItem="jN8-Iq-4fu" firstAttribute="top" secondItem="awn-nA-eRG" secondAttribute="top" id="ljU-tg-yeu"/>
                             <constraint firstItem="KnL-ao-wAr" firstAttribute="bottom" secondItem="unu-vj-1E6" secondAttribute="bottom" id="qHr-j8-ZJ1"/>
                         </constraints>
@@ -614,8 +614,8 @@
                         <outlet property="accessoryView" destination="jYB-Gi-hvV" id="SGf-KE-Mex"/>
                         <outlet property="bottomConstraint" destination="B33-7y-WdC" id="fuf-pL-3PI"/>
                         <outlet property="fromLabel" destination="hMl-Zq-rzy" id="Yyu-kd-Xao"/>
-                        <outlet property="heightConstraint" destination="fDW-We-aoS" id="ydi-gm-P11"/>
                         <outlet property="scrollView" destination="jN8-Iq-4fu" id="IwM-HJ-QBv"/>
+                        <outlet property="searchResultsContainer" destination="9nX-y8-EQq" id="4XK-h4-RCD"/>
                         <outlet property="subjectTextView" destination="kpv-am-FIV" id="fSQ-gf-T3J"/>
                         <outlet property="textView" destination="VJ0-AD-wbj" id="mre-yz-RoD"/>
                         <outlet property="toTextView" destination="Fum-Ju-umX" id="YVa-UH-wqm"/>
@@ -646,13 +646,13 @@
                     </constraints>
                     <viewLayoutGuide key="safeArea" id="4MN-yL-1Ja"/>
                 </view>
-                <tapGestureRecognizer id="yQq-PW-9g9">
+                <tapGestureRecognizer enabled="NO" id="yQq-PW-9g9">
                     <connections>
                         <action selector="onTap:" destination="noG-GH-n4m" id="GzG-Vy-HU8"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="606" y="3863"/>
+            <point key="canvasLocation" x="605.60000000000002" y="3862.2188905547227"/>
         </scene>
         <!--Attach-->
         <scene sceneID="ghU-T5-Pcx">

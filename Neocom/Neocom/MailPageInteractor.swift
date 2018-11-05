@@ -27,7 +27,7 @@ class MailPageInteractor: TreeInteractor {
 	
 	var api = Services.api.current
 	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Content> {
-		return load(from: presenter?.lastMailID, cachePolicy: cachePolicy)
+		return load(from: nil, cachePolicy: cachePolicy)
 	}
 	
 	func load(from lastMailID: Int64?, cachePolicy: URLRequest.CachePolicy) -> Future<Content> {

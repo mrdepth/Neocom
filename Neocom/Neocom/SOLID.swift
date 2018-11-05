@@ -114,7 +114,7 @@ protocol ContentProviderPresenter: Presenter where View: ContentProviderView, In
 	var loading: Future<Presentation>? {get set}
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation>
-	func reloadIfNeeded()
+	func prepareForReload()
 }
 
 protocol ContentProviderInteractor: Interactor where Presenter: ContentProviderPresenter {
@@ -124,6 +124,9 @@ protocol ContentProviderInteractor: Interactor where Presenter: ContentProviderP
 }
 
 extension ContentProviderPresenter {
+	
+	func prepareForReload() {
+	}
 	
 //	@discardableResult
 	func reload(cachePolicy: URLRequest.CachePolicy) -> Future<Presentation> {
@@ -135,6 +138,8 @@ extension ContentProviderPresenter {
 		
 		let progress1 = task.performAsCurrent(withPendingUnitCount: 1) { Progress(totalUnitCount: 1)}
 		let progress2 = task.performAsCurrent(withPendingUnitCount: 1) { Progress(totalUnitCount: 1)}
+		
+		prepareForReload()
 		
 		let loading = progress1.performAsCurrent(withPendingUnitCount: 1) {
 			interactor.load(cachePolicy: cachePolicy).then(on: .main) { [weak self] content -> Future<Presentation> in

@@ -104,7 +104,6 @@ class InvTypesPresenter: TreePresenter {
 
 	
 	private var searchString: String?
-	
 	func updateSearchResults(with string: String) {
 		if searchString == nil {
 			searchString = string

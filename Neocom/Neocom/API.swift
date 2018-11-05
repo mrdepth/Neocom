@@ -97,11 +97,19 @@ protocol MailAPI: class {
 	func delete(mailID: Int64) -> Future<ESI.Result<String>>
 }
 
-protocol ContactsAPI: class {
+protocol SearchAPI: class {
+	func search(_ string: String, categories: [ESI.Search.Categories], strict: Bool, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Search.SearchResult>>
 	func contacts(with ids: Set<Int64>) -> Future<[Int64: Contact]>
+	func searchContacts(_ string: String, categories: [ESI.Search.Categories]) -> Future<[Int64: Contact]>
 }
 
-typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & ContactsAPI
+extension SearchAPI {
+	func search(_ string: String, categories: [ESI.Search.Categories], cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Search.SearchResult>> {
+		return search(string, categories: categories, strict: false, cachePolicy: cachePolicy)
+	}
+}
+
+typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & SearchAPI
 
 class APIClient: API {
 	
@@ -472,7 +480,11 @@ class APIClient: API {
 		return esi.mail.deleteMail(characterID: Int(id), mailID: Int(mailID))
 	}
 	
-	//MARK: ContactsAPI
+	//MARK: SearchAPI
+	func search(_ string: String, categories: [ESI.Search.Categories], strict: Bool, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Search.SearchResult>> {
+		return esi.search.search(categories: categories, search: string, strict: strict, cachePolicy: cachePolicy)
+	}
+
 	private lazy var cachedContacts = [Int64: Contact]()
 	private lazy var invalidIDs = Atomic<Set<Int64>>(Set())
 	
@@ -529,6 +541,30 @@ class APIClient: API {
 					self?.cachedContacts[$0.contactID] = $0
 				}
 				return result
+			}
+		}
+	}
+
+	func searchContacts(_ string: String, categories: [ESI.Search.Categories]) -> Future<[Int64: Contact]> {
+		let progress = Progress(totalUnitCount: 2)
+		return progress.performAsCurrent(withPendingUnitCount: 1) {
+			self.search(string, categories: categories, cachePolicy: .useProtocolCachePolicy).then { [weak self] result -> Future<[Int64: Contact]> in
+				guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
+				var ids = Set<Int>()
+				let searchResult = result.value
+				ids.formUnion(searchResult.agent ?? [])
+				ids.formUnion(searchResult.alliance ?? [])
+				ids.formUnion(searchResult.character ?? [])
+				ids.formUnion(searchResult.constellation ?? [])
+				ids.formUnion(searchResult.corporation ?? [])
+				ids.formUnion(searchResult.faction ?? [])
+				ids.formUnion(searchResult.inventoryType ?? [])
+				ids.formUnion(searchResult.region ?? [])
+				ids.formUnion(searchResult.solarSystem ?? [])
+				ids.formUnion(searchResult.station ?? [])
+				return progress.performAsCurrent(withPendingUnitCount: 1) {
+					strongSelf.contacts(with: Set(ids.map{Int64($0)}))
+				}
 			}
 		}
 	}

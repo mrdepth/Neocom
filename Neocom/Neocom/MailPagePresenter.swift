@@ -92,30 +92,23 @@ class MailPagePresenter: TreePresenter {
 		}
 	}
 	
-	func reloadIfNeeded() {
-		if let content = content, presentation != nil, !interactor.isExpired(content) {
-			return
-		}
-		else {
-			let animated = presentation != nil
-			self.presentation = nil
-			self.lastMailID = nil
-			self.isEndReached = false
-			reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { [weak self] presentation in
-				self?.view?.present(presentation, animated: animated)
-			}.catch(on: .main) { [weak self] error in
-				self?.isEndReached = true
-				self?.view?.fail(error)
-			}
-		}
+	func prepareForReload() {
+		self.presentation = nil
+		self.lastMailID = nil
+		self.isEndReached = false
 	}
 	
 	private var isEndReached = false
 	func fetchIfNeeded() {
 		guard !isEndReached && loading == nil else {return}
+		guard let lastMailID = lastMailID else {return}
 		view?.activityIndicator.startAnimating()
-		reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { [weak self] presentation in
-			self?.view?.present(presentation, animated: false)
+		interactor.load(from: lastMailID, cachePolicy: .useProtocolCachePolicy).then(on: .main) { [weak self] content -> Future<Void> in
+			guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
+			return strongSelf.presentation(for: content).then(on: .main) { [weak self] presentation -> Void in
+				self?.presentation = presentation
+				self?.view?.present(presentation, animated: false)
+			}
 		}.catch(on: .main) { [weak self] error in
 			self?.isEndReached = true
 		}.finally(on: .main) { [weak self] in

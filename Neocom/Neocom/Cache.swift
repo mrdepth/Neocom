@@ -135,6 +135,7 @@ struct CacheContextBox: CacheContext {
 		return try? Dictionary(request.all().map {($0.contactID, $0)}, uniquingKeysWith: { (a, _) in a})
 	}
 	
+	
 	var managedObjectContext: NSManagedObjectContext
 	
 }

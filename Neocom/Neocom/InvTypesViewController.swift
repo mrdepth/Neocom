@@ -15,6 +15,7 @@ class InvTypesViewController: TreeViewController<InvTypesPresenter, InvTypesView
 		case none
 		case group(SDEInvGroup)
 		case category(SDEInvCategory)
+		case marketGroup(SDEInvMarketGroup?)
 	}
 	
 	func updateSearchResults(for searchController: UISearchController) {

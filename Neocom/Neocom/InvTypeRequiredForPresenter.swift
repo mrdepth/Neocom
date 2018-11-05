@@ -48,7 +48,6 @@ class InvTypeRequiredForPresenter: TreePresenter {
 		guard let input = view?.input else { return .init(.failure(NCError.invalidInput(type: type(of: self))))}
 		let treeController = view?.treeController
 		
-		
 		return Services.sde.performBackgroundTask { context -> Presentation in
 			let invType: SDEInvType
 			
@@ -63,12 +62,9 @@ class InvTypeRequiredForPresenter: TreePresenter {
 				.filter(filter)
 				.sort(by: \SDEInvType.group?.category?.categoryName, ascending: true)
 				.sort(by: \SDEInvType.typeName, ascending: true)
-				.select([
-					Self.as(NSManagedObjectID.self, name: "objectID"),
-					(\SDEInvType.group?.category?.categoryName).as(String.self, name: "categoryName"),
-					(\SDEInvType.dgmppItem?.requirements).as(NSManagedObjectID.self, name: "requirements"),
-					(\SDEInvType.dgmppItem?.shipResources).as(NSManagedObjectID.self, name: "shipResources"),
-					(\SDEInvType.dgmppItem?.damage).as(NSManagedObjectID.self, name: "damage")])
+				.select(
+					Tree.Item.InvType.propertiesToFetch +
+						[(\SDEInvType.group?.category?.categoryName).as(String.self, name: "categoryName")])
 				.fetchedResultsController(sectionName: (\SDEInvType.group?.category?.categoryName).as(String.self, name: "categoryName"))
 			try controller.performFetch()
 			return Presentation(controller, treeController: treeController)

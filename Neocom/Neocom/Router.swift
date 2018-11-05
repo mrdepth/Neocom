@@ -80,6 +80,13 @@ enum Router {
 		static func certCertificateInfo(_ input: CertCertificateInfo.View.Input) -> Route<CertCertificateInfo> {
 			return Route(assembly: CertCertificateInfo.default, input: input, kind: .push)
 		}
+		static func invMarket() -> Route<InvMarket> {
+			return Route(assembly: InvMarket.default, kind: .detail)
+		}
+		static func invMarketGroups(_ input: InvMarketGroups.View.Input) -> Route<InvMarketGroups> {
+			return Route(assembly: InvMarketGroups.default, input: input, kind: .push)
+		}
+
 	}
 	
 	enum Character {

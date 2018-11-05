@@ -119,7 +119,7 @@ class MainMenuPresenter: TreePresenter {
 																   children: [
 																	Tree.Item.MainMenuRow(title: NSLocalizedString("Database", comment: ""), image: Image( #imageLiteral(resourceName: "items")), route: Router.SDE.invCategories()),
 																	Tree.Item.MainMenuRow(title: NSLocalizedString("Certificates", comment: ""), image: Image( #imageLiteral(resourceName: "certificates")), route: Router.SDE.certGroups()),
-																	Tree.Item.MainMenuRow(title: NSLocalizedString("Market", comment: ""), image: Image( #imageLiteral(resourceName: "market")), route: nil),
+																	Tree.Item.MainMenuRow(title: NSLocalizedString("Market", comment: ""), image: Image( #imageLiteral(resourceName: "market")), route: Router.SDE.invMarket()),
 																	Tree.Item.MainMenuRow(title: NSLocalizedString("NPC", comment: ""), image: Image( #imageLiteral(resourceName: "criminal")), route: nil),
 																	Tree.Item.MainMenuRow(title: NSLocalizedString("Wormholes", comment: ""), image: Image( #imageLiteral(resourceName: "terminate")), route: nil),
 																	Tree.Item.MainMenuRow(title: NSLocalizedString("Incursions", comment: ""), image: Image( #imageLiteral(resourceName: "incursions")), route: nil)

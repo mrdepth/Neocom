@@ -91,8 +91,8 @@
         <!--Market-->
         <scene sceneID="NLT-yp-pkH">
             <objects>
-                <viewController storyboardIdentifier="NCMarketPageViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5ug-iz-g0c" customClass="NCMarketPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="pZY-W5-UGn" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                <viewController storyboardIdentifier="InvMarketViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5ug-iz-g0c" customClass="InvMarketViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pZY-W5-UGn" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -104,11 +104,11 @@
             </objects>
             <point key="canvasLocation" x="5078" y="978"/>
         </scene>
-        <!--Market Groups View Controller-->
+        <!--Market-->
         <scene sceneID="8h5-ib-R1g">
             <objects>
-                <tableViewController storyboardIdentifier="NCMarketGroupsViewController" id="SJy-2d-y0Q" customClass="NCMarketGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="bHr-Dg-TAX" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="InvMarketGroupsViewController" title="Market" useStoryboardIdentifierAsRestorationIdentifier="YES" id="SJy-2d-y0Q" customClass="InvMarketGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="bHr-Dg-TAX" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -121,8 +121,8 @@
         <!--Quickbar-->
         <scene sceneID="e76-GT-4Um">
             <objects>
-                <tableViewController storyboardIdentifier="NCMarketQuickbarViewController" title="Quickbar" id="dhQ-C1-qlt" customClass="NCMarketQuickbarViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="ybm-Rk-xNe" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="MarketQuickbarViewController" title="Quickbar" useStoryboardIdentifierAsRestorationIdentifier="YES" id="dhQ-C1-qlt" customClass="MarketQuickbarViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="ybm-Rk-xNe" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>

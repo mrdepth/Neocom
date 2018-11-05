@@ -46,6 +46,8 @@ class InvTypesPresenter: TreePresenter {
 			view?.title = category.categoryName
 		case let .group(group)?:
 			view?.title = group.groupName
+		case let .marketGroup(marketGroup)?:
+			view?.title = marketGroup?.marketGroupName
 		default:
 			break
 		}
@@ -65,6 +67,13 @@ class InvTypesPresenter: TreePresenter {
 			filter = \SDEInvType.group?.category == category
 		case let .group(group):
 			filter = \SDEInvType.group == group
+		case let .marketGroup(marketGroup):
+			if view?.parent is UISearchController {
+				filter = \SDEInvType.marketGroup != nil
+			}
+			else {
+				filter = \SDEInvType.marketGroup == marketGroup
+			}
 		default:
 			filter = true
 		}
@@ -84,12 +93,9 @@ class InvTypesPresenter: TreePresenter {
 				.sort(by: \SDEInvType.metaGroup?.metaGroupID, ascending: true)
 				.sort(by: \SDEInvType.metaLevel, ascending: true)
 				.sort(by: \SDEInvType.typeName, ascending: true)
-				.select([
-					Self.as(NSManagedObjectID.self, name: "objectID"),
-					(\SDEInvType.dgmppItem?.requirements).as(NSManagedObjectID.self, name: "requirements"),
-					(\SDEInvType.dgmppItem?.shipResources).as(NSManagedObjectID.self, name: "shipResources"),
-					(\SDEInvType.dgmppItem?.damage).as(NSManagedObjectID.self, name: "damage"),
-					(\SDEInvType.metaGroup?.metaGroupName).as(String.self, name: "metaGroupName")])
+				.select(
+					Tree.Item.InvType.propertiesToFetch +
+						[(\SDEInvType.metaGroup?.metaGroupName).as(String.self, name: "metaGroupName")])
 				.fetchedResultsController(sectionName: (\SDEInvType.metaGroup?.metaGroupName).as(String.self, name: "metaGroupName"))
 			try controller.performFetch()
 			return Presentation(controller, treeController: treeController)

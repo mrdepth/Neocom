@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 import TreeController
+import Expressible
 
 typealias InvTypeCell = TreeDefaultCell
 
@@ -140,4 +141,13 @@ extension Tree.Item {
 		}
 	}
 	
+}
+
+extension Tree.Item.InvType {
+	class var propertiesToFetch: [PropertyDescriptionConvertible] {
+		return [Self.as(NSManagedObjectID.self, name: "objectID"),
+				(\SDEInvType.dgmppItem?.requirements).as(NSManagedObjectID.self, name: "requirements"),
+				(\SDEInvType.dgmppItem?.shipResources).as(NSManagedObjectID.self, name: "shipResources"),
+				(\SDEInvType.dgmppItem?.damage).as(NSManagedObjectID.self, name: "damage")]
+	}
 }

@@ -27,6 +27,7 @@ protocol StorageContext: PersistentContext {
 	func newFolder(named name: String) -> AccountsFolder
 	var currentAccount: Account? {get}
 	func setCurrentAccount(_ account: Account?) -> Void
+	func marketQuickItems() -> [MarketQuickItem]?
 }
 
 class StorageContainer: Storage {
@@ -159,6 +160,11 @@ struct StorageContextBox: StorageContext {
 		UserDefaults.standard.set(account?.objectID.uriRepresentation(), forKey: UserDefaults.Key.currentAccount)
 		NotificationCenter.default.post(name: .didChangeAccount, object: account)
 	}
+	
+	func marketQuickItems() -> [MarketQuickItem]? {
+		return (try? managedObjectContext.from(MarketQuickItem.self).all()) ?? nil
+	}
+
 }
 
 extension Account {

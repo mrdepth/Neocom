@@ -21,5 +21,18 @@ class InvTypeInfoViewController: TreeViewController<InvTypeInfoPresenter, InvTyp
 		super.treeController(treeController, didSelectRowFor: item)
 		presenter.didSelect(item: item)
 	}
+	
+	func setRightBarButtonItemImage(_ image: UIImage?) {
+		if let image = image {
+			navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(onFavorites(_:)))
+		}
+		else {
+			navigationItem.rightBarButtonItem = nil
+		}
+	}
+	
+	@IBAction func onFavorites(_ sender: Any) {
+		presenter.onFavorites()
+	}
 }
 

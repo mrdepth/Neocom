@@ -28,6 +28,7 @@ protocol StorageContext: PersistentContext {
 	var currentAccount: Account? {get}
 	func setCurrentAccount(_ account: Account?) -> Void
 	func marketQuickItems() -> [MarketQuickItem]?
+	func marketQuickItem(with typeID: Int) -> MarketQuickItem?
 }
 
 class StorageContainer: Storage {
@@ -163,6 +164,12 @@ struct StorageContextBox: StorageContext {
 	
 	func marketQuickItems() -> [MarketQuickItem]? {
 		return (try? managedObjectContext.from(MarketQuickItem.self).all()) ?? nil
+	}
+	
+	func marketQuickItem(with typeID: Int) -> MarketQuickItem? {
+		return (try? managedObjectContext
+			.from(MarketQuickItem.self)
+			.filter(\MarketQuickItem.typeID == typeID).first()) ?? nil
 	}
 
 }

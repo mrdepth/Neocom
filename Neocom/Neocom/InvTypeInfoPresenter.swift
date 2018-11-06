@@ -56,7 +56,18 @@ class InvTypeInfoPresenter: TreePresenter {
 		default:
 			break
 		}
+		
 		view?.title = invType?.typeName ?? NSLocalizedString("Type Info", comment: "")
+		
+		if let typeID = invType?.typeID {
+			if Services.storage.viewContext.marketQuickItem(with: Int(typeID)) != nil {
+				view?.setRightBarButtonItemImage(#imageLiteral(resourceName: "favoritesOn"))
+			}
+			else if invType?.marketGroup != nil {
+				view?.setRightBarButtonItemImage(#imageLiteral(resourceName: "favoritesOff"))
+			}
+		}
+		
 	}
 	
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
@@ -160,6 +171,21 @@ class InvTypeInfoPresenter: TreePresenter {
 		}
 		
 		view?.present(controller, animated: true)
+	}
+	
+	func onFavorites() {
+		if let typeID = invType?.typeID {
+			if let marketQuickItem = Services.storage.viewContext.marketQuickItem(with: Int(typeID)) {
+				marketQuickItem.managedObjectContext?.delete(marketQuickItem)
+				view?.setRightBarButtonItemImage(#imageLiteral(resourceName: "favoritesOff"))
+			}
+			else if invType?.marketGroup != nil {
+				view?.setRightBarButtonItemImage(#imageLiteral(resourceName: "favoritesOn"))
+				let marketQuickItem = MarketQuickItem(context: Services.storage.viewContext.managedObjectContext)
+				marketQuickItem.typeID = typeID
+			}
+			try? Services.storage.viewContext.save()
+		}
 	}
 }
 

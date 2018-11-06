@@ -24,19 +24,21 @@ class MarketQuickbarInteractor: TreeInteractor {
 		return .init(())
 	}
 	
-	private var managedObjectContextObjectsDidChangeObserver: NotificationObserver?
+	private var managedObjectContextDidSaveObserver: NotificationObserver?
 	
 	func configure() {
-		managedObjectContextObjectsDidChangeObserver = NotificationCenter.default.addNotificationObserver(forName: .NSManagedObjectContextObjectsDidChange, object: Services.storage.viewContext.managedObjectContext, queue: nil) { [weak self] (note) in
-			self?.managedObjectContextObjectsDidChange(note)
+		managedObjectContextDidSaveObserver = NotificationCenter.default.addNotificationObserver(forName: .NSManagedObjectContextDidSave, object: Services.storage.viewContext.managedObjectContext, queue: nil) { [weak self] (note) in
+			self?.managedObjectContextDidSave(note)
 		}
 	}
 	
-	private func managedObjectContextObjectsDidChange(_ note: Notification) {
+	private func managedObjectContextDidSave(_ note: Notification) {
 		guard (note.userInfo?[NSInsertedObjectsKey] as? Set<NSManagedObject>)?.contains(where: {$0 is MarketQuickItem}) == true ||
 		(note.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject>)?.contains(where: {$0 is MarketQuickItem}) == true else {return}
 		_ = presenter?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { [weak self] presentation in
 			self?.presenter?.view?.present(presentation, animated: true)
+		}.catch(on: .main) { [weak self] error in
+			self?.presenter?.view?.fail(error)
 		}
 	}
 

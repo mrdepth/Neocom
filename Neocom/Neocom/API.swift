@@ -103,13 +103,17 @@ protocol SearchAPI: class {
 	func searchContacts(_ string: String, categories: [ESI.Search.Categories]) -> Future<[Int64: Contact]>
 }
 
+protocol IncursionsAPI: class {
+	func incursions(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Incursions.Incursion]>>
+}
+
 extension SearchAPI {
 	func search(_ string: String, categories: [ESI.Search.Categories], cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Search.SearchResult>> {
 		return search(string, categories: categories, strict: false, cachePolicy: cachePolicy)
 	}
 }
 
-typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & SearchAPI
+typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & SearchAPI & IncursionsAPI
 
 class APIClient: API {
 	
@@ -567,6 +571,11 @@ class APIClient: API {
 				}
 			}
 		}
+	}
+
+	//MARK: IncursionsAPI {
+	func incursions(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Incursions.Incursion]>> {
+		return esi.incursions.listIncursions(cachePolicy: cachePolicy)
 	}
 
 }

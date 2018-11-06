@@ -199,6 +199,13 @@
 		1287FBBC21917CF200A505FC /* WhTypesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB821917CF200A505FC /* WhTypesInteractor.swift */; };
 		1287FBBD21917CF200A505FC /* WhTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB921917CF200A505FC /* WhTypes.swift */; };
 		1287FBBF2191889000A505FC /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBBE2191889000A505FC /* SearchManager.swift */; };
+		1287FBC721918E6900A505FC /* IncursionsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBC321918E6800A505FC /* IncursionsPresenter.swift */; };
+		1287FBC821918E6900A505FC /* IncursionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBC421918E6900A505FC /* IncursionsViewController.swift */; };
+		1287FBC921918E6900A505FC /* IncursionsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBC521918E6900A505FC /* IncursionsInteractor.swift */; };
+		1287FBCA21918E6900A505FC /* Incursions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBC621918E6900A505FC /* Incursions.swift */; };
+		1287FBCD2191901600A505FC /* IncursionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBCC2191901600A505FC /* IncursionCell.swift */; };
+		1287FBCF2191916300A505FC /* API+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBCE2191916300A505FC /* API+Constants.swift */; };
+		1287FBD1219192A000A505FC /* IncursionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1287FBD0219192A000A505FC /* IncursionCell.xib */; };
 		128C5F711F418CF30038FE7D /* NCFacilityChartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F701F418CF30038FE7D /* NCFacilityChartTableViewCell.xib */; };
 		128C5F761F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F751F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib */; };
 		128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F821F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib */; };
@@ -786,6 +793,13 @@
 		1287FBB821917CF200A505FC /* WhTypesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhTypesInteractor.swift; sourceTree = "<group>"; };
 		1287FBB921917CF200A505FC /* WhTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhTypes.swift; sourceTree = "<group>"; };
 		1287FBBE2191889000A505FC /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
+		1287FBC321918E6800A505FC /* IncursionsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncursionsPresenter.swift; sourceTree = "<group>"; };
+		1287FBC421918E6900A505FC /* IncursionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncursionsViewController.swift; sourceTree = "<group>"; };
+		1287FBC521918E6900A505FC /* IncursionsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncursionsInteractor.swift; sourceTree = "<group>"; };
+		1287FBC621918E6900A505FC /* Incursions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Incursions.swift; sourceTree = "<group>"; };
+		1287FBCC2191901600A505FC /* IncursionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncursionCell.swift; sourceTree = "<group>"; };
+		1287FBCE2191916300A505FC /* API+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Constants.swift"; sourceTree = "<group>"; };
+		1287FBD0219192A000A505FC /* IncursionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IncursionCell.xib; sourceTree = "<group>"; };
 		128AE8161E360FF1002E3A1E /* NCRangeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRangeFormatter.swift; sourceTree = "<group>"; };
 		128C5F701F418CF30038FE7D /* NCFacilityChartTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFacilityChartTableViewCell.xib; sourceTree = "<group>"; };
 		128C5F721F41AE170038FE7D /* NCFacilityChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFacilityChartTableViewCell.swift; sourceTree = "<group>"; };
@@ -1181,6 +1195,7 @@
 				12133C32215E390600646937 /* CertCertificates */,
 				1287FBAB219175F700A505FC /* NpcGroups */,
 				1287FBB521917CCB00A505FC /* WhTypes */,
+				1287FBC021918E4700A505FC /* Incursions */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -1734,6 +1749,7 @@
 			isa = PBXGroup;
 			children = (
 				1279EFF6213587D7005340C0 /* Cells.swift */,
+				1287FBCB2191900A00A505FC /* IncursionCell */,
 				12C727CB218C5EE600A78ADF /* MailCell */,
 				12EA7793217F4416009C8288 /* SkillCell */,
 				1253C62A2159102A007DEA16 /* MarketHistoryCell */,
@@ -2020,6 +2036,26 @@
 			name = WhTypes;
 			sourceTree = "<group>";
 		};
+		1287FBC021918E4700A505FC /* Incursions */ = {
+			isa = PBXGroup;
+			children = (
+				1287FBC621918E6900A505FC /* Incursions.swift */,
+				1287FBC421918E6900A505FC /* IncursionsViewController.swift */,
+				1287FBC321918E6800A505FC /* IncursionsPresenter.swift */,
+				1287FBC521918E6900A505FC /* IncursionsInteractor.swift */,
+			);
+			name = Incursions;
+			sourceTree = "<group>";
+		};
+		1287FBCB2191900A00A505FC /* IncursionCell */ = {
+			isa = PBXGroup;
+			children = (
+				1287FBD0219192A000A505FC /* IncursionCell.xib */,
+				1287FBCC2191901600A505FC /* IncursionCell.swift */,
+			);
+			name = IncursionCell;
+			sourceTree = "<group>";
+		};
 		12925B702189E8C800F6216C /* MySkillsPage */ = {
 			isa = PBXGroup;
 			children = (
@@ -2137,6 +2173,7 @@
 			isa = PBXGroup;
 			children = (
 				12E0417D212D3C4F0000CB4F /* API.swift */,
+				1287FBCE2191916300A505FC /* API+Constants.swift */,
 				12B89080213023280082D4A3 /* CachedValue.swift */,
 			);
 			name = API;
@@ -2926,6 +2963,7 @@
 				1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */,
 				1253C6272159078C007DEA16 /* DamageTypeCell.xib in Resources */,
 				128130451F3B08600039D46B /* main.js in Resources */,
+				1287FBD1219192A000A505FC /* IncursionCell.xib in Resources */,
 				1298BA7E20AEFB73002C941E /* MPCloseButtonX@3x.png in Resources */,
 				1298BA7D20AEFB73002C941E /* MPCloseButtonX@2x.png in Resources */,
 				1298BA7820AEFB73002C941E /* MPCloseBtn@3x.png in Resources */,
@@ -3027,6 +3065,7 @@
 				12133C5D215E56D800646937 /* CertCertificateRequirementsInfoPresenter.swift in Sources */,
 				12484C76215CC69D0083AE17 /* MapLocationPickerPresenter.swift in Sources */,
 				12133C44215E3B7700646937 /* CertCertificatesInteractor.swift in Sources */,
+				1287FBC721918E6900A505FC /* IncursionsPresenter.swift in Sources */,
 				12EE7D0E213E62E8005CE68F /* Accounts.swift in Sources */,
 				125B2CBE217A7BDF00D34CFB /* SkillsViewController.swift in Sources */,
 				121B28C1218AEA24000D392C /* InvTypeRequiredForPresenter.swift in Sources */,
@@ -3042,6 +3081,7 @@
 				12484C6A215CB3700083AE17 /* Atomic.swift in Sources */,
 				12C727CA218C2BBF00A78ADF /* MailPage.swift in Sources */,
 				12AB974F212C325E00B30DD3 /* ImageValueTransformer.swift in Sources */,
+				1287FBC821918E6900A505FC /* IncursionsViewController.swift in Sources */,
 				121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */,
 				1204D068215271420070AF92 /* InvCategoriesInteractor.swift in Sources */,
 				12D3109A211C282100367440 /* PersistentContext.swift in Sources */,
@@ -3068,6 +3108,8 @@
 				12484C36215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift in Sources */,
 				12AFD46D211C1C3D00007423 /* SDE.swift in Sources */,
 				12133C4D215E55C700646937 /* CertCertificateInfoInteractor.swift in Sources */,
+				1287FBCF2191916300A505FC /* API+Constants.swift in Sources */,
+				1287FBCA21918E6900A505FC /* Incursions.swift in Sources */,
 				1287FBB12191763800A505FC /* NpcGroupsPresenter.swift in Sources */,
 				12133C39215E39AE00646937 /* CertGroupsPresenter.swift in Sources */,
 				1204D07421528A270070AF92 /* InvGroupsInteractor.swift in Sources */,
@@ -3157,6 +3199,7 @@
 				12A843072153872D00570A95 /* InvTypesInteractor.swift in Sources */,
 				129DFE20213486D900C85496 /* ProgressTask.swift in Sources */,
 				12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */,
+				1287FBCD2191901600A505FC /* IncursionCell.swift in Sources */,
 				12B03DA8213FEE1B00DCBD64 /* ActionHandler.swift in Sources */,
 				12C727C7218C2BBF00A78ADF /* MailPagePresenter.swift in Sources */,
 				12484C91215CD5AA0083AE17 /* MapLocationPickerRecentsPresenter.swift in Sources */,
@@ -3227,6 +3270,7 @@
 				1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */,
 				12E0419C212D77530000CB4F /* Error.swift in Sources */,
 				1204D07221528A1C0070AF92 /* InvGroupsPresenter.swift in Sources */,
+				1287FBC921918E6900A505FC /* IncursionsInteractor.swift in Sources */,
 				12D8147621550EDA00313DAF /* InvTypeInfoInteractor.swift in Sources */,
 				1287FB802190241C00A505FC /* NewMailViewController.swift in Sources */,
 				125B2CC7217A7C9400D34CFB /* SkillQueueViewController.swift in Sources */,

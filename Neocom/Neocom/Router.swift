@@ -38,6 +38,12 @@ enum Router {
 		static func mail() -> Route<Neocom.Mail> {
 			return Route(assembly: Neocom.Mail.default, kind: .detail)
 		}
+		static func npc(_ input: NpcGroups.View.Input = .root) -> Route<NpcGroups> {
+			return Route(assembly: NpcGroups.default, input: input, kind: .detail)
+		}
+		static func incursion() -> Route<Incursions> {
+			return Route(assembly: Incursions.default, kind: .detail)
+		}
 	}
 	
 	enum SDE {
@@ -86,13 +92,12 @@ enum Router {
 		static func invMarketGroups(_ input: InvMarketGroups.View.Input) -> Route<InvMarketGroups> {
 			return Route(assembly: InvMarketGroups.default, input: input, kind: .push)
 		}
-		static func npcGroups(_ input: NpcGroups.View.Input = .root) -> Route<NpcGroups> {
-			return Route(assembly: NpcGroups.default, input: input, kind: .push)
-		}
 		static func whTypes() -> Route<WhTypes> {
 			return Route(assembly: WhTypes.default, kind: .push)
 		}
-
+		static func npcGroups(_ input: NpcGroups.View.Input = .root) -> Route<NpcGroups> {
+			return Route(assembly: NpcGroups.default, input: input, kind: .detail)
+		}
 	}
 	
 	enum Character {

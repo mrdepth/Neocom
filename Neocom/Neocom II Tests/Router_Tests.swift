@@ -10,7 +10,7 @@ import XCTest
 @testable import Neocom
 import Futures
 
-class Router_Tests: XCTestCase {
+class Router_Tests: TestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -111,14 +111,6 @@ class Router_Tests: XCTestCase {
 		wait(for: [exp], timeout: 10)
 		window = nil
 	}
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }
 
 enum RouterTests: Assembly {

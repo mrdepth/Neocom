@@ -22,6 +22,7 @@ struct Services {
 	static var storage: Storage = StorageContainer()
 	static var sde: SDE = SDEContainer()
 	static var api: APIService = DefaultAPIService()
+	static var userDefaults: UserDefaults = UserDefaults.standard
 }
 
 class DefaultAPIService: APIService {

@@ -34,7 +34,7 @@ class InvTypeInfoInteractor: TreeInteractor {
 	}
 	
 	private var didChangeAccountObserver: NotificationObserver?
-	private var regionID: Int = (UserDefaults.standard.value(forKey: UserDefaults.Key.marketRegion) as? Int) ?? SDERegionID.theForge.rawValue
+	private var regionID: Int = (Services.userDefaults.value(forKey: UserDefaults.Key.marketRegion) as? Int) ?? SDERegionID.theForge.rawValue
 	
 	func configure() {
 		didChangeAccountObserver = NotificationCenter.default.addNotificationObserver(forName: .didChangeAccount, object: nil, queue: .main) { [weak self] _ in
@@ -60,7 +60,7 @@ class InvTypeInfoInteractor: TreeInteractor {
 	}
 	
 	func isExpired(_ content: Content) -> Bool {
-		let regionID = (UserDefaults.standard.value(forKey: UserDefaults.Key.marketRegion) as? Int) ?? SDERegionID.theForge.rawValue
+		let regionID = (Services.userDefaults.value(forKey: UserDefaults.Key.marketRegion) as? Int) ?? SDERegionID.theForge.rawValue
 		if self.regionID != regionID {
 			self.regionID = regionID
 			return true

@@ -9,7 +9,7 @@
 import XCTest
 @testable import Neocom
 
-class Character_Tests: XCTestCase {
+class Character_Tests: TestCase {
     
     override func setUp() {
         super.setUp()
@@ -22,7 +22,7 @@ class Character_Tests: XCTestCase {
     }
     
     func testSkill() {
-		let context = sde.viewContext
+		let context = Services.sde.viewContext
 		let skill = Character.Skill(type: context.invType("Navigation")!)!
 		
 		for (level, sp) in zip([1,2,3,4,5], [250, 1415, 8000, 45255, 256000]) {
@@ -37,7 +37,7 @@ class Character_Tests: XCTestCase {
     }
 	
 	func testTrainingQueue() {
-		let context = sde.viewContext
+		let context = Services.sde.viewContext
 		let character = Character(attributes: .default, augmentations: .none, trainedSkills: [:], skillQueue: [])
 		let trainingQueue = TrainingQueue(character: character)
 		

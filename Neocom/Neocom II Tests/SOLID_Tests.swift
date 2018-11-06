@@ -14,17 +14,10 @@ import EVEAPI
 import Expressible
 import CoreData
 
-class SOLID_Tests: XCTestCase {
+class SOLID_Tests: TestCase {
 
     override func setUp() {
-		Services.cache = cache
-		Services.sde = sde
-		Services.storage = storage
-
-		if storage.viewContext.account(with: oAuth2Token) == nil {
-			_ = storage.viewContext.newAccount(with: oAuth2Token)
-			try! storage.viewContext.save()
-		}
+		super.setUp()
     }
 
     override func tearDown() {
@@ -64,7 +57,7 @@ class SOLID_Tests: XCTestCase {
 		let exp = expectation(description: "end")
 		
 		var view: SolidTestViewController2! = SolidTestViewController2()
-		try! XCTAssertEqual(storage.viewContext.managedObjectContext.from(Account.self).count(), 1)
+		try! XCTAssertEqual(Services.storage.viewContext.managedObjectContext.from(Account.self).count(), 1)
 		
 		view.didPresent = { [weak view] in
 			
@@ -74,13 +67,13 @@ class SOLID_Tests: XCTestCase {
 			XCTAssertEqual(view!.tableView.numberOfRows(inSection: 0), 2)
 			XCTAssertEqual(view!.tableView.numberOfRows(inSection: 1), 0)
 			
-			let account = storage.viewContext.newAccount(with: oAuth2Token)
-			account.folder = AccountsFolder(context:storage.viewContext.managedObjectContext)
-			account.folder?.name = "Folder"
-			try! account.managedObjectContext?.save()
+			let account = Services.storage.viewContext.currentAccount
+			account?.folder = AccountsFolder(context: Services.storage.viewContext.managedObjectContext)
+			account?.folder?.name = "Folder"
+			try! account?.managedObjectContext?.save()
 
 			XCTAssertEqual(view!.tableView.numberOfSections, 2)
-			XCTAssertEqual(view!.tableView.numberOfRows(inSection: 0), 2)
+			XCTAssertEqual(view!.tableView.numberOfRows(inSection: 0), 1)
 			XCTAssertEqual(view!.tableView.numberOfRows(inSection: 1), 2)
 			
 			view!.tableView.layoutIfNeeded()
@@ -95,14 +88,6 @@ class SOLID_Tests: XCTestCase {
 		wait(for: [exp], timeout: 10)
 		view = nil
 	}
-	
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }
 
 
@@ -168,7 +153,7 @@ class SolidTestInteractor: TreeInteractor {
 class APIMock: APIClient {
 	override func serverStatus(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Status.ServerStatus>> {
 		let value = ESI.Status.ServerStatus(players: 0, serverVersion: "1", startTime: Date(), vip: false)
-		return .init(ESI.Result(value: value, expires: Date.init(timeIntervalSinceNow: 60), metadata: nil))
+		return .init(ESI.Result(value: value, expires: Date(timeIntervalSinceNow: 60), metadata: nil))
 	}
 }
 
@@ -206,8 +191,8 @@ class SolidTestPresenter2: TreePresenter {
 	
 	func presentation(for content: ()) -> Future<[Item]> {
 //		let result = [Tree.Item.Row(Tree.Content.Default(title: "\(content.value)"))]
-		let fetchRequest = storage.viewContext.managedObjectContext.from(AccountsFolder.self).sort(by: \AccountsFolder.name, ascending: true).fetchRequest
-		let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: storage.viewContext.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+		let fetchRequest = Services.storage.viewContext.managedObjectContext.from(AccountsFolder.self).sort(by: \AccountsFolder.name, ascending: true).fetchRequest
+		let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: Services.storage.viewContext.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
 		let defaultFolder = Tree.Item.SolidTestDefaultFolder(treeController: view?.treeController)
 		let folders = Tree.Item.SolidTestFoldersResultsController(frc, treeController: view?.treeController)
 		

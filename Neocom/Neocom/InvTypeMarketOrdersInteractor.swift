@@ -21,10 +21,10 @@ class InvTypeMarketOrdersInteractor: TreeInteractor {
 	}
 	
 	private var api: API = Services.api.current
-	private(set) var regionID: Int = (UserDefaults.standard.value(forKey: UserDefaults.Key.marketRegion) as? Int) ?? SDERegionID.theForge.rawValue
+	private(set) var regionID: Int = (Services.userDefaults.value(forKey: UserDefaults.Key.marketRegion) as? Int) ?? SDERegionID.theForge.rawValue
 	
 	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Content> {
-		let regionID = (UserDefaults.standard.value(forKey: UserDefaults.Key.marketRegion) as? Int) ?? SDERegionID.theForge.rawValue
+		let regionID = (Services.userDefaults.value(forKey: UserDefaults.Key.marketRegion) as? Int) ?? SDERegionID.theForge.rawValue
 		self.regionID = regionID
 		guard let input = presenter?.view?.input else { return .init(.failure(NCError.invalidInput(type: type(of: self)))) }
 		let typeID: Int
@@ -40,7 +40,7 @@ class InvTypeMarketOrdersInteractor: TreeInteractor {
 	}
 	
 	func isExpired(_ content: Content) -> Bool {
-		let regionID = (UserDefaults.standard.value(forKey: UserDefaults.Key.marketRegion) as? Int) ?? SDERegionID.theForge.rawValue
+		let regionID = (Services.userDefaults.value(forKey: UserDefaults.Key.marketRegion) as? Int) ?? SDERegionID.theForge.rawValue
 		if self.regionID != regionID {
 			return true
 		}

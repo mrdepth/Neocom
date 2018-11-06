@@ -12,18 +12,9 @@ import Expressible
 @testable import Neocom
 import Futures
 
-class API_Tests: XCTestCase {
+class API_Tests: TestCase {
     
     override func setUp() {
-		Services.cache = cache
-		Services.sde = sde
-		Services.storage = storage
-
-		if storage.viewContext.account(with: oAuth2Token) == nil {
-			_ = storage.viewContext.newAccount(with: oAuth2Token)
-			try! storage.viewContext.save()
-		}
-		
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -34,7 +25,7 @@ class API_Tests: XCTestCase {
     }
     
 	func testCharacter() {
-		let account: Account? = storage.viewContext.accounts.first
+		let account: Account? = Services.storage.viewContext.currentAccount
 		XCTAssertNotNil(account)
 		
 		var api: API! = Services.api.make(for: account)
@@ -52,12 +43,4 @@ class API_Tests: XCTestCase {
 		api = nil
 
 	}
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-    
 }

@@ -152,13 +152,13 @@ struct StorageContextBox: StorageContext {
 	}
 	
 	var currentAccount: Account? {
-		guard let url = UserDefaults.standard.url(forKey: UserDefaults.Key.currentAccount) else {return nil}
+		guard let url = Services.userDefaults.url(forKey: UserDefaults.Key.currentAccount) else {return nil}
 		guard let objectID = Services.storage.managedObjectID(forURIRepresentation: url) else {return nil}
 		return (try? existingObject(with: objectID)) ?? nil
 	}
 
 	func setCurrentAccount(_ account: Account?) -> Void {
-		UserDefaults.standard.set(account?.objectID.uriRepresentation(), forKey: UserDefaults.Key.currentAccount)
+		Services.userDefaults.set(account?.objectID.uriRepresentation(), forKey: UserDefaults.Key.currentAccount)
 		NotificationCenter.default.post(name: .didChangeAccount, object: account)
 	}
 	

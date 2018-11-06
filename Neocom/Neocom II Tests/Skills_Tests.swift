@@ -11,20 +11,10 @@ import XCTest
 import EVEAPI
 import Futures
 
-class Skills_Tests: XCTestCase {
+class Skills_Tests: TestCase {
 
     override func setUp() {
-		Services.cache = cache
-		Services.sde = sde
-		Services.storage = storage
-		
-		if storage.viewContext.account(with: oAuth2Token) == nil {
-			_ = storage.viewContext.newAccount(with: oAuth2Token)
-			try! storage.viewContext.save()
-		}
-		if storage.viewContext.currentAccount == nil {
-			storage.viewContext.setCurrentAccount(storage.viewContext.accounts.first)
-		}
+		super.setUp()
     }
 
     override func tearDown() {
@@ -55,14 +45,6 @@ class Skills_Tests: XCTestCase {
 		
 		wait(for: [exp], timeout: 10)
     }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }
 
 class SkillQueueInteractorMock: SkillQueueInteractor {

@@ -44,11 +44,9 @@ class MapLocationPickerSearchResultsPresenter: TreePresenter {
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
 		guard let input = view?.input else { return .init(.failure(NCError.invalidInput(type: type(of: self))))}
 		
-		guard let searchString = searchString, !searchString.isEmpty else {
-			self.searchString = nil
+		guard let searchString = searchManager.pop(), !searchString.isEmpty else {
 			return .init([])
 		}
-		self.searchString = nil
 		
 		return Services.sde.performBackgroundTask { [weak self] context -> Presentation in
 			var sections = Presentation()
@@ -128,30 +126,12 @@ class MapLocationPickerSearchResultsPresenter: TreePresenter {
 		}
 	}
 	
-	private var searchString: String?
+	private lazy var searchManager = SearchManager(presenter: self)
 	
 	func updateSearchResults(with string: String) {
-		if searchString == nil {
-			searchString = string
-			if let loading = loading {
-				loading.then(on: .main) { [weak self] _ in
-					DispatchQueue.main.async {
-						self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) {
-							self?.view?.present($0, animated: false)
-						}
-					}
-				}
-			}
-			else {
-				reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { [weak self] in
-					self?.view?.present($0, animated: false)
-				}
-			}
-		}
-		else {
-			searchString = string
-		}
+		searchManager.updateSearchResults(with: string)
 	}
+
 	
 	func didSelect(_ region: SDEMapRegion) {
 		guard let controller = view?.presentingViewController?.navigationController as? MapLocationPickerViewController else {return}

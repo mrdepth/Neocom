@@ -19,11 +19,9 @@ class ContactsSearchResultsInteractor: TreeInteractor {
 		self.presenter = presenter
 	}
 	
-	var searchString: String?
 	var api = Services.api.current
 	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Content> {
-		guard let string = searchString else { return .init(recent ?? [])}
-		searchString = nil
+		guard let string = presenter?.searchManager.pop() else { return .init(recent ?? [])}
 		guard string.count > 2 else { return .init(recent ?? [])}
 		
 		return api.searchContacts(string, categories: [.character, .corporation, .alliance]).then(on: .main) { result in

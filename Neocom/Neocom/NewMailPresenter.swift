@@ -70,5 +70,4 @@ class NewMailPresenter: Presenter {
 	func searchContacts(with string: String?) {
 		view?.searchResultsViewController?.presenter.updateSearchResults(with: string)
 	}
-	
 }

@@ -91,9 +91,8 @@ class InvTypesPresenter: TreePresenter {
 		}
 		
 		if view?.parent is UISearchController {
-			let string = searchString ?? ""
+			let string = searchManager.pop() ?? ""
 			filter = string.count > 2 ? filter && (\SDEInvType.typeName).caseInsensitive.contains(string) : false
-			searchString = nil
 		}
 		
 		
@@ -121,28 +120,10 @@ class InvTypesPresenter: TreePresenter {
 	}
 
 	
-	private var searchString: String?
+	private lazy var searchManager = SearchManager(presenter: self)
+	
 	func updateSearchResults(with string: String) {
-		if searchString == nil {
-			searchString = string
-			if let loading = loading {
-				loading.then(on: .main) { [weak self] _ in
-					DispatchQueue.main.async {
-						self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) {
-							self?.view?.present($0, animated: false)
-						}
-					}
-				}
-			}
-			else {
-				reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { [weak self] in
-					self?.view?.present($0, animated: false)
-				}
-			}
-		}
-		else {
-			searchString = string
-		}
+		searchManager.updateSearchResults(with: string)
 	}
 	
 	

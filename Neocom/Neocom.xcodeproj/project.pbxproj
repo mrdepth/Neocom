@@ -198,6 +198,7 @@
 		1287FBBB21917CF200A505FC /* WhTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB721917CF200A505FC /* WhTypesViewController.swift */; };
 		1287FBBC21917CF200A505FC /* WhTypesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB821917CF200A505FC /* WhTypesInteractor.swift */; };
 		1287FBBD21917CF200A505FC /* WhTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB921917CF200A505FC /* WhTypes.swift */; };
+		1287FBBF2191889000A505FC /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBBE2191889000A505FC /* SearchManager.swift */; };
 		128C5F711F418CF30038FE7D /* NCFacilityChartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F701F418CF30038FE7D /* NCFacilityChartTableViewCell.xib */; };
 		128C5F761F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F751F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib */; };
 		128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F821F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib */; };
@@ -784,6 +785,7 @@
 		1287FBB721917CF200A505FC /* WhTypesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhTypesViewController.swift; sourceTree = "<group>"; };
 		1287FBB821917CF200A505FC /* WhTypesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhTypesInteractor.swift; sourceTree = "<group>"; };
 		1287FBB921917CF200A505FC /* WhTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhTypes.swift; sourceTree = "<group>"; };
+		1287FBBE2191889000A505FC /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		128AE8161E360FF1002E3A1E /* NCRangeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRangeFormatter.swift; sourceTree = "<group>"; };
 		128C5F701F418CF30038FE7D /* NCFacilityChartTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFacilityChartTableViewCell.xib; sourceTree = "<group>"; };
 		128C5F721F41AE170038FE7D /* NCFacilityChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFacilityChartTableViewCell.swift; sourceTree = "<group>"; };
@@ -1229,6 +1231,7 @@
 				12B03DA7213FEE1B00DCBD64 /* ActionHandler.swift */,
 				12484C68215BB24E0083AE17 /* EVELocation.swift */,
 				12841BEB2059464D00B30582 /* Atomic.swift */,
+				1287FBBE2191889000A505FC /* SearchManager.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -3018,6 +3021,7 @@
 				12415981212FF0AC001709F2 /* TreeItem.swift in Sources */,
 				12484C83215CCF2E0083AE17 /* MapLocationPickerRegionsInteractor.swift in Sources */,
 				1287FBA52190885500A505FC /* MarketQuickbarPresenter.swift in Sources */,
+				1287FBBF2191889000A505FC /* SearchManager.swift in Sources */,
 				12484CA5215D20F60083AE17 /* MapLocationPickerSearchResultsViewController.swift in Sources */,
 				12AF2FCC2188930300813DFD /* SkillsContainer.swift in Sources */,
 				12133C5D215E56D800646937 /* CertCertificateRequirementsInfoPresenter.swift in Sources */,

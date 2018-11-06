@@ -44,7 +44,7 @@ class WhTypesPresenter: TreePresenter {
 		
 		let filter: Predictable
 		
-		if let searchString = searchString {
+		if view?.parent is UISearchController, let searchString = searchManager.pop() {
 			filter = searchString.isEmpty ? false : (\SDEWhType.type?.typeName).contains(searchString)
 		}
 		else {
@@ -58,8 +58,6 @@ class WhTypesPresenter: TreePresenter {
 			.sort(by: \SDEWhType.type?.typeName, ascending: true)
 			.fetchedResultsController(sectionName: \SDEWhType.targetSystemClassDisplayName, cacheName: nil)
 		
-		searchString = nil
-		
 		return .init(Presentation(frc, treeController: view?.treeController))
 	}
 	
@@ -69,30 +67,12 @@ class WhTypesPresenter: TreePresenter {
 		Router.SDE.invTypeInfo(.type(type)).perform(from: view)
 	}
 	
+	private lazy var searchManager = SearchManager(presenter: self)
 	
-	private var searchString: String?
 	func updateSearchResults(with string: String) {
-		if searchString == nil {
-			searchString = string
-			if let loading = loading {
-				loading.then(on: .main) { [weak self] _ in
-					DispatchQueue.main.async {
-						self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) {
-							self?.view?.present($0, animated: false)
-						}
-					}
-				}
-			}
-			else {
-				reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { [weak self] in
-					self?.view?.present($0, animated: false)
-				}
-			}
-		}
-		else {
-			searchString = string
-		}
+		searchManager.updateSearchResults(with: string)
 	}
+
 }
 
 extension SDEWhType: CellConfiguring {

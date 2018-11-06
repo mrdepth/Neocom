@@ -181,7 +181,7 @@ extension SDEInvType {
 }
 
 extension SDEWhType {
-	var targetSystemClassDisplayName: String? {
+	@objc var targetSystemClassDisplayName: String? {
 		switch targetSystemClass {
 		case 0:
 			return NSLocalizedString("Exit WH", comment: "")

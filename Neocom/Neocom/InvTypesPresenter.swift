@@ -41,16 +41,21 @@ class InvTypesPresenter: TreePresenter {
 			self?.applicationWillEnterForeground()
 		}
 		
-		switch view?.input {
-		case let .category(category)?:
-			view?.title = category.categoryName
-		case let .group(group)?:
-			view?.title = group.groupName
-		case let .marketGroup(marketGroup)?:
-			view?.title = marketGroup?.marketGroupName
-		default:
-			break
+		if let input = view?.input, let view = view {
+			switch input {
+			case let .category(category):
+				view.title = category.categoryName
+			case let .group(group):
+				view.title = group.groupName
+			case let .marketGroup(marketGroup):
+				view.title = marketGroup?.marketGroupName
+			case let .npcGroup(npcGroup):
+				view.title = npcGroup?.npcGroupName
+			case .none:
+				break
+			}
 		}
+		
 
 	}
 	
@@ -74,7 +79,14 @@ class InvTypesPresenter: TreePresenter {
 			else {
 				filter = \SDEInvType.marketGroup == marketGroup
 			}
-		default:
+		case let .npcGroup(npcGroup):
+			if view?.parent is UISearchController {
+				filter = \SDEInvType.group?.category?.categoryID == SDECategoryID.entity.rawValue
+			}
+			else {
+				filter = \SDEInvType.group == npcGroup?.group
+			}
+		case .none:
 			filter = true
 		}
 		

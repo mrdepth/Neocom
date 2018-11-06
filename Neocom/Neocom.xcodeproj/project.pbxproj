@@ -190,6 +190,14 @@
 		1287FBA62190885500A505FC /* MarketQuickbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBA22190885500A505FC /* MarketQuickbarViewController.swift */; };
 		1287FBA72190885500A505FC /* MarketQuickbarInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBA32190885500A505FC /* MarketQuickbarInteractor.swift */; };
 		1287FBA82190885500A505FC /* MarketQuickbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBA42190885500A505FC /* MarketQuickbar.swift */; };
+		1287FBB12191763800A505FC /* NpcGroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBAD2191763800A505FC /* NpcGroupsPresenter.swift */; };
+		1287FBB22191763800A505FC /* NpcGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBAE2191763800A505FC /* NpcGroupsViewController.swift */; };
+		1287FBB32191763800A505FC /* NpcGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBAF2191763800A505FC /* NpcGroupsInteractor.swift */; };
+		1287FBB42191763800A505FC /* NpcGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB02191763800A505FC /* NpcGroups.swift */; };
+		1287FBBA21917CF200A505FC /* WhTypesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB621917CF200A505FC /* WhTypesPresenter.swift */; };
+		1287FBBB21917CF200A505FC /* WhTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB721917CF200A505FC /* WhTypesViewController.swift */; };
+		1287FBBC21917CF200A505FC /* WhTypesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB821917CF200A505FC /* WhTypesInteractor.swift */; };
+		1287FBBD21917CF200A505FC /* WhTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB921917CF200A505FC /* WhTypes.swift */; };
 		128C5F711F418CF30038FE7D /* NCFacilityChartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F701F418CF30038FE7D /* NCFacilityChartTableViewCell.xib */; };
 		128C5F761F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F751F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib */; };
 		128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F821F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib */; };
@@ -768,6 +776,14 @@
 		1287FBA22190885500A505FC /* MarketQuickbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketQuickbarViewController.swift; sourceTree = "<group>"; };
 		1287FBA32190885500A505FC /* MarketQuickbarInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketQuickbarInteractor.swift; sourceTree = "<group>"; };
 		1287FBA42190885500A505FC /* MarketQuickbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketQuickbar.swift; sourceTree = "<group>"; };
+		1287FBAD2191763800A505FC /* NpcGroupsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NpcGroupsPresenter.swift; sourceTree = "<group>"; };
+		1287FBAE2191763800A505FC /* NpcGroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NpcGroupsViewController.swift; sourceTree = "<group>"; };
+		1287FBAF2191763800A505FC /* NpcGroupsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NpcGroupsInteractor.swift; sourceTree = "<group>"; };
+		1287FBB02191763800A505FC /* NpcGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NpcGroups.swift; sourceTree = "<group>"; };
+		1287FBB621917CF200A505FC /* WhTypesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhTypesPresenter.swift; sourceTree = "<group>"; };
+		1287FBB721917CF200A505FC /* WhTypesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhTypesViewController.swift; sourceTree = "<group>"; };
+		1287FBB821917CF200A505FC /* WhTypesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhTypesInteractor.swift; sourceTree = "<group>"; };
+		1287FBB921917CF200A505FC /* WhTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhTypes.swift; sourceTree = "<group>"; };
 		128AE8161E360FF1002E3A1E /* NCRangeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRangeFormatter.swift; sourceTree = "<group>"; };
 		128C5F701F418CF30038FE7D /* NCFacilityChartTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFacilityChartTableViewCell.xib; sourceTree = "<group>"; };
 		128C5F721F41AE170038FE7D /* NCFacilityChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFacilityChartTableViewCell.swift; sourceTree = "<group>"; };
@@ -1161,6 +1177,8 @@
 				1287FB972190848400A505FC /* InvMarket */,
 				12484C70215CC6360083AE17 /* MapLocationPicker */,
 				12133C32215E390600646937 /* CertCertificates */,
+				1287FBAB219175F700A505FC /* NpcGroups */,
+				1287FBB521917CCB00A505FC /* WhTypes */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -1975,6 +1993,28 @@
 				1287FBA32190885500A505FC /* MarketQuickbarInteractor.swift */,
 			);
 			name = MarketQuickbar;
+			sourceTree = "<group>";
+		};
+		1287FBAB219175F700A505FC /* NpcGroups */ = {
+			isa = PBXGroup;
+			children = (
+				1287FBB02191763800A505FC /* NpcGroups.swift */,
+				1287FBAE2191763800A505FC /* NpcGroupsViewController.swift */,
+				1287FBAD2191763800A505FC /* NpcGroupsPresenter.swift */,
+				1287FBAF2191763800A505FC /* NpcGroupsInteractor.swift */,
+			);
+			name = NpcGroups;
+			sourceTree = "<group>";
+		};
+		1287FBB521917CCB00A505FC /* WhTypes */ = {
+			isa = PBXGroup;
+			children = (
+				1287FBB921917CF200A505FC /* WhTypes.swift */,
+				1287FBB721917CF200A505FC /* WhTypesViewController.swift */,
+				1287FBB621917CF200A505FC /* WhTypesPresenter.swift */,
+				1287FBB821917CF200A505FC /* WhTypesInteractor.swift */,
+			);
+			name = WhTypes;
 			sourceTree = "<group>";
 		};
 		12925B702189E8C800F6216C /* MySkillsPage */ = {
@@ -3002,6 +3042,7 @@
 				1204D068215271420070AF92 /* InvCategoriesInteractor.swift in Sources */,
 				12D3109A211C282100367440 /* PersistentContext.swift in Sources */,
 				12AFD473211C1E7D00007423 /* Cache.swift in Sources */,
+				1287FBBB21917CF200A505FC /* WhTypesViewController.swift in Sources */,
 				12C727BE218C255600A78ADF /* MailPresenter.swift in Sources */,
 				1279EFF7213587D7005340C0 /* Cells.swift in Sources */,
 				1287FB962190825800A505FC /* InvMarketGroups.swift in Sources */,
@@ -3023,6 +3064,7 @@
 				12484C36215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift in Sources */,
 				12AFD46D211C1C3D00007423 /* SDE.swift in Sources */,
 				12133C4D215E55C700646937 /* CertCertificateInfoInteractor.swift in Sources */,
+				1287FBB12191763800A505FC /* NpcGroupsPresenter.swift in Sources */,
 				12133C39215E39AE00646937 /* CertGroupsPresenter.swift in Sources */,
 				1204D07421528A270070AF92 /* InvGroupsInteractor.swift in Sources */,
 				1253C62E21591066007DEA16 /* MarketHistoryCell.swift in Sources */,
@@ -3030,7 +3072,9 @@
 				12AF2FCB2188930300813DFD /* SkillsContainerInteractor.swift in Sources */,
 				1204D066215271370070AF92 /* InvCategoriesPresenter.swift in Sources */,
 				1295A1AA2139242300047516 /* Services.swift in Sources */,
+				1287FBBC21917CF200A505FC /* WhTypesInteractor.swift in Sources */,
 				12484C8F215CD5A10083AE17 /* MapLocationPickerRecentsViewController.swift in Sources */,
+				1287FBBA21917CF200A505FC /* WhTypesPresenter.swift in Sources */,
 				12133C2C215E291500646937 /* InvTypeVariationsViewController.swift in Sources */,
 				12925B792189E8DB00F6216C /* MySkillsPage.swift in Sources */,
 				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
@@ -3040,6 +3084,7 @@
 				12A843302153CA9600570A95 /* DamageTypeLabel.swift in Sources */,
 				12EE7D0A213E60D1005CE68F /* MainMenuContainerInteractor.swift in Sources */,
 				12484CA7215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift in Sources */,
+				1287FBB32191763800A505FC /* NpcGroupsInteractor.swift in Sources */,
 				12484C69215BB24E0083AE17 /* EVELocation.swift in Sources */,
 				12B03DA4213FC44200DCBD64 /* NSAttributedString+NC.swift in Sources */,
 				121F26F12136F07200AE1D70 /* TreeItem+CoreData.swift in Sources */,
@@ -3086,6 +3131,7 @@
 				125DF6332133CFC700B86AE0 /* MainMenuViewController.swift in Sources */,
 				1287FBA82190885500A505FC /* MarketQuickbar.swift in Sources */,
 				1287FB952190825800A505FC /* InvMarketGroupsInteractor.swift in Sources */,
+				1287FBB42191763800A505FC /* NpcGroups.swift in Sources */,
 				12484C3A215B8E230083AE17 /* InvTypeMarketOrdersInteractor.swift in Sources */,
 				12484C74215CC6910083AE17 /* MapLocationPickerViewController.swift in Sources */,
 				12133C5B215E56CF00646937 /* CertCertificateRequirementsInfoViewController.swift in Sources */,
@@ -3139,6 +3185,7 @@
 				12AB9735212C0E6E00B30DD3 /* NCImplantSetData.swift in Sources */,
 				12EE7D0C213E6282005CE68F /* Route.swift in Sources */,
 				12AB9733212C0E5C00B30DD3 /* NCFittingLoadout.swift in Sources */,
+				1287FBB22191763800A505FC /* NpcGroupsViewController.swift in Sources */,
 				125DF6372133CFDB00B86AE0 /* MainMenuInteractor.swift in Sources */,
 				12484C72215CC6610083AE17 /* MapLocationPicker.swift in Sources */,
 				1204D07021528A140070AF92 /* InvGroupsViewController.swift in Sources */,
@@ -3170,6 +3217,7 @@
 				12484C87215CD55F0083AE17 /* MapLocationPickerSolarSystemsViewController.swift in Sources */,
 				1279EFEE213543B7005340C0 /* UnitFormatter.swift in Sources */,
 				1287FB8A2190276B00A505FC /* ContactsSearchResultsInteractor.swift in Sources */,
+				1287FBBD21917CF200A505FC /* WhTypes.swift in Sources */,
 				121B28C2218AEA24000D392C /* InvTypeRequiredForViewController.swift in Sources */,
 				121B28CC218AF1E8000D392C /* CharacterInfo.swift in Sources */,
 				1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */,

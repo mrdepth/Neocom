@@ -85,6 +85,32 @@ class UnitFormatter: Formatter {
 		return localizedString(from: Double(value), unit: unit, style: style)
 	}
 
+	class func localizedString(from range: ClosedRange<Double>, unit: Unit, style: Style) -> String {
+		let formatter = UnitFormatter()
+		formatter.style = style
+		formatter.unit = .none
+		let a = formatter.string(from: range.lowerBound)
+		formatter.unit = unit
+		let b = formatter.string(from: range.upperBound)
+		return "\(a)/\(b)"
+	}
+	
+	class func localizedString(from range: ClosedRange<Float>, unit: Unit, style: Style) -> String {
+		return localizedString(from: Double(range.lowerBound)...Double(range.upperBound), unit: unit, style: style)
+	}
+
+	class func localizedString(from range: ClosedRange<Int>, unit: Unit, style: Style) -> String {
+		return localizedString(from: Double(range.lowerBound)...Double(range.upperBound), unit: unit, style: style)
+	}
+
+	class func localizedString(from range: ClosedRange<Int32>, unit: Unit, style: Style) -> String {
+		return localizedString(from: Double(range.lowerBound)...Double(range.upperBound), unit: unit, style: style)
+	}
+
+	class func localizedString(from range: ClosedRange<Int64>, unit: Unit, style: Style) -> String {
+		return localizedString(from: Double(range.lowerBound)...Double(range.upperBound), unit: unit, style: style)
+	}
+
 }
 
 extension UnitFormatter {

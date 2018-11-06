@@ -13,8 +13,8 @@
         <!--NPC-->
         <scene sceneID="Az2-TS-5hP">
             <objects>
-                <tableViewController storyboardIdentifier="NCNPCViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fdc-2B-dt7" customClass="NCNPCViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="nI3-of-B1O" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="NpcGroupsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fdc-2B-dt7" customClass="NpcGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="nI3-of-B1O" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -44,8 +44,8 @@
         <!--Wormholes-->
         <scene sceneID="IA1-Vs-U67">
             <objects>
-                <tableViewController storyboardIdentifier="NCWHViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ug5-5i-ND4" customClass="NCWHViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="41" sectionHeaderHeight="18" sectionFooterHeight="18" id="Fxy-ew-Zlt" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="WhTypesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ug5-5i-ND4" customClass="WhTypesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="Fxy-ew-Zlt" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>

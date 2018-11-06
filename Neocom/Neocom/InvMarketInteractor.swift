@@ -16,6 +16,4 @@ class InvMarketInteractor: Interactor {
 		self.presenter = presenter
 	}
 	
-	func configure() {
-	}
 }

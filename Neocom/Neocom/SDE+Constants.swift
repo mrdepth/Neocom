@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import EVEAPI
+import Dgmpp
 
 public enum SDEAttributeID: Int32, Codable {
 	case none = 0
@@ -242,6 +244,217 @@ extension SDEMapRegion {
 			return NSLocalizedString("Null-Sec", comment: "")
 		default:
 			return NSLocalizedString("WH-Space", comment: "")
+		}
+	}
+}
+
+enum ItemFlag: Int32 {
+	case hiSlot
+	case medSlot
+	case lowSlot
+	case rigSlot
+	case subsystemSlot
+	case service
+	case drone
+	case cargo
+	case hangar
+	case skill
+	case implant
+	
+	init?(flag: ESI.Assets.Asset.Flag) {
+		switch flag {
+		case .hiSlot0, .hiSlot1, .hiSlot2, .hiSlot3, .hiSlot4, .hiSlot5, .hiSlot6, .hiSlot7:
+			self = .hiSlot
+		case .medSlot0, .medSlot1, .medSlot2, .medSlot3, .medSlot4, .medSlot5, .medSlot6, .medSlot7:
+			self = .medSlot
+		case .loSlot0, .loSlot1, .loSlot2, .loSlot3, .loSlot4, .loSlot5, .loSlot6, .loSlot7:
+			self = .lowSlot
+		case .rigSlot0, .rigSlot1, .rigSlot2, .rigSlot3, .rigSlot4, .rigSlot5, .rigSlot6, .rigSlot7:
+			self = .rigSlot
+		case .subSystemSlot0, .subSystemSlot1, .subSystemSlot2, .subSystemSlot3, .subSystemSlot4, .subSystemSlot5, .subSystemSlot6, .subSystemSlot7:
+			self = .subsystemSlot
+		case .droneBay, .fighterBay, .fighterTube0, .fighterTube1, .fighterTube2, .fighterTube3, .fighterTube4:
+			self = .drone
+		case .hangar, .fleetHangar, .hangarAll, .shipHangar, .specializedLargeShipHold, .specializedIndustrialShipHold, .specializedMediumShipHold, .specializedShipHold, .specializedSmallShipHold :
+			self = .hangar
+		case .cargo, .corpseBay, .specializedAmmoHold, .specializedCommandCenterHold, .specializedFuelBay, .specializedGasHold, .specializedMaterialBay, .specializedMineralHold, .specializedOreHold, .specializedPlanetaryCommoditiesHold, .specializedSalvageHold:
+			self = .cargo
+		case .skill:
+			self = .skill
+		case .implant:
+			self = .implant
+		default:
+			return nil
+		}
+	}
+	
+	init?(flag: ESI.Assets.CorpAsset.Flag) {
+		switch flag {
+		case .hiSlot0, .hiSlot1, .hiSlot2, .hiSlot3, .hiSlot4, .hiSlot5, .hiSlot6, .hiSlot7:
+			self = .hiSlot
+		case .medSlot0, .medSlot1, .medSlot2, .medSlot3, .medSlot4, .medSlot5, .medSlot6, .medSlot7:
+			self = .medSlot
+		case .loSlot0, .loSlot1, .loSlot2, .loSlot3, .loSlot4, .loSlot5, .loSlot6, .loSlot7:
+			self = .lowSlot
+		case .rigSlot0, .rigSlot1, .rigSlot2, .rigSlot3, .rigSlot4, .rigSlot5, .rigSlot6, .rigSlot7:
+			self = .rigSlot
+		case .subSystemSlot0, .subSystemSlot1, .subSystemSlot2, .subSystemSlot3, .subSystemSlot4, .subSystemSlot5, .subSystemSlot6, .subSystemSlot7:
+			self = .subsystemSlot
+		case .droneBay, .fighterBay, .fighterTube0, .fighterTube1, .fighterTube2, .fighterTube3, .fighterTube4:
+			self = .drone
+		case .hangar, .fleetHangar, .hangarAll, .shipHangar, .specializedLargeShipHold, .specializedIndustrialShipHold, .specializedMediumShipHold, .specializedShipHold, .specializedSmallShipHold :
+			self = .hangar
+		case .cargo, .specializedAmmoHold, .specializedCommandCenterHold, .specializedFuelBay, .specializedGasHold, .specializedMaterialBay, .specializedMineralHold, .specializedOreHold, .specializedPlanetaryCommoditiesHold, .specializedSalvageHold:
+			self = .cargo
+		case .skill:
+			self = .skill
+		case .implant:
+			self = .implant
+		default:
+			return nil
+		}
+	}
+	
+	var image: UIImage? {
+		switch self {
+		case .hiSlot:
+			return DGMModule.Slot.hi.image
+		case .medSlot:
+			return DGMModule.Slot.med.image
+		case .lowSlot:
+			return DGMModule.Slot.low.image
+		case .rigSlot:
+			return DGMModule.Slot.rig.image
+		case .subsystemSlot:
+			return DGMModule.Slot.subsystem.image
+		case .service:
+			return DGMModule.Slot.service.image
+		case .drone:
+			return #imageLiteral(resourceName: "drone")
+		case .cargo:
+			return #imageLiteral(resourceName: "cargoBay")
+		case .hangar:
+			return #imageLiteral(resourceName: "ships")
+		case .implant:
+			return #imageLiteral(resourceName: "implant")
+		case .skill:
+			return #imageLiteral(resourceName: "skills")
+		}
+	}
+	
+	var title: String? {
+		switch self {
+		case .hiSlot:
+			return DGMModule.Slot.hi.title
+		case .medSlot:
+			return DGMModule.Slot.med.title
+		case .lowSlot:
+			return DGMModule.Slot.low.title
+		case .rigSlot:
+			return DGMModule.Slot.rig.title
+		case .subsystemSlot:
+			return DGMModule.Slot.subsystem.title
+		case .service:
+			return DGMModule.Slot.service.title
+		case .drone:
+			return NSLocalizedString("Drones", comment: "")
+		case .cargo:
+			return NSLocalizedString("Cargo", comment: "")
+		case .hangar:
+			return NSLocalizedString("Hangar", comment: "")
+		case .implant:
+			return NSLocalizedString("Implant", comment: "")
+		case .skill:
+			return NSLocalizedString("Skill", comment: "")
+		}
+	}
+}
+
+extension DGMModule.Slot {
+	var image: UIImage? {
+		switch self {
+		case .hi:
+			return #imageLiteral(resourceName: "slotHigh")
+		case .med:
+			return #imageLiteral(resourceName: "slotMed")
+		case .low:
+			return #imageLiteral(resourceName: "slotLow")
+		case .rig:
+			return #imageLiteral(resourceName: "slotRig")
+		case .subsystem:
+			return #imageLiteral(resourceName: "slotSubsystem")
+		case .service:
+			return #imageLiteral(resourceName: "slotService")
+		case .mode:
+			return #imageLiteral(resourceName: "slotSubsystem")
+		default:
+			return nil
+		}
+	}
+	
+	var title: String? {
+		switch self {
+		case .hi:
+			return NSLocalizedString("Hi Slot", comment: "")
+		case .med:
+			return NSLocalizedString("Med Slot", comment: "")
+		case .low:
+			return NSLocalizedString("Low Slot", comment: "")
+		case .rig:
+			return NSLocalizedString("Rig Slot", comment: "")
+		case .subsystem:
+			return NSLocalizedString("Subsystem Slot", comment: "")
+		case .service:
+			return NSLocalizedString("Service Slot", comment: "")
+		case .mode:
+			return NSLocalizedString("Tactical Mode", comment: "")
+		default:
+			return nil
+		}
+	}
+	
+	var name: String? {
+		switch self {
+		case .hi:
+			return "Hi Slot"
+		case .med:
+			return "Med Slot"
+		case .low:
+			return "Low Slot"
+		case .rig:
+			return "Rig Slot"
+		case .subsystem:
+			return "Subsystem Slot"
+		case .service:
+			return "Service Slot"
+		case .mode:
+			return "Tactical Mode"
+		default:
+			return nil
+		}
+	}
+	
+	init?(name: String) {
+		if name.range(of: "hi slot")?.lowerBound == name.startIndex {
+			self = .hi
+		}
+		else if name.range(of: "med slot")?.lowerBound == name.startIndex {
+			self = .med
+		}
+		else if name.range(of: "low slot")?.lowerBound == name.startIndex {
+			self = .low
+		}
+		else if name.range(of: "rig slot")?.lowerBound == name.startIndex {
+			self = .rig
+		}
+		else if name.range(of: "subsystem slot")?.lowerBound == name.startIndex {
+			self = .subsystem
+		}
+		else if name.range(of: "service slot")?.lowerBound == name.startIndex {
+			self = .service
+		}
+		else {
+			return nil
 		}
 	}
 }

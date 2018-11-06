@@ -28,7 +28,7 @@ class CertCertificateMasteryInfoPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view?.tableView.register([Prototype.TreeHeaderCell.default,
+		view?.tableView.register([Prototype.TreeSectionCell.default,
 								  Prototype.TreeDefaultCell.default,
 								  Prototype.CertCertificateDescriptionCell.default])
 		

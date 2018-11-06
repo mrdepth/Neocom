@@ -107,7 +107,7 @@ class CharacterInfoInteractor: TreeInteractor {
 						   alliance?.expires,
 						   allianceImage?.expires].compactMap ({$0}).min()
 			
-			return Content(value: value, expires: expires)
+			return Content(value: value, expires: expires, metadata: nil)
 		}
 	}
 	

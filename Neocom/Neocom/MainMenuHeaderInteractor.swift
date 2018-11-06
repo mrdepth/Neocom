@@ -61,7 +61,7 @@ class MainMenuHeaderInteractor: ContentProviderInteractor {
 							 alliance: allianceInformation?.value.name,
 							 allianceImage: allianceImage?.value)
 			let expires = [characterInfo.expires, characterImage?.expires, corporationInfo?.expires, corporationImage?.expires, allianceInformation?.expires, allianceImage?.expires].compactMap {$0}.min()
-			return ESI.Result(value: value, expires: expires)
+			return ESI.Result(value: value, expires: expires, metadata: nil)
 		}
 	}
 }

@@ -142,7 +142,7 @@ struct CacheContextBox: CacheContext {
 
 
 extension Contact {
-	var recipientType: ESI.Mail.RecipientType? {
-		return category.flatMap {ESI.Mail.RecipientType(rawValue: $0)}
+	var recipientType: ESI.Mail.Recipient.RecipientType? {
+		return category.flatMap {ESI.Mail.Recipient.RecipientType(rawValue: $0)}
 	}
 }

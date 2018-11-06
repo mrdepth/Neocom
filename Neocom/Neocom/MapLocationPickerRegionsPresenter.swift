@@ -30,7 +30,7 @@ class MapLocationPickerRegionsPresenter: TreePresenter {
 	
 	func configure() {
 		view?.tableView.register([Prototype.TreeDefaultCell.default,
-								  Prototype.TreeHeaderCell.default])
+								  Prototype.TreeSectionCell.default])
 		
 		interactor.configure()
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in

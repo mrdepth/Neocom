@@ -133,7 +133,7 @@ class SolidTestPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view?.tableView.register([Prototype.TreeHeaderCell.default,
+		view?.tableView.register([Prototype.TreeSectionCell.default,
 								 Prototype.TreeDefaultCell.default])
 		
 		interactor.configure()
@@ -168,7 +168,7 @@ class SolidTestInteractor: TreeInteractor {
 class APIMock: APIClient {
 	override func serverStatus(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Status.ServerStatus>> {
 		let value = ESI.Status.ServerStatus(players: 0, serverVersion: "1", startTime: Date(), vip: false)
-		return .init(ESI.Result(value: value, expires: Date.init(timeIntervalSinceNow: 60)))
+		return .init(ESI.Result(value: value, expires: Date.init(timeIntervalSinceNow: 60), metadata: nil))
 	}
 }
 
@@ -198,7 +198,7 @@ class SolidTestPresenter2: TreePresenter {
 	}
 	
 	func configure() {
-		view?.tableView.register([Prototype.TreeHeaderCell.default,
+		view?.tableView.register([Prototype.TreeSectionCell.default,
 								 Prototype.TreeDefaultCell.default])
 		
 		interactor.configure()

@@ -21,7 +21,7 @@ protocol ESIResultProtocol {
 
 extension ESI.Result: ESIResultProtocol {
 	func map<T>(_ transform: (Value) throws -> T) rethrows -> ESI.Result<T> {
-		return try ESI.Result<T>(value: transform(value), expires: expires)
+		return try ESI.Result<T>(value: transform(value), expires: expires, metadata: metadata)
 	}
 }
 
@@ -62,7 +62,7 @@ protocol AllianceAPI: class {
 protocol LocationAPI: class {
 	func characterLocation(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Location.CharacterLocation>>
 	func characterShip(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Location.CharacterShip>>
-	func locations(ids: Set<Int64>) -> Future<[Int64: EVELocation]>
+	func locations(with ids: Set<Int64>) -> Future<[Int64: EVELocation]>
 }
 
 protocol StatusAPI: class {
@@ -107,13 +107,19 @@ protocol IncursionsAPI: class {
 	func incursions(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Incursions.Incursion]>>
 }
 
+protocol AssetsAPI: class {
+//	func assets(page: Int?, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Assets.Asset]>>
+	func assets(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Assets.Asset]>>
+	func assetNames(with ids: Set<Int64>, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[Int64: ESI.Assets.Name]>>
+}
+
 extension SearchAPI {
 	func search(_ string: String, categories: [ESI.Search.Categories], cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Search.SearchResult>> {
 		return search(string, categories: categories, strict: false, cachePolicy: cachePolicy)
 	}
 }
 
-typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & SearchAPI & IncursionsAPI
+typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & SearchAPI & IncursionsAPI & AssetsAPI
 
 class APIClient: API {
 	
@@ -161,7 +167,7 @@ class APIClient: API {
 									  context: context)
 			
 			let expires = [attributes.expires, skills.expires, skillQueue.expires, implants.expires].compactMap {$0}.min()
-			return ESI.Result(value: character, expires: expires)
+			return ESI.Result(value: character, expires: expires, metadata: nil)
 		}
 	}
 	
@@ -269,7 +275,7 @@ class APIClient: API {
 	
 	private lazy var cachedLocations: Atomic<[Int64: EVELocation]> = Atomic([:])
 
-	func locations(ids: Set<Int64>) -> Future<[Int64: EVELocation]> {
+	func locations(with ids: Set<Int64>) -> Future<[Int64: EVELocation]> {
 		guard !ids.isEmpty else { return .init([:]) }
 		
 		var cachedLocations = self.cachedLocations.value
@@ -436,8 +442,23 @@ class APIClient: API {
 	//MARK: UniverseAPI
 	
 	func universeNames(ids: Set<Int64>) -> Future<ESI.Result<[ESI.Universe.Name]>> {
-		let ids = ids.map{Int($0)}.sorted()
-		return esi.universe.getNamesAndCategoriesForSetOfIDs(ids: ids)
+		guard !ids.isEmpty else { return .init(ESI.Result(value: [], expires: nil, metadata: nil)) }
+		let progress = Progress(totalUnitCount: Int64(ids.count))
+		let esi = self.esi
+		
+		return DispatchQueue.global(qos: .utility).async { () -> ESI.Result<[ESI.Universe.Name]> in
+			let ids = ids.map{Int($0)}.sorted()
+			let chunks = stride(from: 0, to: ids.count, by: 1000).map { ids[$0..<min(ids.count, $0 + 1000)] }
+			
+			let results = try all(chunks.map { i in
+				progress.performAsCurrent(withPendingUnitCount: Int64(i.count)) {
+					esi.universe.getNamesAndCategoriesForSetOfIDs(ids: Array(i))
+				}
+			}).get()
+			guard let first = results.first else { return ESI.Result(value: [], expires: nil, metadata: nil) }
+			
+			return first.map { _ in results.flatMap{$0.value}}
+		}
 	}
 	
 	func universeStructure(structureID: Int64) -> Future<ESI.Result<ESI.Universe.StructureInformation>> {
@@ -509,7 +530,7 @@ class APIClient: API {
 					mailingLists.filter {missing.contains(Int64($0.mailingListID))}.forEach { i in
 						let contact = Contact(context: context.managedObjectContext)
 						contact.contactID = Int64(i.mailingListID)
-						contact.category = ESI.Mail.RecipientType.mailingList.rawValue
+						contact.category = ESI.Mail.Recipient.RecipientType.mailingList.rawValue
 						contact.name = i.name
 						contacts[contact.contactID] = contact
 						missing.remove(contact.contactID)
@@ -573,9 +594,66 @@ class APIClient: API {
 		}
 	}
 
-	//MARK: IncursionsAPI {
+	//MARK: IncursionsAPI
 	func incursions(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Incursions.Incursion]>> {
 		return esi.incursions.listIncursions(cachePolicy: cachePolicy)
 	}
 
+	//MARK: AssetsAPI
+//	func assets(page: Int?, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Assets.Asset]>> {
+//		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+//		assert(page != 0)
+//		return esi.assets.getCharacterAssets(characterID: Int(id), page: page, cachePolicy: cachePolicy)
+//	}
+	
+	func assets(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Assets.Asset]>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+
+		let esi = self.esi
+		let progress = Progress(totalUnitCount: 2)
+		return DispatchQueue.global(qos: .utility).async { () -> ESI.Result<[ESI.Assets.Asset]> in
+			let id = Int(id)
+			
+			let firstPage = try progress.performAsCurrent(withPendingUnitCount: 1) { esi.assets.getCharacterAssets(characterID: id, page: nil, cachePolicy: cachePolicy) }.get()
+			let numberOfPages = firstPage.metadata?["x-pages"].flatMap{Int($0)} ?? 1
+			
+			let assets: [ESI.Assets.Asset]
+			
+			if numberOfPages > 1 {
+				let partialProgress = progress.performAsCurrent(withPendingUnitCount: 1) {Progress(totalUnitCount: Int64(numberOfPages - 1))}
+				let pages = try any((2...numberOfPages).map{ i in partialProgress.performAsCurrent(withPendingUnitCount: 1) { esi.assets.getCharacterAssets(characterID: id, page: i, cachePolicy: cachePolicy) } }).get().compactMap {$0}
+				
+				assets = pages.flatMap{$0.value}
+			}
+			else {
+				assets = []
+			}
+			
+			return firstPage.map {
+				($0 + assets).filter({$0.locationFlag != .skill && $0.locationFlag != .implant})
+			}
+		}
+	}
+	
+	func assetNames(with ids: Set<Int64>, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[Int64: ESI.Assets.Name]>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+		guard !ids.isEmpty else { return .init(ESI.Result(value: [:], expires: nil, metadata: nil)) }
+		let progress = Progress(totalUnitCount: Int64(ids.count))
+		let esi = self.esi
+		
+		return DispatchQueue.global(qos: .utility).async { () -> ESI.Result<[Int64: ESI.Assets.Name]> in
+			let ids = ids.sorted()
+			let chunks = stride(from: 0, to: ids.count, by: 1000).map { ids[$0..<min(ids.count, $0 + 1000)] }
+			
+			let results = try any(chunks.map { i in
+				progress.performAsCurrent(withPendingUnitCount: Int64(i.count)) {
+					esi.assets.getCharacterAssetNames(characterID: Int(id), itemIds: Array(i))
+				}
+			}).get().compactMap{$0}
+			guard let first = results.first else { return ESI.Result(value: [:], expires: nil, metadata: nil) }
+			let values = Dictionary(results.flatMap{$0.value}.map{($0.itemID, $0)}, uniquingKeysWith: {a, _ in a})
+			
+			return first.map { _ in values}
+		}
+	}
 }

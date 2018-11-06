@@ -30,7 +30,7 @@ class SkillQueuePresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view?.tableView.register([Prototype.TreeHeaderCell.default,
+		view?.tableView.register([Prototype.TreeSectionCell.default,
 								  Prototype.SkillCell.default,
 								  Prototype.TreeDefaultCell.default,
 								  Prototype.TreeDefaultCell.placeholder,
@@ -243,7 +243,7 @@ extension Tree.Item {
 		
 		override func configure(cell: UITableViewCell, treeController: TreeController?) {
 			super.configure(cell: cell, treeController: treeController)
-			guard let cell = cell as? TreeHeaderCell else {return}
+			guard let cell = cell as? TreeSectionCell else {return}
 			cell.titleLabel?.text = result.name?.uppercased()
 		}
 

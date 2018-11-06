@@ -28,7 +28,7 @@ class InvTypeInfoInteractor: TreeInteractor {
 		api.character(cachePolicy: .useProtocolCachePolicy).then { result in
 			try! promise.fulfill(result.map {$0 as Character?})
 		}.catch { _ in
-			try! promise.fulfill(ESI.Result(value: nil, expires: nil))
+			try! promise.fulfill(ESI.Result(value: nil, expires: nil, metadata: nil))
 		}
 		return promise.future
 	}

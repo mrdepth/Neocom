@@ -29,7 +29,7 @@ class InvMarketGroupsPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view?.tableView.register([Prototype.TreeDefaultCell.default, Prototype.TreeHeaderCell.default])
+		view?.tableView.register([Prototype.TreeDefaultCell.default, Prototype.TreeSectionCell.default])
 		
 		if let title = view?.input?.marketGroupName {
 			view?.title = title

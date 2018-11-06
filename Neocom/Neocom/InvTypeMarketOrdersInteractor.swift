@@ -49,7 +49,7 @@ class InvTypeMarketOrdersInteractor: TreeInteractor {
 	}
 	
 	func locations(ids: Set<Int64>) -> Future<[Int64: EVELocation]> {
-		return api.locations(ids: ids)
+		return api.locations(with: ids)
 	}
 	
 }

@@ -28,7 +28,7 @@ class MySkillsPagePresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view?.tableView.register([Prototype.TreeHeaderCell.default,
+		view?.tableView.register([Prototype.TreeSectionCell.default,
 								  Prototype.SkillCell.default])
 		
 		interactor.configure()

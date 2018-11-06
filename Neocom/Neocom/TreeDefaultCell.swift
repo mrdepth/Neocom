@@ -30,16 +30,16 @@ extension Tree.Content {
 	struct Default: Hashable {
 		var prototype: Prototype?
 		var title: String?
-		var subtitle: String?
 		var attributedTitle: NSAttributedString?
+		var subtitle: String?
 		var attributedSubtitle: NSAttributedString?
 		var image: Image?
 		var accessoryType: UITableViewCell.AccessoryType
 		
 		init(prototype: Prototype = Prototype.TreeDefaultCell.default,
 			 title: String? = nil,
-			 subtitle: String? = nil,
 			 attributedTitle: NSAttributedString? = nil,
+			 subtitle: String? = nil,
 			 attributedSubtitle: NSAttributedString? = nil,
 			 image: Image? = nil,
 			 accessoryType: UITableViewCell.AccessoryType = .none) {

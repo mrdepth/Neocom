@@ -33,7 +33,7 @@ class InvTypeInfoPresenter: TreePresenter {
 	private var invType: SDEInvType?
 	
 	func configure() {
-		view?.tableView.register([Prototype.TreeHeaderCell.default,
+		view?.tableView.register([Prototype.TreeSectionCell.default,
 								 Prototype.TreeDefaultCell.attribute,
 								 Prototype.DamageTypeCell.compact,
 								 Prototype.TreeDefaultCell.default,

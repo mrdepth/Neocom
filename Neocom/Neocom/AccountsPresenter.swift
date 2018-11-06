@@ -30,7 +30,7 @@ class AccountsPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view?.tableView.register([Prototype.TreeHeaderCell.default,
+		view?.tableView.register([Prototype.TreeSectionCell.default,
 								 Prototype.AccountCell.default])
 
 		interactor.configure()

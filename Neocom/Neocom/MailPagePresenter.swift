@@ -30,7 +30,7 @@ class MailPagePresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view?.tableView.register([Prototype.TreeHeaderCell.default,
+		view?.tableView.register([Prototype.TreeSectionCell.default,
 								  Prototype.MailCell.default])
 		
 		interactor.configure()
@@ -190,7 +190,7 @@ extension Tree.Item {
 			formatter.timeStyle = .none
 			formatter.dateStyle = .medium
 			let title = formatter.string(from: date).uppercased()
-			super.init(Tree.Content.Section(prototype: Prototype.TreeHeaderCell.default,
+			super.init(Tree.Content.Section(prototype: Prototype.TreeSectionCell.default,
 											title: title,
 											isExpanded: true),
 					   diffIdentifier: diffIdentifier,

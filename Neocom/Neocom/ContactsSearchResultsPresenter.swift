@@ -29,7 +29,7 @@ class ContactsSearchResultsPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view?.tableView.register([Prototype.TreeHeaderCell.default,
+		view?.tableView.register([Prototype.TreeSectionCell.default,
 								  Prototype.TreeDefaultCell.default,
 								  Prototype.TreeDefaultCell.contact])
 		

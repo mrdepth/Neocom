@@ -30,7 +30,7 @@ class MapLocationPickerSearchResultsPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view?.tableView.register([Prototype.TreeHeaderCell.default,
+		view?.tableView.register([Prototype.TreeSectionCell.default,
 								  Prototype.TreeDefaultCell.default])
 		
 		interactor.configure()

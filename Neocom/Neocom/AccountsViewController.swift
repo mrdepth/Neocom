@@ -56,7 +56,7 @@ class AccountsViewController: TreeViewController<AccountsPresenter, Void>, TreeV
 	
 	override func treeController<T>(_ treeController: TreeController, configure cell: UITableViewCell, for item: T) where T : TreeItem {
 		super.treeController(treeController, configure: cell, for: item)
-		if let folderItem = item as? Tree.Item.AccountsFolderItem, let cell = cell as? TreeHeaderCell {
+		if let folderItem = item as? Tree.Item.AccountsFolderItem, let cell = cell as? TreeSectionCell {
 			cell.editingAction = cell.editingButton.map{ActionHandler($0, for: .touchUpInside, handler: { [weak self] (_) in
 				self?.presenter.onFolderActions(folderItem.result)
 			})}

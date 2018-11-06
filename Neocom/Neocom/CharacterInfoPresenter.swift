@@ -29,7 +29,7 @@ class CharacterInfoPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view?.tableView.register([Prototype.TreeHeaderCell.default,
+		view?.tableView.register([Prototype.TreeSectionCell.default,
 								  Prototype.TreeDefaultCell.attribute,
 								  Prototype.TreeDefaultCell.placeholder,
 								  Prototype.TreeDefaultCell.portrait])

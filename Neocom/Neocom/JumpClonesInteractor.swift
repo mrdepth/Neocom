@@ -31,7 +31,7 @@ class JumpClonesInteractor: TreeInteractor {
 		return DispatchQueue.global(qos: .utility).async { () -> Content in
 			let clones = try api.clones(cachePolicy: cachePolicy).get()
 			let locationIDs = clones.value.jumpClones.compactMap {$0.locationID}
-			let locations = try? api.locations(ids: Set(locationIDs)).get()
+			let locations = try? api.locations(with: Set(locationIDs)).get()
 			
 			return clones.map { Value(clones: $0, locations: locations) }
 		}

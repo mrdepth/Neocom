@@ -153,8 +153,8 @@
 		1279A2F12023193300DD7A46 /* NCStaticHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1279A2F02023193300DD7A46 /* NCStaticHeaderTableViewCell.xib */; };
 		1279A2F32023332500DD7A46 /* NCFooterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1279A2F22023332500DD7A46 /* NCFooterTableViewCell.xib */; };
 		1279EFEE213543B7005340C0 /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFED213543B7005340C0 /* UnitFormatter.swift */; };
-		1279EFF121355DC9005340C0 /* TreeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFF021355DC9005340C0 /* TreeHeaderCell.swift */; };
-		1279EFF421355DFD005340C0 /* TreeHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1279EFF321355DFD005340C0 /* TreeHeaderCell.xib */; };
+		1279EFF121355DC9005340C0 /* TreeSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFF021355DC9005340C0 /* TreeSectionCell.swift */; };
+		1279EFF421355DFD005340C0 /* TreeSectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1279EFF321355DFD005340C0 /* TreeSectionCell.xib */; };
 		1279EFF5213586D6005340C0 /* NCTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1230A31D1DFFE2CF00627D92 /* NCTableView.m */; };
 		1279EFF7213587D7005340C0 /* Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFF6213587D7005340C0 /* Cells.swift */; };
 		1279EFF921358922005340C0 /* TintImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFF821358922005340C0 /* TintImageView.swift */; };
@@ -206,6 +206,13 @@
 		1287FBCD2191901600A505FC /* IncursionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBCC2191901600A505FC /* IncursionCell.swift */; };
 		1287FBCF2191916300A505FC /* API+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBCE2191916300A505FC /* API+Constants.swift */; };
 		1287FBD1219192A000A505FC /* IncursionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1287FBD0219192A000A505FC /* IncursionCell.xib */; };
+		1287FBD221919BC000A505FC /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D20E9E1EB9EB1400BEC926 /* PieChartView.swift */; };
+		1287FBD921919C6300A505FC /* AssetsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBD521919C6300A505FC /* AssetsPresenter.swift */; };
+		1287FBDA21919C6300A505FC /* AssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBD621919C6300A505FC /* AssetsViewController.swift */; };
+		1287FBDB21919C6300A505FC /* AssetsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBD721919C6300A505FC /* AssetsInteractor.swift */; };
+		1287FBDC21919C6300A505FC /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBD821919C6300A505FC /* Assets.swift */; };
+		1287FBE22191C2A100A505FC /* TreeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBE12191C2A100A505FC /* TreeHeaderCell.swift */; };
+		1287FBE42191C33200A505FC /* TreeHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1287FBE32191C33200A505FC /* TreeHeaderCell.xib */; };
 		128C5F711F418CF30038FE7D /* NCFacilityChartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F701F418CF30038FE7D /* NCFacilityChartTableViewCell.xib */; };
 		128C5F761F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F751F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib */; };
 		128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F821F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib */; };
@@ -738,8 +745,8 @@
 		1279A2F620234DD300DD7A46 /* NCBugreportFinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCBugreportFinishViewController.swift; sourceTree = "<group>"; };
 		1279A8471EB90690002D4A66 /* NCJumpClonesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCJumpClonesViewController.swift; sourceTree = "<group>"; };
 		1279EFED213543B7005340C0 /* UnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitFormatter.swift; sourceTree = "<group>"; };
-		1279EFF021355DC9005340C0 /* TreeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeHeaderCell.swift; sourceTree = "<group>"; };
-		1279EFF321355DFD005340C0 /* TreeHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TreeHeaderCell.xib; sourceTree = "<group>"; };
+		1279EFF021355DC9005340C0 /* TreeSectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeSectionCell.swift; sourceTree = "<group>"; };
+		1279EFF321355DFD005340C0 /* TreeSectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TreeSectionCell.xib; sourceTree = "<group>"; };
 		1279EFF6213587D7005340C0 /* Cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cells.swift; sourceTree = "<group>"; };
 		1279EFF821358922005340C0 /* TintImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintImageView.swift; sourceTree = "<group>"; };
 		1279EFFC21358F68005340C0 /* MainMenuHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuHeaderViewController.swift; sourceTree = "<group>"; };
@@ -800,6 +807,12 @@
 		1287FBCC2191901600A505FC /* IncursionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncursionCell.swift; sourceTree = "<group>"; };
 		1287FBCE2191916300A505FC /* API+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Constants.swift"; sourceTree = "<group>"; };
 		1287FBD0219192A000A505FC /* IncursionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IncursionCell.xib; sourceTree = "<group>"; };
+		1287FBD521919C6300A505FC /* AssetsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsPresenter.swift; sourceTree = "<group>"; };
+		1287FBD621919C6300A505FC /* AssetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsViewController.swift; sourceTree = "<group>"; };
+		1287FBD721919C6300A505FC /* AssetsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsInteractor.swift; sourceTree = "<group>"; };
+		1287FBD821919C6300A505FC /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
+		1287FBE12191C2A100A505FC /* TreeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeHeaderCell.swift; sourceTree = "<group>"; };
+		1287FBE32191C33200A505FC /* TreeHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TreeHeaderCell.xib; sourceTree = "<group>"; };
 		128AE8161E360FF1002E3A1E /* NCRangeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCRangeFormatter.swift; sourceTree = "<group>"; };
 		128C5F701F418CF30038FE7D /* NCFacilityChartTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCFacilityChartTableViewCell.xib; sourceTree = "<group>"; };
 		128C5F721F41AE170038FE7D /* NCFacilityChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFacilityChartTableViewCell.swift; sourceTree = "<group>"; };
@@ -1637,7 +1650,6 @@
 				12BFC46D1E409AC2000ED8D6 /* NCThinLineView.swift */,
 				12DE67201E715D46005CA44C /* NCSegmentedControl.swift */,
 				127DE7D71E9513B4008D4873 /* ChartView.swift */,
-				12D20E9E1EB9EB1400BEC926 /* PieChartView.swift */,
 				1285FB321EB8DBFA0025331A /* NCImageView.swift */,
 				12E7D5ED1F27569200676AFE /* NCSkillLevelView.swift */,
 				122A1C421F8DFCC2005DE351 /* NCNavigationItemTitleLabel.swift */,
@@ -1672,8 +1684,8 @@
 		1259639221381E8800B3A53C /* TreeHeaderCell */ = {
 			isa = PBXGroup;
 			children = (
-				1279EFF021355DC9005340C0 /* TreeHeaderCell.swift */,
-				1279EFF321355DFD005340C0 /* TreeHeaderCell.xib */,
+				1287FBE12191C2A100A505FC /* TreeHeaderCell.swift */,
+				1287FBE32191C33200A505FC /* TreeHeaderCell.xib */,
 			);
 			name = TreeHeaderCell;
 			sourceTree = "<group>";
@@ -1757,6 +1769,7 @@
 				12A843292153C5C500570A95 /* InvTypeCell */,
 				1259639321381E8E00B3A53C /* AccountCell */,
 				1279EFF221355DE2005340C0 /* TreeDefaultCell */,
+				1287FBDF2191C22600A505FC /* TreeSectionCell */,
 				1259639221381E8800B3A53C /* TreeHeaderCell */,
 				12DE75DD215A7186006FC1BF /* InvTypeInfoDescriptionCell */,
 				12484C63215BB0DC0083AE17 /* InvTypeMarketOrderCell */,
@@ -1881,6 +1894,7 @@
 				12A8432F2153CA9600570A95 /* DamageTypeLabel.swift */,
 				12D8144B2154D9BA00313DAF /* ThinLineView.swift */,
 				12484C6E215CC0B70083AE17 /* SegmentedPageControl.swift */,
+				12D20E9E1EB9EB1400BEC926 /* PieChartView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2054,6 +2068,34 @@
 				1287FBCC2191901600A505FC /* IncursionCell.swift */,
 			);
 			name = IncursionCell;
+			sourceTree = "<group>";
+		};
+		1287FBD321919C1000A505FC /* Business */ = {
+			isa = PBXGroup;
+			children = (
+				1287FBD421919C5500A505FC /* Assets */,
+			);
+			name = Business;
+			sourceTree = "<group>";
+		};
+		1287FBD421919C5500A505FC /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				1287FBD821919C6300A505FC /* Assets.swift */,
+				1287FBD621919C6300A505FC /* AssetsViewController.swift */,
+				1287FBD521919C6300A505FC /* AssetsPresenter.swift */,
+				1287FBD721919C6300A505FC /* AssetsInteractor.swift */,
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		1287FBDF2191C22600A505FC /* TreeSectionCell */ = {
+			isa = PBXGroup;
+			children = (
+				1279EFF021355DC9005340C0 /* TreeSectionCell.swift */,
+				1279EFF321355DFD005340C0 /* TreeSectionCell.xib */,
+			);
+			name = TreeSectionCell;
 			sourceTree = "<group>";
 		};
 		12925B702189E8C800F6216C /* MySkillsPage */ = {
@@ -2404,6 +2446,7 @@
 				12C727AE218B32E200A78ADF /* Character */,
 				12484C6B215CC05D0083AE17 /* PageViewController */,
 				12C727E2218C95E400A78ADF /* Mail */,
+				1287FBD321919C1000A505FC /* Business */,
 				121F26E52136EC5700AE1D70 /* NavigationController.swift */,
 				121F26E72136ECA800AE1D70 /* SplitViewController.swift */,
 				12678BEE212BE32A00E7E427 /* AppDelegate.swift */,
@@ -2922,6 +2965,7 @@
 				12D930E51E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib in Resources */,
 				122A7CA81F4B601E00537467 /* KillReports.storyboard in Resources */,
 				1256BECD1DF4770A00A2A24B /* Attributes.xcassets in Resources */,
+				1287FBE42191C33200A505FC /* TreeHeaderCell.xib in Resources */,
 				12406A011F20F49500A4DAE7 /* NCModuleTableViewCell.xib in Resources */,
 				1256BE551DF4728800A2A24B /* Main.storyboard in Resources */,
 				1256BECE1DF4770A00A2A24B /* Fitting.xcassets in Resources */,
@@ -2987,7 +3031,7 @@
 				12AC8D9B1DEF58A100561A7A /* Assets.xcassets in Resources */,
 				1298BA8620AEFB73002C941E /* MPDAAIcon@2x.png in Resources */,
 				1285FB351EB8DD350025331A /* NCAttributeTableViewCell.xib in Resources */,
-				1279EFF421355DFD005340C0 /* TreeHeaderCell.xib in Resources */,
+				1279EFF421355DFD005340C0 /* TreeSectionCell.xib in Resources */,
 				1298BA8320AEFB73002C941E /* MPPlayBtn.png in Resources */,
 				12D85125201A86DA009485D0 /* NCSubscriptionTableViewCell.xib in Resources */,
 				1256BECA1DF4770A00A2A24B /* memory.png in Resources */,
@@ -3071,6 +3115,7 @@
 				121B28C1218AEA24000D392C /* InvTypeRequiredForPresenter.swift in Sources */,
 				12133C7C215E6F1900646937 /* CertCertificateDescriptionCell.swift in Sources */,
 				12B8907F21300E610082D4A3 /* TreeViewController.swift in Sources */,
+				1287FBD221919BC000A505FC /* PieChartView.swift in Sources */,
 				12D8147221550EC200313DAF /* InvTypeInfoViewController.swift in Sources */,
 				12C727E1218C8B7B00A78ADF /* MailBody.swift in Sources */,
 				12133C51215E56A500646937 /* CertCertificateMasteryInfo.swift in Sources */,
@@ -3110,12 +3155,14 @@
 				12133C4D215E55C700646937 /* CertCertificateInfoInteractor.swift in Sources */,
 				1287FBCF2191916300A505FC /* API+Constants.swift in Sources */,
 				1287FBCA21918E6900A505FC /* Incursions.swift in Sources */,
+				1287FBD921919C6300A505FC /* AssetsPresenter.swift in Sources */,
 				1287FBB12191763800A505FC /* NpcGroupsPresenter.swift in Sources */,
 				12133C39215E39AE00646937 /* CertGroupsPresenter.swift in Sources */,
 				1204D07421528A270070AF92 /* InvGroupsInteractor.swift in Sources */,
 				1253C62E21591066007DEA16 /* MarketHistoryCell.swift in Sources */,
 				1287FB942190825800A505FC /* InvMarketGroupsViewController.swift in Sources */,
 				12AF2FCB2188930300813DFD /* SkillsContainerInteractor.swift in Sources */,
+				1287FBDA21919C6300A505FC /* AssetsViewController.swift in Sources */,
 				1204D066215271370070AF92 /* InvCategoriesPresenter.swift in Sources */,
 				1295A1AA2139242300047516 /* Services.swift in Sources */,
 				1287FBBC21917CF200A505FC /* WhTypesInteractor.swift in Sources */,
@@ -3153,7 +3200,8 @@
 				1287FB932190825800A505FC /* InvMarketGroupsPresenter.swift in Sources */,
 				12D8144C2154D9BA00313DAF /* ThinLineView.swift in Sources */,
 				12EA7798217F447A009C8288 /* SkillCell.swift in Sources */,
-				1279EFF121355DC9005340C0 /* TreeHeaderCell.swift in Sources */,
+				1287FBE22191C2A100A505FC /* TreeHeaderCell.swift in Sources */,
+				1279EFF121355DC9005340C0 /* TreeSectionCell.swift in Sources */,
 				12133C49215E55B600646937 /* CertCertificateInfoViewController.swift in Sources */,
 				12B03DA6213FEBF400DCBD64 /* TimeIntervalFormatter.swift in Sources */,
 				12484C34215B8E080083AE17 /* InvTypeMarketOrders.swift in Sources */,
@@ -3204,6 +3252,7 @@
 				12C727C7218C2BBF00A78ADF /* MailPagePresenter.swift in Sources */,
 				12484C91215CD5AA0083AE17 /* MapLocationPickerRecentsPresenter.swift in Sources */,
 				12A843052153872500570A95 /* InvTypesPresenter.swift in Sources */,
+				1287FBDC21919C6300A505FC /* Assets.swift in Sources */,
 				12AF2FD22188943900813DFD /* MySkillsViewController.swift in Sources */,
 				12E04181212D44360000CB4F /* Config.swift in Sources */,
 				12484CA3215D20EC0083AE17 /* MapLocationPickerSearchResults.swift in Sources */,
@@ -3236,6 +3285,7 @@
 				125DF6372133CFDB00B86AE0 /* MainMenuInteractor.swift in Sources */,
 				12484C72215CC6610083AE17 /* MapLocationPicker.swift in Sources */,
 				1204D07021528A140070AF92 /* InvGroupsViewController.swift in Sources */,
+				1287FBDB21919C6300A505FC /* AssetsInteractor.swift in Sources */,
 				1287FB8B2190276B00A505FC /* ContactsSearchResults.swift in Sources */,
 				12C727BF218C255600A78ADF /* MailViewController.swift in Sources */,
 				12484C85215CD5560083AE17 /* MapLocationPickerSolarSystems.swift in Sources */,

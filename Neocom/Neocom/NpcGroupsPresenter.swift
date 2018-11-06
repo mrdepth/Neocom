@@ -29,7 +29,7 @@ class NpcGroupsPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view?.tableView.register([Prototype.TreeDefaultCell.default, Prototype.TreeHeaderCell.default])
+		view?.tableView.register([Prototype.TreeDefaultCell.default, Prototype.TreeSectionCell.default])
 		
 		switch view?.input {
 		case let .parent(npcGroup)?:

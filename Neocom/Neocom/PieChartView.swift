@@ -57,7 +57,7 @@ public class PieSegmentLayer: CALayer {
 			let animation = CABasicAnimation(keyPath: event)
 			animation.fromValue = self.presentation()?.value(forKey: event) ?? (self.animation(forKey: event) as? CABasicAnimation)?.fromValue ?? self.value(forKey: event)
 			animation.duration = 1.0
-			animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
 			return animation
 		}
 		else {
@@ -79,7 +79,7 @@ public class PieSegmentLayer: CALayer {
 		}
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.alignment = .center
-		return NSAttributedString(string: s, attributes: [NSAttributedStringKey.foregroundColor: model().segment!.color, NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .footnote),NSAttributedStringKey.paragraphStyle: paragraph])
+		return NSAttributedString(string: s, attributes: [NSAttributedString.Key.foregroundColor: model().segment!.color, NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .footnote),NSAttributedString.Key.paragraphStyle: paragraph])
 	}
 	
 	fileprivate func titleFrame(at: CGFloat, size: CGSize) -> CGRect {
@@ -158,7 +158,7 @@ public class PieTotalLayer: CALayer {
 			let animation = CABasicAnimation(keyPath: event)
 			animation.fromValue = self.presentation()?.value(forKey: event)
 			animation.duration = 1.0
-			animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+			animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
 			return animation
 		}
 		else {
@@ -171,7 +171,7 @@ public class PieTotalLayer: CALayer {
 		let s =  "\(model().formatter?.string(for: value) ?? "\(model().value)")"
 		let paragraph = NSMutableParagraphStyle()
 		paragraph.alignment = .center
-		return NSAttributedString(string: s, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .subheadline),NSAttributedStringKey.paragraphStyle: paragraph])
+		return NSAttributedString(string: s, attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline), NSAttributedString.Key.paragraphStyle: paragraph])
 	}
 
 	override public func draw(in ctx: CGContext) {

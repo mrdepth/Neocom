@@ -257,7 +257,7 @@ extension Tree.Item {
 
 		func configure(cell: UITableViewCell, treeController: TreeController?) {
 			content.configure(cell: cell, treeController: treeController)
-			guard let cell = cell as? TreeHeaderCell else {return}
+			guard let cell = cell as? TreeSectionCell else {return}
 			cell.expandIconView?.image = treeController?.isItemExpanded(self) == true ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
 		}
 	}
@@ -274,7 +274,7 @@ extension Tree.Item {
 		}
 		
 		var prototype: Prototype? {
-			return Prototype.TreeHeaderCell.default
+			return Prototype.TreeSectionCell.default
 		}
 		
 		var expandIdentifier: CustomStringConvertible?
@@ -283,7 +283,7 @@ extension Tree.Item {
 		}
 		
 		func configure(cell: UITableViewCell, treeController: TreeController?) {
-			guard let cell = cell as? TreeHeaderCell else {return}
+			guard let cell = cell as? TreeSectionCell else {return}
 			
 			cell.titleLabel?.text = name
 			cell.expandIconView?.image = treeController?.isItemExpanded(self) == true ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")

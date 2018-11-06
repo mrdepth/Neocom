@@ -72,7 +72,7 @@ class SkillQueueInteractorMock: SkillQueueInteractor {
 		
 		let queuedSkill = ESI.Skills.SkillQueueItem.init(finishDate: Date.init(timeIntervalSinceNow: 60), finishedLevel: 1, levelEndSP: skill.skillPoints(at: 1), levelStartSP: 0, queuePosition: 0, skillID: skill.typeID, startDate: Date.init(timeIntervalSinceNow: -60), trainingStartSP: 0)
 		character.skillQueue.append(Neocom.Character.SkillQueueItem(skill: skill, queuedSkill: queuedSkill))
-		let result = ESI.Result(value: character, expires: nil)
+		let result = ESI.Result(value: character, expires: nil, metadata: nil)
 		return .init(result)
 	}
 }

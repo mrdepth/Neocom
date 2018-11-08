@@ -122,7 +122,12 @@ enum Router {
 		static func newMail(_ input: NewMail.View.Input) -> Route<NewMail> {
 			return Route(assembly: NewMail.default, input: input, kind: .adaptiveModal)
 		}
-
+	}
+	
+	enum Business {
+		static func assets() -> Route<Assets> {
+			return Route(assembly: Assets.default, kind: .detail)
+		}
 	}
 }
 

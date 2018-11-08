@@ -124,6 +124,17 @@ class MainMenuPresenter: TreePresenter {
 																	Tree.Item.MainMenuRow(title: NSLocalizedString("Wormholes", comment: ""), image: Image( #imageLiteral(resourceName: "terminate")), route: Router.SDE.whTypes()),
 																	Tree.Item.MainMenuRow(title: NSLocalizedString("Incursions", comment: ""), image: Image( #imageLiteral(resourceName: "incursions")), route: Router.MainMenu.incursion())
 						]).asAnyItem,
+					Tree.Item.SimpleSection<Tree.Item.MainMenuAPIRow>(title: NSLocalizedString("Business", comment: "").uppercased(),
+																	  treeController: view?.treeController,
+																	  children: [
+																		Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Assets", comment: ""),
+																								 image: Image( #imageLiteral(resourceName: "assets")),
+																								 account: account,
+																								 //value: characterSheet(),
+																								 treeController: view?.treeController,
+																								 route: Router.Business.assets(),
+																								 require: [.esiAssetsReadAssetsV1])
+																		].compactMap{$0}).asAnyItem,
 					]
 
 		return .init(menu)

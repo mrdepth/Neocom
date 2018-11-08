@@ -71,10 +71,16 @@ class MailBodyViewController: UIViewController, ContentProviderView {
 }
 
 extension MailBodyViewController: UITextViewDelegate {
-	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
 		if UIApplication.shared.canOpenURL(URL) {
-			UIApplication.shared.openURL(URL)
+			UIApplication.shared.open(URL, options: [:], completionHandler: nil)
 		}
 		return false
 	}
+//	func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+//		if UIApplication.shared.canOpenURL(URL) {
+//			UIApplication.shared.open(URL, options: [:], completionHandler: nil)
+//		}
+//		return false
+//	}
 }

@@ -9,5 +9,10 @@
 import Foundation
 import TreeController
 
-class AssetsViewController: TreeViewController<AssetsPresenter, Void>, TreeView {
+class AssetsViewController: TreeViewController<AssetsPresenter, Void>, TreeView, SearchableViewController {
+	
+	func searchResultsController() -> UIViewController & UISearchResultsUpdating {
+		return try! AssetsSearchResults.default.instantiate([]).get()
+	}
+
 }

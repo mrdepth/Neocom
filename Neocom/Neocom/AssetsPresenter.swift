@@ -51,10 +51,10 @@ class AssetsPresenter: TreePresenter {
 //			let items = Dictionary(content.value.assets.map { ($0.itemID, $0) }, uniquingKeysWith: { a, _ in a})
 			let contents = Dictionary(grouping: content.value.assets, by: {$0.locationID})
 			
-			let invTypes: [Int: SDEInvType] = !typeIDs.isEmpty ? [:] : try {
+			let invTypes: [Int: SDEInvType] = typeIDs.isEmpty ? [:] : try {
 				let types = try context.managedObjectContext
 					.from(SDEInvType.self)
-					.filter((\SDEInvType.typeID).in(typeIDs))
+					.filter((\SDEInvType.typeID).in(Set(typeIDs)))
 					.all()
 					.map {(Int($0.typeID), $0)}
 				return Dictionary(types, uniquingKeysWith: { a, _ in a})
@@ -90,16 +90,32 @@ class AssetsPresenter: TreePresenter {
 
 				sections.insert(section, at: 0)
 			}
+			
+//			let assets = sections.flatMap { $0.children?.flatMap {$0.flattened} ?? [] }
+//			var index = [String: [Tree.Item.AssetRow]]()
+//			for asset in assets {
+//				for key in asset.searchIndex {
+//					index[key, default: []].append(asset)
+//				}
+//			}
+			
 			return sections
+		}.then(on: .main) { [weak self] presentation -> Presentation in
+			(self?.view?.searchController?.searchResultsController as? AssetsSearchResultsViewController)?.input = presentation
+			return presentation
 		}
 	}
 }
 
 extension Tree.Item {
-	class AssetRow: Tree.Item.ExpandableRow<Tree.Content.Default, AnyTreeItem> {
+	class AssetRow: Tree.Item.Collection<Tree.Content.Default, AnyTreeItem> {
+
 		let asset: ESI.Assets.Asset
 		let typeName: String
+		let groupName: String?
+		let categoryName: String?
 		let name: String?
+//		let searchIndex: [SearchIndex]
 		
 		init(asset: ESI.Assets.Asset, names: [Int64: ESI.Assets.Name]?, contents: [Int64: [ESI.Assets.Asset]], types: [Int: SDEInvType]) {
 			self.asset = asset
@@ -121,6 +137,12 @@ extension Tree.Item {
 
 			let name = names?[asset.itemID]?.name
 			self.name = name
+			groupName = type?.group?.groupName
+			categoryName = type?.group?.category?.categoryName
+//			searchIndex = [SearchIndex(category: .typeName, key: typeName),
+//						   name.map {SearchIndex(category: .shipName, key: $0)},
+//						   groupName.map {SearchIndex(category: .groupName, key: $0)},
+//						   categoryName.map {SearchIndex(category: .categoryName, key: $0)}].compactMap {$0}
 
 			if let nested = contents[asset.itemID]?.map({AssetRow(asset: $0, names: names, contents: contents, types: types)}),
 				!nested.isEmpty {
@@ -152,8 +174,30 @@ extension Tree.Item {
 											   subtitle: subtitle,
 											   image: Image(type?.icon),
 											   accessoryType: UITableViewCell.AccessoryType.disclosureIndicator)
-
-			super.init(content, diffIdentifier: asset, isExpanded: true, children: children)
+			super.init(content, diffIdentifier: asset, children: children)
+		}
+		
+		init(_ other: AssetRow) {
+			asset = other.asset
+			typeName = other.typeName
+			groupName = other.groupName
+			categoryName = other.categoryName
+			name = other.name
+//			searchIndex = other.searchIndex
+			super.init(other.content, diffIdentifier: other.diffIdentifier, children: nil)
+		}
+		
+		var flattened: [AssetRow] {
+			var result = [self]
+			children?.forEach { i in
+				if let section = i.base as? Header<AssetRow> {
+					(section.children?.flatMap {$0.flattened}).map { result.append(contentsOf: $0) }
+				}
+				else if let row = i.base as? AssetRow {
+					result.append(contentsOf: row.flattened)
+				}
+			}
+			return result
 		}
 	}
 }

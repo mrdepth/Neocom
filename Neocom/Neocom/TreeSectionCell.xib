@@ -19,14 +19,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="BqY-Ly-TVL">
-                        <rect key="frame" x="8" y="15" width="296" height="16.5"/>
+                        <rect key="frame" x="16" y="15" width="288" height="16.5"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" image="expand" translatesAutoresizingMaskIntoConstraints="NO" id="6yH-cF-WLl" customClass="TintImageView" customModule="Neocom" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.5" width="16" height="16"/>
                                 <color key="tintColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="749" text="LABEL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gkK-pd-whc">
-                                <rect key="frame" x="24" y="0.5" width="272" height="16"/>
+                                <rect key="frame" x="24" y="0.5" width="264" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -35,10 +35,10 @@
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="BqY-Ly-TVL" firstAttribute="leading" secondItem="SQ4-QF-0zT" secondAttribute="leading" constant="8" id="Iis-vd-xcy"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="BqY-Ly-TVL" secondAttribute="trailing" id="B8f-45-C3r"/>
                     <constraint firstAttribute="bottom" secondItem="BqY-Ly-TVL" secondAttribute="bottom" constant="8" id="SzY-hK-3zl"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="BqY-Ly-TVL" secondAttribute="trailing" id="hhf-Ck-rPa"/>
                     <constraint firstItem="BqY-Ly-TVL" firstAttribute="top" secondItem="SQ4-QF-0zT" secondAttribute="top" constant="15" id="tVN-XV-O4N"/>
+                    <constraint firstItem="BqY-Ly-TVL" firstAttribute="leading" secondItem="SQ4-QF-0zT" secondAttribute="leadingMargin" id="xhO-Tr-WfE"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>

@@ -215,7 +215,7 @@ extension Tree.Item {
 		}
 	}
 	
-	class AccountsFolderItem: Tree.Item.Section<AccountsResultsController>, FetchedResultsTreeItem {
+	class AccountsFolderItem: Tree.Item.Section<Tree.Content.Section, AccountsResultsController>, FetchedResultsTreeItem {
 		var result: AccountsFolder
 		weak var section: FetchedResultsSectionProtocol?
 		
@@ -262,7 +262,7 @@ extension Tree.Item {
 		}
 	}
 	
-	class AccountsDefaultFolder: Tree.Item.Section<AccountsResultsController> {
+	class AccountsDefaultFolder: Tree.Item.Section<Tree.Content.Section, AccountsResultsController> {
 		var cachePolicy: URLRequest.CachePolicy
 		
 		init(treeController: TreeController?, cachePolicy: URLRequest.CachePolicy) {

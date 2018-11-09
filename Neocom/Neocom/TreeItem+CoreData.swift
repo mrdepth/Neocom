@@ -226,16 +226,22 @@ extension Tree.Item {
 	
 	class NamedFetchedResultsController<Section: FetchedResultsSectionTreeItem>: FetchedResultsController<Section>, CellConfiguring, ExpandableItem {
 		var isExpanded: Bool {
-			get {
-				return content.isExpanded
-			}
-			set {
-				content.isExpanded = newValue
+			didSet {
 				if let cell = treeController?.cell(for: self) {
 					configure(cell: cell, treeController: treeController)
 				}
 				treeController?.deselectCell(for: self, animated: true)
 			}
+//			get {
+//				return content.isExpanded
+//			}
+//			set {
+//				content.isExpanded = newValue
+//				if let cell = treeController?.cell(for: self) {
+//					configure(cell: cell, treeController: treeController)
+//				}
+//				treeController?.deselectCell(for: self, animated: true)
+//			}
 		}
 
 		var prototype: Prototype? {
@@ -245,14 +251,15 @@ extension Tree.Item {
 		var expandIdentifier: CustomStringConvertible?
 		var content: Tree.Content.Section
 		
-		init<T: Hashable>(_ content: Tree.Content.Section, fetchedResultsController: NSFetchedResultsController<Section.Child.Result>, diffIdentifier: T, expandIdentifier: CustomStringConvertible? = nil, treeController: TreeController?) {
+		init<T: Hashable>(_ content: Tree.Content.Section, fetchedResultsController: NSFetchedResultsController<Section.Child.Result>, isExpanded: Bool = true, diffIdentifier: T, expandIdentifier: CustomStringConvertible? = nil, treeController: TreeController?) {
 			self.expandIdentifier = expandIdentifier
 			self.content = content
+			self.isExpanded = isExpanded
 			super.init(fetchedResultsController, diffIdentifier: diffIdentifier, treeController: treeController)
 		}
 
-		convenience init(_ content: Tree.Content.Section, fetchedResultsController: NSFetchedResultsController<Section.Child.Result>, expandIdentifier: CustomStringConvertible? = nil, treeController: TreeController?) {
-			self.init(content, fetchedResultsController: fetchedResultsController, diffIdentifier: fetchedResultsController.fetchRequest, expandIdentifier: expandIdentifier, treeController: treeController)
+		convenience init(_ content: Tree.Content.Section, fetchedResultsController: NSFetchedResultsController<Section.Child.Result>, isExpanded: Bool = true, expandIdentifier: CustomStringConvertible? = nil, treeController: TreeController?) {
+			self.init(content, fetchedResultsController: fetchedResultsController, isExpanded: isExpanded, diffIdentifier: fetchedResultsController.fetchRequest, expandIdentifier: expandIdentifier, treeController: treeController)
 		}
 
 		func configure(cell: UITableViewCell, treeController: TreeController?) {

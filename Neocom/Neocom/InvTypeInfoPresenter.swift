@@ -99,7 +99,7 @@ class InvTypeInfoPresenter: TreePresenter {
 			}
 			
 			if type.marketGroup != nil {
-				let marketSection = Tree.Item.Section<AnyTreeItem>(Tree.Content.Section(title: NSLocalizedString("Market", comment: "").uppercased()), diffIdentifier: "MarketSection", expandIdentifier: "MarketSection", treeController: self.view?.treeController, children: [])
+				let marketSection = Tree.Item.Section<Tree.Content.Section, AnyTreeItem>(Tree.Content.Section(title: NSLocalizedString("Market", comment: "").uppercased()), diffIdentifier: "MarketSection", expandIdentifier: "MarketSection", treeController: self.view?.treeController, children: [])
 				
 				presentation.insert(marketSection.asAnyItem, at: 0)
 				
@@ -360,7 +360,7 @@ extension Tree.Item {
 		var children: [InvTypeRequiredSkillRow]?
 	}
 	
-	class InvTypeSkillsSection: Section<Tree.Item.InvTypeRequiredSkillRow> {
+	class InvTypeSkillsSection: Section<Tree.Content.Section, Tree.Item.InvTypeRequiredSkillRow> {
 		init<T: Hashable>(title: String, trainingQueue: TrainingQueue, character: Character?, diffIdentifier: T, expandIdentifier: CustomStringConvertible? = nil, treeController: TreeController?, isExpanded: Bool = true, children: [Tree.Item.InvTypeRequiredSkillRow]?, action: ((UIControl) -> Void)?) {
 			let trainingTime = trainingQueue.trainingTime()
 			
@@ -373,9 +373,9 @@ extension Tree.Item {
 			}
 			
 //			let actions: Tree.Content.Section.Actions = character == nil || trainingTime == 0 ? [] : [.normal]
-			let content = Tree.Content.Section(attributedTitle: attributedTitle, isExpanded: isExpanded)
+			let content = Tree.Content.Section(attributedTitle: attributedTitle)
 			//TODO: Add SkillQueue handler
-			super.init(content, diffIdentifier: diffIdentifier, expandIdentifier: expandIdentifier, treeController: treeController, children: children, action: action)
+			super.init(content, isExpanded: isExpanded, diffIdentifier: diffIdentifier, expandIdentifier: expandIdentifier, treeController: treeController, children: children, action: action)
 		}
 		
 	}
@@ -507,27 +507,27 @@ extension InvTypeInfoPresenter {
 		return sections
 	}
 	
-	func variationsPresentation(for type: SDEInvType, context: SDEContext) -> Tree.Item.Section<Tree.Item.RoutableRow<Tree.Content.Default>>? {
+	func variationsPresentation(for type: SDEInvType, context: SDEContext) -> Tree.Item.Section<Tree.Content.Section, Tree.Item.RoutableRow<Tree.Content.Default>>? {
 		guard type.parentType != nil || (type.variations?.count ?? 0) > 0 else {return nil}
 		let n = max(type.variations?.count ?? 0, type.parentType?.variations?.count ?? 0) + 1
 		let row = Tree.Item.RoutableRow<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute, title: String.localizedStringWithFormat("%d types", n).uppercased(), accessoryType: .disclosureIndicator),
 															  diffIdentifier: "Variations",
 															  route: Router.SDE.invTypeVariations(.objectID(type.objectID)))
-		let section = Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Variations", comment: "").uppercased(), isExpanded: true), diffIdentifier: "VariationsSection", expandIdentifier: "VariationsSection", treeController: view?.treeController, children: [row])
+		let section = Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Variations", comment: "").uppercased()), diffIdentifier: "VariationsSection", expandIdentifier: "VariationsSection", treeController: view?.treeController, children: [row])
 		return section
 	}
 	
-	func requiredForPresentation(for type: SDEInvType, context: SDEContext) -> Tree.Item.Section<Tree.Item.RoutableRow<Tree.Content.Default>>? {
+	func requiredForPresentation(for type: SDEInvType, context: SDEContext) -> Tree.Item.Section<Tree.Content.Section, Tree.Item.RoutableRow<Tree.Content.Default>>? {
 		guard let n = type.requiredForSkill?.count, n > 0 else { return nil }
 		let row = Tree.Item.RoutableRow<Tree.Content.Default>(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.attribute,
 																		   title: String.localizedStringWithFormat("%d types", n).uppercased()),
 															  diffIdentifier: "RequiredFor",
 															  route: Router.SDE.invTypeRequiredFor(.objectID(type.objectID)))
-		let section = Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Required for", comment: "").uppercased(), isExpanded: true), diffIdentifier: "RequiredForSection", expandIdentifier: "RequiredForSection", treeController: view?.treeController, children: [row])
+		let section = Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Required for", comment: "").uppercased()), diffIdentifier: "RequiredForSection", expandIdentifier: "RequiredForSection", treeController: view?.treeController, children: [row])
 		return section
 	}
 	
-	func skillPlanPresentation(for type: SDEInvType, character: Character?, context: SDEContext) -> Tree.Item.Section<Tree.Item.InvTypeRequiredSkillRow>? {
+	func skillPlanPresentation(for type: SDEInvType, character: Character?, context: SDEContext) -> Tree.Item.Section<Tree.Content.Section, Tree.Item.InvTypeRequiredSkillRow>? {
 		guard (type.group?.category?.categoryID).flatMap({SDECategoryID(rawValue: $0)}) == .skill else {return nil}
 		
 
@@ -535,10 +535,10 @@ extension InvTypeInfoPresenter {
 			.filter {$0.trainingTime > 0}
 		guard !rows.isEmpty else {return nil}
 		
-		return Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Skill Plan", comment: "").uppercased(), isExpanded: true), diffIdentifier: "SkillPlan", expandIdentifier: "SkillPlan", treeController: view?.treeController, children: rows)
+		return Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Skill Plan", comment: "").uppercased()), diffIdentifier: "SkillPlan", expandIdentifier: "SkillPlan", treeController: view?.treeController, children: rows)
 	}
 	
-	func masteriesPresentation(for type: SDEInvType, character: Character?, context: SDEContext) -> Tree.Item.Section<Tree.Item.Row<Tree.Content.Default>>? {
+	func masteriesPresentation(for type: SDEInvType, character: Character?, context: SDEContext) -> Tree.Item.Section<Tree.Content.Section, Tree.Item.Row<Tree.Content.Default>>? {
 		var masteries = [Int: [SDECertMastery]]()
 		
 		(type.certificates?.allObjects as? [SDECertCertificate])?.forEach { certificate in
@@ -569,7 +569,7 @@ extension InvTypeInfoPresenter {
 		}
 		
 		guard !rows.isEmpty else {return nil}
-		return Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Mastery", comment: "").uppercased(), isExpanded: true), diffIdentifier: "Mastery", expandIdentifier: "Mastery", treeController: view?.treeController, children: rows)
+		return Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Mastery", comment: "").uppercased()), diffIdentifier: "Mastery", expandIdentifier: "Mastery", treeController: view?.treeController, children: rows)
 	}
 	
 	func requiredSkillsPresentation(for type: SDEInvType, character: Character?, context: SDEContext) -> Tree.Item.InvTypeSkillsSection? {

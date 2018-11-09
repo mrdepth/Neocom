@@ -630,7 +630,7 @@ class APIClient: API {
 			}
 			
 			return firstPage.map {
-				($0 + assets).filter({$0.locationFlag != .skill && $0.locationFlag != .implant})
+				Set($0 + assets).filter({$0.locationFlag != .skill && $0.locationFlag != .implant})
 			}
 		}
 	}

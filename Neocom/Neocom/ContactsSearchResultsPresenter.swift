@@ -15,7 +15,7 @@ import EVEAPI
 class ContactsSearchResultsPresenter: TreePresenter {
 	typealias View = ContactsSearchResultsViewController
 	typealias Interactor = ContactsSearchResultsInteractor
-	typealias Presentation = [Tree.Item.Section<Tree.Item.ContactRow>]
+	typealias Presentation = [Tree.Item.Section<Tree.Content.Section, Tree.Item.ContactRow>]
 	
 	weak var view: View?
 	lazy var interactor: Interactor! = Interactor(presenter: self)

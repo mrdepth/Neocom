@@ -51,47 +51,54 @@ extension Tree.Content {
 		var prototype: Prototype?
 		var title: String?
 		var attributedTitle: NSAttributedString?
-		var isExpanded: Bool
+//		var isExpanded: Bool
 		
-		init (prototype: Prototype = Prototype.TreeSectionCell.default, title: String? = nil, attributedTitle: NSAttributedString? = nil, isExpanded: Bool = true) {
+		init (prototype: Prototype = Prototype.TreeSectionCell.default, title: String? = nil, attributedTitle: NSAttributedString? = nil/*, isExpanded: Bool = true*/) {
 			self.prototype = prototype
 			self.title = title
 			self.attributedTitle = attributedTitle
-			self.isExpanded = isExpanded
+//			self.isExpanded = isExpanded
 		}
 	}
 }
 
 extension Tree.Item {
 	
-	class Section<Element: TreeItem>: Collection<Tree.Content.Section, Element>, ExpandableItem {
+	class Section<Content: Hashable, Element: TreeItem>: Collection<Content, Element>, ExpandableItem {
 		
 		var action: ((UIControl) -> Void)?
 		var editingAction: ((UIControl) -> Void)?
 
 		weak var treeController: TreeController?
 		var isExpanded: Bool {
-			get {
-				return content.isExpanded
-			}
-			set {
-				content.isExpanded = newValue
+			didSet {
 				if let cell = treeController?.cell(for: self) {
 					configure(cell: cell, treeController: treeController)
 				}
 				treeController?.deselectCell(for: self, animated: true)
 			}
+//			get {
+//				return content.isExpanded
+//			}
+//			set {
+//				content.isExpanded = newValue
+//				if let cell = treeController?.cell(for: self) {
+//					configure(cell: cell, treeController: treeController)
+//				}
+//				treeController?.deselectCell(for: self, animated: true)
+//			}
 		}
 		
 		var expandIdentifier: CustomStringConvertible?
 		
-		init<T: Hashable>(_ content: Tree.Content.Section, diffIdentifier: T, expandIdentifier: CustomStringConvertible? = nil, treeController: TreeController?, children: [Element]? = nil, action: ((UIControl) -> Void)? = nil, editingAction: ((UIControl) -> Void)? = nil) {
+		init<T: Hashable>(_ content: Content, isExpanded: Bool = true, diffIdentifier: T, expandIdentifier: CustomStringConvertible? = nil, treeController: TreeController?, children: [Element]? = nil, action: ((UIControl) -> Void)? = nil, editingAction: ((UIControl) -> Void)? = nil) {
 			self.action = action
 			self.editingAction = editingAction
 			self.treeController = treeController
 			self.expandIdentifier = expandIdentifier
 			self.action = action
 			self.editingAction = editingAction
+			self.isExpanded = isExpanded
 
 			super.init(content, diffIdentifier: diffIdentifier, children: children)
 		}
@@ -129,7 +136,7 @@ extension Tree.Item {
 		}
 	}
 	
-	class SimpleSection<Element: TreeItem>: Section<Element> {
+	class SimpleSection<Element: TreeItem>: Section<Tree.Content.Section, Element> {
 		init(title: String, treeController: TreeController?, children: [Element]? = nil) {
 			let identifier = "\(type(of: self)).\(title)"
 			super.init(Tree.Content.Section(title: title), diffIdentifier: identifier, expandIdentifier: identifier, treeController: treeController, children: children)

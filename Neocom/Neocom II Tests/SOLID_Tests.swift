@@ -213,7 +213,7 @@ extension Tree.Item {
 	class SolidTestFoldersResultsController: FetchedResultsController<FetchedResultsSection<SolidTestFolderItem>> {
 	}
 	
-	class SolidTestFolderItem: Tree.Item.Section<SolidTestAccountsResultsController>, FetchedResultsTreeItem {
+	class SolidTestFolderItem: Tree.Item.Section<Tree.Content.Section, SolidTestAccountsResultsController>, FetchedResultsTreeItem {
 		var result: AccountsFolder
 		weak var section: FetchedResultsSectionProtocol?
 		
@@ -247,7 +247,7 @@ extension Tree.Item {
 	class SolidTestAccountsResultsController: FetchedResultsController<FetchedResultsSection<SolidTestAccountItem>> {
 	}
 	
-	class SolidTestDefaultFolder: Tree.Item.Section<SolidTestAccountsResultsController> {
+	class SolidTestDefaultFolder: Tree.Item.Section<Tree.Content.Section, SolidTestAccountsResultsController> {
 		
 		init(treeController: TreeController?) {
 			let managedObjectContext = Services.storage.viewContext.managedObjectContext

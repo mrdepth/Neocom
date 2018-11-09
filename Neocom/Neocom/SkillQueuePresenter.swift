@@ -167,7 +167,7 @@ extension Tree.Item {
 	
 	class SkillPlansResultsController: NamedFetchedResultsController<FetchedResultsSection<SkillPlanRow>> {
 		weak var presenter: SkillQueuePresenter?
-		private var section: Tree.Item.Section<Child>
+		private var section: Tree.Item.Section<Tree.Content.Section, Child>
 		
 		init(account: Account, treeController: TreeController?, presenter: SkillQueuePresenter?) {
 			self.presenter = presenter
@@ -211,7 +211,7 @@ extension Tree.Item {
 		}
 	}
 	
-	class SkillPlanRow: Section<SkillPlanSkillsResultsController>, FetchedResultsTreeItem {
+	class SkillPlanRow: Section<Tree.Content.Section, SkillPlanSkillsResultsController>, FetchedResultsTreeItem {
 		typealias Result = SkillPlan
 		
 		private lazy var _children: [Child]? = {
@@ -235,7 +235,7 @@ extension Tree.Item {
 			self.result = result
 			self.section = section
 			let presenter = (section.controller as? SkillPlansResultsController)?.presenter
-			super.init(Tree.Content.Section(title: result.name?.uppercased(), isExpanded: result.active), diffIdentifier: result, treeController: section.controller?.treeController)
+			super.init(Tree.Content.Section(title: result.name?.uppercased()), isExpanded: result.active, diffIdentifier: result, treeController: section.controller?.treeController)
 			action = { [weak presenter] (control) in
 				presenter?.onSkillPlanAction(result, sender: control)
 			}
@@ -309,7 +309,7 @@ extension Tree.Item {
 		}
 	}
 	
-	class OptimalAttributesSection: Section<Tree.Item.Row<Tree.Content.Default>> {
+	class OptimalAttributesSection: Section<Tree.Content.Section, Tree.Item.Row<Tree.Content.Default>> {
 		var account: Account
 		var character: Character
 		var skillPlan: SkillPlan?
@@ -318,7 +318,8 @@ extension Tree.Item {
 		init(character: Character, account: Account, treeController: TreeController?) {
 			self.account = account
 			self.character = character
-			super.init(Tree.Content.Section(title: NSLocalizedString("Attributes", comment: "").uppercased(), isExpanded: false),
+			super.init(Tree.Content.Section(title: NSLocalizedString("Attributes", comment: "").uppercased()),
+					   isExpanded: false,
 					   diffIdentifier: "Attributes",
 					   expandIdentifier: "Attributes",
 					   treeController: treeController,

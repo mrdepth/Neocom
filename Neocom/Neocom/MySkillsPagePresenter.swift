@@ -14,7 +14,7 @@ import TreeController
 class MySkillsPagePresenter: TreePresenter {
 	typealias View = MySkillsPageViewController
 	typealias Interactor = MySkillsPageInteractor
-	typealias Presentation = [Tree.Item.Section<Tree.Item.SkillRow>]
+	typealias Presentation = [Tree.Item.Section<Tree.Content.Section, Tree.Item.SkillRow>]
 	
 	weak var view: View?
 	lazy var interactor: Interactor! = Interactor(presenter: self)
@@ -41,9 +41,9 @@ class MySkillsPagePresenter: TreePresenter {
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
 		
-		let sections = content.map { section -> Tree.Item.Section<Tree.Item.SkillRow> in
+		let sections = content.map { section -> Tree.Item.Section<Tree.Content.Section, Tree.Item.SkillRow> in
 			let title = " \(section.groupName) (\(UnitFormatter.localizedString(from: section.rows.count, unit: .none, style: .long)) \(NSLocalizedString("SKILLS", comment: "")), \(UnitFormatter.localizedString(from: section.skillPoints, unit: .skillPoints, style: .long))) "
-			return Tree.Item.Section(Tree.Content.Section(title: title, isExpanded: false), diffIdentifier: section.groupName, expandIdentifier: section.groupName, treeController: view?.treeController, children: section.rows)
+			return Tree.Item.Section(Tree.Content.Section(title: title), isExpanded: false, diffIdentifier: section.groupName, expandIdentifier: section.groupName, treeController: view?.treeController, children: section.rows)
 		}
 		return .init(sections)
 	}

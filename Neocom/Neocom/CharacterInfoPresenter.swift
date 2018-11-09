@@ -15,7 +15,7 @@ import CoreData
 class CharacterInfoPresenter: TreePresenter {
 	typealias View = CharacterInfoViewController
 	typealias Interactor = CharacterInfoInteractor
-	typealias Presentation = [Tree.Item.Section<Tree.Item.Row<Tree.Content.Default>>]
+	typealias Presentation = [Tree.Item.Section<Tree.Content.Section, Tree.Item.Row<Tree.Content.Default>>]
 	
 	weak var view: View?
 	lazy var interactor: Interactor! = Interactor(presenter: self)
@@ -210,7 +210,7 @@ class CharacterInfoPresenter: TreePresenter {
 }
 
 extension Tree.Item {
-	class ImplantsSection: Section<Tree.Item.Row<Tree.Content.Default>> {
+	class ImplantsSection: Section<Tree.Content.Section, Tree.Item.Row<Tree.Content.Default>> {
 		
 		convenience init<T: Hashable>(_ implants: [Int], title: String?, diffIdentifier: T, treeController: TreeController?) {
 			self.init(implants, attributedTitle: title.map{ NSAttributedString(string: $0) }, diffIdentifier: diffIdentifier, treeController: treeController)

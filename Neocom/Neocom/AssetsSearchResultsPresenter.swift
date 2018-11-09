@@ -14,7 +14,7 @@ import TreeController
 class AssetsSearchResultsPresenter: TreePresenter {
 	typealias View = AssetsSearchResultsViewController
 	typealias Interactor = AssetsSearchResultsInteractor
-	typealias Presentation = [Tree.Item.Section<Tree.Item.AssetRow>]
+	typealias Presentation = [Tree.Item.Section<EVELocation, Tree.Item.AssetRow>]
 	
 	weak var view: View?
 	lazy var interactor: Interactor! = Interactor(presenter: self)
@@ -44,18 +44,19 @@ class AssetsSearchResultsPresenter: TreePresenter {
 		guard let string = searchManager.pop()?.lowercased(), !string.isEmpty else {return .init([])}
 		let treeController = view?.treeController
 		return DispatchQueue.global(qos: .utility).async {
-			content.compactMap { i -> Tree.Item.Section<Tree.Item.AssetRow>? in
+			content.index.compactMap { i -> Tree.Item.Section<EVELocation, Tree.Item.AssetRow>? in
 				let rows: Set<Tree.Item.AssetRow>
-				if (i.0.attributedTitle?.string ?? i.0.title)?.lowercased().contains(string) == true {
+				if i.0.displayName.string.lowercased().contains(string) {
 					rows = Set(i.1.values.joined())
 				}
 				else {
 					rows = Set(i.1.filter {$0.key.contains(string)}.values.joined())
 				}
 				guard !rows.isEmpty else { return nil }
-				var content = i.0
-				content.isExpanded = rows.count < 100
-				return Tree.Item.Section(content, diffIdentifier: i.0,
+				let isExpanded = rows.count < 100
+				return Tree.Item.Section(i.0,
+										 isExpanded: isExpanded,
+										 diffIdentifier: i.0,
 										 treeController: treeController,
 										 children: rows.sorted {$0.typeName < $1.typeName})
 			}
@@ -66,5 +67,18 @@ class AssetsSearchResultsPresenter: TreePresenter {
 	
 	func updateSearchResults(with string: String?) {
 		searchManager.updateSearchResults(with: string ?? "")
+		if let content = content, let prefix = string?.lowercased(), !prefix.isEmpty {
+			let suggestions = content.suggestions.filter({$0.0.hasPrefix(prefix)}).prefix(3).map{$0.1}
+			if !suggestions.isEmpty {
+				view?.suggestions = suggestions
+			}
+			else {
+				view?.suggestions = content.suggestions.filter({$0.0.contains(prefix)}).prefix(3).map{$0.1}
+			}
+		}
+		else {
+			view?.suggestions = nil
+		}
 	}
+	
 }

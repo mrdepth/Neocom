@@ -12,23 +12,16 @@ import CloudData
 
 class AssetsSearchResultsInteractor: TreeInteractor {
 	typealias Presenter = AssetsSearchResultsPresenter
-	typealias Content = [(Tree.Content.Section, [String: [Tree.Item.AssetRow]])]
+	typealias Content = Value
 	weak var presenter: Presenter?
 	
 	required init(presenter: Presenter) {
 		self.presenter = presenter
 	}
 	
-	struct SearchIndex: Hashable {
-		enum Category {
-			case location
-			case typeName
-			case groupName
-			case categoryName
-			case name
-		}
-		let category: Category
-		let key: String
+	struct Value {
+		var suggestions: [(String, String)]
+		var index: [(EVELocation, [String: [Tree.Item.AssetRow]])]
 	}
 	
 	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Content> {
@@ -39,7 +32,8 @@ class AssetsSearchResultsInteractor: TreeInteractor {
 		else {
 			return DispatchQueue.global(qos: .utility).async { () -> Content in
 				
-				var index = Content()
+				var index = [(EVELocation, [String: [Tree.Item.AssetRow]])]()
+				var suggestions = [String: String]()
 
 				for section in input {
 					var dic = [String: [Tree.Item.AssetRow]]()
@@ -50,13 +44,21 @@ class AssetsSearchResultsInteractor: TreeInteractor {
 						 asset.groupName,
 						 asset.categoryName,
 						 asset.name]
-							.compactMap {$0?.lowercased()}
+							.compactMap {$0}
 							.filter {!$0.isEmpty}
-							.forEach {dic[$0, default: []].append(Tree.Item.AssetRow(asset))}
+							.forEach {
+								let key = $0.lowercased()
+								suggestions[key] = $0
+								dic[key, default: []].append(Tree.Item.AssetRow(asset))
+						}
 					}
 					index.append((section.content, dic))
+					[section.content.itemName, section.content.solarSystemName].compactMap {$0}.forEach {
+						suggestions[$0.lowercased()] = $0
+					}
 				}
-				return index
+				
+				return Value(suggestions: suggestions.sorted {$0.key.count < $1.key.count}, index: index)
 			}
 		}
 	}

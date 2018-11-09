@@ -15,7 +15,7 @@ import EVEAPI
 class AssetsPresenter: TreePresenter {
 	typealias View = AssetsViewController
 	typealias Interactor = AssetsInteractor
-	typealias Presentation = [Tree.Item.Section<Tree.Item.AssetRow>]
+	typealias Presentation = [Tree.Item.Section<EVELocation, Tree.Item.AssetRow>]
 	
 	weak var view: View?
 	lazy var interactor: Interactor! = Interactor(presenter: self)
@@ -61,14 +61,15 @@ class AssetsPresenter: TreePresenter {
 			}()
 			
 			var unknown = [Tree.Item.AssetRow]()
-			var sections = [Tree.Item.Section<Tree.Item.AssetRow>]()
+			var sections = [Tree.Item.Section<EVELocation, Tree.Item.AssetRow>]()
 			
 			for locationID in locationIDs {
-				guard var rows = contents[locationID]?.map ({Tree.Item.AssetRow(asset: $0, names: content.value.names, contents: contents, types: invTypes)}) else {continue}
+				guard var rows = contents[locationID]?.compactMap ({Tree.Item.AssetRow(asset: $0, names: content.value.names, contents: contents, types: invTypes)}) else {continue}
 				
 				if let location = content.value.locations?[locationID] {
 					rows.sort { $0.typeName < $1.typeName }
-					let section = Tree.Item.Section(Tree.Content.Section(attributedTitle: location.displayName.uppercased(), isExpanded: false),
+					let section = Tree.Item.Section(location,
+													isExpanded: false,
 													diffIdentifier: locationID,
 													expandIdentifier: locationID,
 													treeController: treeController,
@@ -79,10 +80,11 @@ class AssetsPresenter: TreePresenter {
 					unknown.append(contentsOf: rows)
 				}
 			}
-			sections.sort { ($0.content.attributedTitle?.string ?? "") < ($1.content.attributedTitle?.string ?? "") }
+			sections.sort { ($0.content.solarSystemName ?? "") < ($1.content.solarSystemName ?? "") }
 			if !unknown.isEmpty {
 				unknown.sort { $0.typeName < $1.typeName }
-				let section = Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Unknown Location", comment: "").uppercased(), isExpanded: false),
+				let section = Tree.Item.Section(EVELocation.unknown,
+												isExpanded: false,
 												diffIdentifier: -1,
 												expandIdentifier: -1,
 												treeController: treeController,
@@ -108,20 +110,20 @@ class AssetsPresenter: TreePresenter {
 }
 
 extension Tree.Item {
-	class AssetRow: Tree.Item.Collection<Tree.Content.Default, AnyTreeItem> {
+	class AssetRow: Tree.Item.Collection<Tree.Content.Default, AnyTreeItem>, Routable {
 
 		let asset: ESI.Assets.Asset
 		let typeName: String
 		let groupName: String?
 		let categoryName: String?
 		let name: String?
-//		let searchIndex: [SearchIndex]
+		var route: Routing?
 		
-		init(asset: ESI.Assets.Asset, names: [Int64: ESI.Assets.Name]?, contents: [Int64: [ESI.Assets.Asset]], types: [Int: SDEInvType]) {
+		init?(asset: ESI.Assets.Asset, names: [Int64: ESI.Assets.Name]?, contents: [Int64: [ESI.Assets.Asset]], types: [Int: SDEInvType]) {
 			self.asset = asset
 			
-			let type = types[asset.typeID]
-			let typeName = type?.typeName ?? NSLocalizedString("Unknown Type", comment: "")
+			guard let type = types[asset.typeID] else {return nil}
+			let typeName = type.typeName ?? NSLocalizedString("Unknown Type", comment: "")
 			let title: NSAttributedString
 			
 			if asset.quantity > 1 {
@@ -137,14 +139,10 @@ extension Tree.Item {
 
 			let name = names?[asset.itemID]?.name
 			self.name = name
-			groupName = type?.group?.groupName
-			categoryName = type?.group?.category?.categoryName
-//			searchIndex = [SearchIndex(category: .typeName, key: typeName),
-//						   name.map {SearchIndex(category: .shipName, key: $0)},
-//						   groupName.map {SearchIndex(category: .groupName, key: $0)},
-//						   categoryName.map {SearchIndex(category: .categoryName, key: $0)}].compactMap {$0}
+			groupName = type.group?.groupName
+			categoryName = type.group?.category?.categoryName
 
-			if let nested = contents[asset.itemID]?.map({AssetRow(asset: $0, names: names, contents: contents, types: types)}),
+			if let nested = contents[asset.itemID]?.compactMap({AssetRow(asset: $0, names: names, contents: contents, types: types)}),
 				!nested.isEmpty {
 				let map = Dictionary(grouping: nested, by: {ItemFlag(flag: $0.asset.locationFlag)})
 				var rows = map[nil]?.sorted{$0.typeName < $1.typeName}.map{$0.asAnyItem} ?? []
@@ -169,10 +167,11 @@ extension Tree.Item {
 				subtitle = name
 			}
 			
+			route = Router.SDE.invTypeInfo(.objectID(type.objectID))
 			
 			let content = Tree.Content.Default(attributedTitle: title,
 											   subtitle: subtitle,
-											   image: Image(type?.icon),
+											   image: Image(type.icon),
 											   accessoryType: UITableViewCell.AccessoryType.disclosureIndicator)
 			super.init(content, diffIdentifier: asset, children: children)
 		}
@@ -183,7 +182,7 @@ extension Tree.Item {
 			groupName = other.groupName
 			categoryName = other.categoryName
 			name = other.name
-//			searchIndex = other.searchIndex
+			route = other.route
 			super.init(other.content, diffIdentifier: other.diffIdentifier, children: nil)
 		}
 		

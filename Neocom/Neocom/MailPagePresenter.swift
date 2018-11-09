@@ -179,7 +179,7 @@ class MailPagePresenter: TreePresenter {
 
 
 extension Tree.Item {
-	class DateSection<Element: TreeItem>: Section<Element> {
+	class DateSection<Element: TreeItem>: Section<Tree.Content.Section, Element> {
 		let date: Date
 		
 		init<T: Hashable>(date: Date, doesRelativeDateFormatting: Bool = true, diffIdentifier: T, expandIdentifier: CustomStringConvertible? = nil, treeController: TreeController?, children: [Element]? = nil) {
@@ -191,8 +191,8 @@ extension Tree.Item {
 			formatter.dateStyle = .medium
 			let title = formatter.string(from: date).uppercased()
 			super.init(Tree.Content.Section(prototype: Prototype.TreeSectionCell.default,
-											title: title,
-											isExpanded: true),
+											title: title),
+					   isExpanded: true,
 					   diffIdentifier: diffIdentifier,
 					   expandIdentifier: expandIdentifier,
 					   treeController: treeController, children: children)

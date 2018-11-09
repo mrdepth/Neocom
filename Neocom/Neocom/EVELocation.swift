@@ -8,9 +8,19 @@
 
 import Foundation
 import EVEAPI
+import TreeController
 
 struct EVELocation: Hashable {
 	let displayName: NSAttributedString
+	
+	let stationID: Int?
+	let itemName: String?
+	let stationTypeID: Int?
+	let solarSystemID: Int?
+	let solarSystemName: String?
+	let corporationID: Int?
+	let corporationName: String?
+	let security: Float?
 	
 	init(_ station: SDEStaStation) {
 		self.init(stationID: Int(station.stationID),
@@ -102,6 +112,7 @@ struct EVELocation: Hashable {
 		if let security = security {
 			s.append(NSAttributedString(string: String(format: "%.1f ", security) , attributes: [NSAttributedString.Key.foregroundColor: UIColor(security: security)]))
 		}
+
 		if let itemName = itemName {
 			if let solarSystemName = solarSystemName {
 				let r = (itemName as NSString).range(of: solarSystemName)
@@ -122,7 +133,31 @@ struct EVELocation: Hashable {
 			s.append(NSAttributedString(string: solarSystemName))
 		}
 		
-		displayName = s
+		displayName = s.length > 0 ? s : NSAttributedString(string: NSLocalizedString("Unknown Location", comment: ""))
+		
+		self.stationID = stationID
+		self.itemName = itemName
+		self.stationTypeID = stationTypeID
+		self.solarSystemID = solarSystemID
+		self.solarSystemName = solarSystemName
+		self.corporationID = corporationID
+		self.corporationName = corporationName
+		self.security = security
+	}
+	
+	static let unknown = EVELocation(stationID: nil, itemName: nil, stationTypeID: nil, solarSystemID: nil, solarSystemName: nil, corporationID: nil, corporationName: nil, security: nil)
+}
+
+
+extension EVELocation: CellConfiguring {
+	var prototype: Prototype? {
+		return Prototype.TreeSectionCell.default
+	}
+	
+	func configure(cell: UITableViewCell, treeController: TreeController?) {
+		guard let cell = cell as? TreeSectionCell else {return}
+		cell.titleLabel?.attributedText = displayName.uppercased()
+		cell.titleLabel?.isHidden = false
 	}
 	
 }

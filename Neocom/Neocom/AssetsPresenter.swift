@@ -48,7 +48,6 @@ class AssetsPresenter: TreePresenter {
 			let locationIDs = Set(content.value.assets.map {$0.locationID}).subtracting(itemsIDs)
 			
 			let typeIDs = content.value.assets.map{$0.typeID}
-//			let items = Dictionary(content.value.assets.map { ($0.itemID, $0) }, uniquingKeysWith: { a, _ in a})
 			let contents = Dictionary(grouping: content.value.assets, by: {$0.locationID})
 			
 			let invTypes: [Int: SDEInvType] = typeIDs.isEmpty ? [:] : try {

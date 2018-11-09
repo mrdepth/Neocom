@@ -130,10 +130,21 @@ class MainMenuPresenter: TreePresenter {
 																		Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Assets", comment: ""),
 																								 image: Image( #imageLiteral(resourceName: "assets")),
 																								 account: account,
-																								 //value: characterSheet(),
 																								 treeController: view?.treeController,
 																								 route: Router.Business.assets(),
-																								 require: [.esiAssetsReadAssetsV1])
+																								 require: [.esiAssetsReadAssetsV1]),
+																		Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Market Orders", comment: ""),
+																								 image: Image( #imageLiteral(resourceName: "marketdeliveries")),
+																								 account: account,
+																								 treeController: view?.treeController,
+																								 route: Router.Business.marketOrders(),
+																								 require: [.esiMarketsReadCharacterOrdersV1]),
+																		Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Industry Jobs", comment: ""),
+																								 image: Image( #imageLiteral(resourceName: "industry")),
+																								 account: account,
+																								 treeController: view?.treeController,
+																								 route: Router.Business.industryJobs(),
+																								 require: [.esiIndustryReadCharacterJobsV1])
 																		].compactMap{$0}).asAnyItem,
 					]
 

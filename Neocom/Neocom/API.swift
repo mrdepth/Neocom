@@ -80,6 +80,7 @@ protocol MarketAPI: class {
 	func prices(typeIDs: Set<Int>) -> Future<[Int: Double]>
 	func marketHistory(typeID: Int, regionID: Int, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Market.History]>>
 	func marketOrders(typeID: Int, regionID: Int, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Market.Order]>>
+	func openOrders(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Market.CharacterOrder]>>
 }
 
 protocol UniverseAPI: class {
@@ -108,9 +109,12 @@ protocol IncursionsAPI: class {
 }
 
 protocol AssetsAPI: class {
-//	func assets(page: Int?, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Assets.Asset]>>
 	func assets(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Assets.Asset]>>
 	func assetNames(with ids: Set<Int64>, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[Int64: ESI.Assets.Name]>>
+}
+
+protocol IndustryAPI: class {
+	func industryJobs(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Industry.Job]>>
 }
 
 extension SearchAPI {
@@ -119,7 +123,7 @@ extension SearchAPI {
 	}
 }
 
-typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & SearchAPI & IncursionsAPI & AssetsAPI
+typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & SearchAPI & IncursionsAPI & AssetsAPI & IndustryAPI
 
 class APIClient: API {
 	
@@ -134,7 +138,7 @@ class APIClient: API {
 	}
 	
 	//MARK: CharacterAPI
-
+	
 	func characterInformation(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Character.Information>> {
 		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
 		return characterInformation(with: id, cachePolicy: cachePolicy)
@@ -439,6 +443,11 @@ class APIClient: API {
 		return esi.market.listOrdersInRegion(orderType: .all, regionID: regionID, typeID: typeID, cachePolicy: cachePolicy)
 	}
 	
+	func openOrders(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Market.CharacterOrder]>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+		return esi.market.listOpenOrdersFromCharacter(characterID: Int(id), cachePolicy: cachePolicy)
+	}
+	
 	//MARK: UniverseAPI
 	
 	func universeNames(ids: Set<Int64>) -> Future<ESI.Result<[ESI.Universe.Name]>> {
@@ -656,4 +665,12 @@ class APIClient: API {
 			return first.map { _ in values}
 		}
 	}
+	
+	//MARK: IndustryAPI
+	
+	func industryJobs(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Industry.Job]>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+		return esi.industry.listCharacterIndustryJobs(characterID: Int(id), includeCompleted: true, cachePolicy: cachePolicy)
+	}
+
 }

@@ -10,6 +10,7 @@ import XCTest
 import CoreData
 import EVEAPI
 import UIKit
+import Futures
 @testable import Neocom
 
 /*let sde: SDE = SDEContainer()
@@ -68,6 +69,7 @@ class TestCase: XCTestCase {
 		Services.userDefaults = UserDefaults()
 		Services.cache = cache()
 		Services.storage = storage()
+		Services.api = APIServiceMock()
 		let account = Services.storage.viewContext.newAccount(with: oAuth2Token)
 		try! Services.storage.viewContext.save()
 		Services.storage.viewContext.setCurrentAccount(account)
@@ -166,4 +168,56 @@ enum Size {
 			return 3
 		}
 	}
+}
+
+class APIServiceMock: APIService {
+	
+	func make(for account: Account?) -> API {
+		let esi = ESI(token: account?.oAuth2Token, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey, server: .tranquility)
+		return APIMock(esi: esi)
+	}
+	
+	var current: API {
+		return make(for: Services.storage.viewContext.currentAccount)
+	}
+	
+	func performAuthorization(from controller: UIViewController) {
+	}
+}
+
+class APIMock: APIClient {
+	
+	override func serverStatus(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Status.ServerStatus>> {
+		let value = ESI.Status.ServerStatus(players: 0, serverVersion: "1", startTime: Date(), vip: false)
+		return .init(ESI.Result(value: value, expires: Date(timeIntervalSinceNow: 60), metadata: nil))
+	}
+	
+	override func openOrders(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Market.CharacterOrder]>> {
+		return Services.sde.performBackgroundTask { context -> ESI.Result<[ESI.Market.CharacterOrder]> in
+			let solarSystem = try! context.managedObjectContext.from(SDEMapSolarSystem.self).first()!
+			let orders = [ESI.Market.CharacterOrder(duration: 3600 * 2, escrow: 1000, isBuyOrder: true, isCorporation: false, issued: Date.init(timeIntervalSinceNow: -3600), locationID: Int64(solarSystem.solarSystemID), minVolume: 1000, orderID: 1, price: 1000, range: ESI.Market.CharacterOrder.GetCharactersCharacterIDOrdersRange.solarsystem, regionID: Int(solarSystem.constellation!.region!.regionID), typeID: 645, volumeRemain: 50, volumeTotal: 10000),
+						  ESI.Market.CharacterOrder(duration: 3600*3, escrow: 1000, isBuyOrder: false, isCorporation: false, issued: Date.init(timeIntervalSinceNow: -3600), locationID: Int64(solarSystem.solarSystemID), minVolume: 1000, orderID: 1, price: 1000, range: ESI.Market.CharacterOrder.GetCharactersCharacterIDOrdersRange.solarsystem, regionID: Int(solarSystem.constellation!.region!.regionID), typeID: 645, volumeRemain: 50, volumeTotal: 10000)]
+			return ESI.Result(value: orders, expires: nil, metadata: nil)
+		}
+	}
+	
+	override func industryJobs(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Industry.Job]>> {
+		return Services.sde.performBackgroundTask { context -> ESI.Result<[ESI.Industry.Job]> in
+			let station = try! context.managedObjectContext.from(SDEStaStation.self).first()!
+			let activities = try! context.managedObjectContext.from(SDERamActivity.self).all()
+			let blueprint = context.invType("Dominix Blueprint")!
+			let locationID = Int64(station.stationID)
+			
+			let jobs = [
+				
+				ESI.Industry.Job(activityID: Int(activities.first!.activityID), blueprintID: 1, blueprintLocationID: locationID, blueprintTypeID: Int(blueprint.typeID), completedCharacterID: nil, completedDate: nil, cost: 1000, duration: 3600 * 2, endDate: Date.init(timeIntervalSinceNow: 3600), facilityID: locationID, installerID: 0, jobID: 0, licensedRuns: 1, outputLocationID: locationID, pauseDate: nil, probability: 1, productTypeID: nil, runs: 1, startDate: Date.init(timeIntervalSinceNow: -3600), stationID: locationID, status: .active, successfulRuns: 1),
+				
+				ESI.Industry.Job(activityID: Int(activities.first!.activityID), blueprintID: 1, blueprintLocationID: locationID, blueprintTypeID: Int(blueprint.typeID), completedCharacterID: nil, completedDate: nil, cost: 1000, duration: 3600 * 23, endDate: Date.init(timeIntervalSinceNow: -3600), facilityID: locationID, installerID: 0, jobID: 1, licensedRuns: 10, outputLocationID: locationID, pauseDate: nil, probability: 1, productTypeID: nil, runs: 10, startDate: Date.init(timeIntervalSinceNow: -3600 * 24), stationID: locationID, status: .delivered, successfulRuns: 10)
+
+			]
+			
+			return ESI.Result(value: jobs, expires: nil, metadata: nil)
+		}
+	}
+		
 }

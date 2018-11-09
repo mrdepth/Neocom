@@ -128,6 +128,12 @@ enum Router {
 		static func assets() -> Route<Assets> {
 			return Route(assembly: Assets.default, kind: .detail)
 		}
+		static func marketOrders() -> Route<MarketOrders> {
+			return Route(assembly: MarketOrders.default, kind: .detail)
+		}
+		static func industryJobs() -> Route<IndustryJobs> {
+			return Route(assembly: IndustryJobs.default, kind: .detail)
+		}
 	}
 }
 

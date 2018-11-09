@@ -150,13 +150,6 @@ class SolidTestInteractor: TreeInteractor {
 }
 
 
-class APIMock: APIClient {
-	override func serverStatus(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Status.ServerStatus>> {
-		let value = ESI.Status.ServerStatus(players: 0, serverVersion: "1", startTime: Date(), vip: false)
-		return .init(ESI.Result(value: value, expires: Date(timeIntervalSinceNow: 60), metadata: nil))
-	}
-}
-
 class SolidTestViewController2: TreeViewController<SolidTestPresenter2, Void>, TreeView {
 	var didPresent: (() -> Void)?
 	

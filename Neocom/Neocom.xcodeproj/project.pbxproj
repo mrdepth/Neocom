@@ -333,6 +333,19 @@
 		12C8ABAB219424D50028BF9A /* AssetsSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABA7219424D50028BF9A /* AssetsSearchResultsViewController.swift */; };
 		12C8ABAC219424D50028BF9A /* AssetsSearchResultsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABA8219424D50028BF9A /* AssetsSearchResultsInteractor.swift */; };
 		12C8ABAD219424D50028BF9A /* AssetsSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABA9219424D50028BF9A /* AssetsSearchResults.swift */; };
+		12C8ABD3219597720028BF9A /* MarketOrdersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABCF219597720028BF9A /* MarketOrdersPresenter.swift */; };
+		12C8ABD4219597720028BF9A /* MarketOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABD0219597720028BF9A /* MarketOrdersViewController.swift */; };
+		12C8ABD5219597720028BF9A /* MarketOrdersInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABD1219597720028BF9A /* MarketOrdersInteractor.swift */; };
+		12C8ABD6219597720028BF9A /* MarketOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABD2219597720028BF9A /* MarketOrders.swift */; };
+		12C8ABD9219597E90028BF9A /* MarketOrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C8ABD8219597E90028BF9A /* MarketOrderCell.xib */; };
+		12C8ABDB219598B90028BF9A /* MarketOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABDA219598B90028BF9A /* MarketOrderCell.swift */; };
+		12C8ABDD2195AF5C0028BF9A /* Business_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABDC2195AF5C0028BF9A /* Business_Tests.swift */; };
+		12C8ABE02195BFC00028BF9A /* IndustryJobCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C8ABDF2195BFC00028BF9A /* IndustryJobCell.xib */; };
+		12C8ABE22195BFC80028BF9A /* IndustryJobCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE12195BFC80028BF9A /* IndustryJobCell.swift */; };
+		12C8ABE82195C26E0028BF9A /* IndustryJobsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE42195C26E0028BF9A /* IndustryJobsPresenter.swift */; };
+		12C8ABE92195C26E0028BF9A /* IndustryJobsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE52195C26E0028BF9A /* IndustryJobsViewController.swift */; };
+		12C8ABEA2195C26E0028BF9A /* IndustryJobsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE62195C26E0028BF9A /* IndustryJobsInteractor.swift */; };
+		12C8ABEB2195C26E0028BF9A /* IndustryJobs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE72195C26E0028BF9A /* IndustryJobs.swift */; };
 		12C967001F96111900B141CC /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F71F9610DE00B141CC /* FirebaseCore.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12C967011F96111900B141CC /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F81F9610DE00B141CC /* FirebaseCoreDiagnostics.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12C967021F96111900B141CC /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F91F9610DE00B141CC /* FirebaseInstanceID.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -1001,6 +1014,19 @@
 		12C8ABA7219424D50028BF9A /* AssetsSearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsSearchResultsViewController.swift; sourceTree = "<group>"; };
 		12C8ABA8219424D50028BF9A /* AssetsSearchResultsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsSearchResultsInteractor.swift; sourceTree = "<group>"; };
 		12C8ABA9219424D50028BF9A /* AssetsSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsSearchResults.swift; sourceTree = "<group>"; };
+		12C8ABCF219597720028BF9A /* MarketOrdersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketOrdersPresenter.swift; sourceTree = "<group>"; };
+		12C8ABD0219597720028BF9A /* MarketOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketOrdersViewController.swift; sourceTree = "<group>"; };
+		12C8ABD1219597720028BF9A /* MarketOrdersInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketOrdersInteractor.swift; sourceTree = "<group>"; };
+		12C8ABD2219597720028BF9A /* MarketOrders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketOrders.swift; sourceTree = "<group>"; };
+		12C8ABD8219597E90028BF9A /* MarketOrderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MarketOrderCell.xib; sourceTree = "<group>"; };
+		12C8ABDA219598B90028BF9A /* MarketOrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketOrderCell.swift; sourceTree = "<group>"; };
+		12C8ABDC2195AF5C0028BF9A /* Business_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Business_Tests.swift; sourceTree = "<group>"; };
+		12C8ABDF2195BFC00028BF9A /* IndustryJobCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IndustryJobCell.xib; sourceTree = "<group>"; };
+		12C8ABE12195BFC80028BF9A /* IndustryJobCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndustryJobCell.swift; sourceTree = "<group>"; };
+		12C8ABE42195C26E0028BF9A /* IndustryJobsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndustryJobsPresenter.swift; sourceTree = "<group>"; };
+		12C8ABE52195C26E0028BF9A /* IndustryJobsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndustryJobsViewController.swift; sourceTree = "<group>"; };
+		12C8ABE62195C26E0028BF9A /* IndustryJobsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndustryJobsInteractor.swift; sourceTree = "<group>"; };
+		12C8ABE72195C26E0028BF9A /* IndustryJobs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndustryJobs.swift; sourceTree = "<group>"; };
 		12C966D61F95E02D00B141CC /* NCTransferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCTransferViewController.swift; sourceTree = "<group>"; };
 		12C966DC1F95F56700B141CC /* NCAboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCAboutViewController.swift; sourceTree = "<group>"; };
 		12C966EE1F9610D800B141CC /* clrconvert.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = clrconvert.xcodeproj; path = clrconvert/clrconvert.xcodeproj; sourceTree = "<group>"; };
@@ -1769,6 +1795,8 @@
 			isa = PBXGroup;
 			children = (
 				1279EFF6213587D7005340C0 /* Cells.swift */,
+				12C8ABDE2195BF9F0028BF9A /* IndustryJobCell */,
+				12C8ABD72195978B0028BF9A /* MarketOrderCell */,
 				1287FBCB2191900A00A505FC /* IncursionCell */,
 				12C727CB218C5EE600A78ADF /* MailCell */,
 				12EA7793217F4416009C8288 /* SkillCell */,
@@ -2082,6 +2110,8 @@
 			isa = PBXGroup;
 			children = (
 				1287FBD421919C5500A505FC /* Assets */,
+				12C8ABCE219597580028BF9A /* MarketOrders */,
+				12C8ABE32195C25C0028BF9A /* IndustryJobs */,
 			);
 			name = Business;
 			sourceTree = "<group>";
@@ -2578,6 +2608,46 @@
 			name = AssetsSearchResults;
 			sourceTree = "<group>";
 		};
+		12C8ABCE219597580028BF9A /* MarketOrders */ = {
+			isa = PBXGroup;
+			children = (
+				12C8ABD2219597720028BF9A /* MarketOrders.swift */,
+				12C8ABD0219597720028BF9A /* MarketOrdersViewController.swift */,
+				12C8ABCF219597720028BF9A /* MarketOrdersPresenter.swift */,
+				12C8ABD1219597720028BF9A /* MarketOrdersInteractor.swift */,
+			);
+			name = MarketOrders;
+			sourceTree = "<group>";
+		};
+		12C8ABD72195978B0028BF9A /* MarketOrderCell */ = {
+			isa = PBXGroup;
+			children = (
+				12C8ABD8219597E90028BF9A /* MarketOrderCell.xib */,
+				12C8ABDA219598B90028BF9A /* MarketOrderCell.swift */,
+			);
+			name = MarketOrderCell;
+			sourceTree = "<group>";
+		};
+		12C8ABDE2195BF9F0028BF9A /* IndustryJobCell */ = {
+			isa = PBXGroup;
+			children = (
+				12C8ABDF2195BFC00028BF9A /* IndustryJobCell.xib */,
+				12C8ABE12195BFC80028BF9A /* IndustryJobCell.swift */,
+			);
+			name = IndustryJobCell;
+			sourceTree = "<group>";
+		};
+		12C8ABE32195C25C0028BF9A /* IndustryJobs */ = {
+			isa = PBXGroup;
+			children = (
+				12C8ABE72195C26E0028BF9A /* IndustryJobs.swift */,
+				12C8ABE52195C26E0028BF9A /* IndustryJobsViewController.swift */,
+				12C8ABE42195C26E0028BF9A /* IndustryJobsPresenter.swift */,
+				12C8ABE62195C26E0028BF9A /* IndustryJobsInteractor.swift */,
+			);
+			name = IndustryJobs;
+			sourceTree = "<group>";
+		};
 		12C966ED1F9610CC00B141CC /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
@@ -2633,6 +2703,7 @@
 				121F26DF2136BD9400AE1D70 /* SOLID_Tests.swift */,
 				12EE7D04213D79BB005CE68F /* Router_Tests.swift */,
 				12845CB7218346D000E693D3 /* Skills_Tests.swift */,
+				12C8ABDC2195AF5C0028BF9A /* Business_Tests.swift */,
 				12CA8F832047DED1000360DE /* Info.plist */,
 			);
 			path = "Neocom II Tests";
@@ -3051,6 +3122,7 @@
 				12AC8D9B1DEF58A100561A7A /* Assets.xcassets in Resources */,
 				1298BA8620AEFB73002C941E /* MPDAAIcon@2x.png in Resources */,
 				1285FB351EB8DD350025331A /* NCAttributeTableViewCell.xib in Resources */,
+				12C8ABD9219597E90028BF9A /* MarketOrderCell.xib in Resources */,
 				1279EFF421355DFD005340C0 /* TreeSectionCell.xib in Resources */,
 				1298BA8320AEFB73002C941E /* MPPlayBtn.png in Resources */,
 				12D85125201A86DA009485D0 /* NCSubscriptionTableViewCell.xib in Resources */,
@@ -3077,6 +3149,7 @@
 				12484C67215BB0F60083AE17 /* InvTypeMarketOrderCell.xib in Resources */,
 				1263C50D1E64BE9D003D002D /* NCDefaultTableViewCell.xib in Resources */,
 				122A7CA41F4B589200537467 /* Character.storyboard in Resources */,
+				12C8ABE02195BFC00028BF9A /* IndustryJobCell.xib in Resources */,
 				128C5F711F418CF30038FE7D /* NCFacilityChartTableViewCell.xib in Resources */,
 				1298BA8220AEFB73002C941E /* StartApp.bundle in Resources */,
 				129B316E1E53527C00B9A88D /* damagePatterns.plist in Resources */,
@@ -3149,6 +3222,7 @@
 				1287FBC821918E6900A505FC /* IncursionsViewController.swift in Sources */,
 				121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */,
 				1204D068215271420070AF92 /* InvCategoriesInteractor.swift in Sources */,
+				12C8ABE22195BFC80028BF9A /* IndustryJobCell.swift in Sources */,
 				12D3109A211C282100367440 /* PersistentContext.swift in Sources */,
 				12AFD473211C1E7D00007423 /* Cache.swift in Sources */,
 				1287FBBB21917CF200A505FC /* WhTypesViewController.swift in Sources */,
@@ -3189,16 +3263,19 @@
 				12484C8F215CD5A10083AE17 /* MapLocationPickerRecentsViewController.swift in Sources */,
 				1287FBBA21917CF200A505FC /* WhTypesPresenter.swift in Sources */,
 				12133C2C215E291500646937 /* InvTypeVariationsViewController.swift in Sources */,
+				12C8ABEA2195C26E0028BF9A /* IndustryJobsInteractor.swift in Sources */,
 				12925B792189E8DB00F6216C /* MySkillsPage.swift in Sources */,
 				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
 				12484C78215CC6A70083AE17 /* MapLocationPickerInteractor.swift in Sources */,
 				12C727B6218B33CD00A78ADF /* JumpClonesViewController.swift in Sources */,
 				121B28C4218AEA24000D392C /* InvTypeRequiredFor.swift in Sources */,
 				12A843302153CA9600570A95 /* DamageTypeLabel.swift in Sources */,
+				12C8ABE92195C26E0028BF9A /* IndustryJobsViewController.swift in Sources */,
 				12EE7D0A213E60D1005CE68F /* MainMenuContainerInteractor.swift in Sources */,
 				12484CA7215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift in Sources */,
 				1287FBB32191763800A505FC /* NpcGroupsInteractor.swift in Sources */,
 				12484C69215BB24E0083AE17 /* EVELocation.swift in Sources */,
+				12C8ABE82195C26E0028BF9A /* IndustryJobsPresenter.swift in Sources */,
 				12B03DA4213FC44200DCBD64 /* NSAttributedString+NC.swift in Sources */,
 				121F26F12136F07200AE1D70 /* TreeItem+CoreData.swift in Sources */,
 				1287FB9D2190849A00A505FC /* InvMarketViewController.swift in Sources */,
@@ -3207,6 +3284,7 @@
 				1253C6302159108F007DEA16 /* MarketHistoryView.swift in Sources */,
 				12484C7D215CCF100083AE17 /* MapLocationPickerRegions.swift in Sources */,
 				121B28CB218AF1E8000D392C /* CharacterInfoInteractor.swift in Sources */,
+				12C8ABEB2195C26E0028BF9A /* IndustryJobs.swift in Sources */,
 				12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */,
 				121F26ED2136EE8700AE1D70 /* AccountsInteractor.swift in Sources */,
 				125B2CB62176FEB500D34CFB /* InvTypeMastery.swift in Sources */,
@@ -3262,6 +3340,7 @@
 				125B2CB52176FEB500D34CFB /* InvTypeMasteryInteractor.swift in Sources */,
 				12AF2FD12188943900813DFD /* MySkillsPresenter.swift in Sources */,
 				12133C35215E399C00646937 /* CertGroups.swift in Sources */,
+				12C8ABD4219597720028BF9A /* MarketOrdersViewController.swift in Sources */,
 				1287FB882190276B00A505FC /* ContactsSearchResultsPresenter.swift in Sources */,
 				1287FB892190276B00A505FC /* ContactsSearchResultsViewController.swift in Sources */,
 				12A843072153872D00570A95 /* InvTypesInteractor.swift in Sources */,
@@ -3275,6 +3354,7 @@
 				12A843052153872500570A95 /* InvTypesPresenter.swift in Sources */,
 				1287FBDC21919C6300A505FC /* Assets.swift in Sources */,
 				12AF2FD22188943900813DFD /* MySkillsViewController.swift in Sources */,
+				12C8ABD6219597720028BF9A /* MarketOrders.swift in Sources */,
 				12E04181212D44360000CB4F /* Config.swift in Sources */,
 				12484CA3215D20EC0083AE17 /* MapLocationPickerSearchResults.swift in Sources */,
 				12A8432C2153C5D200570A95 /* InvTypeCell.swift in Sources */,
@@ -3299,6 +3379,7 @@
 				1287FB812190241C00A505FC /* NewMailInteractor.swift in Sources */,
 				12133C5F215E56E100646937 /* CertCertificateRequirementsInfoInteractor.swift in Sources */,
 				125B2CC9217A7C9400D34CFB /* SkillQueue.swift in Sources */,
+				12C8ABD3219597720028BF9A /* MarketOrdersPresenter.swift in Sources */,
 				1287FB7F2190241C00A505FC /* NewMailPresenter.swift in Sources */,
 				12133C30215E292D00646937 /* InvTypeVariationsInteractor.swift in Sources */,
 				120A386F213D543E0071ED72 /* MainMenuHeader.swift in Sources */,
@@ -3340,6 +3421,7 @@
 				1287FB8A2190276B00A505FC /* ContactsSearchResultsInteractor.swift in Sources */,
 				1287FBBD21917CF200A505FC /* WhTypes.swift in Sources */,
 				121B28C2218AEA24000D392C /* InvTypeRequiredForViewController.swift in Sources */,
+				12C8ABD5219597720028BF9A /* MarketOrdersInteractor.swift in Sources */,
 				121B28CC218AF1E8000D392C /* CharacterInfo.swift in Sources */,
 				1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */,
 				12E0419C212D77530000CB4F /* Error.swift in Sources */,
@@ -3350,6 +3432,7 @@
 				125B2CC7217A7C9400D34CFB /* SkillQueueViewController.swift in Sources */,
 				1287FBA72190885500A505FC /* MarketQuickbarInteractor.swift in Sources */,
 				12B03DA3213FC32300DCBD64 /* Math.swift in Sources */,
+				12C8ABDB219598B90028BF9A /* MarketOrderCell.swift in Sources */,
 				12133C4B215E55BE00646937 /* CertCertificateInfoPresenter.swift in Sources */,
 				12133C2A215E290500646937 /* InvTypeVariations.swift in Sources */,
 			);
@@ -3359,6 +3442,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12C8ABDD2195AF5C0028BF9A /* Business_Tests.swift in Sources */,
 				12926F10212EDC66006A3D1C /* API_Tests.swift in Sources */,
 				12845CB8218346D000E693D3 /* Skills_Tests.swift in Sources */,
 				12AB9751212C32EB00B30DD3 /* SDE_Tests.swift in Sources */,

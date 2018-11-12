@@ -108,6 +108,16 @@
 		12484CA7215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484CA6215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift */; };
 		12484CA9215D21080083AE17 /* MapLocationPickerSearchResultsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484CA8215D21080083AE17 /* MapLocationPickerSearchResultsInteractor.swift */; };
 		1248DB3A1F1C9DE9009625EC /* NCMailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1248DB391F1C9DE9009625EC /* NCMailTableViewCell.xib */; };
+		124C50FB219954F700D0FC8E /* ContractsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C50F7219954F700D0FC8E /* ContractsPresenter.swift */; };
+		124C50FC219954F700D0FC8E /* ContractsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C50F8219954F700D0FC8E /* ContractsViewController.swift */; };
+		124C50FD219954F700D0FC8E /* ContractsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C50F9219954F700D0FC8E /* ContractsInteractor.swift */; };
+		124C50FE219954F700D0FC8E /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C50FA219954F700D0FC8E /* Contracts.swift */; };
+		124C5101219956D800D0FC8E /* ContractCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C5100219956D800D0FC8E /* ContractCell.swift */; };
+		124C5103219956DE00D0FC8E /* ContractCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124C5102219956DE00D0FC8E /* ContractCell.xib */; };
+		124C51092199626000D0FC8E /* ContractInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51052199626000D0FC8E /* ContractInfoPresenter.swift */; };
+		124C510A2199626000D0FC8E /* ContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51062199626000D0FC8E /* ContractInfoViewController.swift */; };
+		124C510B2199626000D0FC8E /* ContractInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51072199626000D0FC8E /* ContractInfoInteractor.swift */; };
+		124C510C2199626000D0FC8E /* ContractInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51082199626000D0FC8E /* ContractInfo.swift */; };
 		124C858F213E880200333636 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C858E213E880200333636 /* BackgroundView.swift */; };
 		1253C62521590744007DEA16 /* DamageTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62421590744007DEA16 /* DamageTypeCell.swift */; };
 		1253C6272159078C007DEA16 /* DamageTypeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C6262159078C007DEA16 /* DamageTypeCell.xib */; };
@@ -673,6 +683,16 @@
 		12498B031EFD63D800FEEE36 /* NCKillmailsPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailsPageViewController.swift; sourceTree = "<group>"; };
 		12498B051EFD680200FEEE36 /* NCKillmailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCKillmailTableViewCell.swift; sourceTree = "<group>"; };
 		124BD4B12018978E00816946 /* NCSubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCSubscriptionViewController.swift; sourceTree = "<group>"; };
+		124C50F7219954F700D0FC8E /* ContractsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractsPresenter.swift; sourceTree = "<group>"; };
+		124C50F8219954F700D0FC8E /* ContractsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractsViewController.swift; sourceTree = "<group>"; };
+		124C50F9219954F700D0FC8E /* ContractsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractsInteractor.swift; sourceTree = "<group>"; };
+		124C50FA219954F700D0FC8E /* Contracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contracts.swift; sourceTree = "<group>"; };
+		124C5100219956D800D0FC8E /* ContractCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractCell.swift; sourceTree = "<group>"; };
+		124C5102219956DE00D0FC8E /* ContractCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContractCell.xib; sourceTree = "<group>"; };
+		124C51052199626000D0FC8E /* ContractInfoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractInfoPresenter.swift; sourceTree = "<group>"; };
+		124C51062199626000D0FC8E /* ContractInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractInfoViewController.swift; sourceTree = "<group>"; };
+		124C51072199626000D0FC8E /* ContractInfoInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractInfoInteractor.swift; sourceTree = "<group>"; };
+		124C51082199626000D0FC8E /* ContractInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractInfo.swift; sourceTree = "<group>"; };
 		124C858E213E880200333636 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		1253C62421590744007DEA16 /* DamageTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamageTypeCell.swift; sourceTree = "<group>"; };
 		1253C6262159078C007DEA16 /* DamageTypeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DamageTypeCell.xib; sourceTree = "<group>"; };
@@ -1590,6 +1610,38 @@
 			name = MapLocationPickerSearchResults;
 			sourceTree = "<group>";
 		};
+		124C50F5219953D400D0FC8E /* Contracts */ = {
+			isa = PBXGroup;
+			children = (
+				124C51042199624F00D0FC8E /* ContractInfo */,
+				124C50FA219954F700D0FC8E /* Contracts.swift */,
+				124C50F8219954F700D0FC8E /* ContractsViewController.swift */,
+				124C50F7219954F700D0FC8E /* ContractsPresenter.swift */,
+				124C50F9219954F700D0FC8E /* ContractsInteractor.swift */,
+			);
+			name = Contracts;
+			sourceTree = "<group>";
+		};
+		124C50FF219956CB00D0FC8E /* ContractCell */ = {
+			isa = PBXGroup;
+			children = (
+				124C5100219956D800D0FC8E /* ContractCell.swift */,
+				124C5102219956DE00D0FC8E /* ContractCell.xib */,
+			);
+			name = ContractCell;
+			sourceTree = "<group>";
+		};
+		124C51042199624F00D0FC8E /* ContractInfo */ = {
+			isa = PBXGroup;
+			children = (
+				124C51082199626000D0FC8E /* ContractInfo.swift */,
+				124C51062199626000D0FC8E /* ContractInfoViewController.swift */,
+				124C51052199626000D0FC8E /* ContractInfoPresenter.swift */,
+				124C51072199626000D0FC8E /* ContractInfoInteractor.swift */,
+			);
+			name = ContractInfo;
+			sourceTree = "<group>";
+		};
 		1253C62321590738007DEA16 /* DamageTypeCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1795,6 +1847,7 @@
 			isa = PBXGroup;
 			children = (
 				1279EFF6213587D7005340C0 /* Cells.swift */,
+				124C50FF219956CB00D0FC8E /* ContractCell */,
 				12C8ABDE2195BF9F0028BF9A /* IndustryJobCell */,
 				12C8ABD72195978B0028BF9A /* MarketOrderCell */,
 				1287FBCB2191900A00A505FC /* IncursionCell */,
@@ -2112,6 +2165,7 @@
 				1287FBD421919C5500A505FC /* Assets */,
 				12C8ABCE219597580028BF9A /* MarketOrders */,
 				12C8ABE32195C25C0028BF9A /* IndustryJobs */,
+				124C50F5219953D400D0FC8E /* Contracts */,
 			);
 			name = Business;
 			sourceTree = "<group>";
@@ -3139,6 +3193,7 @@
 				124069FF1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib in Resources */,
 				1298BA7420AEFB73002C941E /* TapjoyResources.bundle in Resources */,
 				12C37D301EFA9D070070F055 /* NCContactCompactTableViewCell.xib in Resources */,
+				124C5103219956DE00D0FC8E /* ContractCell.xib in Resources */,
 				1298BA7220AEFB73002C941E /* MRAID.bundle in Resources */,
 				12D930F31E6584AF00CBAE1C /* NCDefaultCompactTableViewCell.xib in Resources */,
 				122A7CA21F4B49D100537467 /* Database.storyboard in Resources */,
@@ -3221,6 +3276,7 @@
 				12AB974F212C325E00B30DD3 /* ImageValueTransformer.swift in Sources */,
 				1287FBC821918E6900A505FC /* IncursionsViewController.swift in Sources */,
 				121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */,
+				124C50FD219954F700D0FC8E /* ContractsInteractor.swift in Sources */,
 				1204D068215271420070AF92 /* InvCategoriesInteractor.swift in Sources */,
 				12C8ABE22195BFC80028BF9A /* IndustryJobCell.swift in Sources */,
 				12D3109A211C282100367440 /* PersistentContext.swift in Sources */,
@@ -3241,6 +3297,7 @@
 				125B2CBD217A7BDF00D34CFB /* SkillsPresenter.swift in Sources */,
 				12EE7CE5213D598F005CE68F /* Router.swift in Sources */,
 				12AB974D212C30E300B30DD3 /* SDEVersion.swift in Sources */,
+				124C50FE219954F700D0FC8E /* Contracts.swift in Sources */,
 				125DF63C2133D30000B86AE0 /* TreeDefaultCell.swift in Sources */,
 				121F26EF2136EE9100AE1D70 /* AccountsPresenter.swift in Sources */,
 				12133C57215E56BE00646937 /* CertCertificateMasteryInfoInteractor.swift in Sources */,
@@ -3280,6 +3337,7 @@
 				121F26F12136F07200AE1D70 /* TreeItem+CoreData.swift in Sources */,
 				1287FB9D2190849A00A505FC /* InvMarketViewController.swift in Sources */,
 				12133C2E215E292300646937 /* InvTypeVariationsPresenter.swift in Sources */,
+				124C510C2199626000D0FC8E /* ContractInfo.swift in Sources */,
 				129E40A9213EA318002EDAF9 /* ViewController.swift in Sources */,
 				1253C6302159108F007DEA16 /* MarketHistoryView.swift in Sources */,
 				12484C7D215CCF100083AE17 /* MapLocationPickerRegions.swift in Sources */,
@@ -3295,6 +3353,7 @@
 				1279EFF5213586D6005340C0 /* NCTableView.m in Sources */,
 				12C727DE218C8B7B00A78ADF /* MailBodyPresenter.swift in Sources */,
 				1279F00121358F7C005340C0 /* MainMenuHeaderInteractor.swift in Sources */,
+				124C51092199626000D0FC8E /* ContractInfoPresenter.swift in Sources */,
 				1287FB932190825800A505FC /* InvMarketGroupsPresenter.swift in Sources */,
 				12D8144C2154D9BA00313DAF /* ThinLineView.swift in Sources */,
 				12EA7798217F447A009C8288 /* SkillCell.swift in Sources */,
@@ -3318,6 +3377,7 @@
 				12C727E0218C8B7B00A78ADF /* MailBodyInteractor.swift in Sources */,
 				12EE7D08213E60C8005CE68F /* MainMenuContainerPresenter.swift in Sources */,
 				125B2CBF217A7BDF00D34CFB /* SkillsInteractor.swift in Sources */,
+				124C510A2199626000D0FC8E /* ContractInfoViewController.swift in Sources */,
 				12B890722130054E0082D4A3 /* SOLID.swift in Sources */,
 				12AB972C212BF6A900B30DD3 /* Storage.swift in Sources */,
 				125DF6332133CFC700B86AE0 /* MainMenuViewController.swift in Sources */,
@@ -3373,6 +3433,7 @@
 				12484C81215CCF260083AE17 /* MapLocationPickerRegionsPresenter.swift in Sources */,
 				12C8ABAD219424D50028BF9A /* AssetsSearchResults.swift in Sources */,
 				121B28C3218AEA24000D392C /* InvTypeRequiredForInteractor.swift in Sources */,
+				124C50FC219954F700D0FC8E /* ContractsViewController.swift in Sources */,
 				12C8ABAA219424D50028BF9A /* AssetsSearchResultsPresenter.swift in Sources */,
 				12D8147021550E0F00313DAF /* InvTypeInfo.swift in Sources */,
 				12484C38215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift in Sources */,
@@ -3392,8 +3453,10 @@
 				1204D07021528A140070AF92 /* InvGroupsViewController.swift in Sources */,
 				1287FBDB21919C6300A505FC /* AssetsInteractor.swift in Sources */,
 				1287FB8B2190276B00A505FC /* ContactsSearchResults.swift in Sources */,
+				124C510B2199626000D0FC8E /* ContractInfoInteractor.swift in Sources */,
 				12C727BF218C255600A78ADF /* MailViewController.swift in Sources */,
 				12484C85215CD5560083AE17 /* MapLocationPickerSolarSystems.swift in Sources */,
+				124C5101219956D800D0FC8E /* ContractCell.swift in Sources */,
 				12AF2FD32188943900813DFD /* MySkillsInteractor.swift in Sources */,
 				12484C8B215CD5740083AE17 /* MapLocationPickerSolarSystemsInteractor.swift in Sources */,
 				12AF2FC92188930300813DFD /* SkillsContainerPresenter.swift in Sources */,
@@ -3426,6 +3489,7 @@
 				1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */,
 				12E0419C212D77530000CB4F /* Error.swift in Sources */,
 				1204D07221528A1C0070AF92 /* InvGroupsPresenter.swift in Sources */,
+				124C50FB219954F700D0FC8E /* ContractsPresenter.swift in Sources */,
 				1287FBC921918E6900A505FC /* IncursionsInteractor.swift in Sources */,
 				12D8147621550EDA00313DAF /* InvTypeInfoInteractor.swift in Sources */,
 				1287FB802190241C00A505FC /* NewMailViewController.swift in Sources */,

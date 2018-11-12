@@ -134,6 +134,13 @@ enum Router {
 		static func industryJobs() -> Route<IndustryJobs> {
 			return Route(assembly: IndustryJobs.default, kind: .detail)
 		}
+		static func contracts() -> Route<Contracts> {
+			return Route(assembly: Contracts.default, kind: .detail)
+		}
+		static func contractInfo(_ input: ContractInfo.View.Input) -> Route<ContractInfo> {
+			return Route(assembly: ContractInfo.default, input: input, kind: .push)
+		}
+
 	}
 }
 

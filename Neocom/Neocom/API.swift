@@ -117,13 +117,19 @@ protocol IndustryAPI: class {
 	func industryJobs(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Industry.Job]>>
 }
 
+protocol ContractsAPI: class {
+	func contracts(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Contracts.Contract]>>
+	func contractItems(contractID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Contracts.Item]>>
+	func contractBids(contractID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Contracts.Bid]>>
+}
+
 extension SearchAPI {
 	func search(_ string: String, categories: [ESI.Search.Categories], cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Search.SearchResult>> {
 		return search(string, categories: categories, strict: false, cachePolicy: cachePolicy)
 	}
 }
 
-typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & SearchAPI & IncursionsAPI & AssetsAPI & IndustryAPI
+typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & SearchAPI & IncursionsAPI & AssetsAPI & IndustryAPI & ContractsAPI
 
 class APIClient: API {
 	
@@ -673,4 +679,23 @@ class APIClient: API {
 		return esi.industry.listCharacterIndustryJobs(characterID: Int(id), includeCompleted: true, cachePolicy: cachePolicy)
 	}
 
+	//MARK: ContractsAPI
+	
+	func contracts(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Contracts.Contract]>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+		return esi.contracts.getContracts(characterID: Int(id), cachePolicy: cachePolicy)
+	}
+	
+	func contractItems(contractID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Contracts.Item]>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+		return esi.contracts.getContractItems(characterID: Int(id), contractID: Int(contractID), cachePolicy: cachePolicy)
+	}
+	
+	func contractBids(contractID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Contracts.Bid]>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+		return esi.contracts.getContractBids(characterID: Int(id), contractID: Int(contractID), cachePolicy: cachePolicy)
+
+	}
+
+	
 }

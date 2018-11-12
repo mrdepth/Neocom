@@ -219,5 +219,36 @@ class APIMock: APIClient {
 			return ESI.Result(value: jobs, expires: nil, metadata: nil)
 		}
 	}
+	
+	override func contracts(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Contracts.Contract]>> {
+		return Services.sde.performBackgroundTask { context -> ESI.Result<[ESI.Contracts.Contract]> in
+			let characterID = try! Services.storage.performBackgroundTask {context in Int(context.currentAccount?.characterID ?? 0)}.get()
+			
+			let station = Int64((try! context.managedObjectContext.from(SDEStaStation.self).first()!).stationID)
+			
+			let contracts = [
+				ESI.Contracts.Contract(acceptorID: characterID, assigneeID: characterID, availability: .personal, buyout: 1000, collateral: 40, contractID: 1, dateAccepted: nil, dateCompleted: nil, dateExpired: Date(timeIntervalSinceNow: 3600), dateIssued: Date(timeIntervalSinceNow: -3600 * 23), daysToComplete: 1, endLocationID: station, forCorporation: false, issuerCorporationID: 0, issuerID: characterID, price: 1000, reward: 100, startLocationID: station, status: .inProgress, title: "Test Contract 1", type: .courier, volume: 100),
+				
+				ESI.Contracts.Contract(acceptorID: characterID, assigneeID: characterID, availability: .personal, buyout: 10000, collateral: 40, contractID: 1, dateAccepted: Date(timeIntervalSinceNow: -3600), dateCompleted: Date(timeIntervalSinceNow: -3600/2), dateExpired: Date(timeIntervalSinceNow: 3600), dateIssued: Date.init(timeIntervalSinceNow: -3600 * 24 * 2), daysToComplete: 3, endLocationID: station, forCorporation: false, issuerCorporationID: 0, issuerID: characterID, price: 1000, reward: 100, startLocationID: station, status: .finished, title: "Test Contract 2", type: .auction, volume: 100)
+			]
+			return ESI.Result(value: contracts, expires: nil, metadata: nil)
+		}
+	}
+	
+	override func contractItems(contractID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Contracts.Item]>> {
+		let value = [ESI.Contracts.Item(isIncluded: true, isSingleton: false, quantity: 1, rawQuantity: 1, recordID: 1, typeID: 645),
+					 ESI.Contracts.Item(isIncluded: false, isSingleton: false, quantity: 10, rawQuantity: 10, recordID: 2, typeID: 34)]
+		return .init(ESI.Result(value: value, expires: nil, metadata: nil))
+
+	}
+	
+	override func contractBids(contractID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Contracts.Bid]>> {
+		return Services.storage.performBackgroundTask {context -> ESI.Result<[ESI.Contracts.Bid]> in
+			let characterID = Int(context.currentAccount?.characterID ?? 0)
+			let value = [ESI.Contracts.Bid(amount: 100, bidID: 1, bidderID: characterID, dateBid: Date.init(timeIntervalSinceNow: -3600 * 24)),
+						 ESI.Contracts.Bid(amount: 1000, bidID: 1, bidderID: characterID, dateBid: Date.init(timeIntervalSinceNow: -3600 * 12))]
+			return ESI.Result(value: value, expires: nil, metadata: nil)
+		}
+	}
 		
 }

@@ -41,4 +41,18 @@ class Business_Tests: TestCase {
 		wait(for: [test(controller)], timeout: 10)
 	}
 
+	func testContracts() {
+		let controller = try! Contracts.default.instantiate().get()
+		
+		wait(for: [test(controller)], timeout: 10)
+	}
+
+	func testContractInfo() {
+		let contract = try! Services.api.current.contracts(cachePolicy: .useProtocolCachePolicy).get()
+		XCTAssertFalse(contract.value.isEmpty)
+		let controller = try! ContractInfo.default.instantiate(contract.value[0]).get()
+
+		wait(for: [test(controller)], timeout: 10)
+	}
+
 }

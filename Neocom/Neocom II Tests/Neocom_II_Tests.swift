@@ -110,13 +110,15 @@ class TestCase: XCTestCase {
 		return StorageContainer(persistentContainer: container)
 	}
 	
-	func test<T: TreeView>(_ view: T) -> XCTestExpectation where T: UIViewController {
+	func test<T: TreeView>(_ view: T, takeScreenshot: Bool = true) -> XCTestExpectation where T: UIViewController {
 		view.loadViewIfNeeded()
 		let exp = expectation(description: "end")
 		
 		view.presenter.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { result in
 			view.present(result, animated: true).then(on: .main) { _ in
-				self.add(view.screenshot())
+				if takeScreenshot {
+					self.add(view.screenshot())
+				}
 				
 				XCTAssertGreaterThan(view.tableView.numberOfSections, 0)
 				XCTAssertGreaterThan(view.tableView.numberOfRows(inSection: 0), 0)
@@ -247,6 +249,29 @@ class APIMock: APIClient {
 			let characterID = Int(context.currentAccount?.characterID ?? 0)
 			let value = [ESI.Contracts.Bid(amount: 100, bidID: 1, bidderID: characterID, dateBid: Date.init(timeIntervalSinceNow: -3600 * 24)),
 						 ESI.Contracts.Bid(amount: 1000, bidID: 1, bidderID: characterID, dateBid: Date.init(timeIntervalSinceNow: -3600 * 12))]
+			return ESI.Result(value: value, expires: nil, metadata: nil)
+		}
+	}
+	
+	override func walletJournal(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Wallet.WalletJournalItem]>> {
+		let value = [
+			ESI.Wallet.WalletJournalItem(amount: 1000, balance: 1000000, contextID: 1, contextIDType: .characterID, date: Date(timeIntervalSinceNow: -3600), localizedDescription: "Test Item 1", firstPartyID: nil, id: 1, reason: "Reason", refType: .agentDonation, secondPartyID: nil, tax: 10, taxReceiverID: nil),
+			ESI.Wallet.WalletJournalItem(amount: 1000, balance: 1000000, contextID: 1, contextIDType: .characterID, date: Date(timeIntervalSinceNow: -3600 * 24), localizedDescription: "Test Item 1", firstPartyID: nil, id: 1, reason: "Reason", refType: .agentDonation, secondPartyID: nil, tax: 10, taxReceiverID: nil),
+			ESI.Wallet.WalletJournalItem(amount: 1000, balance: 1000000, contextID: 1, contextIDType: .characterID, date: Date(timeIntervalSinceNow: -3600 * 25), localizedDescription: "Test Item 1", firstPartyID: nil, id: 1, reason: "Reason", refType: .agentDonation, secondPartyID: nil, tax: 10, taxReceiverID: nil),
+			ESI.Wallet.WalletJournalItem(amount: 1000, balance: 1000000, contextID: 1, contextIDType: .characterID, date: Date(timeIntervalSinceNow: -3600 * 50), localizedDescription: "Test Item 1", firstPartyID: nil, id: 1, reason: "Reason", refType: .agentDonation, secondPartyID: nil, tax: 10, taxReceiverID: nil)]
+		return .init(ESI.Result(value: value, expires: nil, metadata: nil))
+	}
+	
+	override func walletTransactions(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Wallet.Transaction]>> {
+		return Services.sde.performBackgroundTask { context -> ESI.Result<[ESI.Wallet.Transaction]> in
+			let characterID = try! Services.storage.performBackgroundTask {context in Int(context.currentAccount?.characterID ?? 0)}.get()
+			let station = Int64((try! context.managedObjectContext.from(SDEStaStation.self).first()!).stationID)
+
+			let value = [ESI.Wallet.Transaction(clientID: characterID, date: Date(timeIntervalSinceNow: -3600), isBuy: true, isPersonal: true, journalRefID: 1, locationID: station, quantity: 1, transactionID: 1, typeID: 645, unitPrice: 100),
+						 ESI.Wallet.Transaction(clientID: characterID, date: Date(timeIntervalSinceNow: -3600 * 12), isBuy: true, isPersonal: true, journalRefID: 1, locationID: station, quantity: 1, transactionID: 1, typeID: 645, unitPrice: 100),
+						 ESI.Wallet.Transaction(clientID: characterID, date: Date(timeIntervalSinceNow: -3600 * 24), isBuy: true, isPersonal: true, journalRefID: 1, locationID: station, quantity: 1, transactionID: 1, typeID: 645, unitPrice: 100),
+						 ESI.Wallet.Transaction(clientID: characterID, date: Date(timeIntervalSinceNow: -3600 * 32), isBuy: true, isPersonal: true, journalRefID: 1, locationID: station, quantity: 1, transactionID: 1, typeID: 645, unitPrice: 100)]
+			
 			return ESI.Result(value: value, expires: nil, metadata: nil)
 		}
 	}

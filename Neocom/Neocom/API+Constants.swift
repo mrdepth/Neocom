@@ -104,3 +104,9 @@ extension ESI.Contracts.Contract {
 		return dateExpired > Date() && (status == .outstanding || status == .inProgress)
 	}
 }
+
+extension ESI.Wallet.RefType {
+	var title: String {
+		return rawValue.replacingOccurrences(of: "_", with: " ").capitalized
+	}
+}

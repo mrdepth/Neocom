@@ -140,7 +140,12 @@ enum Router {
 		static func contractInfo(_ input: ContractInfo.View.Input) -> Route<ContractInfo> {
 			return Route(assembly: ContractInfo.default, input: input, kind: .push)
 		}
-
+		static func walletJournal() -> Route<WalletJournalPage> {
+			return Route(assembly: WalletJournalPage.default, kind: .detail)
+		}
+		static func walletTransactions() -> Route<WalletTransactionsPage> {
+			return Route(assembly: WalletTransactionsPage.default, kind: .detail)
+		}
 	}
 }
 

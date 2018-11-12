@@ -118,6 +118,19 @@
 		124C510A2199626000D0FC8E /* ContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51062199626000D0FC8E /* ContractInfoViewController.swift */; };
 		124C510B2199626000D0FC8E /* ContractInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51072199626000D0FC8E /* ContractInfoInteractor.swift */; };
 		124C510C2199626000D0FC8E /* ContractInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51082199626000D0FC8E /* ContractInfo.swift */; };
+		124C511221998D6A00D0FC8E /* WalletJournalPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C510E21998D6A00D0FC8E /* WalletJournalPagePresenter.swift */; };
+		124C511321998D6A00D0FC8E /* WalletJournalPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C510F21998D6A00D0FC8E /* WalletJournalPageViewController.swift */; };
+		124C511421998D6A00D0FC8E /* WalletJournalPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511021998D6A00D0FC8E /* WalletJournalPageInteractor.swift */; };
+		124C511521998D6A00D0FC8E /* WalletJournalPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511121998D6A00D0FC8E /* WalletJournalPage.swift */; };
+		124C51182199906100D0FC8E /* WalletJournalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51172199906100D0FC8E /* WalletJournalCell.swift */; };
+		124C511A219990BD00D0FC8E /* WalletJournalCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124C5119219990BD00D0FC8E /* WalletJournalCell.xib */; };
+		124C51202199A54000D0FC8E /* WalletTransactionsPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511C2199A54000D0FC8E /* WalletTransactionsPagePresenter.swift */; };
+		124C51212199A54000D0FC8E /* WalletTransactionsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511D2199A54000D0FC8E /* WalletTransactionsPageViewController.swift */; };
+		124C51222199A54000D0FC8E /* WalletTransactionsPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511E2199A54000D0FC8E /* WalletTransactionsPageInteractor.swift */; };
+		124C51232199A54000D0FC8E /* WalletTransactionsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511F2199A54000D0FC8E /* WalletTransactionsPage.swift */; };
+		124C51252199AB6800D0FC8E /* NavigationItemTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51242199AB6800D0FC8E /* NavigationItemTitleLabel.swift */; };
+		124C51282199B16000D0FC8E /* WalletTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51272199B16000D0FC8E /* WalletTransactionCell.swift */; };
+		124C512A2199B16700D0FC8E /* WalletTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124C51292199B16700D0FC8E /* WalletTransactionCell.xib */; };
 		124C858F213E880200333636 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C858E213E880200333636 /* BackgroundView.swift */; };
 		1253C62521590744007DEA16 /* DamageTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62421590744007DEA16 /* DamageTypeCell.swift */; };
 		1253C6272159078C007DEA16 /* DamageTypeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C6262159078C007DEA16 /* DamageTypeCell.xib */; };
@@ -693,6 +706,19 @@
 		124C51062199626000D0FC8E /* ContractInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractInfoViewController.swift; sourceTree = "<group>"; };
 		124C51072199626000D0FC8E /* ContractInfoInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractInfoInteractor.swift; sourceTree = "<group>"; };
 		124C51082199626000D0FC8E /* ContractInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractInfo.swift; sourceTree = "<group>"; };
+		124C510E21998D6A00D0FC8E /* WalletJournalPagePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletJournalPagePresenter.swift; sourceTree = "<group>"; };
+		124C510F21998D6A00D0FC8E /* WalletJournalPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletJournalPageViewController.swift; sourceTree = "<group>"; };
+		124C511021998D6A00D0FC8E /* WalletJournalPageInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletJournalPageInteractor.swift; sourceTree = "<group>"; };
+		124C511121998D6A00D0FC8E /* WalletJournalPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletJournalPage.swift; sourceTree = "<group>"; };
+		124C51172199906100D0FC8E /* WalletJournalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletJournalCell.swift; sourceTree = "<group>"; };
+		124C5119219990BD00D0FC8E /* WalletJournalCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletJournalCell.xib; sourceTree = "<group>"; };
+		124C511C2199A54000D0FC8E /* WalletTransactionsPagePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionsPagePresenter.swift; sourceTree = "<group>"; };
+		124C511D2199A54000D0FC8E /* WalletTransactionsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionsPageViewController.swift; sourceTree = "<group>"; };
+		124C511E2199A54000D0FC8E /* WalletTransactionsPageInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionsPageInteractor.swift; sourceTree = "<group>"; };
+		124C511F2199A54000D0FC8E /* WalletTransactionsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionsPage.swift; sourceTree = "<group>"; };
+		124C51242199AB6800D0FC8E /* NavigationItemTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItemTitleLabel.swift; sourceTree = "<group>"; };
+		124C51272199B16000D0FC8E /* WalletTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionCell.swift; sourceTree = "<group>"; };
+		124C51292199B16700D0FC8E /* WalletTransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletTransactionCell.xib; sourceTree = "<group>"; };
 		124C858E213E880200333636 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		1253C62421590744007DEA16 /* DamageTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamageTypeCell.swift; sourceTree = "<group>"; };
 		1253C6262159078C007DEA16 /* DamageTypeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DamageTypeCell.xib; sourceTree = "<group>"; };
@@ -1642,6 +1668,46 @@
 			name = ContractInfo;
 			sourceTree = "<group>";
 		};
+		124C510D21998D1400D0FC8E /* WalletJournalPage */ = {
+			isa = PBXGroup;
+			children = (
+				124C511121998D6A00D0FC8E /* WalletJournalPage.swift */,
+				124C510F21998D6A00D0FC8E /* WalletJournalPageViewController.swift */,
+				124C510E21998D6A00D0FC8E /* WalletJournalPagePresenter.swift */,
+				124C511021998D6A00D0FC8E /* WalletJournalPageInteractor.swift */,
+			);
+			name = WalletJournalPage;
+			sourceTree = "<group>";
+		};
+		124C51162199905000D0FC8E /* WalletJorunalCell */ = {
+			isa = PBXGroup;
+			children = (
+				124C51172199906100D0FC8E /* WalletJournalCell.swift */,
+				124C5119219990BD00D0FC8E /* WalletJournalCell.xib */,
+			);
+			name = WalletJorunalCell;
+			sourceTree = "<group>";
+		};
+		124C511B2199A52E00D0FC8E /* WalletTransactionsPage */ = {
+			isa = PBXGroup;
+			children = (
+				124C511F2199A54000D0FC8E /* WalletTransactionsPage.swift */,
+				124C511D2199A54000D0FC8E /* WalletTransactionsPageViewController.swift */,
+				124C511C2199A54000D0FC8E /* WalletTransactionsPagePresenter.swift */,
+				124C511E2199A54000D0FC8E /* WalletTransactionsPageInteractor.swift */,
+			);
+			name = WalletTransactionsPage;
+			sourceTree = "<group>";
+		};
+		124C51262199B15300D0FC8E /* WalletTransactionCell */ = {
+			isa = PBXGroup;
+			children = (
+				124C51272199B16000D0FC8E /* WalletTransactionCell.swift */,
+				124C51292199B16700D0FC8E /* WalletTransactionCell.xib */,
+			);
+			name = WalletTransactionCell;
+			sourceTree = "<group>";
+		};
 		1253C62321590738007DEA16 /* DamageTypeCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1847,6 +1913,8 @@
 			isa = PBXGroup;
 			children = (
 				1279EFF6213587D7005340C0 /* Cells.swift */,
+				124C51262199B15300D0FC8E /* WalletTransactionCell */,
+				124C51162199905000D0FC8E /* WalletJorunalCell */,
 				124C50FF219956CB00D0FC8E /* ContractCell */,
 				12C8ABDE2195BF9F0028BF9A /* IndustryJobCell */,
 				12C8ABD72195978B0028BF9A /* MarketOrderCell */,
@@ -1984,6 +2052,7 @@
 				12D8144B2154D9BA00313DAF /* ThinLineView.swift */,
 				12484C6E215CC0B70083AE17 /* SegmentedPageControl.swift */,
 				12D20E9E1EB9EB1400BEC926 /* PieChartView.swift */,
+				124C51242199AB6800D0FC8E /* NavigationItemTitleLabel.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2166,6 +2235,8 @@
 				12C8ABCE219597580028BF9A /* MarketOrders */,
 				12C8ABE32195C25C0028BF9A /* IndustryJobs */,
 				124C50F5219953D400D0FC8E /* Contracts */,
+				124C510D21998D1400D0FC8E /* WalletJournalPage */,
+				124C511B2199A52E00D0FC8E /* WalletTransactionsPage */,
 			);
 			name = Business;
 			sourceTree = "<group>";
@@ -3150,6 +3221,7 @@
 				12AC8D9E1DEF58A100561A7A /* LaunchScreen.storyboard in Resources */,
 				1259639721381ECD00B3A53C /* AccountCell.xib in Resources */,
 				1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */,
+				124C511A219990BD00D0FC8E /* WalletJournalCell.xib in Resources */,
 				1253C6272159078C007DEA16 /* DamageTypeCell.xib in Resources */,
 				128130451F3B08600039D46B /* main.js in Resources */,
 				1287FBD1219192A000A505FC /* IncursionCell.xib in Resources */,
@@ -3212,6 +3284,7 @@
 				12A843342153CBB000570A95 /* InvTypeChargeCell.xib in Resources */,
 				1256BF2B1DF4770B00A2A24B /* MainMenu.xcassets in Resources */,
 				12CFDAEC1F03F8F700CC0762 /* NCKillmailTableViewCell.xib in Resources */,
+				124C512A2199B16700D0FC8E /* WalletTransactionCell.xib in Resources */,
 				1298BA8020AEFB73002C941E /* MPDAAIcon@3x.png in Resources */,
 				1298BA8B20AEFCFC002C941E /* GDPR.storyboard in Resources */,
 				12CFDAE61F03D8E800CC0762 /* NCDatePickerTableViewCell.xib in Resources */,
@@ -3296,6 +3369,7 @@
 				12133C3B215E39B700646937 /* CertGroupsInteractor.swift in Sources */,
 				125B2CBD217A7BDF00D34CFB /* SkillsPresenter.swift in Sources */,
 				12EE7CE5213D598F005CE68F /* Router.swift in Sources */,
+				124C51252199AB6800D0FC8E /* NavigationItemTitleLabel.swift in Sources */,
 				12AB974D212C30E300B30DD3 /* SDEVersion.swift in Sources */,
 				124C50FE219954F700D0FC8E /* Contracts.swift in Sources */,
 				125DF63C2133D30000B86AE0 /* TreeDefaultCell.swift in Sources */,
@@ -3380,7 +3454,9 @@
 				124C510A2199626000D0FC8E /* ContractInfoViewController.swift in Sources */,
 				12B890722130054E0082D4A3 /* SOLID.swift in Sources */,
 				12AB972C212BF6A900B30DD3 /* Storage.swift in Sources */,
+				124C51282199B16000D0FC8E /* WalletTransactionCell.swift in Sources */,
 				125DF6332133CFC700B86AE0 /* MainMenuViewController.swift in Sources */,
+				124C51212199A54000D0FC8E /* WalletTransactionsPageViewController.swift in Sources */,
 				1287FBA82190885500A505FC /* MarketQuickbar.swift in Sources */,
 				1287FB952190825800A505FC /* InvMarketGroupsInteractor.swift in Sources */,
 				1287FBB42191763800A505FC /* NpcGroups.swift in Sources */,
@@ -3438,8 +3514,10 @@
 				12D8147021550E0F00313DAF /* InvTypeInfo.swift in Sources */,
 				12484C38215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift in Sources */,
 				1287FB812190241C00A505FC /* NewMailInteractor.swift in Sources */,
+				124C51182199906100D0FC8E /* WalletJournalCell.swift in Sources */,
 				12133C5F215E56E100646937 /* CertCertificateRequirementsInfoInteractor.swift in Sources */,
 				125B2CC9217A7C9400D34CFB /* SkillQueue.swift in Sources */,
+				124C51232199A54000D0FC8E /* WalletTransactionsPage.swift in Sources */,
 				12C8ABD3219597720028BF9A /* MarketOrdersPresenter.swift in Sources */,
 				1287FB7F2190241C00A505FC /* NewMailPresenter.swift in Sources */,
 				12133C30215E292D00646937 /* InvTypeVariationsInteractor.swift in Sources */,
@@ -3450,6 +3528,7 @@
 				1287FBB22191763800A505FC /* NpcGroupsViewController.swift in Sources */,
 				125DF6372133CFDB00B86AE0 /* MainMenuInteractor.swift in Sources */,
 				12484C72215CC6610083AE17 /* MapLocationPicker.swift in Sources */,
+				124C51202199A54000D0FC8E /* WalletTransactionsPagePresenter.swift in Sources */,
 				1204D07021528A140070AF92 /* InvGroupsViewController.swift in Sources */,
 				1287FBDB21919C6300A505FC /* AssetsInteractor.swift in Sources */,
 				1287FB8B2190276B00A505FC /* ContactsSearchResults.swift in Sources */,
@@ -3464,18 +3543,22 @@
 				12C727C8218C2BBF00A78ADF /* MailPageViewController.swift in Sources */,
 				12E0417E212D3C4F0000CB4F /* API.swift in Sources */,
 				125B2CB32176FEB500D34CFB /* InvTypeMasteryPresenter.swift in Sources */,
+				124C511521998D6A00D0FC8E /* WalletJournalPage.swift in Sources */,
 				1287FB9F2190849A00A505FC /* InvMarket.swift in Sources */,
 				125B2CC6217A7C9400D34CFB /* SkillQueuePresenter.swift in Sources */,
 				12D8147421550ED100313DAF /* InvTypeInfoPresenter.swift in Sources */,
 				125B2CC0217A7BDF00D34CFB /* Skills.swift in Sources */,
 				125B2CB42176FEB500D34CFB /* InvTypeMasteryViewController.swift in Sources */,
 				12C727CF218C5F9D00A78ADF /* MailCell.swift in Sources */,
+				124C511421998D6A00D0FC8E /* WalletJournalPageInteractor.swift in Sources */,
 				12AB9755212C488400B30DD3 /* TrainingQueue.swift in Sources */,
+				124C51222199A54000D0FC8E /* WalletTransactionsPageInteractor.swift in Sources */,
 				129E40AD213ECE0E002EDAF9 /* RoundedImageView.swift in Sources */,
 				12133C59215E56C600646937 /* CertCertificateRequirementsInfo.swift in Sources */,
 				120A386D213D46970071ED72 /* MainMenuContainerViewController.swift in Sources */,
 				1287FB822190241C00A505FC /* NewMail.swift in Sources */,
 				12AF2FD42188943900813DFD /* MySkills.swift in Sources */,
+				124C511221998D6A00D0FC8E /* WalletJournalPagePresenter.swift in Sources */,
 				1287FBA62190885500A505FC /* MarketQuickbarViewController.swift in Sources */,
 				12484C7F215CCF1B0083AE17 /* MapLocationPickerRegionsViewController.swift in Sources */,
 				12DE75E1215A7554006FC1BF /* InvTypeInfoDescriptionCell.swift in Sources */,
@@ -3494,6 +3577,7 @@
 				12D8147621550EDA00313DAF /* InvTypeInfoInteractor.swift in Sources */,
 				1287FB802190241C00A505FC /* NewMailViewController.swift in Sources */,
 				125B2CC7217A7C9400D34CFB /* SkillQueueViewController.swift in Sources */,
+				124C511321998D6A00D0FC8E /* WalletJournalPageViewController.swift in Sources */,
 				1287FBA72190885500A505FC /* MarketQuickbarInteractor.swift in Sources */,
 				12B03DA3213FC32300DCBD64 /* Math.swift in Sources */,
 				12C8ABDB219598B90028BF9A /* MarketOrderCell.swift in Sources */,

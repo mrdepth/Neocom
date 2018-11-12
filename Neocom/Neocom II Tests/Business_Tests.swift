@@ -31,13 +31,11 @@ class Business_Tests: TestCase {
 	
 	func testMarketOrders() {
 		let controller = try! MarketOrders.default.instantiate().get()
-		
 		wait(for: [test(controller)], timeout: 10)
 	}
 	
 	func testIndustryJobs() {
 		let controller = try! IndustryJobs.default.instantiate().get()
-		
 		wait(for: [test(controller)], timeout: 10)
 	}
 
@@ -53,6 +51,20 @@ class Business_Tests: TestCase {
 		let controller = try! ContractInfo.default.instantiate(contract.value[0]).get()
 
 		wait(for: [test(controller)], timeout: 10)
+	}
+
+	func testWalletJournal() {
+		let controller = try! WalletJournalPage.default.instantiate().get()
+		let nc = NavigationController(rootViewController: controller)
+		wait(for: [test(controller, takeScreenshot: false)], timeout: 10)
+		add(nc.screenshot())
+	}
+
+	func testWalletTransactions() {
+		let controller = try! WalletTransactionsPage.default.instantiate().get()
+		let nc = NavigationController(rootViewController: controller)
+		wait(for: [test(controller, takeScreenshot: false)], timeout: 10)
+		add(nc.screenshot())
 	}
 
 }

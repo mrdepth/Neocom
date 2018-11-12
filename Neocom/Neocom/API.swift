@@ -530,7 +530,8 @@ class APIClient: API {
 	
 	func contacts(with ids: Set<Int64>) -> Future<[Int64: Contact]> {
 		let ids = ids.subtracting(invalidIDs.value)
-		var result = Dictionary(ids.compactMap {cachedContacts[$0]}.map{($0.contactID, $0)}, uniquingKeysWith: {(a, _) in a})
+		
+		var result = Dictionary(cachedContacts.filter {ids.contains($0.key)}, uniquingKeysWith: {(a, _) in a})
 		var missing = ids.subtracting(Set(result.keys))
 		
 		if missing.isEmpty {

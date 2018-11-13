@@ -73,6 +73,13 @@
 		122A7CAA1F4B617E00537467 /* Fitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA91F4B617E00537467 /* Fitting.storyboard */; };
 		122DB9AB1E804DF200E8E2C4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */; };
 		122DB9AF1E806DB000E8E2C4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DB9AE1E806DB000E8E2C4 /* libz.tbd */; };
+		1233EB53219AEF5900EB99C9 /* KillmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB52219AEF5800EB99C9 /* KillmailCell.swift */; };
+		1233EB55219AEF6100EB99C9 /* KillmailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1233EB54219AEF6100EB99C9 /* KillmailCell.xib */; };
+		1233EB5B219AF2F200EB99C9 /* KillmailsPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB57219AF2F200EB99C9 /* KillmailsPagePresenter.swift */; };
+		1233EB5C219AF2F200EB99C9 /* KillmailsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB58219AF2F200EB99C9 /* KillmailsPageViewController.swift */; };
+		1233EB5D219AF2F200EB99C9 /* KillmailsPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB59219AF2F200EB99C9 /* KillmailsPageInteractor.swift */; };
+		1233EB5E219AF2F200EB99C9 /* KillmailsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB5A219AF2F200EB99C9 /* KillmailsPage.swift */; };
+		1233EB60219B068700EB99C9 /* KillReports_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB5F219B068700EB99C9 /* KillReports_Tests.swift */; };
 		124069FF1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124069FE1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib */; };
 		12406A011F20F49500A4DAE7 /* NCModuleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12406A001F20F49500A4DAE7 /* NCModuleTableViewCell.xib */; };
 		12406A031F20F4B800A4DAE7 /* NCShipTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12406A021F20F4B800A4DAE7 /* NCShipTableViewCell.xib */; };
@@ -131,6 +138,10 @@
 		124C51252199AB6800D0FC8E /* NavigationItemTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51242199AB6800D0FC8E /* NavigationItemTitleLabel.swift */; };
 		124C51282199B16000D0FC8E /* WalletTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51272199B16000D0FC8E /* WalletTransactionCell.swift */; };
 		124C512A2199B16700D0FC8E /* WalletTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124C51292199B16700D0FC8E /* WalletTransactionCell.xib */; };
+		124C5131219ACCE400D0FC8E /* KillmailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C512D219ACCE400D0FC8E /* KillmailsPresenter.swift */; };
+		124C5132219ACCE400D0FC8E /* KillmailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C512E219ACCE400D0FC8E /* KillmailsViewController.swift */; };
+		124C5133219ACCE400D0FC8E /* KillmailsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C512F219ACCE400D0FC8E /* KillmailsInteractor.swift */; };
+		124C5134219ACCE400D0FC8E /* Killmails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C5130219ACCE400D0FC8E /* Killmails.swift */; };
 		124C858F213E880200333636 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C858E213E880200333636 /* BackgroundView.swift */; };
 		1253C62521590744007DEA16 /* DamageTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62421590744007DEA16 /* DamageTypeCell.swift */; };
 		1253C6272159078C007DEA16 /* DamageTypeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C6262159078C007DEA16 /* DamageTypeCell.xib */; };
@@ -644,6 +655,13 @@
 		1230A3221DFFE2CF00627D92 /* NSExpressionDescription+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSExpressionDescription+NC.swift"; sourceTree = "<group>"; };
 		1230A3231DFFE2CF00627D92 /* UIImage+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+NC.swift"; sourceTree = "<group>"; };
 		1230A3391E001D7300627D92 /* NCAccountTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountTableViewCell.swift; sourceTree = "<group>"; };
+		1233EB52219AEF5800EB99C9 /* KillmailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillmailCell.swift; sourceTree = "<group>"; };
+		1233EB54219AEF6100EB99C9 /* KillmailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KillmailCell.xib; sourceTree = "<group>"; };
+		1233EB57219AF2F200EB99C9 /* KillmailsPagePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillmailsPagePresenter.swift; sourceTree = "<group>"; };
+		1233EB58219AF2F200EB99C9 /* KillmailsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillmailsPageViewController.swift; sourceTree = "<group>"; };
+		1233EB59219AF2F200EB99C9 /* KillmailsPageInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillmailsPageInteractor.swift; sourceTree = "<group>"; };
+		1233EB5A219AF2F200EB99C9 /* KillmailsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillmailsPage.swift; sourceTree = "<group>"; };
+		1233EB5F219B068700EB99C9 /* KillReports_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillReports_Tests.swift; sourceTree = "<group>"; };
 		1235F3D41F39B9F1000E0FD9 /* Swifter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Swifter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1235F3D71F39BB37000E0FD9 /* NCFittingServerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingServerViewController.swift; sourceTree = "<group>"; };
 		1235F3DB1F39BC90000E0FD9 /* UIDevice+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+NC.swift"; sourceTree = "<group>"; };
@@ -719,6 +737,10 @@
 		124C51242199AB6800D0FC8E /* NavigationItemTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationItemTitleLabel.swift; sourceTree = "<group>"; };
 		124C51272199B16000D0FC8E /* WalletTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionCell.swift; sourceTree = "<group>"; };
 		124C51292199B16700D0FC8E /* WalletTransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletTransactionCell.xib; sourceTree = "<group>"; };
+		124C512D219ACCE400D0FC8E /* KillmailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillmailsPresenter.swift; sourceTree = "<group>"; };
+		124C512E219ACCE400D0FC8E /* KillmailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillmailsViewController.swift; sourceTree = "<group>"; };
+		124C512F219ACCE400D0FC8E /* KillmailsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillmailsInteractor.swift; sourceTree = "<group>"; };
+		124C5130219ACCE400D0FC8E /* Killmails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Killmails.swift; sourceTree = "<group>"; };
 		124C858E213E880200333636 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		1253C62421590744007DEA16 /* DamageTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamageTypeCell.swift; sourceTree = "<group>"; };
 		1253C6262159078C007DEA16 /* DamageTypeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DamageTypeCell.xib; sourceTree = "<group>"; };
@@ -1538,6 +1560,26 @@
 			name = Database;
 			sourceTree = "<group>";
 		};
+		1233EB51219AEAAE00EB99C9 /* KillmailCell */ = {
+			isa = PBXGroup;
+			children = (
+				1233EB52219AEF5800EB99C9 /* KillmailCell.swift */,
+				1233EB54219AEF6100EB99C9 /* KillmailCell.xib */,
+			);
+			name = KillmailCell;
+			sourceTree = "<group>";
+		};
+		1233EB56219AF2DD00EB99C9 /* KillmailsPage */ = {
+			isa = PBXGroup;
+			children = (
+				1233EB5A219AF2F200EB99C9 /* KillmailsPage.swift */,
+				1233EB58219AF2F200EB99C9 /* KillmailsPageViewController.swift */,
+				1233EB57219AF2F200EB99C9 /* KillmailsPagePresenter.swift */,
+				1233EB59219AF2F200EB99C9 /* KillmailsPageInteractor.swift */,
+			);
+			name = KillmailsPage;
+			sourceTree = "<group>";
+		};
 		1241597C212FEFCE001709F2 /* TreeViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1706,6 +1748,26 @@
 				124C51292199B16700D0FC8E /* WalletTransactionCell.xib */,
 			);
 			name = WalletTransactionCell;
+			sourceTree = "<group>";
+		};
+		124C512B219AC39500D0FC8E /* KillReports */ = {
+			isa = PBXGroup;
+			children = (
+				124C512C219AC7E500D0FC8E /* Killmails */,
+			);
+			name = KillReports;
+			sourceTree = "<group>";
+		};
+		124C512C219AC7E500D0FC8E /* Killmails */ = {
+			isa = PBXGroup;
+			children = (
+				1233EB56219AF2DD00EB99C9 /* KillmailsPage */,
+				124C5130219ACCE400D0FC8E /* Killmails.swift */,
+				124C512E219ACCE400D0FC8E /* KillmailsViewController.swift */,
+				124C512D219ACCE400D0FC8E /* KillmailsPresenter.swift */,
+				124C512F219ACCE400D0FC8E /* KillmailsInteractor.swift */,
+			);
+			name = Killmails;
 			sourceTree = "<group>";
 		};
 		1253C62321590738007DEA16 /* DamageTypeCell */ = {
@@ -1913,6 +1975,7 @@
 			isa = PBXGroup;
 			children = (
 				1279EFF6213587D7005340C0 /* Cells.swift */,
+				1233EB51219AEAAE00EB99C9 /* KillmailCell */,
 				124C51262199B15300D0FC8E /* WalletTransactionCell */,
 				124C51162199905000D0FC8E /* WalletJorunalCell */,
 				124C50FF219956CB00D0FC8E /* ContractCell */,
@@ -2611,6 +2674,7 @@
 				12484C6B215CC05D0083AE17 /* PageViewController */,
 				12C727E2218C95E400A78ADF /* Mail */,
 				1287FBD321919C1000A505FC /* Business */,
+				124C512B219AC39500D0FC8E /* KillReports */,
 				121F26E52136EC5700AE1D70 /* NavigationController.swift */,
 				121F26E72136ECA800AE1D70 /* SplitViewController.swift */,
 				12678BEE212BE32A00E7E427 /* AppDelegate.swift */,
@@ -2829,6 +2893,7 @@
 				12EE7D04213D79BB005CE68F /* Router_Tests.swift */,
 				12845CB7218346D000E693D3 /* Skills_Tests.swift */,
 				12C8ABDC2195AF5C0028BF9A /* Business_Tests.swift */,
+				1233EB5F219B068700EB99C9 /* KillReports_Tests.swift */,
 				12CA8F832047DED1000360DE /* Info.plist */,
 			);
 			path = "Neocom II Tests";
@@ -3225,6 +3290,7 @@
 				1253C6272159078C007DEA16 /* DamageTypeCell.xib in Resources */,
 				128130451F3B08600039D46B /* main.js in Resources */,
 				1287FBD1219192A000A505FC /* IncursionCell.xib in Resources */,
+				1233EB55219AEF6100EB99C9 /* KillmailCell.xib in Resources */,
 				1298BA7E20AEFB73002C941E /* MPCloseButtonX@3x.png in Resources */,
 				1298BA7D20AEFB73002C941E /* MPCloseButtonX@2x.png in Resources */,
 				1298BA7820AEFB73002C941E /* MPCloseBtn@3x.png in Resources */,
@@ -3324,7 +3390,9 @@
 				12415981212FF0AC001709F2 /* TreeItem.swift in Sources */,
 				12484C83215CCF2E0083AE17 /* MapLocationPickerRegionsInteractor.swift in Sources */,
 				1287FBA52190885500A505FC /* MarketQuickbarPresenter.swift in Sources */,
+				1233EB5C219AF2F200EB99C9 /* KillmailsPageViewController.swift in Sources */,
 				1287FBBF2191889000A505FC /* SearchManager.swift in Sources */,
+				124C5133219ACCE400D0FC8E /* KillmailsInteractor.swift in Sources */,
 				12484CA5215D20F60083AE17 /* MapLocationPickerSearchResultsViewController.swift in Sources */,
 				12AF2FCC2188930300813DFD /* SkillsContainer.swift in Sources */,
 				12133C5D215E56D800646937 /* CertCertificateRequirementsInfoPresenter.swift in Sources */,
@@ -3346,6 +3414,7 @@
 				12C727C9218C2BBF00A78ADF /* MailPageInteractor.swift in Sources */,
 				12484C6A215CB3700083AE17 /* Atomic.swift in Sources */,
 				12C727CA218C2BBF00A78ADF /* MailPage.swift in Sources */,
+				1233EB5B219AF2F200EB99C9 /* KillmailsPagePresenter.swift in Sources */,
 				12AB974F212C325E00B30DD3 /* ImageValueTransformer.swift in Sources */,
 				1287FBC821918E6900A505FC /* IncursionsViewController.swift in Sources */,
 				121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */,
@@ -3383,6 +3452,7 @@
 				1287FBD921919C6300A505FC /* AssetsPresenter.swift in Sources */,
 				1287FBB12191763800A505FC /* NpcGroupsPresenter.swift in Sources */,
 				12133C39215E39AE00646937 /* CertGroupsPresenter.swift in Sources */,
+				1233EB5E219AF2F200EB99C9 /* KillmailsPage.swift in Sources */,
 				1204D07421528A270070AF92 /* InvGroupsInteractor.swift in Sources */,
 				1253C62E21591066007DEA16 /* MarketHistoryCell.swift in Sources */,
 				1287FB942190825800A505FC /* InvMarketGroupsViewController.swift in Sources */,
@@ -3450,6 +3520,7 @@
 				12C727B5218B33CD00A78ADF /* JumpClonesPresenter.swift in Sources */,
 				12C727E0218C8B7B00A78ADF /* MailBodyInteractor.swift in Sources */,
 				12EE7D08213E60C8005CE68F /* MainMenuContainerPresenter.swift in Sources */,
+				124C5132219ACCE400D0FC8E /* KillmailsViewController.swift in Sources */,
 				125B2CBF217A7BDF00D34CFB /* SkillsInteractor.swift in Sources */,
 				124C510A2199626000D0FC8E /* ContractInfoViewController.swift in Sources */,
 				12B890722130054E0082D4A3 /* SOLID.swift in Sources */,
@@ -3481,6 +3552,7 @@
 				1287FB892190276B00A505FC /* ContactsSearchResultsViewController.swift in Sources */,
 				12A843072153872D00570A95 /* InvTypesInteractor.swift in Sources */,
 				129DFE20213486D900C85496 /* ProgressTask.swift in Sources */,
+				1233EB53219AEF5900EB99C9 /* KillmailCell.swift in Sources */,
 				12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */,
 				1287FBCD2191901600A505FC /* IncursionCell.swift in Sources */,
 				12B03DA8213FEE1B00DCBD64 /* ActionHandler.swift in Sources */,
@@ -3548,12 +3620,14 @@
 				125B2CC6217A7C9400D34CFB /* SkillQueuePresenter.swift in Sources */,
 				12D8147421550ED100313DAF /* InvTypeInfoPresenter.swift in Sources */,
 				125B2CC0217A7BDF00D34CFB /* Skills.swift in Sources */,
+				124C5131219ACCE400D0FC8E /* KillmailsPresenter.swift in Sources */,
 				125B2CB42176FEB500D34CFB /* InvTypeMasteryViewController.swift in Sources */,
 				12C727CF218C5F9D00A78ADF /* MailCell.swift in Sources */,
 				124C511421998D6A00D0FC8E /* WalletJournalPageInteractor.swift in Sources */,
 				12AB9755212C488400B30DD3 /* TrainingQueue.swift in Sources */,
 				124C51222199A54000D0FC8E /* WalletTransactionsPageInteractor.swift in Sources */,
 				129E40AD213ECE0E002EDAF9 /* RoundedImageView.swift in Sources */,
+				124C5134219ACCE400D0FC8E /* Killmails.swift in Sources */,
 				12133C59215E56C600646937 /* CertCertificateRequirementsInfo.swift in Sources */,
 				120A386D213D46970071ED72 /* MainMenuContainerViewController.swift in Sources */,
 				1287FB822190241C00A505FC /* NewMail.swift in Sources */,
@@ -3568,6 +3642,7 @@
 				1287FBBD21917CF200A505FC /* WhTypes.swift in Sources */,
 				121B28C2218AEA24000D392C /* InvTypeRequiredForViewController.swift in Sources */,
 				12C8ABD5219597720028BF9A /* MarketOrdersInteractor.swift in Sources */,
+				1233EB5D219AF2F200EB99C9 /* KillmailsPageInteractor.swift in Sources */,
 				121B28CC218AF1E8000D392C /* CharacterInfo.swift in Sources */,
 				1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */,
 				12E0419C212D77530000CB4F /* Error.swift in Sources */,
@@ -3591,6 +3666,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				12C8ABDD2195AF5C0028BF9A /* Business_Tests.swift in Sources */,
+				1233EB60219B068700EB99C9 /* KillReports_Tests.swift in Sources */,
 				12926F10212EDC66006A3D1C /* API_Tests.swift in Sources */,
 				12845CB8218346D000E693D3 /* Skills_Tests.swift in Sources */,
 				12AB9751212C32EB00B30DD3 /* SDE_Tests.swift in Sources */,

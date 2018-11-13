@@ -123,13 +123,18 @@ protocol ContractsAPI: class {
 	func contractBids(contractID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Contracts.Bid]>>
 }
 
+protocol KillmailsAPI: class {
+	func killmails(page: Int?, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Killmails.Recent]>>
+	func killmailInfo(killmailHash: String, killmailID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Killmails.Killmail>>
+}
+
 extension SearchAPI {
 	func search(_ string: String, categories: [ESI.Search.Categories], cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Search.SearchResult>> {
 		return search(string, categories: categories, strict: false, cachePolicy: cachePolicy)
 	}
 }
 
-typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & SearchAPI & IncursionsAPI & AssetsAPI & IndustryAPI & ContractsAPI
+typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & SearchAPI & IncursionsAPI & AssetsAPI & IndustryAPI & ContractsAPI & KillmailsAPI
 
 class APIClient: API {
 	
@@ -698,5 +703,15 @@ class APIClient: API {
 
 	}
 
+	//MARK: KillmailsAPI
+	
+	func killmails(page: Int?, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Killmails.Recent]>> {
+		guard let id = characterID else { return .init(.failure(NCError.missingCharacterID(function: #function))) }
+		return esi.killmails.getCharactersRecentKillsAndLosses(characterID: Int(id), page: page, cachePolicy: cachePolicy)
+	}
+	
+	func killmailInfo(killmailHash: String, killmailID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Killmails.Killmail>> {
+		return esi.killmails.getSingleKillmail(killmailHash: killmailHash, killmailID: Int(killmailID), cachePolicy: cachePolicy)
+	}
 	
 }

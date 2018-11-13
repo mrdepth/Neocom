@@ -18,4 +18,5 @@ enum NCError: Error {
 	case reloadInProgress
 	case invalidInput(type: Any?)
 	case noResults
+	case isEndReached
 }

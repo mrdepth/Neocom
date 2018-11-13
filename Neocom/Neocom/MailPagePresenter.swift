@@ -99,21 +99,32 @@ class MailPagePresenter: TreePresenter {
 	}
 	
 	private var isEndReached = false
-	func fetchIfNeeded() {
-		guard !isEndReached && loading == nil else {return}
-		guard let lastMailID = lastMailID else {return}
+	
+	@discardableResult
+	func fetchIfNeeded() -> Future<Presentation> {
+		guard !isEndReached else {return .init(.failure(NCError.isEndReached))}
+		guard let lastMailID = lastMailID, self.loading == nil else {return .init(.failure(NCError.reloadInProgress))}
+		
 		view?.activityIndicator.startAnimating()
-		interactor.load(from: lastMailID, cachePolicy: .useProtocolCachePolicy).then(on: .main) { [weak self] content -> Future<Void> in
+		let loading = interactor.load(from: lastMailID, cachePolicy: .useProtocolCachePolicy).then(on: .main) { [weak self] content -> Future<Presentation> in
 			guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
-			return strongSelf.presentation(for: content).then(on: .main) { [weak self] presentation -> Void in
+			return strongSelf.presentation(for: content).then(on: .main) { [weak self] presentation -> Presentation in
 				self?.presentation = presentation
 				self?.view?.present(presentation, animated: false)
+				self?.loading = nil
+				return presentation
 			}
 		}.catch(on: .main) { [weak self] error in
+			self?.loading = nil
 			self?.isEndReached = true
 		}.finally(on: .main) { [weak self] in
 			self?.view?.activityIndicator.stopAnimating()
 		}
+		
+		if case .pending = loading.state {
+			self.loading = loading
+		}
+		return loading
 	}
 	
 	func canEdit<T: TreeItem>(_ item: T) -> Bool {

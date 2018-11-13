@@ -16,8 +16,14 @@ class MailPageViewController: TreeViewController<MailPagePresenter, ESI.Mail.Mai
 	
 	
 	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		fetchIfNeeded()
+	}
+	
+	private func fetchIfNeeded() {
 		guard tableView.contentOffset.y > tableView.contentSize.height - tableView.bounds.size.height * 2 else {return}
-		presenter.fetchIfNeeded()
+		presenter.fetchIfNeeded().then(on: .main) { [weak self] _ in
+			self?.fetchIfNeeded()
+		}
 	}
 	
 	override func treeController<T>(_ treeController: TreeController, canEdit item: T) -> Bool where T : TreeItem {

@@ -131,9 +131,6 @@ extension ContentProviderPresenter {
 //	@discardableResult
 	func reload(cachePolicy: URLRequest.CachePolicy) -> Future<Presentation> {
 		guard self.loading == nil else {return .init(.failure(NCError.reloadInProgress))}
-		if let loading = self.loading {
-			return loading
-		}
 		var task: ProgressTask! = beginTask(totalUnitCount: 2)
 		
 		let progress1 = task.performAsCurrent(withPendingUnitCount: 1) { Progress(totalUnitCount: 1)}
@@ -149,11 +146,13 @@ extension ContentProviderPresenter {
 						guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
 						strongSelf.content = content
 						strongSelf.presentation = presentation
+						strongSelf.loading = nil
 						return presentation
 					}
 				}
-			}.finally(on: .main) { [weak self] in
+			}.catch(on: .main) { [weak self] _ in
 				self?.loading = nil
+			}.finally(on: .main) {
 				task = nil
 			}
 		}

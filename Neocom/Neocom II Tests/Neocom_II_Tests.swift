@@ -401,35 +401,4 @@ class APIMock: APIClient {
 						  ESI.Killmails.Recent(killmailHash: "1a6e4dba56259753b932d457ee4bc34a0a292571", killmailID: 11587535)]]
 		return .init(ESI.Result(value: killmails[(page ?? 1) - 1], expires: .distantFuture, metadata: ["x-pages" : "\(killmails.count)"]))
 	}
-	
-	/*override func killmailInfo(killmailHash: String, killmailID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Killmails.Killmail>> {
-		return Services.sde.performBackgroundTask { context -> ESI.Result<ESI.Killmails.Killmail> in
-			let characterID = try! Services.storage.performBackgroundTask {context in Int(context.currentAccount?.characterID ?? 0)}.get()
-			let solarSystem = try! Int(context.managedObjectContext.from(SDEMapSolarSystem.self).first()!.solarSystemID)
-			
-			let value = ESI.Killmails.Killmail(attackers: [ESI.Killmails.Killmail.Attacker(allianceID: nil,
-																						   characterID: characterID,
-																						   corporationID: nil,
-																						   damageDone: 1000,
-																						   factionID: nil,
-																						   finalBlow: true,
-																						   securityStatus: -1,
-																						   shipTypeID: 645,
-																						   weaponTypeID: 645)],
-											   killmailID: Int(killmailID),
-											   killmailTime: Date(timeIntervalSinceNow: TimeInterval(killmailID)),
-											   moonID: 1,
-											   solarSystemID: solarSystem,
-											   victim: ESI.Killmails.Killmail.Victim(allianceID: nil,
-																					 characterID: killmailID % 2 == 1 ? characterID : 95810944,
-																					 corporationID: nil,
-																					 damageTaken: 1000,
-																					 factionID: nil,
-																					 items: [ESI.Killmails.Killmail.Victim.Items(flag: 0, itemTypeID: 645, items: nil, quantityDestroyed: 1, quantityDropped: 1, singleton: 0)],
-																					 position: nil,
-																					 shipTypeID: 645),
-											   warID: nil)
-			return ESI.Result(value: value, expires: nil, metadata: nil)
-		}
-	}*/
 }

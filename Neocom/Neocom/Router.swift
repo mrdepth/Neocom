@@ -147,5 +147,14 @@ enum Router {
 			return Route(assembly: WalletTransactionsPage.default, kind: .detail)
 		}
 	}
+	
+	enum KillReports {
+		static func killmails() -> Route<Killmails> {
+			return Route(assembly: Killmails.default, kind: .detail)
+		}
+		static func killmailInfo(_ input: KillmailInfo.View.Input) -> Route<KillmailInfo> {
+			return Route(assembly: KillmailInfo.default, input: input, kind: .detail)
+		}
+	}
 }
 

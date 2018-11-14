@@ -155,7 +155,24 @@ extension Tree.Item {
 			super.init(content)
 		}
 	}
-	
+
+	class RoutableCollection<Content: Hashable, Element: TreeItem>: Collection<Content, Element>, Routable {
+		var route: Routing?
+		var secondaryRoute: Routing?
+		
+		init<T: Hashable>(_ content: Content, diffIdentifier: T, route: Routing? = nil, secondaryRoute: Routing? = nil, children: [Element]? = nil) {
+			self.route = route
+			self.secondaryRoute = secondaryRoute
+			super.init(content, diffIdentifier: diffIdentifier, children: children)
+		}
+		
+		init(_ content: Content, route: Routing? = nil, secondaryRoute: Routing? = nil, children: [Element]? = nil) {
+			self.route = route
+			self.secondaryRoute = secondaryRoute
+			super.init(content, children: children)
+		}
+	}
+
 	class ExpandableRow<Content: Hashable, Element: TreeItem>: Base<Content, Element>, ExpandableItem {
 		
 		var isExpanded: Bool

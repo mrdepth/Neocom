@@ -195,24 +195,14 @@ extension Tree.Item {
 			cell.iconView?.image = image ?? UIImage()
 			
 			if let contact = contact, image == nil {
-				let image: Future<ESI.Result<UIImage>>?
 				let dimension = Int(cell.iconView!.bounds.width)
 				
-				switch contact.recipientType {
-				case .character?:
-					image = api.image(characterID: contact.contactID, dimension: dimension, cachePolicy: .useProtocolCachePolicy)
-				case .corporation?:
-					image = api.image(corporationID: contact.contactID, dimension: dimension, cachePolicy: .useProtocolCachePolicy)
-				case .alliance?:
-					image = api.image(allianceID: contact.contactID, dimension: dimension, cachePolicy: .useProtocolCachePolicy)
-				default:
-					image = nil
-				}
-				
-				image?.then(on: .main) { [weak self, weak treeController] result in
+				api.image(contact: contact, dimension: dimension, cachePolicy: .useProtocolCachePolicy).then(on: .main) { [weak self, weak treeController] result in
 					guard let strongSelf = self else {return}
 					strongSelf.image = result.value
 					treeController?.reloadRow(for: strongSelf, with: .none)
+				}.catch(on: .main) { [weak self] _ in
+					self?.image = UIImage()
 				}
 			}
 		}

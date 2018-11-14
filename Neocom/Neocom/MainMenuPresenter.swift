@@ -164,6 +164,16 @@ class MainMenuPresenter: TreePresenter {
 																								 route: Router.Business.industryJobs(),
 																								 require: [.esiIndustryReadCharacterJobsV1]),
 																		].compactMap{$0}).asAnyItem,
+					Tree.Item.SimpleSection<Tree.Item.MainMenuAPIRow>(title: NSLocalizedString("Fitting/Kills", comment: "").uppercased(),
+																	  treeController: view?.treeController,
+																	  children: [
+																		Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Kill Reports", comment: ""),
+																								 image: Image( #imageLiteral(resourceName: "killreport")),
+																								 account: account,
+																								 treeController: view?.treeController,
+																								 route: Router.KillReports.killmails(),
+																								 require: [.esiKillmailsReadKillmailsV1]),
+																		].compactMap{$0}).asAnyItem,
 					]
 
 		return .init(menu)

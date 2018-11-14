@@ -25,7 +25,7 @@ extension Prototype {
 }
 
 extension Tree.Item {
-	class KillmailRow: Row<ESI.Killmails.Killmail> {
+	class KillmailRow: RoutableRow<ESI.Killmails.Killmail> {
 		lazy var type: SDEInvType? = Services.sde.viewContext.invType(content.victim.shipTypeID)
 		lazy var location: EVELocation = Services.sde.viewContext.mapSolarSystem(content.solarSystemID).map{EVELocation($0)} ?? .unknown
 		var name: Contact?
@@ -36,7 +36,7 @@ extension Tree.Item {
 		
 		init(_ content: ESI.Killmails.Killmail, name: Contact?) {
 			self.name = name
-			super.init(content)
+			super.init(content, route: Router.KillReports.killmailInfo(content))
 		}
 		
 		override func configure(cell: UITableViewCell, treeController: TreeController?) {

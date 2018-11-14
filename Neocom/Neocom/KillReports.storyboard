@@ -14,7 +14,7 @@
         <scene sceneID="FC5-XY-ocy">
             <objects>
                 <viewController storyboardIdentifier="KillmailsViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Iid-cs-F8D" customClass="KillmailsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="FsB-LK-oAj" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="FsB-LK-oAj" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -82,8 +82,8 @@
         <!--Kill Report-->
         <scene sceneID="mrQ-Pv-2YI">
             <objects>
-                <tableViewController storyboardIdentifier="NCKillmailInfoViewController" title="Kill Report" modalPresentationStyle="overCurrentContext" id="Tq3-yJ-LbF" customClass="NCKillmailInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="84" sectionHeaderHeight="18" sectionFooterHeight="18" id="t9C-PA-gJv" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="KillmailInfoViewController" title="Kill Report" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Tq3-yJ-LbF" customClass="KillmailInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="t9C-PA-gJv" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>

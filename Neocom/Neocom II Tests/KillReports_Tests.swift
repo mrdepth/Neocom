@@ -39,5 +39,15 @@ class KillReports_Tests: TestCase {
 		
 		wait(for: [exp], timeout: 10)
     }
+	
+	func testKillmailInfo() {
+		
+//		let killmail = try! Services.api.current.killmailInfo(killmailHash: "c9e56846f73b4cb82c3868e91d173bec99c7d630", killmailID: 22044992, cachePolicy: .useProtocolCachePolicy).get()
+		let killmail = try! Services.api.current.killmailInfo(killmailHash: "f8ffc770033a08e65a34632dedad0e31e72f17d5", killmailID: 45560150, cachePolicy: .useProtocolCachePolicy).get()
+		
+		let view = try! KillmailInfo.default.instantiate(killmail.value).get()
+		wait(for: [test(view)], timeout: 10)
+		
+	}
 
 }

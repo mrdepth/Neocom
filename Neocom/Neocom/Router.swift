@@ -155,6 +155,18 @@ enum Router {
 		static func killmailInfo(_ input: KillmailInfo.View.Input) -> Route<KillmailInfo> {
 			return Route(assembly: KillmailInfo.default, input: input, kind: .detail)
 		}
+		static func zKillboard() -> Route<ZKillboard> {
+			return Route(assembly: ZKillboard.default, kind: .detail)
+		}
+		static func datePicker(_ input: DatePicker.View.Input) -> Route<DatePicker> {
+			return Route(assembly: DatePicker.default, input: input, kind: .sheet)
+		}
+		static func contacts(_ input: Contacts.View.Input) -> Route<Contacts> {
+			return Route(assembly: Contacts.default, input: input, kind: .adaptiveModal)
+		}
+	}
+	
+	enum Utility {
 	}
 }
 

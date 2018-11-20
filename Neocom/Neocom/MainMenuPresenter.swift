@@ -49,7 +49,7 @@ class MainMenuPresenter: TreePresenter {
 			}}
 		}
 		
-		let menu = [Tree.Item.SimpleSection<Tree.Item.MainMenuAPIRow>(title: NSLocalizedString("Character", comment: "").uppercased(),
+		let menu = [Tree.Item.SimpleSection(title: NSLocalizedString("Character", comment: "").uppercased(),
 																   treeController: view?.treeController,
 																   children: [
 																	Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Character Sheet", comment: ""),
@@ -114,7 +114,7 @@ class MainMenuPresenter: TreePresenter {
 																							 require: [.esiCharactersReadLoyaltyV1])
 
 																	].compactMap{$0}).asAnyItem,
-					Tree.Item.SimpleSection<Tree.Item.MainMenuRow>(title: NSLocalizedString("Database", comment: "").uppercased(),
+					Tree.Item.SimpleSection(title: NSLocalizedString("Database", comment: "").uppercased(),
 																   treeController: view?.treeController,
 																   children: [
 																	Tree.Item.MainMenuRow(title: NSLocalizedString("Database", comment: ""), image: Image( #imageLiteral(resourceName: "items")), route: Router.SDE.invCategories()),
@@ -124,7 +124,7 @@ class MainMenuPresenter: TreePresenter {
 																	Tree.Item.MainMenuRow(title: NSLocalizedString("Wormholes", comment: ""), image: Image( #imageLiteral(resourceName: "terminate")), route: Router.SDE.whTypes()),
 																	Tree.Item.MainMenuRow(title: NSLocalizedString("Incursions", comment: ""), image: Image( #imageLiteral(resourceName: "incursions")), route: Router.MainMenu.incursion())
 						]).asAnyItem,
-					Tree.Item.SimpleSection<Tree.Item.MainMenuAPIRow>(title: NSLocalizedString("Business", comment: "").uppercased(),
+					Tree.Item.SimpleSection(title: NSLocalizedString("Business", comment: "").uppercased(),
 																	  treeController: view?.treeController,
 																	  children: [
 																		Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Assets", comment: ""),
@@ -164,16 +164,19 @@ class MainMenuPresenter: TreePresenter {
 																								 route: Router.Business.industryJobs(),
 																								 require: [.esiIndustryReadCharacterJobsV1]),
 																		].compactMap{$0}).asAnyItem,
-					Tree.Item.SimpleSection<Tree.Item.MainMenuAPIRow>(title: NSLocalizedString("Fitting/Kills", comment: "").uppercased(),
-																	  treeController: view?.treeController,
-																	  children: [
-																		Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Kill Reports", comment: ""),
-																								 image: Image( #imageLiteral(resourceName: "killreport")),
-																								 account: account,
-																								 treeController: view?.treeController,
-																								 route: Router.KillReports.killmails(),
-																								 require: [.esiKillmailsReadKillmailsV1]),
-																		].compactMap{$0}).asAnyItem,
+					Tree.Item.SimpleSection(title: NSLocalizedString("Fitting/Kills", comment: "").uppercased(),
+											treeController: view?.treeController,
+											children: [
+												Tree.Item.MainMenuAPIRow(title: NSLocalizedString("Kill Reports", comment: ""),
+																		 image: Image( #imageLiteral(resourceName: "killreport")),
+																		 account: account,
+																		 treeController: view?.treeController,
+																		 route: Router.KillReports.killmails(),
+																		 require: [.esiKillmailsReadKillmailsV1])?.asAnyItem,
+												Tree.Item.MainMenuRow(title: NSLocalizedString("zKillboard Reports", comment: ""),
+																	  image: Image( #imageLiteral(resourceName: "killreport")),
+																	  route: Router.KillReports.zKillboard()).asAnyItem,
+												].compactMap{$0}).asAnyItem,
 					]
 
 		return .init(menu)

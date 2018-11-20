@@ -682,3 +682,18 @@ extension ESI.Assets.Asset.Flag {
 		}
 	}
 }
+
+extension ESI.Mail.Recipient.RecipientType {
+	var title: String {
+		switch self {
+		case .alliance:
+			return NSLocalizedString("Alliance", comment: "")
+		case .character:
+			return NSLocalizedString("Character", comment: "")
+		case .corporation:
+			return NSLocalizedString("Corporation", comment: "")
+		case .mailingList:
+			return NSLocalizedString("Mailing List", comment: "")
+		}
+	}
+}

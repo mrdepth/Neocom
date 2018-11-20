@@ -83,10 +83,9 @@ struct Route<Assembly: Neocom.Assembly>: Routing where Assembly.View: UIViewCont
 
 				
 				if let firstVC = dst.viewControllers.first, firstVC.navigationItem.leftBarButtonItem == nil {
-//					NCSlideDownDismissalInteractiveTransitioning.add(to: dst)
 					firstVC.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: firstVC, action: #selector(UIViewController.dismissAnimated(_:)))
 				}
-//				NCSlideDownDismissalInteractiveTransitioning.add(to: dst)
+				SlideDownDismissalInteractiveTransitioning.add(to: dst)
 				
 				view.prepareToRoute(to: destination)
 				view.present(dst, animated: true) {
@@ -95,6 +94,19 @@ struct Route<Assembly: Neocom.Assembly>: Routing where Assembly.View: UIViewCont
 			case .detail:
 				let dst = destination as? UINavigationController ?? NavigationController(rootViewController: destination)
 				view.showDetailViewController(dst, sender: sender)
+				try! promise.fulfill(true)
+			case .sheet:
+				let dst = destination as? UINavigationController ?? NavigationController(rootViewController: destination)
+				dst.modalPresentationStyle = .custom
+				let presentationController = SheetPresentationController(presentedViewController: dst, presenting: view)
+//				dst.preferredContentSize = dst.viewControllers[0].preferredContentSize
+				withExtendedLifetime(presentationController) {
+					dst.transitioningDelegate = presentationController
+					view.present(dst, animated: true) {
+						try! promise.fulfill(true)
+					}
+				}
+
 			default:
 				try! promise.fulfill(false)
 			}

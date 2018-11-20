@@ -171,7 +171,7 @@ extension Tree.Item {
 			let content = Tree.Content.Default(attributedTitle: title,
 											   subtitle: subtitle,
 											   image: Image(type.icon),
-											   accessoryType: UITableViewCell.AccessoryType.disclosureIndicator)
+											   accessoryType: .disclosureIndicator)
 			super.init(content, diffIdentifier: asset, children: children)
 		}
 		

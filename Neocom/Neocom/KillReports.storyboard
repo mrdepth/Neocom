@@ -120,8 +120,8 @@
         <!--zKillboard-->
         <scene sceneID="5On-M3-oFz">
             <objects>
-                <tableViewController storyboardIdentifier="NCZKillboardViewController" modalPresentationStyle="overCurrentContext" id="8N8-8V-ajE" customClass="NCZKillboardViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="sKO-Hn-Ckx" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="ZKillboardViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8N8-8V-ajE" customClass="ZKillboardViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="sKO-Hn-Ckx" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -135,24 +135,19 @@
         <!--Pilots-->
         <scene sceneID="GbD-Rm-jN6">
             <objects>
-                <tableViewController storyboardIdentifier="NCZKillboardContactsViewController" modalPresentationStyle="overCurrentContext" id="YtO-j7-ZRR" customClass="NCZKillboardContactsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="M3M-Gf-G00" customClass="NCTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                <tableViewController storyboardIdentifier="ContactsViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YtO-j7-ZRR" customClass="ContactsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="28" id="M3M-Gf-G00" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" id="zRS-qx-Crd">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <outlet property="delegate" destination="YtO-j7-ZRR" id="n7e-h2-axz"/>
-                            </connections>
-                        </searchBar>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="AaE-jh-F3S">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                     </tableView>
                     <navigationItem key="navigationItem" title="Pilots" id="yKv-fP-k4t"/>
-                    <connections>
-                        <outlet property="searchBar" destination="zRS-qx-Crd" id="azm-rG-DO7"/>
-                    </connections>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lN0-wM-Tm3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -287,6 +282,57 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KKF-7q-eLD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3246" y="2088"/>
+        </scene>
+        <!--Title-->
+        <scene sceneID="DLp-n4-aTc">
+            <objects>
+                <viewController storyboardIdentifier="DatePickerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5SC-MG-IrM" customClass="DatePickerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xb2-W2-sDi" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="216"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="twj-3d-QC6">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="216"/>
+                                <date key="date" timeIntervalSinceReferenceDate="564393143.18829">
+                                    <!--2018-11-20 07:52:23 +0000-->
+                                </date>
+                                <connections>
+                                    <action selector="onChangeValue:" destination="5SC-MG-IrM" eventType="valueChanged" id="w7D-U2-etN"/>
+                                </connections>
+                            </datePicker>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="twj-3d-QC6" firstAttribute="trailing" secondItem="uhS-YO-yN5" secondAttribute="trailing" id="1vv-BZ-8Y3"/>
+                            <constraint firstItem="twj-3d-QC6" firstAttribute="top" secondItem="uhS-YO-yN5" secondAttribute="top" id="aXS-sC-Cku"/>
+                            <constraint firstItem="twj-3d-QC6" firstAttribute="leading" secondItem="uhS-YO-yN5" secondAttribute="leading" id="hM8-4d-dof"/>
+                            <constraint firstAttribute="bottom" secondItem="twj-3d-QC6" secondAttribute="bottom" id="yIq-uf-bCN"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="uhS-YO-yN5"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="uZg-8o-2LO">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="iKY-pv-8WC">
+                            <connections>
+                                <action selector="onCancel:" destination="5SC-MG-IrM" id="PuB-VN-v62"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="yar-zX-XtQ">
+                            <connections>
+                                <action selector="onDone:" destination="5SC-MG-IrM" id="gC0-lT-cQA"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <value key="contentSizeForViewInPopover" type="size" width="320" height="216"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="260"/>
+                    <connections>
+                        <outlet property="datePicker" destination="twj-3d-QC6" id="Si8-YP-46u"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3i9-lB-y6F" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4048" y="2809"/>
         </scene>
     </scenes>
     <resources>

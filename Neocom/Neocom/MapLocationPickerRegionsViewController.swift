@@ -13,8 +13,22 @@ class MapLocationPickerRegionsViewController: TreeViewController<MapLocationPick
 	
 	override func treeController<T>(_ treeController: TreeController, configure cell: UITableViewCell, for item: T) where T : TreeItem {
 		super.treeController(treeController, configure: cell, for: item)
-		guard cell is TreeDefaultCell, input?.contains(.solarSystems) == true else {return}
-		cell.accessoryType = input?.contains(.regions) == true ? .detailButton : .disclosureIndicator
+		guard let item = item as? Tree.Item.FetchedResultsRow<SDEMapRegion> else {return}
+		guard let cell = cell as? TreeDefaultCell, input?.contains(.solarSystems) == true else {return}
+		if input?.contains(.regions) == true {
+			let button = UIButton(type: .system)
+			button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .subheadline)
+			button.setTitle(NSLocalizedString("Select", comment: "").uppercased(), for: .normal)
+			button.sizeToFit()
+
+			cell.accessoryView = button
+			cell.accessoryButtonHandler = ActionHandler(button, for: .touchUpInside) { [weak self] _ in
+				self?.presenter.didSelect(item.result)
+			}
+		}
+		else {
+			cell.accessoryType = .disclosureIndicator
+		}
 	}
 	
 	override func treeController<T>(_ treeController: TreeController, didSelectRowFor item: T) where T : TreeItem {

@@ -91,6 +91,10 @@
 		1248427C219C343B00CB3616 /* KillmailAttackerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1248427B219C343B00CB3616 /* KillmailAttackerCell.xib */; };
 		1248427E219C344500CB3616 /* KillmailAttackerNPCCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1248427D219C344500CB3616 /* KillmailAttackerNPCCell.xib */; };
 		12484280219C344E00CB3616 /* KillmailAttackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1248427F219C344E00CB3616 /* KillmailAttackerCell.swift */; };
+		12484297219D46D000CB3616 /* ZKillboardPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484293219D46D000CB3616 /* ZKillboardPresenter.swift */; };
+		12484298219D46D000CB3616 /* ZKillboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484294219D46D000CB3616 /* ZKillboardViewController.swift */; };
+		12484299219D46D000CB3616 /* ZKillboardInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484295219D46D000CB3616 /* ZKillboardInteractor.swift */; };
+		1248429A219D46D000CB3616 /* ZKillboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484296219D46D000CB3616 /* ZKillboard.swift */; };
 		12484C34215B8E080083AE17 /* InvTypeMarketOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C33215B8E080083AE17 /* InvTypeMarketOrders.swift */; };
 		12484C36215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C35215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift */; };
 		12484C38215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C37215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift */; };
@@ -352,6 +356,16 @@
 		12BFE4212017BF6F0083AC2F /* ASReceipt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BFE4222017BF6F0083AC2F /* ASReceipt.framework */; };
 		12C37D2C1EFA9CDC0070F055 /* NCContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C37D2B1EFA9CDC0070F055 /* NCContactTableViewCell.xib */; };
 		12C37D301EFA9D070070F055 /* NCContactCompactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C37D2F1EFA9D070070F055 /* NCContactCompactTableViewCell.xib */; };
+		12C3E38C21A3F228002ED002 /* SheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E38B21A3F228002ED002 /* SheetPresentationController.swift */; };
+		12C3E38E21A3F248002ED002 /* SlideDownDismissalInteractiveTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E38D21A3F248002ED002 /* SlideDownDismissalInteractiveTransitioning.swift */; };
+		12C3E39421A3F3E3002ED002 /* DatePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39021A3F3E3002ED002 /* DatePickerPresenter.swift */; };
+		12C3E39521A3F3E3002ED002 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39121A3F3E3002ED002 /* DatePickerViewController.swift */; };
+		12C3E39621A3F3E3002ED002 /* DatePickerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39221A3F3E3002ED002 /* DatePickerInteractor.swift */; };
+		12C3E39721A3F3E3002ED002 /* DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39321A3F3E3002ED002 /* DatePicker.swift */; };
+		12C3E39D21A42D77002ED002 /* ContactsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39921A42D77002ED002 /* ContactsPresenter.swift */; };
+		12C3E39E21A42D77002ED002 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39A21A42D77002ED002 /* ContactsViewController.swift */; };
+		12C3E39F21A42D77002ED002 /* ContactsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39B21A42D77002ED002 /* ContactsInteractor.swift */; };
+		12C3E3A021A42D77002ED002 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39C21A42D77002ED002 /* Contacts.swift */; };
 		12C727B5218B33CD00A78ADF /* JumpClonesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B1218B33CD00A78ADF /* JumpClonesPresenter.swift */; };
 		12C727B6218B33CD00A78ADF /* JumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B2218B33CD00A78ADF /* JumpClonesViewController.swift */; };
 		12C727B7218B33CD00A78ADF /* JumpClonesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B3218B33CD00A78ADF /* JumpClonesInteractor.swift */; };
@@ -693,6 +707,10 @@
 		1248427B219C343B00CB3616 /* KillmailAttackerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KillmailAttackerCell.xib; sourceTree = "<group>"; };
 		1248427D219C344500CB3616 /* KillmailAttackerNPCCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KillmailAttackerNPCCell.xib; sourceTree = "<group>"; };
 		1248427F219C344E00CB3616 /* KillmailAttackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillmailAttackerCell.swift; sourceTree = "<group>"; };
+		12484293219D46D000CB3616 /* ZKillboardPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKillboardPresenter.swift; sourceTree = "<group>"; };
+		12484294219D46D000CB3616 /* ZKillboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKillboardViewController.swift; sourceTree = "<group>"; };
+		12484295219D46D000CB3616 /* ZKillboardInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKillboardInteractor.swift; sourceTree = "<group>"; };
+		12484296219D46D000CB3616 /* ZKillboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKillboard.swift; sourceTree = "<group>"; };
 		12484C33215B8E080083AE17 /* InvTypeMarketOrders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeMarketOrders.swift; sourceTree = "<group>"; };
 		12484C35215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeMarketOrdersViewController.swift; sourceTree = "<group>"; };
 		12484C37215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvTypeMarketOrdersPresenter.swift; sourceTree = "<group>"; };
@@ -1072,6 +1090,16 @@
 		12C37D2F1EFA9D070070F055 /* NCContactCompactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCContactCompactTableViewCell.xib; sourceTree = "<group>"; };
 		12C37D331EFAAA290070F055 /* NCNPCViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCNPCViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12C37D361EFBA4C80070F055 /* NCWHViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCWHViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		12C3E38B21A3F228002ED002 /* SheetPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentationController.swift; sourceTree = "<group>"; };
+		12C3E38D21A3F248002ED002 /* SlideDownDismissalInteractiveTransitioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideDownDismissalInteractiveTransitioning.swift; sourceTree = "<group>"; };
+		12C3E39021A3F3E3002ED002 /* DatePickerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerPresenter.swift; sourceTree = "<group>"; };
+		12C3E39121A3F3E3002ED002 /* DatePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewController.swift; sourceTree = "<group>"; };
+		12C3E39221A3F3E3002ED002 /* DatePickerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerInteractor.swift; sourceTree = "<group>"; };
+		12C3E39321A3F3E3002ED002 /* DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker.swift; sourceTree = "<group>"; };
+		12C3E39921A42D77002ED002 /* ContactsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsPresenter.swift; sourceTree = "<group>"; };
+		12C3E39A21A42D77002ED002 /* ContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
+		12C3E39B21A42D77002ED002 /* ContactsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsInteractor.swift; sourceTree = "<group>"; };
+		12C3E39C21A42D77002ED002 /* Contacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		12C44CF91E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleInfoTableViewCell.swift; sourceTree = "<group>"; };
 		12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleDamageChartTableViewCell.swift; sourceTree = "<group>"; };
 		12C727B1218B33CD00A78ADF /* JumpClonesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpClonesPresenter.swift; sourceTree = "<group>"; };
@@ -1354,13 +1382,15 @@
 		120A385C213D3B280071ED72 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				12EE7D0F213E6BD0005CE68F /* SlideDownAnimationController */,
+				12EE7D0F213E6BD0005CE68F /* Presentation */,
 				12B8906F213005350082D4A3 /* SOLID */,
 				1241597C212FEFCE001709F2 /* TreeViewController */,
 				12AB9738212C111800B30DD3 /* Character */,
 				12A374ED211C2BC900259593 /* API */,
 				12D3109C211C2B7B00367440 /* Database */,
 				1279EFFA21358E14005340C0 /* Views */,
+				12EE7CE4213D598F005CE68F /* Router.swift */,
+				12EE7D0B213E6282005CE68F /* Route.swift */,
 				12E0419B212D77530000CB4F /* Error.swift */,
 				129DFE1F213486D900C85496 /* ProgressTask.swift */,
 				1279EFED213543B7005340C0 /* UnitFormatter.swift */,
@@ -1368,8 +1398,6 @@
 				1295A1A92139242300047516 /* Services.swift */,
 				12E04180212D44360000CB4F /* Config.swift */,
 				12E314BB1E165D5D000A926D /* UIKit+NC.swift */,
-				12EE7CE4213D598F005CE68F /* Router.swift */,
-				12EE7D0B213E6282005CE68F /* Route.swift */,
 				1230A3211DFFE2CF00627D92 /* NSAttributedString+NC.swift */,
 				1230A3111DFFE2CF00627D92 /* Math.swift */,
 				12B03DA7213FEE1B00DCBD64 /* ActionHandler.swift */,
@@ -1626,6 +1654,17 @@
 			name = KillmailAttackerCell;
 			sourceTree = "<group>";
 		};
+		12484291219D46B800CB3616 /* ZKillboard */ = {
+			isa = PBXGroup;
+			children = (
+				12484296219D46D000CB3616 /* ZKillboard.swift */,
+				12484294219D46D000CB3616 /* ZKillboardViewController.swift */,
+				12484293219D46D000CB3616 /* ZKillboardPresenter.swift */,
+				12484295219D46D000CB3616 /* ZKillboardInteractor.swift */,
+			);
+			name = ZKillboard;
+			sourceTree = "<group>";
+		};
 		12484C31215B8DF10083AE17 /* InvTypeMarketOrders */ = {
 			isa = PBXGroup;
 			children = (
@@ -1788,8 +1827,12 @@
 		124C512B219AC39500D0FC8E /* KillReports */ = {
 			isa = PBXGroup;
 			children = (
+				12C3E3A121A44B4C002ED002 /* ZKillboardCategories */,
+				12C3E39821A42D5F002ED002 /* Contacts */,
+				12C3E38F21A3F3CC002ED002 /* DatePicker */,
 				124C512C219AC7E500D0FC8E /* Killmails */,
 				1248426D219BF92C00CB3616 /* KillmailInfo */,
+				12484291219D46B800CB3616 /* ZKillboard */,
 			);
 			name = KillReports;
 			sourceTree = "<group>";
@@ -2757,6 +2800,35 @@
 			path = Appodeal;
 			sourceTree = "<group>";
 		};
+		12C3E38F21A3F3CC002ED002 /* DatePicker */ = {
+			isa = PBXGroup;
+			children = (
+				12C3E39321A3F3E3002ED002 /* DatePicker.swift */,
+				12C3E39121A3F3E3002ED002 /* DatePickerViewController.swift */,
+				12C3E39021A3F3E3002ED002 /* DatePickerPresenter.swift */,
+				12C3E39221A3F3E3002ED002 /* DatePickerInteractor.swift */,
+			);
+			name = DatePicker;
+			sourceTree = "<group>";
+		};
+		12C3E39821A42D5F002ED002 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				12C3E39C21A42D77002ED002 /* Contacts.swift */,
+				12C3E39A21A42D77002ED002 /* ContactsViewController.swift */,
+				12C3E39921A42D77002ED002 /* ContactsPresenter.swift */,
+				12C3E39B21A42D77002ED002 /* ContactsInteractor.swift */,
+			);
+			name = Contacts;
+			sourceTree = "<group>";
+		};
+		12C3E3A121A44B4C002ED002 /* ZKillboardCategories */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ZKillboardCategories;
+			sourceTree = "<group>";
+		};
 		12C727AE218B32E200A78ADF /* Character */ = {
 			isa = PBXGroup;
 			children = (
@@ -3091,12 +3163,14 @@
 			name = MainMenuContainer;
 			sourceTree = "<group>";
 		};
-		12EE7D0F213E6BD0005CE68F /* SlideDownAnimationController */ = {
+		12EE7D0F213E6BD0005CE68F /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
 				12EE7D10213E6BD7005CE68F /* SlideDownAnimationController.swift */,
+				12C3E38B21A3F228002ED002 /* SheetPresentationController.swift */,
+				12C3E38D21A3F248002ED002 /* SlideDownDismissalInteractiveTransitioning.swift */,
 			);
-			name = SlideDownAnimationController;
+			name = Presentation;
 			sourceTree = "<group>";
 		};
 		12EFE7F41E40C833007BF69B /* PresentationControllers */ = {
@@ -3442,6 +3516,7 @@
 				125B2CBE217A7BDF00D34CFB /* SkillsViewController.swift in Sources */,
 				121B28C1218AEA24000D392C /* InvTypeRequiredForPresenter.swift in Sources */,
 				12133C7C215E6F1900646937 /* CertCertificateDescriptionCell.swift in Sources */,
+				12C3E39521A3F3E3002ED002 /* DatePickerViewController.swift in Sources */,
 				12B8907F21300E610082D4A3 /* TreeViewController.swift in Sources */,
 				12484276219BF94A00CB3616 /* KillmailInfo.swift in Sources */,
 				1287FBD221919BC000A505FC /* PieChartView.swift in Sources */,
@@ -3474,6 +3549,7 @@
 				12925B772189E8DB00F6216C /* MySkillsPageViewController.swift in Sources */,
 				12133C42215E3B6D00646937 /* CertCertificatesPresenter.swift in Sources */,
 				12484C65215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift in Sources */,
+				12C3E39421A3F3E3002ED002 /* DatePickerPresenter.swift in Sources */,
 				12484CA9215D21080083AE17 /* MapLocationPickerSearchResultsInteractor.swift in Sources */,
 				12133C3B215E39B700646937 /* CertGroupsInteractor.swift in Sources */,
 				125B2CBD217A7BDF00D34CFB /* SkillsPresenter.swift in Sources */,
@@ -3482,6 +3558,7 @@
 				12AB974D212C30E300B30DD3 /* SDEVersion.swift in Sources */,
 				124C50FE219954F700D0FC8E /* Contracts.swift in Sources */,
 				125DF63C2133D30000B86AE0 /* TreeDefaultCell.swift in Sources */,
+				12C3E3A021A42D77002ED002 /* Contacts.swift in Sources */,
 				121F26EF2136EE9100AE1D70 /* AccountsPresenter.swift in Sources */,
 				12133C57215E56BE00646937 /* CertCertificateMasteryInfoInteractor.swift in Sources */,
 				12484C36215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift in Sources */,
@@ -3495,6 +3572,7 @@
 				1233EB5E219AF2F200EB99C9 /* KillmailsPage.swift in Sources */,
 				1204D07421528A270070AF92 /* InvGroupsInteractor.swift in Sources */,
 				1253C62E21591066007DEA16 /* MarketHistoryCell.swift in Sources */,
+				12C3E38C21A3F228002ED002 /* SheetPresentationController.swift in Sources */,
 				1287FB942190825800A505FC /* InvMarketGroupsViewController.swift in Sources */,
 				12AF2FCB2188930300813DFD /* SkillsContainerInteractor.swift in Sources */,
 				1287FBDA21919C6300A505FC /* AssetsViewController.swift in Sources */,
@@ -3508,6 +3586,7 @@
 				12484280219C344E00CB3616 /* KillmailAttackerCell.swift in Sources */,
 				12925B792189E8DB00F6216C /* MySkillsPage.swift in Sources */,
 				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
+				12484299219D46D000CB3616 /* ZKillboardInteractor.swift in Sources */,
 				12484C78215CC6A70083AE17 /* MapLocationPickerInteractor.swift in Sources */,
 				12C727B6218B33CD00A78ADF /* JumpClonesViewController.swift in Sources */,
 				121B28C4218AEA24000D392C /* InvTypeRequiredFor.swift in Sources */,
@@ -3527,6 +3606,7 @@
 				1253C6302159108F007DEA16 /* MarketHistoryView.swift in Sources */,
 				12484C7D215CCF100083AE17 /* MapLocationPickerRegions.swift in Sources */,
 				121B28CB218AF1E8000D392C /* CharacterInfoInteractor.swift in Sources */,
+				12C3E39721A3F3E3002ED002 /* DatePicker.swift in Sources */,
 				12484275219BF94A00CB3616 /* KillmailInfoInteractor.swift in Sources */,
 				12C8ABEB2195C26E0028BF9A /* IndustryJobs.swift in Sources */,
 				12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */,
@@ -3546,6 +3626,7 @@
 				12EA7798217F447A009C8288 /* SkillCell.swift in Sources */,
 				1287FBE22191C2A100A505FC /* TreeHeaderCell.swift in Sources */,
 				1279EFF121355DC9005340C0 /* TreeSectionCell.swift in Sources */,
+				12C3E39E21A42D77002ED002 /* ContactsViewController.swift in Sources */,
 				12133C49215E55B600646937 /* CertCertificateInfoViewController.swift in Sources */,
 				12B03DA6213FEBF400DCBD64 /* TimeIntervalFormatter.swift in Sources */,
 				12484C34215B8E080083AE17 /* InvTypeMarketOrders.swift in Sources */,
@@ -3557,7 +3638,9 @@
 				12133C55215E56B500646937 /* CertCertificateMasteryInfoPresenter.swift in Sources */,
 				12484C6F215CC0B70083AE17 /* SegmentedPageControl.swift in Sources */,
 				121F26E62136EC5700AE1D70 /* NavigationController.swift in Sources */,
+				12484297219D46D000CB3616 /* ZKillboardPresenter.swift in Sources */,
 				12925B782189E8DB00F6216C /* MySkillsPageInteractor.swift in Sources */,
+				12C3E39D21A42D77002ED002 /* ContactsPresenter.swift in Sources */,
 				12AB972A212BF60000B30DD3 /* Storage.xcdatamodeld in Sources */,
 				12AB9732212C0E4F00B30DD3 /* NCFleetConfiguration.swift in Sources */,
 				12C727B5218B33CD00A78ADF /* JumpClonesPresenter.swift in Sources */,
@@ -3577,6 +3660,7 @@
 				12484C3A215B8E230083AE17 /* InvTypeMarketOrdersInteractor.swift in Sources */,
 				12484C74215CC6910083AE17 /* MapLocationPickerViewController.swift in Sources */,
 				12133C5B215E56CF00646937 /* CertCertificateRequirementsInfoViewController.swift in Sources */,
+				12C3E39F21A42D77002ED002 /* ContactsInteractor.swift in Sources */,
 				12EE7D11213E6BD7005CE68F /* SlideDownAnimationController.swift in Sources */,
 				12133C47215E55AB00646937 /* CertCertificateInfo.swift in Sources */,
 				1204D06A215271670070AF92 /* InvCategories.swift in Sources */,
@@ -3589,6 +3673,8 @@
 				12C727DF218C8B7B00A78ADF /* MailBodyViewController.swift in Sources */,
 				125B2CB52176FEB500D34CFB /* InvTypeMasteryInteractor.swift in Sources */,
 				12AF2FD12188943900813DFD /* MySkillsPresenter.swift in Sources */,
+				1248429A219D46D000CB3616 /* ZKillboard.swift in Sources */,
+				12484298219D46D000CB3616 /* ZKillboardViewController.swift in Sources */,
 				12133C35215E399C00646937 /* CertGroups.swift in Sources */,
 				12C8ABD4219597720028BF9A /* MarketOrdersViewController.swift in Sources */,
 				1287FB882190276B00A505FC /* ContactsSearchResultsPresenter.swift in Sources */,
@@ -3599,6 +3685,7 @@
 				12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */,
 				1287FBCD2191901600A505FC /* IncursionCell.swift in Sources */,
 				12B03DA8213FEE1B00DCBD64 /* ActionHandler.swift in Sources */,
+				12C3E39621A3F3E3002ED002 /* DatePickerInteractor.swift in Sources */,
 				12C727C7218C2BBF00A78ADF /* MailPagePresenter.swift in Sources */,
 				12C8ABAB219424D50028BF9A /* AssetsSearchResultsViewController.swift in Sources */,
 				12484C91215CD5AA0083AE17 /* MapLocationPickerRecentsPresenter.swift in Sources */,
@@ -3701,6 +3788,7 @@
 				12B03DA3213FC32300DCBD64 /* Math.swift in Sources */,
 				12C8ABDB219598B90028BF9A /* MarketOrderCell.swift in Sources */,
 				12133C4B215E55BE00646937 /* CertCertificateInfoPresenter.swift in Sources */,
+				12C3E38E21A3F248002ED002 /* SlideDownDismissalInteractiveTransitioning.swift in Sources */,
 				12133C2A215E290500646937 /* InvTypeVariations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

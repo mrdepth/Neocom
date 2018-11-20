@@ -4,5 +4,10 @@ import UIKit
 import PlaygroundSupport
 import CoreData
 
-13.quotientAndRemainder(dividingBy: 5)
-13 / 5 + (13 % 5 > 0 ? 1 : 0)
+var r = CGRect(x: 0, y: 0.33, width: 100, height: 50)
+withUnsafePointer(to: &r) { p in
+	let ptr = UnsafeRawPointer(p)
+	print(ptr)
+	ptr.bind
+}
+

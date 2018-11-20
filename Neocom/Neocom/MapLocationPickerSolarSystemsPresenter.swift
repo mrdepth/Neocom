@@ -65,7 +65,7 @@ extension SDEMapSolarSystem: CellConfiguring {
 	
 	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? TreeDefaultCell else {return}
-		cell.titleLabel?.text = solarSystemName
+		cell.titleLabel?.attributedText = EVELocation(self).displayName
 		cell.subtitleLabel?.isHidden = true
 		cell.iconView?.isHidden = true
 	}

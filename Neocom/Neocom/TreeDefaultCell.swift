@@ -13,6 +13,7 @@ class TreeDefaultCell: RowCell {
 	@IBOutlet var titleLabel: UILabel?
 	@IBOutlet var subtitleLabel: UILabel?
 	@IBOutlet var iconView: UIImageView?
+	var accessoryButtonHandler: ActionHandler<UIButton>?
 }
 
 extension Prototype {
@@ -27,6 +28,48 @@ extension Prototype {
 }
 
 extension Tree.Content {
+	enum AccessoryType: Hashable {
+		static func == (lhs: Tree.Content.AccessoryType, rhs: Tree.Content.AccessoryType) -> Bool {
+			switch (lhs, rhs) {
+			case (.none, .none),
+				 (.disclosureIndicator, .disclosureIndicator),
+				 (.detailDisclosureButton, .detailDisclosureButton),
+				 (.checkmark, .checkmark),
+				 (.detailButton, .detailButton):
+				return true
+			case let (.imageButton(l, _), .imageButton(r, _)):
+				return l == r
+			default:
+				return false
+			}
+		}
+		
+		case none
+		case disclosureIndicator
+		case detailDisclosureButton
+		case checkmark
+		case detailButton
+		case imageButton(Image?, (UIControl) -> Void)
+		
+		func hash(into hasher: inout Hasher) {
+			switch self {
+			case .none:
+				hasher.combine(0)
+			case .disclosureIndicator:
+				hasher.combine(1)
+			case .detailDisclosureButton:
+				hasher.combine(2)
+			case .checkmark:
+				hasher.combine(3)
+			case .detailButton:
+				hasher.combine(4)
+			case let .imageButton(image, _):
+				hasher.combine(5)
+				hasher.combine(image)
+			}
+		}
+	}
+	
 	struct Default: Hashable {
 		var prototype: Prototype?
 		var title: String?
@@ -34,7 +77,7 @@ extension Tree.Content {
 		var subtitle: String?
 		var attributedSubtitle: NSAttributedString?
 		var image: Image?
-		var accessoryType: UITableViewCell.AccessoryType
+		var accessoryType: AccessoryType
 		
 		init(prototype: Prototype = Prototype.TreeDefaultCell.default,
 			 title: String? = nil,
@@ -42,7 +85,7 @@ extension Tree.Content {
 			 subtitle: String? = nil,
 			 attributedSubtitle: NSAttributedString? = nil,
 			 image: Image? = nil,
-			 accessoryType: UITableViewCell.AccessoryType = .none) {
+			 accessoryType: AccessoryType = .none) {
 			self.prototype = prototype
 			self.title = title
 			self.subtitle = subtitle
@@ -93,7 +136,25 @@ extension Tree.Content.Default: CellConfiguring {
 			cell.iconView?.isHidden = true
 		}
 		
-		cell.accessoryType = accessoryType
+		switch accessoryType {
+		case .none:
+			cell.accessoryType = .none
+		case .disclosureIndicator:
+			cell.accessoryType = .disclosureIndicator
+		case .detailDisclosureButton:
+			cell.accessoryType = .detailDisclosureButton
+		case .checkmark:
+			cell.accessoryType = .checkmark
+		case .detailButton:
+			cell.accessoryType = .detailButton
+		case let .imageButton(image, handler):
+			let button = UIButton(frame: .zero)
+			button.setImage(image?.value, for: .normal)
+			button.sizeToFit()
+			cell.accessoryButtonHandler = ActionHandler(button, for: .touchUpInside, handler: handler)
+			cell.accessoryView = button
+		}
+		
 	}
 }
 

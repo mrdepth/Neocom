@@ -158,6 +158,9 @@ enum Router {
 		static func zKillboard() -> Route<ZKillboard> {
 			return Route(assembly: ZKillboard.default, kind: .detail)
 		}
+		static func zKillmails(_ input: ZKillmails.View.Input) -> Route<ZKillmails> {
+			return Route(assembly: ZKillmails.default, input: input, kind: .push)
+		}
 		static func datePicker(_ input: DatePicker.View.Input) -> Route<DatePicker> {
 			return Route(assembly: DatePicker.default, input: input, kind: .sheet)
 		}

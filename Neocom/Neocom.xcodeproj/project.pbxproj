@@ -383,6 +383,10 @@
 		12C3E3C321A54ADF002ED002 /* ZKillboardInvTypesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3BF21A54ADF002ED002 /* ZKillboardInvTypesInteractor.swift */; };
 		12C3E3C421A54ADF002ED002 /* ZKillboardInvTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3C021A54ADF002ED002 /* ZKillboardInvTypes.swift */; };
 		12C3E3C721A57810002ED002 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3C621A57810002ED002 /* SwitchCell.swift */; };
+		12C3E3CD21A58972002ED002 /* ZKillmailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3C921A58972002ED002 /* ZKillmailsPresenter.swift */; };
+		12C3E3CE21A58972002ED002 /* ZKillmailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3CA21A58972002ED002 /* ZKillmailsViewController.swift */; };
+		12C3E3CF21A58972002ED002 /* ZKillmailsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3CB21A58972002ED002 /* ZKillmailsInteractor.swift */; };
+		12C3E3D021A58972002ED002 /* ZKillmails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3CC21A58972002ED002 /* ZKillmails.swift */; };
 		12C727B5218B33CD00A78ADF /* JumpClonesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B1218B33CD00A78ADF /* JumpClonesPresenter.swift */; };
 		12C727B6218B33CD00A78ADF /* JumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B2218B33CD00A78ADF /* JumpClonesViewController.swift */; };
 		12C727B7218B33CD00A78ADF /* JumpClonesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B3218B33CD00A78ADF /* JumpClonesInteractor.swift */; };
@@ -1134,6 +1138,10 @@
 		12C3E3BF21A54ADF002ED002 /* ZKillboardInvTypesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKillboardInvTypesInteractor.swift; sourceTree = "<group>"; };
 		12C3E3C021A54ADF002ED002 /* ZKillboardInvTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKillboardInvTypes.swift; sourceTree = "<group>"; };
 		12C3E3C621A57810002ED002 /* SwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
+		12C3E3C921A58972002ED002 /* ZKillmailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKillmailsPresenter.swift; sourceTree = "<group>"; };
+		12C3E3CA21A58972002ED002 /* ZKillmailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKillmailsViewController.swift; sourceTree = "<group>"; };
+		12C3E3CB21A58972002ED002 /* ZKillmailsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKillmailsInteractor.swift; sourceTree = "<group>"; };
+		12C3E3CC21A58972002ED002 /* ZKillmails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKillmails.swift; sourceTree = "<group>"; };
 		12C44CF91E446E0F00BA43ED /* NCFittingModuleInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleInfoTableViewCell.swift; sourceTree = "<group>"; };
 		12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleDamageChartTableViewCell.swift; sourceTree = "<group>"; };
 		12C727B1218B33CD00A78ADF /* JumpClonesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpClonesPresenter.swift; sourceTree = "<group>"; };
@@ -1694,6 +1702,7 @@
 				12C3E3AA21A5456B002ED002 /* ZKillboardTypePicker */,
 				12C3E39821A42D5F002ED002 /* Contacts */,
 				12C3E38F21A3F3CC002ED002 /* DatePicker */,
+				12C3E3C821A58957002ED002 /* ZKillmails */,
 				12484296219D46D000CB3616 /* ZKillboard.swift */,
 				12484294219D46D000CB3616 /* ZKillboardViewController.swift */,
 				12484293219D46D000CB3616 /* ZKillboardPresenter.swift */,
@@ -2912,6 +2921,17 @@
 			name = SwitchCell;
 			sourceTree = "<group>";
 		};
+		12C3E3C821A58957002ED002 /* ZKillmails */ = {
+			isa = PBXGroup;
+			children = (
+				12C3E3CC21A58972002ED002 /* ZKillmails.swift */,
+				12C3E3CA21A58972002ED002 /* ZKillmailsViewController.swift */,
+				12C3E3C921A58972002ED002 /* ZKillmailsPresenter.swift */,
+				12C3E3CB21A58972002ED002 /* ZKillmailsInteractor.swift */,
+			);
+			name = ZKillmails;
+			sourceTree = "<group>";
+		};
 		12C727AE218B32E200A78ADF /* Character */ = {
 			isa = PBXGroup;
 			children = (
@@ -3634,6 +3654,7 @@
 				12133C26215E1F9500646937 /* Image.swift in Sources */,
 				12A843032153871C00570A95 /* InvTypesViewController.swift in Sources */,
 				12925B772189E8DB00F6216C /* MySkillsPageViewController.swift in Sources */,
+				12C3E3CF21A58972002ED002 /* ZKillmailsInteractor.swift in Sources */,
 				12133C42215E3B6D00646937 /* CertCertificatesPresenter.swift in Sources */,
 				12484C65215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift in Sources */,
 				12C3E39421A3F3E3002ED002 /* DatePickerPresenter.swift in Sources */,
@@ -3669,9 +3690,11 @@
 				1287FBBC21917CF200A505FC /* WhTypesInteractor.swift in Sources */,
 				12484C8F215CD5A10083AE17 /* MapLocationPickerRecentsViewController.swift in Sources */,
 				1287FBBA21917CF200A505FC /* WhTypesPresenter.swift in Sources */,
+				12C3E3CE21A58972002ED002 /* ZKillmailsViewController.swift in Sources */,
 				12133C2C215E291500646937 /* InvTypeVariationsViewController.swift in Sources */,
 				12C8ABEA2195C26E0028BF9A /* IndustryJobsInteractor.swift in Sources */,
 				12484280219C344E00CB3616 /* KillmailAttackerCell.swift in Sources */,
+				12C3E3D021A58972002ED002 /* ZKillmails.swift in Sources */,
 				12925B792189E8DB00F6216C /* MySkillsPage.swift in Sources */,
 				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
 				12484299219D46D000CB3616 /* ZKillboardInteractor.swift in Sources */,
@@ -3849,6 +3872,7 @@
 				12D8147421550ED100313DAF /* InvTypeInfoPresenter.swift in Sources */,
 				125B2CC0217A7BDF00D34CFB /* Skills.swift in Sources */,
 				124C5131219ACCE400D0FC8E /* KillmailsPresenter.swift in Sources */,
+				12C3E3CD21A58972002ED002 /* ZKillmailsPresenter.swift in Sources */,
 				125B2CB42176FEB500D34CFB /* InvTypeMasteryViewController.swift in Sources */,
 				12C727CF218C5F9D00A78ADF /* MailCell.swift in Sources */,
 				124C511421998D6A00D0FC8E /* WalletJournalPageInteractor.swift in Sources */,

@@ -266,7 +266,7 @@ class ZKillboardPresenter: TreePresenter {
 		return Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.action,
 														  title: NSLocalizedString("Search Kills", comment: "").uppercased()),
 									 diffIdentifier: "Kills",
-									 route: nil).asAnyItem
+									 route: Router.KillReports.zKillmails(filter.values + [.kills])).asAnyItem
 
 	}
 
@@ -274,7 +274,7 @@ class ZKillboardPresenter: TreePresenter {
 		return Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.action,
 														  title: NSLocalizedString("Search Losses", comment: "").uppercased()),
 									 diffIdentifier: "Losses",
-									 route: nil).asAnyItem
+									 route: Router.KillReports.zKillmails(filter.values + [.losses])).asAnyItem
 		
 	}
 

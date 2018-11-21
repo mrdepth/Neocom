@@ -127,6 +127,7 @@ protocol ContractsAPI: class {
 protocol KillmailsAPI: class {
 	func killmails(page: Int?, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Killmails.Recent]>>
 	func killmailInfo(killmailHash: String, killmailID: Int64, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Killmails.Killmail>>
+	func zKillmails(filter: [EVEAPI.ZKillboard.Filter], page: Int?, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[EVEAPI.ZKillboard.Killmail]>>
 }
 
 extension SearchAPI {
@@ -144,6 +145,7 @@ class APIClient: API {
 	}
 	
 	let esi: ESI
+	lazy var zKillboard = EVEAPI.ZKillboard()
 	
 	init(esi: ESI) {
 		self.esi = esi
@@ -852,4 +854,7 @@ class APIClient: API {
 		return esi.killmails.getSingleKillmail(killmailHash: killmailHash, killmailID: Int(killmailID), cachePolicy: cachePolicy)
 	}
 	
+	func zKillmails(filter: [EVEAPI.ZKillboard.Filter], page: Int?, cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[EVEAPI.ZKillboard.Killmail]>> {
+		return zKillboard.kills(filter: filter, page: page, cachePolicy: cachePolicy)
+	}
 }

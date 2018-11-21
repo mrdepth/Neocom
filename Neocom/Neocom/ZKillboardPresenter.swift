@@ -44,15 +44,11 @@ class ZKillboardPresenter: TreePresenter {
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
 	
 	struct Filter {
-		enum Ship {
-			case type(SDEInvType)
-			case group(SDEInvGroup)
-		}
 		var from: Date?
 		var to: Date?
 		var pilot: Contact?
 		var location: MapLocationPicker.View.Location?
-		var ship: Ship?
+		var ship: ZKillboardTypePicker.View.Result?
 	}
 	
 	var filter = Filter()
@@ -60,9 +56,17 @@ class ZKillboardPresenter: TreePresenter {
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
 		
-		var result = Presentation()
+		let result = [pilotRow,
+					  shipRow,
+					  locationRow,
+					  fromRow,
+					  toRow]
 		
-		let contactsRoute = Router.KillReports.contacts(Contacts.View.Input { [weak self] (controller, contact) in
+		return .init([Tree.Item.Virtual(children: result, diffIdentifier: 0).asAnyItem])
+	}
+	
+	private var pilotRow: AnyTreeItem {
+		let route = Router.KillReports.contacts(Contacts.View.Input { [weak self] (controller, contact) in
 			guard let strongSelf = self, let view = strongSelf.view else {return}
 			controller.unwinder?.unwind(to: view)
 			strongSelf.filter.pilot = contact
@@ -70,21 +74,64 @@ class ZKillboardPresenter: TreePresenter {
 		})
 		
 		if let contact = filter.pilot {
-			let row = Tree.Item.ZKillboardContactRow(contact, api: interactor.api, route: contactsRoute) { [weak self] (_) in
+			return Tree.Item.ZKillboardContactRow(contact, api: interactor.api, route: route) { [weak self] (_) in
 				self?.filter.pilot = nil
 				self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { self?.view?.present($0, animated: true)}
-			}
-			result.append(row.asAnyItem)
+			}.asAnyItem
 		}
 		else {
-			let row = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.action,
-															   title: NSLocalizedString("Pilot", comment: "").uppercased()),
-										  diffIdentifier: "Pilot",
-										  route: contactsRoute)
-			result.append(row.asAnyItem)
+			return Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.action,
+																 title: NSLocalizedString("Pilot", comment: "").uppercased()),
+											diffIdentifier: "Pilot",
+											route: route).asAnyItem
+		}
+	}
+	
+	private var shipRow: AnyTreeItem {
+		let route = Router.KillReports.typePicker { [weak self] (controller, result) in
+			guard let strongSelf = self, let view = strongSelf.view else {return}
+			controller.unwinder?.unwind(to: view)
+			strongSelf.filter.ship = result
+			strongSelf.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { view.present($0, animated: true)}
 		}
 		
-		let locationRow: Tree.Item.RoutableRow<Tree.Content.Default>
+		if let ship = filter.ship {
+			switch ship {
+			case let .type(type):
+				return Tree.Item.RoutableRow(Tree.Content.Default(title: type.typeName,
+																  image: Image(type.icon ?? Services.sde.viewContext.eveIcon(.defaultType)),
+																  accessoryType: .imageButton(Image(#imageLiteral(resourceName: "clear.pdf")), { [weak self] _ in
+																	self?.filter.ship = nil
+																	self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { self?.view?.present($0, animated: true)}
+																})),
+											 diffIdentifier: type,
+											 route: route).asAnyItem
+			case let .group(group):
+				return Tree.Item.RoutableRow(Tree.Content.Default(title: group.groupName,
+																  image: Image(group.icon ?? Services.sde.viewContext.eveIcon(.defaultGroup)),
+																  accessoryType: .imageButton(Image(#imageLiteral(resourceName: "clear.pdf")), { [weak self] _ in
+																	self?.filter.ship = nil
+																	self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { self?.view?.present($0, animated: true)}
+																})),
+											 diffIdentifier: group,
+											 route: route).asAnyItem
+			}
+		}
+		else {
+			return Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.action,
+															  title: NSLocalizedString("Ship", comment: "").uppercased()),
+										 diffIdentifier: "Ship",
+										 route: route).asAnyItem
+		}
+	}
+	
+	private var locationRow: AnyTreeItem {
+		let route = Router.SDE.mapLocationPicker(MapLocationPicker.View.Input(mode: .all) { [weak self] (controller, location) in
+			guard let strongSelf = self, let view = strongSelf.view else {return}
+			strongSelf.filter.location = location
+			controller.unwinder?.unwind(to: view)
+			strongSelf.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { view.present($0, animated: true)}
+		})
 		
 		if let location = filter.location {
 			let title: NSAttributedString?
@@ -99,80 +146,67 @@ class ZKillboardPresenter: TreePresenter {
 				title = NSAttributedString(string: region.regionName ?? "")
 			}
 			
-			locationRow = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.default,
+			return Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.default,
 															  attributedTitle: title,
 															  accessoryType: .imageButton(Image(#imageLiteral(resourceName: "clear.pdf")), { [weak self] _ in
 																self?.filter.location = nil
 																self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { self?.view?.present($0, animated: true)}
-															})), diffIdentifier: object)
+															})),
+										 diffIdentifier: object,
+										 route: route).asAnyItem
 		}
 		else {
-			locationRow = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.action,
+			return Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.action,
 															  title: NSLocalizedString("Solar System", comment: "").uppercased()),
-										 diffIdentifier: "Location")
+										 diffIdentifier: "Location",
+										 route: route).asAnyItem
 		}
-		
-		locationRow.route = Router.SDE.mapLocationPicker(MapLocationPicker.View.Input(mode: .all) { [weak self] (controller, location) in
-			guard let strongSelf = self, let view = strongSelf.view else {return}
-			strongSelf.filter.location = location
-			controller.unwinder?.unwind(to: view)
-			strongSelf.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { view.present($0, animated: true)}
-		})
-
-		result.append(locationRow.asAnyItem)
-		
-		let from: Tree.Item.RoutableRow<Tree.Content.Default>
-		
-		if let date = filter.from {
-			from = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.default,
-															  title: NSLocalizedString("From", comment: ""),
-															  subtitle: DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .none),
-															  accessoryType: .imageButton(Image(#imageLiteral(resourceName: "clear.pdf")), { [weak self] _ in
-																self?.filter.from = nil
-																self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { self?.view?.present($0, animated: true)}
-															})), diffIdentifier: Pair("From", date))
-		}
-		else {
-			from = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.action,
-															  title: NSLocalizedString("From Date", comment: "").uppercased()),
-										 diffIdentifier: "From")
-		}
-		from.route = Router.KillReports.datePicker(DatePicker.View.Input(title: NSLocalizedString("From Date", comment: ""),
-																		 range: Date.distantPast...Date(),
-																		 current: filter.from ?? Date(),
-																		 completion: { [weak self] (controller, date) in
-																			self?.filter.from = date
+	}
+	
+	private func dateRow(shortTitle: String, fullTitle: String, range: ClosedRange<Date>, date: Date?, handler: @escaping (Date?) -> Void) -> AnyTreeItem {
+		let route = Router.KillReports.datePicker(DatePicker.View.Input(title: fullTitle,
+																		range: range,
+																		current: date ?? Date(),
+																		completion: { [weak self] (controller, date) in
+																			handler(date)
 																			self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { self?.view?.present($0, animated: true)}
 		}))
-		result.append(from.asAnyItem)
 		
-		let to: Tree.Item.RoutableRow<Tree.Content.Default>
-		
-		if let date = filter.to {
-			to = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.default,
-															title: NSLocalizedString("To", comment: ""),
-															subtitle: DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .none),
-															accessoryType: .imageButton(Image(#imageLiteral(resourceName: "clear.pdf")), { [weak self] _ in
-																self?.filter.to = nil
+		if let date = date {
+			return Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.default,
+															  title: shortTitle,
+															  subtitle: DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .none),
+															  accessoryType: .imageButton(Image(#imageLiteral(resourceName: "clear.pdf")), { [weak self] _ in
+																handler(nil)
 																self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { self?.view?.present($0, animated: true)}
-															})), diffIdentifier: Pair("To", date))
+															})),
+										 diffIdentifier: Pair(shortTitle, date),
+										 route: route).asAnyItem
 		}
 		else {
-			to = Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.action,
-															title: NSLocalizedString("To Date", comment: "").uppercased()),
-									   diffIdentifier: "To")
+			return Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.action,
+															  title: fullTitle.uppercased()),
+										 diffIdentifier: shortTitle,
+										 route: route).asAnyItem
 		}
-		to.route = Router.KillReports.datePicker(DatePicker.View.Input(title: NSLocalizedString("To Date", comment: ""),
-																	   range: Date.distantPast...Date(),
-																	   current: filter.to ?? Date(),
-																	   completion: { [weak self] (controller, date) in
-																		self?.filter.to = date
-																		self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { self?.view?.present($0, animated: true)}
-		}))
-		result.append(to.asAnyItem)
-		
-		
-		return .init([Tree.Item.Virtual(children: result).asAnyItem])
+	}
+	
+	private var fromRow: AnyTreeItem {
+		return dateRow(shortTitle: NSLocalizedString("From", comment: ""),
+					   fullTitle: NSLocalizedString("From Date", comment: ""),
+					   range: Date.distantPast...Date(),
+					   date: filter.from) { [weak self] date in
+						self?.filter.from = date
+		}
+	}
+	
+	private var toRow: AnyTreeItem {
+		return dateRow(shortTitle: NSLocalizedString("To", comment: ""),
+					   fullTitle: NSLocalizedString("To Date", comment: ""),
+					   range: Date.distantPast...Date(),
+					   date: filter.to) { [weak self] date in
+						self?.filter.to = date
+		}
 	}
 }
 

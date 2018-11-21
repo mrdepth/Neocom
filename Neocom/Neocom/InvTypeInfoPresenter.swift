@@ -726,7 +726,7 @@ extension InvTypeInfoPresenter {
 														   image: Image(context.eveIcon("23_64_3"))),
 									  diffIdentifier: "MaximumMassRegeneration").asAnyItem)
 		}
-		return [Tree.Item.Virtual(children: rows).asAnyItem]
+		return [Tree.Item.Virtual(children: rows, diffIdentifier: "WH").asAnyItem]
 	}
 	
 	func npcInfoPresentation(for type: SDEInvType, character: Character?, context: SDEContext) -> [AnyTreeItem] {

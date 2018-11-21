@@ -156,8 +156,8 @@
         <!--Categories-->
         <scene sceneID="f1m-tz-zax">
             <objects>
-                <tableViewController storyboardIdentifier="NCZKillboardCategoriesViewController" modalPresentationStyle="overCurrentContext" id="4md-Mo-vST" customClass="NCZKillboardCategoriesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="PeF-dC-FOg" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="ZKillboardInvCategoriesViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4md-Mo-vST" customClass="ZKillboardInvCategoriesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="PeF-dC-FOg" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -177,8 +177,8 @@
         <!--Groups-->
         <scene sceneID="mOL-oa-RFT">
             <objects>
-                <tableViewController storyboardIdentifier="NCZKillboardGroupsViewController" modalPresentationStyle="overCurrentContext" id="eAY-ht-rKb" customClass="NCZKillboardGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="1ra-zD-jzz" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="ZKillboardInvGroupsViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="eAY-ht-rKb" customClass="ZKillboardInvGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="1ra-zD-jzz" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -193,7 +193,7 @@
         <!--Killboard Type Picker View Controller-->
         <scene sceneID="ksb-pd-kVI">
             <objects>
-                <navigationController storyboardIdentifier="NCZKillboardTypePickerViewController" id="H1g-SK-mKc" customClass="NCZKillboardTypePickerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ZKillboardTypePickerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="H1g-SK-mKc" customClass="ZKillboardTypePickerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="aJJ-qj-EZW">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -209,8 +209,8 @@
         <!--Types-->
         <scene sceneID="AmS-Wp-Wwv">
             <objects>
-                <tableViewController storyboardIdentifier="NCZKillboardTypesViewController" modalPresentationStyle="overCurrentContext" id="vdt-pE-5zb" customClass="NCZKillboardTypesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="68" sectionHeaderHeight="18" sectionFooterHeight="18" id="bRD-qK-D4a" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="ZKillboardInvTypesViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vdt-pE-5zb" customClass="ZKillboardInvTypesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="bRD-qK-D4a" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>

@@ -74,12 +74,15 @@ enum Tree {
 }
 
 extension Tree.Item {
-	struct Virtual<T: TreeItem>: TreeItem {
-		typealias Child = T
+	struct Virtual<Element: TreeItem, DiffIdentifier: Hashable>: TreeItem {
+		typealias Child = Element
 		var children: [Child]?
 		
-		init(children: [Child]) {
+		var diffIdentifier: DiffIdentifier
+		
+		init(children: [Child], diffIdentifier: DiffIdentifier) {
 			self.children = children
+			self.diffIdentifier = diffIdentifier
 		}
 	}
 	

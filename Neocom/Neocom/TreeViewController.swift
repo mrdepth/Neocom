@@ -158,6 +158,8 @@ class TreeViewController<Presenter: TreePresenter, Input>: UITableViewController
 	}
 	
 	func treeController<T: TreeItem> (_ treeController: TreeController, accessoryButtonTappedFor item: T) -> Void {
+		guard let route = (item as? Routable)?.secondaryRoute else {return}
+		_ = route.perform(from: self)
 	}
 
 	func treeController<T: TreeItem> (_ treeController: TreeController, canMove item: T) -> Bool {

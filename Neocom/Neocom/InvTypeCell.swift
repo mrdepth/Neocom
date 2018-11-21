@@ -55,6 +55,8 @@ extension Tree.Item {
 		
 		lazy var route: Routing? = (self.result["objectID"] as? NSManagedObjectID).map{Router.SDE.invTypeInfo(.objectID($0))}
 		
+		var secondaryRoute: Routing?
+		
 		lazy var type: SDEInvType? = {
 			guard let objectID = result["objectID"] as? NSManagedObjectID else {return nil}
 			return (try? Services.sde.viewContext.existingObject(with: objectID)) ?? nil

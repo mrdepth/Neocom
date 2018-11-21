@@ -164,6 +164,16 @@ enum Router {
 		static func contacts(_ input: Contacts.View.Input) -> Route<Contacts> {
 			return Route(assembly: Contacts.default, input: input, kind: .adaptiveModal)
 		}
+		static func typePicker(_ input: @escaping ZKillboardTypePicker.View.Input) -> Route<ZKillboardTypePicker> {
+			return Route(assembly: ZKillboardTypePicker.default, input: input, kind: .modal)
+		}
+		static func typePickerInvGroups(_ input: ZKillboardInvGroups.View.Input) -> Route<ZKillboardInvGroups> {
+			return Route(assembly: ZKillboardInvGroups.default, input: input, kind: .push)
+		}
+		static func typePickerInvTypes(_ input: ZKillboardInvTypes.View.Input) -> Route<ZKillboardInvTypes> {
+			return Route(assembly: ZKillboardInvTypes.default, input: input, kind: .push)
+		}
+
 	}
 	
 	enum Utility {

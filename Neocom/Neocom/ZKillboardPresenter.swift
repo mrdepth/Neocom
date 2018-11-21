@@ -11,6 +11,7 @@ import Futures
 import CloudData
 import TreeController
 import CoreData
+import EVEAPI
 
 class ZKillboardPresenter: TreePresenter {
 	typealias View = ZKillboardViewController
@@ -49,6 +50,8 @@ class ZKillboardPresenter: TreePresenter {
 		var pilot: Contact?
 		var location: MapLocationPicker.View.Location?
 		var ship: ZKillboardTypePicker.View.Result?
+		var soloOnly = false
+		var whOnly = false
 	}
 	
 	var filter = Filter()
@@ -56,13 +59,43 @@ class ZKillboardPresenter: TreePresenter {
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
 		
-		let result = [pilotRow,
-					  shipRow,
-					  locationRow,
-					  fromRow,
-					  toRow]
+		let section0 = [pilotRow,
+						shipRow,
+						locationRow,
+						fromRow,
+						toRow]
+
+		var section1 = [soloOnlyRow]
 		
-		return .init([Tree.Item.Virtual(children: result, diffIdentifier: 0).asAnyItem])
+		if filter.location == nil {
+			section1.append(whOnlyRow)
+		}
+		
+		let section2: [AnyTreeItem]
+		let values = filter.values
+		
+		let hasDate = filter.from != nil || filter.to != nil
+		let hasRegion: Bool
+		if case .region? = filter.location {
+			hasRegion = true
+		}
+		else {
+			hasRegion = false
+		}
+		
+		if filter.whOnly && values.count == 1 {
+			section2 = [lossesRow]
+		}
+		else if values.isEmpty || (hasRegion && hasDate) {
+			section2 = []
+		}
+		else {
+			section2 = [killsRow, lossesRow]
+		}
+
+		return .init([Tree.Item.Virtual(children: section0, diffIdentifier: 0).asAnyItem,
+					  Tree.Item.Virtual(children: section1, diffIdentifier: 1).asAnyItem,
+					  Tree.Item.Virtual(children: section2, diffIdentifier: 2).asAnyItem])
 	}
 	
 	private var pilotRow: AnyTreeItem {
@@ -208,6 +241,43 @@ class ZKillboardPresenter: TreePresenter {
 						self?.filter.to = date
 		}
 	}
+	
+	private lazy var soloOnlyRow: AnyTreeItem = {
+		return Tree.Item.SwitchRow(Tree.Content.Default(prototype: Prototype.SwitchCell.attribute,
+														title: NSLocalizedString("Solo", comment: "").uppercased()),
+								   value: filter.soloOnly,
+								   diffIdentifier: "Solo") { [weak self] switchView in
+									self?.filter.soloOnly = switchView.isOn
+									self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { self?.view?.present($0, animated: true)}
+			}.asAnyItem
+	}()
+	
+	private lazy var whOnlyRow: AnyTreeItem = {
+		return Tree.Item.SwitchRow(Tree.Content.Default(prototype: Prototype.SwitchCell.attribute,
+														title: NSLocalizedString("W-Space", comment: "").uppercased()),
+								   value: filter.whOnly,
+								   diffIdentifier: "WH") { [weak self] switchView in
+									self?.filter.whOnly = switchView.isOn
+									self?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { self?.view?.present($0, animated: true)}
+			}.asAnyItem
+	}()
+	
+	private var killsRow: AnyTreeItem {
+		return Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.action,
+														  title: NSLocalizedString("Search Kills", comment: "").uppercased()),
+									 diffIdentifier: "Kills",
+									 route: nil).asAnyItem
+
+	}
+
+	private var lossesRow: AnyTreeItem {
+		return Tree.Item.RoutableRow(Tree.Content.Default(prototype: Prototype.TreeDefaultCell.action,
+														  title: NSLocalizedString("Search Losses", comment: "").uppercased()),
+									 diffIdentifier: "Losses",
+									 route: nil).asAnyItem
+		
+	}
+
 }
 
 
@@ -229,8 +299,54 @@ extension Tree.Item {
 			let button = UIButton(frame: .zero)
 			button.setImage(#imageLiteral(resourceName: "clear.pdf"), for: .normal)
 			button.sizeToFit()
-			cell.accessoryButtonHandler = ActionHandler(button, for: .touchUpInside, handler: handler)
+			cell.accessoryViewHandler = ActionHandler(button, for: .touchUpInside, handler: handler)
 			cell.accessoryView = button
 		}
+	}
+}
+
+
+extension ZKillboardPresenter.Filter {
+	var values: [EVEAPI.ZKillboard.Filter] {
+		var values = [EVEAPI.ZKillboard.Filter]()
+		if let pilot = pilot {
+			switch pilot.recipientType {
+			case .character?:
+				values.append(.characterID([pilot.contactID]))
+			case .corporation?:
+				values.append(.corporationID([pilot.contactID]))
+			case .alliance?:
+				values.append(.allianceID([pilot.contactID]))
+			default:
+				break
+			}
+		}
+		
+		switch ship {
+		case let .type(type)?:
+			values.append(.shipTypeID([Int(type.typeID)]))
+		case let .group(group)?:
+			values.append(.groupID([Int(group.groupID)]))
+		default:
+			break
+		}
+		
+		switch location {
+		case let .solarSystem(solarSystem)?:
+			values.append(.solarSystemID([Int(solarSystem.solarSystemID)]))
+		case let .region(region)?:
+			values.append(.regionID([Int(region.regionID)]))
+		default:
+			break
+		}
+		
+		if soloOnly {
+			values.append(.solo)
+		}
+		
+		if whOnly && location == nil {
+			values.append(.wSpace)
+		}
+		return values
 	}
 }

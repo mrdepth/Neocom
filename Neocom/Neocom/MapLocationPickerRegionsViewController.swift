@@ -22,7 +22,7 @@ class MapLocationPickerRegionsViewController: TreeViewController<MapLocationPick
 			button.sizeToFit()
 
 			cell.accessoryView = button
-			cell.accessoryButtonHandler = ActionHandler(button, for: .touchUpInside) { [weak self] _ in
+			cell.accessoryViewHandler = ActionHandler(button, for: .touchUpInside) { [weak self] _ in
 				self?.presenter.didSelect(item.result)
 			}
 		}

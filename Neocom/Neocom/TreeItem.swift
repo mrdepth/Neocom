@@ -25,7 +25,7 @@ extension TreeItem {
 extension UITableView {
 	
 	func register(_ prototypes: [Prototype]) {
-		for prototype in prototypes {
+		for prototype in Set(prototypes) {
 			register(prototype.nib, forCellReuseIdentifier: prototype.reuseIdentifier)
 		}
 	}
@@ -34,7 +34,7 @@ extension UITableView {
 extension UICollectionView {
 	
 	func register(_ prototypes: [Prototype]) {
-		for prototype in prototypes {
+		for prototype in Set(prototypes) {
 			register(prototype.nib, forCellWithReuseIdentifier: prototype.reuseIdentifier)
 		}
 	}

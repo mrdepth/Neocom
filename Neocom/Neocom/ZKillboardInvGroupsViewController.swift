@@ -21,7 +21,7 @@ class ZKillboardInvGroupsViewController: TreeViewController<ZKillboardInvGroupsP
 		cell.accessoryView = button
 		
 		let group = item.result
-		cell.accessoryButtonHandler = ActionHandler(button, for: .touchUpInside) { [weak self] _ in
+		cell.accessoryViewHandler = ActionHandler(button, for: .touchUpInside) { [weak self] _ in
 			self?.presenter.select(group)
 		}
 	}

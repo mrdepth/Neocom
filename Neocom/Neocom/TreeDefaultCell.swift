@@ -13,7 +13,7 @@ class TreeDefaultCell: RowCell {
 	@IBOutlet var titleLabel: UILabel?
 	@IBOutlet var subtitleLabel: UILabel?
 	@IBOutlet var iconView: UIImageView?
-	var accessoryButtonHandler: ActionHandler<UIButton>?
+	var accessoryViewHandler: ActionHandler<UIControl>?
 }
 
 extension Prototype {
@@ -50,6 +50,7 @@ extension Tree.Content {
 		case checkmark
 		case detailButton
 		case imageButton(Image?, (UIControl) -> Void)
+		case view(UIView)
 		
 		func hash(into hasher: inout Hasher) {
 			switch self {
@@ -66,6 +67,8 @@ extension Tree.Content {
 			case let .imageButton(image, _):
 				hasher.combine(5)
 				hasher.combine(image)
+			case .view:
+				hasher.combine(6)
 			}
 		}
 	}
@@ -151,8 +154,10 @@ extension Tree.Content.Default: CellConfiguring {
 			let button = UIButton(frame: .zero)
 			button.setImage(image?.value, for: .normal)
 			button.sizeToFit()
-			cell.accessoryButtonHandler = ActionHandler(button, for: .touchUpInside, handler: handler)
+			cell.accessoryViewHandler = ActionHandler(button, for: .touchUpInside, handler: handler)
 			cell.accessoryView = button
+		case let .view(view):
+			cell.accessoryView = view
 		}
 		
 	}

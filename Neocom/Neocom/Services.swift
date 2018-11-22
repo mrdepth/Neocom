@@ -9,6 +9,7 @@
 import Foundation
 import EVEAPI
 import SafariServices
+import CloudData
 
 protocol APIService {
 	func make(for account: Account?) -> API
@@ -27,14 +28,21 @@ struct Services {
 
 class DefaultAPIService: APIService {
 	
+	private var didChangeAccountObserver: NotificationObserver?
+	
+	init() {
+		didChangeAccountObserver = NotificationCenter.default.addNotificationObserver(forName: .didChangeAccount, object: nil, queue: .main) { [weak self] _ in
+			guard let strongSelf = self else {return}
+			strongSelf.current = strongSelf.make(for: Services.storage.viewContext.currentAccount)
+		}
+	}
+	
 	func make(for account: Account?) -> API {
 		let esi = ESI(token: account?.oAuth2Token, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey, server: .tranquility)
 		return APIClient(esi: esi)
 	}
 	
-	var current: API {
-		return make(for: Services.storage.viewContext.currentAccount)
-	}
+	lazy var current: API = make(for: Services.storage.viewContext.currentAccount)
 	
 	func performAuthorization(from controller: UIViewController) {
 		let url = OAuth2.authURL(clientID: Config.current.esi.clientID, callbackURL: Config.current.esi.callbackURL, scope: ESI.Scope.default, state: "esi")

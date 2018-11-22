@@ -1,1 +1,1 @@
-let SDEVersion = "August_Release_2018_1.0"
+let SDEVersion = "Onslaught_1.0"

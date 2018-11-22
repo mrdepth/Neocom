@@ -123,6 +123,9 @@ struct Certificate: Codable {
 struct IconID: Codable {
 	var description: String?
 	var iconFile: String
+	var backgrounds: [String]?
+	var foregrounds: [String]?
+	var obsolete: Bool?
 }
 
 struct Ancestry: Codable {

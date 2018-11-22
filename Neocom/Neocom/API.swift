@@ -593,7 +593,41 @@ class APIClient: API {
 						}
 					}
 				}
-				try? context.save()
+				
+				while true {
+					do {
+						try context.save()
+						break
+					}
+					catch {
+						if let error = error as? CocoaError,
+							error.errorCode == CocoaError.managedObjectConstraintMerge.rawValue,
+							let conflicts = error.errorUserInfo[NSPersistentStoreSaveConflictsErrorKey] as? [NSConstraintConflict],
+							!conflicts.isEmpty {
+							
+							let pairs = conflicts.filter{$0.databaseObject is Contact}.map { conflict in
+								(conflict.databaseObject as! Contact, Set(conflict.conflictingObjects.compactMap{$0 as? Contact}))
+							}.filter{!$0.1.isEmpty}
+							
+							if !pairs.isEmpty {
+								for (object, objects) in pairs {
+									contacts.filter{objects.contains($0.value)}.forEach {
+										contacts[$0.key] = object
+									}
+									objects.forEach {
+										$0.managedObjectContext?.delete($0)
+									}
+								}
+							}
+							else {
+								break
+							}
+						}
+						else {
+							break
+						}
+					}
+				}
 				return contacts.values.map{$0.objectID}
 			}.then(on: .main) { [weak self] ids -> [Int64: Contact] in
 				let context = Services.cache.viewContext

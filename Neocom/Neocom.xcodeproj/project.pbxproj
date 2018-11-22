@@ -2799,6 +2799,7 @@
 				12C727E2218C95E400A78ADF /* Mail */,
 				1287FBD321919C1000A505FC /* Business */,
 				124C512B219AC39500D0FC8E /* KillReports */,
+				12D3B61221A6DE1400BA5C9A /* Fitting */,
 				121F26E52136EC5700AE1D70 /* NavigationController.swift */,
 				121F26E72136ECA800AE1D70 /* SplitViewController.swift */,
 				12678BEE212BE32A00E7E427 /* AppDelegate.swift */,
@@ -3132,6 +3133,13 @@
 				12D31099211C282100367440 /* PersistentContext.swift */,
 			);
 			name = Database;
+			sourceTree = "<group>";
+		};
+		12D3B61221A6DE1400BA5C9A /* Fitting */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Fitting;
 			sourceTree = "<group>";
 		};
 		12D8146E21550DFE00313DAF /* InvTypeInfo */ = {

@@ -62,7 +62,7 @@ class MapLocationPickerSearchResultsPresenter: TreePresenter {
 				
 				if controller.fetchedObjects?.isEmpty == false {
 					let section: Tree.Item.NamedFetchedResultsController<Tree.Item.FetchedResultsSection<Tree.Item.MapSolarSystemSearchResultsRow>> =
-						Tree.Item.NamedFetchedResultsController(Tree.Content.Section(title: NSLocalizedString("Solar Systems", comment: "")),
+						Tree.Item.NamedFetchedResultsController(Tree.Content.Section(title: NSLocalizedString("Solar Systems", comment: "").uppercased()),
 																fetchedResultsController: controller,
 																treeController: self?.view?.treeController)
 					sections.append(section.asAnyItem)
@@ -80,7 +80,9 @@ class MapLocationPickerSearchResultsPresenter: TreePresenter {
 					try controller.performFetch()
 					
 					if controller.fetchedObjects?.isEmpty == false {
-						let section = Tree.Item.FetchedResultsController<Tree.Item.FetchedResultsSection<Tree.Item.MapRegionSearchResultsRow>>(controller, treeController: self?.view?.treeController)
+						let section = Tree.Item.NamedFetchedResultsController<Tree.Item.FetchedResultsSection<Tree.Item.MapRegionSearchResultsRow>>(Tree.Content.Section(title: NSLocalizedString("Regions", comment: "").uppercased()),
+																																					fetchedResultsController: controller,
+																																					treeController: self?.view?.treeController)
 						sections.append(section.asAnyItem)
 					}
 					
@@ -113,7 +115,7 @@ class MapLocationPickerSearchResultsPresenter: TreePresenter {
 					
 					if controller.fetchedObjects?.isEmpty == false {
 						let section: Tree.Item.NamedFetchedResultsController<Tree.Item.FetchedResultsSection<Tree.Item.MapSolarSystemSearchResultsRow>> =
-							Tree.Item.NamedFetchedResultsController(Tree.Content.Section(title: NSLocalizedString("Solar Systems", comment: "")),
+							Tree.Item.NamedFetchedResultsController(Tree.Content.Section(title: NSLocalizedString("Solar Systems", comment: "").uppercased()),
 																	fetchedResultsController: controller,
 																	treeController: self?.view?.treeController)
 						sections.append(section.asAnyItem)

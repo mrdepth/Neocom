@@ -329,7 +329,33 @@ do {
 						let solarSystem = try SDEMapSolarSystem($0.get())
 						solarSystem.constellation = constellation
 					}
+					
+					constellation.security = (constellation.solarSystems?.allObjects as? [SDEMapSolarSystem]).map { array in
+						return !array.isEmpty ? array.map{$0.security}.reduce(0, +) / Float(array.count) : 0
+					} ?? 0
 				}
+				
+				if let array = (region.constellations?.allObjects as? [SDEMapConstellation])?.flatMap ({return $0.solarSystems?.allObjects as? [SDEMapSolarSystem] ?? []}), !array.isEmpty  {
+					region.security = array.map {$0.security}.reduce(0, +) / Float(array.count)
+				}
+				else {
+					region.security = 0
+				}
+				
+				if region.regionID >= Int32(NCDBRegionID.whSpace.rawValue) {
+					region.securityClass = -1
+				}
+				else {
+					switch region.security {
+					case 0.5...1:
+						region.securityClass = 1
+					case -1...0:
+						region.securityClass = 0
+					default:
+						region.securityClass = 0.5
+					}
+				}
+
 			}
 			return .init(universe)
 		}

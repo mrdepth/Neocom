@@ -21,7 +21,7 @@ class SDE_Tests: TestCase {
     override func tearDown() {
         super.tearDown()
     }
-    
+	
 	func testIcons() {
 		let context = Services.sde.viewContext
 		

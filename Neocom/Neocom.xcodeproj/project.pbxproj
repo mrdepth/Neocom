@@ -444,6 +444,18 @@
 		12CFDAEC1F03F8F700CC0762 /* NCKillmailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CFDAEB1F03F8F700CC0762 /* NCKillmailTableViewCell.xib */; };
 		12D20EA31EBA011900BEC926 /* NCPieChartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D20EA21EBA011900BEC926 /* NCPieChartTableViewCell.xib */; };
 		12D3109A211C282100367440 /* PersistentContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D31099211C282100367440 /* PersistentContext.swift */; };
+		12D3B61B21A7F6D100BA5C9A /* FittingMenuPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61721A7F6D100BA5C9A /* FittingMenuPresenter.swift */; };
+		12D3B61C21A7F6D100BA5C9A /* FittingMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61821A7F6D100BA5C9A /* FittingMenuViewController.swift */; };
+		12D3B61D21A7F6D100BA5C9A /* FittingMenuInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61921A7F6D100BA5C9A /* FittingMenuInteractor.swift */; };
+		12D3B61E21A7F6D100BA5C9A /* FittingMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61A21A7F6D100BA5C9A /* FittingMenu.swift */; };
+		12D3B62521A7F70C00BA5C9A /* FittingShipsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62121A7F70C00BA5C9A /* FittingShipsPresenter.swift */; };
+		12D3B62621A7F70C00BA5C9A /* FittingShipsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62221A7F70C00BA5C9A /* FittingShipsViewController.swift */; };
+		12D3B62721A7F70C00BA5C9A /* FittingShipsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62321A7F70C00BA5C9A /* FittingShipsInteractor.swift */; };
+		12D3B62821A7F70C00BA5C9A /* FittingShips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62421A7F70C00BA5C9A /* FittingShips.swift */; };
+		12D3B62E21A7F73500BA5C9A /* FittingLoadoutsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62A21A7F73500BA5C9A /* FittingLoadoutsPresenter.swift */; };
+		12D3B62F21A7F73500BA5C9A /* FittingLoadoutsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62B21A7F73500BA5C9A /* FittingLoadoutsViewController.swift */; };
+		12D3B63021A7F73500BA5C9A /* FittingLoadoutsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62C21A7F73500BA5C9A /* FittingLoadoutsInteractor.swift */; };
+		12D3B63121A7F73500BA5C9A /* FittingLoadouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62D21A7F73500BA5C9A /* FittingLoadouts.swift */; };
 		12D404471F31C010007F1715 /* NCSwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D404461F31C010007F1715 /* NCSwitchTableViewCell.xib */; };
 		12D404561F3460BE007F1715 /* NCAccountTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D404551F3460BE007F1715 /* NCAccountTableViewCell.xib */; };
 		12D7A4402068DDBD00F78560 /* openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1293D7C72049807E00A1F453 /* openssl.framework */; };
@@ -1240,6 +1252,18 @@
 		12D39D0F1EF936980077BD17 /* NCWalletTransactionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCWalletTransactionsViewController.swift; sourceTree = "<group>"; };
 		12D39D131EF969210077BD17 /* NCContractTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContractTableViewCell.swift; sourceTree = "<group>"; };
 		12D39D151EF969DA0077BD17 /* NCContractsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCContractsViewController.swift; sourceTree = "<group>"; };
+		12D3B61721A7F6D100BA5C9A /* FittingMenuPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingMenuPresenter.swift; sourceTree = "<group>"; };
+		12D3B61821A7F6D100BA5C9A /* FittingMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingMenuViewController.swift; sourceTree = "<group>"; };
+		12D3B61921A7F6D100BA5C9A /* FittingMenuInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingMenuInteractor.swift; sourceTree = "<group>"; };
+		12D3B61A21A7F6D100BA5C9A /* FittingMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingMenu.swift; sourceTree = "<group>"; };
+		12D3B62121A7F70C00BA5C9A /* FittingShipsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingShipsPresenter.swift; sourceTree = "<group>"; };
+		12D3B62221A7F70C00BA5C9A /* FittingShipsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingShipsViewController.swift; sourceTree = "<group>"; };
+		12D3B62321A7F70C00BA5C9A /* FittingShipsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingShipsInteractor.swift; sourceTree = "<group>"; };
+		12D3B62421A7F70C00BA5C9A /* FittingShips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingShips.swift; sourceTree = "<group>"; };
+		12D3B62A21A7F73500BA5C9A /* FittingLoadoutsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingLoadoutsPresenter.swift; sourceTree = "<group>"; };
+		12D3B62B21A7F73500BA5C9A /* FittingLoadoutsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingLoadoutsViewController.swift; sourceTree = "<group>"; };
+		12D3B62C21A7F73500BA5C9A /* FittingLoadoutsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingLoadoutsInteractor.swift; sourceTree = "<group>"; };
+		12D3B62D21A7F73500BA5C9A /* FittingLoadouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingLoadouts.swift; sourceTree = "<group>"; };
 		12D404461F31C010007F1715 /* NCSwitchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCSwitchTableViewCell.xib; sourceTree = "<group>"; };
 		12D404481F31C0AF007F1715 /* NCSwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSwitchTableViewCell.swift; sourceTree = "<group>"; };
 		12D4044B1F32222A007F1715 /* NCLocationPickerContainerViewContrller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCLocationPickerContainerViewContrller.swift; sourceTree = "<group>"; };
@@ -3138,8 +3162,44 @@
 		12D3B61221A6DE1400BA5C9A /* Fitting */ = {
 			isa = PBXGroup;
 			children = (
+				12D3B61F21A7F6E500BA5C9A /* FittingMenu */,
 			);
 			name = Fitting;
+			sourceTree = "<group>";
+		};
+		12D3B61F21A7F6E500BA5C9A /* FittingMenu */ = {
+			isa = PBXGroup;
+			children = (
+				12D3B62921A7F72A00BA5C9A /* FittingLoadouts */,
+				12D3B62021A7F6F300BA5C9A /* FittingShips */,
+				12D3B61A21A7F6D100BA5C9A /* FittingMenu.swift */,
+				12D3B61821A7F6D100BA5C9A /* FittingMenuViewController.swift */,
+				12D3B61721A7F6D100BA5C9A /* FittingMenuPresenter.swift */,
+				12D3B61921A7F6D100BA5C9A /* FittingMenuInteractor.swift */,
+			);
+			name = FittingMenu;
+			sourceTree = "<group>";
+		};
+		12D3B62021A7F6F300BA5C9A /* FittingShips */ = {
+			isa = PBXGroup;
+			children = (
+				12D3B62421A7F70C00BA5C9A /* FittingShips.swift */,
+				12D3B62221A7F70C00BA5C9A /* FittingShipsViewController.swift */,
+				12D3B62121A7F70C00BA5C9A /* FittingShipsPresenter.swift */,
+				12D3B62321A7F70C00BA5C9A /* FittingShipsInteractor.swift */,
+			);
+			name = FittingShips;
+			sourceTree = "<group>";
+		};
+		12D3B62921A7F72A00BA5C9A /* FittingLoadouts */ = {
+			isa = PBXGroup;
+			children = (
+				12D3B62D21A7F73500BA5C9A /* FittingLoadouts.swift */,
+				12D3B62B21A7F73500BA5C9A /* FittingLoadoutsViewController.swift */,
+				12D3B62A21A7F73500BA5C9A /* FittingLoadoutsPresenter.swift */,
+				12D3B62C21A7F73500BA5C9A /* FittingLoadoutsInteractor.swift */,
+			);
+			name = FittingLoadouts;
 			sourceTree = "<group>";
 		};
 		12D8146E21550DFE00313DAF /* InvTypeInfo */ = {
@@ -3629,6 +3689,7 @@
 				12133C7C215E6F1900646937 /* CertCertificateDescriptionCell.swift in Sources */,
 				12C3E39521A3F3E3002ED002 /* DatePickerViewController.swift in Sources */,
 				12C3E3BA21A5460E002ED002 /* ZKillboardInvGroupsInteractor.swift in Sources */,
+				12D3B62F21A7F73500BA5C9A /* FittingLoadoutsViewController.swift in Sources */,
 				12B8907F21300E610082D4A3 /* TreeViewController.swift in Sources */,
 				12484276219BF94A00CB3616 /* KillmailInfo.swift in Sources */,
 				1287FBD221919BC000A505FC /* PieChartView.swift in Sources */,
@@ -3681,6 +3742,7 @@
 				12484C36215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift in Sources */,
 				12AFD46D211C1C3D00007423 /* SDE.swift in Sources */,
 				12133C4D215E55C700646937 /* CertCertificateInfoInteractor.swift in Sources */,
+				12D3B62521A7F70C00BA5C9A /* FittingShipsPresenter.swift in Sources */,
 				1287FBCF2191916300A505FC /* API+Constants.swift in Sources */,
 				1287FBCA21918E6900A505FC /* Incursions.swift in Sources */,
 				1287FBD921919C6300A505FC /* AssetsPresenter.swift in Sources */,
@@ -3704,6 +3766,7 @@
 				12484280219C344E00CB3616 /* KillmailAttackerCell.swift in Sources */,
 				12C3E3D021A58972002ED002 /* ZKillmails.swift in Sources */,
 				12925B792189E8DB00F6216C /* MySkillsPage.swift in Sources */,
+				12D3B61E21A7F6D100BA5C9A /* FittingMenu.swift in Sources */,
 				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
 				12484299219D46D000CB3616 /* ZKillboardInteractor.swift in Sources */,
 				12484C78215CC6A70083AE17 /* MapLocationPickerInteractor.swift in Sources */,
@@ -3766,6 +3829,7 @@
 				12AB9732212C0E4F00B30DD3 /* NCFleetConfiguration.swift in Sources */,
 				12C727B5218B33CD00A78ADF /* JumpClonesPresenter.swift in Sources */,
 				12C727E0218C8B7B00A78ADF /* MailBodyInteractor.swift in Sources */,
+				12D3B61B21A7F6D100BA5C9A /* FittingMenuPresenter.swift in Sources */,
 				12EE7D08213E60C8005CE68F /* MainMenuContainerPresenter.swift in Sources */,
 				124C5132219ACCE400D0FC8E /* KillmailsViewController.swift in Sources */,
 				125B2CBF217A7BDF00D34CFB /* SkillsInteractor.swift in Sources */,
@@ -3774,6 +3838,7 @@
 				12AB972C212BF6A900B30DD3 /* Storage.swift in Sources */,
 				124C51282199B16000D0FC8E /* WalletTransactionCell.swift in Sources */,
 				125DF6332133CFC700B86AE0 /* MainMenuViewController.swift in Sources */,
+				12D3B61C21A7F6D100BA5C9A /* FittingMenuViewController.swift in Sources */,
 				124C51212199A54000D0FC8E /* WalletTransactionsPageViewController.swift in Sources */,
 				1287FBA82190885500A505FC /* MarketQuickbar.swift in Sources */,
 				1287FB952190825800A505FC /* InvMarketGroupsInteractor.swift in Sources */,
@@ -3782,7 +3847,9 @@
 				12484C74215CC6910083AE17 /* MapLocationPickerViewController.swift in Sources */,
 				12133C5B215E56CF00646937 /* CertCertificateRequirementsInfoViewController.swift in Sources */,
 				12C3E39F21A42D77002ED002 /* ContactsInteractor.swift in Sources */,
+				12D3B62821A7F70C00BA5C9A /* FittingShips.swift in Sources */,
 				12EE7D11213E6BD7005CE68F /* SlideDownAnimationController.swift in Sources */,
+				12D3B62721A7F70C00BA5C9A /* FittingShipsInteractor.swift in Sources */,
 				12133C47215E55AB00646937 /* CertCertificateInfo.swift in Sources */,
 				1204D06A215271670070AF92 /* InvCategories.swift in Sources */,
 				129E40AB213EB001002EDAF9 /* UIKit+NC.swift in Sources */,
@@ -3802,6 +3869,7 @@
 				1287FB882190276B00A505FC /* ContactsSearchResultsPresenter.swift in Sources */,
 				1287FB892190276B00A505FC /* ContactsSearchResultsViewController.swift in Sources */,
 				12A843072153872D00570A95 /* InvTypesInteractor.swift in Sources */,
+				12D3B62E21A7F73500BA5C9A /* FittingLoadoutsPresenter.swift in Sources */,
 				129DFE20213486D900C85496 /* ProgressTask.swift in Sources */,
 				1233EB53219AEF5900EB99C9 /* KillmailCell.swift in Sources */,
 				12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */,
@@ -3821,6 +3889,7 @@
 				12A8432C2153C5D200570A95 /* InvTypeCell.swift in Sources */,
 				12AFD476211C1EA800007423 /* Cache.xcdatamodeld in Sources */,
 				1253C62521590744007DEA16 /* DamageTypeCell.swift in Sources */,
+				12D3B62621A7F70C00BA5C9A /* FittingShipsViewController.swift in Sources */,
 				1279EFF921358922005340C0 /* TintImageView.swift in Sources */,
 				12484C6D215CC0780083AE17 /* PageViewController.swift in Sources */,
 				12C8ABAC219424D50028BF9A /* AssetsSearchResultsInteractor.swift in Sources */,
@@ -3831,7 +3900,9 @@
 				12AB973E212C162A00B30DD3 /* Character.swift in Sources */,
 				12133C40215E3B6400646937 /* CertCertificatesViewController.swift in Sources */,
 				125DF6352133CFD000B86AE0 /* MainMenuPresenter.swift in Sources */,
+				12D3B63021A7F73500BA5C9A /* FittingLoadoutsInteractor.swift in Sources */,
 				121B28CA218AF1E8000D392C /* CharacterInfoViewController.swift in Sources */,
+				12D3B63121A7F73500BA5C9A /* FittingLoadouts.swift in Sources */,
 				12484C81215CCF260083AE17 /* MapLocationPickerRegionsPresenter.swift in Sources */,
 				12C8ABAD219424D50028BF9A /* AssetsSearchResults.swift in Sources */,
 				121B28C3218AEA24000D392C /* InvTypeRequiredForInteractor.swift in Sources */,
@@ -3874,6 +3945,7 @@
 				12C727C8218C2BBF00A78ADF /* MailPageViewController.swift in Sources */,
 				12E0417E212D3C4F0000CB4F /* API.swift in Sources */,
 				125B2CB32176FEB500D34CFB /* InvTypeMasteryPresenter.swift in Sources */,
+				12D3B61D21A7F6D100BA5C9A /* FittingMenuInteractor.swift in Sources */,
 				124C511521998D6A00D0FC8E /* WalletJournalPage.swift in Sources */,
 				1287FB9F2190849A00A505FC /* InvMarket.swift in Sources */,
 				125B2CC6217A7C9400D34CFB /* SkillQueuePresenter.swift in Sources */,

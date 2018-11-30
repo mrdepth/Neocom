@@ -77,16 +77,6 @@ extension Tree.Item {
 				}
 				treeController?.deselectCell(for: self, animated: true)
 			}
-//			get {
-//				return content.isExpanded
-//			}
-//			set {
-//				content.isExpanded = newValue
-//				if let cell = treeController?.cell(for: self) {
-//					configure(cell: cell, treeController: treeController)
-//				}
-//				treeController?.deselectCell(for: self, animated: true)
-//			}
 		}
 		
 		var expandIdentifier: CustomStringConvertible?

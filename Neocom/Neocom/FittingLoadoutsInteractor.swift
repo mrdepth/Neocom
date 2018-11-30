@@ -9,6 +9,7 @@
 import Foundation
 import Futures
 import CloudData
+import CoreData
 
 class FittingLoadoutsInteractor: TreeInteractor {
 	typealias Presenter = FittingLoadoutsPresenter
@@ -19,19 +20,25 @@ class FittingLoadoutsInteractor: TreeInteractor {
 		self.presenter = presenter
 	}
 	
-	var api = Services.api.current
-	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Content> {
-		return .init(())
-	}
-	
-	private var didChangeAccountObserver: NotificationObserver?
+	lazy var storageContext: StorageContext = Services.storage.newBackgroundContext()
 	
 	func configure() {
-		didChangeAccountObserver = NotificationCenter.default.addNotificationObserver(forName: .didChangeAccount, object: nil, queue: .main) { [weak self] _ in
-			self?.api = Services.api.current
-			_ = self?.presenter?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { presentation in
-				self?.presenter?.view?.present(presentation, animated: true)
-			}
+		managedObjectContextDidSaveObsever = NotificationCenter.default.addNotificationObserver(forName: .NSManagedObjectContextDidSave, object: nil, queue: nil) { [weak self] (note) in
+			self?.managedObjectContextDidSave(with: note)
+		}
+	}
+	
+	private var managedObjectContextDidSaveObsever: NotificationObserver?
+	func managedObjectContextDidSave(with note: Notification) {
+		let storageContext = self.storageContext
+
+		guard (note.object as? NSManagedObjectContext)?.persistentStoreCoordinator == storageContext.managedObjectContext.persistentStoreCoordinator else {return}
+		storageContext.perform { [weak self] in
+			storageContext.managedObjectContext.mergeChanges(fromContextDidSave: note)
+			let updated: [Loadout]? = (note.userInfo?[NSUpdatedObjectsKey] as? NSSet)?.allObjects.compactMap {$0 as? Loadout}.compactMap{(try? storageContext.existingObject(with: $0.objectID)) ?? nil}
+			let deleted: [Loadout]? = (note.userInfo?[NSDeletedObjectsKey] as? NSSet)?.allObjects.compactMap {$0 as? Loadout}
+			let inserted: [Loadout]? = (note.userInfo?[NSInsertedObjectsKey] as? NSSet)?.allObjects.compactMap {$0 as? Loadout}.compactMap{(try? storageContext.existingObject(with: $0.objectID)) ?? nil}
+			self?.presenter?.didUpdateLoaoduts(updated: updated, inserted: inserted, deleted: deleted)
 		}
 	}
 }

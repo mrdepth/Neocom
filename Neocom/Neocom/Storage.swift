@@ -18,6 +18,7 @@ protocol Storage {
 	var viewContext: StorageContext {get}
 	@discardableResult func performBackgroundTask<T>(_ block: @escaping (StorageContext) throws -> T) -> Future<T>
 	@discardableResult func performBackgroundTask<T>(_ block: @escaping (StorageContext) throws -> Future<T>) -> Future<T>
+	func newBackgroundContext() -> StorageContext
 }
 
 protocol StorageContext: PersistentContext {
@@ -124,7 +125,9 @@ class StorageContainer: Storage {
 		return promise.future
 	}
 	
-//	static let shared = StorageContainer()
+	func newBackgroundContext() -> StorageContext {
+		return StorageContextBox(managedObjectContext: persistentContainer.newBackgroundContext())
+	}
 }
 
 struct StorageContextBox: StorageContext {

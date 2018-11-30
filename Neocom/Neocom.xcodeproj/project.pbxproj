@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12028D5721B11BA5004B0669 /* DgmTypePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5321B11BA5004B0669 /* DgmTypePickerPresenter.swift */; };
+		12028D5821B11BA5004B0669 /* DgmTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5421B11BA5004B0669 /* DgmTypePickerViewController.swift */; };
+		12028D5921B11BA5004B0669 /* DgmTypePickerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5521B11BA5004B0669 /* DgmTypePickerInteractor.swift */; };
+		12028D5A21B11BA5004B0669 /* DgmTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5621B11BA5004B0669 /* DgmTypePicker.swift */; };
+		12028D6121B11C85004B0669 /* DgmTypePickerContainerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5D21B11C85004B0669 /* DgmTypePickerContainerPresenter.swift */; };
+		12028D6221B11C85004B0669 /* DgmTypePickerContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5E21B11C85004B0669 /* DgmTypePickerContainerViewController.swift */; };
+		12028D6321B11C85004B0669 /* DgmTypePickerContainerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5F21B11C85004B0669 /* DgmTypePickerContainerInteractor.swift */; };
+		12028D6421B11C85004B0669 /* DgmTypePickerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D6021B11C85004B0669 /* DgmTypePickerContainer.swift */; };
 		1203E8851F09350A009ADF8D /* rssFeeds.json in Resources */ = {isa = PBXBuildFile; fileRef = 1203E8841F09350A009ADF8D /* rssFeeds.json */; };
 		1204D064215270780070AF92 /* InvCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D063215270780070AF92 /* InvCategoriesViewController.swift */; };
 		1204D066215271370070AF92 /* InvCategoriesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D065215271370070AF92 /* InvCategoriesPresenter.swift */; };
@@ -496,6 +504,7 @@
 		12EE7D0C213E6282005CE68F /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D0B213E6282005CE68F /* Route.swift */; };
 		12EE7D0E213E62E8005CE68F /* Accounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D0D213E62E8005CE68F /* Accounts.swift */; };
 		12EE7D11213E6BD7005CE68F /* SlideDownAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D10213E6BD7005CE68F /* SlideDownAnimationController.swift */; };
+		12F2DE7321ABFB6800A93775 /* Fitting_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F2DE7221ABFB6800A93775 /* Fitting_Tests.swift */; };
 		12FE0E3621348F6B002F3507 /* Dark.clr in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DD51DF0AF6900561A7A /* Dark.clr */; };
 /* End PBXBuildFile section */
 
@@ -584,6 +593,14 @@
 
 /* Begin PBXFileReference section */
 		109ECAA07552D18BDB7F6B5E /* Pods_Neocom_II_UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Neocom_II_UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		12028D5321B11BA5004B0669 /* DgmTypePickerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerPresenter.swift; sourceTree = "<group>"; };
+		12028D5421B11BA5004B0669 /* DgmTypePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerViewController.swift; sourceTree = "<group>"; };
+		12028D5521B11BA5004B0669 /* DgmTypePickerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerInteractor.swift; sourceTree = "<group>"; };
+		12028D5621B11BA5004B0669 /* DgmTypePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePicker.swift; sourceTree = "<group>"; };
+		12028D5D21B11C85004B0669 /* DgmTypePickerContainerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerContainerPresenter.swift; sourceTree = "<group>"; };
+		12028D5E21B11C85004B0669 /* DgmTypePickerContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerContainerViewController.swift; sourceTree = "<group>"; };
+		12028D5F21B11C85004B0669 /* DgmTypePickerContainerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerContainerInteractor.swift; sourceTree = "<group>"; };
+		12028D6021B11C85004B0669 /* DgmTypePickerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerContainer.swift; sourceTree = "<group>"; };
 		1203E87E1F043A86009ADF8D /* NCZKillboardSummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCZKillboardSummaryViewController.swift; sourceTree = "<group>"; };
 		1203E8821F0932D9009ADF8D /* rssFeeds.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = rssFeeds.plist; sourceTree = "<group>"; };
 		1203E8841F09350A009ADF8D /* rssFeeds.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = rssFeeds.json; path = ../../rssFeeds.json; sourceTree = "<group>"; };
@@ -1334,6 +1351,7 @@
 		12EE7D10213E6BD7005CE68F /* SlideDownAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideDownAnimationController.swift; sourceTree = "<group>"; };
 		12EFE7EB1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCFittingModuleActionsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12EFE7F51E40C840007BF69B /* NCSheetPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSheetPresentationController.swift; sourceTree = "<group>"; };
+		12F2DE7221ABFB6800A93775 /* Fitting_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fitting_Tests.swift; sourceTree = "<group>"; };
 		12F8FF9E1E5DBC58008F79D5 /* NCFittingShipsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingShipsViewController.swift; sourceTree = "<group>"; };
 		12FC3CC71E13F4A400B7744E /* NCDatabaseTypeMasteryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseTypeMasteryViewController.swift; sourceTree = "<group>"; };
 		12FE20FC1F8F9F25004C021E /* NCLoyaltyPointsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCLoyaltyPointsViewController.swift; sourceTree = "<group>"; };
@@ -1393,6 +1411,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		12028D5121B11B8F004B0669 /* DgmTypePicker */ = {
+			isa = PBXGroup;
+			children = (
+				12028D5C21B11C78004B0669 /* DgmTypePickerContainer */,
+				12028D5621B11BA5004B0669 /* DgmTypePicker.swift */,
+				12028D5421B11BA5004B0669 /* DgmTypePickerViewController.swift */,
+				12028D5321B11BA5004B0669 /* DgmTypePickerPresenter.swift */,
+				12028D5521B11BA5004B0669 /* DgmTypePickerInteractor.swift */,
+			);
+			name = DgmTypePicker;
+			sourceTree = "<group>";
+		};
+		12028D5C21B11C78004B0669 /* DgmTypePickerContainer */ = {
+			isa = PBXGroup;
+			children = (
+				12028D6021B11C85004B0669 /* DgmTypePickerContainer.swift */,
+				12028D5E21B11C85004B0669 /* DgmTypePickerContainerViewController.swift */,
+				12028D5D21B11C85004B0669 /* DgmTypePickerContainerPresenter.swift */,
+				12028D5F21B11C85004B0669 /* DgmTypePickerContainerInteractor.swift */,
+			);
+			name = DgmTypePickerContainer;
+			sourceTree = "<group>";
+		};
 		1203E8861F093A0D009ADF8D /* Misc */ = {
 			isa = PBXGroup;
 			children = (
@@ -3131,6 +3172,7 @@
 				12845CB7218346D000E693D3 /* Skills_Tests.swift */,
 				12C8ABDC2195AF5C0028BF9A /* Business_Tests.swift */,
 				1233EB5F219B068700EB99C9 /* KillReports_Tests.swift */,
+				12F2DE7221ABFB6800A93775 /* Fitting_Tests.swift */,
 				12CA8F832047DED1000360DE /* Info.plist */,
 			);
 			path = "Neocom II Tests";
@@ -3162,6 +3204,7 @@
 		12D3B61221A6DE1400BA5C9A /* Fitting */ = {
 			isa = PBXGroup;
 			children = (
+				12028D5121B11B8F004B0669 /* DgmTypePicker */,
 				12D3B61F21A7F6E500BA5C9A /* FittingMenu */,
 			);
 			name = Fitting;
@@ -3690,14 +3733,18 @@
 				12C3E39521A3F3E3002ED002 /* DatePickerViewController.swift in Sources */,
 				12C3E3BA21A5460E002ED002 /* ZKillboardInvGroupsInteractor.swift in Sources */,
 				12D3B62F21A7F73500BA5C9A /* FittingLoadoutsViewController.swift in Sources */,
+				12028D5A21B11BA5004B0669 /* DgmTypePicker.swift in Sources */,
 				12B8907F21300E610082D4A3 /* TreeViewController.swift in Sources */,
 				12484276219BF94A00CB3616 /* KillmailInfo.swift in Sources */,
 				1287FBD221919BC000A505FC /* PieChartView.swift in Sources */,
 				12D8147221550EC200313DAF /* InvTypeInfoViewController.swift in Sources */,
 				12C727E1218C8B7B00A78ADF /* MailBody.swift in Sources */,
 				12133C51215E56A500646937 /* CertCertificateMasteryInfo.swift in Sources */,
+				12028D5921B11BA5004B0669 /* DgmTypePickerInteractor.swift in Sources */,
+				12028D6121B11C85004B0669 /* DgmTypePickerContainerPresenter.swift in Sources */,
 				12484C93215CD5B30083AE17 /* MapLocationPickerRecentsInteractor.swift in Sources */,
 				12C727B8218B33CD00A78ADF /* JumpClones.swift in Sources */,
+				12028D5721B11BA5004B0669 /* DgmTypePickerPresenter.swift in Sources */,
 				12AB9737212C0ECC00B30DD3 /* SDE+Constants.swift in Sources */,
 				12C727C9218C2BBF00A78ADF /* MailPageInteractor.swift in Sources */,
 				12484C6A215CB3700083AE17 /* Atomic.swift in Sources */,
@@ -3781,9 +3828,11 @@
 				12C3E3A921A5442D002ED002 /* ZKillboardInvCategories.swift in Sources */,
 				12C8ABE82195C26E0028BF9A /* IndustryJobsPresenter.swift in Sources */,
 				12B03DA4213FC44200DCBD64 /* NSAttributedString+NC.swift in Sources */,
+				12028D6421B11C85004B0669 /* DgmTypePickerContainer.swift in Sources */,
 				121F26F12136F07200AE1D70 /* TreeItem+CoreData.swift in Sources */,
 				1287FB9D2190849A00A505FC /* InvMarketViewController.swift in Sources */,
 				12133C2E215E292300646937 /* InvTypeVariationsPresenter.swift in Sources */,
+				12028D6321B11C85004B0669 /* DgmTypePickerContainerInteractor.swift in Sources */,
 				124C510C2199626000D0FC8E /* ContractInfo.swift in Sources */,
 				129E40A9213EA318002EDAF9 /* ViewController.swift in Sources */,
 				1253C6302159108F007DEA16 /* MarketHistoryView.swift in Sources */,
@@ -3839,6 +3888,7 @@
 				124C51282199B16000D0FC8E /* WalletTransactionCell.swift in Sources */,
 				125DF6332133CFC700B86AE0 /* MainMenuViewController.swift in Sources */,
 				12D3B61C21A7F6D100BA5C9A /* FittingMenuViewController.swift in Sources */,
+				12028D6221B11C85004B0669 /* DgmTypePickerContainerViewController.swift in Sources */,
 				124C51212199A54000D0FC8E /* WalletTransactionsPageViewController.swift in Sources */,
 				1287FBA82190885500A505FC /* MarketQuickbar.swift in Sources */,
 				1287FB952190825800A505FC /* InvMarketGroupsInteractor.swift in Sources */,
@@ -3882,6 +3932,7 @@
 				12A843052153872500570A95 /* InvTypesPresenter.swift in Sources */,
 				1287FBDC21919C6300A505FC /* Assets.swift in Sources */,
 				12AF2FD22188943900813DFD /* MySkillsViewController.swift in Sources */,
+				12028D5821B11BA5004B0669 /* DgmTypePickerViewController.swift in Sources */,
 				12C8ABD6219597720028BF9A /* MarketOrders.swift in Sources */,
 				12C3E3A721A5442D002ED002 /* ZKillboardInvCategoriesViewController.swift in Sources */,
 				12E04181212D44360000CB4F /* Config.swift in Sources */,
@@ -4010,6 +4061,7 @@
 				12E041A0212D89840000CB4F /* Cache_Tests.swift in Sources */,
 				12AB9753212C3E5800B30DD3 /* Character_Tests.swift in Sources */,
 				121F26E02136BD9400AE1D70 /* SOLID_Tests.swift in Sources */,
+				12F2DE7321ABFB6800A93775 /* Fitting_Tests.swift in Sources */,
 				12EE7D05213D79BB005CE68F /* Router_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

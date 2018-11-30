@@ -111,6 +111,14 @@ class TestCase: XCTestCase {
 	}
 	
 	func test<T: TreeView>(_ view: T, takeScreenshot: Bool = true) -> XCTestExpectation where T: UIViewController {
+		
+		return test(view, takeScreenshot: takeScreenshot) { (view) in
+			XCTAssertGreaterThan(view.tableView.numberOfSections, 0)
+			XCTAssertGreaterThan(view.tableView.numberOfRows(inSection: 0), 0)
+		}
+	}
+	
+	func test<T: TreeView>(_ view: T, takeScreenshot: Bool = true, validate: @escaping (T) -> Void ) -> XCTestExpectation where T: UIViewController {
 		view.loadViewIfNeeded()
 		let exp = expectation(description: "end")
 		
@@ -120,8 +128,7 @@ class TestCase: XCTestCase {
 					self.add(view.screenshot())
 				}
 				
-				XCTAssertGreaterThan(view.tableView.numberOfSections, 0)
-				XCTAssertGreaterThan(view.tableView.numberOfRows(inSection: 0), 0)
+				validate(view)
 				
 				exp.fulfill()
 			}

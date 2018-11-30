@@ -16,6 +16,7 @@ protocol Cache {
 	var viewContext: CacheContext {get}
 	@discardableResult func performBackgroundTask<T>(_ block: @escaping (CacheContext) throws -> T) -> Future<T>
 	@discardableResult func performBackgroundTask<T>(_ block: @escaping (CacheContext) throws -> Future<T>) -> Future<T>
+	func newBackgroundContext() -> CacheContext
 }
 
 protocol CacheContext: PersistentContext {
@@ -97,6 +98,9 @@ class CacheContainer: Cache {
 		return promise.future
 	}
 
+	func newBackgroundContext() -> CacheContext {
+		return CacheContextBox(managedObjectContext: persistentContainer.newBackgroundContext())
+	}
 }
 
 

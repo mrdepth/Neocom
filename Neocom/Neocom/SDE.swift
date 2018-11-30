@@ -15,6 +15,7 @@ protocol SDE {
 	var viewContext: SDEContext {get}
 	@discardableResult func performBackgroundTask<T>(_ block: @escaping (SDEContext) throws -> T) -> Future<T>
 	@discardableResult func performBackgroundTask<T>(_ block: @escaping (SDEContext) throws -> Future<T>) -> Future<T>
+	func newBackgroundContext() -> SDEContext
 }
 
 protocol SDEContext: PersistentContext {
@@ -91,7 +92,9 @@ class SDEContainer: SDE {
 		return promise.future
 	}
 	
-//	static let shared = SDEContainer()
+	func newBackgroundContext() -> SDEContext {
+		return SDEContextBox(managedObjectContext: persistentContainer.newBackgroundContext())
+	}
 }
 
 

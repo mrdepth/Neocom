@@ -9,5 +9,5 @@
 import Foundation
 import TreeController
 
-class FittingLoadoutsViewController: TreeViewController<FittingLoadoutsPresenter, Void>, TreeView {
+class FittingLoadoutsViewController: TreeViewController<FittingLoadoutsPresenter, SDECategoryID>, TreeView {
 }

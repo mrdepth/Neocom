@@ -8,6 +8,7 @@
 
 import Foundation
 import Futures
+import SheetPresentation
 
 enum RouteKind {
 	case push
@@ -80,7 +81,6 @@ struct Route<Assembly: Neocom.Assembly>: Routing where Assembly.View: UIViewCont
 			case .adaptiveModal:
 				let dst = destination as? UINavigationController ?? NavigationController(rootViewController: destination)
 				dst.modalPresentationStyle = .custom
-
 				
 				if let firstVC = dst.viewControllers.first, firstVC.navigationItem.leftBarButtonItem == nil {
 					firstVC.navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: .plain, target: firstVC, action: #selector(UIViewController.dismissAnimated(_:)))
@@ -99,18 +99,15 @@ struct Route<Assembly: Neocom.Assembly>: Routing where Assembly.View: UIViewCont
 				let dst = destination as? UINavigationController ?? NavigationController(rootViewController: destination)
 				dst.modalPresentationStyle = .custom
 				let presentationController = SheetPresentationController(presentedViewController: dst, presenting: view)
-//				dst.preferredContentSize = dst.viewControllers[0].preferredContentSize
 				withExtendedLifetime(presentationController) {
 					dst.transitioningDelegate = presentationController
 					view.present(dst, animated: true) {
 						try! promise.fulfill(true)
 					}
 				}
-
 			default:
 				try! promise.fulfill(false)
 			}
-			
 			
 			return promise.future
 		}

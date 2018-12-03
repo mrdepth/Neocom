@@ -37,4 +37,7 @@
    <FileRef
       location = "group:ThirdParty/EVEOnlineAPI/ThirdParty/Futures/Futures.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:ThirdParty/SheetPresentation/SheetPresentation/SheetPresentation.xcodeproj">
+   </FileRef>
 </Workspace>

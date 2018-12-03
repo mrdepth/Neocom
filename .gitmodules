@@ -28,3 +28,6 @@
 [submodule "ThirdParty/Expressible"]
 	path = ThirdParty/Expressible
 	url = https://github.com/mrdepth/Expressible.git
+[submodule "ThirdParty/SheetPresentation"]
+	path = ThirdParty/SheetPresentation
+	url = ../SheetPresentation.git

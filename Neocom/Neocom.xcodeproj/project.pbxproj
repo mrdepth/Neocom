@@ -318,6 +318,8 @@
 		12A843302153CA9600570A95 /* DamageTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8432F2153CA9600570A95 /* DamageTypeLabel.swift */; };
 		12A843322153CB5D00570A95 /* InvTypeShipCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A843312153CB5D00570A95 /* InvTypeShipCell.xib */; };
 		12A843342153CBB000570A95 /* InvTypeChargeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A843332153CBB000570A95 /* InvTypeChargeCell.xib */; };
+		12A948CD21B5253500AE1D2E /* SheetPresentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A948CC21B5253500AE1D2E /* SheetPresentation.framework */; };
+		12A948CE21B5253500AE1D2E /* SheetPresentation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12A948CC21B5253500AE1D2E /* SheetPresentation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9722212BEA6C00B30DD3 /* SDE.xcdatamodeld */; };
 		12AB9725212BF11400B30DD3 /* Appodeal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BFE4402017C8E80083AC2F /* Appodeal.framework */; };
 		12AB9726212BF11800B30DD3 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129DE4381FF628AD00A2C1CD /* FBSDKCoreKit.framework */; };
@@ -364,8 +366,6 @@
 		12BFE4212017BF6F0083AC2F /* ASReceipt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BFE4222017BF6F0083AC2F /* ASReceipt.framework */; };
 		12C37D2C1EFA9CDC0070F055 /* NCContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C37D2B1EFA9CDC0070F055 /* NCContactTableViewCell.xib */; };
 		12C37D301EFA9D070070F055 /* NCContactCompactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C37D2F1EFA9D070070F055 /* NCContactCompactTableViewCell.xib */; };
-		12C3E38C21A3F228002ED002 /* SheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E38B21A3F228002ED002 /* SheetPresentationController.swift */; };
-		12C3E38E21A3F248002ED002 /* SlideDownDismissalInteractiveTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E38D21A3F248002ED002 /* SlideDownDismissalInteractiveTransitioning.swift */; };
 		12C3E39421A3F3E3002ED002 /* DatePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39021A3F3E3002ED002 /* DatePickerPresenter.swift */; };
 		12C3E39521A3F3E3002ED002 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39121A3F3E3002ED002 /* DatePickerViewController.swift */; };
 		12C3E39621A3F3E3002ED002 /* DatePickerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39221A3F3E3002ED002 /* DatePickerInteractor.swift */; };
@@ -568,6 +568,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				12A948CE21B5253500AE1D2E /* SheetPresentation.framework in Embed Frameworks */,
 				126AF8F0211ADD8E008ED515 /* TreeController.framework in Embed Frameworks */,
 				12B68F2A1E802958006462B7 /* CloudData.framework in Embed Frameworks */,
 				12AC8DA71DEF597400561A7A /* EVEAPI.framework in Embed Frameworks */,
@@ -1077,6 +1078,7 @@
 		12A8432F2153CA9600570A95 /* DamageTypeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamageTypeLabel.swift; sourceTree = "<group>"; };
 		12A843312153CB5D00570A95 /* InvTypeShipCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvTypeShipCell.xib; sourceTree = "<group>"; };
 		12A843332153CBB000570A95 /* InvTypeChargeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvTypeChargeCell.xib; sourceTree = "<group>"; };
+		12A948CC21B5253500AE1D2E /* SheetPresentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SheetPresentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12AB9723212BEA6C00B30DD3 /* SDE.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SDE.xcdatamodel; sourceTree = "<group>"; };
 		12AB9729212BF60000B30DD3 /* Storage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Storage.xcdatamodel; sourceTree = "<group>"; };
 		12AB972B212BF6A900B30DD3 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
@@ -1379,6 +1381,7 @@
 				12C967001F96111900B141CC /* FirebaseCore.framework in Frameworks */,
 				12C967051F96111900B141CC /* nanopb.framework in Frameworks */,
 				12C967041F96111900B141CC /* GoogleToolboxForMac.framework in Frameworks */,
+				12A948CD21B5253500AE1D2E /* SheetPresentation.framework in Frameworks */,
 				126AF8EF211ADD8E008ED515 /* TreeController.framework in Frameworks */,
 				12C967021F96111900B141CC /* FirebaseInstanceID.framework in Frameworks */,
 				12C967031F96111900B141CC /* FirebaseNanoPB.framework in Frameworks */,
@@ -2683,6 +2686,7 @@
 		12AC8D871DEF58A100561A7A = {
 			isa = PBXGroup;
 			children = (
+				12A948CC21B5253500AE1D2E /* SheetPresentation.framework */,
 				12AFD46E211C1CFD00007423 /* Expressible.framework */,
 				126AF8EE211ADD8E008ED515 /* TreeController.framework */,
 				12841C0C205BD42D00B30582 /* openssl.framework */,
@@ -3798,7 +3802,6 @@
 				1233EB5E219AF2F200EB99C9 /* KillmailsPage.swift in Sources */,
 				1204D07421528A270070AF92 /* InvGroupsInteractor.swift in Sources */,
 				1253C62E21591066007DEA16 /* MarketHistoryCell.swift in Sources */,
-				12C3E38C21A3F228002ED002 /* SheetPresentationController.swift in Sources */,
 				1287FB942190825800A505FC /* InvMarketGroupsViewController.swift in Sources */,
 				12AF2FCB2188930300813DFD /* SkillsContainerInteractor.swift in Sources */,
 				1287FBDA21919C6300A505FC /* AssetsViewController.swift in Sources */,
@@ -4043,7 +4046,6 @@
 				12B03DA3213FC32300DCBD64 /* Math.swift in Sources */,
 				12C8ABDB219598B90028BF9A /* MarketOrderCell.swift in Sources */,
 				12133C4B215E55BE00646937 /* CertCertificateInfoPresenter.swift in Sources */,
-				12C3E38E21A3F248002ED002 /* SlideDownDismissalInteractiveTransitioning.swift in Sources */,
 				12133C2A215E290500646937 /* InvTypeVariations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

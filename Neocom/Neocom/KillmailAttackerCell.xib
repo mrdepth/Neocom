@@ -47,7 +47,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="HXJ-80-3Bc">
                                         <rect key="frame" x="0.0" y="34" width="190" height="34"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1gb-Sf-sUH" customClass="NCImageView" customModule="Neocom" customModuleProvider="target">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1gb-Sf-sUH">
                                                 <rect key="frame" x="0.0" y="1" width="32" height="32"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="1gb-Sf-sUH" secondAttribute="height" multiplier="1:1" id="PvH-Bw-KoL"/>

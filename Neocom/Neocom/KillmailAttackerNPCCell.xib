@@ -22,7 +22,7 @@
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dAd-8e-fiL">
                         <rect key="frame" x="16" y="4" width="262" height="75.5"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8AZ-3T-1ng" customClass="NCImageView" customModule="Neocom" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8AZ-3T-1ng">
                                 <rect key="frame" x="0.0" y="6" width="64" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="64" id="ceB-37-1VR"/>
@@ -41,7 +41,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="n7v-jE-iUN">
                                         <rect key="frame" x="0.0" y="18" width="190" height="34"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gAU-bb-Y70" customClass="NCImageView" customModule="Neocom" customModuleProvider="target">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gAU-bb-Y70">
                                                 <rect key="frame" x="0.0" y="1" width="32" height="32"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="32" id="d1m-9G-MOB"/>

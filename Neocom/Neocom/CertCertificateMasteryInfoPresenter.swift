@@ -45,7 +45,7 @@ class CertCertificateMasteryInfoPresenter: TreePresenter {
 		
 		let character = content.value ?? .empty
 		return Services.sde.performBackgroundTask { [weak self] context -> Presentation in
-			let certificate: SDECertCertificate = try context.existingObject(with: input.objectID)!
+			let certificate: SDECertCertificate = try context.existingObject(with: input.objectID)
 			var sections = (certificate.masteries?.array as? [SDECertMastery])?.sorted {$0.level!.level < $1.level!.level}.compactMap { mastery -> AnyTreeItem? in
 				let rows = (mastery.skills?.allObjects as? [SDECertSkill])?.sorted {$0.type!.typeName! < $1.type!.typeName!}.compactMap {
 					Tree.Item.InvTypeRequiredSkillRow($0, character: character)

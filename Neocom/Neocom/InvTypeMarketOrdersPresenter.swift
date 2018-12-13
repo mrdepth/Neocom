@@ -81,7 +81,7 @@ class InvTypeMarketOrdersPresenter: TreePresenter {
 		guard let view = view else {return}
 		Router.SDE.mapLocationPicker(MapLocationPicker.View.Input(mode: [.regions], completion: { [weak self] (controller, location) in
 			if case let .region(region) = location {
-				Services.userDefaults.set(region.regionID, forKey: UserDefaults.Key.marketRegion)
+				Services.settings.marketRegionID = Int(region.regionID)
 				self?.view?.title = region.regionName ?? NSLocalizedString("Market Orders", comment: "")
 				self?.reloadIfNeeded()
 			}

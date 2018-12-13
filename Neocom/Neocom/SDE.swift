@@ -11,41 +11,12 @@ import CoreData
 import Futures
 import Expressible
 
-protocol SDE {
-	var viewContext: SDEContext {get}
-	@discardableResult func performBackgroundTask<T>(_ block: @escaping (SDEContext) throws -> T) -> Future<T>
-	@discardableResult func performBackgroundTask<T>(_ block: @escaping (SDEContext) throws -> Future<T>) -> Future<T>
-	func newBackgroundContext() -> SDEContext
-}
-
-protocol SDEContext: PersistentContext {
-	func invType(_ typeID: Int) -> SDEInvType?
-	func invType(_ typeName: String) -> SDEInvType?
-	func invGroup(_ groupID: Int) -> SDEInvGroup?
-	func invCategory(_ categoryID: Int) -> SDEInvCategory?
-	func invMetaGroup(_ metaGroupID: Int) -> SDEInvMetaGroup?
-	func chrRace(_ raceID: Int) -> SDEChrRace?
-	func chrBloodline(_ bloodlineID: Int) -> SDEChrBloodline?
-	func chrAncestry(_ ancestryID: Int) -> SDEChrAncestry?
-	func chrFaction(_ factionID: Int) -> SDEChrFaction?
-	func ramActivity(_ activityID: Int) -> SDERamActivity?
-	func eveIcon(_ file: String) -> SDEEveIcon?
-	func dgmAttributeType(_ attributeID: Int) -> SDEDgmAttributeType?
-	func mapSolarSystem(_ solarSystemID: Int) -> SDEMapSolarSystem?
-	func mapConstellation(_ constellationID: Int) -> SDEMapConstellation?
-	func mapRegion(_ regionID: Int) -> SDEMapRegion?
-	func mapPlanet(_ planetID: Int) -> SDEMapPlanet?
-	func staStation(_ stationID: Int) -> SDEStaStation?
-}
-
-class SDEContainer: SDE {
-	lazy var viewContext: SDEContext = SDEContextBox(managedObjectContext: persistentContainer.viewContext)
-	var persistentContainer: NSPersistentContainer
+class SDE: PersistentContainer<SDEContext> {
 	
-	init(persistentContainer: NSPersistentContainer? = nil) {
+	override init(persistentContainer: NSPersistentContainer? = nil) {
 		ValueTransformer.setValueTransformer(ImageValueTransformer(), forName: NSValueTransformerName("ImageValueTransformer"))
 
-		self.persistentContainer = persistentContainer ?? {
+		let persistentContainer = persistentContainer ?? {
 			let container = NSPersistentContainer(name: "SDE", managedObjectModel: NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "SDE", withExtension: "momd")!)!)
 			
 			let description = NSPersistentStoreDescription()
@@ -56,53 +27,14 @@ class SDEContainer: SDE {
 			}
 			return container
 		}()
-	}
-	
-	
-	@discardableResult
-	func performBackgroundTask<T>(_ block: @escaping (SDEContext) throws -> T) -> Future<T> {
-		let promise = Promise<T>()
-		persistentContainer.performBackgroundTask { (context) in
-			do {
-				try promise.fulfill(block(SDEContextBox(managedObjectContext: context)))
-			}
-			catch {
-				try? promise.fail(error)
-			}
-		}
-		return promise.future
-	}
-	
-	@discardableResult
-	func performBackgroundTask<T>(_ block: @escaping (SDEContext) throws -> Future<T>) -> Future<T> {
-		let promise = Promise<T>()
-		
-		persistentContainer.performBackgroundTask { (context) in
-			do {
-				try block(SDEContextBox(managedObjectContext: context)).then {
-					try? promise.fulfill($0)
-				}.catch {
-					try? promise.fail($0)
-				}
-			}
-			catch {
-				try? promise.fail(error)
-			}
-		}
-		return promise.future
-	}
-	
-	func newBackgroundContext() -> SDEContext {
-		return SDEContextBox(managedObjectContext: persistentContainer.newBackgroundContext())
+		super.init(persistentContainer: persistentContainer)
 	}
 }
 
 
-struct SDEContextBox: SDEContext {
+struct SDEContext: PersistentContext {
 	var managedObjectContext: NSManagedObjectContext
-}
 
-extension SDEContext {
 	func invType(_ typeID: Int) -> SDEInvType? {
 		return (try? self.managedObjectContext.from(SDEInvType.self).filter(\SDEInvType.typeID == Int32(typeID)).first()) ?? nil
 	}

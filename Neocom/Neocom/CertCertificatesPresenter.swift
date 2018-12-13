@@ -82,7 +82,7 @@ extension Tree.Item {
 			if let character = (section?.controller as? CertificatesFetchedResultsController)?.character, subtitle == nil {
 				
 				Services.sde.performBackgroundTask { context in
-					let certificate: SDECertCertificate = try! context.existingObject(with: self.result.objectID)!
+					let certificate: SDECertCertificate = try! context.existingObject(with: self.result.objectID)
 					let result = (certificate.masteries?.array as? [SDECertMastery])?.sorted {$0.level!.level < $1.level!.level}.lazy.map { mastery -> (SDECertMastery, TimeInterval) in
 						let tq = TrainingQueue(character: character)
 						tq.add(mastery)

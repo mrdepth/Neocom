@@ -12,16 +12,20 @@ import Futures
 
 public protocol PersistentContext {
 	var managedObjectContext: NSManagedObjectContext {get}
-	func existingObject<T: NSManagedObject>(with objectID: NSManagedObjectID) throws -> T?
-	func save() throws -> Void
-	func performAndWait<T>(_ block: () throws -> T) throws -> T
-	func performAndWait<T>(_ block: () -> T) -> T
-	@discardableResult func perform<T>(_ block: @escaping () throws -> T) -> Future<T>
+//	func existingObject<T: NSManagedObject>(with objectID: NSManagedObjectID) throws -> T?
+//	func save() throws -> Void
+//	func performAndWait<T>(_ block: () throws -> T) throws -> T
+//	func performAndWait<T>(_ block: () -> T) -> T
+//	@discardableResult func perform<T>(_ block: @escaping () throws -> T) -> Future<T>
+	
+	init(managedObjectContext: NSManagedObjectContext)
 }
 
 extension PersistentContext {
-	func existingObject<T: NSManagedObject>(with objectID: NSManagedObjectID) throws -> T? {
-		return (try? managedObjectContext.existingObject(with: objectID)) as? T
+	func existingObject<T: NSManagedObject>(with objectID: NSManagedObjectID) throws -> T {
+		let value = (try managedObjectContext.existingObject(with: objectID))
+		guard let result = value as? T else { throw NCError.castError(from: type(of: value), to: T.self) }
+		return result
 	}
 	
 	func save() throws -> Void {

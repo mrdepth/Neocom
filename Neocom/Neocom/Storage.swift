@@ -13,60 +13,60 @@ import Futures
 import EVEAPI
 import Expressible
 
-protocol Storage {
-	func managedObjectID(forURIRepresentation url: URL) -> NSManagedObjectID?
-	var viewContext: StorageContext {get}
-	@discardableResult func performBackgroundTask<T>(_ block: @escaping (StorageContext) throws -> T) -> Future<T>
-	@discardableResult func performBackgroundTask<T>(_ block: @escaping (StorageContext) throws -> Future<T>) -> Future<T>
-	func newBackgroundContext() -> StorageContext
-}
-
-protocol StorageContext: PersistentContext {
-	var accounts: [Account] {get}
-	func account(with token: OAuth2Token) -> Account?
-	func newAccount(with token: OAuth2Token) -> Account
-	func newFolder(named name: String) -> AccountsFolder
-	var currentAccount: Account? {get}
-	func setCurrentAccount(_ account: Account?) -> Void
-	func marketQuickItems() -> [MarketQuickItem]?
-	func marketQuickItem(with typeID: Int) -> MarketQuickItem?
-}
-
-class StorageContainer: Storage {
-	
-	lazy var viewContext: StorageContext = StorageContextBox(managedObjectContext: persistentContainer.viewContext)
-	var persistentContainer: NSPersistentContainer
+class Storage: PersistentContainer<StorageContext> {
 	
 	private var oAuth2TokenDidRefreshObserver: NotificationObserver?
 	
-	init(persistentContainer: NSPersistentContainer? = nil) {
-		self.persistentContainer = persistentContainer ?? {
-			let container = NSPersistentContainer(name: "Storage", managedObjectModel: NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Storage", withExtension: "momd")!)!)
-			
-			let directory = URL.init(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)[0])
-			try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
-			let url = directory.appendingPathComponent("store.sqlite")
-			
-			let description = NSPersistentStoreDescription()
-			description.url = url
-			//description.type = CloudStoreType
-			description.setOption("Neocom" as NSString, forKey: CloudStoreOptions.recordZoneKey)
-			description.setOption(CompressionMethod.zlibDefault as NSNumber, forKey: CloudStoreOptions.binaryDataCompressionMethod)
-			description.setOption(NSMergePolicy.overwrite, forKey: CloudStoreOptions.mergePolicy)
-
-			container.persistentStoreDescriptions = [description]
-			var isLoaded = false
-			container.loadPersistentStores { (_, error) in
-				isLoaded = error == nil
+	class func `default`() -> Storage {
+		let container = NSPersistentContainer(name: "Storage", managedObjectModel: NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Storage", withExtension: "momd")!)!)
+		
+		let directory = URL.init(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)[0])
+		try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
+		let url = directory.appendingPathComponent("store.sqlite")
+		
+		let description = NSPersistentStoreDescription()
+		description.url = url
+		//description.type = CloudStoreType
+		description.setOption("Neocom" as NSString, forKey: CloudStoreOptions.recordZoneKey)
+		description.setOption(CompressionMethod.zlibDefault as NSNumber, forKey: CloudStoreOptions.binaryDataCompressionMethod)
+		description.setOption(NSMergePolicy.overwrite, forKey: CloudStoreOptions.mergePolicy)
+		
+		container.persistentStoreDescriptions = [description]
+		var isLoaded = false
+		container.loadPersistentStores { (_, error) in
+			isLoaded = error == nil
+		}
+		
+		if !isLoaded {
+			try? FileManager.default.removeItem(at: url)
+			container.loadPersistentStores { (_, _) in
 			}
-
-			if !isLoaded {
-				try? FileManager.default.removeItem(at: url)
-				container.loadPersistentStores { (_, _) in
-				}
+		}
+		
+		return Storage(persistentContainer: container)
+	}
+	
+	#if DEBUG
+	class func testing() -> Storage {
+		let container = NSPersistentContainer(name: "Store", managedObjectModel: NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Storage", withExtension: "momd")!)!)
+		let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("store.sqlite")
+		try? FileManager.default.removeItem(at: url)
+		
+		let description = NSPersistentStoreDescription()
+		description.url = url
+		container.persistentStoreDescriptions = [description]
+		container.loadPersistentStores { (description, error) in
+			if let error = error {
+				fatalError(error.localizedDescription)
 			}
-			return container
-		}()
+		}
+		
+		return Storage(persistentContainer: container)
+	}
+	#endif
+	
+	override init(persistentContainer: NSPersistentContainer) {
+		super.init(persistentContainer: persistentContainer)
 		
 		oAuth2TokenDidRefreshObserver = NotificationCenter.default.addNotificationObserver(forName: .OAuth2TokenDidRefresh, object: nil, queue: .main) { [weak self] (note) in
 			guard let token = note.object as? OAuth2Token else {return}
@@ -75,62 +75,9 @@ class StorageContainer: Storage {
 			try? self?.viewContext.save()
 		}
 	}
-	
-	func managedObjectID(forURIRepresentation url: URL) -> NSManagedObjectID? {
-		return persistentContainer.persistentStoreCoordinator.managedObjectID(forURIRepresentation: url)
-	}
-	
-	@discardableResult
-	func performBackgroundTask<T>(_ block: @escaping (StorageContext) throws -> T) -> Future<T> {
-		let promise = Promise<T>()
-		persistentContainer.performBackgroundTask { (context) in
-			do {
-				let ctx = StorageContextBox(managedObjectContext: context)
-				let result = try block(ctx)
-				try ctx.save()
-				try promise.fulfill(result)
-			}
-			catch {
-				try? promise.fail(error)
-			}
-		}
-		return promise.future
-	}
-	
-	@discardableResult
-	func performBackgroundTask<T>(_ block: @escaping (StorageContext) throws -> Future<T>) -> Future<T> {
-		let promise = Promise<T>()
-		
-		persistentContainer.performBackgroundTask { (context) in
-			do {
-				let ctx = StorageContextBox(managedObjectContext: context)
-				try block(ctx).then { result in
-					ctx.managedObjectContext.perform {
-						do {
-							try ctx.save()
-							try promise.fulfill(result)
-						}
-						catch {
-							try? promise.fail(error)
-						}
-					}
-				}.catch {
-					try? promise.fail($0)
-				}
-			}
-			catch {
-				try? promise.fail(error)
-			}
-		}
-		return promise.future
-	}
-	
-	func newBackgroundContext() -> StorageContext {
-		return StorageContextBox(managedObjectContext: persistentContainer.newBackgroundContext())
-	}
 }
 
-struct StorageContextBox: StorageContext {
+struct StorageContext: PersistentContext {
 	var managedObjectContext: NSManagedObjectContext
 	
 	var accounts: [Account] {
@@ -155,13 +102,13 @@ struct StorageContextBox: StorageContext {
 	}
 	
 	var currentAccount: Account? {
-		guard let url = Services.userDefaults.url(forKey: UserDefaults.Key.currentAccount) else {return nil}
+		guard let url = Services.settings.currentAccount else {return nil}
 		guard let objectID = Services.storage.managedObjectID(forURIRepresentation: url) else {return nil}
 		return (try? existingObject(with: objectID)) ?? nil
 	}
 
 	func setCurrentAccount(_ account: Account?) -> Void {
-		Services.userDefaults.set(account?.objectID.uriRepresentation(), forKey: UserDefaults.Key.currentAccount)
+		Services.settings.currentAccount = account?.objectID.uriRepresentation()
 		NotificationCenter.default.post(name: .didChangeAccount, object: account)
 	}
 	

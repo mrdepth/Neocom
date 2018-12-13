@@ -47,7 +47,7 @@ class InvTypeVariationsPresenter: TreePresenter {
 		
 		switch input {
 		case let .objectID(objectID):
-			invType = try! Services.sde.viewContext.existingObject(with: objectID)!
+			invType = try! Services.sde.viewContext.existingObject(with: objectID)
 		}
 		let what = invType.parentType ?? invType
 		

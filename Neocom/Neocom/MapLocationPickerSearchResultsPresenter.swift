@@ -149,7 +149,7 @@ class MapLocationPickerSearchResultsPresenter: TreePresenter {
 
 extension Tree.Item {
 	class MapSolarSystemSearchResultsRow: FetchedResultsRow<NSManagedObjectID> {
-		lazy var solarSytem: SDEMapSolarSystem = try! Services.sde.viewContext.existingObject(with: self.result)!
+		lazy var solarSytem: SDEMapSolarSystem = try! Services.sde.viewContext.existingObject(with: self.result)
 		
 		override var prototype: Prototype? {
 			return solarSytem.prototype
@@ -161,7 +161,7 @@ extension Tree.Item {
 	}
 
 	class MapRegionSearchResultsRow: FetchedResultsRow<NSManagedObjectID> {
-		lazy var region: SDEMapRegion = try! Services.sde.viewContext.existingObject(with: self.result)!
+		lazy var region: SDEMapRegion = try! Services.sde.viewContext.existingObject(with: self.result)
 		
 		override var prototype: Prototype? {
 			return region.prototype
@@ -173,7 +173,7 @@ extension Tree.Item {
 	}
 	
 	class MapRegionBySolarSystemSearchResultsRow: FetchedResultsRow<NSManagedObjectID> {
-		lazy var solarSytem: SDEMapSolarSystem = try! Services.sde.viewContext.existingObject(with: self.result)!
+		lazy var solarSytem: SDEMapSolarSystem = try! Services.sde.viewContext.existingObject(with: self.result)
 		
 		override var prototype: Prototype? {
 			return Prototype.TreeDefaultCell.default

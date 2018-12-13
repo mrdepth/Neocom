@@ -136,7 +136,11 @@ extension SearchAPI {
 	}
 }
 
-typealias API = CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & SearchAPI & IncursionsAPI & AssetsAPI & IndustryAPI & ContractsAPI & KillmailsAPI
+protocol BaseAPI {
+	init(esi: ESI)
+}
+
+typealias API = BaseAPI & CharacterAPI & SkillsAPI & ClonesAPI & ImageAPI & CorporationAPI & AllianceAPI & LocationAPI & StatusAPI & WalletAPI & MarketAPI & UniverseAPI & MailAPI & SearchAPI & IncursionsAPI & AssetsAPI & IndustryAPI & ContractsAPI & KillmailsAPI
 
 class APIClient: API {
 	
@@ -147,7 +151,7 @@ class APIClient: API {
 	let esi: ESI
 	lazy var zKillboard = EVEAPI.ZKillboard()
 	
-	init(esi: ESI) {
+	required init(esi: ESI) {
 		self.esi = esi
 	}
 	

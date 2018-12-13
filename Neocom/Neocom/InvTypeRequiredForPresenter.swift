@@ -53,7 +53,7 @@ class InvTypeRequiredForPresenter: TreePresenter {
 			
 			switch input {
 			case let .objectID(objectID):
-				invType = try! context.existingObject(with: objectID)!
+				invType = try! context.existingObject(with: objectID)
 			}
 			let filter = (\SDEInvType.requiredSkills).any(\SDEInvTypeRequiredSkill.skillType) == invType
 			

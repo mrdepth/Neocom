@@ -12,100 +12,46 @@ import Futures
 import Expressible
 import EVEAPI
 
-protocol Cache {
-	var viewContext: CacheContext {get}
-	@discardableResult func performBackgroundTask<T>(_ block: @escaping (CacheContext) throws -> T) -> Future<T>
-	@discardableResult func performBackgroundTask<T>(_ block: @escaping (CacheContext) throws -> Future<T>) -> Future<T>
-	func newBackgroundContext() -> CacheContext
-}
-
-protocol CacheContext: PersistentContext {
-	func sectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState?
-	func newSectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState
-	func price(for typeID: Int) -> Price?
-	func price(for typeIDs: Set<Int>) -> [Int: Double]?
-	func prices() -> [Price]?
-	func contacts(with ids: Set<Int64>) -> [Int64: Contact]?
-}
-
-
-class CacheContainer: Cache {
+class Cache: PersistentContainer<CacheContext> {
 	
-	var persistentContainer: NSPersistentContainer
-	
-	init(persistentContainer: NSPersistentContainer? = nil) {
-		self.persistentContainer = persistentContainer ?? {
-			let container = NSPersistentContainer(name: "Cache")
-			var isLoaded = false
-			container.loadPersistentStores { (_, error) in
-				isLoaded = error == nil
-			}
-			
-			if !isLoaded, let url = container.persistentStoreDescriptions.first?.url {
-				try? FileManager.default.removeItem(at: url)
-				container.loadPersistentStores { (_, _) in
-				}
-			}
-
-			return container
-		}()
-	}
+	class func `default`() -> Cache {
+		let container = NSPersistentContainer(name: "Cache")
+		var isLoaded = false
+		container.loadPersistentStores { (_, error) in
+			isLoaded = error == nil
+		}
 		
-	lazy var viewContext: CacheContext = CacheContextBox(managedObjectContext: persistentContainer.viewContext)
-	
-	@discardableResult
-	func performBackgroundTask<T>(_ block: @escaping (CacheContext) throws -> T) -> Future<T> {
-		let promise = Promise<T>()
-		persistentContainer.performBackgroundTask { (context) in
-			do {
-				let ctx = CacheContextBox(managedObjectContext: context)
-				let result = try block(ctx)
-				try ctx.save()
-				try promise.fulfill(result)
-			}
-			catch {
-				try? promise.fail(error)
+		if !isLoaded, let url = container.persistentStoreDescriptions.first?.url {
+			try? FileManager.default.removeItem(at: url)
+			container.loadPersistentStores { (_, _) in
 			}
 		}
-		return promise.future
+		return Cache(persistentContainer: container)
 	}
 	
-	@discardableResult
-	func performBackgroundTask<T>(_ block: @escaping (CacheContext) throws -> Future<T>) -> Future<T> {
-		let promise = Promise<T>()
+	#if DEBUG
+	class func testing() -> Cache {
+		let container = NSPersistentContainer(name: "Cache", managedObjectModel: NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Cache", withExtension: "momd")!)!)
+		let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("Cache.sqlite")
+		try? FileManager.default.removeItem(at: url)
 		
-		persistentContainer.performBackgroundTask { (context) in
-			do {
-				let ctx = CacheContextBox(managedObjectContext: context)
-				try block(ctx).then { result in
-					ctx.managedObjectContext.perform {
-						do {
-							try ctx.save()
-							try promise.fulfill(result)
-						}
-						catch {
-							try? promise.fail(error)
-						}
-					}
-				}.catch {
-					try? promise.fail($0)
-				}
-			}
-			catch {
-				try? promise.fail(error)
+		let description = NSPersistentStoreDescription()
+		description.url = url
+		container.persistentStoreDescriptions = [description]
+		container.loadPersistentStores { (description, error) in
+			if let error = error {
+				fatalError(error.localizedDescription)
 			}
 		}
-		return promise.future
+		return Cache(persistentContainer: container)
 	}
-
-	func newBackgroundContext() -> CacheContext {
-		return CacheContextBox(managedObjectContext: persistentContainer.newBackgroundContext())
-	}
+	#endif
 }
 
 
-struct CacheContextBox: CacheContext {
-	
+struct CacheContext: PersistentContext {
+	var managedObjectContext: NSManagedObjectContext
+
 	func sectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState? {
 		let scope = "\(scope)"
 		return (try? managedObjectContext.from(SectionCollapseState.self).filter(\SectionCollapseState.scope == scope && \SectionCollapseState.identifier == identifier).first()) ?? nil
@@ -138,9 +84,6 @@ struct CacheContextBox: CacheContext {
 			.filter((\Contact.contactID).in(ids))
 		return try? Dictionary(request.all().map {($0.contactID, $0)}, uniquingKeysWith: { (a, _) in a})
 	}
-	
-	
-	var managedObjectContext: NSManagedObjectContext
 	
 }
 

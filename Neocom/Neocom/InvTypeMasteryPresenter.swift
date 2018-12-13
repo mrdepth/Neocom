@@ -46,8 +46,8 @@ class InvTypeMasteryPresenter: TreePresenter {
 		let character = content.value ?? .empty
 		
 		return Services.sde.performBackgroundTask { [weak self] context -> Presentation in
-			let type: SDEInvType = try context.existingObject(with: input.typeObjectID)!
-			let level: SDECertMasteryLevel = try context.existingObject(with: input.masteryLevelObjectID)!
+			let type: SDEInvType = try context.existingObject(with: input.typeObjectID)
+			let level: SDECertMasteryLevel = try context.existingObject(with: input.masteryLevelObjectID)
 
 			let masteries = try context.managedObjectContext
 				.from(SDECertMastery.self)

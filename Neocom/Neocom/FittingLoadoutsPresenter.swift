@@ -174,7 +174,7 @@ extension Tree.Item {
 			return Prototype.TreeDefaultCell.default
 		}
 		
-		lazy var type: SDEInvType = try! Services.sde.viewContext.existingObject(with: content.typeID)!
+		lazy var type: SDEInvType = try! Services.sde.viewContext.existingObject(with: content.typeID)
 		
 		override func configure(cell: UITableViewCell, treeController: TreeController?) {
 			super.configure(cell: cell, treeController: treeController)

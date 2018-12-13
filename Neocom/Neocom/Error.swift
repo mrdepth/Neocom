@@ -19,4 +19,5 @@ enum NCError: Error {
 	case invalidInput(type: Any?)
 	case noResults
 	case isEndReached
+	case castError(from: Any, to: Any)
 }

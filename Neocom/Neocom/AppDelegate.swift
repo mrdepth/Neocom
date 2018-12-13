@@ -13,6 +13,10 @@ import CloudData
 import EVEAPI
 import SafariServices
 
+#if DEBUG
+var isTesting: Bool = CommandLine.arguments.contains("-testing")
+#endif
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	
@@ -23,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			print(exc)
 		}
 		setupAppearance()
+		setupServices()
 		return true
 	}
 	
@@ -35,6 +40,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 extension AppDelegate {
+	
+	fileprivate func setupServices() {
+		Services.sde = SDE()
+		Services.settings = Settings()
+
+		func common() {
+			Services.cache = Cache.default()
+			Services.storage = Storage.default()
+			Services.api = APIService()
+			Services.userDefaults = UserDefaults.standard
+		}
+		
+		#if DEBUG
+		if isTesting {
+			Services.cache = Cache.testing()
+			Services.storage = Storage.testing()
+			Services.api = APIServiceTesting()
+			Services.userDefaults = UserDefaults(suiteName: "testing")
+		}
+		else {
+			common()
+		}
+		#else
+		common()
+		#endif
+	}
+	
 	fileprivate func setupAppearance() {
 		CSScheme.currentScheme = CSScheme.Dark
 		

@@ -141,7 +141,7 @@ class SolidTestInteractor: TreeInteractor {
 	
 	func load(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<ESI.Status.ServerStatus>> {
 		
-		var api: API! = APIMock(esi: ESI())
+		var api: API! = APITesting(esi: ESI())
 		return api.serverStatus(cachePolicy: .useProtocolCachePolicy).finally {
 			api = nil
 		}

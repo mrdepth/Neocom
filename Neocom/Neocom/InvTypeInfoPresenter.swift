@@ -78,7 +78,7 @@ class InvTypeInfoPresenter: TreePresenter {
 		let progress = Progress(totalUnitCount: 2)
 		
 		return Services.sde.performBackgroundTask { (context) -> Presentation in
-			let type: SDEInvType = try context.existingObject(with: objectID)!
+			let type: SDEInvType = try context.existingObject(with: objectID)
 			let categoryID = (type.group?.category?.categoryID).flatMap { SDECategoryID(rawValue: $0)}
 			
 			var presentation: [AnyTreeItem] = progress.performAsCurrent(withPendingUnitCount: 1) {

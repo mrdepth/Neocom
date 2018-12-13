@@ -21,7 +21,7 @@
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Cds-kD-zJh">
                         <rect key="frame" x="16" y="4" width="288" height="32.5"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lPf-rG-gqm" customClass="NCImageView" customModule="Neocom" customModuleProvider="target">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lPf-rG-gqm">
                                 <rect key="frame" x="0.0" y="0.5" width="32" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="32" id="LX1-0l-qdH"/>

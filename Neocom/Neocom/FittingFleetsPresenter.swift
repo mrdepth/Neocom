@@ -1,8 +1,8 @@
 //
-//  FittingShipsPresenter.swift
+//  FittingFleetsPresenter.swift
 //  Neocom
 //
-//  Created by Artem Shimanski on 11/23/18.
+//  Created by Artem Shimanski on 25/12/2018.
 //  Copyright © 2018 Artem Shimanski. All rights reserved.
 //
 
@@ -11,9 +11,9 @@ import Futures
 import CloudData
 import TreeController
 
-class FittingShipsPresenter: TreePresenter {
-	typealias View = FittingShipsViewController
-	typealias Interactor = FittingShipsInteractor
+class FittingFleetsPresenter: TreePresenter {
+	typealias View = FittingFleetsViewController
+	typealias Interactor = FittingFleetsInteractor
 	typealias Presentation = [AnyTreeItem]
 	
 	weak var view: View?

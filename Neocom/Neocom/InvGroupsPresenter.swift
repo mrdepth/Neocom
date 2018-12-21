@@ -74,7 +74,7 @@ class InvGroupsPresenter: TreePresenter {
 
 }
 
-extension SDEInvGroup: CellConfiguring {
+extension SDEInvGroup: CellConfigurable {
 	var prototype: Prototype? {
 		return Prototype.TreeDefaultCell.default
 	}

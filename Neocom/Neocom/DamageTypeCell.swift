@@ -65,7 +65,7 @@ extension Tree.Content {
 	}
 }
 
-extension Tree.Content.DamageType: CellConfiguring {
+extension Tree.Content.DamageType: CellConfigurable {
 	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? DamageTypeCell else {return}
 		cell.titleLabel?.text = title

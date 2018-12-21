@@ -42,7 +42,7 @@ extension Tree.Item {
 	}
 }
 
-extension Tree.Content.Header: CellConfiguring {
+extension Tree.Content.Header: CellConfigurable {
 	
 	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? TreeHeaderCell else {return}

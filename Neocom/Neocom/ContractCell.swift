@@ -36,7 +36,7 @@ extension Tree.Content {
 	
 }
 
-extension Tree.Content.Contract: CellConfiguring {
+extension Tree.Content.Contract: CellConfigurable {
 	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? ContractCell else {return}
 		let type = contract.type.title

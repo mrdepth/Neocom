@@ -95,54 +95,95 @@ extension Tree.Item {
 		override func configure(cell: UITableViewCell, treeController: TreeController?) {
 			switch cell {
 			case let cell as InvTypeModuleCell:
-				cell.titleLabel?.text = type?.typeName
-				cell.iconView?.image = type?.icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultType)?.image?.image
-				cell.cpuLabel.text = UnitFormatter.localizedString(from: requirements?.cpu ?? 0, unit: .teraflops, style: .long)
-				cell.powerGridLabel.text = UnitFormatter.localizedString(from: requirements?.powerGrid ?? 0, unit: .megaWatts, style: .long)
+				requirements?.configure(cell: cell, treeController: treeController)
 			case let cell as InvTypeShipCell:
-				cell.titleLabel?.text = type?.typeName
-				cell.iconView?.image = type?.icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultType)?.image?.image
-				cell.hiSlotsLabel.text = "\(shipResources?.hiSlots ?? 0)"
-				cell.medSlotsLabel.text = "\(shipResources?.medSlots ?? 0)"
-				cell.lowSlotsLabel.text = "\(shipResources?.lowSlots ?? 0)"
-				cell.rigSlotsLabel.text = "\(shipResources?.rigSlots ?? 0)"
-				cell.turretsLabel.text = "\(shipResources?.turrets ?? 0)"
-				cell.launchersLabel.text = "\(shipResources?.launchers ?? 0)"
+				shipResources?.configure(cell: cell, treeController: treeController)
 			case let cell as InvTypeChargeCell:
-				cell.titleLabel?.text = type?.typeName
-				cell.iconView?.image = type?.icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultType)?.image?.image
-				
-				let em = damage?.emAmount ?? 0
-				let kinetic = damage?.kineticAmount ?? 0
-				let thermal = damage?.thermalAmount ?? 0
-				let explosive = damage?.explosiveAmount ?? 0
-				var total = em + kinetic + thermal + explosive
-				if total == 0 {
-					total = 1
-				}
-				
-				cell.emLabel.progress = em / total
-				cell.emLabel.text = UnitFormatter.localizedString(from: em, unit: .none, style: .short)
-				
-				cell.kineticLabel.progress = kinetic / total
-				cell.kineticLabel.text = UnitFormatter.localizedString(from: kinetic, unit: .none, style: .short)
-				
-				cell.thermalLabel.progress = thermal / total
-				cell.thermalLabel.text = UnitFormatter.localizedString(from: thermal, unit: .none, style: .short)
-				
-				cell.explosiveLabel.progress = explosive / total
-				cell.explosiveLabel.text = UnitFormatter.localizedString(from: explosive, unit: .none, style: .short)
+				damage?.configure(cell: cell, treeController: treeController)
 			case let cell as InvTypeCell:
-				cell.titleLabel?.text = type?.typeName
-				cell.iconView?.image = type?.icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultType)?.image?.image
-				cell.subtitleLabel?.isHidden = true
+				type?.configure(cell: cell, treeController: treeController)
 				cell.accessoryType = .disclosureIndicator
 			default:
 				break
 			}
 		}
 	}
+}
+
+extension SDEInvType: CellConfigurable {
+	var prototype: Prototype? {
+		return Prototype.TreeDefaultCell.default
+	}
 	
+	func configure(cell: UITableViewCell, treeController: TreeController?) {
+		guard let cell = cell as? TreeDefaultCell else {return}
+		cell.titleLabel?.text = typeName
+		cell.subtitleLabel?.isHidden = true
+		cell.iconView?.image = icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultType)?.image?.image
+		cell.iconView?.isHidden = false
+	}
+}
+
+extension SDEDgmppItemRequirements: CellConfigurable {
+	
+	var prototype: Prototype? {
+		return Prototype.InvTypeCell.module
+	}
+	
+	func configure(cell: UITableViewCell, treeController: TreeController?) {
+		guard let cell = cell as? InvTypeModuleCell else {return}
+		let type = item?.type
+		cell.titleLabel?.text = type?.typeName
+		cell.iconView?.image = type?.icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultType)?.image?.image
+		cell.cpuLabel.text = UnitFormatter.localizedString(from: cpu, unit: .teraflops, style: .long)
+		cell.powerGridLabel.text = UnitFormatter.localizedString(from: powerGrid, unit: .megaWatts, style: .long)
+	}
+}
+
+extension SDEDgmppItemShipResources: CellConfigurable {
+	var prototype: Prototype? {
+		return Prototype.InvTypeCell.ship
+	}
+	
+	func configure(cell: UITableViewCell, treeController: TreeController?) {
+		guard let cell = cell as? InvTypeShipCell else {return}
+		let type = item?.type
+		cell.titleLabel?.text = type?.typeName
+		cell.iconView?.image = type?.icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultType)?.image?.image
+		cell.hiSlotsLabel.text = "\(hiSlots)"
+		cell.medSlotsLabel.text = "\(medSlots)"
+		cell.lowSlotsLabel.text = "\(lowSlots)"
+		cell.rigSlotsLabel.text = "\(rigSlots)"
+		cell.turretsLabel.text = "\(turrets)"
+		cell.launchersLabel.text = "\(launchers)"
+
+	}
+}
+
+extension SDEDgmppItemDamage: CellConfigurable {
+	var prototype: Prototype? {
+		return Prototype.InvTypeCell.charge
+	}
+	
+	func configure(cell: UITableViewCell, treeController: TreeController?) {
+		guard let cell = cell as? InvTypeChargeCell else {return}
+		let type = item?.type
+		cell.titleLabel?.text = type?.typeName
+		cell.iconView?.image = type?.icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultType)?.image?.image
+		
+		var total = emAmount + kineticAmount + thermalAmount + explosiveAmount
+		if total == 0 {
+			total = 1
+		}
+		
+		[(cell.emLabel, emAmount),
+		 (cell.kineticLabel, kineticAmount),
+		 (cell.thermalLabel, thermalAmount),
+		 (cell.explosiveLabel, explosiveAmount)].forEach { (label, amount) in
+			label?.progress = amount / total
+			label?.text = UnitFormatter.localizedString(from: amount, unit: .none, style: .short)
+		}
+	}
 }
 
 extension Tree.Item.InvType {

@@ -189,13 +189,13 @@ extension Tree.Item {
 		}
 	}
 	
-	class FetchedResultsRow<Result: NSFetchRequestResult & Equatable & Hashable>: FetchedResultsTreeItem, CellConfiguring {
+	class FetchedResultsRow<Result: NSFetchRequestResult & Equatable & Hashable>: FetchedResultsTreeItem, CellConfigurable {
 		var prototype: Prototype? {
-			return (result as? CellConfiguring)?.prototype
+			return (result as? CellConfigurable)?.prototype
 		}
 		
 		func configure(cell: UITableViewCell, treeController: TreeController?) {
-			(result as? CellConfiguring)?.configure(cell: cell, treeController: treeController)
+			(result as? CellConfigurable)?.configure(cell: cell, treeController: treeController)
 		}
 		
 		var result: Result
@@ -224,7 +224,7 @@ extension Tree.Item {
 		}
 	}
 	
-	class NamedFetchedResultsController<Section: FetchedResultsSectionTreeItem>: FetchedResultsController<Section>, CellConfiguring, ExpandableItem {
+	class NamedFetchedResultsController<Section: FetchedResultsSectionTreeItem>: FetchedResultsController<Section>, CellConfigurable, ItemExpandable {
 		var isExpanded: Bool {
 			didSet {
 				if let cell = treeController?.cell(for: self) {
@@ -269,7 +269,7 @@ extension Tree.Item {
 		}
 	}
 	
-	class NamedFetchedResultsSection<Item: FetchedResultsTreeItem>: FetchedResultsSection<Item>, CellConfiguring, ExpandableItem {
+	class NamedFetchedResultsSection<Item: FetchedResultsTreeItem>: FetchedResultsSection<Item>, CellConfigurable, ItemExpandable {
 		
 		var isExpanded: Bool = true {
 			didSet {

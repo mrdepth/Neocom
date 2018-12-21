@@ -88,8 +88,22 @@ class SOLID_Tests: TestCase {
 		wait(for: [exp], timeout: 10)
 		view = nil
 	}
+	
+	func testPageViewController() {
+		let controller = TestPageViewController()
+		controller.loadViewIfNeeded()
+		add(controller.screenshot())
+	}
 }
 
+class TestPageViewController: PageViewController {
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		let page1 = UIViewController()
+		page1.title = "Page 1"
+		viewControllers = [page1]
+	}
+}
 
 class SolidTestViewController: TreeViewController<SolidTestPresenter, Void>, TreeView {
 	var didPresent: (() -> Void)?
@@ -257,7 +271,7 @@ extension Tree.Item {
 		}
 	}
 	
-	class SolidTestAccountItem: FetchedResultsTreeItem, CellConfiguring {
+	class SolidTestAccountItem: FetchedResultsTreeItem, CellConfigurable {
 		var hashValue: Int {
 			return result.hashValue
 		}

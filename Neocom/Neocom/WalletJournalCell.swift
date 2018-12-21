@@ -23,7 +23,7 @@ extension Prototype {
 	}
 }
 
-extension ESI.Wallet.WalletJournalItem: CellConfiguring {
+extension ESI.Wallet.WalletJournalItem: CellConfigurable {
 	var prototype: Prototype? {
 		return Prototype.WalletJournalCell.default
 	}

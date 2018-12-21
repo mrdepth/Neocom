@@ -26,7 +26,6 @@
 		1204D07421528A270070AF92 /* InvGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D07321528A270070AF92 /* InvGroupsInteractor.swift */; };
 		120A386D213D46970071ED72 /* MainMenuContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A386C213D46970071ED72 /* MainMenuContainerViewController.swift */; };
 		120A386F213D543E0071ED72 /* MainMenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A386E213D543E0071ED72 /* MainMenuHeader.swift */; };
-		120A59EF1F10ABEC0053F94B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 120A59EE1F10ABEC0053F94B /* StoreKit.framework */; };
 		120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */; };
 		1211A4631EEEC35A00364744 /* NCSkillTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */; };
 		1211A4651EEEDE3600364744 /* NCActionHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */; };
@@ -79,8 +78,6 @@
 		122A7CA61F4B5DD800537467 /* Business.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA51F4B5DD800537467 /* Business.storyboard */; };
 		122A7CA81F4B601E00537467 /* KillReports.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA71F4B601E00537467 /* KillReports.storyboard */; };
 		122A7CAA1F4B617E00537467 /* Fitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA91F4B617E00537467 /* Fitting.storyboard */; };
-		122DB9AB1E804DF200E8E2C4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */; };
-		122DB9AF1E806DB000E8E2C4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DB9AE1E806DB000E8E2C4 /* libz.tbd */; };
 		1233EB53219AEF5900EB99C9 /* KillmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB52219AEF5800EB99C9 /* KillmailCell.swift */; };
 		1233EB55219AEF6100EB99C9 /* KillmailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1233EB54219AEF6100EB99C9 /* KillmailCell.xib */; };
 		1233EB5B219AF2F200EB99C9 /* KillmailsPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB57219AF2F200EB99C9 /* KillmailsPagePresenter.swift */; };
@@ -90,6 +87,10 @@
 		1233EB60219B068700EB99C9 /* KillReports_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB5F219B068700EB99C9 /* KillReports_Tests.swift */; };
 		123E4C7221C51DE9002234A7 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7121C51DE9002234A7 /* APIService.swift */; };
 		123E4C7521C560B6002234A7 /* APIServiceTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7421C560B6002234A7 /* APIServiceTesting.swift */; };
+		123E4C7B21C6E4CF002234A7 /* DgmTypePickerGroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7721C6E4CF002234A7 /* DgmTypePickerGroupsPresenter.swift */; };
+		123E4C7C21C6E4CF002234A7 /* DgmTypePickerGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7821C6E4CF002234A7 /* DgmTypePickerGroupsViewController.swift */; };
+		123E4C7D21C6E4CF002234A7 /* DgmTypePickerGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7921C6E4CF002234A7 /* DgmTypePickerGroupsInteractor.swift */; };
+		123E4C7E21C6E4CF002234A7 /* DgmTypePickerGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7A21C6E4CF002234A7 /* DgmTypePickerGroups.swift */; };
 		124069FF1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124069FE1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib */; };
 		12406A011F20F49500A4DAE7 /* NCModuleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12406A001F20F49500A4DAE7 /* NCModuleTableViewCell.xib */; };
 		12406A031F20F4B800A4DAE7 /* NCShipTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12406A021F20F4B800A4DAE7 /* NCShipTableViewCell.xib */; };
@@ -182,6 +183,18 @@
 		1256BECE1DF4770A00A2A24B /* Fitting.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE671DF4770A00A2A24B /* Fitting.xcassets */; };
 		1256BF2B1DF4770B00A2A24B /* MainMenu.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BEC61DF4770A00A2A24B /* MainMenu.xcassets */; };
 		1256BF2C1DF4770B00A2A24B /* UI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BEC71DF4770A00A2A24B /* UI.xcassets */; };
+		1256C9EF21D15BAE00D65AD7 /* DgmTypePickerTypesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9EB21D15BAE00D65AD7 /* DgmTypePickerTypesPresenter.swift */; };
+		1256C9F021D15BAE00D65AD7 /* DgmTypePickerTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9EC21D15BAE00D65AD7 /* DgmTypePickerTypesViewController.swift */; };
+		1256C9F121D15BAE00D65AD7 /* DgmTypePickerTypesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9ED21D15BAE00D65AD7 /* DgmTypePickerTypesInteractor.swift */; };
+		1256C9F221D15BAE00D65AD7 /* DgmTypePickerTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9EE21D15BAE00D65AD7 /* DgmTypePickerTypes.swift */; };
+		1256C9FC21D2821A00D65AD7 /* DgmTypePickerRecentsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9F821D2821A00D65AD7 /* DgmTypePickerRecentsPresenter.swift */; };
+		1256C9FD21D2821A00D65AD7 /* DgmTypePickerRecentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9F921D2821A00D65AD7 /* DgmTypePickerRecentsViewController.swift */; };
+		1256C9FE21D2821A00D65AD7 /* DgmTypePickerRecentsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9FA21D2821A00D65AD7 /* DgmTypePickerRecentsInteractor.swift */; };
+		1256C9FF21D2821A00D65AD7 /* DgmTypePickerRecents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9FB21D2821A00D65AD7 /* DgmTypePickerRecents.swift */; };
+		1256CA0521D2CDA800D65AD7 /* FittingFleetsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0121D2CDA800D65AD7 /* FittingFleetsPresenter.swift */; };
+		1256CA0621D2CDA800D65AD7 /* FittingFleetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0221D2CDA800D65AD7 /* FittingFleetsViewController.swift */; };
+		1256CA0721D2CDA800D65AD7 /* FittingFleetsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0321D2CDA800D65AD7 /* FittingFleetsInteractor.swift */; };
+		1256CA0821D2CDA800D65AD7 /* FittingFleets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0421D2CDA800D65AD7 /* FittingFleets.swift */; };
 		1259639521381EA100B3A53C /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1259639421381EA100B3A53C /* AccountCell.swift */; };
 		1259639721381ECD00B3A53C /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259639621381ECD00B3A53C /* AccountCell.xib */; };
 		125B2CB32176FEB500D34CFB /* InvTypeMasteryPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CAF2176FEB500D34CFB /* InvTypeMasteryPresenter.swift */; };
@@ -305,7 +318,6 @@
 		1298BA8620AEFB73002C941E /* MPDAAIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA7020AEFB73002C941E /* MPDAAIcon@2x.png */; };
 		1298BA8B20AEFCFC002C941E /* GDPR.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA8A20AEFCFC002C941E /* GDPR.storyboard */; };
 		129B316E1E53527C00B9A88D /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 129B316D1E53527C00B9A88D /* damagePatterns.plist */; };
-		129DE43C1FF628AD00A2C1CD /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129DE4391FF628AD00A2C1CD /* Bolts.framework */; };
 		129DFE1B21347A6F00C85496 /* TableViewBackgroundLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129DFE1A21347A6F00C85496 /* TableViewBackgroundLabel.swift */; };
 		129DFE1E21347AFB00C85496 /* AccessibilityLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129DFE1D21347AFB00C85496 /* AccessibilityLabel.swift */; };
 		129DFE20213486D900C85496 /* ProgressTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129DFE1F213486D900C85496 /* ProgressTask.swift */; };
@@ -324,8 +336,6 @@
 		12A948CD21B5253500AE1D2E /* SheetPresentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A948CC21B5253500AE1D2E /* SheetPresentation.framework */; };
 		12A948CE21B5253500AE1D2E /* SheetPresentation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12A948CC21B5253500AE1D2E /* SheetPresentation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9722212BEA6C00B30DD3 /* SDE.xcdatamodeld */; };
-		12AB9725212BF11400B30DD3 /* Appodeal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BFE4402017C8E80083AC2F /* Appodeal.framework */; };
-		12AB9726212BF11800B30DD3 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129DE4381FF628AD00A2C1CD /* FBSDKCoreKit.framework */; };
 		12AB972A212BF60000B30DD3 /* Storage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9728212BF60000B30DD3 /* Storage.xcdatamodeld */; };
 		12AB972C212BF6A900B30DD3 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB972B212BF6A900B30DD3 /* Storage.swift */; };
 		12AB9732212C0E4F00B30DD3 /* NCFleetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B31771E5488AF00B9A88D /* NCFleetConfiguration.swift */; };
@@ -433,13 +443,6 @@
 		12C8ABE92195C26E0028BF9A /* IndustryJobsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE52195C26E0028BF9A /* IndustryJobsViewController.swift */; };
 		12C8ABEA2195C26E0028BF9A /* IndustryJobsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE62195C26E0028BF9A /* IndustryJobsInteractor.swift */; };
 		12C8ABEB2195C26E0028BF9A /* IndustryJobs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE72195C26E0028BF9A /* IndustryJobs.swift */; };
-		12C967001F96111900B141CC /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F71F9610DE00B141CC /* FirebaseCore.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		12C967011F96111900B141CC /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F81F9610DE00B141CC /* FirebaseCoreDiagnostics.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		12C967021F96111900B141CC /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F91F9610DE00B141CC /* FirebaseInstanceID.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		12C967031F96111900B141CC /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FA1F9610DE00B141CC /* FirebaseNanoPB.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		12C967041F96111900B141CC /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FB1F9610DE00B141CC /* GoogleToolboxForMac.framework */; };
-		12C967051F96111900B141CC /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FC1F9610DE00B141CC /* nanopb.framework */; };
-		12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F61F9610DE00B141CC /* FirebaseAnalytics.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12C967101F9614B200B141CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12C9670F1F96149F00B141CC /* GoogleService-Info.plist */; };
 		12CA8F822047DED1000360DE /* Neocom_II_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CA8F812047DED1000360DE /* Neocom_II_Tests.swift */; };
 		12CACFE52008C36B000B76C3 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12CACFE42008C36B000B76C3 /* NotificationCenter.framework */; };
@@ -459,10 +462,6 @@
 		12D3B61C21A7F6D100BA5C9A /* FittingMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61821A7F6D100BA5C9A /* FittingMenuViewController.swift */; };
 		12D3B61D21A7F6D100BA5C9A /* FittingMenuInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61921A7F6D100BA5C9A /* FittingMenuInteractor.swift */; };
 		12D3B61E21A7F6D100BA5C9A /* FittingMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61A21A7F6D100BA5C9A /* FittingMenu.swift */; };
-		12D3B62521A7F70C00BA5C9A /* FittingShipsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62121A7F70C00BA5C9A /* FittingShipsPresenter.swift */; };
-		12D3B62621A7F70C00BA5C9A /* FittingShipsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62221A7F70C00BA5C9A /* FittingShipsViewController.swift */; };
-		12D3B62721A7F70C00BA5C9A /* FittingShipsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62321A7F70C00BA5C9A /* FittingShipsInteractor.swift */; };
-		12D3B62821A7F70C00BA5C9A /* FittingShips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62421A7F70C00BA5C9A /* FittingShips.swift */; };
 		12D3B62E21A7F73500BA5C9A /* FittingLoadoutsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62A21A7F73500BA5C9A /* FittingLoadoutsPresenter.swift */; };
 		12D3B62F21A7F73500BA5C9A /* FittingLoadoutsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62B21A7F73500BA5C9A /* FittingLoadoutsViewController.swift */; };
 		12D3B63021A7F73500BA5C9A /* FittingLoadoutsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62C21A7F73500BA5C9A /* FittingLoadoutsInteractor.swift */; };
@@ -744,6 +743,10 @@
 		123AEFF41E3B78EC0087AEDE /* NCFittingModuleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingModuleTableViewCell.swift; sourceTree = "<group>"; };
 		123E4C7121C51DE9002234A7 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		123E4C7421C560B6002234A7 /* APIServiceTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceTesting.swift; sourceTree = "<group>"; };
+		123E4C7721C6E4CF002234A7 /* DgmTypePickerGroupsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerGroupsPresenter.swift; sourceTree = "<group>"; };
+		123E4C7821C6E4CF002234A7 /* DgmTypePickerGroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerGroupsViewController.swift; sourceTree = "<group>"; };
+		123E4C7921C6E4CF002234A7 /* DgmTypePickerGroupsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerGroupsInteractor.swift; sourceTree = "<group>"; };
+		123E4C7A21C6E4CF002234A7 /* DgmTypePickerGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerGroups.swift; sourceTree = "<group>"; };
 		124069FE1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCAttributeNoImageTableViewCell.xib; sourceTree = "<group>"; };
 		12406A001F20F49500A4DAE7 /* NCModuleTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCModuleTableViewCell.xib; sourceTree = "<group>"; };
 		12406A021F20F4B800A4DAE7 /* NCShipTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCShipTableViewCell.xib; sourceTree = "<group>"; };
@@ -867,6 +870,18 @@
 		1256BEC61DF4770A00A2A24B /* MainMenu.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MainMenu.xcassets; sourceTree = "<group>"; };
 		1256BEC71DF4770A00A2A24B /* UI.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = UI.xcassets; sourceTree = "<group>"; };
 		1256BF2D1DF48AA800A2A24B /* NCBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCBackgroundView.swift; sourceTree = "<group>"; };
+		1256C9EB21D15BAE00D65AD7 /* DgmTypePickerTypesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerTypesPresenter.swift; sourceTree = "<group>"; };
+		1256C9EC21D15BAE00D65AD7 /* DgmTypePickerTypesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerTypesViewController.swift; sourceTree = "<group>"; };
+		1256C9ED21D15BAE00D65AD7 /* DgmTypePickerTypesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerTypesInteractor.swift; sourceTree = "<group>"; };
+		1256C9EE21D15BAE00D65AD7 /* DgmTypePickerTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerTypes.swift; sourceTree = "<group>"; };
+		1256C9F821D2821A00D65AD7 /* DgmTypePickerRecentsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerRecentsPresenter.swift; sourceTree = "<group>"; };
+		1256C9F921D2821A00D65AD7 /* DgmTypePickerRecentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerRecentsViewController.swift; sourceTree = "<group>"; };
+		1256C9FA21D2821A00D65AD7 /* DgmTypePickerRecentsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerRecentsInteractor.swift; sourceTree = "<group>"; };
+		1256C9FB21D2821A00D65AD7 /* DgmTypePickerRecents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DgmTypePickerRecents.swift; sourceTree = "<group>"; };
+		1256CA0121D2CDA800D65AD7 /* FittingFleetsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingFleetsPresenter.swift; sourceTree = "<group>"; };
+		1256CA0221D2CDA800D65AD7 /* FittingFleetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingFleetsViewController.swift; sourceTree = "<group>"; };
+		1256CA0321D2CDA800D65AD7 /* FittingFleetsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingFleetsInteractor.swift; sourceTree = "<group>"; };
+		1256CA0421D2CDA800D65AD7 /* FittingFleets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingFleets.swift; sourceTree = "<group>"; };
 		1259639421381EA100B3A53C /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		1259639621381ECD00B3A53C /* AccountCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountCell.xib; sourceTree = "<group>"; };
 		125AB80E1E41D9F500B8A2A8 /* UIViewController+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+NC.swift"; sourceTree = "<group>"; };
@@ -1282,10 +1297,6 @@
 		12D3B61821A7F6D100BA5C9A /* FittingMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingMenuViewController.swift; sourceTree = "<group>"; };
 		12D3B61921A7F6D100BA5C9A /* FittingMenuInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingMenuInteractor.swift; sourceTree = "<group>"; };
 		12D3B61A21A7F6D100BA5C9A /* FittingMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingMenu.swift; sourceTree = "<group>"; };
-		12D3B62121A7F70C00BA5C9A /* FittingShipsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingShipsPresenter.swift; sourceTree = "<group>"; };
-		12D3B62221A7F70C00BA5C9A /* FittingShipsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingShipsViewController.swift; sourceTree = "<group>"; };
-		12D3B62321A7F70C00BA5C9A /* FittingShipsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingShipsInteractor.swift; sourceTree = "<group>"; };
-		12D3B62421A7F70C00BA5C9A /* FittingShips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingShips.swift; sourceTree = "<group>"; };
 		12D3B62A21A7F73500BA5C9A /* FittingLoadoutsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingLoadoutsPresenter.swift; sourceTree = "<group>"; };
 		12D3B62B21A7F73500BA5C9A /* FittingLoadoutsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingLoadoutsViewController.swift; sourceTree = "<group>"; };
 		12D3B62C21A7F73500BA5C9A /* FittingLoadoutsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingLoadoutsInteractor.swift; sourceTree = "<group>"; };
@@ -1382,25 +1393,12 @@
 				12841C10205BD9F900B30582 /* cwrapper.framework in Frameworks */,
 				12AFD46F211C1CFD00007423 /* Expressible.framework in Frameworks */,
 				12BFE4212017BF6F0083AC2F /* ASReceipt.framework in Frameworks */,
-				122DB9AF1E806DB000E8E2C4 /* libz.tbd in Frameworks */,
-				120A59EF1F10ABEC0053F94B /* StoreKit.framework in Frameworks */,
-				122DB9AB1E804DF200E8E2C4 /* CloudKit.framework in Frameworks */,
 				12B68F291E802958006462B7 /* CloudData.framework in Frameworks */,
-				12C967001F96111900B141CC /* FirebaseCore.framework in Frameworks */,
-				12C967051F96111900B141CC /* nanopb.framework in Frameworks */,
-				12C967041F96111900B141CC /* GoogleToolboxForMac.framework in Frameworks */,
 				12A948CD21B5253500AE1D2E /* SheetPresentation.framework in Frameworks */,
 				126AF8EF211ADD8E008ED515 /* TreeController.framework in Frameworks */,
-				12C967021F96111900B141CC /* FirebaseInstanceID.framework in Frameworks */,
-				12C967031F96111900B141CC /* FirebaseNanoPB.framework in Frameworks */,
-				12C967011F96111900B141CC /* FirebaseCoreDiagnostics.framework in Frameworks */,
 				12AC8DA61DEF597400561A7A /* EVEAPI.framework in Frameworks */,
-				129DE43C1FF628AD00A2C1CD /* Bolts.framework in Frameworks */,
 				12BC40A21DFF1EBB00657D40 /* Alamofire.framework in Frameworks */,
 				12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */,
-				12AB9726212BF11800B30DD3 /* FBSDKCoreKit.framework in Frameworks */,
-				12AB9725212BF11400B30DD3 /* Appodeal.framework in Frameworks */,
-				12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1426,6 +1424,9 @@
 			isa = PBXGroup;
 			children = (
 				12028D5C21B11C78004B0669 /* DgmTypePickerContainer */,
+				123E4C7621C6E4BB002234A7 /* DgmTypePickerGroups */,
+				12EC3EDD21CD707700638122 /* DgmTypePickerTypes */,
+				1256C9F621D2820600D65AD7 /* DgmTypePickerRecents */,
 				12028D5621B11BA5004B0669 /* DgmTypePicker.swift */,
 				12028D5421B11BA5004B0669 /* DgmTypePickerViewController.swift */,
 				12028D5321B11BA5004B0669 /* DgmTypePickerPresenter.swift */,
@@ -1737,6 +1738,17 @@
 				1233EB59219AF2F200EB99C9 /* KillmailsPageInteractor.swift */,
 			);
 			name = KillmailsPage;
+			sourceTree = "<group>";
+		};
+		123E4C7621C6E4BB002234A7 /* DgmTypePickerGroups */ = {
+			isa = PBXGroup;
+			children = (
+				123E4C7A21C6E4CF002234A7 /* DgmTypePickerGroups.swift */,
+				123E4C7821C6E4CF002234A7 /* DgmTypePickerGroupsViewController.swift */,
+				123E4C7721C6E4CF002234A7 /* DgmTypePickerGroupsPresenter.swift */,
+				123E4C7921C6E4CF002234A7 /* DgmTypePickerGroupsInteractor.swift */,
+			);
+			name = DgmTypePickerGroups;
 			sourceTree = "<group>";
 		};
 		1241597C212FEFCE001709F2 /* TreeViewController */ = {
@@ -2102,6 +2114,28 @@
 				1256BE651DF4770A00A2A24B /* willpower.png */,
 			);
 			path = Attributes;
+			sourceTree = "<group>";
+		};
+		1256C9F621D2820600D65AD7 /* DgmTypePickerRecents */ = {
+			isa = PBXGroup;
+			children = (
+				1256C9FB21D2821A00D65AD7 /* DgmTypePickerRecents.swift */,
+				1256C9F921D2821A00D65AD7 /* DgmTypePickerRecentsViewController.swift */,
+				1256C9F821D2821A00D65AD7 /* DgmTypePickerRecentsPresenter.swift */,
+				1256C9FA21D2821A00D65AD7 /* DgmTypePickerRecentsInteractor.swift */,
+			);
+			name = DgmTypePickerRecents;
+			sourceTree = "<group>";
+		};
+		1256CA0021D2CD9700D65AD7 /* FittingFleets */ = {
+			isa = PBXGroup;
+			children = (
+				1256CA0421D2CDA800D65AD7 /* FittingFleets.swift */,
+				1256CA0221D2CDA800D65AD7 /* FittingFleetsViewController.swift */,
+				1256CA0121D2CDA800D65AD7 /* FittingFleetsPresenter.swift */,
+				1256CA0321D2CDA800D65AD7 /* FittingFleetsInteractor.swift */,
+			);
+			name = FittingFleets;
 			sourceTree = "<group>";
 		};
 		1259639221381E8800B3A53C /* TreeHeaderCell */ = {
@@ -3238,24 +3272,13 @@
 			isa = PBXGroup;
 			children = (
 				12D3B62921A7F72A00BA5C9A /* FittingLoadouts */,
-				12D3B62021A7F6F300BA5C9A /* FittingShips */,
+				1256CA0021D2CD9700D65AD7 /* FittingFleets */,
 				12D3B61A21A7F6D100BA5C9A /* FittingMenu.swift */,
 				12D3B61821A7F6D100BA5C9A /* FittingMenuViewController.swift */,
 				12D3B61721A7F6D100BA5C9A /* FittingMenuPresenter.swift */,
 				12D3B61921A7F6D100BA5C9A /* FittingMenuInteractor.swift */,
 			);
 			name = FittingMenu;
-			sourceTree = "<group>";
-		};
-		12D3B62021A7F6F300BA5C9A /* FittingShips */ = {
-			isa = PBXGroup;
-			children = (
-				12D3B62421A7F70C00BA5C9A /* FittingShips.swift */,
-				12D3B62221A7F70C00BA5C9A /* FittingShipsViewController.swift */,
-				12D3B62121A7F70C00BA5C9A /* FittingShipsPresenter.swift */,
-				12D3B62321A7F70C00BA5C9A /* FittingShipsInteractor.swift */,
-			);
-			name = FittingShips;
 			sourceTree = "<group>";
 		};
 		12D3B62921A7F72A00BA5C9A /* FittingLoadouts */ = {
@@ -3389,6 +3412,17 @@
 				12EA7795217F442A009C8288 /* SkillCell.xib */,
 			);
 			name = SkillCell;
+			sourceTree = "<group>";
+		};
+		12EC3EDD21CD707700638122 /* DgmTypePickerTypes */ = {
+			isa = PBXGroup;
+			children = (
+				1256C9EE21D15BAE00D65AD7 /* DgmTypePickerTypes.swift */,
+				1256C9EC21D15BAE00D65AD7 /* DgmTypePickerTypesViewController.swift */,
+				1256C9EB21D15BAE00D65AD7 /* DgmTypePickerTypesPresenter.swift */,
+				1256C9ED21D15BAE00D65AD7 /* DgmTypePickerTypesInteractor.swift */,
+			);
+			name = DgmTypePickerTypes;
 			sourceTree = "<group>";
 		};
 		12EE7D06213E60BC005CE68F /* MainMenuContainer */ = {
@@ -3748,6 +3782,7 @@
 				12AF2FCC2188930300813DFD /* SkillsContainer.swift in Sources */,
 				12133C5D215E56D800646937 /* CertCertificateRequirementsInfoPresenter.swift in Sources */,
 				12484C76215CC69D0083AE17 /* MapLocationPickerPresenter.swift in Sources */,
+				1256C9FE21D2821A00D65AD7 /* DgmTypePickerRecentsInteractor.swift in Sources */,
 				12133C44215E3B7700646937 /* CertCertificatesInteractor.swift in Sources */,
 				1287FBC721918E6900A505FC /* IncursionsPresenter.swift in Sources */,
 				12EE7D0E213E62E8005CE68F /* Accounts.swift in Sources */,
@@ -3763,6 +3798,7 @@
 				12484276219BF94A00CB3616 /* KillmailInfo.swift in Sources */,
 				1287FBD221919BC000A505FC /* PieChartView.swift in Sources */,
 				12D8147221550EC200313DAF /* InvTypeInfoViewController.swift in Sources */,
+				1256C9F221D15BAE00D65AD7 /* DgmTypePickerTypes.swift in Sources */,
 				12C727E1218C8B7B00A78ADF /* MailBody.swift in Sources */,
 				12133C51215E56A500646937 /* CertCertificateMasteryInfo.swift in Sources */,
 				12028D5921B11BA5004B0669 /* DgmTypePickerInteractor.swift in Sources */,
@@ -3791,7 +3827,9 @@
 				1287FB962190825800A505FC /* InvMarketGroups.swift in Sources */,
 				12A843012153871300570A95 /* InvTypes.swift in Sources */,
 				12C3E3C121A54ADF002ED002 /* ZKillboardInvTypesPresenter.swift in Sources */,
+				123E4C7B21C6E4CF002234A7 /* DgmTypePickerGroupsPresenter.swift in Sources */,
 				12484C89215CD56A0083AE17 /* MapLocationPickerSolarSystemsPresenter.swift in Sources */,
+				1256C9FC21D2821A00D65AD7 /* DgmTypePickerRecentsPresenter.swift in Sources */,
 				12133C26215E1F9500646937 /* Image.swift in Sources */,
 				12A843032153871C00570A95 /* InvTypesViewController.swift in Sources */,
 				12925B772189E8DB00F6216C /* MySkillsPageViewController.swift in Sources */,
@@ -3814,7 +3852,6 @@
 				12484C36215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift in Sources */,
 				12AFD46D211C1C3D00007423 /* SDE.swift in Sources */,
 				12133C4D215E55C700646937 /* CertCertificateInfoInteractor.swift in Sources */,
-				12D3B62521A7F70C00BA5C9A /* FittingShipsPresenter.swift in Sources */,
 				1287FBCF2191916300A505FC /* API+Constants.swift in Sources */,
 				1287FBCA21918E6900A505FC /* Incursions.swift in Sources */,
 				1287FBD921919C6300A505FC /* AssetsPresenter.swift in Sources */,
@@ -3870,6 +3907,7 @@
 				12C8ABEB2195C26E0028BF9A /* IndustryJobs.swift in Sources */,
 				12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */,
 				121F26ED2136EE8700AE1D70 /* AccountsInteractor.swift in Sources */,
+				1256C9F121D15BAE00D65AD7 /* DgmTypePickerTypesInteractor.swift in Sources */,
 				125B2CB62176FEB500D34CFB /* InvTypeMastery.swift in Sources */,
 				1287FB9E2190849A00A505FC /* InvMarketInteractor.swift in Sources */,
 				12C727C1218C255600A78ADF /* Mail.swift in Sources */,
@@ -3885,9 +3923,13 @@
 				12EA7798217F447A009C8288 /* SkillCell.swift in Sources */,
 				1287FBE22191C2A100A505FC /* TreeHeaderCell.swift in Sources */,
 				1279EFF121355DC9005340C0 /* TreeSectionCell.swift in Sources */,
+				1256CA0721D2CDA800D65AD7 /* FittingFleetsInteractor.swift in Sources */,
+				123E4C7E21C6E4CF002234A7 /* DgmTypePickerGroups.swift in Sources */,
 				12C3E39E21A42D77002ED002 /* ContactsViewController.swift in Sources */,
 				12133C49215E55B600646937 /* CertCertificateInfoViewController.swift in Sources */,
+				1256C9EF21D15BAE00D65AD7 /* DgmTypePickerTypesPresenter.swift in Sources */,
 				12B03DA6213FEBF400DCBD64 /* TimeIntervalFormatter.swift in Sources */,
+				123E4C7C21C6E4CF002234A7 /* DgmTypePickerGroupsViewController.swift in Sources */,
 				12484C34215B8E080083AE17 /* InvTypeMarketOrders.swift in Sources */,
 				1204D064215270780070AF92 /* InvCategoriesViewController.swift in Sources */,
 				12C727C0218C255600A78ADF /* MailInteractor.swift in Sources */,
@@ -3898,6 +3940,7 @@
 				12484C6F215CC0B70083AE17 /* SegmentedPageControl.swift in Sources */,
 				121F26E62136EC5700AE1D70 /* NavigationController.swift in Sources */,
 				12484297219D46D000CB3616 /* ZKillboardPresenter.swift in Sources */,
+				1256C9F021D15BAE00D65AD7 /* DgmTypePickerTypesViewController.swift in Sources */,
 				12925B782189E8DB00F6216C /* MySkillsPageInteractor.swift in Sources */,
 				12C3E39D21A42D77002ED002 /* ContactsPresenter.swift in Sources */,
 				12AB972A212BF60000B30DD3 /* Storage.xcdatamodeld in Sources */,
@@ -3923,9 +3966,9 @@
 				12484C74215CC6910083AE17 /* MapLocationPickerViewController.swift in Sources */,
 				12133C5B215E56CF00646937 /* CertCertificateRequirementsInfoViewController.swift in Sources */,
 				12C3E39F21A42D77002ED002 /* ContactsInteractor.swift in Sources */,
-				12D3B62821A7F70C00BA5C9A /* FittingShips.swift in Sources */,
 				12EE7D11213E6BD7005CE68F /* SlideDownAnimationController.swift in Sources */,
-				12D3B62721A7F70C00BA5C9A /* FittingShipsInteractor.swift in Sources */,
+				1256C9FD21D2821A00D65AD7 /* DgmTypePickerRecentsViewController.swift in Sources */,
+				123E4C7D21C6E4CF002234A7 /* DgmTypePickerGroupsInteractor.swift in Sources */,
 				12133C47215E55AB00646937 /* CertCertificateInfo.swift in Sources */,
 				1204D06A215271670070AF92 /* InvCategories.swift in Sources */,
 				129E40AB213EB001002EDAF9 /* UIKit+NC.swift in Sources */,
@@ -3946,6 +3989,7 @@
 				1287FB892190276B00A505FC /* ContactsSearchResultsViewController.swift in Sources */,
 				12A843072153872D00570A95 /* InvTypesInteractor.swift in Sources */,
 				12D3B62E21A7F73500BA5C9A /* FittingLoadoutsPresenter.swift in Sources */,
+				1256CA0821D2CDA800D65AD7 /* FittingFleets.swift in Sources */,
 				129DFE20213486D900C85496 /* ProgressTask.swift in Sources */,
 				1233EB53219AEF5900EB99C9 /* KillmailCell.swift in Sources */,
 				12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */,
@@ -3966,7 +4010,6 @@
 				12A8432C2153C5D200570A95 /* InvTypeCell.swift in Sources */,
 				12AFD476211C1EA800007423 /* Cache.xcdatamodeld in Sources */,
 				1253C62521590744007DEA16 /* DamageTypeCell.swift in Sources */,
-				12D3B62621A7F70C00BA5C9A /* FittingShipsViewController.swift in Sources */,
 				1279EFF921358922005340C0 /* TintImageView.swift in Sources */,
 				12484C6D215CC0780083AE17 /* PageViewController.swift in Sources */,
 				12C8ABAC219424D50028BF9A /* AssetsSearchResultsInteractor.swift in Sources */,
@@ -3974,6 +4017,7 @@
 				121B28C9218AF1E8000D392C /* CharacterInfoPresenter.swift in Sources */,
 				12C727B7218B33CD00A78ADF /* JumpClonesInteractor.swift in Sources */,
 				12C3E3C221A54ADF002ED002 /* ZKillboardInvTypesViewController.swift in Sources */,
+				1256C9FF21D2821A00D65AD7 /* DgmTypePickerRecents.swift in Sources */,
 				12AB973E212C162A00B30DD3 /* Character.swift in Sources */,
 				12133C40215E3B6400646937 /* CertCertificatesViewController.swift in Sources */,
 				125DF6352133CFD000B86AE0 /* MainMenuPresenter.swift in Sources */,
@@ -3986,6 +4030,7 @@
 				124C50FC219954F700D0FC8E /* ContractsViewController.swift in Sources */,
 				12C8ABAA219424D50028BF9A /* AssetsSearchResultsPresenter.swift in Sources */,
 				12D8147021550E0F00313DAF /* InvTypeInfo.swift in Sources */,
+				1256CA0621D2CDA800D65AD7 /* FittingFleetsViewController.swift in Sources */,
 				12484C38215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift in Sources */,
 				1287FB812190241C00A505FC /* NewMailInteractor.swift in Sources */,
 				124C51182199906100D0FC8E /* WalletJournalCell.swift in Sources */,
@@ -4003,6 +4048,7 @@
 				12AB9733212C0E5C00B30DD3 /* NCFittingLoadout.swift in Sources */,
 				12C3E3B921A5460E002ED002 /* ZKillboardInvGroupsViewController.swift in Sources */,
 				1287FBB22191763800A505FC /* NpcGroupsViewController.swift in Sources */,
+				1256CA0521D2CDA800D65AD7 /* FittingFleetsPresenter.swift in Sources */,
 				12C3E3B221A5457C002ED002 /* ZKillboardTypePicker.swift in Sources */,
 				125DF6372133CFDB00B86AE0 /* MainMenuInteractor.swift in Sources */,
 				12484C72215CC6610083AE17 /* MapLocationPicker.swift in Sources */,

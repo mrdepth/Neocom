@@ -62,7 +62,7 @@ class MapLocationPickerRegionsPresenter: TreePresenter {
 
 }
 
-extension SDEMapRegion: CellConfiguring {
+extension SDEMapRegion: CellConfigurable {
 	var prototype: Prototype? {
 		return Prototype.TreeDefaultCell.default
 	}

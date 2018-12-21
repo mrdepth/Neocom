@@ -67,7 +67,7 @@ class InvMarketGroupsPresenter: TreePresenter {
 
 }
 
-extension SDEInvMarketGroup: CellConfiguring {
+extension SDEInvMarketGroup: CellConfigurable {
 	var prototype: Prototype? {
 		return Prototype.TreeDefaultCell.default
 	}

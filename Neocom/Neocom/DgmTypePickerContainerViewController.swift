@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Expressible
 
 class DgmTypePickerContainerViewController: PageViewController, View {
 	
@@ -14,10 +15,23 @@ class DgmTypePickerContainerViewController: PageViewController, View {
 	lazy var presenter: Presenter! = Presenter(view: self)
 	
 	var unwinder: Unwinder?
-	
+	typealias Input = SDEDgmppItemCategory
+	var input: Input?
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		presenter.configure()
+
+		guard let input = input else {return}
+		let group = (try? Services.sde.viewContext.managedObjectContext
+			.from(SDEDgmppItemGroup.self)
+			.filter(\SDEDgmppItemGroup.parentGroup == nil && \SDEDgmppItemGroup.category == input)
+			.first()) ?? nil
+		if let group = group {
+			title = group.groupName
+			viewControllers = try! [DgmTypePickerGroups.default.instantiate(group).get(),
+									DgmTypePickerRecents.default.instantiate(input).get()]
+		}
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -39,5 +53,4 @@ class DgmTypePickerContainerViewController: PageViewController, View {
 		super.viewDidDisappear(animated)
 		presenter.viewDidDisappear(animated)
 	}
-	
 }

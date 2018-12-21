@@ -56,8 +56,8 @@ class TestCase: XCTestCase {
 	func test<T: TreeView>(_ view: T, takeScreenshot: Bool = true, validate: @escaping (T) -> Void ) -> XCTestExpectation where T: UIViewController {
 		view.loadViewIfNeeded()
 		let exp = expectation(description: "end")
-		
-		view.presenter.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { result in
+		let future = view.presenter.loading ?? view.presenter.reload(cachePolicy: .useProtocolCachePolicy)
+		future.then(on: .main) { result in
 			view.present(result, animated: true).then(on: .main) { _ in
 				if takeScreenshot {
 					self.add(view.screenshot())

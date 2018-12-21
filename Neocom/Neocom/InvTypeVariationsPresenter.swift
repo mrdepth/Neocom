@@ -68,17 +68,3 @@ class InvTypeVariationsPresenter: TreePresenter {
 	}
 
 }
-
-extension SDEInvType: CellConfiguring {
-	var prototype: Prototype? {
-		return Prototype.TreeDefaultCell.default
-	}
-	
-	func configure(cell: UITableViewCell, treeController: TreeController?) {
-		guard let cell = cell as? TreeDefaultCell else {return}
-		cell.titleLabel?.text = typeName
-		cell.subtitleLabel?.isHidden = true
-		cell.iconView?.image = icon?.image?.image ?? Services.sde.viewContext.eveIcon(.defaultType)?.image?.image
-		cell.iconView?.isHidden = false
-	}
-}

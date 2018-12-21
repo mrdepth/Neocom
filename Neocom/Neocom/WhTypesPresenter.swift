@@ -75,7 +75,7 @@ class WhTypesPresenter: TreePresenter {
 
 }
 
-extension SDEWhType: CellConfiguring {
+extension SDEWhType: CellConfigurable {
 	var prototype: Prototype? {
 		return Prototype.TreeDefaultCell.default
 	}

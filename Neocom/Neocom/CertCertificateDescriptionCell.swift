@@ -39,7 +39,7 @@ extension Tree.Content {
 	}
 }
 
-extension Tree.Content.CertCertificateDescription: CellConfiguring {
+extension Tree.Content.CertCertificateDescription: CellConfigurable {
 	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? CertCertificateDescriptionCell else {return}
 		cell.titleLabel?.text = title

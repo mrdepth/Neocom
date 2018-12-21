@@ -12,8 +12,23 @@ class DgmTypePickerViewController: NavigationController, View {
 	
 	typealias Presenter = DgmTypePickerPresenter
 	lazy var presenter: Presenter! = Presenter(view: self)
-	typealias Input = SDEDgmppItemCategory
-	var input: Input?
+	var input: Input? {
+		didSet {
+			guard oldValue?.category != input?.category else {return}
+			if let input = input {
+				viewControllers = try! [DgmTypePickerContainer.default.instantiate(input.category).get()]
+			}
+			else {
+				viewControllers = []
+			}
+		}
+	}
+	
+	struct Input {
+		let category: SDEDgmppItemCategory
+		let completion: (DgmTypePickerViewController, SDEInvType) -> Void
+	}
+
 	
 	var unwinder: Unwinder?
 	

@@ -38,6 +38,15 @@ class FittingLoadoutsPresenter: TreePresenter {
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
 			self?.applicationWillEnterForeground()
 		}
+		
+		switch view?.input {
+		case .ship?:
+			view?.title = NSLocalizedString("Ships", comment: "")
+		case .structure?:
+			view?.title = NSLocalizedString("Structures", comment: "")
+		default:
+			break
+		}
 	}
 	
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
@@ -195,7 +204,7 @@ extension Tree.Content {
 		var typeID: NSManagedObjectID
 	}
 	
-	struct LoadoutsSection: Hashable, CellConfiguring {
+	struct LoadoutsSection: Hashable, CellConfigurable {
 		var prototype: Prototype? = Prototype.TreeSectionCell.default
 		var groupID: Int
 		var groupName: String

@@ -70,5 +70,4 @@ class MapLocationPickerPageViewController: PageViewController {
 		try! viewControllers = [MapLocationPickerRegions.default.instantiate(input.mode).get(),
 								MapLocationPickerRecents.default.instantiate(input.mode).get()]
 	}
-	
 }

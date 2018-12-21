@@ -100,7 +100,7 @@ extension Tree.Content {
 	}
 }
 
-extension Tree.Content.Default: CellConfiguring {
+extension Tree.Content.Default: CellConfigurable {
 	
 	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? TreeDefaultCell else {return}

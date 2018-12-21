@@ -58,7 +58,7 @@ class MapLocationPickerSolarSystemsPresenter: TreePresenter {
 
 }
 
-extension SDEMapSolarSystem: CellConfiguring {
+extension SDEMapSolarSystem: CellConfigurable {
 	var prototype: Prototype? {
 		return Prototype.TreeDefaultCell.default
 	}

@@ -149,7 +149,7 @@ struct EVELocation: Hashable {
 }
 
 
-extension EVELocation: CellConfiguring {
+extension EVELocation: CellConfigurable {
 	var prototype: Prototype? {
 		return Prototype.TreeSectionCell.default
 	}

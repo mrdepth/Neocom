@@ -477,7 +477,7 @@
         <!--Fitting-->
         <scene sceneID="IkA-8I-gH7">
             <objects>
-                <viewController storyboardIdentifier="NCFittingMenuContainerViewController" id="XYz-Y5-qTx" customClass="NCFittingMenuContainerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FittingMenuViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XYz-Y5-qTx" customClass="FittingMenuViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hZO-Tp-QND">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -4067,6 +4067,54 @@
             </objects>
             <point key="canvasLocation" x="-817" y="4523"/>
         </scene>
+        <!--Root View Controller-->
+        <scene sceneID="OnL-V4-u9Z">
+            <objects>
+                <tableViewController storyboardIdentifier="DgmTypePickerGroupsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="EhL-G6-jFu" customClass="DgmTypePickerGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="wFP-mJ-mKm" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <connections>
+                            <outlet property="dataSource" destination="EhL-G6-jFu" id="Nzh-b1-yRQ"/>
+                            <outlet property="delegate" destination="EhL-G6-jFu" id="Bkn-7b-bRs"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="UVg-IT-T9g"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0J6-o5-foP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-140" y="5407"/>
+        </scene>
+        <!--Dgm Type Picker View Controller-->
+        <scene sceneID="noH-6d-LHo">
+            <objects>
+                <navigationController storyboardIdentifier="DgmTypePickerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="jnI-WW-Lv0" customClass="DgmTypePickerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="yZg-io-uj0">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3HG-yJ-F0n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1577" y="5407"/>
+        </scene>
+        <!--Dgm Type Picker Container View Controller-->
+        <scene sceneID="4qD-lp-A0T">
+            <objects>
+                <viewController storyboardIdentifier="DgmTypePickerContainerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Mpi-zb-0Kq" customClass="DgmTypePickerContainerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5NU-V9-qSo" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="1Li-8Y-UaW"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="e45-15-WPg"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u6h-ip-46o" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-871" y="5407"/>
+        </scene>
         <!--Implants-->
         <scene sceneID="vVs-8p-brx">
             <objects>
@@ -4348,6 +4396,44 @@
             </objects>
             <point key="canvasLocation" x="6914" y="5364"/>
         </scene>
+        <!--Root View Controller-->
+        <scene sceneID="Ddt-ZN-2ra">
+            <objects>
+                <tableViewController storyboardIdentifier="DgmTypePickerTypesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nsq-63-PXO" customClass="DgmTypePickerTypesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="nZw-mI-Kk9" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <connections>
+                            <outlet property="dataSource" destination="nsq-63-PXO" id="XVw-n1-wtD"/>
+                            <outlet property="delegate" destination="nsq-63-PXO" id="tVZ-yC-O8O"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="1eu-TZ-EBK"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mhh-1q-ERk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="554" y="5407"/>
+        </scene>
+        <!--Root View Controller-->
+        <scene sceneID="gWc-7e-mfE">
+            <objects>
+                <tableViewController storyboardIdentifier="DgmTypePickerRecentsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hTT-Wh-9Zp" customClass="DgmTypePickerRecentsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ldw-R0-J8e" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <connections>
+                            <outlet property="dataSource" destination="hTT-Wh-9Zp" id="fN7-CM-ido"/>
+                            <outlet property="delegate" destination="hTT-Wh-9Zp" id="xlC-pY-pOf"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="nQh-hX-vYZ"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fxr-yA-Pu5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1231" y="5407"/>
+        </scene>
     </scenes>
     <resources>
         <image name="actionsItem" width="24" height="24"/>
@@ -4389,6 +4475,6 @@
         <image name="warpSpeed" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="kZB-6Y-V76"/>
+        <segue reference="mZA-nQ-hvJ"/>
     </inferredMetricsTieBreakers>
 </document>

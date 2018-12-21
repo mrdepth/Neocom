@@ -1,8 +1,8 @@
 //
-//  FittingShipsInteractor.swift
+//  DgmTypePickerGroupsInteractor.swift
 //  Neocom
 //
-//  Created by Artem Shimanski on 11/23/18.
+//  Created by Artem Shimanski on 16/12/2018.
 //  Copyright © 2018 Artem Shimanski. All rights reserved.
 //
 
@@ -10,8 +10,8 @@ import Foundation
 import Futures
 import CloudData
 
-class FittingShipsInteractor: TreeInteractor {
-	typealias Presenter = FittingShipsPresenter
+class DgmTypePickerGroupsInteractor: TreeInteractor {
+	typealias Presenter = DgmTypePickerGroupsPresenter
 	typealias Content = Void
 	weak var presenter: Presenter?
 	
@@ -19,7 +19,6 @@ class FittingShipsInteractor: TreeInteractor {
 		self.presenter = presenter
 	}
 	
-	var api = Services.api.current
 	func load(cachePolicy: URLRequest.CachePolicy) -> Future<Content> {
 		return .init(())
 	}
@@ -28,7 +27,6 @@ class FittingShipsInteractor: TreeInteractor {
 	
 	func configure() {
 		didChangeAccountObserver = NotificationCenter.default.addNotificationObserver(forName: .didChangeAccount, object: nil, queue: .main) { [weak self] _ in
-			self?.api = Services.api.current
 			_ = self?.presenter?.reload(cachePolicy: .useProtocolCachePolicy).then(on: .main) { presentation in
 				self?.presenter?.view?.present(presentation, animated: true)
 			}

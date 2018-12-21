@@ -259,7 +259,7 @@ extension Tree.Item {
 		}
 	}
 	
-	class InvTypeRequiredSkillRow: TreeItem, CellConfiguring, Routable {
+	class InvTypeRequiredSkillRow: TreeItem, CellConfigurable, Routable {
 		var prototype: Prototype? { return Prototype.TreeDefaultCell.default}
 		let skill: TrainingQueue.Item
 		let level: Int

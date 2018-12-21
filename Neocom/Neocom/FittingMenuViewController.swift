@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FittingMenuViewController: UIViewController, View {
+class FittingMenuViewController: PageViewController, View {
 	
 	typealias Presenter = FittingMenuPresenter
 	lazy var presenter: Presenter! = Presenter(view: self)
@@ -17,6 +17,8 @@ class FittingMenuViewController: UIViewController, View {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		viewControllers = try! [FittingLoadouts.default.instantiate(.ship).get(),
+								FittingLoadouts.default.instantiate(.structure).get()]
 		presenter.configure()
 	}
 	

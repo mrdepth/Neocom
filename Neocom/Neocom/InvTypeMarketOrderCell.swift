@@ -31,7 +31,7 @@ extension Tree.Content {
 	}
 }
 
-extension Tree.Content.InvTypeMarketOrder: CellConfiguring {
+extension Tree.Content.InvTypeMarketOrder: CellConfigurable {
 	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? InvTypeMarketOrderCell else {return}
 		

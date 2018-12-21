@@ -20,8 +20,14 @@ class Fitting_Tests: TestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
+	
+	func testFittingMenu() {
+		let controller = try! FittingMenu.default.instantiate().get()
+		controller.loadViewIfNeeded()
+		add(controller.screenshot())
+	}
 
-    func testLoadouts() {
+    func testShipLoadouts() {
 		let context = Services.storage.viewContext.managedObjectContext
 		var loadout = Loadout(context: context)
 		loadout.name = "Test Loadout 1"
@@ -95,10 +101,68 @@ class Fitting_Tests: TestCase {
 			}
 
 		}
-
-
-
 		wait(for: [exp], timeout: 10)
     }
+	
+	func testStructureLoadouts() {
+		let context = Services.storage.viewContext.managedObjectContext
+		let loadout = Loadout(context: context)
+		
+		loadout.name = "Test Loadout 1"
+		loadout.typeID = Services.sde.viewContext.invType("Fortizar")!.typeID
+		loadout.uuid = "s1"
+		loadout.data = LoadoutData(context: context)
+		try! context.save()
+		
+		let controller = try! FittingLoadouts.default.instantiate(.structure).get()
+		wait(for: [test(controller)], timeout: 10)
+	}
+	
+	func testTypePicker() {
+		let category = Services.sde.viewContext.dgmppItemCategory(categoryID: .ship)!
+		
+		let navigationController = try! DgmTypePicker.default.instantiate(DgmTypePicker.View.Input(category: category, completion: {_,_ in})).get()
+		navigationController.loadViewIfNeeded()
+		navigationController.topViewController?.loadViewIfNeeded()
+		let controller = navigationController.topViewController!.children[0] as! DgmTypePickerGroupsViewController
+
+		wait(for: [test(controller, takeScreenshot: false)], timeout: 10)
+		add(navigationController.screenshot())
+	}
+
+	func testTypePickerTypes() {
+		let category = Services.sde.viewContext.dgmppItemCategory(categoryID: .ship)!
+		
+		let group = sequence(first: (category.itemGroups!.anyObject() as! SDEDgmppItemGroup), next: {$0.subGroups?.anyObject() as? SDEDgmppItemGroup}).reversed().first!
+
+		let controller = try! DgmTypePickerTypes.default.instantiate(.group(group)).get()
+		
+		wait(for: [test(controller)], timeout: 10)
+	}
+
+	func testTypePickerSearch() {
+		let category = Services.sde.viewContext.dgmppItemCategory(categoryID: .ship)!
+		
+		let controller = try! DgmTypePickerTypes.default.instantiate(.category(category)).get()
+		let searchController = UISearchController(searchResultsController: controller)
+		searchController.loadViewIfNeeded()
+		controller.presenter.updateSearchResults(with: "Dominix")
+		wait(for: [test(controller, takeScreenshot: false)], timeout: 10)
+		controller.removeFromParent()
+		add(controller.screenshot())
+	}
+	
+	func testTypePickerRecents() {
+		let category = Services.sde.viewContext.dgmppItemCategory(categoryID: .ship)!
+		
+		let group = sequence(first: (category.itemGroups!.anyObject() as! SDEDgmppItemGroup), next: {$0.subGroups?.anyObject() as? SDEDgmppItemGroup}).reversed().first!
+		
+		let controller = try! DgmTypePickerTypes.default.instantiate(.group(group)).get()
+		controller.presenter.interactor.touch((group.items!.anyObject() as! SDEDgmppItem).type!)
+		wait(for: [test(controller, takeScreenshot: false)], timeout: 10)
+		
+		let recents = try! DgmTypePickerRecents.default.instantiate(category).get()
+		wait(for: [test(recents)], timeout: 10)
+	}
 
 }

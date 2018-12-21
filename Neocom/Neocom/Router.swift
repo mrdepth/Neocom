@@ -176,7 +176,18 @@ enum Router {
 		static func typePickerInvTypes(_ input: ZKillboardInvTypes.View.Input) -> Route<ZKillboardInvTypes> {
 			return Route(assembly: ZKillboardInvTypes.default, input: input, kind: .push)
 		}
-
+	}
+	
+	enum Fitting {
+		static func dgmTypePicker(_ input: DgmTypePicker.View.Input) -> Route<DgmTypePicker> {
+			return Route(assembly: DgmTypePicker.default, input: input, kind: .modal)
+		}
+		static func dgmTypePickerGroups(_ input: DgmTypePickerGroups.View.Input) -> Route<DgmTypePickerGroups> {
+			return Route(assembly: DgmTypePickerGroups.default, input: input, kind: .push)
+		}
+		static func dgmTypePickerTypes(_ input: DgmTypePickerTypes.View.Input) -> Route<DgmTypePickerTypes> {
+			return Route(assembly: DgmTypePickerTypes.default, input: input, kind: .push)
+		}
 	}
 	
 	enum Utility {

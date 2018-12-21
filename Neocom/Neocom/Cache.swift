@@ -85,6 +85,21 @@ struct CacheContext: PersistentContext {
 		return try? Dictionary(request.all().map {($0.contactID, $0)}, uniquingKeysWith: { (a, _) in a})
 	}
 	
+	func typePickerRecent(category: SDEDgmppItemCategory, type: SDEInvType) -> TypePickerRecent {
+		let recent = (try? managedObjectContext
+			.from(TypePickerRecent.self)
+			.filter(\TypePickerRecent.category == category.category && \TypePickerRecent.subcategory == category.subcategory && \TypePickerRecent.raceID == category.race?.raceID ?? 0 && \TypePickerRecent.typeID == type.typeID)
+			.first()) ?? nil
+		return recent ?? {
+			let recent = TypePickerRecent(context: managedObjectContext)
+			recent.category = category.category
+			recent.subcategory = category.subcategory
+			recent.raceID = category.race?.raceID ?? 0
+			recent.typeID = type.typeID
+			return recent
+
+		}()
+	}
 }
 
 

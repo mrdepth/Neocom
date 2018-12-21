@@ -64,7 +64,7 @@ extension Tree.Content {
 
 extension Tree.Item {
 	
-	class Section<Content: Hashable, Element: TreeItem>: Collection<Content, Element>, ExpandableItem {
+	class Section<Content: Hashable, Element: TreeItem>: Collection<Content, Element>, ItemExpandable {
 		
 		var action: ((UIControl) -> Void)?
 		var editingAction: ((UIControl) -> Void)?
@@ -134,7 +134,7 @@ extension Tree.Item {
 	}
 }
 
-extension Tree.Content.Section: CellConfiguring {
+extension Tree.Content.Section: CellConfigurable {
 	
 	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? TreeSectionCell else {return}

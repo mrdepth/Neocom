@@ -69,7 +69,7 @@ extension Tree.Item {
 	}
 }
 
-extension SDEInvCategory: CellConfiguring {
+extension SDEInvCategory: CellConfigurable {
 	var prototype: Prototype? {
 		return Prototype.TreeDefaultCell.default
 	}

@@ -40,12 +40,12 @@ extension UICollectionView {
 	}
 }
 
-protocol CellConfiguring {
+protocol CellConfigurable {
 	var prototype: Prototype? {get}
 	func configure(cell: UITableViewCell, treeController: TreeController?) -> Void
 }
 
-protocol ExpandableItem {
+protocol ItemExpandable {
 	var isExpanded: Bool {get set}
 	var expandIdentifier: CustomStringConvertible? {get}
 }
@@ -59,7 +59,7 @@ extension Routable {
 	var secondaryRoute: Routing? { return nil }
 }
 
-extension ExpandableItem {
+extension ItemExpandable {
 	var expandIdentifier: CustomStringConvertible? {
 		return nil
 	}
@@ -86,7 +86,7 @@ extension Tree.Item {
 		}
 	}
 	
-	class Base<Content: Hashable, Element: TreeItem>: TreeItem, CellConfiguring {
+	class Base<Content: Hashable, Element: TreeItem>: TreeItem, CellConfigurable {
 		typealias Child = Element
 		var content: Content
 		var children: [Child]?
@@ -118,11 +118,11 @@ extension Tree.Item {
 		}
 		
 		var prototype: Prototype? {
-			return (content as? CellConfiguring)?.prototype
+			return (content as? CellConfigurable)?.prototype
 		}
 		
 		func configure(cell: UITableViewCell, treeController: TreeController?) {
-			(content as? CellConfiguring)?.configure(cell: cell, treeController: treeController)
+			(content as? CellConfigurable)?.configure(cell: cell, treeController: treeController)
 		}
 		
 		
@@ -176,7 +176,7 @@ extension Tree.Item {
 		}
 	}
 
-	class ExpandableRow<Content: Hashable, Element: TreeItem>: Base<Content, Element>, ExpandableItem {
+	class ExpandableRow<Content: Hashable, Element: TreeItem>: Base<Content, Element>, ItemExpandable {
 		
 		var isExpanded: Bool
 		var expandIdentifier: CustomStringConvertible?

@@ -52,7 +52,7 @@ class MapLocationPickerRecentsPresenter: TreePresenter {
 	}
 }
 
-extension LocationPickerRecent: CellConfiguring {
+extension LocationPickerRecent: CellConfigurable {
 	var prototype: Prototype? {
 		return Prototype.TreeDefaultCell.default
 	}

@@ -102,7 +102,7 @@ class TreeViewController<Presenter: TreePresenter, Input>: UITableViewController
 	}
 
 	func treeController<T: TreeItem> (_ treeController: TreeController, cellIdentifierFor item: T) -> String? {
-		if let item = item as? CellConfiguring {
+		if let item = item as? CellConfigurable {
 			return item.prototype?.reuseIdentifier
 		}
 		else {
@@ -112,7 +112,7 @@ class TreeViewController<Presenter: TreePresenter, Input>: UITableViewController
 	
 	func treeController<T: TreeItem> (_ treeController: TreeController, configure cell: UITableViewCell, for item: T) -> Void {
 		cell.indentationLevel = treeController.indentationLevel(for: item)
-		if let item = item as? CellConfiguring {
+		if let item = item as? CellConfigurable {
 			return item.configure(cell: cell, treeController: treeController)
 		}
 	}
@@ -265,11 +265,11 @@ extension TreeView where Presenter.Presentation: TreeItem {
 extension TreePresenter {
 
 	func isItemExpandable<T: TreeItem>(_ item: T) -> Bool {
-		return item is ExpandableItem
+		return item is ItemExpandable
 	}
 	
 	func isItemExpanded<T: TreeItem>(_ item: T) -> Bool {
-		if let item = item as? ExpandableItem {
+		if let item = item as? ItemExpandable {
 			if let identifier = item.expandIdentifier?.description,
 				let state = Services.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) {
 				return state.isExpanded
@@ -284,7 +284,7 @@ extension TreePresenter {
 	}
 	
 	func didExpand<T: TreeItem>(item: T) {
-		guard var item = item as? ExpandableItem else {return}
+		guard var item = item as? ItemExpandable else {return}
 		if let identifier = item.expandIdentifier?.description {
 			let state = Services.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) ??
 				Services.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: View.self)
@@ -294,7 +294,7 @@ extension TreePresenter {
 	}
 	
 	func didCollapse<T: TreeItem>(item: T) {
-		guard var item = item as? ExpandableItem else {return}
+		guard var item = item as? ItemExpandable else {return}
 		if let identifier = item.expandIdentifier?.description {
 			let state = Services.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) ??
 				Services.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: View.self)

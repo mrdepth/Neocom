@@ -129,7 +129,7 @@ extension Tree.Content {
 	}
 }
 
-extension Tree.Content.MarketHistory: CellConfiguring {
+extension Tree.Content.MarketHistory: CellConfigurable {
 	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? MarketHistoryCell else {return}
 		cell.marketHistoryView.volume = volume

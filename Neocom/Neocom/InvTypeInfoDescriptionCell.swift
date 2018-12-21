@@ -42,7 +42,7 @@ extension Tree.Content {
 	}
 }
 
-extension Tree.Content.InvTypeInfoDescription: CellConfiguring {
+extension Tree.Content.InvTypeInfoDescription: CellConfigurable {
 	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? InvTypeInfoDescriptionCell else {return}
 		cell.titleLabel?.text = title

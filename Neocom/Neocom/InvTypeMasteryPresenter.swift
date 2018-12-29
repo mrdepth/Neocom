@@ -53,7 +53,7 @@ class InvTypeMasteryPresenter: TreePresenter {
 				.from(SDECertMastery.self)
 				.filter(\SDECertMastery.level == level && (\SDECertMastery.certificate?.types).contains(type))
 				.sort(by: \SDECertMastery.certificate?.certificateName, ascending: true)
-				.all()
+				.fetch()
 			
 			let sections = masteries.compactMap { mastery -> Tree.Item.InvTypeSkillsSection? in
 				let rows = (mastery.skills?.allObjects as? [SDECertSkill])?.sorted {$0.type!.typeName! < $1.type!.typeName!}.compactMap {

@@ -81,7 +81,7 @@ struct StorageContext: PersistentContext {
 	var managedObjectContext: NSManagedObjectContext
 	
 	var accounts: [Account] {
-		return (try? managedObjectContext.from(Account.self).all()) ?? []
+		return (try? managedObjectContext.from(Account.self).fetch()) ?? []
 	}
 	
 	func account(with token: OAuth2Token) -> Account? {
@@ -113,7 +113,7 @@ struct StorageContext: PersistentContext {
 	}
 	
 	func marketQuickItems() -> [MarketQuickItem]? {
-		return (try? managedObjectContext.from(MarketQuickItem.self).all()) ?? nil
+		return (try? managedObjectContext.from(MarketQuickItem.self).fetch()) ?? nil
 	}
 	
 	func marketQuickItem(with typeID: Int) -> MarketQuickItem? {

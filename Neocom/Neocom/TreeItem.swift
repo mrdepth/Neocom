@@ -55,6 +55,12 @@ protocol Routable {
 	var secondaryRoute: Routing? {get}
 }
 
+//protocol ItemUpdatingDelegate {
+//	func didUpdate<T: TreeItem>(contentsOf item: T) -> Void
+//	func didReload<T: TreeItem>(item: T) -> Void
+//	func updateCell<T: TreeItem>(of item: T, block: (UITableViewCell) -> Void) -> Void
+//}
+
 extension Routable {
 	var secondaryRoute: Routing? { return nil }
 }

@@ -39,7 +39,7 @@ class APITesting: APIClient {
 	override func industryJobs(cachePolicy: URLRequest.CachePolicy) -> Future<ESI.Result<[ESI.Industry.Job]>> {
 		return Services.sde.performBackgroundTask { context -> ESI.Result<[ESI.Industry.Job]> in
 			let station = try! context.managedObjectContext.from(SDEStaStation.self).first()!
-			let activities = try! context.managedObjectContext.from(SDERamActivity.self).all()
+			let activities = try! context.managedObjectContext.from(SDERamActivity.self).fetch()
 			let blueprint = context.invType("Dominix Blueprint")!
 			let locationID = Int64(station.stationID)
 			

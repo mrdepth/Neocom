@@ -10,11 +10,12 @@ import Foundation
 import Futures
 import CloudData
 import TreeController
+import Expressible
 
 class FittingFleetsPresenter: TreePresenter {
 	typealias View = FittingFleetsViewController
 	typealias Interactor = FittingFleetsInteractor
-	typealias Presentation = [AnyTreeItem]
+	typealias Presentation = Tree.Item.FetchedResultsController<Tree.Item.FetchedResultsSection<Tree.Item.FleetFetchedResultsRow>>
 	
 	weak var view: View?
 	lazy var interactor: Interactor! = Interactor(presenter: self)
@@ -28,7 +29,7 @@ class FittingFleetsPresenter: TreePresenter {
 	}
 	
 	func configure() {
-		view?.tableView.register([Prototype.TreeSectionCell.default])
+		view?.tableView.register([Prototype.FleetCell.default])
 		
 		interactor.configure()
 		applicationWillEnterForegroundObserver = NotificationCenter.default.addNotificationObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] (note) in
@@ -39,6 +40,11 @@ class FittingFleetsPresenter: TreePresenter {
 	private var applicationWillEnterForegroundObserver: NotificationObserver?
 	
 	func presentation(for content: Interactor.Content) -> Future<Presentation> {
-		return .init([])
+		let frc = Services.storage.viewContext.managedObjectContext
+			.from(Fleet.self)
+			.sort(by: \Fleet.name, ascending: true)
+			.fetchedResultsController()
+		
+		return .init(Presentation(frc, treeController: view?.treeController))
 	}
 }

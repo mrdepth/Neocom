@@ -41,7 +41,7 @@ class AssetsInteractor: TreeInteractor {
 				.from(SDEInvType.self)
 				.filter((\SDEInvType.typeID).in(typeIDs) && \SDEInvType.group?.category?.categoryID == SDECategoryID.ship.rawValue)
 				.select([\SDEInvType.typeID])
-				.all().compactMap{$0["typeID"] as? Int}
+				.fetch().compactMap{$0["typeID"] as? Int}
 			)
 			
 			let namedAssetIDs = Set(assets.value.filter {namedTypeIDs.contains($0.typeID)}.map{$0.itemID})

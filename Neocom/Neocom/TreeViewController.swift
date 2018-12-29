@@ -284,22 +284,34 @@ extension TreePresenter {
 	}
 	
 	func didExpand<T: TreeItem>(item: T) {
-		guard var item = item as? ItemExpandable else {return}
-		if let identifier = item.expandIdentifier?.description {
+		guard var expandableItem = item as? ItemExpandable else {return}
+		if let identifier = expandableItem.expandIdentifier?.description {
 			let state = Services.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) ??
 				Services.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: View.self)
 			state.isExpanded = true
 		}
-		item.isExpanded = true
+		expandableItem.isExpanded = true
+		guard let view = view else {return}
+		if let cell = view.treeController.cell(for: item) {
+			(item as? CellConfigurable)?.configure(cell: cell, treeController: view.treeController)
+		}
+		view.treeController?.deselectCell(for: item, animated: true)
+
 	}
 	
 	func didCollapse<T: TreeItem>(item: T) {
-		guard var item = item as? ItemExpandable else {return}
-		if let identifier = item.expandIdentifier?.description {
+		guard var expandableItem = item as? ItemExpandable else {return}
+		if let identifier = expandableItem.expandIdentifier?.description {
 			let state = Services.cache.viewContext.sectionCollapseState(identifier: identifier, scope: View.self) ??
 				Services.cache.viewContext.newSectionCollapseState(identifier: identifier, scope: View.self)
 			state.isExpanded = false
 		}
-		item.isExpanded = false
+		expandableItem.isExpanded = false
+		guard let view = view else {return}
+		if let cell = view.treeController.cell(for: item) {
+			(item as? CellConfigurable)?.configure(cell: cell, treeController: view.treeController)
+		}
+		view.treeController?.deselectCell(for: item, animated: true)
+
 	}
 }

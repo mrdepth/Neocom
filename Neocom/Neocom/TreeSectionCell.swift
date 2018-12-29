@@ -70,14 +70,7 @@ extension Tree.Item {
 		var editingAction: ((UIControl) -> Void)?
 
 		weak var treeController: TreeController?
-		var isExpanded: Bool {
-			didSet {
-				if let cell = treeController?.cell(for: self) {
-					configure(cell: cell, treeController: treeController)
-				}
-				treeController?.deselectCell(for: self, animated: true)
-			}
-		}
+		var isExpanded: Bool
 		
 		var expandIdentifier: CustomStringConvertible?
 		
@@ -98,7 +91,8 @@ extension Tree.Item {
 			configureActions(for: cell, treeController: treeController)
 			guard let cell = cell as? TreeSectionCell else {return}
 			
-			cell.expandIconView?.image = treeController?.isItemExpanded(self) == true ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
+//			cell.expandIconView?.image = treeController?.isItemExpanded(self) == true ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
+			cell.expandIconView?.image = isExpanded ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
 		}
 		
 		func configureActions(for cell: UITableViewCell, treeController: TreeController?) {

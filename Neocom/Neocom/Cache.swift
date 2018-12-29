@@ -70,19 +70,19 @@ struct CacheContext: PersistentContext {
 	}
 	
 	func price(for typeIDs: Set<Int>) -> [Int: Double]? {
-		guard let prices = (try? managedObjectContext.from(Price.self).filter((\Price.typeID).in(typeIDs)).all()) ?? nil else {return nil}
+		guard let prices = (try? managedObjectContext.from(Price.self).filter((\Price.typeID).in(typeIDs)).fetch()) ?? nil else {return nil}
 		return Dictionary(prices.map{(Int($0.typeID), $0.price)}, uniquingKeysWith: {lhs, _ in lhs})
 	}
 	
 	func prices() -> [Price]? {
-		return (try? managedObjectContext.from(Price.self).all()) ?? nil
+		return (try? managedObjectContext.from(Price.self).fetch()) ?? nil
 	}
 	
 	func contacts(with ids: Set<Int64>) -> [Int64: Contact]? {
 		let request = managedObjectContext
 			.from(Contact.self)
 			.filter((\Contact.contactID).in(ids))
-		return try? Dictionary(request.all().map {($0.contactID, $0)}, uniquingKeysWith: { (a, _) in a})
+		return try? Dictionary(request.fetch().map {($0.contactID, $0)}, uniquingKeysWith: { (a, _) in a})
 	}
 	
 	func typePickerRecent(category: SDEDgmppItemCategory, type: SDEInvType) -> TypePickerRecent {

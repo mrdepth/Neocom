@@ -195,6 +195,8 @@
 		1256CA0621D2CDA800D65AD7 /* FittingFleetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0221D2CDA800D65AD7 /* FittingFleetsViewController.swift */; };
 		1256CA0721D2CDA800D65AD7 /* FittingFleetsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0321D2CDA800D65AD7 /* FittingFleetsInteractor.swift */; };
 		1256CA0821D2CDA800D65AD7 /* FittingFleets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0421D2CDA800D65AD7 /* FittingFleets.swift */; };
+		1256CA0D21D3FC7B00D65AD7 /* FleetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0C21D3FC7B00D65AD7 /* FleetCell.swift */; };
+		1256CA0F21D3FC8800D65AD7 /* FleetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1256CA0E21D3FC8800D65AD7 /* FleetCell.xib */; };
 		1259639521381EA100B3A53C /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1259639421381EA100B3A53C /* AccountCell.swift */; };
 		1259639721381ECD00B3A53C /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259639621381ECD00B3A53C /* AccountCell.xib */; };
 		125B2CB32176FEB500D34CFB /* InvTypeMasteryPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CAF2176FEB500D34CFB /* InvTypeMasteryPresenter.swift */; };
@@ -882,6 +884,8 @@
 		1256CA0221D2CDA800D65AD7 /* FittingFleetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingFleetsViewController.swift; sourceTree = "<group>"; };
 		1256CA0321D2CDA800D65AD7 /* FittingFleetsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingFleetsInteractor.swift; sourceTree = "<group>"; };
 		1256CA0421D2CDA800D65AD7 /* FittingFleets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingFleets.swift; sourceTree = "<group>"; };
+		1256CA0C21D3FC7B00D65AD7 /* FleetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCell.swift; sourceTree = "<group>"; };
+		1256CA0E21D3FC8800D65AD7 /* FleetCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FleetCell.xib; sourceTree = "<group>"; };
 		1259639421381EA100B3A53C /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		1259639621381ECD00B3A53C /* AccountCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountCell.xib; sourceTree = "<group>"; };
 		125AB80E1E41D9F500B8A2A8 /* UIViewController+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+NC.swift"; sourceTree = "<group>"; };
@@ -2138,6 +2142,15 @@
 			name = FittingFleets;
 			sourceTree = "<group>";
 		};
+		1256CA0B21D3FC6500D65AD7 /* FleetCell */ = {
+			isa = PBXGroup;
+			children = (
+				1256CA0C21D3FC7B00D65AD7 /* FleetCell.swift */,
+				1256CA0E21D3FC8800D65AD7 /* FleetCell.xib */,
+			);
+			name = FleetCell;
+			sourceTree = "<group>";
+		};
 		1259639221381E8800B3A53C /* TreeHeaderCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -2218,27 +2231,28 @@
 			isa = PBXGroup;
 			children = (
 				1279EFF6213587D7005340C0 /* Cells.swift */,
-				12C3E3C521A57803002ED002 /* SwitchCell */,
-				12484279219C342C00CB3616 /* KillmailAttackerCell */,
-				1233EB51219AEAAE00EB99C9 /* KillmailCell */,
-				124C51262199B15300D0FC8E /* WalletTransactionCell */,
-				124C51162199905000D0FC8E /* WalletJorunalCell */,
-				124C50FF219956CB00D0FC8E /* ContractCell */,
-				12C8ABDE2195BF9F0028BF9A /* IndustryJobCell */,
-				12C8ABD72195978B0028BF9A /* MarketOrderCell */,
-				1287FBCB2191900A00A505FC /* IncursionCell */,
-				12C727CB218C5EE600A78ADF /* MailCell */,
-				12EA7793217F4416009C8288 /* SkillCell */,
-				1253C62A2159102A007DEA16 /* MarketHistoryCell */,
-				1253C62321590738007DEA16 /* DamageTypeCell */,
-				12A843292153C5C500570A95 /* InvTypeCell */,
 				1259639321381E8E00B3A53C /* AccountCell */,
-				1279EFF221355DE2005340C0 /* TreeDefaultCell */,
-				1287FBDF2191C22600A505FC /* TreeSectionCell */,
-				1259639221381E8800B3A53C /* TreeHeaderCell */,
+				12133C79215E6F0200646937 /* CertCertificateDescriptionCell */,
+				124C50FF219956CB00D0FC8E /* ContractCell */,
+				1253C62321590738007DEA16 /* DamageTypeCell */,
+				1256CA0B21D3FC6500D65AD7 /* FleetCell */,
+				1287FBCB2191900A00A505FC /* IncursionCell */,
+				12C8ABDE2195BF9F0028BF9A /* IndustryJobCell */,
+				12A843292153C5C500570A95 /* InvTypeCell */,
 				12DE75DD215A7186006FC1BF /* InvTypeInfoDescriptionCell */,
 				12484C63215BB0DC0083AE17 /* InvTypeMarketOrderCell */,
-				12133C79215E6F0200646937 /* CertCertificateDescriptionCell */,
+				12484279219C342C00CB3616 /* KillmailAttackerCell */,
+				1233EB51219AEAAE00EB99C9 /* KillmailCell */,
+				12C727CB218C5EE600A78ADF /* MailCell */,
+				1253C62A2159102A007DEA16 /* MarketHistoryCell */,
+				12C8ABD72195978B0028BF9A /* MarketOrderCell */,
+				12EA7793217F4416009C8288 /* SkillCell */,
+				12C3E3C521A57803002ED002 /* SwitchCell */,
+				1279EFF221355DE2005340C0 /* TreeDefaultCell */,
+				1259639221381E8800B3A53C /* TreeHeaderCell */,
+				1287FBDF2191C22600A505FC /* TreeSectionCell */,
+				124C51162199905000D0FC8E /* WalletJorunalCell */,
+				124C51262199B15300D0FC8E /* WalletTransactionCell */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -3636,6 +3650,7 @@
 				1256BECE1DF4770A00A2A24B /* Fitting.xcassets in Resources */,
 				12925B7B2189EE6F00F6216C /* TreeDefaultActionCell.xib in Resources */,
 				1279A2F12023193300DD7A46 /* NCStaticHeaderTableViewCell.xib in Resources */,
+				1256CA0F21D3FC8800D65AD7 /* FleetCell.xib in Resources */,
 				12DE75DF215A7199006FC1BF /* InvTypeInfoDescriptionCompactCell.xib in Resources */,
 				12A8432E2153C63900570A95 /* InvTypeModuleCell.xib in Resources */,
 				12EA7796217F442A009C8288 /* SkillCell.xib in Resources */,
@@ -4020,6 +4035,7 @@
 				1256C9FF21D2821A00D65AD7 /* DgmTypePickerRecents.swift in Sources */,
 				12AB973E212C162A00B30DD3 /* Character.swift in Sources */,
 				12133C40215E3B6400646937 /* CertCertificatesViewController.swift in Sources */,
+				1256CA0D21D3FC7B00D65AD7 /* FleetCell.swift in Sources */,
 				125DF6352133CFD000B86AE0 /* MainMenuPresenter.swift in Sources */,
 				12D3B63021A7F73500BA5C9A /* FittingLoadoutsInteractor.swift in Sources */,
 				121B28CA218AF1E8000D392C /* CharacterInfoViewController.swift in Sources */,

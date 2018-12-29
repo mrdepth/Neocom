@@ -225,24 +225,7 @@ extension Tree.Item {
 	}
 	
 	class NamedFetchedResultsController<Section: FetchedResultsSectionTreeItem>: FetchedResultsController<Section>, CellConfigurable, ItemExpandable {
-		var isExpanded: Bool {
-			didSet {
-				if let cell = treeController?.cell(for: self) {
-					configure(cell: cell, treeController: treeController)
-				}
-				treeController?.deselectCell(for: self, animated: true)
-			}
-//			get {
-//				return content.isExpanded
-//			}
-//			set {
-//				content.isExpanded = newValue
-//				if let cell = treeController?.cell(for: self) {
-//					configure(cell: cell, treeController: treeController)
-//				}
-//				treeController?.deselectCell(for: self, animated: true)
-//			}
-		}
+		var isExpanded: Bool
 
 		var prototype: Prototype? {
 			return content.prototype
@@ -265,20 +248,14 @@ extension Tree.Item {
 		func configure(cell: UITableViewCell, treeController: TreeController?) {
 			content.configure(cell: cell, treeController: treeController)
 			guard let cell = cell as? TreeSectionCell else {return}
-			cell.expandIconView?.image = treeController?.isItemExpanded(self) == true ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
+//			cell.expandIconView?.image = treeController?.isItemExpanded(self) == true ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
+			cell.expandIconView?.image = isExpanded ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
 		}
 	}
 	
 	class NamedFetchedResultsSection<Item: FetchedResultsTreeItem>: FetchedResultsSection<Item>, CellConfigurable, ItemExpandable {
 		
-		var isExpanded: Bool = true {
-			didSet {
-				if let cell = controller?.treeController?.cell(for: self) {
-					configure(cell: cell, treeController: controller?.treeController)
-				}
-				controller?.treeController?.deselectCell(for: self, animated: true)
-			}
-		}
+		var isExpanded: Bool = true
 		
 		var prototype: Prototype? {
 			return Prototype.TreeSectionCell.default
@@ -293,7 +270,8 @@ extension Tree.Item {
 			guard let cell = cell as? TreeSectionCell else {return}
 			
 			cell.titleLabel?.text = name
-			cell.expandIconView?.image = treeController?.isItemExpanded(self) == true ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
+//			cell.expandIconView?.image = treeController?.isItemExpanded(self) == true ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
+			cell.expandIconView?.image = isExpanded ? #imageLiteral(resourceName: "collapse") : #imageLiteral(resourceName: "expand")
 		}
 		
 	}

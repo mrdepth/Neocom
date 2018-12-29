@@ -3465,8 +3465,8 @@
         <!--Fleets-->
         <scene sceneID="Cd0-pc-GA6">
             <objects>
-                <tableViewController storyboardIdentifier="NCFittingFleetsViewController" title="Fleets" id="CeV-qo-X4b" customClass="NCFittingFleetsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="121" sectionHeaderHeight="18" sectionFooterHeight="18" id="9pe-bi-6Ae" customClass="NCTableView">
+                <tableViewController storyboardIdentifier="FittingFleetsViewController" title="Fleets" useStoryboardIdentifierAsRestorationIdentifier="YES" id="CeV-qo-X4b" customClass="FittingFleetsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="63" sectionHeaderHeight="18" sectionFooterHeight="18" id="9pe-bi-6Ae" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>

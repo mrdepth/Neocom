@@ -61,7 +61,7 @@ class FittingLoadoutsPresenter: TreePresenter {
 			guard let strongSelf = self else {throw NCError.cancelled(type: type(of: self), function: #function)}
 			let loadouts = try storageContext.managedObjectContext
 				.from(Loadout.self)
-				.all()
+				.fetch()
 
 			return strongSelf.presentation(for: loadouts, categoryID: input, treeController: treeController)
 		}.then(on: .main) { [weak self] result -> Presentation in

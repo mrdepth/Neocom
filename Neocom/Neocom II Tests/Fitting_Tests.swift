@@ -11,6 +11,10 @@ import XCTest
 import Expressible
 
 class Fitting_Tests: TestCase {
+	
+	static let lock: NSLock = {
+		return NSLock()
+	}()
 
     override func setUp() {
 		super.setUp()
@@ -28,7 +32,12 @@ class Fitting_Tests: TestCase {
 	}
 
     func testShipLoadouts() {
+		Fitting_Tests.lock.lock(); defer {Fitting_Tests.lock.unlock()}
 		let context = Services.storage.viewContext.managedObjectContext
+		try! context.from(Fleet.self).delete()
+		try! context.from(Loadout.self).delete()
+		try! context.save()
+
 		var loadout = Loadout(context: context)
 		loadout.name = "Test Loadout 1"
 		loadout.typeID = 645
@@ -57,7 +66,7 @@ class Fitting_Tests: TestCase {
 			
 			XCTAssertEqual((controller.tableView.cellForRow(at: IndexPath(row: 1, section: 1)) as? TreeDefaultCell)?.subtitleLabel?.text, "Test Loadout 1 Renamed")
 
-			try? context.from(Loadout.self).all().forEach {context.delete($0)}
+			try? context.from(Loadout.self).fetch().forEach {context.delete($0)}
 			try! context.save()
 
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -105,6 +114,7 @@ class Fitting_Tests: TestCase {
     }
 	
 	func testStructureLoadouts() {
+		Fitting_Tests.lock.lock(); defer {Fitting_Tests.lock.unlock()}
 		let context = Services.storage.viewContext.managedObjectContext
 		let loadout = Loadout(context: context)
 		
@@ -116,6 +126,35 @@ class Fitting_Tests: TestCase {
 		
 		let controller = try! FittingLoadouts.default.instantiate(.structure).get()
 		wait(for: [test(controller)], timeout: 10)
+	}
+	
+	func testFleets() {
+		Fitting_Tests.lock.lock(); defer {Fitting_Tests.lock.unlock()}
+		let context = Services.storage.viewContext.managedObjectContext
+		try! context.from(Fleet.self).delete()
+		
+		let fleet = Fleet(context: context)
+		fleet.name = "Test Fleet"
+		
+		let loadout1 = Loadout(context: context)
+		loadout1.name = "Test Loadout 1"
+		loadout1.typeID = Services.sde.viewContext.invType("Deimos")!.typeID
+		loadout1.uuid = "1"
+		loadout1.data = LoadoutData(context: context)
+		loadout1.addToFleets(fleet)
+
+		let loadout2 = Loadout(context: context)
+		loadout2.name = "Test Loadout 2"
+		loadout2.typeID = Services.sde.viewContext.invType("Dominix")!.typeID
+		loadout2.uuid = "2"
+		loadout2.data = LoadoutData(context: context)
+		loadout2.addToFleets(fleet)
+
+		try! context.save()
+		
+		let controller = try! FittingFleets.default.instantiate().get()
+		wait(for: [test(controller)], timeout: 10)
+
 	}
 	
 	func testTypePicker() {

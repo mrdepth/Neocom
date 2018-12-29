@@ -54,7 +54,7 @@ class AssetsPresenter: TreePresenter {
 				let types = try context.managedObjectContext
 					.from(SDEInvType.self)
 					.filter((\SDEInvType.typeID).in(Set(typeIDs)))
-					.all()
+					.fetch()
 					.map {(Int($0.typeID), $0)}
 				return Dictionary(types, uniquingKeysWith: { a, _ in a})
 			}()

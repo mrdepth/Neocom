@@ -71,8 +71,12 @@ class FittingLoadoutsPresenter: TreePresenter {
 			
 			switch input {
 			case .ship:
+				let category = Services.sde.viewContext.dgmppItemCategory(categoryID: .ship)!
+				let typePickerRoute = Router.Fitting.dgmTypePicker(.init(category: category, completion: { (controller, type) in
+				}))
+				
 				menu = [
-					Tree.Item.RoutableRow(Tree.Content.Default(title: NSLocalizedString("New Ship Fit", comment: ""), image:Image( #imageLiteral(resourceName: "fitting")), accessoryType: .disclosureIndicator), route: nil),
+					Tree.Item.RoutableRow(Tree.Content.Default(title: NSLocalizedString("New Ship Fit", comment: ""), image:Image( #imageLiteral(resourceName: "fitting")), accessoryType: .disclosureIndicator), route: typePickerRoute),
 					Tree.Item.RoutableRow(Tree.Content.Default(title: NSLocalizedString("Import/Export", comment: ""), image:Image( #imageLiteral(resourceName: "browser")), accessoryType: .disclosureIndicator), route: nil)
 				]
 			case .structure:

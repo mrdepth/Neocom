@@ -29,7 +29,7 @@
       location = "group:ThirdParty/Expressible/Expressible.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:ThirdParty/ASReceipt/ASReceipt/ASReceipt.xcodeproj">
+      location = "group:ThirdParty/ASReceipt/ASReceipt.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:ThirdParty/TreeController/TreeController.xcodeproj">

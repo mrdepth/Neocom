@@ -477,7 +477,7 @@
         <!--Fitting-->
         <scene sceneID="IkA-8I-gH7">
             <objects>
-                <viewController storyboardIdentifier="FittingMenuViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XYz-Y5-qTx" customClass="FittingMenuViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="XYz-Y5-qTx" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hZO-Tp-QND">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -502,13 +502,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QVd-X2-yfP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-871.20000000000005" y="3073.313343328336"/>
+            <point key="canvasLocation" x="-921" y="3074"/>
         </scene>
         <!--Fitting-->
         <scene sceneID="tGo-h3-A7Z">
             <objects>
-                <viewController storyboardIdentifier="NCFittingMenuViewController" automaticallyAdjustsScrollViewInsets="NO" id="quB-aO-oIE" customClass="NCFittingMenuViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="sMY-CW-uqY" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                <viewController storyboardIdentifier="FittingMenuViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="quB-aO-oIE" customClass="FittingMenuViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sMY-CW-uqY" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -3471,77 +3471,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NCFleetTableViewCell" rowHeight="121" id="ude-It-I2o" customClass="NCFleetTableViewCell" customModule="Neocom" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="375" height="121"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ude-It-I2o" id="zF0-O2-Vuc">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="120.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RPB-QB-5M4">
-                                            <rect key="frame" x="15" y="4" width="345" height="87.5"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="qyu-5q-fVB">
-                                            <rect key="frame" x="15" y="100.5" width="74" height="16"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="pvX-EB-DT6">
-                                                    <rect key="frame" x="0.0" y="0.0" width="33" height="16"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tie-8R-t3u">
-                                                            <rect key="frame" x="0.0" y="0.0" width="33" height="16"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                            <color key="textColor" red="0.45098039220000002" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="HaJ-D0-8e2">
-                                                    <rect key="frame" x="41" y="0.0" width="33" height="16"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="768-Ze-bC0">
-                                                            <rect key="frame" x="0.0" y="0.0" width="33" height="16"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                        </stackView>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RlX-fl-rrA" customClass="NCThinLineView" customModule="Neocom" customModuleProvider="target">
-                                            <rect key="frame" x="15" y="95.5" width="345" height="1"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="1" id="ckJ-Ex-zP0"/>
-                                            </constraints>
-                                        </view>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="RPB-QB-5M4" secondAttribute="trailing" constant="15" id="09X-08-p8R"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="qyu-5q-fVB" secondAttribute="trailing" constant="15" id="5Xr-9a-K6q"/>
-                                        <constraint firstItem="RlX-fl-rrA" firstAttribute="top" secondItem="RPB-QB-5M4" secondAttribute="bottom" constant="4" id="B4K-yh-60m"/>
-                                        <constraint firstAttribute="bottom" secondItem="qyu-5q-fVB" secondAttribute="bottom" priority="999" constant="4" id="BBZ-qK-L6b"/>
-                                        <constraint firstItem="RPB-QB-5M4" firstAttribute="leading" secondItem="zF0-O2-Vuc" secondAttribute="leading" constant="15" id="D0u-Wz-ml9"/>
-                                        <constraint firstItem="RlX-fl-rrA" firstAttribute="leading" secondItem="zF0-O2-Vuc" secondAttribute="leading" constant="15" id="QPG-Zh-fUh"/>
-                                        <constraint firstAttribute="trailing" secondItem="RlX-fl-rrA" secondAttribute="trailing" constant="15" id="WAg-54-bGJ"/>
-                                        <constraint firstItem="qyu-5q-fVB" firstAttribute="leading" secondItem="zF0-O2-Vuc" secondAttribute="leading" constant="15" id="XhG-ES-8Rd"/>
-                                        <constraint firstItem="RPB-QB-5M4" firstAttribute="top" secondItem="zF0-O2-Vuc" secondAttribute="top" constant="4" id="a2q-fj-TMo"/>
-                                        <constraint firstItem="qyu-5q-fVB" firstAttribute="top" secondItem="RlX-fl-rrA" secondAttribute="bottom" constant="4" id="qiT-qp-uX3"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="shipNamesStackView" destination="HaJ-D0-8e2" id="QwN-Ci-nXl"/>
-                                    <outlet property="titleLabel" destination="RPB-QB-5M4" id="kov-EA-ukq"/>
-                                    <outlet property="typeNamesStackView" destination="pvX-EB-DT6" id="UMt-au-7dl"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
                     </tableView>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="8LA-cG-92q"/>
@@ -4071,10 +4000,10 @@
         <scene sceneID="OnL-V4-u9Z">
             <objects>
                 <tableViewController storyboardIdentifier="DgmTypePickerGroupsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="EhL-G6-jFu" customClass="DgmTypePickerGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="wFP-mJ-mKm" customClass="NCTableView">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="wFP-mJ-mKm" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <connections>
                             <outlet property="dataSource" destination="EhL-G6-jFu" id="Nzh-b1-yRQ"/>
                             <outlet property="delegate" destination="EhL-G6-jFu" id="Bkn-7b-bRs"/>
@@ -4104,12 +4033,19 @@
             <objects>
                 <viewController storyboardIdentifier="DgmTypePickerContainerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Mpi-zb-0Kq" customClass="DgmTypePickerContainerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5NU-V9-qSo" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="1Li-8Y-UaW"/>
                     </view>
-                    <navigationItem key="navigationItem" id="e45-15-WPg"/>
+                    <navigationItem key="navigationItem" id="e45-15-WPg">
+                        <barButtonItem key="leftBarButtonItem" title="Close" id="zP9-L3-ycX">
+                            <connections>
+                                <action selector="dismissAnimated:" destination="Mpi-zb-0Kq" id="Lyz-ZR-FcG"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u6h-ip-46o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -4400,10 +4336,10 @@
         <scene sceneID="Ddt-ZN-2ra">
             <objects>
                 <tableViewController storyboardIdentifier="DgmTypePickerTypesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nsq-63-PXO" customClass="DgmTypePickerTypesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="nZw-mI-Kk9" customClass="NCTableView">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="nZw-mI-Kk9" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <connections>
                             <outlet property="dataSource" destination="nsq-63-PXO" id="XVw-n1-wtD"/>
                             <outlet property="delegate" destination="nsq-63-PXO" id="tVZ-yC-O8O"/>
@@ -4419,10 +4355,10 @@
         <scene sceneID="gWc-7e-mfE">
             <objects>
                 <tableViewController storyboardIdentifier="DgmTypePickerRecentsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hTT-Wh-9Zp" customClass="DgmTypePickerRecentsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ldw-R0-J8e" customClass="NCTableView">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="ldw-R0-J8e" customClass="NCTableView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <connections>
                             <outlet property="dataSource" destination="hTT-Wh-9Zp" id="fN7-CM-ido"/>
                             <outlet property="delegate" destination="hTT-Wh-9Zp" id="xlC-pY-pOf"/>

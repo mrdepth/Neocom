@@ -179,6 +179,10 @@ enum Router {
 	}
 	
 	enum Fitting {
+		static func fittingMenu() -> Route<FittingMenu> {
+			return Route(assembly: FittingMenu.default, kind: .detail)
+		}
+
 		static func dgmTypePicker(_ input: DgmTypePicker.View.Input) -> Route<DgmTypePicker> {
 			return Route(assembly: DgmTypePicker.default, input: input, kind: .modal)
 		}

@@ -18,7 +18,8 @@ class FittingMenuViewController: PageViewController, View {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		viewControllers = try! [FittingLoadouts.default.instantiate(.ship).get(),
-								FittingLoadouts.default.instantiate(.structure).get()]
+								FittingLoadouts.default.instantiate(.structure).get(),
+								FittingFleets.default.instantiate().get()]
 		presenter.configure()
 	}
 	

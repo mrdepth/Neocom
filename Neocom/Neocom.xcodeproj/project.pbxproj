@@ -48,6 +48,36 @@
 		122A7CA81F4B601E00537467 /* KillReports.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA71F4B601E00537467 /* KillReports.storyboard */; };
 		122A7CAA1F4B617E00537467 /* Fitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA91F4B617E00537467 /* Fitting.storyboard */; };
 		122B55611EB73E3500E46536 /* NCAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122B55601EB73E3500E46536 /* NCAccountsViewController.swift */; };
+		122D73F321DF2FFC00414277 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D73EB21DF2FFC00414277 /* GoogleAppMeasurement.framework */; };
+		122D73F421DF2FFC00414277 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D73EC21DF2FFC00414277 /* FirebaseCore.framework */; };
+		122D73F521DF2FFC00414277 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D73ED21DF2FFC00414277 /* FirebaseAnalytics.framework */; };
+		122D73F621DF2FFC00414277 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D73EE21DF2FFC00414277 /* GoogleUtilities.framework */; };
+		122D73F721DF2FFC00414277 /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D73EF21DF2FFC00414277 /* nanopb.framework */; };
+		122D73F821DF2FFC00414277 /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D73F021DF2FFC00414277 /* FIRAnalyticsConnector.framework */; };
+		122D73F921DF2FFC00414277 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D73F121DF2FFC00414277 /* FirebaseInstanceID.framework */; };
+		122D73FA21DF2FFC00414277 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D73F221DF2FFC00414277 /* FirebaseCoreDiagnostics.framework */; };
+		122D741221DF30E100414277 /* MPUnmutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D73FC21DF30E100414277 /* MPUnmutedBtn.png */; };
+		122D741321DF30E100414277 /* MRAID.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 122D73FD21DF30E100414277 /* MRAID.bundle */; };
+		122D741421DF30E100414277 /* MPDAAIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D73FE21DF30E100414277 /* MPDAAIcon.png */; };
+		122D741521DF30E100414277 /* TapjoyResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 122D73FF21DF30E100414277 /* TapjoyResources.bundle */; };
+		122D741621DF30E100414277 /* MPUnmutedBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740021DF30E100414277 /* MPUnmutedBtn@3x.png */; };
+		122D741721DF30E100414277 /* MPPlayBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740121DF30E100414277 /* MPPlayBtn@2x.png */; };
+		122D741821DF30E100414277 /* MPCloseBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740221DF30E100414277 /* MPCloseBtn@2x.png */; };
+		122D741921DF30E100414277 /* MPCloseBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740321DF30E100414277 /* MPCloseBtn@3x.png */; };
+		122D741A21DF30E100414277 /* MPCloseBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740421DF30E100414277 /* MPCloseBtn.png */; };
+		122D741B21DF30E100414277 /* MPPlayBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740521DF30E100414277 /* MPPlayBtn@3x.png */; };
+		122D741C21DF30E100414277 /* MPAdBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 122D740621DF30E100414277 /* MPAdBrowserController.xib */; };
+		122D741D21DF30E100414277 /* MPUnmutedBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740721DF30E100414277 /* MPUnmutedBtn@2x.png */; };
+		122D741E21DF30E100414277 /* MPCloseButtonX@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740821DF30E100414277 /* MPCloseButtonX@2x.png */; };
+		122D741F21DF30E100414277 /* MPCloseButtonX@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740921DF30E100414277 /* MPCloseButtonX@3x.png */; };
+		122D742021DF30E100414277 /* MPCloseButtonX.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740A21DF30E100414277 /* MPCloseButtonX.png */; };
+		122D742121DF30E100414277 /* MPDAAIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740B21DF30E100414277 /* MPDAAIcon@3x.png */; };
+		122D742221DF30E100414277 /* MPMutedBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740C21DF30E100414277 /* MPMutedBtn@3x.png */; };
+		122D742321DF30E100414277 /* StartApp.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 122D740D21DF30E100414277 /* StartApp.bundle */; };
+		122D742421DF30E100414277 /* MPPlayBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740E21DF30E100414277 /* MPPlayBtn.png */; };
+		122D742521DF30E100414277 /* MPMutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740F21DF30E100414277 /* MPMutedBtn.png */; };
+		122D742621DF30E100414277 /* MPMutedBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D741021DF30E100414277 /* MPMutedBtn@2x.png */; };
+		122D742721DF30E100414277 /* MPDAAIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D741121DF30E100414277 /* MPDAAIcon@2x.png */; };
 		122DB9AB1E804DF200E8E2C4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */; };
 		122DB9AF1E806DB000E8E2C4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DB9AE1E806DB000E8E2C4 /* libz.tbd */; };
 		122E11CC1FEBB81C0057EB0D /* NCFleetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B31771E5488AF00B9A88D /* NCFleetConfiguration.swift */; };
@@ -219,28 +249,6 @@
 		12961DBA1E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */; };
 		12961DBD1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DBC1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift */; };
 		12961DBF1E118EAD008A3F4D /* NCDatabaseCertificateInfoHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12961DBE1E118EAD008A3F4D /* NCDatabaseCertificateInfoHeaderViewController.swift */; };
-		1298BA7120AEFB73002C941E /* MPUnmutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA5B20AEFB73002C941E /* MPUnmutedBtn.png */; };
-		1298BA7220AEFB73002C941E /* MRAID.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA5C20AEFB73002C941E /* MRAID.bundle */; };
-		1298BA7320AEFB73002C941E /* MPDAAIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA5D20AEFB73002C941E /* MPDAAIcon.png */; };
-		1298BA7420AEFB73002C941E /* TapjoyResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA5E20AEFB73002C941E /* TapjoyResources.bundle */; };
-		1298BA7520AEFB73002C941E /* MPUnmutedBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA5F20AEFB73002C941E /* MPUnmutedBtn@3x.png */; };
-		1298BA7620AEFB73002C941E /* MPPlayBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6020AEFB73002C941E /* MPPlayBtn@2x.png */; };
-		1298BA7720AEFB73002C941E /* MPCloseBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6120AEFB73002C941E /* MPCloseBtn@2x.png */; };
-		1298BA7820AEFB73002C941E /* MPCloseBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6220AEFB73002C941E /* MPCloseBtn@3x.png */; };
-		1298BA7920AEFB73002C941E /* MPCloseBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6320AEFB73002C941E /* MPCloseBtn.png */; };
-		1298BA7A20AEFB73002C941E /* MPPlayBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6420AEFB73002C941E /* MPPlayBtn@3x.png */; };
-		1298BA7B20AEFB73002C941E /* MPAdBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6520AEFB73002C941E /* MPAdBrowserController.xib */; };
-		1298BA7C20AEFB73002C941E /* MPUnmutedBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6620AEFB73002C941E /* MPUnmutedBtn@2x.png */; };
-		1298BA7D20AEFB73002C941E /* MPCloseButtonX@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6720AEFB73002C941E /* MPCloseButtonX@2x.png */; };
-		1298BA7E20AEFB73002C941E /* MPCloseButtonX@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6820AEFB73002C941E /* MPCloseButtonX@3x.png */; };
-		1298BA7F20AEFB73002C941E /* MPCloseButtonX.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6920AEFB73002C941E /* MPCloseButtonX.png */; };
-		1298BA8020AEFB73002C941E /* MPDAAIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6A20AEFB73002C941E /* MPDAAIcon@3x.png */; };
-		1298BA8120AEFB73002C941E /* MPMutedBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6B20AEFB73002C941E /* MPMutedBtn@3x.png */; };
-		1298BA8220AEFB73002C941E /* StartApp.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6C20AEFB73002C941E /* StartApp.bundle */; };
-		1298BA8320AEFB73002C941E /* MPPlayBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6D20AEFB73002C941E /* MPPlayBtn.png */; };
-		1298BA8420AEFB73002C941E /* MPMutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6E20AEFB73002C941E /* MPMutedBtn.png */; };
-		1298BA8520AEFB73002C941E /* MPMutedBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA6F20AEFB73002C941E /* MPMutedBtn@2x.png */; };
-		1298BA8620AEFB73002C941E /* MPDAAIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA7020AEFB73002C941E /* MPDAAIcon@2x.png */; };
 		1298BA8920AEFC32002C941E /* GDPR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1298BA8820AEFC32002C941E /* GDPR.swift */; };
 		1298BA8B20AEFCFC002C941E /* GDPR.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA8A20AEFCFC002C941E /* GDPR.storyboard */; };
 		129B316E1E53527C00B9A88D /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 129B316D1E53527C00B9A88D /* damagePatterns.plist */; };
@@ -297,13 +305,6 @@
 		12C44D001E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C44CFF1E44807800BA43ED /* NCFittingModuleDamageChartTableViewCell.swift */; };
 		12C966D71F95E02D00B141CC /* NCTransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C966D61F95E02D00B141CC /* NCTransferViewController.swift */; };
 		12C966DD1F95F56700B141CC /* NCAboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C966DC1F95F56700B141CC /* NCAboutViewController.swift */; };
-		12C967001F96111900B141CC /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F71F9610DE00B141CC /* FirebaseCore.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		12C967011F96111900B141CC /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F81F9610DE00B141CC /* FirebaseCoreDiagnostics.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		12C967021F96111900B141CC /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F91F9610DE00B141CC /* FirebaseInstanceID.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		12C967031F96111900B141CC /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FA1F9610DE00B141CC /* FirebaseNanoPB.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		12C967041F96111900B141CC /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FB1F9610DE00B141CC /* GoogleToolboxForMac.framework */; };
-		12C967051F96111900B141CC /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966FC1F9610DE00B141CC /* nanopb.framework */; };
-		12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C966F61F9610DE00B141CC /* FirebaseAnalytics.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		12C967101F9614B200B141CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12C9670F1F96149F00B141CC /* GoogleService-Info.plist */; };
 		12CA8F752046ED32000360DE /* NCDatabase.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 12CA8F732046ED32000360DE /* NCDatabase.sqlite */; };
 		12CA8F762046ED32000360DE /* NCDatabaseVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CA8F742046ED32000360DE /* NCDatabaseVersion.swift */; };
@@ -540,6 +541,36 @@
 		122A7CA71F4B601E00537467 /* KillReports.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KillReports.storyboard; sourceTree = "<group>"; };
 		122A7CA91F4B617E00537467 /* Fitting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Fitting.storyboard; sourceTree = "<group>"; };
 		122B55601EB73E3500E46536 /* NCAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCAccountsViewController.swift; sourceTree = "<group>"; };
+		122D73EB21DF2FFC00414277 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleAppMeasurement.framework; sourceTree = "<group>"; };
+		122D73EC21DF2FFC00414277 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = "<group>"; };
+		122D73ED21DF2FFC00414277 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseAnalytics.framework; sourceTree = "<group>"; };
+		122D73EE21DF2FFC00414277 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleUtilities.framework; sourceTree = "<group>"; };
+		122D73EF21DF2FFC00414277 /* nanopb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = nanopb.framework; sourceTree = "<group>"; };
+		122D73F021DF2FFC00414277 /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
+		122D73F121DF2FFC00414277 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
+		122D73F221DF2FFC00414277 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
+		122D73FC21DF30E100414277 /* MPUnmutedBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPUnmutedBtn.png; sourceTree = "<group>"; };
+		122D73FD21DF30E100414277 /* MRAID.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MRAID.bundle; sourceTree = "<group>"; };
+		122D73FE21DF30E100414277 /* MPDAAIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPDAAIcon.png; sourceTree = "<group>"; };
+		122D73FF21DF30E100414277 /* TapjoyResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TapjoyResources.bundle; sourceTree = "<group>"; };
+		122D740021DF30E100414277 /* MPUnmutedBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPUnmutedBtn@3x.png"; sourceTree = "<group>"; };
+		122D740121DF30E100414277 /* MPPlayBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPPlayBtn@2x.png"; sourceTree = "<group>"; };
+		122D740221DF30E100414277 /* MPCloseBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseBtn@2x.png"; sourceTree = "<group>"; };
+		122D740321DF30E100414277 /* MPCloseBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseBtn@3x.png"; sourceTree = "<group>"; };
+		122D740421DF30E100414277 /* MPCloseBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPCloseBtn.png; sourceTree = "<group>"; };
+		122D740521DF30E100414277 /* MPPlayBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPPlayBtn@3x.png"; sourceTree = "<group>"; };
+		122D740621DF30E100414277 /* MPAdBrowserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MPAdBrowserController.xib; sourceTree = "<group>"; };
+		122D740721DF30E100414277 /* MPUnmutedBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPUnmutedBtn@2x.png"; sourceTree = "<group>"; };
+		122D740821DF30E100414277 /* MPCloseButtonX@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseButtonX@2x.png"; sourceTree = "<group>"; };
+		122D740921DF30E100414277 /* MPCloseButtonX@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseButtonX@3x.png"; sourceTree = "<group>"; };
+		122D740A21DF30E100414277 /* MPCloseButtonX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPCloseButtonX.png; sourceTree = "<group>"; };
+		122D740B21DF30E100414277 /* MPDAAIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPDAAIcon@3x.png"; sourceTree = "<group>"; };
+		122D740C21DF30E100414277 /* MPMutedBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPMutedBtn@3x.png"; sourceTree = "<group>"; };
+		122D740D21DF30E100414277 /* StartApp.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = StartApp.bundle; sourceTree = "<group>"; };
+		122D740E21DF30E100414277 /* MPPlayBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPPlayBtn.png; sourceTree = "<group>"; };
+		122D740F21DF30E100414277 /* MPMutedBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPMutedBtn.png; sourceTree = "<group>"; };
+		122D741021DF30E100414277 /* MPMutedBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPMutedBtn@2x.png"; sourceTree = "<group>"; };
+		122D741121DF30E100414277 /* MPDAAIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPDAAIcon@2x.png"; sourceTree = "<group>"; };
 		122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		122DB9AE1E806DB000E8E2C4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		122FFDF41E4B7D630066D45E /* NCFittingStatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingStatsViewController.swift; sourceTree = "<group>"; };
@@ -695,28 +726,6 @@
 		12961DB91E0FBDA0008A3F4D /* NCMarketInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCMarketInfoTableViewCell.swift; sourceTree = "<group>"; };
 		12961DBC1E118CDB008A3F4D /* NCDatabaseCertificateInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateInfoViewController.swift; sourceTree = "<group>"; };
 		12961DBE1E118EAD008A3F4D /* NCDatabaseCertificateInfoHeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCDatabaseCertificateInfoHeaderViewController.swift; sourceTree = "<group>"; };
-		1298BA5B20AEFB73002C941E /* MPUnmutedBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPUnmutedBtn.png; sourceTree = "<group>"; };
-		1298BA5C20AEFB73002C941E /* MRAID.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MRAID.bundle; sourceTree = "<group>"; };
-		1298BA5D20AEFB73002C941E /* MPDAAIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPDAAIcon.png; sourceTree = "<group>"; };
-		1298BA5E20AEFB73002C941E /* TapjoyResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TapjoyResources.bundle; sourceTree = "<group>"; };
-		1298BA5F20AEFB73002C941E /* MPUnmutedBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPUnmutedBtn@3x.png"; sourceTree = "<group>"; };
-		1298BA6020AEFB73002C941E /* MPPlayBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPPlayBtn@2x.png"; sourceTree = "<group>"; };
-		1298BA6120AEFB73002C941E /* MPCloseBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseBtn@2x.png"; sourceTree = "<group>"; };
-		1298BA6220AEFB73002C941E /* MPCloseBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseBtn@3x.png"; sourceTree = "<group>"; };
-		1298BA6320AEFB73002C941E /* MPCloseBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPCloseBtn.png; sourceTree = "<group>"; };
-		1298BA6420AEFB73002C941E /* MPPlayBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPPlayBtn@3x.png"; sourceTree = "<group>"; };
-		1298BA6520AEFB73002C941E /* MPAdBrowserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MPAdBrowserController.xib; sourceTree = "<group>"; };
-		1298BA6620AEFB73002C941E /* MPUnmutedBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPUnmutedBtn@2x.png"; sourceTree = "<group>"; };
-		1298BA6720AEFB73002C941E /* MPCloseButtonX@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseButtonX@2x.png"; sourceTree = "<group>"; };
-		1298BA6820AEFB73002C941E /* MPCloseButtonX@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseButtonX@3x.png"; sourceTree = "<group>"; };
-		1298BA6920AEFB73002C941E /* MPCloseButtonX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPCloseButtonX.png; sourceTree = "<group>"; };
-		1298BA6A20AEFB73002C941E /* MPDAAIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPDAAIcon@3x.png"; sourceTree = "<group>"; };
-		1298BA6B20AEFB73002C941E /* MPMutedBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPMutedBtn@3x.png"; sourceTree = "<group>"; };
-		1298BA6C20AEFB73002C941E /* StartApp.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = StartApp.bundle; sourceTree = "<group>"; };
-		1298BA6D20AEFB73002C941E /* MPPlayBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPPlayBtn.png; sourceTree = "<group>"; };
-		1298BA6E20AEFB73002C941E /* MPMutedBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPMutedBtn.png; sourceTree = "<group>"; };
-		1298BA6F20AEFB73002C941E /* MPMutedBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPMutedBtn@2x.png"; sourceTree = "<group>"; };
-		1298BA7020AEFB73002C941E /* MPDAAIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPDAAIcon@2x.png"; sourceTree = "<group>"; };
 		1298BA8820AEFC32002C941E /* GDPR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPR.swift; sourceTree = "<group>"; };
 		1298BA8A20AEFCFC002C941E /* GDPR.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GDPR.storyboard; sourceTree = "<group>"; };
 		129B31681E53114A00B9A88D /* NCFittingAreaEffectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCFittingAreaEffectsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -781,13 +790,6 @@
 		12C966D61F95E02D00B141CC /* NCTransferViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCTransferViewController.swift; sourceTree = "<group>"; };
 		12C966DC1F95F56700B141CC /* NCAboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCAboutViewController.swift; sourceTree = "<group>"; };
 		12C966EE1F9610D800B141CC /* clrconvert.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = clrconvert.xcodeproj; path = clrconvert/clrconvert.xcodeproj; sourceTree = "<group>"; };
-		12C966F61F9610DE00B141CC /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseAnalytics.framework; sourceTree = "<group>"; };
-		12C966F71F9610DE00B141CC /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = "<group>"; };
-		12C966F81F9610DE00B141CC /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
-		12C966F91F9610DE00B141CC /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
-		12C966FA1F9610DE00B141CC /* FirebaseNanoPB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseNanoPB.framework; sourceTree = "<group>"; };
-		12C966FB1F9610DE00B141CC /* GoogleToolboxForMac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleToolboxForMac.framework; sourceTree = "<group>"; };
-		12C966FC1F9610DE00B141CC /* nanopb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = nanopb.framework; sourceTree = "<group>"; };
 		12C966FD1F9610DE00B141CC /* Firebase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
 		12C966FE1F9610DE00B141CC /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		12C9670F1F96149F00B141CC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -912,27 +914,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				122D73F721DF2FFC00414277 /* nanopb.framework in Frameworks */,
+				122D73F621DF2FFC00414277 /* GoogleUtilities.framework in Frameworks */,
 				12D7A4402068DDBD00F78560 /* openssl.framework in Frameworks */,
+				122D73F821DF2FFC00414277 /* FIRAnalyticsConnector.framework in Frameworks */,
+				122D73F921DF2FFC00414277 /* FirebaseInstanceID.framework in Frameworks */,
 				12841C10205BD9F900B30582 /* cwrapper.framework in Frameworks */,
+				122D73F321DF2FFC00414277 /* GoogleAppMeasurement.framework in Frameworks */,
+				122D73FA21DF2FFC00414277 /* FirebaseCoreDiagnostics.framework in Frameworks */,
 				12BFE4212017BF6F0083AC2F /* ASReceipt.framework in Frameworks */,
 				122DB9AF1E806DB000E8E2C4 /* libz.tbd in Frameworks */,
 				1235F3D51F39B9F1000E0FD9 /* Swifter.framework in Frameworks */,
 				12BFE4582017C8E80083AC2F /* Appodeal.framework in Frameworks */,
+				122D73F521DF2FFC00414277 /* FirebaseAnalytics.framework in Frameworks */,
 				120A59EF1F10ABEC0053F94B /* StoreKit.framework in Frameworks */,
 				122DB9AB1E804DF200E8E2C4 /* CloudKit.framework in Frameworks */,
 				12B68F291E802958006462B7 /* CloudData.framework in Frameworks */,
-				12C967001F96111900B141CC /* FirebaseCore.framework in Frameworks */,
-				12C967051F96111900B141CC /* nanopb.framework in Frameworks */,
-				12C967041F96111900B141CC /* GoogleToolboxForMac.framework in Frameworks */,
-				12C967021F96111900B141CC /* FirebaseInstanceID.framework in Frameworks */,
-				12C967031F96111900B141CC /* FirebaseNanoPB.framework in Frameworks */,
-				12C967011F96111900B141CC /* FirebaseCoreDiagnostics.framework in Frameworks */,
 				12AC8DA61DEF597400561A7A /* EVEAPI.framework in Frameworks */,
 				129DE43C1FF628AD00A2C1CD /* Bolts.framework in Frameworks */,
+				122D73F421DF2FFC00414277 /* FirebaseCore.framework in Frameworks */,
 				12BC40A21DFF1EBB00657D40 /* Alamofire.framework in Frameworks */,
 				129DE43B1FF628AD00A2C1CD /* FBSDKCoreKit.framework in Frameworks */,
 				12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */,
-				12C967061F96128D00B141CC /* FirebaseAnalytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -979,6 +982,50 @@
 				12709D4F1FF2954800D6CE22 /* dgmpp.swift */,
 			);
 			name = Loadouts;
+			sourceTree = "<group>";
+		};
+		122D73EA21DF2FFC00414277 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				122D73EB21DF2FFC00414277 /* GoogleAppMeasurement.framework */,
+				122D73EC21DF2FFC00414277 /* FirebaseCore.framework */,
+				122D73ED21DF2FFC00414277 /* FirebaseAnalytics.framework */,
+				122D73EE21DF2FFC00414277 /* GoogleUtilities.framework */,
+				122D73EF21DF2FFC00414277 /* nanopb.framework */,
+				122D73F021DF2FFC00414277 /* FIRAnalyticsConnector.framework */,
+				122D73F121DF2FFC00414277 /* FirebaseInstanceID.framework */,
+				122D73F221DF2FFC00414277 /* FirebaseCoreDiagnostics.framework */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
+		122D73FB21DF30E100414277 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				122D73FC21DF30E100414277 /* MPUnmutedBtn.png */,
+				122D73FD21DF30E100414277 /* MRAID.bundle */,
+				122D73FE21DF30E100414277 /* MPDAAIcon.png */,
+				122D73FF21DF30E100414277 /* TapjoyResources.bundle */,
+				122D740021DF30E100414277 /* MPUnmutedBtn@3x.png */,
+				122D740121DF30E100414277 /* MPPlayBtn@2x.png */,
+				122D740221DF30E100414277 /* MPCloseBtn@2x.png */,
+				122D740321DF30E100414277 /* MPCloseBtn@3x.png */,
+				122D740421DF30E100414277 /* MPCloseBtn.png */,
+				122D740521DF30E100414277 /* MPPlayBtn@3x.png */,
+				122D740621DF30E100414277 /* MPAdBrowserController.xib */,
+				122D740721DF30E100414277 /* MPUnmutedBtn@2x.png */,
+				122D740821DF30E100414277 /* MPCloseButtonX@2x.png */,
+				122D740921DF30E100414277 /* MPCloseButtonX@3x.png */,
+				122D740A21DF30E100414277 /* MPCloseButtonX.png */,
+				122D740B21DF30E100414277 /* MPDAAIcon@3x.png */,
+				122D740C21DF30E100414277 /* MPMutedBtn@3x.png */,
+				122D740D21DF30E100414277 /* StartApp.bundle */,
+				122D740E21DF30E100414277 /* MPPlayBtn.png */,
+				122D740F21DF30E100414277 /* MPMutedBtn.png */,
+				122D741021DF30E100414277 /* MPMutedBtn@2x.png */,
+				122D741121DF30E100414277 /* MPDAAIcon@2x.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		1230A3361DFFE30400627D92 /* Database */ = {
@@ -1276,35 +1323,6 @@
 			path = "Neocom II UITests";
 			sourceTree = "<group>";
 		};
-		1298BA5A20AEFB73002C941E /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				1298BA5B20AEFB73002C941E /* MPUnmutedBtn.png */,
-				1298BA5C20AEFB73002C941E /* MRAID.bundle */,
-				1298BA5D20AEFB73002C941E /* MPDAAIcon.png */,
-				1298BA5E20AEFB73002C941E /* TapjoyResources.bundle */,
-				1298BA5F20AEFB73002C941E /* MPUnmutedBtn@3x.png */,
-				1298BA6020AEFB73002C941E /* MPPlayBtn@2x.png */,
-				1298BA6120AEFB73002C941E /* MPCloseBtn@2x.png */,
-				1298BA6220AEFB73002C941E /* MPCloseBtn@3x.png */,
-				1298BA6320AEFB73002C941E /* MPCloseBtn.png */,
-				1298BA6420AEFB73002C941E /* MPPlayBtn@3x.png */,
-				1298BA6520AEFB73002C941E /* MPAdBrowserController.xib */,
-				1298BA6620AEFB73002C941E /* MPUnmutedBtn@2x.png */,
-				1298BA6720AEFB73002C941E /* MPCloseButtonX@2x.png */,
-				1298BA6820AEFB73002C941E /* MPCloseButtonX@3x.png */,
-				1298BA6920AEFB73002C941E /* MPCloseButtonX.png */,
-				1298BA6A20AEFB73002C941E /* MPDAAIcon@3x.png */,
-				1298BA6B20AEFB73002C941E /* MPMutedBtn@3x.png */,
-				1298BA6C20AEFB73002C941E /* StartApp.bundle */,
-				1298BA6D20AEFB73002C941E /* MPPlayBtn.png */,
-				1298BA6E20AEFB73002C941E /* MPMutedBtn.png */,
-				1298BA6F20AEFB73002C941E /* MPMutedBtn@2x.png */,
-				1298BA7020AEFB73002C941E /* MPDAAIcon@2x.png */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		1298BA8720AEFB8E002C941E /* GDPR */ = {
 			isa = PBXGroup;
 			children = (
@@ -1549,7 +1567,7 @@
 		12BFE4272017C8E80083AC2F /* Appodeal */ = {
 			isa = PBXGroup;
 			children = (
-				1298BA5A20AEFB73002C941E /* Resources */,
+				122D73FB21DF30E100414277 /* Resources */,
 				12BFE4402017C8E80083AC2F /* Appodeal.framework */,
 			);
 			path = Appodeal;
@@ -1570,25 +1588,11 @@
 		12C966F41F9610DE00B141CC /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
-				12C966F51F9610DE00B141CC /* Analytics */,
+				122D73EA21DF2FFC00414277 /* Analytics */,
 				12C966FD1F9610DE00B141CC /* Firebase.h */,
 				12C966FE1F9610DE00B141CC /* module.modulemap */,
 			);
 			path = Firebase;
-			sourceTree = "<group>";
-		};
-		12C966F51F9610DE00B141CC /* Analytics */ = {
-			isa = PBXGroup;
-			children = (
-				12C966F61F9610DE00B141CC /* FirebaseAnalytics.framework */,
-				12C966F71F9610DE00B141CC /* FirebaseCore.framework */,
-				12C966F81F9610DE00B141CC /* FirebaseCoreDiagnostics.framework */,
-				12C966F91F9610DE00B141CC /* FirebaseInstanceID.framework */,
-				12C966FA1F9610DE00B141CC /* FirebaseNanoPB.framework */,
-				12C966FB1F9610DE00B141CC /* GoogleToolboxForMac.framework */,
-				12C966FC1F9610DE00B141CC /* nanopb.framework */,
-			);
-			path = Analytics;
 			sourceTree = "<group>";
 		};
 		12C9670A1F96132200B141CC /* Products */ = {
@@ -1925,92 +1929,92 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				122D742121DF30E100414277 /* MPDAAIcon@3x.png in Resources */,
 				1203E8851F09350A009ADF8D /* rssFeeds.json in Resources */,
 				12D930E51E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib in Resources */,
 				122A7CA81F4B601E00537467 /* KillReports.storyboard in Resources */,
+				122D741221DF30E100414277 /* MPUnmutedBtn.png in Resources */,
 				1256BECD1DF4770A00A2A24B /* Attributes.xcassets in Resources */,
 				12406A011F20F49500A4DAE7 /* NCModuleTableViewCell.xib in Resources */,
 				1256BE551DF4728800A2A24B /* Main.storyboard in Resources */,
 				1256BECE1DF4770A00A2A24B /* Fitting.xcassets in Resources */,
 				1279A2F12023193300DD7A46 /* NCStaticHeaderTableViewCell.xib in Resources */,
-				1298BA8420AEFB73002C941E /* MPMutedBtn.png in Resources */,
 				12D930ED1E656EAD00CBAE1C /* NCDamageTypeCompactTableViewCell.xib in Resources */,
 				12E6AE561F18F703001E829D /* NCKillmailAttackerTableViewCell.xib in Resources */,
-				1298BA7520AEFB73002C941E /* MPUnmutedBtn@3x.png in Resources */,
 				12406A031F20F4B800A4DAE7 /* NCShipTableViewCell.xib in Resources */,
 				1256BF2C1DF4770B00A2A24B /* UI.xcassets in Resources */,
-				1298BA7120AEFB73002C941E /* MPUnmutedBtn.png in Resources */,
 				12D404561F3460BE007F1715 /* NCAccountTableViewCell.xib in Resources */,
+				122D742621DF30E100414277 /* MPMutedBtn@2x.png in Resources */,
 				1256BEC81DF4770A00A2A24B /* charisma.png in Resources */,
+				122D742721DF30E100414277 /* MPDAAIcon@2x.png in Resources */,
 				12D930E71E656B0C00CBAE1C /* NCChargeTableViewCell.xib in Resources */,
-				1298BA7320AEFB73002C941E /* MPDAAIcon.png in Resources */,
 				1256BECB1DF4770A00A2A24B /* perception.png in Resources */,
 				12CFDACB1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib in Resources */,
-				1298BA7B20AEFB73002C941E /* MPAdBrowserController.xib in Resources */,
-				1298BA8120AEFB73002C941E /* MPMutedBtn@3x.png in Resources */,
 				1211A4651EEEDE3600364744 /* NCActionHeaderTableViewCell.xib in Resources */,
-				1298BA7C20AEFB73002C941E /* MPUnmutedBtn@2x.png in Resources */,
 				122A7CA61F4B5DD800537467 /* Business.storyboard in Resources */,
+				122D741521DF30E100414277 /* TapjoyResources.bundle in Resources */,
+				122D742421DF30E100414277 /* MPPlayBtn.png in Resources */,
 				1256BEC91DF4770A00A2A24B /* intelligence.png in Resources */,
 				1256BECC1DF4770A00A2A24B /* willpower.png in Resources */,
 				128130411F3B01230039D46B /* dropzone.css in Resources */,
 				1248DB3A1F1C9DE9009625EC /* NCMailTableViewCell.xib in Resources */,
-				1298BA7F20AEFB73002C941E /* MPCloseButtonX.png in Resources */,
 				12AC8D9E1DEF58A100561A7A /* LaunchScreen.storyboard in Resources */,
+				122D741F21DF30E100414277 /* MPCloseButtonX@3x.png in Resources */,
 				1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */,
 				128130451F3B08600039D46B /* main.js in Resources */,
-				1298BA7E20AEFB73002C941E /* MPCloseButtonX@3x.png in Resources */,
-				1298BA7D20AEFB73002C941E /* MPCloseButtonX@2x.png in Resources */,
-				1298BA7820AEFB73002C941E /* MPCloseBtn@3x.png in Resources */,
-				1298BA7A20AEFB73002C941E /* MPPlayBtn@3x.png in Resources */,
+				122D742521DF30E100414277 /* MPMutedBtn.png in Resources */,
 				128C5F761F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib in Resources */,
 				1211A4631EEEC35A00364744 /* NCSkillTableViewCell.xib in Resources */,
 				12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */,
+				122D741D21DF30E100414277 /* MPUnmutedBtn@2x.png in Resources */,
 				122A7CAA1F4B617E00537467 /* Fitting.storyboard in Resources */,
+				122D741C21DF30E100414277 /* MPAdBrowserController.xib in Resources */,
 				12D20EA31EBA011900BEC926 /* NCPieChartTableViewCell.xib in Resources */,
 				1279A2F32023332500DD7A46 /* NCFooterTableViewCell.xib in Resources */,
+				122D742021DF30E100414277 /* MPCloseButtonX.png in Resources */,
 				12D930EF1E656FCC00CBAE1C /* NCTextFieldTableViewCell.xib in Resources */,
-				1298BA7620AEFB73002C941E /* MPPlayBtn@2x.png in Resources */,
 				128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */,
+				122D741821DF30E100414277 /* MPCloseBtn@2x.png in Resources */,
 				12E9321C1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib in Resources */,
-				1298BA8520AEFB73002C941E /* MPMutedBtn@2x.png in Resources */,
 				12DA88261EB8696F00FB1922 /* NCPlaceholderTableViewCell.xib in Resources */,
+				122D741321DF30E100414277 /* MRAID.bundle in Resources */,
 				120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */,
+				122D741B21DF30E100414277 /* MPPlayBtn@3x.png in Resources */,
 				12AC8D9B1DEF58A100561A7A /* Assets.xcassets in Resources */,
-				1298BA8620AEFB73002C941E /* MPDAAIcon@2x.png in Resources */,
 				1285FB351EB8DD350025331A /* NCAttributeTableViewCell.xib in Resources */,
-				1298BA8320AEFB73002C941E /* MPPlayBtn.png in Resources */,
 				12D85125201A86DA009485D0 /* NCSubscriptionTableViewCell.xib in Resources */,
+				122D742321DF30E100414277 /* StartApp.bundle in Resources */,
+				122D741921DF30E100414277 /* MPCloseBtn@3x.png in Resources */,
 				1256BECA1DF4770A00A2A24B /* memory.png in Resources */,
 				12E932201E6BFC650033D71A /* NCFittingCharacterTableViewCell.xib in Resources */,
 				128130431F3B01230039D46B /* main.css in Resources */,
-				1298BA7920AEFB73002C941E /* MPCloseBtn.png in Resources */,
+				122D741E21DF30E100414277 /* MPCloseButtonX@2x.png in Resources */,
 				12E6AE5A1F18FB3B001E829D /* NCKillmailAttackerNPCTableViewCell.xib in Resources */,
 				128130421F3B01230039D46B /* dropzone.js in Resources */,
 				12D930EB1E656EA300CBAE1C /* NCDamageTypeTableViewCell.xib in Resources */,
 				124069FF1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib in Resources */,
-				1298BA7420AEFB73002C941E /* TapjoyResources.bundle in Resources */,
 				12C37D301EFA9D070070F055 /* NCContactCompactTableViewCell.xib in Resources */,
-				1298BA7220AEFB73002C941E /* MRAID.bundle in Resources */,
 				12D930F31E6584AF00CBAE1C /* NCDefaultCompactTableViewCell.xib in Resources */,
+				122D742221DF30E100414277 /* MPMutedBtn@3x.png in Resources */,
+				122D741621DF30E100414277 /* MPUnmutedBtn@3x.png in Resources */,
 				12CA8F752046ED32000360DE /* NCDatabase.sqlite in Resources */,
 				122A7CA21F4B49D100537467 /* Database.storyboard in Resources */,
 				12CFDAE81F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib in Resources */,
 				12C967101F9614B200B141CC /* GoogleService-Info.plist in Resources */,
+				122D741A21DF30E100414277 /* MPCloseBtn.png in Resources */,
 				128C5F9A1F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib in Resources */,
 				128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */,
 				1263C50D1E64BE9D003D002D /* NCDefaultTableViewCell.xib in Resources */,
+				122D741721DF30E100414277 /* MPPlayBtn@2x.png in Resources */,
 				122A7CA41F4B589200537467 /* Character.storyboard in Resources */,
 				128C5F711F418CF30038FE7D /* NCFacilityChartTableViewCell.xib in Resources */,
-				1298BA8220AEFB73002C941E /* StartApp.bundle in Resources */,
 				129B316E1E53527C00B9A88D /* damagePatterns.plist in Resources */,
 				12D930E91E656B7E00CBAE1C /* NCChargeCompactTableViewCell.xib in Resources */,
 				1256BF2B1DF4770B00A2A24B /* MainMenu.xcassets in Resources */,
+				122D741421DF30E100414277 /* MPDAAIcon.png in Resources */,
 				12CFDAEC1F03F8F700CC0762 /* NCKillmailTableViewCell.xib in Resources */,
-				1298BA8020AEFB73002C941E /* MPDAAIcon@3x.png in Resources */,
 				1298BA8B20AEFCFC002C941E /* GDPR.storyboard in Resources */,
 				12CFDAE61F03D8E800CC0762 /* NCDatePickerTableViewCell.xib in Resources */,
-				1298BA7720AEFB73002C941E /* MPCloseBtn@2x.png in Resources */,
 				12D404471F31C010007F1715 /* NCSwitchTableViewCell.xib in Resources */,
 				12C37D2C1EFA9CDC0070F055 /* NCContactTableViewCell.xib in Resources */,
 			);

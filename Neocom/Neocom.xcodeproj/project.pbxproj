@@ -27,6 +27,9 @@
 		120A386D213D46970071ED72 /* MainMenuContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A386C213D46970071ED72 /* MainMenuContainerViewController.swift */; };
 		120A386F213D543E0071ED72 /* MainMenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A386E213D543E0071ED72 /* MainMenuHeader.swift */; };
 		120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */; };
+		120FB475221324F300794784 /* ImplantSetDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120FB474221324F300794784 /* ImplantSetDescription.swift */; };
+		120FB4782213280900794784 /* FittingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120FB4772213280900794784 /* FittingService.swift */; };
+		120FB47C221359CA00794784 /* FittingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120FB47B221359CA00794784 /* FittingContext.swift */; };
 		1211A4631EEEC35A00364744 /* NCSkillTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */; };
 		1211A4651EEEDE3600364744 /* NCActionHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */; };
 		12133C26215E1F9500646937 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C25215E1F9500646937 /* Image.swift */; };
@@ -65,6 +68,7 @@
 		121B28CB218AF1E8000D392C /* CharacterInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C7218AF1E8000D392C /* CharacterInfoInteractor.swift */; };
 		121B28CC218AF1E8000D392C /* CharacterInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C8218AF1E8000D392C /* CharacterInfo.swift */; };
 		121B28CE218B00BB000D392C /* TreeDefaultPortraitCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121B28CD218B00BB000D392C /* TreeDefaultPortraitCell.xib */; };
+		121B7B3821FDFBDC00224D09 /* Loadouts_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B7B3721FDFBDC00224D09 /* Loadouts_Tests.swift */; };
 		121F26E02136BD9400AE1D70 /* SOLID_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26DF2136BD9400AE1D70 /* SOLID_Tests.swift */; };
 		121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26E32136EC3800AE1D70 /* BannerNavigationViewController.swift */; };
 		121F26E62136EC5700AE1D70 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26E52136EC5700AE1D70 /* NavigationController.swift */; };
@@ -232,6 +236,7 @@
 		1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFFC21358F68005340C0 /* MainMenuHeaderViewController.swift */; };
 		1279EFFF21358F73005340C0 /* MainMenuHeaderPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFFE21358F73005340C0 /* MainMenuHeaderPresenter.swift */; };
 		1279F00121358F7C005340C0 /* MainMenuHeaderInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279F00021358F7C005340C0 /* MainMenuHeaderInteractor.swift */; };
+		127C4433220E161F00ED2A62 /* FleetDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C4432220E161F00ED2A62 /* FleetDescription.swift */; };
 		128130411F3B01230039D46B /* dropzone.css in Resources */ = {isa = PBXBuildFile; fileRef = 1281303E1F3B01230039D46B /* dropzone.css */; };
 		128130421F3B01230039D46B /* dropzone.js in Resources */ = {isa = PBXBuildFile; fileRef = 1281303F1F3B01230039D46B /* dropzone.js */; };
 		128130431F3B01230039D46B /* main.css in Resources */ = {isa = PBXBuildFile; fileRef = 128130401F3B01230039D46B /* main.css */; };
@@ -340,8 +345,6 @@
 		12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9722212BEA6C00B30DD3 /* SDE.xcdatamodeld */; };
 		12AB972A212BF60000B30DD3 /* Storage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9728212BF60000B30DD3 /* Storage.xcdatamodeld */; };
 		12AB972C212BF6A900B30DD3 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB972B212BF6A900B30DD3 /* Storage.swift */; };
-		12AB9732212C0E4F00B30DD3 /* NCFleetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B31771E5488AF00B9A88D /* NCFleetConfiguration.swift */; };
-		12AB9733212C0E5C00B30DD3 /* NCFittingLoadout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D10B41E265D5A00DD671B /* NCFittingLoadout.swift */; };
 		12AB9735212C0E6E00B30DD3 /* NCImplantSetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C5F9D1F4AD7C60038FE7D /* NCImplantSetData.swift */; };
 		12AB9737212C0ECC00B30DD3 /* SDE+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9736212C0ECC00B30DD3 /* SDE+Constants.swift */; };
 		12AB973E212C162A00B30DD3 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB973D212C162A00B30DD3 /* Character.swift */; };
@@ -508,6 +511,7 @@
 		12EE7D0C213E6282005CE68F /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D0B213E6282005CE68F /* Route.swift */; };
 		12EE7D0E213E62E8005CE68F /* Accounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D0D213E62E8005CE68F /* Accounts.swift */; };
 		12EE7D11213E6BD7005CE68F /* SlideDownAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D10213E6BD7005CE68F /* SlideDownAnimationController.swift */; };
+		12EEE84321FDE9E7004F7593 /* LoadoutDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EEE84221FDE9E7004F7593 /* LoadoutDescription.swift */; };
 		12F2DE7321ABFB6800A93775 /* Fitting_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F2DE7221ABFB6800A93775 /* Fitting_Tests.swift */; };
 		12F6C1A221C2BAC20053D62C /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F6C1A121C2BAC20053D62C /* PersistentContainer.swift */; };
 		12FE0E3621348F6B002F3507 /* Dark.clr in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DD51DF0AF6900561A7A /* Dark.clr */; };
@@ -633,6 +637,9 @@
 		120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCDefaultNoImageTableViewCell.xib; sourceTree = "<group>"; };
 		120F62F11F30CDAA0019F5BB /* NCDatabaseTypeVariationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDatabaseTypeVariationsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		120F62F31F30D2990019F5BB /* NCDatabaseTypeRequiredForViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCDatabaseTypeRequiredForViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		120FB474221324F300794784 /* ImplantSetDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImplantSetDescription.swift; sourceTree = "<group>"; };
+		120FB4772213280900794784 /* FittingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingService.swift; sourceTree = "<group>"; };
+		120FB47B221359CA00794784 /* FittingContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingContext.swift; sourceTree = "<group>"; };
 		1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCSkillTableViewCell.xib; sourceTree = "<group>"; };
 		1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NCActionHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		1211A4781EF1843D00364744 /* NCSkillsContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSkillsContentViewController.swift; sourceTree = "<group>"; };
@@ -677,6 +684,7 @@
 		121B28C7218AF1E8000D392C /* CharacterInfoInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfoInteractor.swift; sourceTree = "<group>"; };
 		121B28C8218AF1E8000D392C /* CharacterInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfo.swift; sourceTree = "<group>"; };
 		121B28CD218B00BB000D392C /* TreeDefaultPortraitCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TreeDefaultPortraitCell.xib; sourceTree = "<group>"; };
+		121B7B3721FDFBDC00224D09 /* Loadouts_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loadouts_Tests.swift; sourceTree = "<group>"; };
 		121D10AB1E262C7700DD671B /* NCTypePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCTypePickerViewController.swift; sourceTree = "<group>"; };
 		121D10AD1E262F8900DD671B /* NCTypePickerGroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCTypePickerGroupsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		121D10AF1E26345D00DD671B /* NSManagedObjectContext+NC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+NC.swift"; sourceTree = "<group>"; };
@@ -947,6 +955,7 @@
 		1279EFFE21358F73005340C0 /* MainMenuHeaderPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuHeaderPresenter.swift; sourceTree = "<group>"; };
 		1279F00021358F7C005340C0 /* MainMenuHeaderInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuHeaderInteractor.swift; sourceTree = "<group>"; };
 		127BE38F1E5AFC2900FA7F9F /* RouterOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouterOld.swift; sourceTree = "<group>"; };
+		127C4432220E161F00ED2A62 /* FleetDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetDescription.swift; sourceTree = "<group>"; };
 		127DE7D71E9513B4008D4873 /* ChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		1281303E1F3B01230039D46B /* dropzone.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = dropzone.css; sourceTree = "<group>"; };
 		1281303F1F3B01230039D46B /* dropzone.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = dropzone.js; sourceTree = "<group>"; };
@@ -1373,6 +1382,7 @@
 		12EE7D0B213E6282005CE68F /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		12EE7D0D213E62E8005CE68F /* Accounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accounts.swift; sourceTree = "<group>"; };
 		12EE7D10213E6BD7005CE68F /* SlideDownAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideDownAnimationController.swift; sourceTree = "<group>"; };
+		12EEE84221FDE9E7004F7593 /* LoadoutDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadoutDescription.swift; sourceTree = "<group>"; };
 		12EFE7EB1E40B2ED007BF69B /* NCFittingModuleActionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCFittingModuleActionsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12EFE7F51E40C840007BF69B /* NCSheetPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCSheetPresentationController.swift; sourceTree = "<group>"; };
 		12F2DE7221ABFB6800A93775 /* Fitting_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fitting_Tests.swift; sourceTree = "<group>"; };
@@ -1538,6 +1548,15 @@
 				125DF6362133CFDB00B86AE0 /* MainMenuInteractor.swift */,
 			);
 			name = MainMenu;
+			sourceTree = "<group>";
+		};
+		120FB476221327F800794784 /* FittingService */ = {
+			isa = PBXGroup;
+			children = (
+				120FB4772213280900794784 /* FittingService.swift */,
+				120FB47B221359CA00794784 /* FittingContext.swift */,
+			);
+			name = FittingService;
 			sourceTree = "<group>";
 		};
 		12133C28215E28EE00646937 /* InvTypeVariations */ = {
@@ -1774,6 +1793,7 @@
 				123E4C7121C51DE9002234A7 /* APIService.swift */,
 				123E4C7421C560B6002234A7 /* APIServiceTesting.swift */,
 				124456B121C2E62A00C62ED5 /* Settings.swift */,
+				120FB476221327F800794784 /* FittingService */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -2737,6 +2757,9 @@
 				129B31771E5488AF00B9A88D /* NCFleetConfiguration.swift */,
 				121D10B41E265D5A00DD671B /* NCFittingLoadout.swift */,
 				128C5F9D1F4AD7C60038FE7D /* NCImplantSetData.swift */,
+				12EEE84221FDE9E7004F7593 /* LoadoutDescription.swift */,
+				127C4432220E161F00ED2A62 /* FleetDescription.swift */,
+				120FB474221324F300794784 /* ImplantSetDescription.swift */,
 			);
 			name = Storage;
 			sourceTree = "<group>";
@@ -3244,6 +3267,7 @@
 				12C8ABDC2195AF5C0028BF9A /* Business_Tests.swift */,
 				1233EB5F219B068700EB99C9 /* KillReports_Tests.swift */,
 				12F2DE7221ABFB6800A93775 /* Fitting_Tests.swift */,
+				121B7B3721FDFBDC00224D09 /* Loadouts_Tests.swift */,
 				12CA8F832047DED1000360DE /* Info.plist */,
 			);
 			path = "Neocom II Tests";
@@ -3835,7 +3859,9 @@
 				12C8ABE22195BFC80028BF9A /* IndustryJobCell.swift in Sources */,
 				12D3109A211C282100367440 /* PersistentContext.swift in Sources */,
 				12AFD473211C1E7D00007423 /* Cache.swift in Sources */,
+				120FB47C221359CA00794784 /* FittingContext.swift in Sources */,
 				1287FBBB21917CF200A505FC /* WhTypesViewController.swift in Sources */,
+				120FB4782213280900794784 /* FittingService.swift in Sources */,
 				12C3E3C321A54ADF002ED002 /* ZKillboardInvTypesInteractor.swift in Sources */,
 				12C727BE218C255600A78ADF /* MailPresenter.swift in Sources */,
 				1279EFF7213587D7005340C0 /* Cells.swift in Sources */,
@@ -3901,6 +3927,7 @@
 				12484CA7215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift in Sources */,
 				1287FBB32191763800A505FC /* NpcGroupsInteractor.swift in Sources */,
 				12484C69215BB24E0083AE17 /* EVELocation.swift in Sources */,
+				12EEE84321FDE9E7004F7593 /* LoadoutDescription.swift in Sources */,
 				124456B221C2E62A00C62ED5 /* Settings.swift in Sources */,
 				12C3E3A921A5442D002ED002 /* ZKillboardInvCategories.swift in Sources */,
 				12C8ABE82195C26E0028BF9A /* IndustryJobsPresenter.swift in Sources */,
@@ -3915,6 +3942,7 @@
 				1253C6302159108F007DEA16 /* MarketHistoryView.swift in Sources */,
 				12484C7D215CCF100083AE17 /* MapLocationPickerRegions.swift in Sources */,
 				12C3E3BB21A5460E002ED002 /* ZKillboardInvGroups.swift in Sources */,
+				127C4433220E161F00ED2A62 /* FleetDescription.swift in Sources */,
 				121B28CB218AF1E8000D392C /* CharacterInfoInteractor.swift in Sources */,
 				123E4C7521C560B6002234A7 /* APIServiceTesting.swift in Sources */,
 				12C3E39721A3F3E3002ED002 /* DatePicker.swift in Sources */,
@@ -3959,7 +3987,6 @@
 				12925B782189E8DB00F6216C /* MySkillsPageInteractor.swift in Sources */,
 				12C3E39D21A42D77002ED002 /* ContactsPresenter.swift in Sources */,
 				12AB972A212BF60000B30DD3 /* Storage.xcdatamodeld in Sources */,
-				12AB9732212C0E4F00B30DD3 /* NCFleetConfiguration.swift in Sources */,
 				12C727B5218B33CD00A78ADF /* JumpClonesPresenter.swift in Sources */,
 				12C727E0218C8B7B00A78ADF /* MailBodyInteractor.swift in Sources */,
 				12D3B61B21A7F6D100BA5C9A /* FittingMenuPresenter.swift in Sources */,
@@ -3994,6 +4021,7 @@
 				129DFE1E21347AFB00C85496 /* AccessibilityLabel.swift in Sources */,
 				12C727DF218C8B7B00A78ADF /* MailBodyViewController.swift in Sources */,
 				125B2CB52176FEB500D34CFB /* InvTypeMasteryInteractor.swift in Sources */,
+				120FB475221324F300794784 /* ImplantSetDescription.swift in Sources */,
 				12AF2FD12188943900813DFD /* MySkillsPresenter.swift in Sources */,
 				1248429A219D46D000CB3616 /* ZKillboard.swift in Sources */,
 				12C3E3A621A5442D002ED002 /* ZKillboardInvCategoriesPresenter.swift in Sources */,
@@ -4061,7 +4089,6 @@
 				12AB9735212C0E6E00B30DD3 /* NCImplantSetData.swift in Sources */,
 				12C3E3C421A54ADF002ED002 /* ZKillboardInvTypes.swift in Sources */,
 				12EE7D0C213E6282005CE68F /* Route.swift in Sources */,
-				12AB9733212C0E5C00B30DD3 /* NCFittingLoadout.swift in Sources */,
 				12C3E3B921A5460E002ED002 /* ZKillboardInvGroupsViewController.swift in Sources */,
 				1287FBB22191763800A505FC /* NpcGroupsViewController.swift in Sources */,
 				1256CA0521D2CDA800D65AD7 /* FittingFleetsPresenter.swift in Sources */,
@@ -4140,6 +4167,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				121B7B3821FDFBDC00224D09 /* Loadouts_Tests.swift in Sources */,
 				12C8ABDD2195AF5C0028BF9A /* Business_Tests.swift in Sources */,
 				1233EB60219B068700EB99C9 /* KillReports_Tests.swift in Sources */,
 				12926F10212EDC66006A3D1C /* API_Tests.swift in Sources */,

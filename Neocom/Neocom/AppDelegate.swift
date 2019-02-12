@@ -12,6 +12,7 @@ import CoreData
 import CloudData
 import EVEAPI
 import SafariServices
+import Dgmpp
 
 #if DEBUG
 var isTesting: Bool = CommandLine.arguments.contains("-testing")

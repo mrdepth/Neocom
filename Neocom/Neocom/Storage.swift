@@ -65,7 +65,24 @@ class Storage: PersistentContainer<StorageContext> {
 	}
 	#endif
 	
+	private static let backwardCompatibility: Void = {
+		NSKeyedUnarchiver.setClass(LoadoutDescription.self, forClassName: "Neocom.NCFittingLoadout")
+		NSKeyedUnarchiver.setClass(LoadoutDescription.Item.self, forClassName: "Neocom.NCFittingLoadoutItem")
+		NSKeyedUnarchiver.setClass(LoadoutDescription.Item.Module.self, forClassName: "Neocom.NCFittingLoadoutModule")
+		NSKeyedUnarchiver.setClass(LoadoutDescription.Item.Drone.self, forClassName: "Neocom.NCFittingLoadoutDrone")
+		NSKeyedUnarchiver.setClass(FleetDescription.self, forClassName: "Neocom.NCFleetConfiguration")
+		NSKeyedUnarchiver.setClass(ImplantSetDescription.self, forClassName: "Neocom.NCImplantSetData")
+
+		NSKeyedArchiver.setClassName("Neocom.NCFittingLoadout", for: LoadoutDescription.self)
+		NSKeyedArchiver.setClassName("Neocom.NCFittingLoadoutItem", for: LoadoutDescription.Item.self)
+		NSKeyedArchiver.setClassName("Neocom.NCFittingLoadoutModule", for: LoadoutDescription.Item.Module.self)
+		NSKeyedArchiver.setClassName("Neocom.NCFittingLoadoutDrone", for: LoadoutDescription.Item.Drone.self)
+		NSKeyedArchiver.setClassName("Neocom.NCFleetConfiguration", for: FleetDescription.self)
+		NSKeyedArchiver.setClassName("Neocom.NCImplantSetData", for: ImplantSetDescription.self)
+	}()
+	
 	override init(persistentContainer: NSPersistentContainer) {
+		_ = Storage.backwardCompatibility
 		super.init(persistentContainer: persistentContainer)
 		
 		oAuth2TokenDidRefreshObserver = NotificationCenter.default.addNotificationObserver(forName: .OAuth2TokenDidRefresh, object: nil, queue: .main) { [weak self] (note) in

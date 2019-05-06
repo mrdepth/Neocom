@@ -212,3 +212,60 @@ extension ContentProviderInteractor where Content == Void {
 		return false
 	}
 }
+
+
+class MyV: TreeViewController<MyP, Void>, TreeView {
+	func present(_ content: Void, animated: Bool) -> Future<Void> {
+		fatalError()
+	}
+	
+	
+}
+
+class MyP: TreePresenter {
+	var view: MyV?
+	
+	var interactor: MyI!
+	
+	required init(view: MyV) {
+	}
+	
+	var presentation: Void?
+	
+	var loading: Future<Void>?
+	
+	func presentation(for content: ()) -> Future<Void> {
+		fatalError()
+	}
+	
+	typealias Presentation = Void
+	
+	typealias View = MyV
+	
+	typealias Interactor = MyI
+	
+	
+}
+
+class MyI: TreeInteractor {
+	var presenter: MyP?
+	
+	required init(presenter: MyP) {
+	}
+	
+	typealias Presenter = MyP
+	
+	
+	
+}
+
+
+class MyA: Assembly {
+	func instantiate(_ input: View.Input) -> Future<MyV> {
+		fatalError()
+	}
+	
+	typealias View = MyV
+	
+	
+}

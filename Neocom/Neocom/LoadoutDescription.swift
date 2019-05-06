@@ -85,7 +85,7 @@ extension LoadoutDescription {
 		public var count: Int
 		public let identifier: Int?
 
-		public static var supportsSecureCoding: Bool { return true }
+		public class var supportsSecureCoding: Bool { return true }
 		
 		public enum CodingKeys: String, CodingKey {
 			case typeID
@@ -168,6 +168,8 @@ extension LoadoutDescription.Item {
 			case socket
 		}
 		
+		public override class var supportsSecureCoding: Bool { return true }
+		
 		public convenience init(module: DGMModule) {
 			self.init(typeID: module.typeID,
 					  count: 1,
@@ -224,6 +226,8 @@ extension LoadoutDescription.Item {
 			case squadronTag
 		}
 
+		public override class var supportsSecureCoding: Bool { return true }
+		
 		public convenience init(drone: DGMDrone) {
 			self.init(typeID: drone.typeID, count: 1, identifier: drone.identifier, isActive: drone.isActive, isKamikaze: drone.isKamikaze, squadronTag: drone.squadronTag)
 		}

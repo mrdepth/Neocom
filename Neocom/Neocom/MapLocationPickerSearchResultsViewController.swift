@@ -9,11 +9,12 @@
 import Foundation
 import TreeController
 
-class MapLocationPickerSearchResultsViewController: TreeViewController<MapLocationPickerSearchResultsPresenter, MapLocationPickerSearchResultsViewController.Input>, TreeView, UISearchResultsUpdating {
-	struct Input {
-		var mode: MapLocationPickerViewController.Mode
-		var region: SDEMapRegion?
-	}
+struct MapLocationPickerSearchResultsViewControllerInput {
+	var mode: MapLocationPickerViewController.Mode
+	var region: SDEMapRegion?
+}
+
+class MapLocationPickerSearchResultsViewController: TreeViewController<MapLocationPickerSearchResultsPresenter, MapLocationPickerSearchResultsViewControllerInput>, TreeView, UISearchResultsUpdating {
 	
 	func updateSearchResults(for searchController: UISearchController) {
 		presenter.updateSearchResults(with: searchController.searchBar.text ?? "")

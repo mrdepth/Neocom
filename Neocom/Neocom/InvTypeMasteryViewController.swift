@@ -10,9 +10,10 @@ import Foundation
 import TreeController
 import CoreData
 
-class InvTypeMasteryViewController: TreeViewController<InvTypeMasteryPresenter, InvTypeMasteryViewController.Input>, TreeView {
-	struct Input {
-		var typeObjectID: NSManagedObjectID
-		var masteryLevelObjectID: NSManagedObjectID
-	}
+struct InvTypeMasteryViewControllerInput {
+	var typeObjectID: NSManagedObjectID
+	var masteryLevelObjectID: NSManagedObjectID
+}
+
+class InvTypeMasteryViewController: TreeViewController<InvTypeMasteryPresenter, InvTypeMasteryViewControllerInput>, TreeView {
 }

@@ -10,10 +10,11 @@ import Foundation
 import TreeController
 import Expressible
 
-class InvGroupsViewController: TreeViewController<InvGroupsPresenter, InvGroupsViewController.Input>, TreeView, SearchableViewController {
-	enum Input {
-		case category (SDEInvCategory)
-	}
+enum InvGroupsViewControllerInput {
+	case category (SDEInvCategory)
+}
+
+class InvGroupsViewController: TreeViewController<InvGroupsPresenter, InvGroupsViewControllerInput>, TreeView, SearchableViewController {
 	
 	override func treeController<T>(_ treeController: TreeController, didSelectRowFor item: T) where T : TreeItem {
 		super.treeController(treeController, didSelectRowFor: item)

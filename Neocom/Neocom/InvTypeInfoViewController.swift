@@ -10,12 +10,13 @@ import Foundation
 import CoreData
 import TreeController
 
-class InvTypeInfoViewController: TreeViewController<InvTypeInfoPresenter, InvTypeInfoViewController.Input>, TreeView {
-	enum Input {
-		case type(SDEInvType)
-		case typeID(Int)
-		case objectID(NSManagedObjectID)
-	}
+enum InvTypeInfoViewControllerInput {
+	case type(SDEInvType)
+	case typeID(Int)
+	case objectID(NSManagedObjectID)
+}
+
+class InvTypeInfoViewController: TreeViewController<InvTypeInfoPresenter, InvTypeInfoViewControllerInput>, TreeView {
 	
 	override func treeController<T>(_ treeController: TreeController, didSelectRowFor item: T) where T : TreeItem {
 		super.treeController(treeController, didSelectRowFor: item)

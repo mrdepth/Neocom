@@ -49,14 +49,15 @@ class Cache: PersistentContainer<CacheContext> {
 }
 
 
+
 struct CacheContext: PersistentContext {
 	var managedObjectContext: NSManagedObjectContext
-
+	
 	func sectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState? {
 		let scope = "\(scope)"
 		return (try? managedObjectContext.from(SectionCollapseState.self).filter(\SectionCollapseState.scope == scope && \SectionCollapseState.identifier == identifier).first()) ?? nil
 	}
-
+	
 	func newSectionCollapseState<T: View>(identifier: String, scope: T.Type) -> SectionCollapseState {
 		let scope = "\(scope)"
 		let state = SectionCollapseState(context: managedObjectContext)
@@ -97,14 +98,14 @@ struct CacheContext: PersistentContext {
 			recent.raceID = category.race?.raceID ?? 0
 			recent.typeID = type.typeID
 			return recent
-
-		}()
+			
+			}()
 	}
 }
 
 
 extension Contact {
-	var recipientType: ESI.Mail.Recipient.RecipientType? {
-		return category.flatMap {ESI.Mail.Recipient.RecipientType(rawValue: $0)}
+	var recipientType: ESI.Mail.RecipientType? {
+		return category.flatMap {ESI.Mail.RecipientType(rawValue: $0)}
 	}
 }

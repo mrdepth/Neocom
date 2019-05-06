@@ -10,10 +10,11 @@ import Foundation
 import TreeController
 import CoreData
 
-class InvTypeVariationsViewController: TreeViewController<InvTypeVariationsPresenter, InvTypeVariationsViewController.Input>, TreeView {
-	enum Input {
-		case objectID(NSManagedObjectID)
-	}
+enum InvTypeVariationsViewControllerInput {
+	case objectID(NSManagedObjectID)
+}
+
+class InvTypeVariationsViewController: TreeViewController<InvTypeVariationsPresenter, InvTypeVariationsViewControllerInput>, TreeView {
 
 	override func treeController<T>(_ treeController: TreeController, configure cell: UITableViewCell, for item: T) where T : TreeItem {
 		super.treeController(treeController, configure: cell, for: item)

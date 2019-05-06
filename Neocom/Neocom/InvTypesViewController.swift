@@ -10,14 +10,15 @@ import Foundation
 import Expressible
 import TreeController
 
-class InvTypesViewController: TreeViewController<InvTypesPresenter, InvTypesViewController.Input>, TreeView, UISearchResultsUpdating, SearchableViewController {
-	enum Input {
-		case none
-		case group(SDEInvGroup)
-		case category(SDEInvCategory)
-		case marketGroup(SDEInvMarketGroup?)
-		case npcGroup(SDENpcGroup?)
-	}
+enum InvTypesViewControllerInput {
+	case none
+	case group(SDEInvGroup)
+	case category(SDEInvCategory)
+	case marketGroup(SDEInvMarketGroup?)
+	case npcGroup(SDENpcGroup?)
+}
+
+class InvTypesViewController: TreeViewController<InvTypesPresenter, InvTypesViewControllerInput>, TreeView, UISearchResultsUpdating, SearchableViewController {
 	
 	func updateSearchResults(for searchController: UISearchController) {
 		presenter.updateSearchResults(with: searchController.searchBar.text ?? "")

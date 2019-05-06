@@ -106,6 +106,8 @@ extension Tree.Item {
 				updates?.itemInsertions.append((newIndexPath!, anObject))
 			case .update:
 				updates?.itemUpdates.append((newIndexPath!, anObject))
+			@unknown default:
+				break
 			}
 		}
 		

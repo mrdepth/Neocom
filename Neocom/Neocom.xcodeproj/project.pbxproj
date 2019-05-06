@@ -7,175 +7,84 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		12028D5721B11BA5004B0669 /* DgmTypePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5321B11BA5004B0669 /* DgmTypePickerPresenter.swift */; };
-		12028D5821B11BA5004B0669 /* DgmTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5421B11BA5004B0669 /* DgmTypePickerViewController.swift */; };
-		12028D5921B11BA5004B0669 /* DgmTypePickerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5521B11BA5004B0669 /* DgmTypePickerInteractor.swift */; };
-		12028D5A21B11BA5004B0669 /* DgmTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5621B11BA5004B0669 /* DgmTypePicker.swift */; };
-		12028D6121B11C85004B0669 /* DgmTypePickerContainerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5D21B11C85004B0669 /* DgmTypePickerContainerPresenter.swift */; };
-		12028D6221B11C85004B0669 /* DgmTypePickerContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5E21B11C85004B0669 /* DgmTypePickerContainerViewController.swift */; };
-		12028D6321B11C85004B0669 /* DgmTypePickerContainerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5F21B11C85004B0669 /* DgmTypePickerContainerInteractor.swift */; };
-		12028D6421B11C85004B0669 /* DgmTypePickerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D6021B11C85004B0669 /* DgmTypePickerContainer.swift */; };
 		1203E8851F09350A009ADF8D /* rssFeeds.json in Resources */ = {isa = PBXBuildFile; fileRef = 1203E8841F09350A009ADF8D /* rssFeeds.json */; };
-		1204D064215270780070AF92 /* InvCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D063215270780070AF92 /* InvCategoriesViewController.swift */; };
-		1204D066215271370070AF92 /* InvCategoriesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D065215271370070AF92 /* InvCategoriesPresenter.swift */; };
-		1204D068215271420070AF92 /* InvCategoriesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D067215271420070AF92 /* InvCategoriesInteractor.swift */; };
-		1204D06A215271670070AF92 /* InvCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D069215271670070AF92 /* InvCategories.swift */; };
-		1204D06E215289FC0070AF92 /* InvGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D06D215289FC0070AF92 /* InvGroups.swift */; };
-		1204D07021528A140070AF92 /* InvGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D06F21528A140070AF92 /* InvGroupsViewController.swift */; };
-		1204D07221528A1C0070AF92 /* InvGroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D07121528A1C0070AF92 /* InvGroupsPresenter.swift */; };
-		1204D07421528A270070AF92 /* InvGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D07321528A270070AF92 /* InvGroupsInteractor.swift */; };
-		120A386D213D46970071ED72 /* MainMenuContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A386C213D46970071ED72 /* MainMenuContainerViewController.swift */; };
-		120A386F213D543E0071ED72 /* MainMenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A386E213D543E0071ED72 /* MainMenuHeader.swift */; };
 		120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 120F4C5A1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib */; };
-		120FB475221324F300794784 /* ImplantSetDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120FB474221324F300794784 /* ImplantSetDescription.swift */; };
-		120FB4782213280900794784 /* FittingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120FB4772213280900794784 /* FittingService.swift */; };
-		120FB47C221359CA00794784 /* FittingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120FB47B221359CA00794784 /* FittingContext.swift */; };
 		1211A4631EEEC35A00364744 /* NCSkillTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4621EEEC35A00364744 /* NCSkillTableViewCell.xib */; };
 		1211A4651EEEDE3600364744 /* NCActionHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1211A4641EEEDE3600364744 /* NCActionHeaderTableViewCell.xib */; };
-		12133C26215E1F9500646937 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C25215E1F9500646937 /* Image.swift */; };
-		12133C2A215E290500646937 /* InvTypeVariations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C29215E290500646937 /* InvTypeVariations.swift */; };
-		12133C2C215E291500646937 /* InvTypeVariationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C2B215E291500646937 /* InvTypeVariationsViewController.swift */; };
-		12133C2E215E292300646937 /* InvTypeVariationsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C2D215E292300646937 /* InvTypeVariationsPresenter.swift */; };
-		12133C30215E292D00646937 /* InvTypeVariationsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C2F215E292D00646937 /* InvTypeVariationsInteractor.swift */; };
-		12133C35215E399C00646937 /* CertGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C34215E399C00646937 /* CertGroups.swift */; };
-		12133C37215E39A600646937 /* CertGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C36215E39A500646937 /* CertGroupsViewController.swift */; };
-		12133C39215E39AE00646937 /* CertGroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C38215E39AE00646937 /* CertGroupsPresenter.swift */; };
-		12133C3B215E39B700646937 /* CertGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C3A215E39B700646937 /* CertGroupsInteractor.swift */; };
-		12133C3E215E3B5A00646937 /* CertCertificates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C3D215E3B5A00646937 /* CertCertificates.swift */; };
-		12133C40215E3B6400646937 /* CertCertificatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C3F215E3B6400646937 /* CertCertificatesViewController.swift */; };
-		12133C42215E3B6D00646937 /* CertCertificatesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C41215E3B6D00646937 /* CertCertificatesPresenter.swift */; };
-		12133C44215E3B7700646937 /* CertCertificatesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C43215E3B7700646937 /* CertCertificatesInteractor.swift */; };
-		12133C47215E55AB00646937 /* CertCertificateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C46215E55AB00646937 /* CertCertificateInfo.swift */; };
-		12133C49215E55B600646937 /* CertCertificateInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C48215E55B600646937 /* CertCertificateInfoViewController.swift */; };
-		12133C4B215E55BE00646937 /* CertCertificateInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C4A215E55BE00646937 /* CertCertificateInfoPresenter.swift */; };
-		12133C4D215E55C700646937 /* CertCertificateInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C4C215E55C700646937 /* CertCertificateInfoInteractor.swift */; };
-		12133C51215E56A500646937 /* CertCertificateMasteryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C50215E56A500646937 /* CertCertificateMasteryInfo.swift */; };
-		12133C53215E56AD00646937 /* CertCertificateMasteryInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C52215E56AD00646937 /* CertCertificateMasteryInfoViewController.swift */; };
-		12133C55215E56B500646937 /* CertCertificateMasteryInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C54215E56B500646937 /* CertCertificateMasteryInfoPresenter.swift */; };
-		12133C57215E56BE00646937 /* CertCertificateMasteryInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C56215E56BE00646937 /* CertCertificateMasteryInfoInteractor.swift */; };
-		12133C59215E56C600646937 /* CertCertificateRequirementsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C58215E56C600646937 /* CertCertificateRequirementsInfo.swift */; };
-		12133C5B215E56CF00646937 /* CertCertificateRequirementsInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C5A215E56CF00646937 /* CertCertificateRequirementsInfoViewController.swift */; };
-		12133C5D215E56D800646937 /* CertCertificateRequirementsInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C5C215E56D800646937 /* CertCertificateRequirementsInfoPresenter.swift */; };
-		12133C5F215E56E100646937 /* CertCertificateRequirementsInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C5E215E56E100646937 /* CertCertificateRequirementsInfoInteractor.swift */; };
-		12133C7C215E6F1900646937 /* CertCertificateDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C7B215E6F1900646937 /* CertCertificateDescriptionCell.swift */; };
+		1211DE45227611C900A39F63 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB972B212BF6A900B30DD3 /* Storage.swift */; };
+		1211DE49227611C900A39F63 /* LoadoutDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EEE84221FDE9E7004F7593 /* LoadoutDescription.swift */; };
+		1211DE4A227611C900A39F63 /* FleetDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C4432220E161F00ED2A62 /* FleetDescription.swift */; };
+		1211DE4B227611C900A39F63 /* ImplantSetDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120FB474221324F300794784 /* ImplantSetDescription.swift */; };
+		1211DE4C227611CD00A39F63 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AFD472211C1E7D00007423 /* Cache.swift */; };
+		1211DE4D227611D100A39F63 /* ImageValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB974E212C325E00B30DD3 /* ImageValueTransformer.swift */; };
+		1211DE4E227611D100A39F63 /* SDE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AFD46C211C1C3D00007423 /* SDE.swift */; };
+		1211DE4F227611D100A39F63 /* SDE+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9736212C0ECC00B30DD3 /* SDE+Constants.swift */; };
+		1211DE50227611D100A39F63 /* PersistentContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D31099211C282100367440 /* PersistentContext.swift */; };
+		1211DE51227611D100A39F63 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F6C1A121C2BAC20053D62C /* PersistentContainer.swift */; };
+		1211DE52227611D100A39F63 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1295A1A92139242300047516 /* Services.swift */; };
+		1211DE53227611D100A39F63 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7121C51DE9002234A7 /* APIService.swift */; };
+		1211DE55227611D100A39F63 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124456B121C2E62A00C62ED5 /* Settings.swift */; };
+		1211DE56227611D400A39F63 /* FittingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120FB4772213280900794784 /* FittingService.swift */; };
+		1211DE57227611D400A39F63 /* FittingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120FB47B221359CA00794784 /* FittingContext.swift */; };
+		1211DE58227611D900A39F63 /* SlideDownAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D10213E6BD7005CE68F /* SlideDownAnimationController.swift */; };
+		1211DE59227611D900A39F63 /* SheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E38B21A3F228002ED002 /* SheetPresentationController.swift */; };
+		1211DE5A227611D900A39F63 /* SlideDownDismissalInteractiveTransitioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E38D21A3F248002ED002 /* SlideDownDismissalInteractiveTransitioning.swift */; };
+		1211DE5B227611E300A39F63 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB973D212C162A00B30DD3 /* Character.swift */; };
+		1211DE5C227611E300A39F63 /* TrainingQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9754212C488400B30DD3 /* TrainingQueue.swift */; };
+		1211DE5D227611E300A39F63 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0417D212D3C4F0000CB4F /* API.swift */; };
+		1211DE5E227611E300A39F63 /* API+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBCE2191916300A505FC /* API+Constants.swift */; };
+		1211DE60227611E900A39F63 /* NCTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1230A31D1DFFE2CF00627D92 /* NCTableView.m */; };
+		1211DE61227611E900A39F63 /* TintImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFF821358922005340C0 /* TintImageView.swift */; };
+		1211DE62227611E900A39F63 /* AccessibilityLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129DFE1D21347AFB00C85496 /* AccessibilityLabel.swift */; };
+		1211DE63227611E900A39F63 /* TableViewBackgroundLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129DFE1A21347A6F00C85496 /* TableViewBackgroundLabel.swift */; };
+		1211DE64227611E900A39F63 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C858E213E880200333636 /* BackgroundView.swift */; };
+		1211DE65227611E900A39F63 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E40AC213ECE0E002EDAF9 /* RoundedImageView.swift */; };
+		1211DE66227611E900A39F63 /* DamageTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8432F2153CA9600570A95 /* DamageTypeLabel.swift */; };
+		1211DE67227611E900A39F63 /* ThinLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8144B2154D9BA00313DAF /* ThinLineView.swift */; };
+		1211DE68227611E900A39F63 /* SegmentedPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C6E215CC0B70083AE17 /* SegmentedPageControl.swift */; };
+		1211DE69227611E900A39F63 /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D20E9E1EB9EB1400BEC926 /* PieChartView.swift */; };
+		1211DE6A227611E900A39F63 /* NavigationItemTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51242199AB6800D0FC8E /* NavigationItemTitleLabel.swift */; };
+		1211DE6D227611E900A39F63 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0419B212D77530000CB4F /* Error.swift */; };
+		1211DE6E227611E900A39F63 /* ProgressTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129DFE1F213486D900C85496 /* ProgressTask.swift */; };
+		1211DE6F227611E900A39F63 /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFED213543B7005340C0 /* UnitFormatter.swift */; };
+		1211DE70227611E900A39F63 /* TimeIntervalFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B03DA5213FEBF400DCBD64 /* TimeIntervalFormatter.swift */; };
+		1211DE71227611E900A39F63 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E04180212D44360000CB4F /* Config.swift */; };
+		1211DE72227611E900A39F63 /* UIKit+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E314BB1E165D5D000A926D /* UIKit+NC.swift */; };
+		1211DE73227611E900A39F63 /* NSAttributedString+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3211DFFE2CF00627D92 /* NSAttributedString+NC.swift */; };
+		1211DE74227611E900A39F63 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3111DFFE2CF00627D92 /* Math.swift */; };
+		1211DE75227611E900A39F63 /* ActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B03DA7213FEE1B00DCBD64 /* ActionHandler.swift */; };
+		1211DE77227611E900A39F63 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12841BEB2059464D00B30582 /* Atomic.swift */; };
+		1211DE79227611FB00A39F63 /* Storage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9728212BF60000B30DD3 /* Storage.xcdatamodeld */; };
+		1211DE7A227611FF00A39F63 /* Cache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AFD474211C1EA800007423 /* Cache.xcdatamodeld */; };
+		1211DE7B227611FF00A39F63 /* SDE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9722212BEA6C00B30DD3 /* SDE.xcdatamodeld */; };
+		1211DE7E2276131A00A39F63 /* EVELocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C68215BB24E0083AE17 /* EVELocation.swift */; };
 		12133C7E215E6F2400646937 /* CertCertificateDescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12133C7D215E6F2400646937 /* CertCertificateDescriptionCell.xib */; };
-		121B28C1218AEA24000D392C /* InvTypeRequiredForPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28BD218AEA24000D392C /* InvTypeRequiredForPresenter.swift */; };
-		121B28C2218AEA24000D392C /* InvTypeRequiredForViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28BE218AEA24000D392C /* InvTypeRequiredForViewController.swift */; };
-		121B28C3218AEA24000D392C /* InvTypeRequiredForInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28BF218AEA24000D392C /* InvTypeRequiredForInteractor.swift */; };
-		121B28C4218AEA24000D392C /* InvTypeRequiredFor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C0218AEA24000D392C /* InvTypeRequiredFor.swift */; };
-		121B28C9218AF1E8000D392C /* CharacterInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C5218AF1E8000D392C /* CharacterInfoPresenter.swift */; };
-		121B28CA218AF1E8000D392C /* CharacterInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C6218AF1E8000D392C /* CharacterInfoViewController.swift */; };
-		121B28CB218AF1E8000D392C /* CharacterInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C7218AF1E8000D392C /* CharacterInfoInteractor.swift */; };
-		121B28CC218AF1E8000D392C /* CharacterInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C8218AF1E8000D392C /* CharacterInfo.swift */; };
 		121B28CE218B00BB000D392C /* TreeDefaultPortraitCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121B28CD218B00BB000D392C /* TreeDefaultPortraitCell.xib */; };
 		121B7B3821FDFBDC00224D09 /* Loadouts_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B7B3721FDFBDC00224D09 /* Loadouts_Tests.swift */; };
 		121F26E02136BD9400AE1D70 /* SOLID_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26DF2136BD9400AE1D70 /* SOLID_Tests.swift */; };
-		121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26E32136EC3800AE1D70 /* BannerNavigationViewController.swift */; };
-		121F26E62136EC5700AE1D70 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26E52136EC5700AE1D70 /* NavigationController.swift */; };
-		121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26E72136ECA800AE1D70 /* SplitViewController.swift */; };
-		121F26EB2136EE6C00AE1D70 /* AccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26EA2136EE6C00AE1D70 /* AccountsViewController.swift */; };
-		121F26ED2136EE8700AE1D70 /* AccountsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26EC2136EE8700AE1D70 /* AccountsInteractor.swift */; };
-		121F26EF2136EE9100AE1D70 /* AccountsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26EE2136EE9100AE1D70 /* AccountsPresenter.swift */; };
-		121F26F12136F07200AE1D70 /* TreeItem+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26F02136F07200AE1D70 /* TreeItem+CoreData.swift */; };
+		12214C29227616530091174F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12678BEE212BE32A00E7E427 /* AppDelegate.swift */; };
+		12214C2A227616710091174F /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26E52136EC5700AE1D70 /* NavigationController.swift */; };
+		12214C2C2276168B0091174F /* Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFF6213587D7005340C0 /* Cells.swift */; };
 		122A7CA21F4B49D100537467 /* Database.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA11F4B49D100537467 /* Database.storyboard */; };
 		122A7CA41F4B589200537467 /* Character.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA31F4B589200537467 /* Character.storyboard */; };
 		122A7CA61F4B5DD800537467 /* Business.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA51F4B5DD800537467 /* Business.storyboard */; };
 		122A7CA81F4B601E00537467 /* KillReports.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA71F4B601E00537467 /* KillReports.storyboard */; };
 		122A7CAA1F4B617E00537467 /* Fitting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 122A7CA91F4B617E00537467 /* Fitting.storyboard */; };
-		1233EB53219AEF5900EB99C9 /* KillmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB52219AEF5800EB99C9 /* KillmailCell.swift */; };
 		1233EB55219AEF6100EB99C9 /* KillmailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1233EB54219AEF6100EB99C9 /* KillmailCell.xib */; };
-		1233EB5B219AF2F200EB99C9 /* KillmailsPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB57219AF2F200EB99C9 /* KillmailsPagePresenter.swift */; };
-		1233EB5C219AF2F200EB99C9 /* KillmailsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB58219AF2F200EB99C9 /* KillmailsPageViewController.swift */; };
-		1233EB5D219AF2F200EB99C9 /* KillmailsPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB59219AF2F200EB99C9 /* KillmailsPageInteractor.swift */; };
-		1233EB5E219AF2F200EB99C9 /* KillmailsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB5A219AF2F200EB99C9 /* KillmailsPage.swift */; };
 		1233EB60219B068700EB99C9 /* KillReports_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB5F219B068700EB99C9 /* KillReports_Tests.swift */; };
-		123E4C7221C51DE9002234A7 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7121C51DE9002234A7 /* APIService.swift */; };
-		123E4C7521C560B6002234A7 /* APIServiceTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7421C560B6002234A7 /* APIServiceTesting.swift */; };
-		123E4C7B21C6E4CF002234A7 /* DgmTypePickerGroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7721C6E4CF002234A7 /* DgmTypePickerGroupsPresenter.swift */; };
-		123E4C7C21C6E4CF002234A7 /* DgmTypePickerGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7821C6E4CF002234A7 /* DgmTypePickerGroupsViewController.swift */; };
-		123E4C7D21C6E4CF002234A7 /* DgmTypePickerGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7921C6E4CF002234A7 /* DgmTypePickerGroupsInteractor.swift */; };
-		123E4C7E21C6E4CF002234A7 /* DgmTypePickerGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7A21C6E4CF002234A7 /* DgmTypePickerGroups.swift */; };
 		124069FF1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124069FE1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib */; };
 		12406A011F20F49500A4DAE7 /* NCModuleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12406A001F20F49500A4DAE7 /* NCModuleTableViewCell.xib */; };
 		12406A031F20F4B800A4DAE7 /* NCShipTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12406A021F20F4B800A4DAE7 /* NCShipTableViewCell.xib */; };
-		12415981212FF0AC001709F2 /* TreeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12415980212FF0AC001709F2 /* TreeItem.swift */; };
-		124456B221C2E62A00C62ED5 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124456B121C2E62A00C62ED5 /* Settings.swift */; };
-		12484273219BF94A00CB3616 /* KillmailInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1248426F219BF94A00CB3616 /* KillmailInfoPresenter.swift */; };
-		12484274219BF94A00CB3616 /* KillmailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484270219BF94A00CB3616 /* KillmailInfoViewController.swift */; };
-		12484275219BF94A00CB3616 /* KillmailInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484271219BF94A00CB3616 /* KillmailInfoInteractor.swift */; };
-		12484276219BF94A00CB3616 /* KillmailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484272219BF94A00CB3616 /* KillmailInfo.swift */; };
 		1248427C219C343B00CB3616 /* KillmailAttackerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1248427B219C343B00CB3616 /* KillmailAttackerCell.xib */; };
 		1248427E219C344500CB3616 /* KillmailAttackerNPCCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1248427D219C344500CB3616 /* KillmailAttackerNPCCell.xib */; };
-		12484280219C344E00CB3616 /* KillmailAttackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1248427F219C344E00CB3616 /* KillmailAttackerCell.swift */; };
-		12484297219D46D000CB3616 /* ZKillboardPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484293219D46D000CB3616 /* ZKillboardPresenter.swift */; };
-		12484298219D46D000CB3616 /* ZKillboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484294219D46D000CB3616 /* ZKillboardViewController.swift */; };
-		12484299219D46D000CB3616 /* ZKillboardInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484295219D46D000CB3616 /* ZKillboardInteractor.swift */; };
-		1248429A219D46D000CB3616 /* ZKillboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484296219D46D000CB3616 /* ZKillboard.swift */; };
-		12484C34215B8E080083AE17 /* InvTypeMarketOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C33215B8E080083AE17 /* InvTypeMarketOrders.swift */; };
-		12484C36215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C35215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift */; };
-		12484C38215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C37215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift */; };
-		12484C3A215B8E230083AE17 /* InvTypeMarketOrdersInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C39215B8E230083AE17 /* InvTypeMarketOrdersInteractor.swift */; };
-		12484C65215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C64215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift */; };
 		12484C67215BB0F60083AE17 /* InvTypeMarketOrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12484C66215BB0F60083AE17 /* InvTypeMarketOrderCell.xib */; };
-		12484C69215BB24E0083AE17 /* EVELocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C68215BB24E0083AE17 /* EVELocation.swift */; };
-		12484C6A215CB3700083AE17 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12841BEB2059464D00B30582 /* Atomic.swift */; };
-		12484C6D215CC0780083AE17 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C6C215CC0780083AE17 /* PageViewController.swift */; };
-		12484C6F215CC0B70083AE17 /* SegmentedPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C6E215CC0B70083AE17 /* SegmentedPageControl.swift */; };
-		12484C72215CC6610083AE17 /* MapLocationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C71215CC6610083AE17 /* MapLocationPicker.swift */; };
-		12484C74215CC6910083AE17 /* MapLocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C73215CC6910083AE17 /* MapLocationPickerViewController.swift */; };
-		12484C76215CC69D0083AE17 /* MapLocationPickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C75215CC69D0083AE17 /* MapLocationPickerPresenter.swift */; };
-		12484C78215CC6A70083AE17 /* MapLocationPickerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C77215CC6A70083AE17 /* MapLocationPickerInteractor.swift */; };
-		12484C7D215CCF100083AE17 /* MapLocationPickerRegions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C7C215CCF100083AE17 /* MapLocationPickerRegions.swift */; };
-		12484C7F215CCF1B0083AE17 /* MapLocationPickerRegionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C7E215CCF1B0083AE17 /* MapLocationPickerRegionsViewController.swift */; };
-		12484C81215CCF260083AE17 /* MapLocationPickerRegionsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C80215CCF260083AE17 /* MapLocationPickerRegionsPresenter.swift */; };
-		12484C83215CCF2E0083AE17 /* MapLocationPickerRegionsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C82215CCF2E0083AE17 /* MapLocationPickerRegionsInteractor.swift */; };
-		12484C85215CD5560083AE17 /* MapLocationPickerSolarSystems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C84215CD5560083AE17 /* MapLocationPickerSolarSystems.swift */; };
-		12484C87215CD55F0083AE17 /* MapLocationPickerSolarSystemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C86215CD55F0083AE17 /* MapLocationPickerSolarSystemsViewController.swift */; };
-		12484C89215CD56A0083AE17 /* MapLocationPickerSolarSystemsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C88215CD56A0083AE17 /* MapLocationPickerSolarSystemsPresenter.swift */; };
-		12484C8B215CD5740083AE17 /* MapLocationPickerSolarSystemsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C8A215CD5740083AE17 /* MapLocationPickerSolarSystemsInteractor.swift */; };
-		12484C8D215CD5970083AE17 /* MapLocationPickerRecents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C8C215CD5970083AE17 /* MapLocationPickerRecents.swift */; };
-		12484C8F215CD5A10083AE17 /* MapLocationPickerRecentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C8E215CD5A10083AE17 /* MapLocationPickerRecentsViewController.swift */; };
-		12484C91215CD5AA0083AE17 /* MapLocationPickerRecentsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C90215CD5AA0083AE17 /* MapLocationPickerRecentsPresenter.swift */; };
-		12484C93215CD5B30083AE17 /* MapLocationPickerRecentsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C92215CD5B30083AE17 /* MapLocationPickerRecentsInteractor.swift */; };
-		12484CA3215D20EC0083AE17 /* MapLocationPickerSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484CA2215D20EC0083AE17 /* MapLocationPickerSearchResults.swift */; };
-		12484CA5215D20F60083AE17 /* MapLocationPickerSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484CA4215D20F60083AE17 /* MapLocationPickerSearchResultsViewController.swift */; };
-		12484CA7215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484CA6215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift */; };
-		12484CA9215D21080083AE17 /* MapLocationPickerSearchResultsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484CA8215D21080083AE17 /* MapLocationPickerSearchResultsInteractor.swift */; };
 		1248DB3A1F1C9DE9009625EC /* NCMailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1248DB391F1C9DE9009625EC /* NCMailTableViewCell.xib */; };
-		124C50FB219954F700D0FC8E /* ContractsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C50F7219954F700D0FC8E /* ContractsPresenter.swift */; };
-		124C50FC219954F700D0FC8E /* ContractsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C50F8219954F700D0FC8E /* ContractsViewController.swift */; };
-		124C50FD219954F700D0FC8E /* ContractsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C50F9219954F700D0FC8E /* ContractsInteractor.swift */; };
-		124C50FE219954F700D0FC8E /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C50FA219954F700D0FC8E /* Contracts.swift */; };
-		124C5101219956D800D0FC8E /* ContractCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C5100219956D800D0FC8E /* ContractCell.swift */; };
 		124C5103219956DE00D0FC8E /* ContractCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124C5102219956DE00D0FC8E /* ContractCell.xib */; };
-		124C51092199626000D0FC8E /* ContractInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51052199626000D0FC8E /* ContractInfoPresenter.swift */; };
-		124C510A2199626000D0FC8E /* ContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51062199626000D0FC8E /* ContractInfoViewController.swift */; };
-		124C510B2199626000D0FC8E /* ContractInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51072199626000D0FC8E /* ContractInfoInteractor.swift */; };
-		124C510C2199626000D0FC8E /* ContractInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51082199626000D0FC8E /* ContractInfo.swift */; };
-		124C511221998D6A00D0FC8E /* WalletJournalPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C510E21998D6A00D0FC8E /* WalletJournalPagePresenter.swift */; };
-		124C511321998D6A00D0FC8E /* WalletJournalPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C510F21998D6A00D0FC8E /* WalletJournalPageViewController.swift */; };
-		124C511421998D6A00D0FC8E /* WalletJournalPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511021998D6A00D0FC8E /* WalletJournalPageInteractor.swift */; };
-		124C511521998D6A00D0FC8E /* WalletJournalPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511121998D6A00D0FC8E /* WalletJournalPage.swift */; };
-		124C51182199906100D0FC8E /* WalletJournalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51172199906100D0FC8E /* WalletJournalCell.swift */; };
 		124C511A219990BD00D0FC8E /* WalletJournalCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124C5119219990BD00D0FC8E /* WalletJournalCell.xib */; };
-		124C51202199A54000D0FC8E /* WalletTransactionsPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511C2199A54000D0FC8E /* WalletTransactionsPagePresenter.swift */; };
-		124C51212199A54000D0FC8E /* WalletTransactionsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511D2199A54000D0FC8E /* WalletTransactionsPageViewController.swift */; };
-		124C51222199A54000D0FC8E /* WalletTransactionsPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511E2199A54000D0FC8E /* WalletTransactionsPageInteractor.swift */; };
-		124C51232199A54000D0FC8E /* WalletTransactionsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511F2199A54000D0FC8E /* WalletTransactionsPage.swift */; };
-		124C51252199AB6800D0FC8E /* NavigationItemTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51242199AB6800D0FC8E /* NavigationItemTitleLabel.swift */; };
-		124C51282199B16000D0FC8E /* WalletTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51272199B16000D0FC8E /* WalletTransactionCell.swift */; };
 		124C512A2199B16700D0FC8E /* WalletTransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 124C51292199B16700D0FC8E /* WalletTransactionCell.xib */; };
-		124C5131219ACCE400D0FC8E /* KillmailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C512D219ACCE400D0FC8E /* KillmailsPresenter.swift */; };
-		124C5132219ACCE400D0FC8E /* KillmailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C512E219ACCE400D0FC8E /* KillmailsViewController.swift */; };
-		124C5133219ACCE400D0FC8E /* KillmailsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C512F219ACCE400D0FC8E /* KillmailsInteractor.swift */; };
-		124C5134219ACCE400D0FC8E /* Killmails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C5130219ACCE400D0FC8E /* Killmails.swift */; };
-		124C858F213E880200333636 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C858E213E880200333636 /* BackgroundView.swift */; };
-		1253C62521590744007DEA16 /* DamageTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62421590744007DEA16 /* DamageTypeCell.swift */; };
 		1253C6272159078C007DEA16 /* DamageTypeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C6262159078C007DEA16 /* DamageTypeCell.xib */; };
 		1253C6292159081A007DEA16 /* DamageTypeCompactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C6282159081A007DEA16 /* DamageTypeCompactCell.xib */; };
 		1253C62C21591036007DEA16 /* MarketHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C62B21591036007DEA16 /* MarketHistoryCell.xib */; };
-		1253C62E21591066007DEA16 /* MarketHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62D21591066007DEA16 /* MarketHistoryCell.swift */; };
-		1253C6302159108F007DEA16 /* MarketHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62F2159108F007DEA16 /* MarketHistoryView.swift */; };
 		1253C64C21592BA4007DEA16 /* TreeDefaultAttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1253C64B21592BA4007DEA16 /* TreeDefaultAttributeCell.xib */; };
 		1256BE551DF4728800A2A24B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE541DF4728800A2A24B /* Main.storyboard */; };
 		1256BEC81DF4770A00A2A24B /* charisma.png in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE611DF4770A00A2A24B /* charisma.png */; };
@@ -187,56 +96,16 @@
 		1256BECE1DF4770A00A2A24B /* Fitting.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BE671DF4770A00A2A24B /* Fitting.xcassets */; };
 		1256BF2B1DF4770B00A2A24B /* MainMenu.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BEC61DF4770A00A2A24B /* MainMenu.xcassets */; };
 		1256BF2C1DF4770B00A2A24B /* UI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1256BEC71DF4770A00A2A24B /* UI.xcassets */; };
-		1256C9EF21D15BAE00D65AD7 /* DgmTypePickerTypesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9EB21D15BAE00D65AD7 /* DgmTypePickerTypesPresenter.swift */; };
-		1256C9F021D15BAE00D65AD7 /* DgmTypePickerTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9EC21D15BAE00D65AD7 /* DgmTypePickerTypesViewController.swift */; };
-		1256C9F121D15BAE00D65AD7 /* DgmTypePickerTypesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9ED21D15BAE00D65AD7 /* DgmTypePickerTypesInteractor.swift */; };
-		1256C9F221D15BAE00D65AD7 /* DgmTypePickerTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9EE21D15BAE00D65AD7 /* DgmTypePickerTypes.swift */; };
-		1256C9FC21D2821A00D65AD7 /* DgmTypePickerRecentsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9F821D2821A00D65AD7 /* DgmTypePickerRecentsPresenter.swift */; };
-		1256C9FD21D2821A00D65AD7 /* DgmTypePickerRecentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9F921D2821A00D65AD7 /* DgmTypePickerRecentsViewController.swift */; };
-		1256C9FE21D2821A00D65AD7 /* DgmTypePickerRecentsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9FA21D2821A00D65AD7 /* DgmTypePickerRecentsInteractor.swift */; };
-		1256C9FF21D2821A00D65AD7 /* DgmTypePickerRecents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9FB21D2821A00D65AD7 /* DgmTypePickerRecents.swift */; };
-		1256CA0521D2CDA800D65AD7 /* FittingFleetsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0121D2CDA800D65AD7 /* FittingFleetsPresenter.swift */; };
-		1256CA0621D2CDA800D65AD7 /* FittingFleetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0221D2CDA800D65AD7 /* FittingFleetsViewController.swift */; };
-		1256CA0721D2CDA800D65AD7 /* FittingFleetsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0321D2CDA800D65AD7 /* FittingFleetsInteractor.swift */; };
-		1256CA0821D2CDA800D65AD7 /* FittingFleets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0421D2CDA800D65AD7 /* FittingFleets.swift */; };
-		1256CA0D21D3FC7B00D65AD7 /* FleetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0C21D3FC7B00D65AD7 /* FleetCell.swift */; };
 		1256CA0F21D3FC8800D65AD7 /* FleetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1256CA0E21D3FC8800D65AD7 /* FleetCell.xib */; };
-		1259639521381EA100B3A53C /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1259639421381EA100B3A53C /* AccountCell.swift */; };
 		1259639721381ECD00B3A53C /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1259639621381ECD00B3A53C /* AccountCell.xib */; };
-		125B2CB32176FEB500D34CFB /* InvTypeMasteryPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CAF2176FEB500D34CFB /* InvTypeMasteryPresenter.swift */; };
-		125B2CB42176FEB500D34CFB /* InvTypeMasteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CB02176FEB500D34CFB /* InvTypeMasteryViewController.swift */; };
-		125B2CB52176FEB500D34CFB /* InvTypeMasteryInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CB12176FEB500D34CFB /* InvTypeMasteryInteractor.swift */; };
-		125B2CB62176FEB500D34CFB /* InvTypeMastery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CB22176FEB500D34CFB /* InvTypeMastery.swift */; };
-		125B2CBD217A7BDF00D34CFB /* SkillsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CB9217A7BDF00D34CFB /* SkillsPresenter.swift */; };
-		125B2CBE217A7BDF00D34CFB /* SkillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CBA217A7BDF00D34CFB /* SkillsViewController.swift */; };
-		125B2CBF217A7BDF00D34CFB /* SkillsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CBB217A7BDF00D34CFB /* SkillsInteractor.swift */; };
-		125B2CC0217A7BDF00D34CFB /* Skills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CBC217A7BDF00D34CFB /* Skills.swift */; };
-		125B2CC6217A7C9400D34CFB /* SkillQueuePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CC2217A7C9400D34CFB /* SkillQueuePresenter.swift */; };
-		125B2CC7217A7C9400D34CFB /* SkillQueueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CC3217A7C9400D34CFB /* SkillQueueViewController.swift */; };
-		125B2CC8217A7C9400D34CFB /* SkillQueueInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CC4217A7C9400D34CFB /* SkillQueueInteractor.swift */; };
-		125B2CC9217A7C9400D34CFB /* SkillQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CC5217A7C9400D34CFB /* SkillQueue.swift */; };
-		125DF6332133CFC700B86AE0 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6322133CFC700B86AE0 /* MainMenuViewController.swift */; };
-		125DF6352133CFD000B86AE0 /* MainMenuPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6342133CFD000B86AE0 /* MainMenuPresenter.swift */; };
-		125DF6372133CFDB00B86AE0 /* MainMenuInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6362133CFDB00B86AE0 /* MainMenuInteractor.swift */; };
-		125DF63C2133D30000B86AE0 /* TreeDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF63B2133D30000B86AE0 /* TreeDefaultCell.swift */; };
 		1263C50D1E64BE9D003D002D /* NCDefaultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1263C50C1E64BE9D003D002D /* NCDefaultTableViewCell.xib */; };
 		1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1263C50E1E64BF39003D002D /* NCHeaderTableViewCell.xib */; };
-		12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12678BEE212BE32A00E7E427 /* AppDelegate.swift */; };
 		126AF8EF211ADD8E008ED515 /* TreeController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 126AF8EE211ADD8E008ED515 /* TreeController.framework */; };
 		126AF8F0211ADD8E008ED515 /* TreeController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 126AF8EE211ADD8E008ED515 /* TreeController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1278B8D8218844DF003C9A99 /* TreeDefaultPlaceholderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1278B8D7218844DF003C9A99 /* TreeDefaultPlaceholderCell.xib */; };
 		1279A2F12023193300DD7A46 /* NCStaticHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1279A2F02023193300DD7A46 /* NCStaticHeaderTableViewCell.xib */; };
 		1279A2F32023332500DD7A46 /* NCFooterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1279A2F22023332500DD7A46 /* NCFooterTableViewCell.xib */; };
-		1279EFEE213543B7005340C0 /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFED213543B7005340C0 /* UnitFormatter.swift */; };
-		1279EFF121355DC9005340C0 /* TreeSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFF021355DC9005340C0 /* TreeSectionCell.swift */; };
 		1279EFF421355DFD005340C0 /* TreeSectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1279EFF321355DFD005340C0 /* TreeSectionCell.xib */; };
-		1279EFF5213586D6005340C0 /* NCTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1230A31D1DFFE2CF00627D92 /* NCTableView.m */; };
-		1279EFF7213587D7005340C0 /* Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFF6213587D7005340C0 /* Cells.swift */; };
-		1279EFF921358922005340C0 /* TintImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFF821358922005340C0 /* TintImageView.swift */; };
-		1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFFC21358F68005340C0 /* MainMenuHeaderViewController.swift */; };
-		1279EFFF21358F73005340C0 /* MainMenuHeaderPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFFE21358F73005340C0 /* MainMenuHeaderPresenter.swift */; };
-		1279F00121358F7C005340C0 /* MainMenuHeaderInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279F00021358F7C005340C0 /* MainMenuHeaderInteractor.swift */; };
-		127C4433220E161F00ED2A62 /* FleetDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127C4432220E161F00ED2A62 /* FleetDescription.swift */; };
 		128130411F3B01230039D46B /* dropzone.css in Resources */ = {isa = PBXBuildFile; fileRef = 1281303E1F3B01230039D46B /* dropzone.css */; };
 		128130421F3B01230039D46B /* dropzone.js in Resources */ = {isa = PBXBuildFile; fileRef = 1281303F1F3B01230039D46B /* dropzone.js */; };
 		128130431F3B01230039D46B /* main.css in Resources */ = {isa = PBXBuildFile; fileRef = 128130401F3B01230039D46B /* main.css */; };
@@ -245,62 +114,16 @@
 		12845CB8218346D000E693D3 /* Skills_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12845CB7218346D000E693D3 /* Skills_Tests.swift */; };
 		1284C1512133F84800AF52C2 /* TreeDefaultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1284C1502133F84800AF52C2 /* TreeDefaultCell.xib */; };
 		1285FB351EB8DD350025331A /* NCAttributeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1285FB341EB8DD350025331A /* NCAttributeTableViewCell.xib */; };
-		1287FB7F2190241C00A505FC /* NewMailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB7B2190241C00A505FC /* NewMailPresenter.swift */; };
-		1287FB802190241C00A505FC /* NewMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB7C2190241C00A505FC /* NewMailViewController.swift */; };
-		1287FB812190241C00A505FC /* NewMailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB7D2190241C00A505FC /* NewMailInteractor.swift */; };
-		1287FB822190241C00A505FC /* NewMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB7E2190241C00A505FC /* NewMail.swift */; };
-		1287FB882190276B00A505FC /* ContactsSearchResultsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB842190276B00A505FC /* ContactsSearchResultsPresenter.swift */; };
-		1287FB892190276B00A505FC /* ContactsSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB852190276B00A505FC /* ContactsSearchResultsViewController.swift */; };
-		1287FB8A2190276B00A505FC /* ContactsSearchResultsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB862190276B00A505FC /* ContactsSearchResultsInteractor.swift */; };
-		1287FB8B2190276B00A505FC /* ContactsSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB872190276B00A505FC /* ContactsSearchResults.swift */; };
 		1287FB8D21903C2E00A505FC /* TreeDefaultContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1287FB8C21903C2E00A505FC /* TreeDefaultContactCell.xib */; };
-		1287FB932190825800A505FC /* InvMarketGroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB8F2190825800A505FC /* InvMarketGroupsPresenter.swift */; };
-		1287FB942190825800A505FC /* InvMarketGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB902190825800A505FC /* InvMarketGroupsViewController.swift */; };
-		1287FB952190825800A505FC /* InvMarketGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB912190825800A505FC /* InvMarketGroupsInteractor.swift */; };
-		1287FB962190825800A505FC /* InvMarketGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB922190825800A505FC /* InvMarketGroups.swift */; };
-		1287FB9C2190849A00A505FC /* InvMarketPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB982190849A00A505FC /* InvMarketPresenter.swift */; };
-		1287FB9D2190849A00A505FC /* InvMarketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB992190849A00A505FC /* InvMarketViewController.swift */; };
-		1287FB9E2190849A00A505FC /* InvMarketInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB9A2190849A00A505FC /* InvMarketInteractor.swift */; };
-		1287FB9F2190849A00A505FC /* InvMarket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB9B2190849A00A505FC /* InvMarket.swift */; };
-		1287FBA52190885500A505FC /* MarketQuickbarPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBA12190885500A505FC /* MarketQuickbarPresenter.swift */; };
-		1287FBA62190885500A505FC /* MarketQuickbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBA22190885500A505FC /* MarketQuickbarViewController.swift */; };
-		1287FBA72190885500A505FC /* MarketQuickbarInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBA32190885500A505FC /* MarketQuickbarInteractor.swift */; };
-		1287FBA82190885500A505FC /* MarketQuickbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBA42190885500A505FC /* MarketQuickbar.swift */; };
-		1287FBB12191763800A505FC /* NpcGroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBAD2191763800A505FC /* NpcGroupsPresenter.swift */; };
-		1287FBB22191763800A505FC /* NpcGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBAE2191763800A505FC /* NpcGroupsViewController.swift */; };
-		1287FBB32191763800A505FC /* NpcGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBAF2191763800A505FC /* NpcGroupsInteractor.swift */; };
-		1287FBB42191763800A505FC /* NpcGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB02191763800A505FC /* NpcGroups.swift */; };
-		1287FBBA21917CF200A505FC /* WhTypesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB621917CF200A505FC /* WhTypesPresenter.swift */; };
-		1287FBBB21917CF200A505FC /* WhTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB721917CF200A505FC /* WhTypesViewController.swift */; };
-		1287FBBC21917CF200A505FC /* WhTypesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB821917CF200A505FC /* WhTypesInteractor.swift */; };
-		1287FBBD21917CF200A505FC /* WhTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB921917CF200A505FC /* WhTypes.swift */; };
-		1287FBBF2191889000A505FC /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBBE2191889000A505FC /* SearchManager.swift */; };
-		1287FBC721918E6900A505FC /* IncursionsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBC321918E6800A505FC /* IncursionsPresenter.swift */; };
-		1287FBC821918E6900A505FC /* IncursionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBC421918E6900A505FC /* IncursionsViewController.swift */; };
-		1287FBC921918E6900A505FC /* IncursionsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBC521918E6900A505FC /* IncursionsInteractor.swift */; };
-		1287FBCA21918E6900A505FC /* Incursions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBC621918E6900A505FC /* Incursions.swift */; };
-		1287FBCD2191901600A505FC /* IncursionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBCC2191901600A505FC /* IncursionCell.swift */; };
-		1287FBCF2191916300A505FC /* API+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBCE2191916300A505FC /* API+Constants.swift */; };
 		1287FBD1219192A000A505FC /* IncursionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1287FBD0219192A000A505FC /* IncursionCell.xib */; };
-		1287FBD221919BC000A505FC /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D20E9E1EB9EB1400BEC926 /* PieChartView.swift */; };
-		1287FBD921919C6300A505FC /* AssetsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBD521919C6300A505FC /* AssetsPresenter.swift */; };
-		1287FBDA21919C6300A505FC /* AssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBD621919C6300A505FC /* AssetsViewController.swift */; };
-		1287FBDB21919C6300A505FC /* AssetsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBD721919C6300A505FC /* AssetsInteractor.swift */; };
-		1287FBDC21919C6300A505FC /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBD821919C6300A505FC /* Assets.swift */; };
-		1287FBE22191C2A100A505FC /* TreeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBE12191C2A100A505FC /* TreeHeaderCell.swift */; };
 		1287FBE42191C33200A505FC /* TreeHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1287FBE32191C33200A505FC /* TreeHeaderCell.xib */; };
 		128C5F711F418CF30038FE7D /* NCFacilityChartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F701F418CF30038FE7D /* NCFacilityChartTableViewCell.xib */; };
 		128C5F761F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F751F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib */; };
 		128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F821F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib */; };
 		128C5F9A1F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128C5F991F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib */; };
 		128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 128E32DF1E655D2C00E3B183 /* NCActionTableViewCell.xib */; };
-		12925B762189E8DB00F6216C /* MySkillsPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12925B722189E8DB00F6216C /* MySkillsPagePresenter.swift */; };
-		12925B772189E8DB00F6216C /* MySkillsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12925B732189E8DB00F6216C /* MySkillsPageViewController.swift */; };
-		12925B782189E8DB00F6216C /* MySkillsPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12925B742189E8DB00F6216C /* MySkillsPageInteractor.swift */; };
-		12925B792189E8DB00F6216C /* MySkillsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12925B752189E8DB00F6216C /* MySkillsPage.swift */; };
 		12925B7B2189EE6F00F6216C /* TreeDefaultActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12925B7A2189EE6F00F6216C /* TreeDefaultActionCell.xib */; };
 		12926F10212EDC66006A3D1C /* API_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12926F0F212EDC66006A3D1C /* API_Tests.swift */; };
-		1295A1AA2139242300047516 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1295A1A92139242300047516 /* Services.swift */; };
 		1298BA7120AEFB73002C941E /* MPUnmutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA5B20AEFB73002C941E /* MPUnmutedBtn.png */; };
 		1298BA7220AEFB73002C941E /* MRAID.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA5C20AEFB73002C941E /* MRAID.bundle */; };
 		1298BA7320AEFB73002C941E /* MPDAAIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA5D20AEFB73002C941E /* MPDAAIcon.png */; };
@@ -325,129 +148,31 @@
 		1298BA8620AEFB73002C941E /* MPDAAIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA7020AEFB73002C941E /* MPDAAIcon@2x.png */; };
 		1298BA8B20AEFCFC002C941E /* GDPR.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1298BA8A20AEFCFC002C941E /* GDPR.storyboard */; };
 		129B316E1E53527C00B9A88D /* damagePatterns.plist in Resources */ = {isa = PBXBuildFile; fileRef = 129B316D1E53527C00B9A88D /* damagePatterns.plist */; };
-		129DFE1B21347A6F00C85496 /* TableViewBackgroundLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129DFE1A21347A6F00C85496 /* TableViewBackgroundLabel.swift */; };
-		129DFE1E21347AFB00C85496 /* AccessibilityLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129DFE1D21347AFB00C85496 /* AccessibilityLabel.swift */; };
-		129DFE20213486D900C85496 /* ProgressTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129DFE1F213486D900C85496 /* ProgressTask.swift */; };
-		129E40A9213EA318002EDAF9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8D951DEF58A100561A7A /* ViewController.swift */; };
-		129E40AB213EB001002EDAF9 /* UIKit+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E314BB1E165D5D000A926D /* UIKit+NC.swift */; };
-		129E40AD213ECE0E002EDAF9 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E40AC213ECE0E002EDAF9 /* RoundedImageView.swift */; };
-		12A843012153871300570A95 /* InvTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A843002153871300570A95 /* InvTypes.swift */; };
-		12A843032153871C00570A95 /* InvTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A843022153871C00570A95 /* InvTypesViewController.swift */; };
-		12A843052153872500570A95 /* InvTypesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A843042153872500570A95 /* InvTypesPresenter.swift */; };
-		12A843072153872D00570A95 /* InvTypesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A843062153872D00570A95 /* InvTypesInteractor.swift */; };
-		12A8432C2153C5D200570A95 /* InvTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8432B2153C5D200570A95 /* InvTypeCell.swift */; };
 		12A8432E2153C63900570A95 /* InvTypeModuleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A8432D2153C63900570A95 /* InvTypeModuleCell.xib */; };
-		12A843302153CA9600570A95 /* DamageTypeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8432F2153CA9600570A95 /* DamageTypeLabel.swift */; };
 		12A843322153CB5D00570A95 /* InvTypeShipCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A843312153CB5D00570A95 /* InvTypeShipCell.xib */; };
 		12A843342153CBB000570A95 /* InvTypeChargeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12A843332153CBB000570A95 /* InvTypeChargeCell.xib */; };
 		12A948CD21B5253500AE1D2E /* SheetPresentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A948CC21B5253500AE1D2E /* SheetPresentation.framework */; };
 		12A948CE21B5253500AE1D2E /* SheetPresentation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12A948CC21B5253500AE1D2E /* SheetPresentation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9722212BEA6C00B30DD3 /* SDE.xcdatamodeld */; };
-		12AB972A212BF60000B30DD3 /* Storage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9728212BF60000B30DD3 /* Storage.xcdatamodeld */; };
-		12AB972C212BF6A900B30DD3 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB972B212BF6A900B30DD3 /* Storage.swift */; };
-		12AB9735212C0E6E00B30DD3 /* NCImplantSetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128C5F9D1F4AD7C60038FE7D /* NCImplantSetData.swift */; };
-		12AB9737212C0ECC00B30DD3 /* SDE+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9736212C0ECC00B30DD3 /* SDE+Constants.swift */; };
-		12AB973E212C162A00B30DD3 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB973D212C162A00B30DD3 /* Character.swift */; };
 		12AB974C212C30E300B30DD3 /* SDE.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 12AB974A212C30E300B30DD3 /* SDE.sqlite */; };
-		12AB974D212C30E300B30DD3 /* SDEVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB974B212C30E300B30DD3 /* SDEVersion.swift */; };
-		12AB974F212C325E00B30DD3 /* ImageValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB974E212C325E00B30DD3 /* ImageValueTransformer.swift */; };
 		12AB9751212C32EB00B30DD3 /* SDE_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9750212C32EB00B30DD3 /* SDE_Tests.swift */; };
 		12AB9753212C3E5800B30DD3 /* Character_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9752212C3E5800B30DD3 /* Character_Tests.swift */; };
-		12AB9755212C488400B30DD3 /* TrainingQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AB9754212C488400B30DD3 /* TrainingQueue.swift */; };
 		12AC8D9B1DEF58A100561A7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12AC8D9A1DEF58A100561A7A /* Assets.xcassets */; };
 		12AC8D9E1DEF58A100561A7A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12AC8D9C1DEF58A100561A7A /* LaunchScreen.storyboard */; };
 		12AC8DA61DEF597400561A7A /* EVEAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12AC8DA51DEF597400561A7A /* EVEAPI.framework */; };
 		12AC8DA71DEF597400561A7A /* EVEAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12AC8DA51DEF597400561A7A /* EVEAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		12AF2FC92188930300813DFD /* SkillsContainerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FC52188930300813DFD /* SkillsContainerPresenter.swift */; };
-		12AF2FCA2188930300813DFD /* SkillsContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FC62188930300813DFD /* SkillsContainerViewController.swift */; };
-		12AF2FCB2188930300813DFD /* SkillsContainerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FC72188930300813DFD /* SkillsContainerInteractor.swift */; };
-		12AF2FCC2188930300813DFD /* SkillsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FC82188930300813DFD /* SkillsContainer.swift */; };
-		12AF2FD12188943900813DFD /* MySkillsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FCD2188943900813DFD /* MySkillsPresenter.swift */; };
-		12AF2FD22188943900813DFD /* MySkillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FCE2188943900813DFD /* MySkillsViewController.swift */; };
-		12AF2FD32188943900813DFD /* MySkillsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FCF2188943900813DFD /* MySkillsInteractor.swift */; };
-		12AF2FD42188943900813DFD /* MySkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FD02188943900813DFD /* MySkills.swift */; };
-		12AFD46D211C1C3D00007423 /* SDE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AFD46C211C1C3D00007423 /* SDE.swift */; };
 		12AFD46F211C1CFD00007423 /* Expressible.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12AFD46E211C1CFD00007423 /* Expressible.framework */; };
 		12AFD470211C1CFD00007423 /* Expressible.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12AFD46E211C1CFD00007423 /* Expressible.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		12AFD473211C1E7D00007423 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AFD472211C1E7D00007423 /* Cache.swift */; };
-		12AFD476211C1EA800007423 /* Cache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12AFD474211C1EA800007423 /* Cache.xcdatamodeld */; };
-		12B03DA3213FC32300DCBD64 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3111DFFE2CF00627D92 /* Math.swift */; };
-		12B03DA4213FC44200DCBD64 /* NSAttributedString+NC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1230A3211DFFE2CF00627D92 /* NSAttributedString+NC.swift */; };
-		12B03DA6213FEBF400DCBD64 /* TimeIntervalFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B03DA5213FEBF400DCBD64 /* TimeIntervalFormatter.swift */; };
-		12B03DA8213FEE1B00DCBD64 /* ActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B03DA7213FEE1B00DCBD64 /* ActionHandler.swift */; };
 		12B68F291E802958006462B7 /* CloudData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12B68F281E802958006462B7 /* CloudData.framework */; };
 		12B68F2A1E802958006462B7 /* CloudData.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12B68F281E802958006462B7 /* CloudData.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		12B890722130054E0082D4A3 /* SOLID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B890712130054E0082D4A3 /* SOLID.swift */; };
-		12B8907F21300E610082D4A3 /* TreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B8907E21300E610082D4A3 /* TreeViewController.swift */; };
 		12BC40A21DFF1EBB00657D40 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BC40A11DFF1EBB00657D40 /* Alamofire.framework */; };
 		12BC40A31DFF1EBB00657D40 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12BC40A11DFF1EBB00657D40 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		12BFE4212017BF6F0083AC2F /* ASReceipt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BFE4222017BF6F0083AC2F /* ASReceipt.framework */; };
 		12C37D2C1EFA9CDC0070F055 /* NCContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C37D2B1EFA9CDC0070F055 /* NCContactTableViewCell.xib */; };
 		12C37D301EFA9D070070F055 /* NCContactCompactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C37D2F1EFA9D070070F055 /* NCContactCompactTableViewCell.xib */; };
-		12C3E39421A3F3E3002ED002 /* DatePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39021A3F3E3002ED002 /* DatePickerPresenter.swift */; };
-		12C3E39521A3F3E3002ED002 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39121A3F3E3002ED002 /* DatePickerViewController.swift */; };
-		12C3E39621A3F3E3002ED002 /* DatePickerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39221A3F3E3002ED002 /* DatePickerInteractor.swift */; };
-		12C3E39721A3F3E3002ED002 /* DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39321A3F3E3002ED002 /* DatePicker.swift */; };
-		12C3E39D21A42D77002ED002 /* ContactsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39921A42D77002ED002 /* ContactsPresenter.swift */; };
-		12C3E39E21A42D77002ED002 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39A21A42D77002ED002 /* ContactsViewController.swift */; };
-		12C3E39F21A42D77002ED002 /* ContactsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39B21A42D77002ED002 /* ContactsInteractor.swift */; };
-		12C3E3A021A42D77002ED002 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39C21A42D77002ED002 /* Contacts.swift */; };
-		12C3E3A621A5442D002ED002 /* ZKillboardInvCategoriesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3A221A5442D002ED002 /* ZKillboardInvCategoriesPresenter.swift */; };
-		12C3E3A721A5442D002ED002 /* ZKillboardInvCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3A321A5442D002ED002 /* ZKillboardInvCategoriesViewController.swift */; };
-		12C3E3A821A5442D002ED002 /* ZKillboardInvCategoriesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3A421A5442D002ED002 /* ZKillboardInvCategoriesInteractor.swift */; };
-		12C3E3A921A5442D002ED002 /* ZKillboardInvCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3A521A5442D002ED002 /* ZKillboardInvCategories.swift */; };
-		12C3E3AF21A5457C002ED002 /* ZKillboardTypePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3AB21A5457C002ED002 /* ZKillboardTypePickerPresenter.swift */; };
-		12C3E3B021A5457C002ED002 /* ZKillboardTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3AC21A5457C002ED002 /* ZKillboardTypePickerViewController.swift */; };
-		12C3E3B121A5457C002ED002 /* ZKillboardTypePickerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3AD21A5457C002ED002 /* ZKillboardTypePickerInteractor.swift */; };
-		12C3E3B221A5457C002ED002 /* ZKillboardTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3AE21A5457C002ED002 /* ZKillboardTypePicker.swift */; };
-		12C3E3B821A5460E002ED002 /* ZKillboardInvGroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3B421A5460E002ED002 /* ZKillboardInvGroupsPresenter.swift */; };
-		12C3E3B921A5460E002ED002 /* ZKillboardInvGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3B521A5460E002ED002 /* ZKillboardInvGroupsViewController.swift */; };
-		12C3E3BA21A5460E002ED002 /* ZKillboardInvGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3B621A5460E002ED002 /* ZKillboardInvGroupsInteractor.swift */; };
-		12C3E3BB21A5460E002ED002 /* ZKillboardInvGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3B721A5460E002ED002 /* ZKillboardInvGroups.swift */; };
-		12C3E3C121A54ADF002ED002 /* ZKillboardInvTypesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3BD21A54ADF002ED002 /* ZKillboardInvTypesPresenter.swift */; };
-		12C3E3C221A54ADF002ED002 /* ZKillboardInvTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3BE21A54ADF002ED002 /* ZKillboardInvTypesViewController.swift */; };
-		12C3E3C321A54ADF002ED002 /* ZKillboardInvTypesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3BF21A54ADF002ED002 /* ZKillboardInvTypesInteractor.swift */; };
-		12C3E3C421A54ADF002ED002 /* ZKillboardInvTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3C021A54ADF002ED002 /* ZKillboardInvTypes.swift */; };
-		12C3E3C721A57810002ED002 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3C621A57810002ED002 /* SwitchCell.swift */; };
-		12C3E3CD21A58972002ED002 /* ZKillmailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3C921A58972002ED002 /* ZKillmailsPresenter.swift */; };
-		12C3E3CE21A58972002ED002 /* ZKillmailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3CA21A58972002ED002 /* ZKillmailsViewController.swift */; };
-		12C3E3CF21A58972002ED002 /* ZKillmailsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3CB21A58972002ED002 /* ZKillmailsInteractor.swift */; };
-		12C3E3D021A58972002ED002 /* ZKillmails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3CC21A58972002ED002 /* ZKillmails.swift */; };
-		12C727B5218B33CD00A78ADF /* JumpClonesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B1218B33CD00A78ADF /* JumpClonesPresenter.swift */; };
-		12C727B6218B33CD00A78ADF /* JumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B2218B33CD00A78ADF /* JumpClonesViewController.swift */; };
-		12C727B7218B33CD00A78ADF /* JumpClonesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B3218B33CD00A78ADF /* JumpClonesInteractor.swift */; };
-		12C727B8218B33CD00A78ADF /* JumpClones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B4218B33CD00A78ADF /* JumpClones.swift */; };
-		12C727BE218C255600A78ADF /* MailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727BA218C255600A78ADF /* MailPresenter.swift */; };
-		12C727BF218C255600A78ADF /* MailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727BB218C255600A78ADF /* MailViewController.swift */; };
-		12C727C0218C255600A78ADF /* MailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727BC218C255600A78ADF /* MailInteractor.swift */; };
-		12C727C1218C255600A78ADF /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727BD218C255600A78ADF /* Mail.swift */; };
-		12C727C7218C2BBF00A78ADF /* MailPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727C3218C2BBF00A78ADF /* MailPagePresenter.swift */; };
-		12C727C8218C2BBF00A78ADF /* MailPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727C4218C2BBF00A78ADF /* MailPageViewController.swift */; };
-		12C727C9218C2BBF00A78ADF /* MailPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727C5218C2BBF00A78ADF /* MailPageInteractor.swift */; };
-		12C727CA218C2BBF00A78ADF /* MailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727C6218C2BBF00A78ADF /* MailPage.swift */; };
 		12C727CD218C5EF700A78ADF /* MailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C727CC218C5EF700A78ADF /* MailCell.xib */; };
-		12C727CF218C5F9D00A78ADF /* MailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727CE218C5F9D00A78ADF /* MailCell.swift */; };
-		12C727DE218C8B7B00A78ADF /* MailBodyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727DA218C8B7B00A78ADF /* MailBodyPresenter.swift */; };
-		12C727DF218C8B7B00A78ADF /* MailBodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727DB218C8B7B00A78ADF /* MailBodyViewController.swift */; };
-		12C727E0218C8B7B00A78ADF /* MailBodyInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727DC218C8B7B00A78ADF /* MailBodyInteractor.swift */; };
-		12C727E1218C8B7B00A78ADF /* MailBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727DD218C8B7B00A78ADF /* MailBody.swift */; };
-		12C8ABAA219424D50028BF9A /* AssetsSearchResultsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABA6219424D50028BF9A /* AssetsSearchResultsPresenter.swift */; };
-		12C8ABAB219424D50028BF9A /* AssetsSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABA7219424D50028BF9A /* AssetsSearchResultsViewController.swift */; };
-		12C8ABAC219424D50028BF9A /* AssetsSearchResultsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABA8219424D50028BF9A /* AssetsSearchResultsInteractor.swift */; };
-		12C8ABAD219424D50028BF9A /* AssetsSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABA9219424D50028BF9A /* AssetsSearchResults.swift */; };
-		12C8ABD3219597720028BF9A /* MarketOrdersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABCF219597720028BF9A /* MarketOrdersPresenter.swift */; };
-		12C8ABD4219597720028BF9A /* MarketOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABD0219597720028BF9A /* MarketOrdersViewController.swift */; };
-		12C8ABD5219597720028BF9A /* MarketOrdersInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABD1219597720028BF9A /* MarketOrdersInteractor.swift */; };
-		12C8ABD6219597720028BF9A /* MarketOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABD2219597720028BF9A /* MarketOrders.swift */; };
 		12C8ABD9219597E90028BF9A /* MarketOrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C8ABD8219597E90028BF9A /* MarketOrderCell.xib */; };
-		12C8ABDB219598B90028BF9A /* MarketOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABDA219598B90028BF9A /* MarketOrderCell.swift */; };
 		12C8ABDD2195AF5C0028BF9A /* Business_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABDC2195AF5C0028BF9A /* Business_Tests.swift */; };
 		12C8ABE02195BFC00028BF9A /* IndustryJobCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C8ABDF2195BFC00028BF9A /* IndustryJobCell.xib */; };
-		12C8ABE22195BFC80028BF9A /* IndustryJobCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE12195BFC80028BF9A /* IndustryJobCell.swift */; };
-		12C8ABE82195C26E0028BF9A /* IndustryJobsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE42195C26E0028BF9A /* IndustryJobsPresenter.swift */; };
-		12C8ABE92195C26E0028BF9A /* IndustryJobsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE52195C26E0028BF9A /* IndustryJobsViewController.swift */; };
-		12C8ABEA2195C26E0028BF9A /* IndustryJobsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE62195C26E0028BF9A /* IndustryJobsInteractor.swift */; };
-		12C8ABEB2195C26E0028BF9A /* IndustryJobs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE72195C26E0028BF9A /* IndustryJobs.swift */; };
 		12C967101F9614B200B141CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 12C9670F1F96149F00B141CC /* GoogleService-Info.plist */; };
 		12CA8F822047DED1000360DE /* Neocom_II_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CA8F812047DED1000360DE /* Neocom_II_Tests.swift */; };
 		12CACFE52008C36B000B76C3 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12CACFE42008C36B000B76C3 /* NotificationCenter.framework */; };
@@ -457,28 +182,314 @@
 		12CACFFA2008DA1A000B76C3 /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CACFF82008DA1A000B76C3 /* WidgetData.swift */; };
 		12CACFFB2008E67D000B76C3 /* NCRoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126157031E008E770041B817 /* NCRoundedImageView.swift */; };
 		12CACFFC2008E69F000B76C3 /* NCImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1285FB321EB8DBFA0025331A /* NCImageView.swift */; };
+		12CBCD70227998D400F9D6BA /* MarketHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62F2159108F007DEA16 /* MarketHistoryView.swift */; };
+		12CBCD7A2279990800F9D6BA /* APIServiceTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7421C560B6002234A7 /* APIServiceTesting.swift */; };
+		12CBCD7F2279991700F9D6BA /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C25215E1F9500646937 /* Image.swift */; };
+		12CBCEA62279A5C700F9D6BA /* SOLID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B890712130054E0082D4A3 /* SOLID.swift */; };
+		12CBCEA72279A5FA00F9D6BA /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D0B213E6282005CE68F /* Route.swift */; };
+		12CBCEA92279A66200F9D6BA /* TreeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12415980212FF0AC001709F2 /* TreeItem.swift */; };
+		12CBCEAA2279A67400F9D6BA /* TreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B8907E21300E610082D4A3 /* TreeViewController.swift */; };
+		12CBCEAF2279A6AF00F9D6BA /* TreeItem+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26F02136F07200AE1D70 /* TreeItem+CoreData.swift */; };
+		12CBCEB02279A6C500F9D6BA /* TreeSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFF021355DC9005340C0 /* TreeSectionCell.swift */; };
+		12CBCEB42279A7F000F9D6BA /* InvTypeRequiredForViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28BE218AEA24000D392C /* InvTypeRequiredForViewController.swift */; };
+		12CBCEB52279A7F000F9D6BA /* InvTypeRequiredForPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28BD218AEA24000D392C /* InvTypeRequiredForPresenter.swift */; };
+		12CBCEB62279A7F000F9D6BA /* InvTypeRequiredForInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28BF218AEA24000D392C /* InvTypeRequiredForInteractor.swift */; };
+		12CBCEB72279A82E00F9D6BA /* InvTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8432B2153C5D200570A95 /* InvTypeCell.swift */; };
+		12CBCEB82279A85900F9D6BA /* InvTypeRequiredFor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C0218AEA24000D392C /* InvTypeRequiredFor.swift */; };
+		12CBCEB92279A89B00F9D6BA /* TreeDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF63B2133D30000B86AE0 /* TreeDefaultCell.swift */; };
+		12CBCEBA2279A89B00F9D6BA /* InvTypeMarketOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C64215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift */; };
+		12CBCEBB2279A89B00F9D6BA /* DamageTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62421590744007DEA16 /* DamageTypeCell.swift */; };
+		12CBCEBC2279A89B00F9D6BA /* IncursionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBCC2191901600A505FC /* IncursionCell.swift */; };
+		12CBCEBD2279A89B00F9D6BA /* MailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727CE218C5F9D00A78ADF /* MailCell.swift */; };
+		12CBCEBE2279A89B00F9D6BA /* FleetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0C21D3FC7B00D65AD7 /* FleetCell.swift */; };
+		12CBCEBF2279A89B00F9D6BA /* SkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EA7797217F447A009C8288 /* SkillCell.swift */; };
+		12CBCEC02279A89B00F9D6BA /* ContractCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C5100219956D800D0FC8E /* ContractCell.swift */; };
+		12CBCEC12279A89B00F9D6BA /* WalletJournalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51172199906100D0FC8E /* WalletJournalCell.swift */; };
+		12CBCEC22279A89B00F9D6BA /* KillmailAttackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1248427F219C344E00CB3616 /* KillmailAttackerCell.swift */; };
+		12CBCEC32279A89B00F9D6BA /* WalletTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51272199B16000D0FC8E /* WalletTransactionCell.swift */; };
+		12CBCEC42279A89B00F9D6BA /* MarketHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1253C62D21591066007DEA16 /* MarketHistoryCell.swift */; };
+		12CBCEC52279A89B00F9D6BA /* KillmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB52219AEF5800EB99C9 /* KillmailCell.swift */; };
+		12CBCEC62279A89B00F9D6BA /* MarketOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABDA219598B90028BF9A /* MarketOrderCell.swift */; };
+		12CBCEC72279A89B00F9D6BA /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1259639421381EA100B3A53C /* AccountCell.swift */; };
+		12CBCEC82279A89B00F9D6BA /* IndustryJobCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE12195BFC80028BF9A /* IndustryJobCell.swift */; };
+		12CBCEC92279A8B300F9D6BA /* AssetsSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABA7219424D50028BF9A /* AssetsSearchResultsViewController.swift */; };
+		12CBCECA2279A8B300F9D6BA /* InvTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A843022153871C00570A95 /* InvTypesViewController.swift */; };
+		12CBCECB2279A8B300F9D6BA /* WhTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB721917CF200A505FC /* WhTypesViewController.swift */; };
+		12CBCECC2279A8B300F9D6BA /* CertCertificateMasteryInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C52215E56AD00646937 /* CertCertificateMasteryInfoViewController.swift */; };
+		12CBCECD2279A8B300F9D6BA /* ZKillboardInvTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3BE21A54ADF002ED002 /* ZKillboardInvTypesViewController.swift */; };
+		12CBCECE2279A8B300F9D6BA /* SkillQueueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CC3217A7C9400D34CFB /* SkillQueueViewController.swift */; };
+		12CBCECF2279A8B300F9D6BA /* ZKillboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484294219D46D000CB3616 /* ZKillboardViewController.swift */; };
+		12CBCED02279A8B300F9D6BA /* MapLocationPickerSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484CA4215D20F60083AE17 /* MapLocationPickerSearchResultsViewController.swift */; };
+		12CBCED12279A8B300F9D6BA /* InvTypeMarketOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C35215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift */; };
+		12CBCED22279A8B300F9D6BA /* MapLocationPickerRegionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C7E215CCF1B0083AE17 /* MapLocationPickerRegionsViewController.swift */; };
+		12CBCED32279A8B300F9D6BA /* WalletJournalPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C510F21998D6A00D0FC8E /* WalletJournalPageViewController.swift */; };
+		12CBCED42279A8B300F9D6BA /* MySkillsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12925B732189E8DB00F6216C /* MySkillsPageViewController.swift */; };
+		12CBCED52279A8B300F9D6BA /* AssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBD621919C6300A505FC /* AssetsViewController.swift */; };
+		12CBCED62279A8B300F9D6BA /* WalletTransactionsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511D2199A54000D0FC8E /* WalletTransactionsPageViewController.swift */; };
+		12CBCED72279A8B300F9D6BA /* CertGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C36215E39A500646937 /* CertGroupsViewController.swift */; };
+		12CBCED82279A8B300F9D6BA /* AccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26EA2136EE6C00AE1D70 /* AccountsViewController.swift */; };
+		12CBCED92279A8B300F9D6BA /* ZKillmailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3CA21A58972002ED002 /* ZKillmailsViewController.swift */; };
+		12CBCEDA2279A8B300F9D6BA /* InvTypeInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8147121550EC200313DAF /* InvTypeInfoViewController.swift */; };
+		12CBCEDB2279A8B300F9D6BA /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6322133CFC700B86AE0 /* MainMenuViewController.swift */; };
+		12CBCEDC2279A8B300F9D6BA /* InvGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D06F21528A140070AF92 /* InvGroupsViewController.swift */; };
+		12CBCEDD2279A8B300F9D6BA /* ContractsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C50F8219954F700D0FC8E /* ContractsViewController.swift */; };
+		12CBCEDE2279A8B300F9D6BA /* CertCertificatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C3F215E3B6400646937 /* CertCertificatesViewController.swift */; };
+		12CBCEDF2279A8B300F9D6BA /* CharacterInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C6218AF1E8000D392C /* CharacterInfoViewController.swift */; };
+		12CBCEE02279A8B300F9D6BA /* MailPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727C4218C2BBF00A78ADF /* MailPageViewController.swift */; };
+		12CBCEE12279A8B300F9D6BA /* ContactsSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB852190276B00A505FC /* ContactsSearchResultsViewController.swift */; };
+		12CBCEE22279A8B300F9D6BA /* InvTypeVariationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C2B215E291500646937 /* InvTypeVariationsViewController.swift */; };
+		12CBCEE32279A8B300F9D6BA /* ZKillboardInvCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3A321A5442D002ED002 /* ZKillboardInvCategoriesViewController.swift */; };
+		12CBCEE42279A8B300F9D6BA /* CertCertificateRequirementsInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C5A215E56CF00646937 /* CertCertificateRequirementsInfoViewController.swift */; };
+		12CBCEE52279A8B300F9D6BA /* DgmTypePickerTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9EC21D15BAE00D65AD7 /* DgmTypePickerTypesViewController.swift */; };
+		12CBCEE62279A8B300F9D6BA /* InvTypeMasteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CB02176FEB500D34CFB /* InvTypeMasteryViewController.swift */; };
+		12CBCEE72279A8B300F9D6BA /* NpcGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBAE2191763800A505FC /* NpcGroupsViewController.swift */; };
+		12CBCEE82279A8B300F9D6BA /* MapLocationPickerSolarSystemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C86215CD55F0083AE17 /* MapLocationPickerSolarSystemsViewController.swift */; };
+		12CBCEE92279A8B300F9D6BA /* IncursionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBC421918E6900A505FC /* IncursionsViewController.swift */; };
+		12CBCEEA2279A8B300F9D6BA /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39A21A42D77002ED002 /* ContactsViewController.swift */; };
+		12CBCEEB2279A8B300F9D6BA /* IndustryJobsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE52195C26E0028BF9A /* IndustryJobsViewController.swift */; };
+		12CBCEEC2279A8B300F9D6BA /* DgmTypePickerGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7821C6E4CF002234A7 /* DgmTypePickerGroupsViewController.swift */; };
+		12CBCEED2279A8B300F9D6BA /* MarketQuickbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBA22190885500A505FC /* MarketQuickbarViewController.swift */; };
+		12CBCEEE2279A8B300F9D6BA /* JumpClonesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B2218B33CD00A78ADF /* JumpClonesViewController.swift */; };
+		12CBCEEF2279A8B300F9D6BA /* FittingLoadoutsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62B21A7F73500BA5C9A /* FittingLoadoutsViewController.swift */; };
+		12CBCEF02279A8B300F9D6BA /* MarketOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABD0219597720028BF9A /* MarketOrdersViewController.swift */; };
+		12CBCEF12279A8B300F9D6BA /* InvCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D063215270780070AF92 /* InvCategoriesViewController.swift */; };
+		12CBCEF22279A8B300F9D6BA /* FittingFleetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0221D2CDA800D65AD7 /* FittingFleetsViewController.swift */; };
+		12CBCEF32279A8B300F9D6BA /* ContractInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51062199626000D0FC8E /* ContractInfoViewController.swift */; };
+		12CBCEF42279A8B300F9D6BA /* KillmailsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB58219AF2F200EB99C9 /* KillmailsPageViewController.swift */; };
+		12CBCEF52279A8B300F9D6BA /* MapLocationPickerRecentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C8E215CD5A10083AE17 /* MapLocationPickerRecentsViewController.swift */; };
+		12CBCEF62279A8B300F9D6BA /* ZKillboardInvGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3B521A5460E002ED002 /* ZKillboardInvGroupsViewController.swift */; };
+		12CBCEF72279A8B300F9D6BA /* KillmailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484270219BF94A00CB3616 /* KillmailInfoViewController.swift */; };
+		12CBCEF82279A8B300F9D6BA /* DgmTypePickerRecentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9F921D2821A00D65AD7 /* DgmTypePickerRecentsViewController.swift */; };
+		12CBCEF92279A8B300F9D6BA /* InvMarketGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB902190825800A505FC /* InvMarketGroupsViewController.swift */; };
+		12CBCEFA2279A8CD00F9D6BA /* ZKillboardInvTypesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3BD21A54ADF002ED002 /* ZKillboardInvTypesPresenter.swift */; };
+		12CBCEFB2279A8CD00F9D6BA /* InvTypesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A843042153872500570A95 /* InvTypesPresenter.swift */; };
+		12CBCEFC2279A8CD00F9D6BA /* MapLocationPickerRecentsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C90215CD5AA0083AE17 /* MapLocationPickerRecentsPresenter.swift */; };
+		12CBCEFD2279A8CD00F9D6BA /* InvMarketGroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB8F2190825800A505FC /* InvMarketGroupsPresenter.swift */; };
+		12CBCEFE2279A8CD00F9D6BA /* MapLocationPickerSolarSystemsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C88215CD56A0083AE17 /* MapLocationPickerSolarSystemsPresenter.swift */; };
+		12CBCEFF2279A8CD00F9D6BA /* ZKillboardInvCategoriesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3A221A5442D002ED002 /* ZKillboardInvCategoriesPresenter.swift */; };
+		12CBCF002279A8CD00F9D6BA /* ContractInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51052199626000D0FC8E /* ContractInfoPresenter.swift */; };
+		12CBCF012279A8CD00F9D6BA /* InvTypeInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8147321550ED100313DAF /* InvTypeInfoPresenter.swift */; };
+		12CBCF022279A8CD00F9D6BA /* AssetsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBD521919C6300A505FC /* AssetsPresenter.swift */; };
+		12CBCF032279A8CD00F9D6BA /* MarketQuickbarPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBA12190885500A505FC /* MarketQuickbarPresenter.swift */; };
+		12CBCF042279A8CD00F9D6BA /* IndustryJobsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE42195C26E0028BF9A /* IndustryJobsPresenter.swift */; };
+		12CBCF052279A8CD00F9D6BA /* ContactsSearchResultsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB842190276B00A505FC /* ContactsSearchResultsPresenter.swift */; };
+		12CBCF062279A8CD00F9D6BA /* FittingLoadoutsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62A21A7F73500BA5C9A /* FittingLoadoutsPresenter.swift */; };
+		12CBCF072279A8CD00F9D6BA /* CharacterInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C5218AF1E8000D392C /* CharacterInfoPresenter.swift */; };
+		12CBCF082279A8CD00F9D6BA /* CertCertificateMasteryInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C54215E56B500646937 /* CertCertificateMasteryInfoPresenter.swift */; };
+		12CBCF092279A8CD00F9D6BA /* ZKillmailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3C921A58972002ED002 /* ZKillmailsPresenter.swift */; };
+		12CBCF0A2279A8CD00F9D6BA /* CertCertificatesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C41215E3B6D00646937 /* CertCertificatesPresenter.swift */; };
+		12CBCF0B2279A8CD00F9D6BA /* MainMenuPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6342133CFD000B86AE0 /* MainMenuPresenter.swift */; };
+		12CBCF0C2279A8CD00F9D6BA /* ZKillboardPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484293219D46D000CB3616 /* ZKillboardPresenter.swift */; };
+		12CBCF0D2279A8CD00F9D6BA /* CertGroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C38215E39AE00646937 /* CertGroupsPresenter.swift */; };
+		12CBCF0E2279A8CD00F9D6BA /* InvGroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D07121528A1C0070AF92 /* InvGroupsPresenter.swift */; };
+		12CBCF0F2279A8CD00F9D6BA /* AssetsSearchResultsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABA6219424D50028BF9A /* AssetsSearchResultsPresenter.swift */; };
+		12CBCF102279A8CD00F9D6BA /* MapLocationPickerSearchResultsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484CA6215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift */; };
+		12CBCF112279A8CD00F9D6BA /* DgmTypePickerTypesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9EB21D15BAE00D65AD7 /* DgmTypePickerTypesPresenter.swift */; };
+		12CBCF122279A8CD00F9D6BA /* MySkillsPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12925B722189E8DB00F6216C /* MySkillsPagePresenter.swift */; };
+		12CBCF132279A8CD00F9D6BA /* AccountsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26EE2136EE9100AE1D70 /* AccountsPresenter.swift */; };
+		12CBCF142279A8CD00F9D6BA /* MapLocationPickerRegionsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C80215CCF260083AE17 /* MapLocationPickerRegionsPresenter.swift */; };
+		12CBCF152279A8CD00F9D6BA /* InvTypeMarketOrdersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C37215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift */; };
+		12CBCF162279A8CD00F9D6BA /* KillmailInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1248426F219BF94A00CB3616 /* KillmailInfoPresenter.swift */; };
+		12CBCF172279A8CD00F9D6BA /* FittingFleetsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0121D2CDA800D65AD7 /* FittingFleetsPresenter.swift */; };
+		12CBCF182279A8CD00F9D6BA /* ZKillboardInvGroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3B421A5460E002ED002 /* ZKillboardInvGroupsPresenter.swift */; };
+		12CBCF192279A8CD00F9D6BA /* DgmTypePickerGroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7721C6E4CF002234A7 /* DgmTypePickerGroupsPresenter.swift */; };
+		12CBCF1A2279A8CD00F9D6BA /* InvTypeMasteryPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CAF2176FEB500D34CFB /* InvTypeMasteryPresenter.swift */; };
+		12CBCF1B2279A8CD00F9D6BA /* CertCertificateRequirementsInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C5C215E56D800646937 /* CertCertificateRequirementsInfoPresenter.swift */; };
+		12CBCF1C2279A8CD00F9D6BA /* WalletJournalPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C510E21998D6A00D0FC8E /* WalletJournalPagePresenter.swift */; };
+		12CBCF1D2279A8CD00F9D6BA /* NpcGroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBAD2191763800A505FC /* NpcGroupsPresenter.swift */; };
+		12CBCF1E2279A8CD00F9D6BA /* WalletTransactionsPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511C2199A54000D0FC8E /* WalletTransactionsPagePresenter.swift */; };
+		12CBCF1F2279A8CD00F9D6BA /* KillmailsPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB57219AF2F200EB99C9 /* KillmailsPagePresenter.swift */; };
+		12CBCF202279A8CD00F9D6BA /* SkillQueuePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CC2217A7C9400D34CFB /* SkillQueuePresenter.swift */; };
+		12CBCF212279A8CD00F9D6BA /* DgmTypePickerRecentsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9F821D2821A00D65AD7 /* DgmTypePickerRecentsPresenter.swift */; };
+		12CBCF222279A8CD00F9D6BA /* InvTypeVariationsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C2D215E292300646937 /* InvTypeVariationsPresenter.swift */; };
+		12CBCF232279A8CD00F9D6BA /* IncursionsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBC321918E6800A505FC /* IncursionsPresenter.swift */; };
+		12CBCF242279A8CD00F9D6BA /* WhTypesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB621917CF200A505FC /* WhTypesPresenter.swift */; };
+		12CBCF252279A8CD00F9D6BA /* ContractsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C50F7219954F700D0FC8E /* ContractsPresenter.swift */; };
+		12CBCF262279A8CD00F9D6BA /* InvCategoriesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D065215271370070AF92 /* InvCategoriesPresenter.swift */; };
+		12CBCF272279A8CD00F9D6BA /* JumpClonesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B1218B33CD00A78ADF /* JumpClonesPresenter.swift */; };
+		12CBCF282279A8CD00F9D6BA /* MarketOrdersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABCF219597720028BF9A /* MarketOrdersPresenter.swift */; };
+		12CBCF292279A8CD00F9D6BA /* ContactsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39921A42D77002ED002 /* ContactsPresenter.swift */; };
+		12CBCF2A2279A8CD00F9D6BA /* MailPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727C3218C2BBF00A78ADF /* MailPagePresenter.swift */; };
+		12CBCF2B2279A8D800F9D6BA /* NpcGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBAF2191763800A505FC /* NpcGroupsInteractor.swift */; };
+		12CBCF2C2279A8D800F9D6BA /* DgmTypePickerTypesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9ED21D15BAE00D65AD7 /* DgmTypePickerTypesInteractor.swift */; };
+		12CBCF2D2279A8D800F9D6BA /* ContactsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39B21A42D77002ED002 /* ContactsInteractor.swift */; };
+		12CBCF2E2279A8D800F9D6BA /* WalletJournalPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511021998D6A00D0FC8E /* WalletJournalPageInteractor.swift */; };
+		12CBCF2F2279A8D800F9D6BA /* WhTypesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB821917CF200A505FC /* WhTypesInteractor.swift */; };
+		12CBCF302279A8D800F9D6BA /* InvTypeInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8147521550EDA00313DAF /* InvTypeInfoInteractor.swift */; };
+		12CBCF312279A8D800F9D6BA /* FittingLoadoutsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62C21A7F73500BA5C9A /* FittingLoadoutsInteractor.swift */; };
+		12CBCF322279A8D800F9D6BA /* DgmTypePickerRecentsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9FA21D2821A00D65AD7 /* DgmTypePickerRecentsInteractor.swift */; };
+		12CBCF332279A8D800F9D6BA /* IndustryJobsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE62195C26E0028BF9A /* IndustryJobsInteractor.swift */; };
+		12CBCF342279A8D800F9D6BA /* MainMenuInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125DF6362133CFDB00B86AE0 /* MainMenuInteractor.swift */; };
+		12CBCF352279A8D800F9D6BA /* SkillQueueInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CC4217A7C9400D34CFB /* SkillQueueInteractor.swift */; };
+		12CBCF362279A8D800F9D6BA /* ZKillmailsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3CB21A58972002ED002 /* ZKillmailsInteractor.swift */; };
+		12CBCF372279A8D800F9D6BA /* InvTypeVariationsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C2F215E292D00646937 /* InvTypeVariationsInteractor.swift */; };
+		12CBCF382279A8D800F9D6BA /* JumpClonesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B3218B33CD00A78ADF /* JumpClonesInteractor.swift */; };
+		12CBCF392279A8D800F9D6BA /* CertCertificateMasteryInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C56215E56BE00646937 /* CertCertificateMasteryInfoInteractor.swift */; };
+		12CBCF3A2279A8D800F9D6BA /* InvMarketGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB912190825800A505FC /* InvMarketGroupsInteractor.swift */; };
+		12CBCF3B2279A8D800F9D6BA /* MapLocationPickerSolarSystemsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C8A215CD5740083AE17 /* MapLocationPickerSolarSystemsInteractor.swift */; };
+		12CBCF3C2279A8D800F9D6BA /* ContactsSearchResultsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB862190276B00A505FC /* ContactsSearchResultsInteractor.swift */; };
+		12CBCF3D2279A8D800F9D6BA /* WalletTransactionsPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511E2199A54000D0FC8E /* WalletTransactionsPageInteractor.swift */; };
+		12CBCF3E2279A8D800F9D6BA /* ZKillboardInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484295219D46D000CB3616 /* ZKillboardInteractor.swift */; };
+		12CBCF3F2279A8D800F9D6BA /* AssetsSearchResultsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABA8219424D50028BF9A /* AssetsSearchResultsInteractor.swift */; };
+		12CBCF402279A8D800F9D6BA /* FittingFleetsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0321D2CDA800D65AD7 /* FittingFleetsInteractor.swift */; };
+		12CBCF412279A8D800F9D6BA /* InvGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D07321528A270070AF92 /* InvGroupsInteractor.swift */; };
+		12CBCF422279A8D800F9D6BA /* InvTypesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A843062153872D00570A95 /* InvTypesInteractor.swift */; };
+		12CBCF432279A8D800F9D6BA /* AssetsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBD721919C6300A505FC /* AssetsInteractor.swift */; };
+		12CBCF442279A8D800F9D6BA /* CertGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C3A215E39B700646937 /* CertGroupsInteractor.swift */; };
+		12CBCF452279A8D800F9D6BA /* ContractsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C50F9219954F700D0FC8E /* ContractsInteractor.swift */; };
+		12CBCF462279A8D800F9D6BA /* ZKillboardInvTypesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3BF21A54ADF002ED002 /* ZKillboardInvTypesInteractor.swift */; };
+		12CBCF472279A8D800F9D6BA /* MarketQuickbarInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBA32190885500A505FC /* MarketQuickbarInteractor.swift */; };
+		12CBCF482279A8D800F9D6BA /* DgmTypePickerGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7921C6E4CF002234A7 /* DgmTypePickerGroupsInteractor.swift */; };
+		12CBCF492279A8D800F9D6BA /* AccountsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26EC2136EE8700AE1D70 /* AccountsInteractor.swift */; };
+		12CBCF4A2279A8D800F9D6BA /* CertCertificateRequirementsInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C5E215E56E100646937 /* CertCertificateRequirementsInfoInteractor.swift */; };
+		12CBCF4B2279A8D800F9D6BA /* InvTypeMarketOrdersInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C39215B8E230083AE17 /* InvTypeMarketOrdersInteractor.swift */; };
+		12CBCF4C2279A8D800F9D6BA /* CharacterInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C7218AF1E8000D392C /* CharacterInfoInteractor.swift */; };
+		12CBCF4D2279A8D800F9D6BA /* IncursionsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBC521918E6900A505FC /* IncursionsInteractor.swift */; };
+		12CBCF4E2279A8D800F9D6BA /* InvCategoriesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D067215271420070AF92 /* InvCategoriesInteractor.swift */; };
+		12CBCF4F2279A8D800F9D6BA /* MarketOrdersInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABD1219597720028BF9A /* MarketOrdersInteractor.swift */; };
+		12CBCF502279A8D800F9D6BA /* ZKillboardInvCategoriesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3A421A5442D002ED002 /* ZKillboardInvCategoriesInteractor.swift */; };
+		12CBCF512279A8D800F9D6BA /* MapLocationPickerSearchResultsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484CA8215D21080083AE17 /* MapLocationPickerSearchResultsInteractor.swift */; };
+		12CBCF522279A8D800F9D6BA /* MapLocationPickerRecentsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C92215CD5B30083AE17 /* MapLocationPickerRecentsInteractor.swift */; };
+		12CBCF532279A8D800F9D6BA /* MailPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727C5218C2BBF00A78ADF /* MailPageInteractor.swift */; };
+		12CBCF542279A8D800F9D6BA /* CertCertificatesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C43215E3B7700646937 /* CertCertificatesInteractor.swift */; };
+		12CBCF552279A8D800F9D6BA /* MapLocationPickerRegionsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C82215CCF2E0083AE17 /* MapLocationPickerRegionsInteractor.swift */; };
+		12CBCF562279A8D800F9D6BA /* ContractInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51072199626000D0FC8E /* ContractInfoInteractor.swift */; };
+		12CBCF572279A8D800F9D6BA /* MySkillsPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12925B742189E8DB00F6216C /* MySkillsPageInteractor.swift */; };
+		12CBCF582279A8D800F9D6BA /* ZKillboardInvGroupsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3B621A5460E002ED002 /* ZKillboardInvGroupsInteractor.swift */; };
+		12CBCF592279A8D800F9D6BA /* KillmailsPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB59219AF2F200EB99C9 /* KillmailsPageInteractor.swift */; };
+		12CBCF5A2279A8D800F9D6BA /* KillmailInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484271219BF94A00CB3616 /* KillmailInfoInteractor.swift */; };
+		12CBCF5B2279A8D800F9D6BA /* InvTypeMasteryInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CB12176FEB500D34CFB /* InvTypeMasteryInteractor.swift */; };
+		12CBCF5C2279A8EB00F9D6BA /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7CE4213D598F005CE68F /* Router.swift */; };
+		12CBCF9E2279A90000F9D6BA /* InvTypeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8146F21550E0F00313DAF /* InvTypeInfo.swift */; };
+		12CBCF9F2279A90000F9D6BA /* MainMenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A386E213D543E0071ED72 /* MainMenuHeader.swift */; };
+		12CBCFA02279A90000F9D6BA /* InvTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A843002153871300570A95 /* InvTypes.swift */; };
+		12CBCFA12279A90000F9D6BA /* FittingFleets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256CA0421D2CDA800D65AD7 /* FittingFleets.swift */; };
+		12CBCFA22279A90000F9D6BA /* MapLocationPickerSolarSystems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C84215CD5560083AE17 /* MapLocationPickerSolarSystems.swift */; };
+		12CBCFA32279A90000F9D6BA /* MapLocationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C71215CC6610083AE17 /* MapLocationPicker.swift */; };
+		12CBCFA42279A90000F9D6BA /* InvMarketGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB922190825800A505FC /* InvMarketGroups.swift */; };
+		12CBCFA52279A90000F9D6BA /* DgmTypePickerRecents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9FB21D2821A00D65AD7 /* DgmTypePickerRecents.swift */; };
+		12CBCFA62279A90000F9D6BA /* ZKillmails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3CC21A58972002ED002 /* ZKillmails.swift */; };
+		12CBCFA72279A90000F9D6BA /* KillmailsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1233EB5A219AF2F200EB99C9 /* KillmailsPage.swift */; };
+		12CBCFA82279A90000F9D6BA /* CertCertificates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C3D215E3B5A00646937 /* CertCertificates.swift */; };
+		12CBCFA92279A90000F9D6BA /* InvGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D06D215289FC0070AF92 /* InvGroups.swift */; };
+		12CBCFAA2279A90000F9D6BA /* Skills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CBC217A7BDF00D34CFB /* Skills.swift */; };
+		12CBCFAB2279A90000F9D6BA /* Incursions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBC621918E6900A505FC /* Incursions.swift */; };
+		12CBCFAC2279A90000F9D6BA /* WalletJournalPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511121998D6A00D0FC8E /* WalletJournalPage.swift */; };
+		12CBCFAD2279A90000F9D6BA /* InvTypeMastery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CB22176FEB500D34CFB /* InvTypeMastery.swift */; };
+		12CBCFAE2279A90000F9D6BA /* CertGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C34215E399C00646937 /* CertGroups.swift */; };
+		12CBCFAF2279A90000F9D6BA /* Killmails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C5130219ACCE400D0FC8E /* Killmails.swift */; };
+		12CBCFB02279A90000F9D6BA /* ZKillboardInvCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3A521A5442D002ED002 /* ZKillboardInvCategories.swift */; };
+		12CBCFB12279A90000F9D6BA /* SkillQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CC5217A7C9400D34CFB /* SkillQueue.swift */; };
+		12CBCFB22279A90000F9D6BA /* WalletTransactionsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C511F2199A54000D0FC8E /* WalletTransactionsPage.swift */; };
+		12CBCFB32279A90000F9D6BA /* SkillsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FC82188930300813DFD /* SkillsContainer.swift */; };
+		12CBCFB42279A90000F9D6BA /* ZKillboardTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3AE21A5457C002ED002 /* ZKillboardTypePicker.swift */; };
+		12CBCFB52279A90000F9D6BA /* MapLocationPickerRegions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C7C215CCF100083AE17 /* MapLocationPickerRegions.swift */; };
+		12CBCFB62279A90000F9D6BA /* ContractInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C51082199626000D0FC8E /* ContractInfo.swift */; };
+		12CBCFB72279A90000F9D6BA /* CertCertificateMasteryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C50215E56A500646937 /* CertCertificateMasteryInfo.swift */; };
+		12CBCFB82279A90000F9D6BA /* InvTypeVariations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C29215E290500646937 /* InvTypeVariations.swift */; };
+		12CBCFB92279A90000F9D6BA /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBD821919C6300A505FC /* Assets.swift */; };
+		12CBCFBA2279A90000F9D6BA /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727BD218C255600A78ADF /* Mail.swift */; };
+		12CBCFBB2279A90000F9D6BA /* IndustryJobs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABE72195C26E0028BF9A /* IndustryJobs.swift */; };
+		12CBCFBC2279A90000F9D6BA /* DgmTypePickerTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1256C9EE21D15BAE00D65AD7 /* DgmTypePickerTypes.swift */; };
+		12CBCFBD2279A90000F9D6BA /* DgmTypePickerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D6021B11C85004B0669 /* DgmTypePickerContainer.swift */; };
+		12CBCFBE2279A90000F9D6BA /* MailBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727DD218C8B7B00A78ADF /* MailBody.swift */; };
+		12CBCFBF2279A90000F9D6BA /* FittingLoadouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62D21A7F73500BA5C9A /* FittingLoadouts.swift */; };
+		12CBCFC02279A90000F9D6BA /* ZKillboardInvTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3C021A54ADF002ED002 /* ZKillboardInvTypes.swift */; };
+		12CBCFC12279A90000F9D6BA /* AssetsSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABA9219424D50028BF9A /* AssetsSearchResults.swift */; };
+		12CBCFC22279A90000F9D6BA /* DgmTypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5621B11BA5004B0669 /* DgmTypePicker.swift */; };
+		12CBCFC32279A90000F9D6BA /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C50FA219954F700D0FC8E /* Contracts.swift */; };
+		12CBCFC42279A90000F9D6BA /* InvMarket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB9B2190849A00A505FC /* InvMarket.swift */; };
+		12CBCFC52279A90000F9D6BA /* MarketQuickbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBA42190885500A505FC /* MarketQuickbar.swift */; };
+		12CBCFC62279A90000F9D6BA /* NpcGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB02191763800A505FC /* NpcGroups.swift */; };
+		12CBCFC72279A90000F9D6BA /* MySkillsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12925B752189E8DB00F6216C /* MySkillsPage.swift */; };
+		12CBCFC82279A90000F9D6BA /* ZKillboardInvGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3B721A5460E002ED002 /* ZKillboardInvGroups.swift */; };
+		12CBCFC92279A90000F9D6BA /* MySkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FD02188943900813DFD /* MySkills.swift */; };
+		12CBCFCA2279A90000F9D6BA /* InvTypeMarketOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C33215B8E080083AE17 /* InvTypeMarketOrders.swift */; };
+		12CBCFCB2279A90000F9D6BA /* CertCertificateRequirementsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C58215E56C600646937 /* CertCertificateRequirementsInfo.swift */; };
+		12CBCFCC2279A90000F9D6BA /* DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39321A3F3E3002ED002 /* DatePicker.swift */; };
+		12CBCFCD2279A90000F9D6BA /* WhTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBB921917CF200A505FC /* WhTypes.swift */; };
+		12CBCFCE2279A90000F9D6BA /* MapLocationPickerSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484CA2215D20EC0083AE17 /* MapLocationPickerSearchResults.swift */; };
+		12CBCFCF2279A90000F9D6BA /* MarketOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C8ABD2219597720028BF9A /* MarketOrders.swift */; };
+		12CBCFD02279A90000F9D6BA /* CharacterInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121B28C8218AF1E8000D392C /* CharacterInfo.swift */; };
+		12CBCFD12279A90000F9D6BA /* DgmTypePickerGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123E4C7A21C6E4CF002234A7 /* DgmTypePickerGroups.swift */; };
+		12CBCFD22279A90000F9D6BA /* InvCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1204D069215271670070AF92 /* InvCategories.swift */; };
+		12CBCFD32279A90000F9D6BA /* NewMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB7E2190241C00A505FC /* NewMail.swift */; };
+		12CBCFD42279A90000F9D6BA /* CertCertificateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C46215E55AB00646937 /* CertCertificateInfo.swift */; };
+		12CBCFD52279A90000F9D6BA /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39C21A42D77002ED002 /* Contacts.swift */; };
+		12CBCFD62279A90000F9D6BA /* ContactsSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB872190276B00A505FC /* ContactsSearchResults.swift */; };
+		12CBCFD72279A90000F9D6BA /* MapLocationPickerRecents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C8C215CD5970083AE17 /* MapLocationPickerRecents.swift */; };
+		12CBCFD82279A90000F9D6BA /* MailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727C6218C2BBF00A78ADF /* MailPage.swift */; };
+		12CBCFD92279A90000F9D6BA /* JumpClones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727B4218B33CD00A78ADF /* JumpClones.swift */; };
+		12CBCFDA2279A90000F9D6BA /* Accounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D0D213E62E8005CE68F /* Accounts.swift */; };
+		12CBCFDB2279A90000F9D6BA /* ZKillboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484296219D46D000CB3616 /* ZKillboard.swift */; };
+		12CBCFDC2279A90000F9D6BA /* FittingMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61A21A7F6D100BA5C9A /* FittingMenu.swift */; };
+		12CBCFDD2279A90000F9D6BA /* KillmailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484272219BF94A00CB3616 /* KillmailInfo.swift */; };
+		12CBCFDE2279A95700F9D6BA /* MapLocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C73215CC6910083AE17 /* MapLocationPickerViewController.swift */; };
+		12CBCFDF2279A95700F9D6BA /* MapLocationPickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C75215CC69D0083AE17 /* MapLocationPickerPresenter.swift */; };
+		12CBCFE02279A95700F9D6BA /* MapLocationPickerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C77215CC6A70083AE17 /* MapLocationPickerInteractor.swift */; };
+		12CBCFE12279A98500F9D6BA /* CertCertificateInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C48215E55B600646937 /* CertCertificateInfoViewController.swift */; };
+		12CBCFE22279A98500F9D6BA /* CertCertificateInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C4A215E55BE00646937 /* CertCertificateInfoPresenter.swift */; };
+		12CBCFE32279A98500F9D6BA /* CertCertificateInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C4C215E55C700646937 /* CertCertificateInfoInteractor.swift */; };
+		12CBCFE42279A9A800F9D6BA /* FittingMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61821A7F6D100BA5C9A /* FittingMenuViewController.swift */; };
+		12CBCFE52279A9A800F9D6BA /* FittingMenuPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61721A7F6D100BA5C9A /* FittingMenuPresenter.swift */; };
+		12CBCFE62279A9A800F9D6BA /* FittingMenuInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61921A7F6D100BA5C9A /* FittingMenuInteractor.swift */; };
+		12CBCFE72279A9B100F9D6BA /* NewMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB7C2190241C00A505FC /* NewMailViewController.swift */; };
+		12CBCFE82279A9B100F9D6BA /* NewMailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB7B2190241C00A505FC /* NewMailPresenter.swift */; };
+		12CBCFE92279A9B100F9D6BA /* NewMailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB7D2190241C00A505FC /* NewMailInteractor.swift */; };
+		12CBCFEA2279A9F100F9D6BA /* KillmailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C512E219ACCE400D0FC8E /* KillmailsViewController.swift */; };
+		12CBCFEB2279A9F100F9D6BA /* KillmailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C512D219ACCE400D0FC8E /* KillmailsPresenter.swift */; };
+		12CBCFEC2279A9F100F9D6BA /* KillmailsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124C512F219ACCE400D0FC8E /* KillmailsInteractor.swift */; };
+		12CBCFED2279AA1900F9D6BA /* CertCertificateDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12133C7B215E6F1900646937 /* CertCertificateDescriptionCell.swift */; };
+		12CBCFEE2279AA2200F9D6BA /* InvTypeInfoDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE75E0215A7554006FC1BF /* InvTypeInfoDescriptionCell.swift */; };
+		12CBCFEF2279AA2D00F9D6BA /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3C621A57810002ED002 /* SwitchCell.swift */; };
+		12CBCFF02279AA3400F9D6BA /* TreeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBE12191C2A100A505FC /* TreeHeaderCell.swift */; };
+		12CBCFF12279AA5100F9D6BA /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FBBE2191889000A505FC /* SearchManager.swift */; };
+		12CBCFF22279AA5500F9D6BA /* BannerNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121F26E32136EC3800AE1D70 /* BannerNavigationViewController.swift */; };
+		12CBCFF32279AA5E00F9D6BA /* MainMenuHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFFC21358F68005340C0 /* MainMenuHeaderViewController.swift */; };
+		12CBCFF42279AA5E00F9D6BA /* MainMenuHeaderPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279EFFE21358F73005340C0 /* MainMenuHeaderPresenter.swift */; };
+		12CBCFF52279AA5E00F9D6BA /* MainMenuHeaderInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1279F00021358F7C005340C0 /* MainMenuHeaderInteractor.swift */; };
+		12CBCFF62279AA6200F9D6BA /* MainMenuContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120A386C213D46970071ED72 /* MainMenuContainerViewController.swift */; };
+		12CBCFF72279AA6200F9D6BA /* MainMenuContainerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D07213E60C8005CE68F /* MainMenuContainerPresenter.swift */; };
+		12CBCFF82279AA6200F9D6BA /* MainMenuContainerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D09213E60D1005CE68F /* MainMenuContainerInteractor.swift */; };
+		12CBCFF92279AA7300F9D6BA /* InvMarketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB992190849A00A505FC /* InvMarketViewController.swift */; };
+		12CBCFFA2279AA7300F9D6BA /* InvMarketPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB982190849A00A505FC /* InvMarketPresenter.swift */; };
+		12CBCFFB2279AA7300F9D6BA /* InvMarketInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1287FB9A2190849A00A505FC /* InvMarketInteractor.swift */; };
+		12CBCFFC2279AA8900F9D6BA /* SkillsContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FC62188930300813DFD /* SkillsContainerViewController.swift */; };
+		12CBCFFD2279AA8900F9D6BA /* SkillsContainerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FC52188930300813DFD /* SkillsContainerPresenter.swift */; };
+		12CBCFFE2279AA8900F9D6BA /* SkillsContainerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FC72188930300813DFD /* SkillsContainerInteractor.swift */; };
+		12CBCFFF2279AA9200F9D6BA /* MySkillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FCE2188943900813DFD /* MySkillsViewController.swift */; };
+		12CBD0002279AA9200F9D6BA /* MySkillsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FCD2188943900813DFD /* MySkillsPresenter.swift */; };
+		12CBD0012279AA9200F9D6BA /* MySkillsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AF2FCF2188943900813DFD /* MySkillsInteractor.swift */; };
+		12CBD0022279AA9600F9D6BA /* SkillsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CBA217A7BDF00D34CFB /* SkillsViewController.swift */; };
+		12CBD0032279AA9600F9D6BA /* SkillsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CB9217A7BDF00D34CFB /* SkillsPresenter.swift */; };
+		12CBD0042279AA9600F9D6BA /* SkillsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B2CBB217A7BDF00D34CFB /* SkillsInteractor.swift */; };
+		12CBD0052279AA9F00F9D6BA /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12484C6C215CC0780083AE17 /* PageViewController.swift */; };
+		12CBD0062279AAA500F9D6BA /* MailBodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727DB218C8B7B00A78ADF /* MailBodyViewController.swift */; };
+		12CBD0072279AAA600F9D6BA /* MailBodyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727DA218C8B7B00A78ADF /* MailBodyPresenter.swift */; };
+		12CBD0082279AAA600F9D6BA /* MailBodyInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727DC218C8B7B00A78ADF /* MailBodyInteractor.swift */; };
+		12CBD0092279AAAE00F9D6BA /* MailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727BB218C255600A78ADF /* MailViewController.swift */; };
+		12CBD00A2279AAAE00F9D6BA /* MailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727BA218C255600A78ADF /* MailPresenter.swift */; };
+		12CBD00B2279AAAE00F9D6BA /* MailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C727BC218C255600A78ADF /* MailInteractor.swift */; };
+		12CBD00C2279AAC900F9D6BA /* ZKillboardTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3AC21A5457C002ED002 /* ZKillboardTypePickerViewController.swift */; };
+		12CBD00D2279AAC900F9D6BA /* ZKillboardTypePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3AB21A5457C002ED002 /* ZKillboardTypePickerPresenter.swift */; };
+		12CBD00E2279AAC900F9D6BA /* ZKillboardTypePickerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E3AD21A5457C002ED002 /* ZKillboardTypePickerInteractor.swift */; };
+		12CBD00F2279AACF00F9D6BA /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39121A3F3E3002ED002 /* DatePickerViewController.swift */; };
+		12CBD0102279AACF00F9D6BA /* DatePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39021A3F3E3002ED002 /* DatePickerPresenter.swift */; };
+		12CBD0112279AACF00F9D6BA /* DatePickerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C3E39221A3F3E3002ED002 /* DatePickerInteractor.swift */; };
+		12CBD0122279AADB00F9D6BA /* DgmTypePickerContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5E21B11C85004B0669 /* DgmTypePickerContainerViewController.swift */; };
+		12CBD0132279AADB00F9D6BA /* DgmTypePickerContainerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5D21B11C85004B0669 /* DgmTypePickerContainerPresenter.swift */; };
+		12CBD0142279AADB00F9D6BA /* DgmTypePickerContainerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5F21B11C85004B0669 /* DgmTypePickerContainerInteractor.swift */; };
+		12CBD0152279AAE500F9D6BA /* DgmTypePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5421B11BA5004B0669 /* DgmTypePickerViewController.swift */; };
+		12CBD0162279AAE500F9D6BA /* DgmTypePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5321B11BA5004B0669 /* DgmTypePickerPresenter.swift */; };
+		12CBD0172279AAE500F9D6BA /* DgmTypePickerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12028D5521B11BA5004B0669 /* DgmTypePickerInteractor.swift */; };
 		12CFDACB1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CFDACA1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib */; };
 		12CFDAE61F03D8E800CC0762 /* NCDatePickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CFDAE51F03D8E800CC0762 /* NCDatePickerTableViewCell.xib */; };
 		12CFDAE81F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CFDAE71F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib */; };
 		12CFDAEC1F03F8F700CC0762 /* NCKillmailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12CFDAEB1F03F8F700CC0762 /* NCKillmailTableViewCell.xib */; };
 		12D20EA31EBA011900BEC926 /* NCPieChartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D20EA21EBA011900BEC926 /* NCPieChartTableViewCell.xib */; };
-		12D3109A211C282100367440 /* PersistentContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D31099211C282100367440 /* PersistentContext.swift */; };
-		12D3B61B21A7F6D100BA5C9A /* FittingMenuPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61721A7F6D100BA5C9A /* FittingMenuPresenter.swift */; };
-		12D3B61C21A7F6D100BA5C9A /* FittingMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61821A7F6D100BA5C9A /* FittingMenuViewController.swift */; };
-		12D3B61D21A7F6D100BA5C9A /* FittingMenuInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61921A7F6D100BA5C9A /* FittingMenuInteractor.swift */; };
-		12D3B61E21A7F6D100BA5C9A /* FittingMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B61A21A7F6D100BA5C9A /* FittingMenu.swift */; };
-		12D3B62E21A7F73500BA5C9A /* FittingLoadoutsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62A21A7F73500BA5C9A /* FittingLoadoutsPresenter.swift */; };
-		12D3B62F21A7F73500BA5C9A /* FittingLoadoutsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62B21A7F73500BA5C9A /* FittingLoadoutsViewController.swift */; };
-		12D3B63021A7F73500BA5C9A /* FittingLoadoutsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62C21A7F73500BA5C9A /* FittingLoadoutsInteractor.swift */; };
-		12D3B63121A7F73500BA5C9A /* FittingLoadouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D3B62D21A7F73500BA5C9A /* FittingLoadouts.swift */; };
 		12D404471F31C010007F1715 /* NCSwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D404461F31C010007F1715 /* NCSwitchTableViewCell.xib */; };
 		12D404561F3460BE007F1715 /* NCAccountTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D404551F3460BE007F1715 /* NCAccountTableViewCell.xib */; };
 		12D7A4402068DDBD00F78560 /* openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1293D7C72049807E00A1F453 /* openssl.framework */; };
-		12D8144C2154D9BA00313DAF /* ThinLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8144B2154D9BA00313DAF /* ThinLineView.swift */; };
-		12D8147021550E0F00313DAF /* InvTypeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8146F21550E0F00313DAF /* InvTypeInfo.swift */; };
-		12D8147221550EC200313DAF /* InvTypeInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8147121550EC200313DAF /* InvTypeInfoViewController.swift */; };
-		12D8147421550ED100313DAF /* InvTypeInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8147321550ED100313DAF /* InvTypeInfoPresenter.swift */; };
-		12D8147621550EDA00313DAF /* InvTypeInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D8147521550EDA00313DAF /* InvTypeInfoInteractor.swift */; };
 		12D85125201A86DA009485D0 /* NCSubscriptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D85124201A86DA009485D0 /* NCSubscriptionTableViewCell.xib */; };
 		12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E21E65689500CBAE1C /* NCFittingModuleTableViewCell.xib */; };
 		12D930E51E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E41E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib */; };
@@ -492,28 +503,15 @@
 		12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		12DBEAAE1E1D3B710088A486 /* Dgmpp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 12DBEAAC1E1D3B710088A486 /* Dgmpp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		12DE75DF215A7199006FC1BF /* InvTypeInfoDescriptionCompactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12DE75DE215A7199006FC1BF /* InvTypeInfoDescriptionCompactCell.xib */; };
-		12DE75E1215A7554006FC1BF /* InvTypeInfoDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE75E0215A7554006FC1BF /* InvTypeInfoDescriptionCell.swift */; };
 		12DE75E3215A75F4006FC1BF /* InvTypeInfoDescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12DE75E2215A75F4006FC1BF /* InvTypeInfoDescriptionCell.xib */; };
-		12E0417E212D3C4F0000CB4F /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0417D212D3C4F0000CB4F /* API.swift */; };
-		12E04181212D44360000CB4F /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E04180212D44360000CB4F /* Config.swift */; };
-		12E0419C212D77530000CB4F /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0419B212D77530000CB4F /* Error.swift */; };
 		12E041A0212D89840000CB4F /* Cache_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E0419F212D89840000CB4F /* Cache_Tests.swift */; };
 		12E6AE561F18F703001E829D /* NCKillmailAttackerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E6AE551F18F703001E829D /* NCKillmailAttackerTableViewCell.xib */; };
 		12E6AE5A1F18FB3B001E829D /* NCKillmailAttackerNPCTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E6AE591F18FB3B001E829D /* NCKillmailAttackerNPCTableViewCell.xib */; };
 		12E9321C1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E9321B1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib */; };
 		12E932201E6BFC650033D71A /* NCFittingCharacterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12E9321F1E6BFC650033D71A /* NCFittingCharacterTableViewCell.xib */; };
 		12EA7796217F442A009C8288 /* SkillCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12EA7795217F442A009C8288 /* SkillCell.xib */; };
-		12EA7798217F447A009C8288 /* SkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EA7797217F447A009C8288 /* SkillCell.swift */; };
-		12EE7CE5213D598F005CE68F /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7CE4213D598F005CE68F /* Router.swift */; };
 		12EE7D05213D79BB005CE68F /* Router_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D04213D79BB005CE68F /* Router_Tests.swift */; };
-		12EE7D08213E60C8005CE68F /* MainMenuContainerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D07213E60C8005CE68F /* MainMenuContainerPresenter.swift */; };
-		12EE7D0A213E60D1005CE68F /* MainMenuContainerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D09213E60D1005CE68F /* MainMenuContainerInteractor.swift */; };
-		12EE7D0C213E6282005CE68F /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D0B213E6282005CE68F /* Route.swift */; };
-		12EE7D0E213E62E8005CE68F /* Accounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D0D213E62E8005CE68F /* Accounts.swift */; };
-		12EE7D11213E6BD7005CE68F /* SlideDownAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE7D10213E6BD7005CE68F /* SlideDownAnimationController.swift */; };
-		12EEE84321FDE9E7004F7593 /* LoadoutDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EEE84221FDE9E7004F7593 /* LoadoutDescription.swift */; };
 		12F2DE7321ABFB6800A93775 /* Fitting_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F2DE7221ABFB6800A93775 /* Fitting_Tests.swift */; };
-		12F6C1A221C2BAC20053D62C /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F6C1A121C2BAC20053D62C /* PersistentContainer.swift */; };
 		12FE0E3621348F6B002F3507 /* Dark.clr in Sources */ = {isa = PBXBuildFile; fileRef = 12AC8DD51DF0AF6900561A7A /* Dark.clr */; };
 /* End PBXBuildFile section */
 
@@ -3567,7 +3565,7 @@
 			attributes = {
 				CLASSPREFIX = "";
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Artem Shimanski";
 				TargetAttributes = {
 					12AC8D8F1DEF58A100561A7A = {
@@ -3613,7 +3611,7 @@
 			};
 			buildConfigurationList = 12AC8D8B1DEF58A100561A7A /* Build configuration list for PBXProject "Neocom" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -3807,359 +3805,357 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12CBCEFD2279A8CD00F9D6BA /* InvMarketGroupsPresenter.swift in Sources */,
+				12CBCF022279A8CD00F9D6BA /* AssetsPresenter.swift in Sources */,
+				12CBCEED2279A8B300F9D6BA /* MarketQuickbarViewController.swift in Sources */,
+				1211DE79227611FB00A39F63 /* Storage.xcdatamodeld in Sources */,
+				12CBCF2B2279A8D800F9D6BA /* NpcGroupsInteractor.swift in Sources */,
+				12CBCF502279A8D800F9D6BA /* ZKillboardInvCategoriesInteractor.swift in Sources */,
+				12CBCFC22279A90000F9D6BA /* DgmTypePicker.swift in Sources */,
+				12CBCFD02279A90000F9D6BA /* CharacterInfo.swift in Sources */,
+				12CBCF562279A8D800F9D6BA /* ContractInfoInteractor.swift in Sources */,
+				12CBCEBF2279A89B00F9D6BA /* SkillCell.swift in Sources */,
+				1211DE7A227611FF00A39F63 /* Cache.xcdatamodeld in Sources */,
+				1211DE56227611D400A39F63 /* FittingService.swift in Sources */,
+				12CBCF172279A8CD00F9D6BA /* FittingFleetsPresenter.swift in Sources */,
+				12CBCF442279A8D800F9D6BA /* CertGroupsInteractor.swift in Sources */,
+				1211DE4D227611D100A39F63 /* ImageValueTransformer.swift in Sources */,
+				1211DE4F227611D100A39F63 /* SDE+Constants.swift in Sources */,
+				12CBCF082279A8CD00F9D6BA /* CertCertificateMasteryInfoPresenter.swift in Sources */,
+				12CBCFBF2279A90000F9D6BA /* FittingLoadouts.swift in Sources */,
+				12CBCFAE2279A90000F9D6BA /* CertGroups.swift in Sources */,
+				12CBCF4E2279A8D800F9D6BA /* InvCategoriesInteractor.swift in Sources */,
+				12CBCECC2279A8B300F9D6BA /* CertCertificateMasteryInfoViewController.swift in Sources */,
+				12CBCF2A2279A8CD00F9D6BA /* MailPagePresenter.swift in Sources */,
+				12CBCEB42279A7F000F9D6BA /* InvTypeRequiredForViewController.swift in Sources */,
+				12CBCF1E2279A8CD00F9D6BA /* WalletTransactionsPagePresenter.swift in Sources */,
+				12CBCEC62279A89B00F9D6BA /* MarketOrderCell.swift in Sources */,
+				12CBCEF42279A8B300F9D6BA /* KillmailsPageViewController.swift in Sources */,
+				12CBCF142279A8CD00F9D6BA /* MapLocationPickerRegionsPresenter.swift in Sources */,
+				12CBCF1A2279A8CD00F9D6BA /* InvTypeMasteryPresenter.swift in Sources */,
+				12CBCFED2279AA1900F9D6BA /* CertCertificateDescriptionCell.swift in Sources */,
+				12CBD0172279AAE500F9D6BA /* DgmTypePickerInteractor.swift in Sources */,
+				12CBCEA72279A5FA00F9D6BA /* Route.swift in Sources */,
+				1211DE77227611E900A39F63 /* Atomic.swift in Sources */,
+				12CBCFEB2279A9F100F9D6BA /* KillmailsPresenter.swift in Sources */,
+				12CBCF392279A8D800F9D6BA /* CertCertificateMasteryInfoInteractor.swift in Sources */,
+				12CBCF1C2279A8CD00F9D6BA /* WalletJournalPagePresenter.swift in Sources */,
+				12CBCF282279A8CD00F9D6BA /* MarketOrdersPresenter.swift in Sources */,
+				12CBCFF42279AA5E00F9D6BA /* MainMenuHeaderPresenter.swift in Sources */,
+				12CBCF9E2279A90000F9D6BA /* InvTypeInfo.swift in Sources */,
+				12CBCEF62279A8B300F9D6BA /* ZKillboardInvGroupsViewController.swift in Sources */,
+				12CBCFEA2279A9F100F9D6BA /* KillmailsViewController.swift in Sources */,
+				12CBCF4C2279A8D800F9D6BA /* CharacterInfoInteractor.swift in Sources */,
+				12CBCF552279A8D800F9D6BA /* MapLocationPickerRegionsInteractor.swift in Sources */,
+				12CBCEBB2279A89B00F9D6BA /* DamageTypeCell.swift in Sources */,
+				1211DE4C227611CD00A39F63 /* Cache.swift in Sources */,
+				12CBCFEC2279A9F100F9D6BA /* KillmailsInteractor.swift in Sources */,
+				12CBCF542279A8D800F9D6BA /* CertCertificatesInteractor.swift in Sources */,
+				12CBCEE42279A8B300F9D6BA /* CertCertificateRequirementsInfoViewController.swift in Sources */,
+				1211DE51227611D100A39F63 /* PersistentContainer.swift in Sources */,
+				12CBCFE22279A98500F9D6BA /* CertCertificateInfoPresenter.swift in Sources */,
+				12CBCEF32279A8B300F9D6BA /* ContractInfoViewController.swift in Sources */,
+				12CBD00B2279AAAE00F9D6BA /* MailInteractor.swift in Sources */,
+				1211DE70227611E900A39F63 /* TimeIntervalFormatter.swift in Sources */,
+				12CBCEC22279A89B00F9D6BA /* KillmailAttackerCell.swift in Sources */,
+				12CBCF232279A8CD00F9D6BA /* IncursionsPresenter.swift in Sources */,
+				12CBCFA32279A90000F9D6BA /* MapLocationPicker.swift in Sources */,
+				12CBD0112279AACF00F9D6BA /* DatePickerInteractor.swift in Sources */,
+				12CBCFBC2279A90000F9D6BA /* DgmTypePickerTypes.swift in Sources */,
+				12CBCEDB2279A8B300F9D6BA /* MainMenuViewController.swift in Sources */,
+				12CBCF4D2279A8D800F9D6BA /* IncursionsInteractor.swift in Sources */,
+				12CBCF212279A8CD00F9D6BA /* DgmTypePickerRecentsPresenter.swift in Sources */,
+				12CBCFF32279AA5E00F9D6BA /* MainMenuHeaderViewController.swift in Sources */,
+				12CBCFFC2279AA8900F9D6BA /* SkillsContainerViewController.swift in Sources */,
+				12CBD0032279AA9600F9D6BA /* SkillsPresenter.swift in Sources */,
+				12CBCECA2279A8B300F9D6BA /* InvTypesViewController.swift in Sources */,
+				12CBCFB22279A90000F9D6BA /* WalletTransactionsPage.swift in Sources */,
+				1211DE49227611C900A39F63 /* LoadoutDescription.swift in Sources */,
+				1211DE6A227611E900A39F63 /* NavigationItemTitleLabel.swift in Sources */,
+				12CBCEDE2279A8B300F9D6BA /* CertCertificatesViewController.swift in Sources */,
+				12CBCEA62279A5C700F9D6BA /* SOLID.swift in Sources */,
+				12CBCEAF2279A6AF00F9D6BA /* TreeItem+CoreData.swift in Sources */,
+				12CBCEEA2279A8B300F9D6BA /* ContactsViewController.swift in Sources */,
+				12CBCF092279A8CD00F9D6BA /* ZKillmailsPresenter.swift in Sources */,
+				12CBCEF82279A8B300F9D6BA /* DgmTypePickerRecentsViewController.swift in Sources */,
+				12CBCFC02279A90000F9D6BA /* ZKillboardInvTypes.swift in Sources */,
+				1211DE5E227611E300A39F63 /* API+Constants.swift in Sources */,
+				12CBCF342279A8D800F9D6BA /* MainMenuInteractor.swift in Sources */,
+				1211DE66227611E900A39F63 /* DamageTypeLabel.swift in Sources */,
+				12CBCEE02279A8B300F9D6BA /* MailPageViewController.swift in Sources */,
+				12CBD00A2279AAAE00F9D6BA /* MailPresenter.swift in Sources */,
+				12CBCF272279A8CD00F9D6BA /* JumpClonesPresenter.swift in Sources */,
+				12CBCFF02279AA3400F9D6BA /* TreeHeaderCell.swift in Sources */,
+				12CBCF3C2279A8D800F9D6BA /* ContactsSearchResultsInteractor.swift in Sources */,
+				12CBCECE2279A8B300F9D6BA /* SkillQueueViewController.swift in Sources */,
+				12CBCF2F2279A8D800F9D6BA /* WhTypesInteractor.swift in Sources */,
+				12CBCFB12279A90000F9D6BA /* SkillQueue.swift in Sources */,
+				12CBD0012279AA9200F9D6BA /* MySkillsInteractor.swift in Sources */,
+				12CBCF582279A8D800F9D6BA /* ZKillboardInvGroupsInteractor.swift in Sources */,
+				12CBCFC92279A90000F9D6BA /* MySkills.swift in Sources */,
+				1211DE55227611D100A39F63 /* Settings.swift in Sources */,
+				1211DE61227611E900A39F63 /* TintImageView.swift in Sources */,
+				12CBCEFE2279A8CD00F9D6BA /* MapLocationPickerSolarSystemsPresenter.swift in Sources */,
+				12CBCFC12279A90000F9D6BA /* AssetsSearchResults.swift in Sources */,
+				1211DE5D227611E300A39F63 /* API.swift in Sources */,
+				12CBD0022279AA9600F9D6BA /* SkillsViewController.swift in Sources */,
+				12CBCF4F2279A8D800F9D6BA /* MarketOrdersInteractor.swift in Sources */,
+				12CBCFBA2279A90000F9D6BA /* Mail.swift in Sources */,
+				12CBD00E2279AAC900F9D6BA /* ZKillboardTypePickerInteractor.swift in Sources */,
+				12CBCFE62279A9A800F9D6BA /* FittingMenuInteractor.swift in Sources */,
+				12CBCF472279A8D800F9D6BA /* MarketQuickbarInteractor.swift in Sources */,
+				12CBCFC82279A90000F9D6BA /* ZKillboardInvGroups.swift in Sources */,
+				12CBCF5B2279A8D800F9D6BA /* InvTypeMasteryInteractor.swift in Sources */,
+				12CBCF382279A8D800F9D6BA /* JumpClonesInteractor.swift in Sources */,
+				12CBD0152279AAE500F9D6BA /* DgmTypePickerViewController.swift in Sources */,
+				12CBCFB42279A90000F9D6BA /* ZKillboardTypePicker.swift in Sources */,
+				12CBCF0D2279A8CD00F9D6BA /* CertGroupsPresenter.swift in Sources */,
+				12CBCF1B2279A8CD00F9D6BA /* CertCertificateRequirementsInfoPresenter.swift in Sources */,
+				12CBCD7A2279990800F9D6BA /* APIServiceTesting.swift in Sources */,
+				12CBCF242279A8CD00F9D6BA /* WhTypesPresenter.swift in Sources */,
+				12CBD0092279AAAE00F9D6BA /* MailViewController.swift in Sources */,
+				12CBCFCA2279A90000F9D6BA /* InvTypeMarketOrders.swift in Sources */,
+				12CBCF402279A8D800F9D6BA /* FittingFleetsInteractor.swift in Sources */,
+				12CBCFA42279A90000F9D6BA /* InvMarketGroups.swift in Sources */,
+				12CBCEB02279A6C500F9D6BA /* TreeSectionCell.swift in Sources */,
+				12CBCFC52279A90000F9D6BA /* MarketQuickbar.swift in Sources */,
+				12CBCF0A2279A8CD00F9D6BA /* CertCertificatesPresenter.swift in Sources */,
+				1211DE53227611D100A39F63 /* APIService.swift in Sources */,
+				12CBCFE12279A98500F9D6BA /* CertCertificateInfoViewController.swift in Sources */,
+				1211DE57227611D400A39F63 /* FittingContext.swift in Sources */,
+				12CBCFDA2279A90000F9D6BA /* Accounts.swift in Sources */,
+				12CBCF002279A8CD00F9D6BA /* ContractInfoPresenter.swift in Sources */,
+				12CBCF122279A8CD00F9D6BA /* MySkillsPagePresenter.swift in Sources */,
+				12CBCFB32279A90000F9D6BA /* SkillsContainer.swift in Sources */,
+				12CBCEC42279A89B00F9D6BA /* MarketHistoryCell.swift in Sources */,
+				12CBCFBB2279A90000F9D6BA /* IndustryJobs.swift in Sources */,
+				12CBCF252279A8CD00F9D6BA /* ContractsPresenter.swift in Sources */,
+				12CBCEC82279A89B00F9D6BA /* IndustryJobCell.swift in Sources */,
+				12CBCF482279A8D800F9D6BA /* DgmTypePickerGroupsInteractor.swift in Sources */,
+				12CBCFFF2279AA9200F9D6BA /* MySkillsViewController.swift in Sources */,
+				12CBCF4B2279A8D800F9D6BA /* InvTypeMarketOrdersInteractor.swift in Sources */,
+				12CBCF222279A8CD00F9D6BA /* InvTypeVariationsPresenter.swift in Sources */,
+				12CBCFCE2279A90000F9D6BA /* MapLocationPickerSearchResults.swift in Sources */,
+				12CBCEEC2279A8B300F9D6BA /* DgmTypePickerGroupsViewController.swift in Sources */,
+				12CBCF3E2279A8D800F9D6BA /* ZKillboardInteractor.swift in Sources */,
+				12CBCFFB2279AA7300F9D6BA /* InvMarketInteractor.swift in Sources */,
+				12CBCFB82279A90000F9D6BA /* InvTypeVariations.swift in Sources */,
+				12CBCF2C2279A8D800F9D6BA /* DgmTypePickerTypesInteractor.swift in Sources */,
+				12CBCECD2279A8B300F9D6BA /* ZKillboardInvTypesViewController.swift in Sources */,
+				12CBCF3D2279A8D800F9D6BA /* WalletTransactionsPageInteractor.swift in Sources */,
+				12CBCFE82279A9B100F9D6BA /* NewMailPresenter.swift in Sources */,
 				12FE0E3621348F6B002F3507 /* Dark.clr in Sources */,
-				12133C53215E56AD00646937 /* CertCertificateMasteryInfoViewController.swift in Sources */,
-				125B2CC8217A7C9400D34CFB /* SkillQueueInteractor.swift in Sources */,
-				12133C37215E39A600646937 /* CertGroupsViewController.swift in Sources */,
-				12415981212FF0AC001709F2 /* TreeItem.swift in Sources */,
-				12484C83215CCF2E0083AE17 /* MapLocationPickerRegionsInteractor.swift in Sources */,
-				1287FBA52190885500A505FC /* MarketQuickbarPresenter.swift in Sources */,
-				1233EB5C219AF2F200EB99C9 /* KillmailsPageViewController.swift in Sources */,
-				1287FBBF2191889000A505FC /* SearchManager.swift in Sources */,
-				124C5133219ACCE400D0FC8E /* KillmailsInteractor.swift in Sources */,
-				12484CA5215D20F60083AE17 /* MapLocationPickerSearchResultsViewController.swift in Sources */,
-				12AF2FCC2188930300813DFD /* SkillsContainer.swift in Sources */,
-				12133C5D215E56D800646937 /* CertCertificateRequirementsInfoPresenter.swift in Sources */,
-				12484C76215CC69D0083AE17 /* MapLocationPickerPresenter.swift in Sources */,
-				1256C9FE21D2821A00D65AD7 /* DgmTypePickerRecentsInteractor.swift in Sources */,
-				12133C44215E3B7700646937 /* CertCertificatesInteractor.swift in Sources */,
-				1287FBC721918E6900A505FC /* IncursionsPresenter.swift in Sources */,
-				12EE7D0E213E62E8005CE68F /* Accounts.swift in Sources */,
-				125B2CBE217A7BDF00D34CFB /* SkillsViewController.swift in Sources */,
-				121B28C1218AEA24000D392C /* InvTypeRequiredForPresenter.swift in Sources */,
-				12133C7C215E6F1900646937 /* CertCertificateDescriptionCell.swift in Sources */,
-				12C3E39521A3F3E3002ED002 /* DatePickerViewController.swift in Sources */,
-				12C3E3BA21A5460E002ED002 /* ZKillboardInvGroupsInteractor.swift in Sources */,
-				123E4C7221C51DE9002234A7 /* APIService.swift in Sources */,
-				12D3B62F21A7F73500BA5C9A /* FittingLoadoutsViewController.swift in Sources */,
-				12028D5A21B11BA5004B0669 /* DgmTypePicker.swift in Sources */,
-				12B8907F21300E610082D4A3 /* TreeViewController.swift in Sources */,
-				12484276219BF94A00CB3616 /* KillmailInfo.swift in Sources */,
-				1287FBD221919BC000A505FC /* PieChartView.swift in Sources */,
-				12D8147221550EC200313DAF /* InvTypeInfoViewController.swift in Sources */,
-				1256C9F221D15BAE00D65AD7 /* DgmTypePickerTypes.swift in Sources */,
-				12C727E1218C8B7B00A78ADF /* MailBody.swift in Sources */,
-				12133C51215E56A500646937 /* CertCertificateMasteryInfo.swift in Sources */,
-				12028D5921B11BA5004B0669 /* DgmTypePickerInteractor.swift in Sources */,
-				12028D6121B11C85004B0669 /* DgmTypePickerContainerPresenter.swift in Sources */,
-				12484C93215CD5B30083AE17 /* MapLocationPickerRecentsInteractor.swift in Sources */,
-				12C727B8218B33CD00A78ADF /* JumpClones.swift in Sources */,
-				12028D5721B11BA5004B0669 /* DgmTypePickerPresenter.swift in Sources */,
-				12AB9737212C0ECC00B30DD3 /* SDE+Constants.swift in Sources */,
-				12C727C9218C2BBF00A78ADF /* MailPageInteractor.swift in Sources */,
-				12484C6A215CB3700083AE17 /* Atomic.swift in Sources */,
-				12C727CA218C2BBF00A78ADF /* MailPage.swift in Sources */,
-				1233EB5B219AF2F200EB99C9 /* KillmailsPagePresenter.swift in Sources */,
-				12C3E3B121A5457C002ED002 /* ZKillboardTypePickerInteractor.swift in Sources */,
-				12AB974F212C325E00B30DD3 /* ImageValueTransformer.swift in Sources */,
-				1287FBC821918E6900A505FC /* IncursionsViewController.swift in Sources */,
-				121F26E42136EC3800AE1D70 /* BannerNavigationViewController.swift in Sources */,
-				124C50FD219954F700D0FC8E /* ContractsInteractor.swift in Sources */,
-				1204D068215271420070AF92 /* InvCategoriesInteractor.swift in Sources */,
-				12C8ABE22195BFC80028BF9A /* IndustryJobCell.swift in Sources */,
-				12D3109A211C282100367440 /* PersistentContext.swift in Sources */,
-				12AFD473211C1E7D00007423 /* Cache.swift in Sources */,
-				120FB47C221359CA00794784 /* FittingContext.swift in Sources */,
-				1287FBBB21917CF200A505FC /* WhTypesViewController.swift in Sources */,
-				120FB4782213280900794784 /* FittingService.swift in Sources */,
-				12C3E3C321A54ADF002ED002 /* ZKillboardInvTypesInteractor.swift in Sources */,
-				12C727BE218C255600A78ADF /* MailPresenter.swift in Sources */,
-				1279EFF7213587D7005340C0 /* Cells.swift in Sources */,
-				1287FB962190825800A505FC /* InvMarketGroups.swift in Sources */,
-				12A843012153871300570A95 /* InvTypes.swift in Sources */,
-				12C3E3C121A54ADF002ED002 /* ZKillboardInvTypesPresenter.swift in Sources */,
-				123E4C7B21C6E4CF002234A7 /* DgmTypePickerGroupsPresenter.swift in Sources */,
-				12484C89215CD56A0083AE17 /* MapLocationPickerSolarSystemsPresenter.swift in Sources */,
-				1256C9FC21D2821A00D65AD7 /* DgmTypePickerRecentsPresenter.swift in Sources */,
-				12133C26215E1F9500646937 /* Image.swift in Sources */,
-				12A843032153871C00570A95 /* InvTypesViewController.swift in Sources */,
-				12925B772189E8DB00F6216C /* MySkillsPageViewController.swift in Sources */,
-				12C3E3CF21A58972002ED002 /* ZKillmailsInteractor.swift in Sources */,
-				12133C42215E3B6D00646937 /* CertCertificatesPresenter.swift in Sources */,
-				12484C65215BB0EF0083AE17 /* InvTypeMarketOrderCell.swift in Sources */,
-				12C3E39421A3F3E3002ED002 /* DatePickerPresenter.swift in Sources */,
-				12484CA9215D21080083AE17 /* MapLocationPickerSearchResultsInteractor.swift in Sources */,
-				12133C3B215E39B700646937 /* CertGroupsInteractor.swift in Sources */,
-				12C3E3A821A5442D002ED002 /* ZKillboardInvCategoriesInteractor.swift in Sources */,
-				125B2CBD217A7BDF00D34CFB /* SkillsPresenter.swift in Sources */,
-				12EE7CE5213D598F005CE68F /* Router.swift in Sources */,
-				124C51252199AB6800D0FC8E /* NavigationItemTitleLabel.swift in Sources */,
-				12AB974D212C30E300B30DD3 /* SDEVersion.swift in Sources */,
-				124C50FE219954F700D0FC8E /* Contracts.swift in Sources */,
-				125DF63C2133D30000B86AE0 /* TreeDefaultCell.swift in Sources */,
-				12C3E3A021A42D77002ED002 /* Contacts.swift in Sources */,
-				121F26EF2136EE9100AE1D70 /* AccountsPresenter.swift in Sources */,
-				12133C57215E56BE00646937 /* CertCertificateMasteryInfoInteractor.swift in Sources */,
-				12484C36215B8E120083AE17 /* InvTypeMarketOrdersViewController.swift in Sources */,
-				12AFD46D211C1C3D00007423 /* SDE.swift in Sources */,
-				12133C4D215E55C700646937 /* CertCertificateInfoInteractor.swift in Sources */,
-				1287FBCF2191916300A505FC /* API+Constants.swift in Sources */,
-				1287FBCA21918E6900A505FC /* Incursions.swift in Sources */,
-				1287FBD921919C6300A505FC /* AssetsPresenter.swift in Sources */,
-				1287FBB12191763800A505FC /* NpcGroupsPresenter.swift in Sources */,
-				12133C39215E39AE00646937 /* CertGroupsPresenter.swift in Sources */,
-				1233EB5E219AF2F200EB99C9 /* KillmailsPage.swift in Sources */,
-				1204D07421528A270070AF92 /* InvGroupsInteractor.swift in Sources */,
-				1253C62E21591066007DEA16 /* MarketHistoryCell.swift in Sources */,
-				1287FB942190825800A505FC /* InvMarketGroupsViewController.swift in Sources */,
-				12AF2FCB2188930300813DFD /* SkillsContainerInteractor.swift in Sources */,
-				1287FBDA21919C6300A505FC /* AssetsViewController.swift in Sources */,
-				1204D066215271370070AF92 /* InvCategoriesPresenter.swift in Sources */,
-				1295A1AA2139242300047516 /* Services.swift in Sources */,
-				1287FBBC21917CF200A505FC /* WhTypesInteractor.swift in Sources */,
-				12484C8F215CD5A10083AE17 /* MapLocationPickerRecentsViewController.swift in Sources */,
-				1287FBBA21917CF200A505FC /* WhTypesPresenter.swift in Sources */,
-				12C3E3CE21A58972002ED002 /* ZKillmailsViewController.swift in Sources */,
-				12133C2C215E291500646937 /* InvTypeVariationsViewController.swift in Sources */,
-				12C8ABEA2195C26E0028BF9A /* IndustryJobsInteractor.swift in Sources */,
-				12484280219C344E00CB3616 /* KillmailAttackerCell.swift in Sources */,
-				12C3E3D021A58972002ED002 /* ZKillmails.swift in Sources */,
-				12925B792189E8DB00F6216C /* MySkillsPage.swift in Sources */,
-				12D3B61E21A7F6D100BA5C9A /* FittingMenu.swift in Sources */,
-				121F26E82136ECA800AE1D70 /* SplitViewController.swift in Sources */,
-				12484299219D46D000CB3616 /* ZKillboardInteractor.swift in Sources */,
-				12484C78215CC6A70083AE17 /* MapLocationPickerInteractor.swift in Sources */,
-				12C727B6218B33CD00A78ADF /* JumpClonesViewController.swift in Sources */,
-				121B28C4218AEA24000D392C /* InvTypeRequiredFor.swift in Sources */,
-				12A843302153CA9600570A95 /* DamageTypeLabel.swift in Sources */,
-				12C8ABE92195C26E0028BF9A /* IndustryJobsViewController.swift in Sources */,
-				12EE7D0A213E60D1005CE68F /* MainMenuContainerInteractor.swift in Sources */,
-				12484CA7215D20FE0083AE17 /* MapLocationPickerSearchResultsPresenter.swift in Sources */,
-				1287FBB32191763800A505FC /* NpcGroupsInteractor.swift in Sources */,
-				12484C69215BB24E0083AE17 /* EVELocation.swift in Sources */,
-				12EEE84321FDE9E7004F7593 /* LoadoutDescription.swift in Sources */,
-				124456B221C2E62A00C62ED5 /* Settings.swift in Sources */,
-				12C3E3A921A5442D002ED002 /* ZKillboardInvCategories.swift in Sources */,
-				12C8ABE82195C26E0028BF9A /* IndustryJobsPresenter.swift in Sources */,
-				12B03DA4213FC44200DCBD64 /* NSAttributedString+NC.swift in Sources */,
-				12028D6421B11C85004B0669 /* DgmTypePickerContainer.swift in Sources */,
-				121F26F12136F07200AE1D70 /* TreeItem+CoreData.swift in Sources */,
-				1287FB9D2190849A00A505FC /* InvMarketViewController.swift in Sources */,
-				12133C2E215E292300646937 /* InvTypeVariationsPresenter.swift in Sources */,
-				12028D6321B11C85004B0669 /* DgmTypePickerContainerInteractor.swift in Sources */,
-				124C510C2199626000D0FC8E /* ContractInfo.swift in Sources */,
-				129E40A9213EA318002EDAF9 /* ViewController.swift in Sources */,
-				1253C6302159108F007DEA16 /* MarketHistoryView.swift in Sources */,
-				12484C7D215CCF100083AE17 /* MapLocationPickerRegions.swift in Sources */,
-				12C3E3BB21A5460E002ED002 /* ZKillboardInvGroups.swift in Sources */,
-				127C4433220E161F00ED2A62 /* FleetDescription.swift in Sources */,
-				121B28CB218AF1E8000D392C /* CharacterInfoInteractor.swift in Sources */,
-				123E4C7521C560B6002234A7 /* APIServiceTesting.swift in Sources */,
-				12C3E39721A3F3E3002ED002 /* DatePicker.swift in Sources */,
-				12484275219BF94A00CB3616 /* KillmailInfoInteractor.swift in Sources */,
-				12C8ABEB2195C26E0028BF9A /* IndustryJobs.swift in Sources */,
-				12678BEF212BE32A00E7E427 /* AppDelegate.swift in Sources */,
-				121F26ED2136EE8700AE1D70 /* AccountsInteractor.swift in Sources */,
-				1256C9F121D15BAE00D65AD7 /* DgmTypePickerTypesInteractor.swift in Sources */,
-				125B2CB62176FEB500D34CFB /* InvTypeMastery.swift in Sources */,
-				1287FB9E2190849A00A505FC /* InvMarketInteractor.swift in Sources */,
-				12C727C1218C255600A78ADF /* Mail.swift in Sources */,
-				1287FB9C2190849A00A505FC /* InvMarketPresenter.swift in Sources */,
-				12484C8D215CD5970083AE17 /* MapLocationPickerRecents.swift in Sources */,
-				1279EFF5213586D6005340C0 /* NCTableView.m in Sources */,
-				12C727DE218C8B7B00A78ADF /* MailBodyPresenter.swift in Sources */,
-				12484273219BF94A00CB3616 /* KillmailInfoPresenter.swift in Sources */,
-				1279F00121358F7C005340C0 /* MainMenuHeaderInteractor.swift in Sources */,
-				124C51092199626000D0FC8E /* ContractInfoPresenter.swift in Sources */,
-				1287FB932190825800A505FC /* InvMarketGroupsPresenter.swift in Sources */,
-				12D8144C2154D9BA00313DAF /* ThinLineView.swift in Sources */,
-				12EA7798217F447A009C8288 /* SkillCell.swift in Sources */,
-				1287FBE22191C2A100A505FC /* TreeHeaderCell.swift in Sources */,
-				1279EFF121355DC9005340C0 /* TreeSectionCell.swift in Sources */,
-				1256CA0721D2CDA800D65AD7 /* FittingFleetsInteractor.swift in Sources */,
-				123E4C7E21C6E4CF002234A7 /* DgmTypePickerGroups.swift in Sources */,
-				12C3E39E21A42D77002ED002 /* ContactsViewController.swift in Sources */,
-				12133C49215E55B600646937 /* CertCertificateInfoViewController.swift in Sources */,
-				1256C9EF21D15BAE00D65AD7 /* DgmTypePickerTypesPresenter.swift in Sources */,
-				12B03DA6213FEBF400DCBD64 /* TimeIntervalFormatter.swift in Sources */,
-				123E4C7C21C6E4CF002234A7 /* DgmTypePickerGroupsViewController.swift in Sources */,
-				12484C34215B8E080083AE17 /* InvTypeMarketOrders.swift in Sources */,
-				1204D064215270780070AF92 /* InvCategoriesViewController.swift in Sources */,
-				12C727C0218C255600A78ADF /* MailInteractor.swift in Sources */,
-				129DFE1B21347A6F00C85496 /* TableViewBackgroundLabel.swift in Sources */,
-				1204D06E215289FC0070AF92 /* InvGroups.swift in Sources */,
-				1279EFFF21358F73005340C0 /* MainMenuHeaderPresenter.swift in Sources */,
-				12133C55215E56B500646937 /* CertCertificateMasteryInfoPresenter.swift in Sources */,
-				12484C6F215CC0B70083AE17 /* SegmentedPageControl.swift in Sources */,
-				121F26E62136EC5700AE1D70 /* NavigationController.swift in Sources */,
-				12484297219D46D000CB3616 /* ZKillboardPresenter.swift in Sources */,
-				1256C9F021D15BAE00D65AD7 /* DgmTypePickerTypesViewController.swift in Sources */,
-				12925B782189E8DB00F6216C /* MySkillsPageInteractor.swift in Sources */,
-				12C3E39D21A42D77002ED002 /* ContactsPresenter.swift in Sources */,
-				12AB972A212BF60000B30DD3 /* Storage.xcdatamodeld in Sources */,
-				12C727B5218B33CD00A78ADF /* JumpClonesPresenter.swift in Sources */,
-				12C727E0218C8B7B00A78ADF /* MailBodyInteractor.swift in Sources */,
-				12D3B61B21A7F6D100BA5C9A /* FittingMenuPresenter.swift in Sources */,
-				12EE7D08213E60C8005CE68F /* MainMenuContainerPresenter.swift in Sources */,
-				124C5132219ACCE400D0FC8E /* KillmailsViewController.swift in Sources */,
-				125B2CBF217A7BDF00D34CFB /* SkillsInteractor.swift in Sources */,
-				124C510A2199626000D0FC8E /* ContractInfoViewController.swift in Sources */,
-				12B890722130054E0082D4A3 /* SOLID.swift in Sources */,
-				12AB972C212BF6A900B30DD3 /* Storage.swift in Sources */,
-				124C51282199B16000D0FC8E /* WalletTransactionCell.swift in Sources */,
-				125DF6332133CFC700B86AE0 /* MainMenuViewController.swift in Sources */,
-				12D3B61C21A7F6D100BA5C9A /* FittingMenuViewController.swift in Sources */,
-				12028D6221B11C85004B0669 /* DgmTypePickerContainerViewController.swift in Sources */,
-				124C51212199A54000D0FC8E /* WalletTransactionsPageViewController.swift in Sources */,
-				1287FBA82190885500A505FC /* MarketQuickbar.swift in Sources */,
-				1287FB952190825800A505FC /* InvMarketGroupsInteractor.swift in Sources */,
-				1287FBB42191763800A505FC /* NpcGroups.swift in Sources */,
-				12484C3A215B8E230083AE17 /* InvTypeMarketOrdersInteractor.swift in Sources */,
-				12484C74215CC6910083AE17 /* MapLocationPickerViewController.swift in Sources */,
-				12133C5B215E56CF00646937 /* CertCertificateRequirementsInfoViewController.swift in Sources */,
-				12C3E39F21A42D77002ED002 /* ContactsInteractor.swift in Sources */,
-				12EE7D11213E6BD7005CE68F /* SlideDownAnimationController.swift in Sources */,
-				1256C9FD21D2821A00D65AD7 /* DgmTypePickerRecentsViewController.swift in Sources */,
-				123E4C7D21C6E4CF002234A7 /* DgmTypePickerGroupsInteractor.swift in Sources */,
-				12133C47215E55AB00646937 /* CertCertificateInfo.swift in Sources */,
-				1204D06A215271670070AF92 /* InvCategories.swift in Sources */,
-				129E40AB213EB001002EDAF9 /* UIKit+NC.swift in Sources */,
-				12133C3E215E3B5A00646937 /* CertCertificates.swift in Sources */,
-				121F26EB2136EE6C00AE1D70 /* AccountsViewController.swift in Sources */,
-				124C858F213E880200333636 /* BackgroundView.swift in Sources */,
-				12AF2FCA2188930300813DFD /* SkillsContainerViewController.swift in Sources */,
-				129DFE1E21347AFB00C85496 /* AccessibilityLabel.swift in Sources */,
-				12C727DF218C8B7B00A78ADF /* MailBodyViewController.swift in Sources */,
-				125B2CB52176FEB500D34CFB /* InvTypeMasteryInteractor.swift in Sources */,
-				120FB475221324F300794784 /* ImplantSetDescription.swift in Sources */,
-				12AF2FD12188943900813DFD /* MySkillsPresenter.swift in Sources */,
-				1248429A219D46D000CB3616 /* ZKillboard.swift in Sources */,
-				12C3E3A621A5442D002ED002 /* ZKillboardInvCategoriesPresenter.swift in Sources */,
-				12484298219D46D000CB3616 /* ZKillboardViewController.swift in Sources */,
-				12133C35215E399C00646937 /* CertGroups.swift in Sources */,
-				12C8ABD4219597720028BF9A /* MarketOrdersViewController.swift in Sources */,
-				1287FB882190276B00A505FC /* ContactsSearchResultsPresenter.swift in Sources */,
-				1287FB892190276B00A505FC /* ContactsSearchResultsViewController.swift in Sources */,
-				12A843072153872D00570A95 /* InvTypesInteractor.swift in Sources */,
-				12D3B62E21A7F73500BA5C9A /* FittingLoadoutsPresenter.swift in Sources */,
-				1256CA0821D2CDA800D65AD7 /* FittingFleets.swift in Sources */,
-				129DFE20213486D900C85496 /* ProgressTask.swift in Sources */,
-				1233EB53219AEF5900EB99C9 /* KillmailCell.swift in Sources */,
-				12AB9724212BEA6C00B30DD3 /* SDE.xcdatamodeld in Sources */,
-				1287FBCD2191901600A505FC /* IncursionCell.swift in Sources */,
-				12B03DA8213FEE1B00DCBD64 /* ActionHandler.swift in Sources */,
-				12C3E39621A3F3E3002ED002 /* DatePickerInteractor.swift in Sources */,
-				12C727C7218C2BBF00A78ADF /* MailPagePresenter.swift in Sources */,
-				12C8ABAB219424D50028BF9A /* AssetsSearchResultsViewController.swift in Sources */,
-				12484C91215CD5AA0083AE17 /* MapLocationPickerRecentsPresenter.swift in Sources */,
-				12A843052153872500570A95 /* InvTypesPresenter.swift in Sources */,
-				1287FBDC21919C6300A505FC /* Assets.swift in Sources */,
-				12AF2FD22188943900813DFD /* MySkillsViewController.swift in Sources */,
-				12028D5821B11BA5004B0669 /* DgmTypePickerViewController.swift in Sources */,
-				12C8ABD6219597720028BF9A /* MarketOrders.swift in Sources */,
-				12C3E3A721A5442D002ED002 /* ZKillboardInvCategoriesViewController.swift in Sources */,
-				12E04181212D44360000CB4F /* Config.swift in Sources */,
-				12484CA3215D20EC0083AE17 /* MapLocationPickerSearchResults.swift in Sources */,
-				12A8432C2153C5D200570A95 /* InvTypeCell.swift in Sources */,
-				12AFD476211C1EA800007423 /* Cache.xcdatamodeld in Sources */,
-				1253C62521590744007DEA16 /* DamageTypeCell.swift in Sources */,
-				1279EFF921358922005340C0 /* TintImageView.swift in Sources */,
-				12484C6D215CC0780083AE17 /* PageViewController.swift in Sources */,
-				12C8ABAC219424D50028BF9A /* AssetsSearchResultsInteractor.swift in Sources */,
-				1259639521381EA100B3A53C /* AccountCell.swift in Sources */,
-				121B28C9218AF1E8000D392C /* CharacterInfoPresenter.swift in Sources */,
-				12C727B7218B33CD00A78ADF /* JumpClonesInteractor.swift in Sources */,
-				12C3E3C221A54ADF002ED002 /* ZKillboardInvTypesViewController.swift in Sources */,
-				1256C9FF21D2821A00D65AD7 /* DgmTypePickerRecents.swift in Sources */,
-				12AB973E212C162A00B30DD3 /* Character.swift in Sources */,
-				12133C40215E3B6400646937 /* CertCertificatesViewController.swift in Sources */,
-				1256CA0D21D3FC7B00D65AD7 /* FleetCell.swift in Sources */,
-				125DF6352133CFD000B86AE0 /* MainMenuPresenter.swift in Sources */,
-				12D3B63021A7F73500BA5C9A /* FittingLoadoutsInteractor.swift in Sources */,
-				121B28CA218AF1E8000D392C /* CharacterInfoViewController.swift in Sources */,
-				12D3B63121A7F73500BA5C9A /* FittingLoadouts.swift in Sources */,
-				12484C81215CCF260083AE17 /* MapLocationPickerRegionsPresenter.swift in Sources */,
-				12C8ABAD219424D50028BF9A /* AssetsSearchResults.swift in Sources */,
-				121B28C3218AEA24000D392C /* InvTypeRequiredForInteractor.swift in Sources */,
-				124C50FC219954F700D0FC8E /* ContractsViewController.swift in Sources */,
-				12C8ABAA219424D50028BF9A /* AssetsSearchResultsPresenter.swift in Sources */,
-				12D8147021550E0F00313DAF /* InvTypeInfo.swift in Sources */,
-				1256CA0621D2CDA800D65AD7 /* FittingFleetsViewController.swift in Sources */,
-				12484C38215B8E1A0083AE17 /* InvTypeMarketOrdersPresenter.swift in Sources */,
-				1287FB812190241C00A505FC /* NewMailInteractor.swift in Sources */,
-				124C51182199906100D0FC8E /* WalletJournalCell.swift in Sources */,
-				12133C5F215E56E100646937 /* CertCertificateRequirementsInfoInteractor.swift in Sources */,
-				125B2CC9217A7C9400D34CFB /* SkillQueue.swift in Sources */,
-				124C51232199A54000D0FC8E /* WalletTransactionsPage.swift in Sources */,
-				12C8ABD3219597720028BF9A /* MarketOrdersPresenter.swift in Sources */,
-				1287FB7F2190241C00A505FC /* NewMailPresenter.swift in Sources */,
-				12133C30215E292D00646937 /* InvTypeVariationsInteractor.swift in Sources */,
-				120A386F213D543E0071ED72 /* MainMenuHeader.swift in Sources */,
-				12C3E3C721A57810002ED002 /* SwitchCell.swift in Sources */,
-				12AB9735212C0E6E00B30DD3 /* NCImplantSetData.swift in Sources */,
-				12C3E3C421A54ADF002ED002 /* ZKillboardInvTypes.swift in Sources */,
-				12EE7D0C213E6282005CE68F /* Route.swift in Sources */,
-				12C3E3B921A5460E002ED002 /* ZKillboardInvGroupsViewController.swift in Sources */,
-				1287FBB22191763800A505FC /* NpcGroupsViewController.swift in Sources */,
-				1256CA0521D2CDA800D65AD7 /* FittingFleetsPresenter.swift in Sources */,
-				12C3E3B221A5457C002ED002 /* ZKillboardTypePicker.swift in Sources */,
-				125DF6372133CFDB00B86AE0 /* MainMenuInteractor.swift in Sources */,
-				12484C72215CC6610083AE17 /* MapLocationPicker.swift in Sources */,
-				124C51202199A54000D0FC8E /* WalletTransactionsPagePresenter.swift in Sources */,
-				1204D07021528A140070AF92 /* InvGroupsViewController.swift in Sources */,
-				1287FBDB21919C6300A505FC /* AssetsInteractor.swift in Sources */,
-				12484274219BF94A00CB3616 /* KillmailInfoViewController.swift in Sources */,
-				1287FB8B2190276B00A505FC /* ContactsSearchResults.swift in Sources */,
-				124C510B2199626000D0FC8E /* ContractInfoInteractor.swift in Sources */,
-				12C727BF218C255600A78ADF /* MailViewController.swift in Sources */,
-				12484C85215CD5560083AE17 /* MapLocationPickerSolarSystems.swift in Sources */,
-				124C5101219956D800D0FC8E /* ContractCell.swift in Sources */,
-				12AF2FD32188943900813DFD /* MySkillsInteractor.swift in Sources */,
-				12484C8B215CD5740083AE17 /* MapLocationPickerSolarSystemsInteractor.swift in Sources */,
-				12AF2FC92188930300813DFD /* SkillsContainerPresenter.swift in Sources */,
-				12925B762189E8DB00F6216C /* MySkillsPagePresenter.swift in Sources */,
-				12C727C8218C2BBF00A78ADF /* MailPageViewController.swift in Sources */,
-				12E0417E212D3C4F0000CB4F /* API.swift in Sources */,
-				125B2CB32176FEB500D34CFB /* InvTypeMasteryPresenter.swift in Sources */,
-				12D3B61D21A7F6D100BA5C9A /* FittingMenuInteractor.swift in Sources */,
-				124C511521998D6A00D0FC8E /* WalletJournalPage.swift in Sources */,
-				1287FB9F2190849A00A505FC /* InvMarket.swift in Sources */,
-				125B2CC6217A7C9400D34CFB /* SkillQueuePresenter.swift in Sources */,
-				12D8147421550ED100313DAF /* InvTypeInfoPresenter.swift in Sources */,
-				125B2CC0217A7BDF00D34CFB /* Skills.swift in Sources */,
-				124C5131219ACCE400D0FC8E /* KillmailsPresenter.swift in Sources */,
-				12C3E3CD21A58972002ED002 /* ZKillmailsPresenter.swift in Sources */,
-				125B2CB42176FEB500D34CFB /* InvTypeMasteryViewController.swift in Sources */,
-				12C727CF218C5F9D00A78ADF /* MailCell.swift in Sources */,
-				124C511421998D6A00D0FC8E /* WalletJournalPageInteractor.swift in Sources */,
-				12C3E3B821A5460E002ED002 /* ZKillboardInvGroupsPresenter.swift in Sources */,
-				12AB9755212C488400B30DD3 /* TrainingQueue.swift in Sources */,
-				124C51222199A54000D0FC8E /* WalletTransactionsPageInteractor.swift in Sources */,
-				129E40AD213ECE0E002EDAF9 /* RoundedImageView.swift in Sources */,
-				124C5134219ACCE400D0FC8E /* Killmails.swift in Sources */,
-				12133C59215E56C600646937 /* CertCertificateRequirementsInfo.swift in Sources */,
-				120A386D213D46970071ED72 /* MainMenuContainerViewController.swift in Sources */,
-				1287FB822190241C00A505FC /* NewMail.swift in Sources */,
-				12AF2FD42188943900813DFD /* MySkills.swift in Sources */,
-				124C511221998D6A00D0FC8E /* WalletJournalPagePresenter.swift in Sources */,
-				1287FBA62190885500A505FC /* MarketQuickbarViewController.swift in Sources */,
-				12484C7F215CCF1B0083AE17 /* MapLocationPickerRegionsViewController.swift in Sources */,
-				12DE75E1215A7554006FC1BF /* InvTypeInfoDescriptionCell.swift in Sources */,
-				12484C87215CD55F0083AE17 /* MapLocationPickerSolarSystemsViewController.swift in Sources */,
-				1279EFEE213543B7005340C0 /* UnitFormatter.swift in Sources */,
-				1287FB8A2190276B00A505FC /* ContactsSearchResultsInteractor.swift in Sources */,
-				1287FBBD21917CF200A505FC /* WhTypes.swift in Sources */,
-				121B28C2218AEA24000D392C /* InvTypeRequiredForViewController.swift in Sources */,
-				12C3E3B021A5457C002ED002 /* ZKillboardTypePickerViewController.swift in Sources */,
-				12C8ABD5219597720028BF9A /* MarketOrdersInteractor.swift in Sources */,
-				12F6C1A221C2BAC20053D62C /* PersistentContainer.swift in Sources */,
-				1233EB5D219AF2F200EB99C9 /* KillmailsPageInteractor.swift in Sources */,
-				121B28CC218AF1E8000D392C /* CharacterInfo.swift in Sources */,
-				12C3E3AF21A5457C002ED002 /* ZKillboardTypePickerPresenter.swift in Sources */,
-				1279EFFD21358F68005340C0 /* MainMenuHeaderViewController.swift in Sources */,
-				12E0419C212D77530000CB4F /* Error.swift in Sources */,
-				1204D07221528A1C0070AF92 /* InvGroupsPresenter.swift in Sources */,
-				124C50FB219954F700D0FC8E /* ContractsPresenter.swift in Sources */,
-				1287FBC921918E6900A505FC /* IncursionsInteractor.swift in Sources */,
-				12D8147621550EDA00313DAF /* InvTypeInfoInteractor.swift in Sources */,
-				1287FB802190241C00A505FC /* NewMailViewController.swift in Sources */,
-				125B2CC7217A7C9400D34CFB /* SkillQueueViewController.swift in Sources */,
-				124C511321998D6A00D0FC8E /* WalletJournalPageViewController.swift in Sources */,
-				1287FBA72190885500A505FC /* MarketQuickbarInteractor.swift in Sources */,
-				12B03DA3213FC32300DCBD64 /* Math.swift in Sources */,
-				12C8ABDB219598B90028BF9A /* MarketOrderCell.swift in Sources */,
-				12133C4B215E55BE00646937 /* CertCertificateInfoPresenter.swift in Sources */,
-				12133C2A215E290500646937 /* InvTypeVariations.swift in Sources */,
+				12CBCFDF2279A95700F9D6BA /* MapLocationPickerPresenter.swift in Sources */,
+				12CBCF422279A8D800F9D6BA /* InvTypesInteractor.swift in Sources */,
+				12CBCEA92279A66200F9D6BA /* TreeItem.swift in Sources */,
+				12CBCFD42279A90000F9D6BA /* CertCertificateInfo.swift in Sources */,
+				12CBCED32279A8B300F9D6BA /* WalletJournalPageViewController.swift in Sources */,
+				12CBCF2E2279A8D800F9D6BA /* WalletJournalPageInteractor.swift in Sources */,
+				12CBCD7F2279991700F9D6BA /* Image.swift in Sources */,
+				12CBCFA82279A90000F9D6BA /* CertCertificates.swift in Sources */,
+				1211DE74227611E900A39F63 /* Math.swift in Sources */,
+				12CBCEB62279A7F000F9D6BA /* InvTypeRequiredForInteractor.swift in Sources */,
+				1211DE4B227611C900A39F63 /* ImplantSetDescription.swift in Sources */,
+				12CBCFDC2279A90000F9D6BA /* FittingMenu.swift in Sources */,
+				12CBCF592279A8D800F9D6BA /* KillmailsPageInteractor.swift in Sources */,
+				12CBCEC92279A8B300F9D6BA /* AssetsSearchResultsViewController.swift in Sources */,
+				12CBCED62279A8B300F9D6BA /* WalletTransactionsPageViewController.swift in Sources */,
+				12CBCF372279A8D800F9D6BA /* InvTypeVariationsInteractor.swift in Sources */,
+				12CBCFCF2279A90000F9D6BA /* MarketOrders.swift in Sources */,
+				12CBCEEB2279A8B300F9D6BA /* IndustryJobsViewController.swift in Sources */,
+				12CBCF1F2279A8CD00F9D6BA /* KillmailsPagePresenter.swift in Sources */,
+				12CBCEE52279A8B300F9D6BA /* DgmTypePickerTypesViewController.swift in Sources */,
+				12CBCFA52279A90000F9D6BA /* DgmTypePickerRecents.swift in Sources */,
+				1211DE73227611E900A39F63 /* NSAttributedString+NC.swift in Sources */,
+				12CBCED82279A8B300F9D6BA /* AccountsViewController.swift in Sources */,
+				12CBCFC32279A90000F9D6BA /* Contracts.swift in Sources */,
+				12CBCFD62279A90000F9D6BA /* ContactsSearchResults.swift in Sources */,
+				12CBCFE42279A9A800F9D6BA /* FittingMenuViewController.swift in Sources */,
+				12CBD0082279AAA600F9D6BA /* MailBodyInteractor.swift in Sources */,
+				12CBCF1D2279A8CD00F9D6BA /* NpcGroupsPresenter.swift in Sources */,
+				12214C2A227616710091174F /* NavigationController.swift in Sources */,
+				12CBCF302279A8D800F9D6BA /* InvTypeInfoInteractor.swift in Sources */,
+				12CBD00D2279AAC900F9D6BA /* ZKillboardTypePickerPresenter.swift in Sources */,
+				12CBCEC12279A89B00F9D6BA /* WalletJournalCell.swift in Sources */,
+				12CBCEFB2279A8CD00F9D6BA /* InvTypesPresenter.swift in Sources */,
+				12CBCF352279A8D800F9D6BA /* SkillQueueInteractor.swift in Sources */,
+				12CBCEBE2279A89B00F9D6BA /* FleetCell.swift in Sources */,
+				12CBCFA62279A90000F9D6BA /* ZKillmails.swift in Sources */,
+				12CBCFAB2279A90000F9D6BA /* Incursions.swift in Sources */,
+				1211DE68227611E900A39F63 /* SegmentedPageControl.swift in Sources */,
+				1211DE45227611C900A39F63 /* Storage.swift in Sources */,
+				12CBCF332279A8D800F9D6BA /* IndustryJobsInteractor.swift in Sources */,
+				12CBCED92279A8B300F9D6BA /* ZKillmailsViewController.swift in Sources */,
+				12CBCFAF2279A90000F9D6BA /* Killmails.swift in Sources */,
+				12CBCFDE2279A95700F9D6BA /* MapLocationPickerViewController.swift in Sources */,
+				12CBCEE62279A8B300F9D6BA /* InvTypeMasteryViewController.swift in Sources */,
+				12CBCEE12279A8B300F9D6BA /* ContactsSearchResultsViewController.swift in Sources */,
+				12CBCEC72279A89B00F9D6BA /* AccountCell.swift in Sources */,
+				12CBCEF52279A8B300F9D6BA /* MapLocationPickerRecentsViewController.swift in Sources */,
+				12CBCF152279A8CD00F9D6BA /* InvTypeMarketOrdersPresenter.swift in Sources */,
+				1211DE72227611E900A39F63 /* UIKit+NC.swift in Sources */,
+				12CBCEFA2279A8CD00F9D6BA /* ZKillboardInvTypesPresenter.swift in Sources */,
+				12CBD0002279AA9200F9D6BA /* MySkillsPresenter.swift in Sources */,
+				12CBCFA72279A90000F9D6BA /* KillmailsPage.swift in Sources */,
+				12CBCFF62279AA6200F9D6BA /* MainMenuContainerViewController.swift in Sources */,
+				12CBCEE22279A8B300F9D6BA /* InvTypeVariationsViewController.swift in Sources */,
+				12CBCF5A2279A8D800F9D6BA /* KillmailInfoInteractor.swift in Sources */,
+				12CBCFCB2279A90000F9D6BA /* CertCertificateRequirementsInfo.swift in Sources */,
+				12CBCF522279A8D800F9D6BA /* MapLocationPickerRecentsInteractor.swift in Sources */,
+				12CBCEE32279A8B300F9D6BA /* ZKillboardInvCategoriesViewController.swift in Sources */,
+				12CBCFF52279AA5E00F9D6BA /* MainMenuHeaderInteractor.swift in Sources */,
+				12CBCF432279A8D800F9D6BA /* AssetsInteractor.swift in Sources */,
+				12CBCF532279A8D800F9D6BA /* MailPageInteractor.swift in Sources */,
+				12CBCFC72279A90000F9D6BA /* MySkillsPage.swift in Sources */,
+				12CBCFE02279A95700F9D6BA /* MapLocationPickerInteractor.swift in Sources */,
+				12CBD0102279AACF00F9D6BA /* DatePickerPresenter.swift in Sources */,
+				12CBCF132279A8CD00F9D6BA /* AccountsPresenter.swift in Sources */,
+				12CBCF492279A8D800F9D6BA /* AccountsInteractor.swift in Sources */,
+				1211DE67227611E900A39F63 /* ThinLineView.swift in Sources */,
+				12CBCF0E2279A8CD00F9D6BA /* InvGroupsPresenter.swift in Sources */,
+				12CBCF3F2279A8D800F9D6BA /* AssetsSearchResultsInteractor.swift in Sources */,
+				12CBCFD12279A90000F9D6BA /* DgmTypePickerGroups.swift in Sources */,
+				12CBCF4A2279A8D800F9D6BA /* CertCertificateRequirementsInfoInteractor.swift in Sources */,
+				12CBCFD22279A90000F9D6BA /* InvCategories.swift in Sources */,
+				12CBD0042279AA9600F9D6BA /* SkillsInteractor.swift in Sources */,
+				12CBCEDA2279A8B300F9D6BA /* InvTypeInfoViewController.swift in Sources */,
+				12CBCF362279A8D800F9D6BA /* ZKillmailsInteractor.swift in Sources */,
+				12CBCF102279A8CD00F9D6BA /* MapLocationPickerSearchResultsPresenter.swift in Sources */,
+				12CBCF5C2279A8EB00F9D6BA /* Router.swift in Sources */,
+				12CBCED22279A8B300F9D6BA /* MapLocationPickerRegionsViewController.swift in Sources */,
+				12CBCEC52279A89B00F9D6BA /* KillmailCell.swift in Sources */,
+				1211DE5B227611E300A39F63 /* Character.swift in Sources */,
+				12CBCEDF2279A8B300F9D6BA /* CharacterInfoViewController.swift in Sources */,
+				12CBCF0F2279A8CD00F9D6BA /* AssetsSearchResultsPresenter.swift in Sources */,
+				12CBCFD92279A90000F9D6BA /* JumpClones.swift in Sources */,
+				12CBCFF12279AA5100F9D6BA /* SearchManager.swift in Sources */,
+				1211DE5A227611D900A39F63 /* SlideDownDismissalInteractiveTransitioning.swift in Sources */,
+				12CBCFCC2279A90000F9D6BA /* DatePicker.swift in Sources */,
+				12CBD00C2279AAC900F9D6BA /* ZKillboardTypePickerViewController.swift in Sources */,
+				1211DE75227611E900A39F63 /* ActionHandler.swift in Sources */,
+				12CBCECF2279A8B300F9D6BA /* ZKillboardViewController.swift in Sources */,
+				12CBCF462279A8D800F9D6BA /* ZKillboardInvTypesInteractor.swift in Sources */,
+				12CBCFC62279A90000F9D6BA /* NpcGroups.swift in Sources */,
+				12CBCEDC2279A8B300F9D6BA /* InvGroupsViewController.swift in Sources */,
+				12CBCEE72279A8B300F9D6BA /* NpcGroupsViewController.swift in Sources */,
+				12CBD0072279AAA600F9D6BA /* MailBodyPresenter.swift in Sources */,
+				12CBCF072279A8CD00F9D6BA /* CharacterInfoPresenter.swift in Sources */,
+				12CBCEEF2279A8B300F9D6BA /* FittingLoadoutsViewController.swift in Sources */,
+				12CBCFD52279A90000F9D6BA /* Contacts.swift in Sources */,
+				12CBCED52279A8B300F9D6BA /* AssetsViewController.swift in Sources */,
+				12CBCF042279A8CD00F9D6BA /* IndustryJobsPresenter.swift in Sources */,
+				12CBCFB02279A90000F9D6BA /* ZKillboardInvCategories.swift in Sources */,
+				12CBCED12279A8B300F9D6BA /* InvTypeMarketOrdersViewController.swift in Sources */,
+				12CBCF0B2279A8CD00F9D6BA /* MainMenuPresenter.swift in Sources */,
+				12CBCF322279A8D800F9D6BA /* DgmTypePickerRecentsInteractor.swift in Sources */,
+				12CBCFDD2279A90000F9D6BA /* KillmailInfo.swift in Sources */,
+				12CBCEBD2279A89B00F9D6BA /* MailCell.swift in Sources */,
+				12CBCF452279A8D800F9D6BA /* ContractsInteractor.swift in Sources */,
+				12CBCED42279A8B300F9D6BA /* MySkillsPageViewController.swift in Sources */,
+				1211DE52227611D100A39F63 /* Services.swift in Sources */,
+				12CBCFFA2279AA7300F9D6BA /* InvMarketPresenter.swift in Sources */,
+				12CBCFCD2279A90000F9D6BA /* WhTypes.swift in Sources */,
+				12CBCEDD2279A8B300F9D6BA /* ContractsViewController.swift in Sources */,
+				12CBCFFD2279AA8900F9D6BA /* SkillsContainerPresenter.swift in Sources */,
+				12CBCFAC2279A90000F9D6BA /* WalletJournalPage.swift in Sources */,
+				12CBCFB72279A90000F9D6BA /* CertCertificateMasteryInfo.swift in Sources */,
+				12CBCEBC2279A89B00F9D6BA /* IncursionCell.swift in Sources */,
+				1211DE6E227611E900A39F63 /* ProgressTask.swift in Sources */,
+				12CBCF052279A8CD00F9D6BA /* ContactsSearchResultsPresenter.swift in Sources */,
+				12214C2C2276168B0091174F /* Cells.swift in Sources */,
+				12CBCFBE2279A90000F9D6BA /* MailBody.swift in Sources */,
+				1211DE59227611D900A39F63 /* SheetPresentationController.swift in Sources */,
+				12CBCF572279A8D800F9D6BA /* MySkillsPageInteractor.swift in Sources */,
+				1211DE64227611E900A39F63 /* BackgroundView.swift in Sources */,
+				1211DE62227611E900A39F63 /* AccessibilityLabel.swift in Sources */,
+				1211DE65227611E900A39F63 /* RoundedImageView.swift in Sources */,
+				12CBCED72279A8B300F9D6BA /* CertGroupsViewController.swift in Sources */,
+				12CBCFA92279A90000F9D6BA /* InvGroups.swift in Sources */,
+				12CBCFEF2279AA2D00F9D6BA /* SwitchCell.swift in Sources */,
+				12CBCF012279A8CD00F9D6BA /* InvTypeInfoPresenter.swift in Sources */,
+				12CBCEF12279A8B300F9D6BA /* InvCategoriesViewController.swift in Sources */,
+				12CBCEB82279A85900F9D6BA /* InvTypeRequiredFor.swift in Sources */,
+				1211DE69227611E900A39F63 /* PieChartView.swift in Sources */,
+				12CBCF162279A8CD00F9D6BA /* KillmailInfoPresenter.swift in Sources */,
+				12CBCEE92279A8B300F9D6BA /* IncursionsViewController.swift in Sources */,
+				1211DE7B227611FF00A39F63 /* SDE.xcdatamodeld in Sources */,
+				12CBCF3B2279A8D800F9D6BA /* MapLocationPickerSolarSystemsInteractor.swift in Sources */,
+				12CBCF9F2279A90000F9D6BA /* MainMenuHeader.swift in Sources */,
+				12CBCF312279A8D800F9D6BA /* FittingLoadoutsInteractor.swift in Sources */,
+				12CBCFD32279A90000F9D6BA /* NewMail.swift in Sources */,
+				12CBCFD82279A90000F9D6BA /* MailPage.swift in Sources */,
+				12CBD0062279AAA500F9D6BA /* MailBodyViewController.swift in Sources */,
+				12CBCEE82279A8B300F9D6BA /* MapLocationPickerSolarSystemsViewController.swift in Sources */,
+				12214C29227616530091174F /* AppDelegate.swift in Sources */,
+				12CBCFA22279A90000F9D6BA /* MapLocationPickerSolarSystems.swift in Sources */,
+				12CBD0132279AADB00F9D6BA /* DgmTypePickerContainerPresenter.swift in Sources */,
+				1211DE7E2276131A00A39F63 /* EVELocation.swift in Sources */,
+				12CBD0142279AADB00F9D6BA /* DgmTypePickerContainerInteractor.swift in Sources */,
+				12CBCF2D2279A8D800F9D6BA /* ContactsInteractor.swift in Sources */,
+				12CBCFE72279A9B100F9D6BA /* NewMailViewController.swift in Sources */,
+				1211DE4E227611D100A39F63 /* SDE.swift in Sources */,
+				12CBCFD72279A90000F9D6BA /* MapLocationPickerRecents.swift in Sources */,
+				12CBCEFC2279A8CD00F9D6BA /* MapLocationPickerRecentsPresenter.swift in Sources */,
+				12CBCFB62279A90000F9D6BA /* ContractInfo.swift in Sources */,
+				1211DE5C227611E300A39F63 /* TrainingQueue.swift in Sources */,
+				12CBCEF72279A8B300F9D6BA /* KillmailInfoViewController.swift in Sources */,
+				12CBCEEE2279A8B300F9D6BA /* JumpClonesViewController.swift in Sources */,
+				12CBCF0C2279A8CD00F9D6BA /* ZKillboardPresenter.swift in Sources */,
+				12CBCF3A2279A8D800F9D6BA /* InvMarketGroupsInteractor.swift in Sources */,
+				12CBCFF22279AA5500F9D6BA /* BannerNavigationViewController.swift in Sources */,
+				12CBCFB92279A90000F9D6BA /* Assets.swift in Sources */,
+				12CBCEFF2279A8CD00F9D6BA /* ZKillboardInvCategoriesPresenter.swift in Sources */,
+				12CBCFBD2279A90000F9D6BA /* DgmTypePickerContainer.swift in Sources */,
+				1211DE4A227611C900A39F63 /* FleetDescription.swift in Sources */,
+				12CBCEC32279A89B00F9D6BA /* WalletTransactionCell.swift in Sources */,
+				12CBCFF92279AA7300F9D6BA /* InvMarketViewController.swift in Sources */,
+				12CBCFA12279A90000F9D6BA /* FittingFleets.swift in Sources */,
+				12CBCF512279A8D800F9D6BA /* MapLocationPickerSearchResultsInteractor.swift in Sources */,
+				12CBCFA02279A90000F9D6BA /* InvTypes.swift in Sources */,
+				1211DE63227611E900A39F63 /* TableViewBackgroundLabel.swift in Sources */,
+				12CBCF182279A8CD00F9D6BA /* ZKillboardInvGroupsPresenter.swift in Sources */,
+				12CBCF262279A8CD00F9D6BA /* InvCategoriesPresenter.swift in Sources */,
+				12CBCEB52279A7F000F9D6BA /* InvTypeRequiredForPresenter.swift in Sources */,
+				12CBCEAA2279A67400F9D6BA /* TreeViewController.swift in Sources */,
+				1211DE50227611D100A39F63 /* PersistentContext.swift in Sources */,
+				12CBCECB2279A8B300F9D6BA /* WhTypesViewController.swift in Sources */,
+				12CBCFDB2279A90000F9D6BA /* ZKillboard.swift in Sources */,
+				1211DE71227611E900A39F63 /* Config.swift in Sources */,
+				12CBD0162279AAE500F9D6BA /* DgmTypePickerPresenter.swift in Sources */,
+				1211DE60227611E900A39F63 /* NCTableView.m in Sources */,
+				12CBCF062279A8CD00F9D6BA /* FittingLoadoutsPresenter.swift in Sources */,
+				12CBCEBA2279A89B00F9D6BA /* InvTypeMarketOrderCell.swift in Sources */,
+				12CBCFFE2279AA8900F9D6BA /* SkillsContainerInteractor.swift in Sources */,
+				12CBCEB72279A82E00F9D6BA /* InvTypeCell.swift in Sources */,
+				12CBCEB92279A89B00F9D6BA /* TreeDefaultCell.swift in Sources */,
+				12CBCF112279A8CD00F9D6BA /* DgmTypePickerTypesPresenter.swift in Sources */,
+				12CBCFAA2279A90000F9D6BA /* Skills.swift in Sources */,
+				12CBCEC02279A89B00F9D6BA /* ContractCell.swift in Sources */,
+				12CBCFE32279A98500F9D6BA /* CertCertificateInfoInteractor.swift in Sources */,
+				12CBCD70227998D400F9D6BA /* MarketHistoryView.swift in Sources */,
+				12CBCFB52279A90000F9D6BA /* MapLocationPickerRegions.swift in Sources */,
+				12CBCFE92279A9B100F9D6BA /* NewMailInteractor.swift in Sources */,
+				12CBCEF22279A8B300F9D6BA /* FittingFleetsViewController.swift in Sources */,
+				12CBCFE52279A9A800F9D6BA /* FittingMenuPresenter.swift in Sources */,
+				12CBCFC42279A90000F9D6BA /* InvMarket.swift in Sources */,
+				12CBCFAD2279A90000F9D6BA /* InvTypeMastery.swift in Sources */,
+				1211DE6D227611E900A39F63 /* Error.swift in Sources */,
+				12CBCF292279A8CD00F9D6BA /* ContactsPresenter.swift in Sources */,
+				12CBCF192279A8CD00F9D6BA /* DgmTypePickerGroupsPresenter.swift in Sources */,
+				12CBD0052279AA9F00F9D6BA /* PageViewController.swift in Sources */,
+				12CBD00F2279AACF00F9D6BA /* DatePickerViewController.swift in Sources */,
+				12CBCF032279A8CD00F9D6BA /* MarketQuickbarPresenter.swift in Sources */,
+				12CBCFF72279AA6200F9D6BA /* MainMenuContainerPresenter.swift in Sources */,
+				1211DE6F227611E900A39F63 /* UnitFormatter.swift in Sources */,
+				12CBCEF92279A8B300F9D6BA /* InvMarketGroupsViewController.swift in Sources */,
+				12CBCFEE2279AA2200F9D6BA /* InvTypeInfoDescriptionCell.swift in Sources */,
+				12CBCEF02279A8B300F9D6BA /* MarketOrdersViewController.swift in Sources */,
+				1211DE58227611D900A39F63 /* SlideDownAnimationController.swift in Sources */,
+				12CBD0122279AADB00F9D6BA /* DgmTypePickerContainerViewController.swift in Sources */,
+				12CBCFF82279AA6200F9D6BA /* MainMenuContainerInteractor.swift in Sources */,
+				12CBCED02279A8B300F9D6BA /* MapLocationPickerSearchResultsViewController.swift in Sources */,
+				12CBCF412279A8D800F9D6BA /* InvGroupsInteractor.swift in Sources */,
+				12CBCF202279A8CD00F9D6BA /* SkillQueuePresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4237,6 +4233,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -4296,6 +4293,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -4357,6 +4355,7 @@
 					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
 					"${PROJECT_DIR}/../ThirdParty/Facebook",
 					"${PROJECT_DIR}/../ThirdParty/Appodeal",
+					"$(SRCROOT)/../ThirdParty/ASReceipt/Source/ThirdParty/OpenSSL/iOS",
 				);
 				INFOPLIST_FILE = Neocom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -4367,7 +4366,7 @@
 				"SWIFT_ACTIVE_COMPILATION_CONDITIONS[sdk=iphonesimulator*]" = "DEBUG TARGET_OS_SIMULATOR";
 				SWIFT_OBJC_BRIDGING_HEADER = "Neocom/Neocom-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../ThirdParty/Firebase";
 			};
 			name = Debug;
@@ -4385,6 +4384,7 @@
 					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
 					"${PROJECT_DIR}/../ThirdParty/Facebook",
 					"${PROJECT_DIR}/../ThirdParty/Appodeal",
+					"$(SRCROOT)/../ThirdParty/ASReceipt/Source/ThirdParty/OpenSSL/iOS",
 				);
 				INFOPLIST_FILE = Neocom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -4393,7 +4393,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SWIFT_OBJC_BRIDGING_HEADER = "Neocom/Neocom-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/../ThirdParty/Firebase";
 			};
 			name = Release;

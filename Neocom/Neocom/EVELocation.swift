@@ -148,16 +148,15 @@ struct EVELocation: Hashable {
 	static let unknown = EVELocation(stationID: nil, itemName: nil, stationTypeID: nil, solarSystemID: nil, solarSystemName: nil, corporationID: nil, corporationName: nil, security: nil)
 }
 
-
 extension EVELocation: CellConfigurable {
 	var prototype: Prototype? {
 		return Prototype.TreeSectionCell.default
 	}
-	
+
 	func configure(cell: UITableViewCell, treeController: TreeController?) {
 		guard let cell = cell as? TreeSectionCell else {return}
 		cell.titleLabel?.attributedText = displayName.uppercased()
 		cell.titleLabel?.isHidden = false
 	}
-	
+
 }

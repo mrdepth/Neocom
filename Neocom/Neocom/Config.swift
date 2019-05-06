@@ -23,3 +23,10 @@ struct Config: Hashable {
 extension Config {
 	static let current = Config()
 }
+
+enum URLScheme: String {
+	case nc = "nc"
+	case showinfo = "showinfo"
+	case fitting = "fitting"
+	case file = "file"
+}

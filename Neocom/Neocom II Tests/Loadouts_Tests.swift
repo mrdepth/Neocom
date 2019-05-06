@@ -128,10 +128,10 @@ class NCFittingLoadoutItem: NSObject, NSSecureCoding {
 	}
 	
 	public static func ==(lhs: NCFittingLoadoutItem, rhs: NCFittingLoadoutItem) -> Bool {
-		return lhs.hashValue == rhs.hashValue
+		return lhs.hash == rhs.hash
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return [typeID, count].hashValue
 	}
 }
@@ -174,7 +174,7 @@ class NCFittingLoadoutModule: NCFittingLoadoutItem {
 		aCoder.encode(socket, forKey: "socket")
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return [typeID, count, state.rawValue, charge?.typeID ?? 0].hashValue
 	}
 }
@@ -217,7 +217,7 @@ class NCFittingLoadoutDrone: NCFittingLoadoutItem {
 		aCoder.encode(squadronTag, forKey: "squadronTag")
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return [typeID, count, isActive ? 1 : 0].hashValue
 	}
 }

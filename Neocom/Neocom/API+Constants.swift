@@ -683,7 +683,7 @@ extension ESI.Assets.Asset.Flag {
 	}
 }
 
-extension ESI.Mail.Recipient.RecipientType {
+extension ESI.Mail.RecipientType {
 	var title: String {
 		switch self {
 		case .alliance:

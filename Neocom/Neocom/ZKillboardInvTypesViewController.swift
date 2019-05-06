@@ -9,13 +9,14 @@
 import Foundation
 import TreeController
 
-class ZKillboardInvTypesViewController: TreeViewController<ZKillboardInvTypesPresenter, ZKillboardInvTypesViewController.Input>, TreeView, UISearchResultsUpdating, SearchableViewController {
+enum ZKillboardInvTypesViewControllerInput {
+	case group(SDEInvGroup)
+	case category(SDEInvCategory)
+	case none
+}
+
+class ZKillboardInvTypesViewController: TreeViewController<ZKillboardInvTypesPresenter, ZKillboardInvTypesViewControllerInput>, TreeView, UISearchResultsUpdating, SearchableViewController {
 	
-	enum Input {
-		case group(SDEInvGroup)
-		case category(SDEInvCategory)
-		case none
-	}
 	
 	override func treeController<T>(_ treeController: TreeController, configure cell: UITableViewCell, for item: T) where T : TreeItem {
 		super.treeController(treeController, configure: cell, for: item)

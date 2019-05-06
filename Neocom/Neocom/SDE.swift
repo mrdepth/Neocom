@@ -124,6 +124,11 @@ extension SDEInvType {
 	subscript(key: SDEAttributeID) -> SDEDgmTypeAttribute? {
 		return (try? managedObjectContext?.from(SDEDgmTypeAttribute.self).filter(\SDEDgmTypeAttribute.type == self && \SDEDgmTypeAttribute.attributeType?.attributeID == key.rawValue).first()) ?? nil
 	}
+	
+	var dgmppItemCategoryID: SDEDgmppItemCategoryID? {
+		guard let category = (dgmppItem?.groups?.anyObject() as? SDEDgmppItemGroup)?.category?.category else {return nil}
+		return SDEDgmppItemCategoryID(rawValue: category)
+	}
 }
 
 extension SDEWhType {

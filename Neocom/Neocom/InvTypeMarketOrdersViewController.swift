@@ -9,10 +9,11 @@
 import Foundation
 import CoreData
 
-class InvTypeMarketOrdersViewController: TreeViewController<InvTypeMarketOrdersPresenter, InvTypeMarketOrdersViewController.Input>, TreeView {
-	enum Input {
-		case typeID(Int)
-	}
+enum InvTypeMarketOrdersViewControllerInput {
+	case typeID(Int)
+}
+
+class InvTypeMarketOrdersViewController: TreeViewController<InvTypeMarketOrdersPresenter, InvTypeMarketOrdersViewControllerInput>, TreeView {
 	
 	@IBAction func onRegions(_ sender: Any) {
 		presenter.onRegions(sender)

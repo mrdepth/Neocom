@@ -10,8 +10,9 @@ import Foundation
 import TreeController
 import CoreData
 
-class InvTypeRequiredForViewController: TreeViewController<InvTypeRequiredForPresenter, InvTypeRequiredForViewController.Input>, TreeView {
-	enum Input {
-		case objectID(NSManagedObjectID)
-	}
+enum InvTypeRequiredForViewControllerInput {
+	case objectID(NSManagedObjectID)
+}
+
+class InvTypeRequiredForViewController: TreeViewController<InvTypeRequiredForPresenter, InvTypeRequiredForViewControllerInput>, TreeView {
 }

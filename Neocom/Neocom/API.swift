@@ -571,7 +571,7 @@ class APIClient: API {
 					mailingLists.filter {missing.contains(Int64($0.mailingListID))}.forEach { i in
 						let contact = Contact(context: context.managedObjectContext)
 						contact.contactID = Int64(i.mailingListID)
-						contact.category = ESI.Mail.Recipient.RecipientType.mailingList.rawValue
+						contact.category = ESI.Mail.RecipientType.mailingList.rawValue
 						contact.name = i.name
 						contacts[contact.contactID] = contact
 						missing.remove(contact.contactID)

@@ -9,10 +9,11 @@
 import Foundation
 import TreeController
 
-class ContactsViewController: TreeViewController<ContactsPresenter, ContactsViewController.Input>, TreeView, SearchableViewController {
-	struct Input {
-		var completion: (ContactsViewController, Contact) -> Void
-	}
+struct ContactsViewControllerInput {
+	var completion: (ContactsViewController, Contact) -> Void
+}
+
+class ContactsViewController: TreeViewController<ContactsPresenter, ContactsViewControllerInput>, TreeView, SearchableViewController {
 	
 	func searchResultsController() -> UIViewController & UISearchResultsUpdating {
 		return try! ContactsSearchResults.default.instantiate(self).get()

@@ -9,12 +9,14 @@
 import Foundation
 import TreeController
 
-class DgmTypePickerTypesViewController: TreeViewController<DgmTypePickerTypesPresenter, DgmTypePickerTypesViewController.Input>, TreeView, UISearchResultsUpdating, SearchableViewController {
+enum DgmTypePickerTypesViewControllerInput {
+	case category(SDEDgmppItemCategory)
+	case group(SDEDgmppItemGroup)
+}
+
+class DgmTypePickerTypesViewController: TreeViewController<DgmTypePickerTypesPresenter, DgmTypePickerTypesViewControllerInput>, TreeView, UISearchResultsUpdating, SearchableViewController {
 	
-	enum Input {
-		case category(SDEDgmppItemCategory)
-		case group(SDEDgmppItemGroup)
-	}
+	
 	
 	func searchResultsController() -> UIViewController & UISearchResultsUpdating {
 		guard let input = input else {return try! InvTypes.default.instantiate(.none).get()}

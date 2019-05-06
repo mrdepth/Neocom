@@ -9,11 +9,12 @@
 import Foundation
 import TreeController
 
-class NpcGroupsViewController: TreeViewController<NpcGroupsPresenter, NpcGroupsViewController.Input>, TreeView, SearchableViewController {
-	enum Input {
-		case root
-		case parent(SDENpcGroup)
-	}
+enum NpcGroupsViewControllerInput {
+	case root
+	case parent(SDENpcGroup)
+}
+
+class NpcGroupsViewController: TreeViewController<NpcGroupsPresenter, NpcGroupsViewControllerInput>, TreeView, SearchableViewController {
 	
 	override func treeController<T>(_ treeController: TreeController, didSelectRowFor item: T) where T : TreeItem {
 		super.treeController(treeController, didSelectRowFor: item)

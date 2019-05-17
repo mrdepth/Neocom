@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import EVEAPI
+import Futures
 
 class NCDgmppItemGroupRow: NCFetchedResultsObjectNode<NCDBDgmppItemGroup> {
 	required init(object: NCDBDgmppItemGroup) {

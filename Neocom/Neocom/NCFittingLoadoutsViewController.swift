@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import CloudData
 import EVEAPI
+import Futures
 
 class NCLoadoutRow: TreeRow {
 	let typeName: String
@@ -35,12 +36,12 @@ class NCLoadoutRow: TreeRow {
 		cell.accessoryType = .disclosureIndicator
 	}
 	
-	override var hashValue: Int {
-		return loadoutID.hashValue
+	override var hash: Int {
+		return loadoutID.hash
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCLoadoutRow)?.hashValue == hashValue
+		return (object as? NCLoadoutRow)?.hash == hash
 	}
 }
 
@@ -55,12 +56,12 @@ class NCLoadoutProxyRow: TreeRow {
 		loadoutRow.configure(cell: cell)
 	}
 	
-	override var hashValue: Int {
-		return loadoutRow.hashValue
+	override var hash: Int {
+		return loadoutRow.hash
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCLoadoutProxyRow)?.hashValue == hashValue
+		return (object as? NCLoadoutProxyRow)?.hash == hash
 	}
 
 }
@@ -91,12 +92,12 @@ class NCLoadoutsSection<T: NCLoadoutRow>: TreeSection {
 		}
 	}
 	
-	override var hashValue: Int {
-		return categoryID?.hashValue ?? filter?.hash ?? super.hashValue
+	override var hash: Int {
+		return categoryID?.hashValue ?? filter?.hashValue ?? super.hash
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCLoadoutsSection)?.hashValue == hashValue
+		return (object as? NCLoadoutsSection)?.hash == hash
 	}
 	
 	private func reload() {

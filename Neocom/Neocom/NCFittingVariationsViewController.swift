@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import EVEAPI
+import Futures
 
 class NCFittingVariationRow: NCDatabaseTypeRow<NCDBInvType> {
 	override func configure(cell: UITableViewCell) {

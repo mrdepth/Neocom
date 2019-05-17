@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CoreData
+import Futures
 
 class NCMailTableViewCell: NCTableViewCell {
 	@IBOutlet weak var recipientLabel: UILabel!
@@ -126,7 +127,7 @@ class NCMailRow: TreeRow {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return mail.mailID?.hashValue ?? 0
 	}
 	

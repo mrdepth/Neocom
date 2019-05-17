@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import EVEAPI
 import CloudData
+import Futures
 
 
 fileprivate class NCSkillQueueRow: NCSkillRow {
@@ -40,7 +41,7 @@ fileprivate class NCSkillQueueRow: NCSkillRow {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return skill.hashValue
 	}
 	

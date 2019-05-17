@@ -148,7 +148,7 @@ extension NCBannerNavigationViewController: SKPaymentTransactionObserver {
 		guard bannerContainerView != nil else {return}
 		
 		if transactions.contains(where: {$0.transactionState == .purchased || $0.transactionState == .restored}) {
-			Receipt.fetchValidReceipt { [weak self] (result) in
+			Receipt.fetchValidReceipt(refreshIfNeeded: false) { [weak self] (result) in
 				if case let .success(receipt) = result, receipt.inAppPurchases?.contains(where: {$0.inAppType == .autoRenewableSubscription && !$0.isExpired}) == true {
 					self?.removeBanner()
 				}

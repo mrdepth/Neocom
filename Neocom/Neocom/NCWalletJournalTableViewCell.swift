@@ -27,14 +27,20 @@ protocol NCWalletJournalItem {
 	var amount: Double? {get}
 	var balance: Double? {get}
 	var date: Date {get}
-	var refType: ESI.Wallet.RefType {get}
+	var refTypeTitle: String {get}
 	var hashValue: Int {get}
 }
 
 extension ESI.Wallet.WalletJournalItem: NCWalletJournalItem {
+    var refTypeTitle: String {
+        return refType.title
+    }
 }
 
 extension ESI.Wallet.CorpWalletsJournalItem: NCWalletJournalItem {
+    var refTypeTitle: String {
+        return refType.title
+    }
 }
 
 
@@ -48,7 +54,7 @@ class NCWalletJournalRow: TreeRow {
 	
 	override func configure(cell: UITableViewCell) {
 		guard let cell = cell as? NCWalletJournalTableViewCell else {return}
-		cell.titleLabel.text = item.refType.title
+		cell.titleLabel.text = item.refTypeTitle
 		cell.dateLabel.text = DateFormatter.localizedString(from: item.date, dateStyle: .medium, timeStyle: .medium)
 		var s: NSAttributedString
 		if let amount = item.amount {
@@ -67,7 +73,9 @@ class NCWalletJournalRow: TreeRow {
 		}
 	}
 	
-	override lazy var hashValue: Int = item.hashValue
+	override var hash: Int {
+        return item.hashValue
+    }
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCWalletJournalRow)?.hashValue == hashValue

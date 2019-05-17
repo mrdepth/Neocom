@@ -152,10 +152,9 @@ class NCFittingFleet {
 
 		var cargo = Set<Int>()
 		var requiresAmmo = [DGMModule]()
-		
 		fitting.items.forEach {
 			do {
-				switch ESI.Assets.Asset.Flag($0.flag) {
+				switch ESI.Assets.Asset.Flag(rawValue: $0.flag.rawValue) {
 				case .droneBay?, .fighterBay?, .fighterTube0?, .fighterTube1?, .fighterTube2?, .fighterTube3?, .fighterTube4?:
 					for _ in 0..<max($0.quantity, 1) {
 						try ship.add(DGMDrone(typeID: $0.typeID))

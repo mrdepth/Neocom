@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import Appodeal
+import Futures
 
 class NCSkillQueueNotificationOptionsSection: DefaultTreeSection {
 	let setting: NCSetting

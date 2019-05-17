@@ -10,6 +10,7 @@ import Foundation
 import UserNotifications
 import EVEAPI
 import CoreData
+import Futures
 
 private protocol NotificationRequest {
 	var identifier: String {get}

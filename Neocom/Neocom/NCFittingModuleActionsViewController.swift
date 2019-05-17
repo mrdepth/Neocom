@@ -10,6 +10,7 @@ import UIKit
 import CloudData
 import Dgmpp
 import EVEAPI
+import Futures
 
 class NCFittingModuleStateRow: TreeRow {
 	let fleet: NCFittingFleet
@@ -54,7 +55,7 @@ class NCFittingModuleStateRow: TreeRow {
 	}
 	
 
-	override var hashValue: Int {
+	override var hash: Int {
 		return modules.first?.hashValue ?? 0
 	}
 	
@@ -118,7 +119,7 @@ class NCFittingModuleInfoRow: TreeRow {
 		}
 	}
 
-	override var hashValue: Int {
+	override var hash: Int {
 		return module.hashValue
 	}
 	

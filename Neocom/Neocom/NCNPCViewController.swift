@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import EVEAPI
+import Futures
 
 class NCNPCGroupRow: NCFetchedResultsObjectNode<NCDBNpcGroup> {
 	

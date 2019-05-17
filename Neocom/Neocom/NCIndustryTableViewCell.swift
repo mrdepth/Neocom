@@ -143,7 +143,9 @@ class NCIndustryRow: TreeRow {
 		cell.runsPerCopyLabel.textColor = color
 	}
 	
-	override lazy var hashValue: Int = job.hashValue
+    override var hash: Int {
+        return job.hashValue
+    }
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCIndustryRow)?.hashValue == hashValue

@@ -10,6 +10,7 @@ import UIKit
 import CloudData
 import Dgmpp
 import EVEAPI
+import Futures
 
 class NCFittingFuelRow: TreeRow {
 	let structure: DGMStructure
@@ -46,7 +47,7 @@ class NCFittingFuelRow: TreeRow {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return "FuelRow".hashValue
 	}
 	
@@ -118,7 +119,7 @@ class NCFittingPriceSection: TreeSection {
 		cell.titleLabel?.text = NSLocalizedString("Cost:", comment: "").uppercased() + (cost > 0 ? " \(NCUnitFormatter.localizedString(from: cost, unit: .isk, style: .full))" : "")
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return "Cost".hashValue
 	}
 	
@@ -186,7 +187,7 @@ class NCFittingPriceTypeRow: NCFittingPriceRow {
 		
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return typeID.hashValue
 	}
 	
@@ -230,7 +231,7 @@ class NCFittingPriceModulesRow: NCFittingPriceRow {
 		cell.subtitleLabel?.text = cost > 0 ? NSLocalizedString("Cost:", comment: "") + " \(NCUnitFormatter.localizedString(from: cost, unit: .isk, style: .full))" : nil
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return "Modules".hashValue
 	}
 	
@@ -274,7 +275,7 @@ class NCFittingPriceDronesRow: NCFittingPriceRow {
 	}
 
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return "Drones".hashValue
 	}
 	
@@ -313,7 +314,7 @@ class NCFittingPriceImplantsRow: NCFittingPriceRow {
 		cell.subtitleLabel?.text = cost > 0 ? NSLocalizedString("Cost:", comment: "") + " \(NCUnitFormatter.localizedString(from: cost, unit: .isk, style: .full))" : nil
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return "Implants".hashValue
 	}
 	

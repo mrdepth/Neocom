@@ -129,7 +129,7 @@ class NCKillmailRow: TreeRow {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return killmail.killmailID
 	}
 	

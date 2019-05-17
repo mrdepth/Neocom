@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CloudData
+import Futures
 
 class NCDateSection: TreeSection {
 	let date: Date

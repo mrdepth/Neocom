@@ -81,7 +81,7 @@ class NCFittingDroneRow: TreeRow {
 		cell.subtitleLabel?.attributedText = subtitle
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return drones.first?.hashValue ?? 0
 	}
 	
@@ -114,7 +114,7 @@ class NCFittingDroneSection: TreeSection {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return squadron.rawValue
 	}
 	

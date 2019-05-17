@@ -10,6 +10,7 @@ import UIKit
 import CloudData
 import Dgmpp
 import EVEAPI
+import Futures
 
 class NCFittingFleetViewController: NCTreeViewController, NCFittingEditorPage {
 	

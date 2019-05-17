@@ -65,7 +65,7 @@ class NCTankRow: TreeRow {
 		fill(view: cell.sustainedView, tank: sustainableTank)
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return ship.hashValue
 	}
 	

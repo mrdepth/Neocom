@@ -9,6 +9,7 @@
 import Foundation
 import Dgmpp
 import EVEAPI
+import Futures
 
 class NCAboutViewController: NCTreeViewController {
 	

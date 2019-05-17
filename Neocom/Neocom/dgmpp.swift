@@ -259,9 +259,13 @@ extension DGMDrone.Squadron {
 
 
 extension DGMDamageVector: Hashable {
-	public var hashValue: Int {
-		return [em, kinetic, thermal, explosive].hashValue
-	}
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(em)
+        hasher.combine(kinetic)
+        hasher.combine(thermal)
+        hasher.combine(explosive)
+    }
 	
 	public static func == (lhs: DGMDamageVector, rhs: DGMDamageVector) -> Bool {
 		return lhs.hashValue == rhs.hashValue

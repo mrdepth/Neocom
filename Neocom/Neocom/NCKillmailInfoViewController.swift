@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CoreData
+import Futures
 
 class NCKillmailItemRow: TreeRow {
 	let typeID: Int
@@ -69,7 +70,7 @@ class NCKillmailItemSection: TreeSection {
 		cell.iconView?.image = image
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return title.hash
 	}
 	

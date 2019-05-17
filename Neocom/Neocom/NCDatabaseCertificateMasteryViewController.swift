@@ -8,7 +8,7 @@
 
 import UIKit
 import EVEAPI
-
+import Futures
 
 class NCDatabaseCertificateMasteryViewController: NCTreeViewController {
 	var certificate: NCDBCertCertificate?

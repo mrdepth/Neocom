@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CoreData
+import Futures
 
 class NCLoyaltyStoreCategoryRow: TreeRow {
 	let categoryID: Int

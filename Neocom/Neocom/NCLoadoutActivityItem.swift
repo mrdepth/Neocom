@@ -10,6 +10,7 @@ import UIKit
 import EVEAPI
 import CoreData
 import Dgmpp
+import Futures
 
 enum NCLoadoutRepresentation {
 	case dna([(typeID: Int, data: NCFittingLoadout, name: String)])
@@ -160,7 +161,7 @@ enum NCLoadoutRepresentation {
 			let invTypes = NCDBInvType.invTypes(managedObjectContext: managedObjectContext)
 			
 			let modules = loadout.data.modules?.map { i -> FlattenBidirectionalCollection<[[ESI.Fittings.Item]]> in
-				let flags: [ESI.Assets.Asset.Flag]
+				let flags: [ESI.Fittings.Item.Flag]
 				switch i.key {
 				case .hi:
 					flags = [.hiSlot0, .hiSlot1, .hiSlot2, .hiSlot3, .hiSlot4, .hiSlot5, .hiSlot6, .hiSlot7]
@@ -169,11 +170,11 @@ enum NCLoadoutRepresentation {
 				case .low:
 					flags = [.loSlot0, .loSlot1, .loSlot2, .loSlot3, .loSlot4, .loSlot5, .loSlot6, .loSlot7]
 				case .rig:
-					flags = [.rigSlot0, .rigSlot1, .rigSlot2, .rigSlot3, .rigSlot4, .rigSlot5, .rigSlot6, .rigSlot7]
+					flags = [.rigSlot0, .rigSlot1, .rigSlot2]
 				case .subsystem:
-					flags = [.subSystemSlot0, .subSystemSlot1, .subSystemSlot2, .subSystemSlot3, .subSystemSlot4, .subSystemSlot5, .subSystemSlot6, .subSystemSlot7]
+					flags = [.subSystemSlot0, .subSystemSlot1, .subSystemSlot2, .subSystemSlot3]
 				case .service:
-					flags = [.structureServiceSlot0, .structureServiceSlot1, .structureServiceSlot2, .structureServiceSlot3, .structureServiceSlot4, .structureServiceSlot5, .structureServiceSlot6, .structureServiceSlot7]
+					flags = [.serviceSlot0, .serviceSlot1, .serviceSlot2, .serviceSlot3, .serviceSlot4, .serviceSlot5, .serviceSlot6, .serviceSlot7]
 				default:
 					flags = [.cargo]
 				}
@@ -181,7 +182,7 @@ enum NCLoadoutRepresentation {
 				let items = i.value.map { j -> [ESI.Fittings.Item] in
 					var items: [ESI.Fittings.Item] = []
 					for _ in 0..<j.count {
-						let item = ESI.Fittings.Item(flag: flags[min(slot, flags.count - 1)].intValue, quantity: 1, typeID: j.typeID)
+						let item = ESI.Fittings.Item(flag: flags[min(slot, flags.count - 1)], quantity: 1, typeID: j.typeID)
 						slot += 1
 						items.append(item)
 					}
@@ -194,7 +195,7 @@ enum NCLoadoutRepresentation {
 				guard let type = invTypes[i.typeID] else {return nil}
 				guard let categoryID = type.group?.category?.categoryID, let category = NCDBCategoryID(rawValue: Int(categoryID)) else {return nil}
 				
-				let flag = category == .fighter ? ESI.Assets.Asset.Flag.fighterBay.intValue : ESI.Assets.Asset.Flag.droneBay.intValue
+                let flag: ESI.Fittings.Item.Flag = category == .fighter ? .fighterBay : .droneBay
 				let item = ESI.Fittings.Item(flag: flag, quantity: i.count, typeID: i.typeID)
 				return item
 				}

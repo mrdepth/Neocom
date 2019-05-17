@@ -11,6 +11,7 @@ import CoreData
 import EVEAPI
 import CloudData
 import Dgmpp
+import Futures
 
 class NCStorage: NSObject {
 	private(set) lazy var managedObjectModel: NSManagedObjectModel = {

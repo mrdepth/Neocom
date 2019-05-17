@@ -9,6 +9,7 @@
 import Foundation
 import EVEAPI
 import CoreData
+import Futures
 
 class NCCharacter {
 	

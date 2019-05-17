@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CoreData
+import Futures
 
 class NCMainMenuRow: DefaultTreeRow {
 	let scopes: Set<ESI.Scope>

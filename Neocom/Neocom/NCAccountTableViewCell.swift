@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CoreData
+import Futures
 
 class NCAccountTableViewCell: NCTableViewCell {
 	@IBOutlet weak var characterNameLabel: UILabel?

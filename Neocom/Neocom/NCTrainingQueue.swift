@@ -36,11 +36,9 @@ class NCTrainingSkill: Hashable {
 	
 	//MARK: Hashable
 	
-	var hashValue: Int {
-		get {
-			return skill.hashValue
-		}
-	}
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(skill)
+    }
 	
 	static func ==(lhs: NCTrainingSkill, rhs: NCTrainingSkill) -> Bool {
 		return lhs.hashValue == rhs.hashValue

@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import EVEAPI
 import Alamofire
+import Futures
 
 enum NCCachedResult<T> {
 	case success(value: T, cacheRecord: NCCacheRecord?)
@@ -77,7 +78,7 @@ extension OAuth2Token {
 }
 
 
-typealias NCLoaderCompletion<T> = (_ result: Result<T>, _ cacheTime: TimeInterval) -> Void
+typealias NCLoaderCompletion<T> = (_ result: AFResult<T>, _ cacheTime: TimeInterval) -> Void
 
 enum NCDataManagerError: Error, LocalizedError {
 	case internalError
@@ -104,10 +105,10 @@ class NCDataManager {
 	
 	private lazy var _esi: ESI = {
 		if let token = self.token {
-			return ESI(token: token, clientID: ESClientID, secretKey: ESSecretKey, server: .tranquility, cachePolicy: self.cachePolicy)
+			return ESI(token: token, clientID: ESClientID, secretKey: ESSecretKey, server: .tranquility)
 		}
 		else {
-			return ESI(cachePolicy: self.cachePolicy)
+			return ESI()
 		}
 	}()
 	
@@ -118,7 +119,7 @@ class NCDataManager {
 	}
 
 	private lazy var _zKillboard: ZKillboard = {
-		return ZKillboard(cachePolicy: self.cachePolicy)
+		return ZKillboard()
 	}()
 	
 	var zKillboard: ZKillboard {
@@ -396,11 +397,11 @@ class NCDataManager {
 		return loadFromCache(forKey: "ESI.Market.Order.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.market.listOrdersInRegion(orderType: .all, regionID: regionID, typeID: typeID))
 	}
 	
-	func search(_ string: String, categories: [ESI.Search.SearchCategories], strict: Bool = false) -> Future<CachedValue<ESI.Search.SearchResult>> {
+	func search(_ string: String, categories: [ESI.Search.Categories], strict: Bool = false) -> Future<CachedValue<ESI.Search.SearchResult>> {
 		return loadFromCache(forKey: "ESI.Search.SearchResult.\(categories.hashValue).\(string.lowercased().hashValue).\(strict)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.search.search(categories: categories, search: string, strict: strict))
 	}
 
-	func searchNames(_ string: String, categories: [ESI.Search.SearchCategories], strict: Bool = false) -> Future<[Int64: NSManagedObjectID]> {
+	func searchNames(_ string: String, categories: [ESI.Search.Categories], strict: Bool = false) -> Future<[Int64: NSManagedObjectID]> {
 		return self.search(string, categories: categories).then(on: .global(qos: .utility)) { result -> [Int64: NSManagedObjectID] in
 			if let searchResult = result.value {
 				var ids = Set<Int>()
@@ -721,11 +722,11 @@ class NCDataManager {
 	func rss(url: URL) -> Future<CachedValue<RSS.Feed>> {
 		return loadFromCache(forKey: "RSS.Feed.\(url.absoluteString)", account: nil, cachePolicy: cachePolicy, elseLoad: { () -> Future<ESI.Result<RSS.Feed>> in
 			let promise = Promise<ESI.Result<RSS.Feed>>()
-			Alamofire.request(url, method: .get).validate().responseRSS { (response: DataResponse<RSS.Feed>) in
+			Session.default.request(url, method: .get).validate().responseRSS { (response: DataResponse<RSS.Feed>) in
 				do {
 					switch response.result {
 					case let .success(value):
-						try promise.fulfill(.init(value: value, cached: 60))
+                        try promise.fulfill(ESI.Result<RSS.Feed>.init(value: value, expires: Date(timeIntervalSinceNow: 60), metadata: response.response?.allHeaderFields as? [String: String]))
 					case let .failure(error):
 						throw error
 					}
@@ -749,7 +750,7 @@ class NCDataManager {
 		}
 	}
 	
-	func createFitting(fitting: ESI.Fittings.MutableFitting, completionHandler: @escaping (Result<ESI.Fittings.CreateFittingResult>) -> Void) {
+	func createFitting(fitting: ESI.Fittings.MutableFitting, completionHandler: @escaping (AFResult<ESI.Fittings.CreateFittingResult>) -> Void) {
 		self.esi.fittings.createFitting(characterID: Int(self.characterID), fitting: fitting).then { result in
 			completionHandler(.success(result.value))
 		}.catch { error in
@@ -793,7 +794,7 @@ class NCDataManager {
 		case .reloadIgnoringLocalCacheData:
 			progress.becomeCurrent(withPendingUnitCount: 1)
 			future = loader().then { result in
-				return cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: result.cached), error: nil)
+				return cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: result.expires, error: nil)
 			}
 			progress.resignCurrent()
 			
@@ -808,7 +809,7 @@ class NCDataManager {
 				else {
 					let result = try loader().get()
 					progress.completedUnitCount += 1
-					return try cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: result.cached), error: nil, into: managedObjectContext)
+					return try cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: result.expires, error: nil, into: managedObjectContext)
 				}
 			}
 
@@ -833,14 +834,14 @@ class NCDataManager {
 				if let record = record, object != nil {
 					if expired {
 						loader().then { result in
-							cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: result.cached), error: nil)
+							cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: result.expires, error: nil)
 						}
 					}
 					return record.objectID
 				}
 				else {
 					let result = try loader().get()
-					return try cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: result.cached), error: nil, into: managedObjectContext)
+					return try cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: result.expires, error: nil, into: managedObjectContext)
 				}
 			}
 		}

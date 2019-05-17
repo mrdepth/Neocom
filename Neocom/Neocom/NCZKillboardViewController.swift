@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CoreData
+import Futures
 
 fileprivate protocol NCZKillboardFilterRow: class {
 }
@@ -66,7 +67,7 @@ fileprivate class NCZKillboardShipRow: TreeRow, NCZKillboardFilterRow {
 		return (object as? NCZKillboardShipRow)?.hashValue == hashValue
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return ship.hashValue
 	}
 
@@ -98,7 +99,7 @@ fileprivate class NCZKillboardLocationRow: TreeRow, NCZKillboardFilterRow {
 		return (object as? NCZKillboardLocationRow)?.hashValue == hashValue
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return location.hashValue
 	}
 	

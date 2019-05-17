@@ -124,27 +124,13 @@ class NCSkill: Hashable {
 	}
 
 	//MARK: Hashable
-	
-	var hashValue: Int {
-		get {
-			var dic = [String: AnyHashable]()
-			dic["typeID"] = typeID
-			if let level = level {
-				dic["level"] = level
-			}
-			if let startSkillPoints = startSkillPoints {
-				dic["startSkillPoints"] = startSkillPoints
-			}
-			
-			if let trainingStartDate = trainingStartDate {
-				dic["trainingStartDate"] = trainingStartDate
-			}
-			if let trainingEndDate = trainingEndDate {
-				dic["trainingEndDate"] = trainingEndDate
-			}
-			return dic.hashValue
-		}
-	}
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(typeID)
+        hasher.combine(level)
+        hasher.combine(startSkillPoints)
+        hasher.combine(trainingStartDate)
+        hasher.combine(trainingEndDate)
+    }
 	
 	static func ==(lhs: NCSkill, rhs: NCSkill) -> Bool {
 		return lhs.hashValue == rhs.hashValue

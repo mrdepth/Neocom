@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import EVEAPI
+import Futures
 
 fileprivate class InvType<T> {
 	
@@ -223,7 +224,7 @@ class NCDatabaseTypeRow<ResultType: NSFetchRequestResult>: NCFetchedResultsObjec
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return (object as? NSDictionary)?["typeID"] as? Int ?? Int((object as? NCDBInvType)?.typeID ?? 0)
 	}
 }

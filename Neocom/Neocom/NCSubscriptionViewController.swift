@@ -10,6 +10,7 @@ import Foundation
 import ASReceipt
 import StoreKit
 import EVEAPI
+import Futures
 
 class NCSubscriptionViewController: NCTreeViewController {
 	
@@ -43,7 +44,7 @@ class NCSubscriptionViewController: NCTreeViewController {
 	override func content() -> Future<TreeNode?> {
 		let promise = Promise<TreeNode?>()
 		
-		Receipt.fetchValidReceipt { result in
+		Receipt.fetchValidReceipt(refreshIfNeeded: false) { result in
 			guard let products = self.products ?? (UIApplication.shared.delegate as? NCAppDelegate)?.products, !products.isEmpty else {
 				try! promise.fulfill(nil)
 				return
@@ -199,8 +200,7 @@ extension NCSubscriptionViewController: SKPaymentTransactionObserver {
 		progressHandler?.finish()
 		progressHandler = nil
 		tableView.isUserInteractionEnabled = true
-		
-		let (title, message) = Receipt.local?.inAppPurchases?.isEmpty == false
+		let (title, message) = (try? Receipt().inAppPurchases?.isEmpty) == false
 			? (NSLocalizedString("Purchases Restored", comment: ""), NSLocalizedString("Your previous purchases are being restored. Thank you!", comment: ""))
 			: (NSLocalizedString("No Purchases to Restore", comment: ""), NSLocalizedString("No purchases have been made under this Apple ID. Use the Apple ID that is linked to the purchase made.", comment: ""))
 		let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)

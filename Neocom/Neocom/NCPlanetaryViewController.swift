@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import Dgmpp
+import Futures
 
 enum NCColonyError: Error {
 	case invalidLayout
@@ -102,7 +103,7 @@ class NCColonySection: TreeSection {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return colony.planetID.hashValue
 	}
 	
@@ -173,7 +174,7 @@ class NCFacilityRow: TreeRow {
 		cell.accessoryType = .detailButton
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return identifier.hashValue
 	}
 	
@@ -205,7 +206,7 @@ class NCFacilityOutputRow: TreeRow {
 		cell.accessoryType = .disclosureIndicator
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return [identifier.hashValue, typeID.hashValue].hashValue
 	}
 	
@@ -390,7 +391,7 @@ class NCFactoryInputRow: TreeRow {
 		cell.accessoryType = .disclosureIndicator
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return [identifier.hashValue, typeID.hashValue].hashValue
 	}
 	
@@ -501,7 +502,7 @@ class NCCommodityRow: TreeRow {
 		cell.accessoryType = .disclosureIndicator
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return [identifier.hashValue, typeID.hashValue].hashValue
 	}
 	

@@ -56,28 +56,6 @@
 		122D73F821DF2FFC00414277 /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D73F021DF2FFC00414277 /* FIRAnalyticsConnector.framework */; };
 		122D73F921DF2FFC00414277 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D73F121DF2FFC00414277 /* FirebaseInstanceID.framework */; };
 		122D73FA21DF2FFC00414277 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122D73F221DF2FFC00414277 /* FirebaseCoreDiagnostics.framework */; };
-		122D741221DF30E100414277 /* MPUnmutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D73FC21DF30E100414277 /* MPUnmutedBtn.png */; };
-		122D741321DF30E100414277 /* MRAID.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 122D73FD21DF30E100414277 /* MRAID.bundle */; };
-		122D741421DF30E100414277 /* MPDAAIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D73FE21DF30E100414277 /* MPDAAIcon.png */; };
-		122D741521DF30E100414277 /* TapjoyResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 122D73FF21DF30E100414277 /* TapjoyResources.bundle */; };
-		122D741621DF30E100414277 /* MPUnmutedBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740021DF30E100414277 /* MPUnmutedBtn@3x.png */; };
-		122D741721DF30E100414277 /* MPPlayBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740121DF30E100414277 /* MPPlayBtn@2x.png */; };
-		122D741821DF30E100414277 /* MPCloseBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740221DF30E100414277 /* MPCloseBtn@2x.png */; };
-		122D741921DF30E100414277 /* MPCloseBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740321DF30E100414277 /* MPCloseBtn@3x.png */; };
-		122D741A21DF30E100414277 /* MPCloseBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740421DF30E100414277 /* MPCloseBtn.png */; };
-		122D741B21DF30E100414277 /* MPPlayBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740521DF30E100414277 /* MPPlayBtn@3x.png */; };
-		122D741C21DF30E100414277 /* MPAdBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 122D740621DF30E100414277 /* MPAdBrowserController.xib */; };
-		122D741D21DF30E100414277 /* MPUnmutedBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740721DF30E100414277 /* MPUnmutedBtn@2x.png */; };
-		122D741E21DF30E100414277 /* MPCloseButtonX@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740821DF30E100414277 /* MPCloseButtonX@2x.png */; };
-		122D741F21DF30E100414277 /* MPCloseButtonX@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740921DF30E100414277 /* MPCloseButtonX@3x.png */; };
-		122D742021DF30E100414277 /* MPCloseButtonX.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740A21DF30E100414277 /* MPCloseButtonX.png */; };
-		122D742121DF30E100414277 /* MPDAAIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740B21DF30E100414277 /* MPDAAIcon@3x.png */; };
-		122D742221DF30E100414277 /* MPMutedBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740C21DF30E100414277 /* MPMutedBtn@3x.png */; };
-		122D742321DF30E100414277 /* StartApp.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 122D740D21DF30E100414277 /* StartApp.bundle */; };
-		122D742421DF30E100414277 /* MPPlayBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740E21DF30E100414277 /* MPPlayBtn.png */; };
-		122D742521DF30E100414277 /* MPMutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D740F21DF30E100414277 /* MPMutedBtn.png */; };
-		122D742621DF30E100414277 /* MPMutedBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D741021DF30E100414277 /* MPMutedBtn@2x.png */; };
-		122D742721DF30E100414277 /* MPDAAIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 122D741121DF30E100414277 /* MPDAAIcon@2x.png */; };
 		122DB9AB1E804DF200E8E2C4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */; };
 		122DB9AF1E806DB000E8E2C4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 122DB9AE1E806DB000E8E2C4 /* libz.tbd */; };
 		122E11CC1FEBB81C0057EB0D /* NCFleetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129B31771E5488AF00B9A88D /* NCFleetConfiguration.swift */; };
@@ -399,6 +377,30 @@
 		12FE20FF1F8FA52F004C021E /* NCLoyaltyStoreOffersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FE20FE1F8FA52F004C021E /* NCLoyaltyStoreOffersViewController.swift */; };
 		12FF4D3E1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */; };
 		12FF4D401E33A5DB00A8BAD4 /* NCResourceLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FF4D3F1E33A5DB00A8BAD4 /* NCResourceLabel.swift */; };
+		1626539D228EBAF300B13997 /* MPUnmutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 16265387228EBAF300B13997 /* MPUnmutedBtn.png */; };
+		1626539E228EBAF300B13997 /* MRAID.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 16265388228EBAF300B13997 /* MRAID.bundle */; };
+		1626539F228EBAF300B13997 /* MPDAAIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 16265389228EBAF300B13997 /* MPDAAIcon.png */; };
+		162653A0228EBAF300B13997 /* TapjoyResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1626538A228EBAF300B13997 /* TapjoyResources.bundle */; };
+		162653A1228EBAF300B13997 /* MPUnmutedBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1626538B228EBAF300B13997 /* MPUnmutedBtn@3x.png */; };
+		162653A2228EBAF300B13997 /* MPPlayBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1626538C228EBAF300B13997 /* MPPlayBtn@2x.png */; };
+		162653A3228EBAF300B13997 /* MPCloseBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1626538D228EBAF300B13997 /* MPCloseBtn@2x.png */; };
+		162653A4228EBAF300B13997 /* MPCloseBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1626538E228EBAF300B13997 /* MPCloseBtn@3x.png */; };
+		162653A5228EBAF300B13997 /* MPCloseBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 1626538F228EBAF300B13997 /* MPCloseBtn.png */; };
+		162653A6228EBAF300B13997 /* MPPlayBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 16265390228EBAF300B13997 /* MPPlayBtn@3x.png */; };
+		162653A7228EBAF300B13997 /* MPAdBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 16265391228EBAF300B13997 /* MPAdBrowserController.xib */; };
+		162653A8228EBAF300B13997 /* MPUnmutedBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 16265392228EBAF300B13997 /* MPUnmutedBtn@2x.png */; };
+		162653A9228EBAF300B13997 /* MPCloseButtonX@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 16265393228EBAF300B13997 /* MPCloseButtonX@2x.png */; };
+		162653AA228EBAF300B13997 /* MPCloseButtonX@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 16265394228EBAF300B13997 /* MPCloseButtonX@3x.png */; };
+		162653AB228EBAF300B13997 /* MPCloseButtonX.png in Resources */ = {isa = PBXBuildFile; fileRef = 16265395228EBAF300B13997 /* MPCloseButtonX.png */; };
+		162653AC228EBAF300B13997 /* MPDAAIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 16265396228EBAF300B13997 /* MPDAAIcon@3x.png */; };
+		162653AD228EBAF300B13997 /* MPMutedBtn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 16265397228EBAF300B13997 /* MPMutedBtn@3x.png */; };
+		162653AE228EBAF300B13997 /* StartApp.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 16265398228EBAF300B13997 /* StartApp.bundle */; };
+		162653AF228EBAF300B13997 /* MPPlayBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 16265399228EBAF300B13997 /* MPPlayBtn.png */; };
+		162653B0228EBAF300B13997 /* MPMutedBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 1626539A228EBAF300B13997 /* MPMutedBtn.png */; };
+		162653B1228EBAF300B13997 /* MPMutedBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1626539B228EBAF300B13997 /* MPMutedBtn@2x.png */; };
+		162653B2228EBAF300B13997 /* MPDAAIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1626539C228EBAF300B13997 /* MPDAAIcon@2x.png */; };
+		162653B4228EBB0C00B13997 /* Futures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 162653B3228EBB0C00B13997 /* Futures.framework */; };
+		162653B5228EBB0C00B13997 /* Futures.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 162653B3228EBB0C00B13997 /* Futures.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -473,6 +475,7 @@
 				12BC40A31DFF1EBB00657D40 /* Alamofire.framework in Embed Frameworks */,
 				1235F3D61F39B9F1000E0FD9 /* Swifter.framework in Embed Frameworks */,
 				12DBEAAE1E1D3B710088A486 /* Dgmpp.framework in Embed Frameworks */,
+				162653B5228EBB0C00B13997 /* Futures.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -549,28 +552,6 @@
 		122D73F021DF2FFC00414277 /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
 		122D73F121DF2FFC00414277 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseInstanceID.framework; sourceTree = "<group>"; };
 		122D73F221DF2FFC00414277 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
-		122D73FC21DF30E100414277 /* MPUnmutedBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPUnmutedBtn.png; sourceTree = "<group>"; };
-		122D73FD21DF30E100414277 /* MRAID.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MRAID.bundle; sourceTree = "<group>"; };
-		122D73FE21DF30E100414277 /* MPDAAIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPDAAIcon.png; sourceTree = "<group>"; };
-		122D73FF21DF30E100414277 /* TapjoyResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TapjoyResources.bundle; sourceTree = "<group>"; };
-		122D740021DF30E100414277 /* MPUnmutedBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPUnmutedBtn@3x.png"; sourceTree = "<group>"; };
-		122D740121DF30E100414277 /* MPPlayBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPPlayBtn@2x.png"; sourceTree = "<group>"; };
-		122D740221DF30E100414277 /* MPCloseBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseBtn@2x.png"; sourceTree = "<group>"; };
-		122D740321DF30E100414277 /* MPCloseBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseBtn@3x.png"; sourceTree = "<group>"; };
-		122D740421DF30E100414277 /* MPCloseBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPCloseBtn.png; sourceTree = "<group>"; };
-		122D740521DF30E100414277 /* MPPlayBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPPlayBtn@3x.png"; sourceTree = "<group>"; };
-		122D740621DF30E100414277 /* MPAdBrowserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MPAdBrowserController.xib; sourceTree = "<group>"; };
-		122D740721DF30E100414277 /* MPUnmutedBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPUnmutedBtn@2x.png"; sourceTree = "<group>"; };
-		122D740821DF30E100414277 /* MPCloseButtonX@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseButtonX@2x.png"; sourceTree = "<group>"; };
-		122D740921DF30E100414277 /* MPCloseButtonX@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseButtonX@3x.png"; sourceTree = "<group>"; };
-		122D740A21DF30E100414277 /* MPCloseButtonX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPCloseButtonX.png; sourceTree = "<group>"; };
-		122D740B21DF30E100414277 /* MPDAAIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPDAAIcon@3x.png"; sourceTree = "<group>"; };
-		122D740C21DF30E100414277 /* MPMutedBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPMutedBtn@3x.png"; sourceTree = "<group>"; };
-		122D740D21DF30E100414277 /* StartApp.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = StartApp.bundle; sourceTree = "<group>"; };
-		122D740E21DF30E100414277 /* MPPlayBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPPlayBtn.png; sourceTree = "<group>"; };
-		122D740F21DF30E100414277 /* MPMutedBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPMutedBtn.png; sourceTree = "<group>"; };
-		122D741021DF30E100414277 /* MPMutedBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPMutedBtn@2x.png"; sourceTree = "<group>"; };
-		122D741121DF30E100414277 /* MPDAAIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPDAAIcon@2x.png"; sourceTree = "<group>"; };
 		122DB9AA1E804DF200E8E2C4 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		122DB9AE1E806DB000E8E2C4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		122FFDF41E4B7D630066D45E /* NCFittingStatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCFittingStatsViewController.swift; sourceTree = "<group>"; };
@@ -897,6 +878,29 @@
 		12FE20FE1F8FA52F004C021E /* NCLoyaltyStoreOffersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NCLoyaltyStoreOffersViewController.swift; sourceTree = "<group>"; };
 		12FF4D3D1E33893A00A8BAD4 /* NCTypePickerRecentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NCTypePickerRecentViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		12FF4D3F1E33A5DB00A8BAD4 /* NCResourceLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NCResourceLabel.swift; sourceTree = "<group>"; };
+		16265387228EBAF300B13997 /* MPUnmutedBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPUnmutedBtn.png; sourceTree = "<group>"; };
+		16265388228EBAF300B13997 /* MRAID.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MRAID.bundle; sourceTree = "<group>"; };
+		16265389228EBAF300B13997 /* MPDAAIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPDAAIcon.png; sourceTree = "<group>"; };
+		1626538A228EBAF300B13997 /* TapjoyResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TapjoyResources.bundle; sourceTree = "<group>"; };
+		1626538B228EBAF300B13997 /* MPUnmutedBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPUnmutedBtn@3x.png"; sourceTree = "<group>"; };
+		1626538C228EBAF300B13997 /* MPPlayBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPPlayBtn@2x.png"; sourceTree = "<group>"; };
+		1626538D228EBAF300B13997 /* MPCloseBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseBtn@2x.png"; sourceTree = "<group>"; };
+		1626538E228EBAF300B13997 /* MPCloseBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseBtn@3x.png"; sourceTree = "<group>"; };
+		1626538F228EBAF300B13997 /* MPCloseBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPCloseBtn.png; sourceTree = "<group>"; };
+		16265390228EBAF300B13997 /* MPPlayBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPPlayBtn@3x.png"; sourceTree = "<group>"; };
+		16265391228EBAF300B13997 /* MPAdBrowserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MPAdBrowserController.xib; sourceTree = "<group>"; };
+		16265392228EBAF300B13997 /* MPUnmutedBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPUnmutedBtn@2x.png"; sourceTree = "<group>"; };
+		16265393228EBAF300B13997 /* MPCloseButtonX@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseButtonX@2x.png"; sourceTree = "<group>"; };
+		16265394228EBAF300B13997 /* MPCloseButtonX@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPCloseButtonX@3x.png"; sourceTree = "<group>"; };
+		16265395228EBAF300B13997 /* MPCloseButtonX.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPCloseButtonX.png; sourceTree = "<group>"; };
+		16265396228EBAF300B13997 /* MPDAAIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPDAAIcon@3x.png"; sourceTree = "<group>"; };
+		16265397228EBAF300B13997 /* MPMutedBtn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPMutedBtn@3x.png"; sourceTree = "<group>"; };
+		16265398228EBAF300B13997 /* StartApp.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = StartApp.bundle; sourceTree = "<group>"; };
+		16265399228EBAF300B13997 /* MPPlayBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPPlayBtn.png; sourceTree = "<group>"; };
+		1626539A228EBAF300B13997 /* MPMutedBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MPMutedBtn.png; sourceTree = "<group>"; };
+		1626539B228EBAF300B13997 /* MPMutedBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPMutedBtn@2x.png"; sourceTree = "<group>"; };
+		1626539C228EBAF300B13997 /* MPDAAIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MPDAAIcon@2x.png"; sourceTree = "<group>"; };
+		162653B3228EBB0C00B13997 /* Futures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Futures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2966A910CF3B7B0D3616B717 /* Pods_Widget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Widget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AD37530C1DC990A12B6E565 /* Pods_Neocom.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Neocom.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		892328FAC283635AA2B5B091 /* Pods_Neocom_II_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Neocom_II_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -934,6 +938,7 @@
 				129DE43C1FF628AD00A2C1CD /* Bolts.framework in Frameworks */,
 				122D73F421DF2FFC00414277 /* FirebaseCore.framework in Frameworks */,
 				12BC40A21DFF1EBB00657D40 /* Alamofire.framework in Frameworks */,
+				162653B4228EBB0C00B13997 /* Futures.framework in Frameworks */,
 				129DE43B1FF628AD00A2C1CD /* FBSDKCoreKit.framework in Frameworks */,
 				12DBEAAD1E1D3B710088A486 /* Dgmpp.framework in Frameworks */,
 			);
@@ -997,35 +1002,6 @@
 				122D73F221DF2FFC00414277 /* FirebaseCoreDiagnostics.framework */,
 			);
 			path = Analytics;
-			sourceTree = "<group>";
-		};
-		122D73FB21DF30E100414277 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				122D73FC21DF30E100414277 /* MPUnmutedBtn.png */,
-				122D73FD21DF30E100414277 /* MRAID.bundle */,
-				122D73FE21DF30E100414277 /* MPDAAIcon.png */,
-				122D73FF21DF30E100414277 /* TapjoyResources.bundle */,
-				122D740021DF30E100414277 /* MPUnmutedBtn@3x.png */,
-				122D740121DF30E100414277 /* MPPlayBtn@2x.png */,
-				122D740221DF30E100414277 /* MPCloseBtn@2x.png */,
-				122D740321DF30E100414277 /* MPCloseBtn@3x.png */,
-				122D740421DF30E100414277 /* MPCloseBtn.png */,
-				122D740521DF30E100414277 /* MPPlayBtn@3x.png */,
-				122D740621DF30E100414277 /* MPAdBrowserController.xib */,
-				122D740721DF30E100414277 /* MPUnmutedBtn@2x.png */,
-				122D740821DF30E100414277 /* MPCloseButtonX@2x.png */,
-				122D740921DF30E100414277 /* MPCloseButtonX@3x.png */,
-				122D740A21DF30E100414277 /* MPCloseButtonX.png */,
-				122D740B21DF30E100414277 /* MPDAAIcon@3x.png */,
-				122D740C21DF30E100414277 /* MPMutedBtn@3x.png */,
-				122D740D21DF30E100414277 /* StartApp.bundle */,
-				122D740E21DF30E100414277 /* MPPlayBtn.png */,
-				122D740F21DF30E100414277 /* MPMutedBtn.png */,
-				122D741021DF30E100414277 /* MPMutedBtn@2x.png */,
-				122D741121DF30E100414277 /* MPDAAIcon@2x.png */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		1230A3361DFFE30400627D92 /* Database */ = {
@@ -1401,6 +1377,7 @@
 		12AC8D871DEF58A100561A7A = {
 			isa = PBXGroup;
 			children = (
+				162653B3228EBB0C00B13997 /* Futures.framework */,
 				12841C0C205BD42D00B30582 /* openssl.framework */,
 				1235F3D41F39B9F1000E0FD9 /* Swifter.framework */,
 				12B68F281E802958006462B7 /* CloudData.framework */,
@@ -1567,7 +1544,7 @@
 		12BFE4272017C8E80083AC2F /* Appodeal */ = {
 			isa = PBXGroup;
 			children = (
-				122D73FB21DF30E100414277 /* Resources */,
+				16265386228EBAF300B13997 /* Resources */,
 				12BFE4402017C8E80083AC2F /* Appodeal.framework */,
 			);
 			path = Appodeal;
@@ -1733,6 +1710,35 @@
 			name = Segues;
 			sourceTree = "<group>";
 		};
+		16265386228EBAF300B13997 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				16265387228EBAF300B13997 /* MPUnmutedBtn.png */,
+				16265388228EBAF300B13997 /* MRAID.bundle */,
+				16265389228EBAF300B13997 /* MPDAAIcon.png */,
+				1626538A228EBAF300B13997 /* TapjoyResources.bundle */,
+				1626538B228EBAF300B13997 /* MPUnmutedBtn@3x.png */,
+				1626538C228EBAF300B13997 /* MPPlayBtn@2x.png */,
+				1626538D228EBAF300B13997 /* MPCloseBtn@2x.png */,
+				1626538E228EBAF300B13997 /* MPCloseBtn@3x.png */,
+				1626538F228EBAF300B13997 /* MPCloseBtn.png */,
+				16265390228EBAF300B13997 /* MPPlayBtn@3x.png */,
+				16265391228EBAF300B13997 /* MPAdBrowserController.xib */,
+				16265392228EBAF300B13997 /* MPUnmutedBtn@2x.png */,
+				16265393228EBAF300B13997 /* MPCloseButtonX@2x.png */,
+				16265394228EBAF300B13997 /* MPCloseButtonX@3x.png */,
+				16265395228EBAF300B13997 /* MPCloseButtonX.png */,
+				16265396228EBAF300B13997 /* MPDAAIcon@3x.png */,
+				16265397228EBAF300B13997 /* MPMutedBtn@3x.png */,
+				16265398228EBAF300B13997 /* StartApp.bundle */,
+				16265399228EBAF300B13997 /* MPPlayBtn.png */,
+				1626539A228EBAF300B13997 /* MPMutedBtn.png */,
+				1626539B228EBAF300B13997 /* MPMutedBtn@2x.png */,
+				1626539C228EBAF300B13997 /* MPDAAIcon@2x.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1874,6 +1880,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1929,11 +1936,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				122D742121DF30E100414277 /* MPDAAIcon@3x.png in Resources */,
+				162653AC228EBAF300B13997 /* MPDAAIcon@3x.png in Resources */,
 				1203E8851F09350A009ADF8D /* rssFeeds.json in Resources */,
 				12D930E51E65698900CBAE1C /* NCFittingModuleStateTableViewCell.xib in Resources */,
 				122A7CA81F4B601E00537467 /* KillReports.storyboard in Resources */,
-				122D741221DF30E100414277 /* MPUnmutedBtn.png in Resources */,
+				1626539D228EBAF300B13997 /* MPUnmutedBtn.png in Resources */,
 				1256BECD1DF4770A00A2A24B /* Attributes.xcassets in Resources */,
 				12406A011F20F49500A4DAE7 /* NCModuleTableViewCell.xib in Resources */,
 				1256BE551DF4728800A2A24B /* Main.storyboard in Resources */,
@@ -1944,74 +1951,74 @@
 				12406A031F20F4B800A4DAE7 /* NCShipTableViewCell.xib in Resources */,
 				1256BF2C1DF4770B00A2A24B /* UI.xcassets in Resources */,
 				12D404561F3460BE007F1715 /* NCAccountTableViewCell.xib in Resources */,
-				122D742621DF30E100414277 /* MPMutedBtn@2x.png in Resources */,
+				162653B1228EBAF300B13997 /* MPMutedBtn@2x.png in Resources */,
 				1256BEC81DF4770A00A2A24B /* charisma.png in Resources */,
-				122D742721DF30E100414277 /* MPDAAIcon@2x.png in Resources */,
+				162653B2228EBAF300B13997 /* MPDAAIcon@2x.png in Resources */,
 				12D930E71E656B0C00CBAE1C /* NCChargeTableViewCell.xib in Resources */,
 				1256BECB1DF4770A00A2A24B /* perception.png in Resources */,
 				12CFDACB1F0119E500CC0762 /* NCImageHeaderTableViewCell.xib in Resources */,
 				1211A4651EEEDE3600364744 /* NCActionHeaderTableViewCell.xib in Resources */,
 				122A7CA61F4B5DD800537467 /* Business.storyboard in Resources */,
-				122D741521DF30E100414277 /* TapjoyResources.bundle in Resources */,
-				122D742421DF30E100414277 /* MPPlayBtn.png in Resources */,
+				162653A0228EBAF300B13997 /* TapjoyResources.bundle in Resources */,
+				162653AF228EBAF300B13997 /* MPPlayBtn.png in Resources */,
 				1256BEC91DF4770A00A2A24B /* intelligence.png in Resources */,
 				1256BECC1DF4770A00A2A24B /* willpower.png in Resources */,
 				128130411F3B01230039D46B /* dropzone.css in Resources */,
 				1248DB3A1F1C9DE9009625EC /* NCMailTableViewCell.xib in Resources */,
 				12AC8D9E1DEF58A100561A7A /* LaunchScreen.storyboard in Resources */,
-				122D741F21DF30E100414277 /* MPCloseButtonX@3x.png in Resources */,
+				162653AA228EBAF300B13997 /* MPCloseButtonX@3x.png in Resources */,
 				1263C50F1E64BF39003D002D /* NCHeaderTableViewCell.xib in Resources */,
 				128130451F3B08600039D46B /* main.js in Resources */,
-				122D742521DF30E100414277 /* MPMutedBtn.png in Resources */,
+				162653B0228EBAF300B13997 /* MPMutedBtn.png in Resources */,
 				128C5F761F41EDD60038FE7D /* NCExtractorDetailsTableViewCell.xib in Resources */,
 				1211A4631EEEC35A00364744 /* NCSkillTableViewCell.xib in Resources */,
 				12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */,
-				122D741D21DF30E100414277 /* MPUnmutedBtn@2x.png in Resources */,
+				162653A8228EBAF300B13997 /* MPUnmutedBtn@2x.png in Resources */,
 				122A7CAA1F4B617E00537467 /* Fitting.storyboard in Resources */,
-				122D741C21DF30E100414277 /* MPAdBrowserController.xib in Resources */,
+				162653A7228EBAF300B13997 /* MPAdBrowserController.xib in Resources */,
 				12D20EA31EBA011900BEC926 /* NCPieChartTableViewCell.xib in Resources */,
 				1279A2F32023332500DD7A46 /* NCFooterTableViewCell.xib in Resources */,
-				122D742021DF30E100414277 /* MPCloseButtonX.png in Resources */,
+				162653AB228EBAF300B13997 /* MPCloseButtonX.png in Resources */,
 				12D930EF1E656FCC00CBAE1C /* NCTextFieldTableViewCell.xib in Resources */,
 				128E32E01E655D2C00E3B183 /* NCActionTableViewCell.xib in Resources */,
-				122D741821DF30E100414277 /* MPCloseBtn@2x.png in Resources */,
+				162653A3228EBAF300B13997 /* MPCloseBtn@2x.png in Resources */,
 				12E9321C1E6B18F20033D71A /* NCFleetMemberTableViewCell.xib in Resources */,
 				12DA88261EB8696F00FB1922 /* NCPlaceholderTableViewCell.xib in Resources */,
-				122D741321DF30E100414277 /* MRAID.bundle in Resources */,
+				1626539E228EBAF300B13997 /* MRAID.bundle in Resources */,
 				120F4C5B1EF9B157003C92E9 /* NCDefaultNoImageTableViewCell.xib in Resources */,
-				122D741B21DF30E100414277 /* MPPlayBtn@3x.png in Resources */,
+				162653A6228EBAF300B13997 /* MPPlayBtn@3x.png in Resources */,
 				12AC8D9B1DEF58A100561A7A /* Assets.xcassets in Resources */,
 				1285FB351EB8DD350025331A /* NCAttributeTableViewCell.xib in Resources */,
 				12D85125201A86DA009485D0 /* NCSubscriptionTableViewCell.xib in Resources */,
-				122D742321DF30E100414277 /* StartApp.bundle in Resources */,
-				122D741921DF30E100414277 /* MPCloseBtn@3x.png in Resources */,
+				162653AE228EBAF300B13997 /* StartApp.bundle in Resources */,
+				162653A4228EBAF300B13997 /* MPCloseBtn@3x.png in Resources */,
 				1256BECA1DF4770A00A2A24B /* memory.png in Resources */,
 				12E932201E6BFC650033D71A /* NCFittingCharacterTableViewCell.xib in Resources */,
 				128130431F3B01230039D46B /* main.css in Resources */,
-				122D741E21DF30E100414277 /* MPCloseButtonX@2x.png in Resources */,
+				162653A9228EBAF300B13997 /* MPCloseButtonX@2x.png in Resources */,
 				12E6AE5A1F18FB3B001E829D /* NCKillmailAttackerNPCTableViewCell.xib in Resources */,
 				128130421F3B01230039D46B /* dropzone.js in Resources */,
 				12D930EB1E656EA300CBAE1C /* NCDamageTypeTableViewCell.xib in Resources */,
 				124069FF1F20DFBE00A4DAE7 /* NCAttributeNoImageTableViewCell.xib in Resources */,
 				12C37D301EFA9D070070F055 /* NCContactCompactTableViewCell.xib in Resources */,
 				12D930F31E6584AF00CBAE1C /* NCDefaultCompactTableViewCell.xib in Resources */,
-				122D742221DF30E100414277 /* MPMutedBtn@3x.png in Resources */,
-				122D741621DF30E100414277 /* MPUnmutedBtn@3x.png in Resources */,
+				162653AD228EBAF300B13997 /* MPMutedBtn@3x.png in Resources */,
+				162653A1228EBAF300B13997 /* MPUnmutedBtn@3x.png in Resources */,
 				12CA8F752046ED32000360DE /* NCDatabase.sqlite in Resources */,
 				122A7CA21F4B49D100537467 /* Database.storyboard in Resources */,
 				12CFDAE81F03EA4400CC0762 /* NCEmptyHeaderTableViewCell.xib in Resources */,
 				12C967101F9614B200B141CC /* GoogleService-Info.plist in Resources */,
-				122D741A21DF30E100414277 /* MPCloseBtn.png in Resources */,
+				162653A5228EBAF300B13997 /* MPCloseBtn.png in Resources */,
 				128C5F9A1F4ABD5A0038FE7D /* NCContactAttributeTableViewCell.xib in Resources */,
 				128C5F831F446F540038FE7D /* NCFactoryDetailsTableViewCell.xib in Resources */,
 				1263C50D1E64BE9D003D002D /* NCDefaultTableViewCell.xib in Resources */,
-				122D741721DF30E100414277 /* MPPlayBtn@2x.png in Resources */,
+				162653A2228EBAF300B13997 /* MPPlayBtn@2x.png in Resources */,
 				122A7CA41F4B589200537467 /* Character.storyboard in Resources */,
 				128C5F711F418CF30038FE7D /* NCFacilityChartTableViewCell.xib in Resources */,
 				129B316E1E53527C00B9A88D /* damagePatterns.plist in Resources */,
 				12D930E91E656B7E00CBAE1C /* NCChargeCompactTableViewCell.xib in Resources */,
 				1256BF2B1DF4770B00A2A24B /* MainMenu.xcassets in Resources */,
-				122D741421DF30E100414277 /* MPDAAIcon.png in Resources */,
+				1626539F228EBAF300B13997 /* MPDAAIcon.png in Resources */,
 				12CFDAEC1F03F8F700CC0762 /* NCKillmailTableViewCell.xib in Resources */,
 				1298BA8B20AEFCFC002C941E /* GDPR.storyboard in Resources */,
 				12CFDAE61F03D8E800CC0762 /* NCDatePickerTableViewCell.xib in Resources */,

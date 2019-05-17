@@ -76,7 +76,7 @@ class NCFittingResourcesRow: TreeRow {
 		cell.dronesCountLabel?.textColor = droneSquadron.0 > droneSquadron.1 ? .red : .white
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return ship.hashValue
 	}
 	

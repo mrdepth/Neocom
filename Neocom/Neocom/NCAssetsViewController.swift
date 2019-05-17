@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import Futures
 
 protocol NCAsset {
 	var itemID: Int64 {get}

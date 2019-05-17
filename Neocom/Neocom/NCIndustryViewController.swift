@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import Futures
 
 class NCIndustryViewController: NCTreeViewController {
 	var owner = Owner.character

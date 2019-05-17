@@ -26,6 +26,9 @@
       location = "group:ThirdParty/swifter/XCode/Swifter.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:ThirdParty/ASReceipt/ASReceipt/ASReceipt.xcodeproj">
+      location = "group:/Users/artem.shimanski/git2/Neocom/ThirdParty/ASReceipt/ASReceipt.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/EVEOnlineAPI/ThirdParty/Futures/Futures.xcodeproj">
    </FileRef>
 </Workspace>

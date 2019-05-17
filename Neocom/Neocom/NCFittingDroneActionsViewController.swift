@@ -11,6 +11,7 @@ import CoreData
 import CloudData
 import Dgmpp
 import EVEAPI
+import Futures
 
 class NCFittingDroneInfoRow: NCChargeRow {
 	let count: Int
@@ -35,7 +36,7 @@ class NCFittingDroneInfoRow: NCChargeRow {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return type.hashValue
 	}
 	
@@ -95,7 +96,7 @@ class NCFittingDroneStateRow: TreeRow {
 	}
 	
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return drones.first?.hashValue ?? 0
 	}
 	
@@ -124,7 +125,7 @@ class NCFittingDroneCountRow: NCCountRow {
 		super.init(value: drones.count, range: Range(range))
 	}
 
-	override var hashValue: Int {
+	override var hash: Int {
 		return drones.first?.hashValue ?? 0
 	}
 	

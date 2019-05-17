@@ -68,7 +68,7 @@ class NCFacilityChartRow: TreeRow {
 		cell.yLabel.text = NCUnitFormatter.localizedString(from: yRange.upperBound, unit: .none, style: .full)
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return identifier.hashValue
 	}
 	

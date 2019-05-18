@@ -337,7 +337,6 @@
 		12D404561F3460BE007F1715 /* NCAccountTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D404551F3460BE007F1715 /* NCAccountTableViewCell.xib */; };
 		12D404581F34BA70007F1715 /* NCAccountsFoldersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D404571F34BA70007F1715 /* NCAccountsFoldersViewController.swift */; };
 		12D4045A1F34BAD6007F1715 /* NCAccountsFolderPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D404591F34BAD6007F1715 /* NCAccountsFolderPickerViewController.swift */; };
-		12D7A4402068DDBD00F78560 /* openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1293D7C72049807E00A1F453 /* openssl.framework */; };
 		12D85125201A86DA009485D0 /* NCSubscriptionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D85124201A86DA009485D0 /* NCSubscriptionTableViewCell.xib */; };
 		12D85128201A8793009485D0 /* NCSubscriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D85127201A8793009485D0 /* NCSubscriptionTableViewCell.swift */; };
 		12D930E31E65689500CBAE1C /* NCFittingModuleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12D930E21E65689500CBAE1C /* NCFittingModuleTableViewCell.xib */; };
@@ -920,7 +919,6 @@
 			files = (
 				122D73F721DF2FFC00414277 /* nanopb.framework in Frameworks */,
 				122D73F621DF2FFC00414277 /* GoogleUtilities.framework in Frameworks */,
-				12D7A4402068DDBD00F78560 /* openssl.framework in Frameworks */,
 				122D73F821DF2FFC00414277 /* FIRAnalyticsConnector.framework in Frameworks */,
 				122D73F921DF2FFC00414277 /* FirebaseInstanceID.framework in Frameworks */,
 				12841C10205BD9F900B30582 /* cwrapper.framework in Frameworks */,
@@ -2564,6 +2562,7 @@
 					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
 					"${PROJECT_DIR}/../ThirdParty/Facebook",
 					"${PROJECT_DIR}/../ThirdParty/Appodeal",
+					"${PROJECT_DIR}/../ThirdParty/ASReceipt/Source/ThirdParty/OpenSSL/iOS",
 				);
 				INFOPLIST_FILE = Neocom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -2592,6 +2591,7 @@
 					"${PROJECT_DIR}/../ThirdParty/Firebase/**",
 					"${PROJECT_DIR}/../ThirdParty/Facebook",
 					"${PROJECT_DIR}/../ThirdParty/Appodeal",
+					"${PROJECT_DIR}/../ThirdParty/ASReceipt/Source/ThirdParty/OpenSSL/iOS",
 				);
 				INFOPLIST_FILE = Neocom/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

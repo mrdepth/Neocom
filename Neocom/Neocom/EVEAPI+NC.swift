@@ -670,14 +670,14 @@ protocol NCKillmail {
 extension ESI.Killmails.Killmail.Victim: NCVictim {
 }
 
-extension ZKillboard.Killmail.Victim: NCVictim {
-}
+//extension ZKillboard.Killmail.Victim: NCVictim {
+//}
 
 extension ESI.Killmails.Killmail.Attacker: NCAttacker {
 }
 
-extension ZKillboard.Killmail.Attacker: NCAttacker {
-}
+//extension ZKillboard.Killmail.Attacker: NCAttacker {
+//}
 
 extension ESI.Killmails.Killmail.Victim.Items: NCItem {
 	func getItems() -> [NCItem]? {
@@ -691,11 +691,11 @@ extension ESI.Killmails.Killmail.Victim.Items.Item: NCItem {
 	}
 }
 
-extension ZKillboard.Killmail.Item: NCItem {
-	func getItems() -> [NCItem]? {
-		return nil
-	}
-}
+//extension ZKillboard.Killmail.Item: NCItem {
+//    func getItems() -> [NCItem]? {
+//        return nil
+//    }
+//}
 
 extension ESI.Killmails.Killmail: NCKillmail {
 	func getAttackers() -> [NCAttacker] {
@@ -711,19 +711,19 @@ extension ESI.Killmails.Killmail: NCKillmail {
 	}
 }
 
-extension ZKillboard.Killmail: NCKillmail {
-	func getAttackers() -> [NCAttacker] {
-		return attackers
-	}
-	
-	func getVictim() -> NCVictim {
-		return victim
-	}
-	
-	func getItems() -> [NCItem]? {
-		return victim.items
-	}
-}
+//extension ZKillboard.Killmail: NCKillmail {
+//    func getAttackers() -> [NCAttacker] {
+//        return attackers
+//    }
+//    
+//    func getVictim() -> NCVictim {
+//        return victim
+//    }
+//    
+//    func getItems() -> [NCItem]? {
+//        return victim.items
+//    }
+//}
 
 extension ESI.PlanetaryInteraction.Colony.PlanetType {
 	var title: String {

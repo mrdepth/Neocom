@@ -47,8 +47,9 @@ class NCZKillboardKillmailsViewController: NCTreeViewController {
 		return .init(kills)
 	}
 	
-	/*private func process(result: CachedValue<[ZKillboard.Killmail]>) -> Future<Void> {
-		let killsNode = self.kills
+	private func process(result: CachedValue<[ZKillboard.Killmail]>) -> Future<Void> {
+        fatalError()
+		/*let killsNode = self.kills
 		var kills = killsNode.children.map { i -> NCDateSection in
 			let section = NCDateSection(date: (i as! NCDateSection).date)
 			section.children = i.children
@@ -85,8 +86,8 @@ class NCZKillboardKillmailsViewController: NCTreeViewController {
 			self.fetchIfNeeded()
 		}.catch(on: .main) { _ in
 			self.isEndReached = true
-		}
-	}*/
+		}*/
+	}
 	
 	//MARK: - Private
 	private var page: Int?

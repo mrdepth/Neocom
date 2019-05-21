@@ -38,7 +38,6 @@ class NCBannerNavigationViewController: NCNavigationController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		#if targetEnvironment(simulator)
-//		let strongSelf = self
 		GDPR.requestConsent().then(on: .main) { [weak self] hasConsent in
 			guard let strongSelf = self else {return}
 			Appodeal.setTestingEnabled(true)
@@ -52,7 +51,7 @@ class NCBannerNavigationViewController: NCNavigationController {
 			SKPaymentQueue.default().add(strongSelf)
 		}
 		#else
-		Receipt.fetchValidReceipt { [weak self] (result) in
+        Receipt.fetchValidReceipt(refreshIfNeeded: false) { [weak self] (result) in
 			guard let strongSelf = self else {return}
 			if case let .success(receipt) = result, receipt.inAppPurchases?.contains(where: {$0.inAppType == .autoRenewableSubscription && !$0.isExpired}) == true {
 				return

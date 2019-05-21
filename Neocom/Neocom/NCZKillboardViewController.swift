@@ -183,8 +183,8 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 				self?.select(location: result as! NSManagedObject)
 				controller.dismiss(animated: true, completion: nil)
 			}),
-			NCZKillboardDateRow(bound: .lower),
-			NCZKillboardDateRow(bound: .upper)
+//            NCZKillboardDateRow(bound: .lower),
+//            NCZKillboardDateRow(bound: .upper)
 		]
 		
 		defaultRows = rows
@@ -287,14 +287,14 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 			return true
 		}
 
-		let hasDate = filter.contains {
-			switch $0 {
-			case .startTime, .endTime:
-				return true
-			default:
-				return false
-			}
-		}
+//        let hasDate = filter.contains {
+//            switch $0 {
+//            case .startTime, .endTime:
+//                return true
+//            default:
+//                return false
+//            }
+//        }
 		
 		let wSpace = filter.contains {
 			guard case .wSpace = $0 else {return false}
@@ -311,7 +311,8 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 		if wSpace && filter.count == 1 {
 			actionsSection.children = [lossesRow!]
 		}
-		else if filter.isEmpty || (hasRegion && hasDate) {
+//        else if filter.isEmpty || (hasRegion && hasDate) {
+        else if filter.isEmpty || hasRegion {
 			actionsSection.children = []
 		}
 		else {
@@ -348,9 +349,9 @@ class NCZKillboardViewController: NCTreeViewController, NCContactsSearchResultVi
 				else if let solarSystem = node.location as? NCDBMapSolarSystem {
 					return .solarSystemID([Int(solarSystem.solarSystemID)])
 				}
-			case let node as NCZKillboardDateRow:
-				guard let date = node.date else {break}
-				return node.bound == .lower ? .startTime(date) : .endTime(date.addingTimeInterval(3600 * 24))
+//            case let node as NCZKillboardDateRow:
+//                guard let date = node.date else {break}
+//                return node.bound == .lower ? .startTime(date) : .endTime(date.addingTimeInterval(3600 * 24))
 			default:
 				break
 			}

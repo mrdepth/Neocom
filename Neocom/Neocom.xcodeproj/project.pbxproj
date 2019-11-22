@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		12AE040F23847EC600DEFFC5 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE040E23847EC600DEFFC5 /* Home.swift */; };
-		12AE041123847EDE00DEFFC5 /* HomeAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE041023847EDE00DEFFC5 /* HomeAccount.swift */; };
+		12AE041123847EDE00DEFFC5 /* HomeAccountHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE041023847EDE00DEFFC5 /* HomeAccountHeader.swift */; };
 		12F06F13238464920061313D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F12238464920061313D /* AppDelegate.swift */; };
 		12F06F15238464920061313D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F14238464920061313D /* SceneDelegate.swift */; };
 		12F06F17238464920061313D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F16238464920061313D /* ContentView.swift */; };
@@ -22,11 +22,34 @@
 		12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F322384676F0061313D /* Storage.xcdatamodeld */; };
 		12F06F6923846C890061313D /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F6823846C890061313D /* Storage.swift */; };
 		12F06F6B23846D670061313D /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F6A23846D670061313D /* Main.swift */; };
+		169672D72387EA2F00EB860B /* HomeHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169672D62387EA2F00EB860B /* HomeHeader.swift */; };
+		169672D92387EA3F00EB860B /* EnvironmentValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169672D82387EA3F00EB860B /* EnvironmentValues.swift */; };
+		169672DB2387ECCD00EB860B /* EVEAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 169672DA2387ECCD00EB860B /* EVEAPI.framework */; };
+		169672DC2387ECCD00EB860B /* EVEAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 169672DA2387ECCD00EB860B /* EVEAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		169672DF2387ECEF00EB860B /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 169672DE2387ECEF00EB860B /* Alamofire.framework */; };
+		169672E02387ECEF00EB860B /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 169672DE2387ECEF00EB860B /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		16D8DC80238808870057A6F4 /* Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D8DC7F238808870057A6F4 /* Combine.swift */; };
+		16D8DC82238813A40057A6F4 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D8DC81238813A40057A6F4 /* API.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		169672DD2387ECCE00EB860B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				169672DC2387ECCD00EB860B /* EVEAPI.framework in Embed Frameworks */,
+				169672E02387ECEF00EB860B /* Alamofire.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		12AE040E23847EC600DEFFC5 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
-		12AE041023847EDE00DEFFC5 /* HomeAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAccount.swift; sourceTree = "<group>"; };
+		12AE041023847EDE00DEFFC5 /* HomeAccountHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAccountHeader.swift; sourceTree = "<group>"; };
 		12F06F0F238464920061313D /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12F06F12238464920061313D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		12F06F14238464920061313D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +66,12 @@
 		12F06F3F238469C10061313D /* SDE.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDE.sqlite; sourceTree = SOURCE_ROOT; };
 		12F06F6823846C890061313D /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		12F06F6A23846D670061313D /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
+		169672D62387EA2F00EB860B /* HomeHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeader.swift; sourceTree = "<group>"; };
+		169672D82387EA3F00EB860B /* EnvironmentValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EnvironmentValues.swift; path = Neocom/Home/EnvironmentValues.swift; sourceTree = SOURCE_ROOT; };
+		169672DA2387ECCD00EB860B /* EVEAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EVEAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		169672DE2387ECEF00EB860B /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		16D8DC7F238808870057A6F4 /* Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Combine.swift; path = Neocom/Home/Combine.swift; sourceTree = SOURCE_ROOT; };
+		16D8DC81238813A40057A6F4 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +79,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				169672DB2387ECCD00EB860B /* EVEAPI.framework in Frameworks */,
+				169672DF2387ECEF00EB860B /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,7 +91,8 @@
 			isa = PBXGroup;
 			children = (
 				12AE040E23847EC600DEFFC5 /* Home.swift */,
-				12AE041023847EDE00DEFFC5 /* HomeAccount.swift */,
+				169672D62387EA2F00EB860B /* HomeHeader.swift */,
+				12AE041023847EDE00DEFFC5 /* HomeAccountHeader.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -111,6 +143,8 @@
 		12F06F2A238466EB0061313D /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				169672D82387EA3F00EB860B /* EnvironmentValues.swift */,
+				16D8DC7F238808870057A6F4 /* Combine.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -124,6 +158,7 @@
 				12F06F3E238469C10061313D /* SDEVersion.swift */,
 				12F06F3C238468E50061313D /* SDE.swift */,
 				12F06F6823846C890061313D /* Storage.swift */,
+				16D8DC81238813A40057A6F4 /* API.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -131,6 +166,8 @@
 		12F06F35238467A10061313D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				169672DE2387ECEF00EB860B /* Alamofire.framework */,
+				169672DA2387ECCD00EB860B /* EVEAPI.framework */,
 				12F06F36238467A10061313D /* UIKit.framework */,
 			);
 			name = Frameworks;
@@ -146,6 +183,7 @@
 				12F06F0B238464920061313D /* Sources */,
 				12F06F0C238464920061313D /* Frameworks */,
 				12F06F0D238464920061313D /* Resources */,
+				169672DD2387ECCE00EB860B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -212,13 +250,17 @@
 				12F06F31238467600061313D /* SDE.xcdatamodeld in Sources */,
 				12AE040F23847EC600DEFFC5 /* Home.swift in Sources */,
 				12F06F40238469C10061313D /* SDEVersion.swift in Sources */,
+				16D8DC82238813A40057A6F4 /* API.swift in Sources */,
 				12F06F3D238468E50061313D /* SDE.swift in Sources */,
+				169672D72387EA2F00EB860B /* HomeHeader.swift in Sources */,
 				12F06F13238464920061313D /* AppDelegate.swift in Sources */,
-				12AE041123847EDE00DEFFC5 /* HomeAccount.swift in Sources */,
+				12AE041123847EDE00DEFFC5 /* HomeAccountHeader.swift in Sources */,
 				12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */,
+				169672D92387EA3F00EB860B /* EnvironmentValues.swift in Sources */,
 				12F06F6923846C890061313D /* Storage.swift in Sources */,
 				12F06F15238464920061313D /* SceneDelegate.swift in Sources */,
 				12F06F17238464920061313D /* ContentView.swift in Sources */,
+				16D8DC80238808870057A6F4 /* Combine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -4,4 +4,10 @@
    <FileRef
       location = "group:Neocom/Neocom.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:ThirdParty/EVEOnlineAPI/EVEAPI/EVEAPI.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/EVEOnlineAPI/ThirdParty/Alamofire/Alamofire.xcodeproj">
+   </FileRef>
 </Workspace>

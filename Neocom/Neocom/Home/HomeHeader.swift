@@ -33,69 +33,29 @@ extension Result {
 struct HomeHeader: View {
     @Environment(\.account) var account
     @Environment(\.esi) var esi
-    var characterID: Int? = 1554561480
+    var characterID: Int64? = 1554561480
     
     private struct Character {
         var character: ESI.Characters.CharacterID.Success
         var corporation: ESI.Corporations.CorporationID.Success
         var alliance: ESI.Alliances.AllianceID.Success?
     }
-    @ObservedObject private var character = API<ESI.Characters.CharacterID.Success, AFError>()
-    @ObservedObject private var corporation = API<ESI.Corporations.CorporationID.Success, AFError>()
-    @ObservedObject private var alliance = API<ESI.Alliances.AllianceID.Success, AFError>()
-    @ObservedObject private var characterImage = API<UIImage, AFError>()
-    @ObservedObject private var corporationImage = API<UIImage, AFError>()
-    @ObservedObject private var allianceImage = API<UIImage, AFError>()
-
-    private func characterPublisher() -> AnyPublisher<ESI.Characters.CharacterID.Success, AFError> {
-        CurrentValueSubject(characterID)
-            .compactMap{$0}
-            .flatMap {
-            self.esi.characters.characterID(Int($0)).get()
-        }
-        .eraseToAnyPublisher()
-    }
-
-    private func corporationPublisher() -> AnyPublisher<ESI.Corporations.CorporationID.Success, AFError> {
-        character.publisher()
-            .compactMap{$0}
-//            .tryMap{try $0.get()}
-//            .mapError{$0 as! AFError}
-            .flatMap {
-            self.esi.corporations.corporationID($0.corporationID).get()
-        }
-        .eraseToAnyPublisher()
-    }
-
-    private func alliancePublisher() -> AnyPublisher<ESI.Alliances.AllianceID.Success, AFError> {
-        corporation.publisher()
-            .compactMap{$0}
-            .tryMap{try $0.get()}
-            .mapError{$0 as! AFError}
-            .compactMap{$0.allianceID}
-            .flatMap {
-                self.esi.alliances.allianceID($0).get()
-        }
-        .eraseToAnyPublisher()
-    }
+	@ObservedObject private var characterInfo = CharacterInfo(characterImageSize: .size256, corporationImageSize: .size32, allianceImageSize: .size32)
 
     private func reload() {
-        character.update(characterPublisher().receive(on: DispatchQueue.main))
-        corporation.update(corporationPublisher().receive(on: DispatchQueue.main))
-        alliance.update(alliancePublisher().receive(on: DispatchQueue.main))
-//        characterImage.update(character.publisher().flatMap{self.esi.image.character($0.va, size: <#T##ESI.Image.Size#>)})
+		characterInfo.update(esi: esi, characterID: characterID)
     }
 
     var body: some View {
         return VStack {
             Text("sdf")
-            (character.result?.value).map {
+			(characterInfo.character?.value).map {
                 HomeAccountHeader(characterName: $0.name,
-                                  corporationName: corporation.result?.value?.name ?? corporation.result?.error?.localizedDescription,
-                                  allianceName: alliance.result?.value?.name ?? alliance.result?.error?.localizedDescription,
-                                  characterImage: nil,
-                                  corporationImage: nil,
-                                  allianceImage: nil)
+								  corporationName: characterInfo.corporation?.value?.name ?? characterInfo.corporation?.error?.localizedDescription,
+                                  allianceName: characterInfo.alliance?.value?.name ?? characterInfo.alliance?.error?.localizedDescription,
+								  characterImage: (characterInfo.characterImage?.value).map{Image(uiImage: $0)},
+                                  corporationImage: (characterInfo.corporationImage?.value).map{Image(uiImage: $0)},
+                                  allianceImage: (characterInfo.allianceImage?.value).map{Image(uiImage: $0)})
                 }
 //            (character?.error).map {Text($0.localizedDescription)} ?? Text("Loading")
         }.onAppear {

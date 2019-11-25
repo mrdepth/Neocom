@@ -31,7 +31,7 @@ struct ContentView: View {
     @State var esi: ESI = ESI()
     var body: some View {
         VStack {
-            HomeHeader()
+            Accounts()
             Spacer()
         }
     }

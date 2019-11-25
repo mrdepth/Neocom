@@ -10,7 +10,4 @@
    <FileRef
       location = "group:sde-tool/sde-tool.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:/Users/shimanski/Documents/git/EVEUniverse/database/NCDatabase/SDE.xcodeproj">
-   </FileRef>
 </Workspace>

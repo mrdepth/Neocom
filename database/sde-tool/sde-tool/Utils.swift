@@ -44,6 +44,8 @@ extension NSDictionary {
 				break
 			case let (obj1 as NSObject, obj2 as NSObject) where obj1.isEqual(obj2):
 				break
+            case (is NSNull, nil):
+                break
 			default:
 				throw DumpError.schemaIsInvalid(subkey)
 			}

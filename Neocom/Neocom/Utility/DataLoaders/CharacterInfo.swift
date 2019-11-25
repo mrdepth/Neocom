@@ -32,13 +32,14 @@ class CharacterInfo: ObservableObject {
 	private var subscriptions: [AnyCancellable]?
 
 	func update(esi: ESI, characterID: Int64?) {
-		character = nil
-		corporation = nil
-		alliance = nil
-		characterImage = nil
-		corporationImage = nil
-		allianceImage = nil
+        character = nil
+        corporation = nil
+        alliance = nil
+        characterImage = nil
+        corporationImage = nil
+        allianceImage = nil
 		guard let characterID = characterID else {return}
+        
 		subscriptions = [
 			esi.characters.characterID(Int(characterID)).get()
 				.asResult()
@@ -58,7 +59,7 @@ class CharacterInfo: ObservableObject {
 			
 			$corporation.compactMap{$0}
 				.tryGet()
-				.compactMap{$0.allianceID}
+                .compactMap{$0.allianceID}
 				.flatMap{esi.alliances.allianceID($0).get()}
 				.asResult()
 				.receive(on: DispatchQueue.main)

@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftUI
+import CoreData
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -29,6 +30,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		    self.window = window
 		    window.makeKeyAndVisible()
 		}
+        
+        let sde = Storage()
+        sde.loadPersistentStores { _, _ in
+        }
+
+        do {
+            let r = try sde.viewContext.fetch(NSFetchRequest<SDEInvType>(entityName: "InvType"))
+            print(r.count)
+        }
+        catch {
+            
+        }
 	}
 
 	func sceneDidDisconnect(_ scene: UIScene) {

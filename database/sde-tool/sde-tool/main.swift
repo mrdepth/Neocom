@@ -36,7 +36,7 @@ let managedObjectModel = NSManagedObjectModel.mergedModel(from: nil)!
 let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
 let storeURL = URL(fileURLWithPath: CommandLine.output)
 try? FileManager.default.removeItem(at: storeURL)
-try! persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: [NSSQLitePragmasOption:["journal_mode": "OFF"]])
+try! persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: "SDE", at: storeURL, options: [NSSQLitePragmasOption:["journal_mode": "OFF"]])
 let mainContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
 mainContext.persistentStoreCoordinator = persistentStoreCoordinator
 
@@ -125,11 +125,11 @@ do {
 	
 	invMetaGroups = operationQueue.detach {
 		let from = Date(); defer {print("invMetaGroups\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/invMetaGroups.json"), type: Schema.MetaGroups.self).map {($0.metaGroupID, .init(SDEInvMetaGroup($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/invMetaGroups.json"), type: Schema.MetaGroups.self).map {($0.metaGroupID, .init(SDEInvMetaGroup($0)))})
 	}
 	metaTypes = operationQueue.detach {
 		let from = Date(); defer {print("metaTypes\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/invMetaTypes.json"), type: Schema.MetaTypes.self).map {($0.typeID, $0)})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/invMetaTypes.json"), type: Schema.MetaTypes.self).map {($0.typeID, $0)})
 	}
 	
 	invCategories = operationQueue.detach {
@@ -154,23 +154,23 @@ do {
 	invMarketGroups = operationQueue.detach {
 		let from = Date(); defer {print("invMarketGroups\t\(Date().timeIntervalSince(from))s")}
 		var invMarketGroups = [Int: SDEInvMarketGroup]()
-		var queue = try load(root.appendingPathComponent("/sde/bsd/invMarketGroups.json"), type: Schema.MarketGroups.self)
+        var queue = try load(root.appendingPathComponent("/sde/fsd/marketGroups.json"), type: Schema.MarketGroups.self).map{$0}
 		while !queue.isEmpty {
 			let first = queue.removeFirst()
-			if let parentGroupID = first.parentGroupID {
+            if let parentGroupID = first.value.parentGroupID {
 				if let parent = invMarketGroups[parentGroupID] {
-					let marketGroup = try SDEInvMarketGroup(first)
+                    let marketGroup = try SDEInvMarketGroup(first.key, first.value)
 					marketGroup.parentGroup = parent
 					parent.addToSubGroups(marketGroup)
-					invMarketGroups[first.marketGroupID] = marketGroup
+					invMarketGroups[first.key] = marketGroup
 				}
 				else {
 					queue.append(first)
 				}
 			}
 			else {
-				let marketGroup = try SDEInvMarketGroup(first)
-				invMarketGroups[first.marketGroupID] = marketGroup
+                let marketGroup = try SDEInvMarketGroup(first.key, first.value)
+				invMarketGroups[first.key] = marketGroup
 			}
 		}
 		return Dictionary(uniqueKeysWithValues: invMarketGroups.map {($0.key, .init($0.value))})

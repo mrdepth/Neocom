@@ -57,8 +57,15 @@ def dump(table, rows):
 	del array
 	output.close()
 
+def map(header, objects):
+	return [objects.Get(key) for key in objects.keys()]
+
 
 dgmTypeAttributes = [r for rows in cfg.dgmtypeattribs.values() for r in rows]
 dgmTypeEffects = [r for rows in cfg.dgmtypeeffects.values() for r in rows]
+invMetaTypes = [r for rows in cfg.invmetatypes.items.values() for r in rows]
+invMetaGroups = cfg.invmetagroups.items.values()
 dump ("dgmTypeAttributes", dgmTypeAttributes)
 dump ("dgmTypeEffects", dgmTypeEffects)
+dump ("invMetaTypes", invMetaTypes)
+dump ("invMetaGroups", invMetaGroups)

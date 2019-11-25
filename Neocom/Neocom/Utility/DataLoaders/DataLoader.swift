@@ -1,5 +1,5 @@
 //
-//  DataTask.swift
+//  DataLoader.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 11/22/19.
@@ -12,7 +12,7 @@ import Alamofire
 import SwiftUI
 import EVEAPI
 
-class DataTask<Success, Failure: Error>: ObservableObject {
+class DataLoader<Success, Failure: Error>: ObservableObject {
 
     private var subscription: AnyCancellable?
 

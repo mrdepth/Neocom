@@ -11,25 +11,6 @@ import Combine
 import EVEAPI
 import Alamofire
 
-extension Result {
-    var value: Success? {
-        switch self {
-        case let .success(value):
-            return value
-        default:
-            return nil
-        }
-    }
-    var error: Failure? {
-        switch self {
-        case let .failure(error):
-            return error
-        default:
-            return nil
-        }
-    }
-}
-
 struct HomeHeader: View {
     @Environment(\.account) var account
     @Environment(\.esi) var esi
@@ -48,7 +29,6 @@ struct HomeHeader: View {
 
     var body: some View {
         return VStack {
-            Text("sdf")
 			(characterInfo.character?.value).map {
                 HomeAccountHeader(characterName: $0.name,
 								  corporationName: characterInfo.corporation?.value?.name ?? characterInfo.corporation?.error?.localizedDescription,
@@ -57,7 +37,6 @@ struct HomeHeader: View {
                                   corporationImage: (characterInfo.corporationImage?.value).map{Image(uiImage: $0)},
                                   allianceImage: (characterInfo.allianceImage?.value).map{Image(uiImage: $0)})
                 }
-//            (character?.error).map {Text($0.localizedDescription)} ?? Text("Loading")
         }.onAppear {
             self.reload()
         }

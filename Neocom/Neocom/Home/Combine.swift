@@ -20,3 +20,24 @@ extension Publisher {
 		tryMap {try $0.get()}.mapError{$0 as! F}
 	}
 }
+
+extension Result {
+
+    var value: Success? {
+        switch self {
+        case let .success(value):
+            return value
+        default:
+            return nil
+        }
+    }
+
+    var error: Failure? {
+        switch self {
+        case let .failure(error):
+            return error
+        default:
+            return nil
+        }
+    }
+}

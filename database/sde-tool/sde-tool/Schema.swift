@@ -17,6 +17,7 @@ struct LocalizedString: Codable {
 	var ja: String?
 	var ru: String?
 	var zh: String?
+    var ko: String?
 }
 
 struct CategoryID: Codable {
@@ -69,6 +70,8 @@ struct TypeID: Codable {
 	var sofMaterialSetID: Int?
 	var iconID: Int?
 	var traits: Traits?
+    var metaGroupID: Int?
+    var variationParentTypeID: Int?
 }
 
 struct Blueprint: Codable {
@@ -209,18 +212,22 @@ struct Item: Codable {
 }
 
 struct MarketGroup: Codable {
-	var description: String?
+    var descriptionID: LocalizedString?
 	var hasTypes: Bool
 	var iconID: Int?
-	var marketGroupID: Int
-	var marketGroupName: String
+//	var marketGroupID: Int
+    var nameID: LocalizedString
 	var parentGroupID: Int?
 }
 
 struct MetaGroup: Codable {
 	var metaGroupID: Int
-	var metaGroupName: String
+	var metaGroupName: String?
 	var description: String?
+    var dataID: Int?
+    var iconID: Int?
+    var metaGroupNameID: Int?
+    var descriptionID: Int?
 }
 
 struct MetaType: Codable {
@@ -548,8 +555,8 @@ struct Effect: Codable {
 	var isAssistance: Bool
 	var isOffensive: Bool
 	var isWarpSafe: Bool
-	var postExpression: Int
-	var preExpression: Int
+	var postExpression: Int?
+	var preExpression: Int?
 	var propulsionChance: Bool
 	var published: Bool
 	var rangeChance: Bool
@@ -590,7 +597,7 @@ enum Schema {
 	typealias Units = [Unit]
 	typealias Flags = [Flag]
 	typealias Items = [Item]
-	typealias MarketGroups = [MarketGroup]
+    typealias MarketGroups = [Int: MarketGroup]
 	typealias MetaGroups = [MetaGroup]
 	typealias MetaTypes = [MetaType]
 	typealias Names = [Name]

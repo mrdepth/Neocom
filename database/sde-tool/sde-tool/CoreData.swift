@@ -9,6 +9,45 @@
 import Foundation
 import CoreData
 
+public class LoadoutDescription: NSObject, NSSecureCoding {
+    
+    public static var supportsSecureCoding: Bool = true
+    
+    public func encode(with coder: NSCoder) {
+        fatalError()
+    }
+    
+    public required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
+    
+}
+
+public class ImplantSetDescription: NSObject, NSSecureCoding {
+    public static var supportsSecureCoding: Bool = true
+    
+    public func encode(with coder: NSCoder) {
+        fatalError()
+    }
+    
+    public required init?(coder: NSCoder) {
+        fatalError()
+    }
+}
+
+public class FleetDescription: NSObject, NSSecureCoding {
+    public static var supportsSecureCoding: Bool = true
+    
+    public func encode(with coder: NSCoder) {
+        fatalError()
+    }
+    
+    public required init?(coder: NSCoder) {
+        fatalError()
+    }
+}
+
 public typealias UIImage = Data
 
 struct ObjectID<T: NSManagedObject> {
@@ -160,10 +199,10 @@ extension SDEInvType {
 		portionSize = Int32(type.value.portionSize)
 		try metaLevel = Int16(typeAttributes.get()[type.key]?[SDEDgmAttributeID.metaLevel.rawValue]?.value ?? 0)
 		icon = try .icon(typeID: type.key)
-		if let raceID = type.value.raceID {
+		if let raceID = type.value.raceID, raceID > 0 {
 			try race = chrRaces.get()[raceID]!.object()
 		}
-		if let marketGroupID = type.value.marketGroupID {
+		if let marketGroupID = type.value.marketGroupID, marketGroupID > 0 {
 			try marketGroup = invMarketGroups.get()[marketGroupID]!.object()
 		}
 		
@@ -250,10 +289,10 @@ extension SDEInvMetaGroup {
 }
 
 extension SDEInvMarketGroup {
-	convenience init(_ marketGroup: MarketGroup) throws {
+    convenience init(_ id: Int, _ marketGroup: MarketGroup) throws {
 		self.init(context: .current)
-		marketGroupID = Int32(marketGroup.marketGroupID)
-		marketGroupName = marketGroup.marketGroupName
+		marketGroupID = Int32(id)
+        marketGroupName = marketGroup.nameID.en
 		if let iconID = marketGroup.iconID {
 			try icon = .icon(iconID: iconID)
 		}

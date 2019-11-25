@@ -437,6 +437,54 @@
         <attribute name="targetSystemClass" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="wormhole" inverseEntity="InvType"/>
     </entity>
+    <configuration name="SDE">
+        <memberEntity name="CertCertificate"/>
+        <memberEntity name="CertMastery"/>
+        <memberEntity name="CertMasteryLevel"/>
+        <memberEntity name="CertSkill"/>
+        <memberEntity name="ChrAncestry"/>
+        <memberEntity name="ChrBloodline"/>
+        <memberEntity name="ChrFaction"/>
+        <memberEntity name="ChrRace"/>
+        <memberEntity name="DgmAttributeCategory"/>
+        <memberEntity name="DgmAttributeType"/>
+        <memberEntity name="DgmEffect"/>
+        <memberEntity name="DgmppHullType"/>
+        <memberEntity name="DgmppItem"/>
+        <memberEntity name="DgmppItemCategory"/>
+        <memberEntity name="DgmppItemDamage"/>
+        <memberEntity name="DgmppItemGroup"/>
+        <memberEntity name="DgmppItemRequirements"/>
+        <memberEntity name="DgmppItemShipResources"/>
+        <memberEntity name="DgmppItemStructureResources"/>
+        <memberEntity name="DgmTypeAttribute"/>
+        <memberEntity name="EveIcon"/>
+        <memberEntity name="EveIconImage"/>
+        <memberEntity name="EveUnit"/>
+        <memberEntity name="IndActivity"/>
+        <memberEntity name="IndBlueprintType"/>
+        <memberEntity name="IndProduct"/>
+        <memberEntity name="IndRequiredMaterial"/>
+        <memberEntity name="IndRequiredSkill"/>
+        <memberEntity name="InvCategory"/>
+        <memberEntity name="InvGroup"/>
+        <memberEntity name="InvMarketGroup"/>
+        <memberEntity name="InvMetaGroup"/>
+        <memberEntity name="InvType"/>
+        <memberEntity name="InvTypeRequiredSkill"/>
+        <memberEntity name="MapConstellation"/>
+        <memberEntity name="MapPlanet"/>
+        <memberEntity name="MapRegion"/>
+        <memberEntity name="MapSolarSystem"/>
+        <memberEntity name="MapUniverse"/>
+        <memberEntity name="NpcGroup"/>
+        <memberEntity name="RamActivity"/>
+        <memberEntity name="RamAssemblyLineType"/>
+        <memberEntity name="RamInstallationTypeContent"/>
+        <memberEntity name="StaStation"/>
+        <memberEntity name="TxtDescription"/>
+        <memberEntity name="WhType"/>
+    </configuration>
     <elements>
         <element name="CertCertificate" positionX="-180" positionY="162" width="128" height="135"/>
         <element name="CertMastery" positionX="-189" positionY="180" width="128" height="90"/>

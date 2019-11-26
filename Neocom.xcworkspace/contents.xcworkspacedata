@@ -10,4 +10,7 @@
    <FileRef
       location = "group:ThirdParty/EVEOnlineAPI/ThirdParty/Alamofire/Alamofire.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:ThirdParty/Expressible/Expressible.xcodeproj">
+   </FileRef>
 </Workspace>

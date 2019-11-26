@@ -16,10 +16,6 @@ struct ESIKey: EnvironmentKey {
     }
 }
 
-struct SDEKey: EnvironmentKey {
-    static var defaultValue: SDE = SDE()
-}
-
 struct AccountKey: EnvironmentKey {
     static var defaultValue: Account? = nil
 }
@@ -31,15 +27,6 @@ extension EnvironmentValues {
         }
         set {
             self[ESIKey.self] = newValue
-        }
-    }
-    
-    var sde: SDE {
-        get {
-            self[SDEKey.self]
-        }
-        set {
-            self[SDEKey.self] = newValue
         }
     }
     

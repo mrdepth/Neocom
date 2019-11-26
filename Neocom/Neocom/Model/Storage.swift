@@ -8,23 +8,22 @@
 
 import Foundation
 import CoreData
+import EVEAPI
 
-class Storage: NSPersistentContainer {
+class Storage: NSPersistentCloudKitContainer {
     init() {
         let storageModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Storage", withExtension: "momd")!)!
         let sdeModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "SDE", withExtension: "momd")!)!
         let model = NSManagedObjectModel(byMerging: [storageModel, sdeModel])!
-        
-        super.init(name: "Storage", managedObjectModel: model)
-        let sde = NSPersistentStoreDescription()
-        sde.url = Bundle.main.url(forResource: "SDE", withExtension: "sqlite")
+        super.init(name: "Neocom", managedObjectModel: model)
+        let sde = NSPersistentStoreDescription(url: Bundle.main.url(forResource: "SDE", withExtension: "sqlite")!)
         sde.configuration = "SDE"
         sde.isReadOnly = true
         sde.shouldMigrateStoreAutomatically = false
         
-        let storage = NSPersistentStoreDescription()
+        let storage = NSPersistentStoreDescription(url: URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!).appendingPathComponent("stora.sqlite"))
         storage.configuration = "Storage"
-        storage.url = URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!).appendingPathComponent("stora.sqlite")
+//        storage.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.shimanski.neocom")
         persistentStoreDescriptions = [sde, storage]
     }
 }
@@ -40,4 +39,85 @@ public class ImplantSetDescription: NSObject {
 
 public class FleetDescription: NSObject {
 	
+}
+
+extension Account {
+    
+    convenience init(token: OAuth2Token, context: NSManagedObjectContext) {
+        self.init(context: context)
+        oAuth2Token = token
+    }
+    
+    var oAuth2Token: OAuth2Token? {
+        get {
+            let scopes = (self.scopes as? Set<Scope>)?.compactMap {
+                return $0.name
+                } ?? []
+            guard let accessToken = accessToken,
+                let refreshToken = refreshToken,
+                let tokenType = tokenType,
+                let characterName = characterName,
+                let realm = realm else {return nil}
+            
+            let token = OAuth2Token(accessToken: accessToken, refreshToken: refreshToken, tokenType: tokenType, expiresOn: expiresOn as Date? ?? Date.distantPast, characterID: characterID, characterName: characterName, realm: realm, scopes: scopes)
+            return token
+        }
+        set {
+            guard let managedObjectContext = managedObjectContext else {return}
+            
+            if let token = newValue {
+                if accessToken != token.accessToken {accessToken = token.accessToken}
+                if refreshToken != token.refreshToken {refreshToken = token.refreshToken}
+                if tokenType != token.tokenType {tokenType = token.tokenType}
+                if characterID != token.characterID {characterID = token.characterID}
+                if characterName != token.characterName {characterName = token.characterName}
+                if realm != token.realm {realm = token.realm}
+                if expiresOn != token.expiresOn {expiresOn = token.expiresOn}
+                let newScopes = Set<String>(token.scopes)
+                
+                let toInsert: Set<String>
+                if var scopes = self.scopes as? Set<Scope> {
+                    let toDelete = scopes.filter {
+                        guard let name = $0.name else {return true}
+                        return !newScopes.contains(name)
+                    }
+                    for scope in toDelete {
+                        managedObjectContext.delete(scope)
+                        scopes.remove(scope)
+                    }
+                    
+                    toInsert = newScopes.symmetricDifference(scopes.compactMap {return $0.name})
+                }
+                else {
+                    toInsert = newScopes
+                }
+                
+                for name in toInsert {
+                    let scope = Scope(context: managedObjectContext)
+                    scope.name = name
+                    scope.account = self
+                }
+            }
+        }
+    }
+//
+//    var activeSkillPlan: SkillPlan? {
+//        if let skillPlan = (try? managedObjectContext?.from(SkillPlan.self).filter(\SkillPlan.account == self && \SkillPlan.active == true).first()) ?? nil {
+//            return skillPlan
+//        }
+//        else if let skillPlan = skillPlans?.anyObject() as? SkillPlan {
+//            skillPlan.active = true
+//            return skillPlan
+//        }
+//        else if let managedObjectContext = managedObjectContext {
+//            let skillPlan = SkillPlan(context: managedObjectContext)
+//            skillPlan.active = true
+//            skillPlan.account = self
+//            skillPlan.name = NSLocalizedString("Default", comment: "")
+//            return skillPlan
+//        }
+//        else {
+//            return nil
+//        }
+//    }
 }

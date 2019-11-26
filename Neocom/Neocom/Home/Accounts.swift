@@ -8,15 +8,35 @@
 
 import SwiftUI
 import CoreData
+import EVEAPI
 
 struct Accounts: View {
+    @Environment(\.managedObjectContext) var managedObjectContext
+    
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.characterName, ascending: true)])
+    var accounts: FetchedResults<Account>
+    
     var body: some View {
-        Text("sdf")
+        NavigationView {
+            List {
+                Button("Add new account") {
+                    
+                }
+                Section {
+                ForEach(accounts, id: \Account.objectID) { account in
+                    AccountCell(account: account, esi: account.oAuth2Token.map{ESI(token: $0)} ?? ESI())
+                }
+                }
+            }
+            .listStyle(GroupedListStyle())
+            .navigationBarItems(trailing: Button("Add") {
+            })
+        }
     }
 }
 
 struct Accounts_Previews: PreviewProvider {
     static var previews: some View {
-        Accounts()
+        Accounts().environment(\.managedObjectContext, AppDelegate.sharedDelegate.testingContainer.viewContext)
     }
 }

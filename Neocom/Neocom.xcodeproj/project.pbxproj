@@ -17,7 +17,6 @@
 		12F06F1C238464950061313D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12F06F1B238464950061313D /* Preview Assets.xcassets */; };
 		12F06F1F238464950061313D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12F06F1D238464950061313D /* LaunchScreen.storyboard */; };
 		12F06F31238467600061313D /* SDE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F2F238467600061313D /* SDE.xcdatamodeld */; };
-		12F06F3D238468E50061313D /* SDE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F3C238468E50061313D /* SDE.swift */; };
 		12F06F40238469C10061313D /* SDEVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F3E238469C10061313D /* SDEVersion.swift */; };
 		12F06F41238469C10061313D /* SDE.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 12F06F3F238469C10061313D /* SDE.sqlite */; };
 		12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F322384676F0061313D /* Storage.xcdatamodeld */; };
@@ -37,8 +36,18 @@
 		169A72CF238BE05600E4C181 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A72CE238BE05600E4C181 /* String+Extensions.swift */; };
 		169A72D1238BE0EF00E4C181 /* TimeIntervalFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A72D0238BE0EF00E4C181 /* TimeIntervalFormatter.swift */; };
 		169A72D3238BE10700E4C181 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A72D2238BE10700E4C181 /* Math.swift */; };
+		169A9195238CF9D5004E3DAA /* Expressible.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 169A9194238CF9D5004E3DAA /* Expressible.framework */; };
+		169A9196238CF9D5004E3DAA /* Expressible.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 169A9194238CF9D5004E3DAA /* Expressible.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		169A9199238CFBEC004E3DAA /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 169A9198238CFBEC004E3DAA /* CloudKit.framework */; };
+		169A91A3238D1D38004E3DAA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A91A2238D1D38004E3DAA /* Config.swift */; };
+		169A91A5238D1D81004E3DAA /* ESI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A91A4238D1D81004E3DAA /* ESI+Extensions.swift */; };
+		16D667CC238D66FB00A74C98 /* FetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */; };
 		16D8DC80238808870057A6F4 /* Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D8DC7F238808870057A6F4 /* Combine.swift */; };
 		16D8DC82238813A40057A6F4 /* DataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D8DC81238813A40057A6F4 /* DataLoader.swift */; };
+		16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DFF82E238D360B004C1185 /* TypeCategories.swift */; };
+		16DFF831238D3A4F004C1185 /* SearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DFF830238D3A4F004C1185 /* SearchField.swift */; };
+		16DFF833238D4C02004C1185 /* UIKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */; };
+		16DFF835238D5980004C1185 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DFF834238D5980004C1185 /* SearchResults.swift */; };
 		16E3DBF3238BF944005F5AAE /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBF2238BF944005F5AAE /* Avatar.swift */; };
 		16E3DBF5238BFACC005F5AAE /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBF4238BFACC005F5AAE /* AccountCell.swift */; };
 /* End PBXBuildFile section */
@@ -51,6 +60,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				169672DC2387ECCD00EB860B /* EVEAPI.framework in Embed Frameworks */,
+				169A9196238CF9D5004E3DAA /* Expressible.framework in Embed Frameworks */,
 				169672E02387ECEF00EB860B /* Alamofire.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -73,7 +83,6 @@
 		12F06F30238467600061313D /* SDE.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SDE.xcdatamodel; sourceTree = "<group>"; };
 		12F06F332384676F0061313D /* Storage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Storage.xcdatamodel; sourceTree = "<group>"; };
 		12F06F36238467A10061313D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		12F06F3C238468E50061313D /* SDE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDE.swift; sourceTree = "<group>"; };
 		12F06F3E238469C10061313D /* SDEVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDEVersion.swift; sourceTree = SOURCE_ROOT; };
 		12F06F3F238469C10061313D /* SDE.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDE.sqlite; sourceTree = SOURCE_ROOT; };
 		12F06F6823846C890061313D /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
@@ -90,8 +99,18 @@
 		169A72CE238BE05600E4C181 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		169A72D0238BE0EF00E4C181 /* TimeIntervalFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalFormatter.swift; sourceTree = "<group>"; };
 		169A72D2238BE10700E4C181 /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		169A9194238CF9D5004E3DAA /* Expressible.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Expressible.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		169A9197238CFBE8004E3DAA /* Neocom.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Neocom.entitlements; sourceTree = "<group>"; };
+		169A9198238CFBEC004E3DAA /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		169A91A2238D1D38004E3DAA /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		169A91A4238D1D81004E3DAA /* ESI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ESI+Extensions.swift"; sourceTree = "<group>"; };
+		16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResultsController.swift; sourceTree = "<group>"; };
 		16D8DC7F238808870057A6F4 /* Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Combine.swift; path = Neocom/Home/Combine.swift; sourceTree = SOURCE_ROOT; };
 		16D8DC81238813A40057A6F4 /* DataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLoader.swift; sourceTree = "<group>"; };
+		16DFF82E238D360B004C1185 /* TypeCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeCategories.swift; sourceTree = "<group>"; };
+		16DFF830238D3A4F004C1185 /* SearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchField.swift; sourceTree = "<group>"; };
+		16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Extensions.swift"; sourceTree = "<group>"; };
+		16DFF834238D5980004C1185 /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		16E3DBF2238BF944005F5AAE /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		16E3DBF4238BFACC005F5AAE /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -102,6 +121,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				169672DB2387ECCD00EB860B /* EVEAPI.framework in Frameworks */,
+				169A9199238CFBEC004E3DAA /* CloudKit.framework in Frameworks */,
+				169A9195238CF9D5004E3DAA /* Expressible.framework in Frameworks */,
 				169672DF2387ECEF00EB860B /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -151,13 +172,16 @@
 		12F06F11238464920061313D /* Neocom */ = {
 			isa = PBXGroup;
 			children = (
+				169A9197238CFBE8004E3DAA /* Neocom.entitlements */,
 				12F06F2B238466F50061313D /* Model */,
 				12F06F2A238466EB0061313D /* Utility */,
-				12F06F12238464920061313D /* AppDelegate.swift */,
 				12AE040D23847EB400DEFFC5 /* Home */,
+				16DFF82D238D35F6004C1185 /* Database */,
+				12F06F12238464920061313D /* AppDelegate.swift */,
 				12F06F14238464920061313D /* SceneDelegate.swift */,
 				12F06F16238464920061313D /* ContentView.swift */,
 				12F06F6A23846D670061313D /* Main.swift */,
+				169A91A2238D1D38004E3DAA /* Config.swift */,
 				12F06F18238464950061313D /* Assets.xcassets */,
 				12F06F1D238464950061313D /* LaunchScreen.storyboard */,
 				12F06F20238464950061313D /* Info.plist */,
@@ -186,6 +210,10 @@
 				169A72D0238BE0EF00E4C181 /* TimeIntervalFormatter.swift */,
 				169A72CE238BE05600E4C181 /* String+Extensions.swift */,
 				169A72D2238BE10700E4C181 /* Math.swift */,
+				169A91A4238D1D81004E3DAA /* ESI+Extensions.swift */,
+				16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */,
+				16DFF834238D5980004C1185 /* SearchResults.swift */,
+				16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -197,7 +225,6 @@
 				12F06F322384676F0061313D /* Storage.xcdatamodeld */,
 				12F06F3F238469C10061313D /* SDE.sqlite */,
 				12F06F3E238469C10061313D /* SDEVersion.swift */,
-				12F06F3C238468E50061313D /* SDE.swift */,
 				12F06F6823846C890061313D /* Storage.swift */,
 			);
 			path = Model;
@@ -206,6 +233,8 @@
 		12F06F35238467A10061313D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				169A9198238CFBEC004E3DAA /* CloudKit.framework */,
+				169A9194238CF9D5004E3DAA /* Expressible.framework */,
 				169672DE2387ECEF00EB860B /* Alamofire.framework */,
 				169672DA2387ECCD00EB860B /* EVEAPI.framework */,
 				12F06F36238467A10061313D /* UIKit.framework */,
@@ -218,8 +247,17 @@
 			children = (
 				16674BEB238BB97400E6E547 /* ProgressView.swift */,
 				16E3DBF2238BF944005F5AAE /* Avatar.swift */,
+				16DFF830238D3A4F004C1185 /* SearchField.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		16DFF82D238D35F6004C1185 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				16DFF82E238D360B004C1185 /* TypeCategories.swift */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -297,20 +335,25 @@
 			files = (
 				12F06F6B23846D670061313D /* Main.swift in Sources */,
 				12F06F31238467600061313D /* SDE.xcdatamodeld in Sources */,
+				16D667CC238D66FB00A74C98 /* FetchedResultsController.swift in Sources */,
 				12AE040F23847EC600DEFFC5 /* Home.swift in Sources */,
+				169A91A5238D1D81004E3DAA /* ESI+Extensions.swift in Sources */,
 				169A72D1238BE0EF00E4C181 /* TimeIntervalFormatter.swift in Sources */,
 				16674BE7238BB7FE00E6E547 /* Accounts.swift in Sources */,
 				12F06F40238469C10061313D /* SDEVersion.swift in Sources */,
 				16D8DC82238813A40057A6F4 /* DataLoader.swift in Sources */,
+				16DFF833238D4C02004C1185 /* UIKit+Extensions.swift in Sources */,
 				16E3DBF3238BF944005F5AAE /* Avatar.swift in Sources */,
-				12F06F3D238468E50061313D /* SDE.swift in Sources */,
+				169A91A3238D1D38004E3DAA /* Config.swift in Sources */,
 				169672D72387EA2F00EB860B /* HomeHeader.swift in Sources */,
 				120E28F0238B12A1006B30EA /* CharacterInfo.swift in Sources */,
 				12F06F13238464920061313D /* AppDelegate.swift in Sources */,
 				169A72C9238BD9AA00E4C181 /* Colors.swift in Sources */,
 				12AE041123847EDE00DEFFC5 /* HomeAccountHeader.swift in Sources */,
+				16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */,
 				169A72CF238BE05600E4C181 /* String+Extensions.swift in Sources */,
 				16674BE9238BB80900E6E547 /* AccountCellContent.swift in Sources */,
+				16DFF831238D3A4F004C1185 /* SearchField.swift in Sources */,
 				12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */,
 				169672D92387EA3F00EB860B /* EnvironmentValues.swift in Sources */,
 				12F06F6923846C890061313D /* Storage.swift in Sources */,
@@ -319,6 +362,7 @@
 				12F06F17238464920061313D /* ContentView.swift in Sources */,
 				16674BF0238BC6F300E6E547 /* UnitFormatter.swift in Sources */,
 				16E3DBF5238BFACC005F5AAE /* AccountCell.swift in Sources */,
+				16DFF835238D5980004C1185 /* SearchResults.swift in Sources */,
 				16D8DC80238808870057A6F4 /* Combine.swift in Sources */,
 				169A72D3238BE10700E4C181 /* Math.swift in Sources */,
 			);
@@ -456,6 +500,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 44;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
@@ -478,6 +523,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 44;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";

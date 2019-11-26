@@ -16,11 +16,6 @@ struct HomeHeader: View {
     @Environment(\.esi) var esi
     var characterID: Int64? = 1554561480
     
-    private struct Character {
-        var character: ESI.Characters.CharacterID.Success
-        var corporation: ESI.Corporations.CorporationID.Success
-        var alliance: ESI.Alliances.AllianceID.Success?
-    }
 	@ObservedObject private var characterInfo = CharacterInfo(characterImageSize: .size256, corporationImageSize: .size32, allianceImageSize: .size32)
 
     private func reload() {

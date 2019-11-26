@@ -30,10 +30,7 @@ struct ContentView: View {
     @ObservedObject var a: A = A("a")
     @State var esi: ESI = ESI()
     var body: some View {
-        VStack {
-            Accounts()
-            Spacer()
-        }
+        TypeCategories()
     }
 }
 

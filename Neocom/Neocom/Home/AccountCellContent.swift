@@ -26,19 +26,19 @@ struct AccountCellContent: View {
     var ship: String?
     var location: String?
     var sp: Int64?
-    var isk: Int64?
+    var isk: Double?
     var skill: Skill?
     var skillQueue: Int?
     
     var body: some View {
         VStack {
-            HStack {
+            HStack(spacing: 15) {
                 Avatar(image: character?.image).frame(width: 64, height: 64)
                 
                 VStack(alignment: .leading, spacing: 0) {
                     (character?.name).map{Text($0)}.font(.title)
                     HStack {
-                        corporation?.image?.resizable().frame(width: 24, height: 24)
+//                        corporation?.image?.resizable().frame(width: 24, height: 24)
                         (corporation?.name).map{Text($0)}
                         (alliance?.name).map{ name in
                             Group{
@@ -51,17 +51,21 @@ struct AccountCellContent: View {
                 }
                 Spacer()
             }
-            HStack(alignment: .top) {
+            HStack(alignment: .top, spacing: 15) {
                 HStack {
                     VStack(alignment: .trailing) {
-                        Text("SP:")
-                        Text("ISK:")
+                        if sp != nil {
+                            Text("SP:")
+                        }
+                        if isk != nil {
+                            Text("ISK:")
+                        }
                     }.foregroundColor(.skyBlue)
                     VStack(alignment: .leading) {
-                        sp.map{Text(UnitFormatter.localizedString(from: $0, unit: .skillPoints, style: .short))}
-                        isk.map{Text(UnitFormatter.localizedString(from: $0, unit: .skillPoints, style: .short))}
+                        sp.map{Text(UnitFormatter.localizedString(from: $0, unit: .none, style: .short))}
+                        isk.map{Text(UnitFormatter.localizedString(from: $0, unit: .none, style: .short))}
                     }
-                }
+                }.frame(minWidth: 64)
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {
                         ship.map{Text($0)}
@@ -82,7 +86,10 @@ struct AccountCellContent: View {
                 }
                 Spacer(minLength: 0)
             }
-        }.padding().font(.subheadline).background(Color(UIColor.systemGroupedBackground)).lineLimit(1)
+        }
+            .font(.subheadline)
+            .lineLimit(1)
+//        .padding()
     }
 }
 
@@ -96,10 +103,10 @@ struct AccountCellContent_Previews: PreviewProvider {
                                      sp: 1000,
                                      isk: 1000,
                                      skill: .init(name: "Battleship", level: 5, trainingTime: 3600 * 48 - 1),
-                                     skillQueue: 5)
+                                     skillQueue: 5).padding()
         return VStack {
-            row.colorScheme(.light)
-            row.colorScheme(.dark)
+            row.background(Color(UIColor.systemGroupedBackground)).colorScheme(.light)
+            row.background(Color(UIColor.systemGroupedBackground)).colorScheme(.dark)
             AccountCellContent(character: nil,
             corporation: nil,
             alliance: nil,
@@ -108,7 +115,7 @@ struct AccountCellContent_Previews: PreviewProvider {
             sp: nil,
             isk: nil,
             skill: nil,
-            skillQueue: nil)
+            skillQueue: nil).padding().background(Color(UIColor.systemGroupedBackground))
         }
     }
 }

@@ -21,7 +21,7 @@ private class Search: ObservableObject {
 struct SearchField: View {
 //    @ObservedObject private var search: Search
     @Binding var text: String
-    @State private var showCancelButton: Bool = false
+    @Binding var isEditing: Bool
     
 //    init(text: Binding<String>) {
 //        _search = ObservedObject(initialValue: Search(text))
@@ -34,7 +34,7 @@ struct SearchField: View {
 
                 TextField("search", text: $text, onEditingChanged: { isEditing in
                     withAnimation {
-                        self.showCancelButton = true
+                        self.isEditing = isEditing
                     }
                 }, onCommit: {
                     print("onCommit")
@@ -51,12 +51,12 @@ struct SearchField: View {
             .background(Color(.secondarySystemBackground))
             .cornerRadius(10.0)
 
-            if showCancelButton  {
+            if isEditing  {
                 Button("Cancel") {
                     withAnimation {
                         UIApplication.shared.endEditing(true)
                         self.text = ""
-                        self.showCancelButton = false
+                        self.isEditing = false
                     }
                 }
                 .foregroundColor(Color(.systemBlue))
@@ -64,14 +64,16 @@ struct SearchField: View {
             }
         }
         .padding(.horizontal)
-        .navigationBarHidden(showCancelButton)
+//        .frame(height: 44)
+//        .background(Color.red)
+//        .navigationBarHidden(isEditing)
     }
 }
 
 struct SearchField_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            SearchField(text: .constant(""))
+            SearchField(text: .constant(""), isEditing: .constant(false))
                 .navigationBarTitle("Title")
         }
     }

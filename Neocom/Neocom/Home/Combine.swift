@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import CoreData
 
 extension Publisher where Failure: Error {
     func asResult() -> Publishers.Catch<Publishers.Map<Self, Result<Self.Output, Self.Failure>>, Just<Result<Self.Output, Self.Failure>>> {
@@ -40,4 +41,40 @@ extension Result {
             return nil
         }
     }
+}
+
+
+extension NSManagedObjectContext: Scheduler {
+    
+    public func schedule(after date: DispatchQueue.SchedulerTimeType, interval: DispatchQueue.SchedulerTimeType.Stride, tolerance: DispatchQueue.SchedulerTimeType.Stride, options: DispatchQueue.SchedulerOptions?, _ action: @escaping () -> Void) -> Cancellable {
+        DispatchQueue.main.schedule(after: date, interval: interval, tolerance: tolerance, options: options) {
+            self.perform(action)
+        }
+    }
+    
+    public func schedule(after date: DispatchQueue.SchedulerTimeType, tolerance: DispatchQueue.SchedulerTimeType.Stride, options: DispatchQueue.SchedulerOptions?, _ action: @escaping () -> Void) {
+        DispatchQueue.main.schedule(after: date, tolerance: tolerance, options: options) {
+            self.perform(action)
+        }
+    }
+    
+    public func schedule(options: DispatchQueue.SchedulerOptions?, _ action: @escaping () -> Void) {
+        DispatchQueue.main.schedule(options: options) {
+            self.perform(action)
+        }
+    }
+    
+    public var now: DispatchQueue.SchedulerTimeType {
+        DispatchQueue.main.now
+    }
+    
+    public var minimumTolerance: DispatchQueue.SchedulerTimeType.Stride {
+        DispatchQueue.main.minimumTolerance
+    }
+    
+    public typealias SchedulerTimeType = DispatchQueue.SchedulerTimeType
+    
+    public typealias SchedulerOptions = DispatchQueue.SchedulerOptions
+    
+    
 }

@@ -10,14 +10,14 @@ import Foundation
 import Combine
 
 
-class SearchResults<Element>: ObservableObject {
-    @Published var results: [Element]
+class SearchResults<Content>: ObservableObject {
+    @Published var results: Content
     @Published var searchString: String = ""
     
     private var subscription: AnyCancellable?
     
-    init<P>(_ search: @escaping (String) -> P) where P: Publisher, P.Output == [Element], P.Failure == Never {
-        _results = Published(initialValue: [])
+    init<P>(initialValue: Content, _ search: @escaping (String) -> P) where P: Publisher, P.Output == Content, P.Failure == Never {
+        _results = Published(initialValue: initialValue)
         searchString = ""
         
         subscription = $searchString.debounce(for: .seconds(0.25), scheduler: DispatchQueue.main).flatMap(search).sink { [weak self] in

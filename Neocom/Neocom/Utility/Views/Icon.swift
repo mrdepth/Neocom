@@ -10,23 +10,34 @@ import SwiftUI
 
 struct Icon: View {
 	enum Size {
-		case `default`
+		case normal
+        case small
 	}
 	let image: Image
 	let size: Size
 	
-	init(_ image: Image, size: Size = .default) {
+	init(_ image: Image, size: Size = .normal) {
 		self.image = image
 		self.size = size
 	}
 	
     var body: some View {
-        image.resizable().scaledToFit().frame(width: 32, height: 32)
+        let s: CGSize
+        switch size {
+        case .normal:
+            s = CGSize(width: 32, height: 32)
+        case .small:
+            s = CGSize(width: 20, height: 20)
+        }
+        return image.resizable().scaledToFit().frame(width: s.width, height: s.height)
     }
 }
 
 struct Icon_Previews: PreviewProvider {
     static var previews: some View {
-		Icon(Image("character"))
+        VStack {
+            Icon(Image("character"))
+            Icon(Image("character"), size: .small)
+        }
     }
 }

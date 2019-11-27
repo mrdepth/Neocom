@@ -39,6 +39,24 @@ extension SDEInvCategory {
 	}
 }
 
+extension SDEInvGroup {
+    var image: Image {
+        let image = icon?.image?.image ??
+            (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
+            UIImage()
+        return Image(uiImage: image)
+    }
+}
+
+extension SDEInvType {
+    var image: Image {
+        let image = icon?.image?.image ??
+            (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultType)).first?.image?.image) ??
+            UIImage()
+        return Image(uiImage: image)
+    }
+}
+
 extension SDEEveIcon {
 	class func named(_ name: Name) -> NSFetchRequest<SDEEveIcon> {
 		let request = NSFetchRequest<SDEEveIcon>(entityName: "EveIcon")

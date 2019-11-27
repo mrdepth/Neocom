@@ -35,6 +35,12 @@
 		169672DC2387ECCD00EB860B /* EVEAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 169672DA2387ECCD00EB860B /* EVEAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		169672DF2387ECEF00EB860B /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 169672DE2387ECEF00EB860B /* Alamofire.framework */; };
 		169672E02387ECEF00EB860B /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 169672DE2387ECEF00EB860B /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1698919F238E4BA500FBA0B3 /* FetchedResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1698919E238E4BA500FBA0B3 /* FetchedResultsView.swift */; };
+		169891A1238E50AC00FBA0B3 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169891A0238E50AC00FBA0B3 /* Types.swift */; };
+		169891A3238E53D600FBA0B3 /* TypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169891A2238E53D600FBA0B3 /* TypeCell.swift */; };
+		169891AB238E555100FBA0B3 /* Fitting.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 169891AA238E555100FBA0B3 /* Fitting.xcassets */; };
+		169891B0238E696900FBA0B3 /* ShipCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169891AC238E557900FBA0B3 /* ShipCell.swift */; };
+		169891B5238EAF4000FBA0B3 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169891B4238EAF4000FBA0B3 /* SearchView.swift */; };
 		169A72C9238BD9AA00E4C181 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A72C8238BD9AA00E4C181 /* Colors.swift */; };
 		169A72CF238BE05600E4C181 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A72CE238BE05600E4C181 /* String+Extensions.swift */; };
 		169A72D1238BE0EF00E4C181 /* TimeIntervalFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A72D0238BE0EF00E4C181 /* TimeIntervalFormatter.swift */; };
@@ -101,6 +107,12 @@
 		169672D82387EA3F00EB860B /* EnvironmentValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EnvironmentValues.swift; path = Neocom/Home/EnvironmentValues.swift; sourceTree = SOURCE_ROOT; };
 		169672DA2387ECCD00EB860B /* EVEAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EVEAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		169672DE2387ECEF00EB860B /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1698919E238E4BA500FBA0B3 /* FetchedResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResultsView.swift; sourceTree = "<group>"; };
+		169891A0238E50AC00FBA0B3 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		169891A2238E53D600FBA0B3 /* TypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeCell.swift; sourceTree = "<group>"; };
+		169891AA238E555100FBA0B3 /* Fitting.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Fitting.xcassets; sourceTree = "<group>"; };
+		169891AC238E557900FBA0B3 /* ShipCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipCell.swift; sourceTree = "<group>"; };
+		169891B4238EAF4000FBA0B3 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		169A72C8238BD9AA00E4C181 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		169A72CE238BE05600E4C181 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		169A72D0238BE0EF00E4C181 /* TimeIntervalFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalFormatter.swift; sourceTree = "<group>"; };
@@ -189,6 +201,7 @@
 				12F06F6A23846D670061313D /* Main.swift */,
 				169A91A2238D1D38004E3DAA /* Config.swift */,
 				12F06F18238464950061313D /* Assets.xcassets */,
+				169891AA238E555100FBA0B3 /* Fitting.xcassets */,
 				12F06F1D238464950061313D /* LaunchScreen.storyboard */,
 				12F06F20238464950061313D /* Info.plist */,
 				12F06F1A238464950061313D /* Preview Content */,
@@ -256,6 +269,8 @@
 				16E3DBF2238BF944005F5AAE /* Avatar.swift */,
 				16DFF830238D3A4F004C1185 /* SearchField.swift */,
 				124F06E6238D8EB400395D54 /* Icon.swift */,
+				1698919E238E4BA500FBA0B3 /* FetchedResultsView.swift */,
+				169891B4238EAF4000FBA0B3 /* SearchView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -265,6 +280,9 @@
 			children = (
 				16DFF82E238D360B004C1185 /* TypeCategories.swift */,
 				124F06E8238D908A00395D54 /* TypeGroups.swift */,
+				169891A0238E50AC00FBA0B3 /* Types.swift */,
+				169891A2238E53D600FBA0B3 /* TypeCell.swift */,
+				169891AC238E557900FBA0B3 /* ShipCell.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -330,6 +348,7 @@
 			files = (
 				12F06F1F238464950061313D /* LaunchScreen.storyboard in Resources */,
 				12F06F1C238464950061313D /* Preview Assets.xcassets in Resources */,
+				169891AB238E555100FBA0B3 /* Fitting.xcassets in Resources */,
 				12F06F41238469C10061313D /* SDE.sqlite in Resources */,
 				12F06F19238464950061313D /* Assets.xcassets in Resources */,
 			);
@@ -343,12 +362,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				12F06F6B23846D670061313D /* Main.swift in Sources */,
+				169891B0238E696900FBA0B3 /* ShipCell.swift in Sources */,
 				124F06E9238D908A00395D54 /* TypeGroups.swift in Sources */,
 				124F06E3238D897E00395D54 /* ImageValueTransformer.swift in Sources */,
 				12F06F31238467600061313D /* SDE.xcdatamodeld in Sources */,
 				16D667CC238D66FB00A74C98 /* FetchedResultsController.swift in Sources */,
 				12AE040F23847EC600DEFFC5 /* Home.swift in Sources */,
+				169891A1238E50AC00FBA0B3 /* Types.swift in Sources */,
 				169A91A5238D1D81004E3DAA /* ESI+Extensions.swift in Sources */,
+				1698919F238E4BA500FBA0B3 /* FetchedResultsView.swift in Sources */,
 				169A72D1238BE0EF00E4C181 /* TimeIntervalFormatter.swift in Sources */,
 				16674BE7238BB7FE00E6E547 /* Accounts.swift in Sources */,
 				12F06F40238469C10061313D /* SDEVersion.swift in Sources */,
@@ -359,10 +381,12 @@
 				169672D72387EA2F00EB860B /* HomeHeader.swift in Sources */,
 				120E28F0238B12A1006B30EA /* CharacterInfo.swift in Sources */,
 				12F06F13238464920061313D /* AppDelegate.swift in Sources */,
+				169891B5238EAF4000FBA0B3 /* SearchView.swift in Sources */,
 				169A72C9238BD9AA00E4C181 /* Colors.swift in Sources */,
 				12AE041123847EDE00DEFFC5 /* HomeAccountHeader.swift in Sources */,
 				124F06E7238D8EB400395D54 /* Icon.swift in Sources */,
 				16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */,
+				169891A3238E53D600FBA0B3 /* TypeCell.swift in Sources */,
 				169A72CF238BE05600E4C181 /* String+Extensions.swift in Sources */,
 				16674BE9238BB80900E6E547 /* AccountCellContent.swift in Sources */,
 				16DFF831238D3A4F004C1185 /* SearchField.swift in Sources */,

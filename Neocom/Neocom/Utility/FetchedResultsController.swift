@@ -13,23 +13,19 @@ class FetchedResultsController<ResultType: NSFetchRequestResult>: ObservableObje
     private let controller: NSFetchedResultsController<ResultType>
     
     struct Section {
-        var name: String {
-            return section.name
-        }
-        var objects: [ResultType] {
-            return section.objects as? [ResultType] ?? []
-        }
-
-        fileprivate var section: NSFetchedResultsSectionInfo
+        var name: String
+        var objects: [ResultType]
     }
     
     private var isFetched: Bool = false
+    private var _sections: [Section]?
     var sections: [Section] {
         if !isFetched {
             try! controller.performFetch()
             isFetched = true
+            _sections = controller.sections?.map { return Section(name: $0.name, objects: ($0.objects as? [ResultType]) ?? []) }
         }
-        return (controller.sections ?? []).map { return Section(section: $0) }
+        return _sections ?? []
     }
     
     var fetchedObjects: [ResultType] {

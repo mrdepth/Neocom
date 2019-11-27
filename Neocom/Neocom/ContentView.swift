@@ -29,8 +29,9 @@ struct Nested: View {
 struct ContentView: View {
     @ObservedObject var a: A = A("a")
     @State var esi: ESI = ESI()
+	@Environment(\.managedObjectContext) var managedObjectContext
     var body: some View {
-        TypeCategories()
+		TypeCategories(managedObjectContext: managedObjectContext)
     }
 }
 

@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 import EVEAPI
+import Expressible
+import SwiftUI
 
 class Storage: NSPersistentCloudKitContainer {
     init() {
@@ -28,6 +30,42 @@ class Storage: NSPersistentCloudKitContainer {
     }
 }
 
+extension SDEInvCategory {
+	var image: Image {
+		let image = icon?.image?.image ??
+			(try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultCategory)).first?.image?.image) ??
+			UIImage()
+		return Image(uiImage: image)
+	}
+}
+
+extension SDEEveIcon {
+	class func named(_ name: Name) -> NSFetchRequest<SDEEveIcon> {
+		let request = NSFetchRequest<SDEEveIcon>(entityName: "EveIcon")
+		request.predicate = (\SDEEveIcon.iconFile == name.name).predicate(for: .`self`)
+		request.fetchLimit = 1
+		return request
+	}
+	
+	enum Name {
+		case defaultCategory
+		case defaultGroup
+		case defaultType
+		case mastery(Int?)
+		
+		var name: String {
+			switch self {
+			case .defaultCategory, .defaultGroup:
+				return "38_16_174"
+			case .defaultType:
+				return "7_64_15"
+			case let .mastery(level):
+				guard let level = level, (0...4).contains(level) else {return "79_64_1"}
+				return "79_64_\(level + 2)"
+			}
+		}
+	}
+}
 
 public class LoadoutDescription: NSObject {
 	

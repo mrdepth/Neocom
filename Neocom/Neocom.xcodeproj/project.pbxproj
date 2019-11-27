@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		120E28F0238B12A1006B30EA /* CharacterInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120E28EF238B12A1006B30EA /* CharacterInfo.swift */; };
+		124F06E3238D897E00395D54 /* ImageValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F06E2238D897E00395D54 /* ImageValueTransformer.swift */; };
+		124F06E7238D8EB400395D54 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F06E6238D8EB400395D54 /* Icon.swift */; };
+		124F06E9238D908A00395D54 /* TypeGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F06E8238D908A00395D54 /* TypeGroups.swift */; };
 		12AE040F23847EC600DEFFC5 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE040E23847EC600DEFFC5 /* Home.swift */; };
 		12AE041123847EDE00DEFFC5 /* HomeAccountHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE041023847EDE00DEFFC5 /* HomeAccountHeader.swift */; };
 		12F06F13238464920061313D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F12238464920061313D /* AppDelegate.swift */; };
@@ -70,6 +73,9 @@
 
 /* Begin PBXFileReference section */
 		120E28EF238B12A1006B30EA /* CharacterInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfo.swift; sourceTree = "<group>"; };
+		124F06E2238D897E00395D54 /* ImageValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageValueTransformer.swift; sourceTree = "<group>"; };
+		124F06E6238D8EB400395D54 /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
+		124F06E8238D908A00395D54 /* TypeGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeGroups.swift; sourceTree = "<group>"; };
 		12AE040E23847EC600DEFFC5 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		12AE041023847EDE00DEFFC5 /* HomeAccountHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAccountHeader.swift; sourceTree = "<group>"; };
 		12F06F0F238464920061313D /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -226,6 +232,7 @@
 				12F06F3F238469C10061313D /* SDE.sqlite */,
 				12F06F3E238469C10061313D /* SDEVersion.swift */,
 				12F06F6823846C890061313D /* Storage.swift */,
+				124F06E2238D897E00395D54 /* ImageValueTransformer.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -248,6 +255,7 @@
 				16674BEB238BB97400E6E547 /* ProgressView.swift */,
 				16E3DBF2238BF944005F5AAE /* Avatar.swift */,
 				16DFF830238D3A4F004C1185 /* SearchField.swift */,
+				124F06E6238D8EB400395D54 /* Icon.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -256,6 +264,7 @@
 			isa = PBXGroup;
 			children = (
 				16DFF82E238D360B004C1185 /* TypeCategories.swift */,
+				124F06E8238D908A00395D54 /* TypeGroups.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -334,6 +343,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				12F06F6B23846D670061313D /* Main.swift in Sources */,
+				124F06E9238D908A00395D54 /* TypeGroups.swift in Sources */,
+				124F06E3238D897E00395D54 /* ImageValueTransformer.swift in Sources */,
 				12F06F31238467600061313D /* SDE.xcdatamodeld in Sources */,
 				16D667CC238D66FB00A74C98 /* FetchedResultsController.swift in Sources */,
 				12AE040F23847EC600DEFFC5 /* Home.swift in Sources */,
@@ -350,6 +361,7 @@
 				12F06F13238464920061313D /* AppDelegate.swift in Sources */,
 				169A72C9238BD9AA00E4C181 /* Colors.swift in Sources */,
 				12AE041123847EDE00DEFFC5 /* HomeAccountHeader.swift in Sources */,
+				124F06E7238D8EB400395D54 /* Icon.swift in Sources */,
 				16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */,
 				169A72CF238BE05600E4C181 /* String+Extensions.swift in Sources */,
 				16674BE9238BB80900E6E547 /* AccountCellContent.swift in Sources */,

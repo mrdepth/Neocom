@@ -23,7 +23,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 		// Create the SwiftUI view that provides the window contents.
         let c = try! (AppDelegate.sharedDelegate.storageContainer.viewContext.from(SDEInvType.self).filter(\SDEInvType.typeID == 645).first()?.dgmppItem?.shipResources)!
-		let contentView = ContentView().environment(\.managedObjectContext, (UIApplication.shared.delegate as! AppDelegate).storageContainer.viewContext)
+		let contentView = ContentView()
+            .environment(\.managedObjectContext, (UIApplication.shared.delegate as! AppDelegate).storageContainer.viewContext)
+            .environment(\.backgroundManagedObjectContext, (UIApplication.shared.delegate as! AppDelegate).storageContainer.newBackgroundContext())
 
 		// Use a UIHostingController as window root view controller.
 		if let windowScene = scene as? UIWindowScene {

@@ -64,8 +64,9 @@ struct SearchField: View {
             }
         }
         .padding(.horizontal)
-//        .frame(height: 44)
-//        .background(Color.red)
+        .padding(.vertical, 8)
+//        .background(Color(.systemBackground))
+//        .padding(.horizontal)
 //        .navigationBarHidden(isEditing)
     }
 }
@@ -73,8 +74,11 @@ struct SearchField: View {
 struct SearchField_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
+            ZStack {
+                Color.gray
             SearchField(text: .constant(""), isEditing: .constant(false))
                 .navigationBarTitle("Title")
+            }
         }
     }
 }

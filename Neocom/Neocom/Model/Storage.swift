@@ -55,6 +55,12 @@ extension SDEInvType {
             UIImage()
         return Image(uiImage: image)
     }
+    
+    class func dominix() -> NSFetchRequest<SDEInvType> {
+        let request = NSFetchRequest<SDEInvType>(entityName: "InvType")
+        request.predicate = (\SDEInvType.typeID == 645).predicate(for: .`self`)
+        return request
+    }
 }
 
 extension SDEEveIcon {
@@ -176,4 +182,12 @@ extension Account {
 //            return nil
 //        }
 //    }
+}
+
+
+enum DamageType {
+    case em
+    case thermal
+    case kinetic
+    case explosive
 }

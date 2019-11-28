@@ -25,10 +25,18 @@ struct Types: View {
     }
     
     var body: some View {
-        FetchedResultsView(types()) { types in
+        TypesSearch(predicate: predicate) { searchResults in
             List {
-                TypesContent(types: types.sections)
+                if searchResults == nil {
+                    FetchedResultsView(self.types()) { types in
+                        TypesContent(types: types.sections)
+                    }
+                }
+                else {
+                    TypesContent(types: searchResults!)
+                }
             }.listStyle(GroupedListStyle())
+                .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
         }
     }
 }

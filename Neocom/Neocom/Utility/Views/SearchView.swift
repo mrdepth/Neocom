@@ -9,24 +9,39 @@
 import SwiftUI
 import Combine
 
-struct SearchView<Results: Publisher, Content: View>: View where Results.Failure == Never {
-    @ObservedObject var searchResults: SearchResults<Results.Output>
+private class SearchResults<Results>: ObservableObject {
+    @Published var results: Results
+    @Published var searchString: String = ""
+    
+    private var subscription: AnyCancellable?
+    
+    init<P>(initialValue: Results, _ search: @escaping (String) -> P) where P: Publisher, P.Output == Results, P.Failure == Never {
+        _results = Published(initialValue: initialValue)
+        searchString = ""
+        
+        subscription = $searchString.debounce(for: .seconds(0.25), scheduler: DispatchQueue.main).flatMap(search).sink { [weak self] in
+            self?.results = $0
+        }
+    }
+
+}
+
+struct SearchView<Results: Publisher, Content: View, Output>: View where Results.Failure == Never, Results.Output == Output? {
+    @ObservedObject private var searchResults: SearchResults<Results.Output>
     @State var isEditing: Bool = false
     
-    var content: (Results.Output?) -> Content
+    var content: (Results.Output) -> Content
     
-    init(initialValue: Results.Output, action: @escaping (String) -> Results, @ViewBuilder content: @escaping (Results.Output?) -> Content) {
+    init(initialValue: Results.Output, search: @escaping (String) -> Results, @ViewBuilder content: @escaping (Results.Output) -> Content) {
         self.content = content
-        searchResults = SearchResults(initialValue: initialValue, action)
+        searchResults = SearchResults(initialValue: initialValue, search)
     }
         
         
     var body: some View {
-        ZStack {
-            VStack(spacing: 0) {
-                SearchField(text: $searchResults.searchString, isEditing: $isEditing)
-                content(searchResults.searchString.isEmpty ? nil : searchResults.results)
-            }
+        VStack(spacing: 0) {
+            SearchField(text: $searchResults.searchString, isEditing: $isEditing)
+            content(searchResults.results).overlay(Color(.systemFill).opacity(searchResults.results == nil && isEditing ? 1.0 : 0.0).edgesIgnoringSafeArea(.all))
         }
     }
 }
@@ -34,7 +49,7 @@ struct SearchView<Results: Publisher, Content: View>: View where Results.Failure
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            SearchView(initialValue: "", action: { string in
+            SearchView(initialValue: nil, search: { string in
                 Just(string)
             }) { results in
                 List {

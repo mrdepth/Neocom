@@ -23,14 +23,13 @@ struct Accounts: View {
                     
                 }
                 Section {
-                ForEach(accounts, id: \Account.objectID) { account in
-                    AccountCell(account: account, esi: account.oAuth2Token.map{ESI(token: $0)} ?? ESI())
-                }
+                    ForEach(accounts, id: \Account.objectID) { account in
+                        AccountCell(account: account, esi: account.oAuth2Token.map{ESI(token: $0)} ?? ESI())
+                    }
                 }
             }
             .listStyle(GroupedListStyle())
-            .navigationBarItems(trailing: Button("Add") {
-            })
+            .navigationBarTitle("Accounts")
         }
     }
 }

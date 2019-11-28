@@ -24,11 +24,19 @@ struct TypeGroups: View {
     }
     
     var body: some View {
-        FetchedResultsView(groups()) { groups in
+        TypesSearch(predicate: \SDEInvType.group?.category == category) { searchResults in
             List {
-                TypeGroupsContent(groups: groups)
-            }.listStyle(GroupedListStyle()).navigationBarTitle(self.category.categoryName ?? "Unknown")
-        }
+                if searchResults == nil {
+                    FetchedResultsView(self.groups()) { groups in
+                        TypeGroupsContent(groups: groups)
+                    }
+                }
+                else {
+                    TypesContent(types: searchResults!)
+                }
+            }.listStyle(GroupedListStyle())
+                .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
+        }.navigationBarTitle(category.categoryName ?? "Categories")
     }
 }
 
@@ -40,10 +48,7 @@ struct TypeGroupsContent: View {
             Section(header: section.name == "0" ? Text("UNPUBLISHED") : Text("PUBLISHED")) {
                 ForEach(section.objects, id: \.objectID) { group in
                     NavigationLink(destination: Types(predicate: \SDEInvType.group == group).navigationBarTitle(group.groupName ?? "Unknown")) {
-                        HStack {
-                            Icon(group.image)
-                            Text(group.groupName ?? "")
-                        }
+                        GroupCell(group: group)
                     }
                 }
             }

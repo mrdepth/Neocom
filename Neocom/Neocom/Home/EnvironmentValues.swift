@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import EVEAPI
+import CoreData
 
 struct ESIKey: EnvironmentKey {
     static var defaultValue: ESI {
@@ -18,6 +19,10 @@ struct ESIKey: EnvironmentKey {
 
 struct AccountKey: EnvironmentKey {
     static var defaultValue: Account? = nil
+}
+
+struct BackgroundManagedObjectContextKey: EnvironmentKey {
+    static var defaultValue: NSManagedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
 }
 
 extension EnvironmentValues {
@@ -36,6 +41,15 @@ extension EnvironmentValues {
         }
         set {
             self[AccountKey.self] = newValue
+        }
+    }
+    
+    var backgroundManagedObjectContext: NSManagedObjectContext {
+        get {
+            self[BackgroundManagedObjectContextKey.self]
+        }
+        set {
+            self[BackgroundManagedObjectContextKey.self] = newValue
         }
     }
 }

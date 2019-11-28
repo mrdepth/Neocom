@@ -9,7 +9,7 @@
 import SwiftUI
 import Expressible
 
-struct ShipCell: View {
+struct ShipTypeCell: View {
     var ship: SDEDgmppItemShipResources
     
     private func column(_ image: String, _ value: Int16) -> some View {
@@ -37,8 +37,10 @@ struct ShipCell: View {
     }
 }
 
-struct ShipCell_Previews: PreviewProvider {
+struct ShipTypeCell_Previews: PreviewProvider {
     static var previews: some View {
-        ShipCell(ship: try! (AppDelegate.sharedDelegate.storageContainer.viewContext.from(SDEInvType.self).filter(\SDEInvType.typeID == 645).first()?.dgmppItem?.shipResources)!)
+        List {
+            ShipTypeCell(ship: (try! AppDelegate.sharedDelegate.storageContainer.viewContext.fetch(SDEInvType.dominix()).first?.dgmppItem?.shipResources)!)
+        }.listStyle(GroupedListStyle())
     }
 }

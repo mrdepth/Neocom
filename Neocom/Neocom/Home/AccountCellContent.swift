@@ -79,7 +79,7 @@ struct AccountCellContent: View {
                                 Text(TimeIntervalFormatter.localizedString(from: skill.trainingTime, precision: .minutes))
                             }
                         }
-                    }.padding(.horizontal).background(ProgressView(progress: 0.9))
+                    }.padding(.horizontal).background(ProgressView(progress: 0.5).accentColor(Color(.systemGray2)))
                     skillQueue.map{
                         $0 > 0 ? Text("\($0) skills in queue") : Text("Skill queue is empty")
                     }

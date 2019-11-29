@@ -24,18 +24,18 @@ struct TypeGroups: View {
     }
     
     var body: some View {
-        TypesSearch(predicate: \SDEInvType.group?.category == category) { searchResults in
-            List {
-                if searchResults == nil {
-                    FetchedResultsView(self.groups()) { groups in
+        FetchedResultsView(self.groups()) { groups in
+            TypesSearch(predicate: \SDEInvType.group?.category == self.category) { searchResults in
+                List {
+                    if searchResults == nil {
                         TypeGroupsContent(groups: groups)
                     }
-                }
-                else {
-                    TypesContent(types: searchResults!)
-                }
-            }.listStyle(GroupedListStyle())
-                .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
+                    else {
+                        TypesContent(types: searchResults!)
+                    }
+                }.listStyle(GroupedListStyle())
+                    .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
+            }
         }.navigationBarTitle(category.categoryName ?? "Categories")
     }
 }

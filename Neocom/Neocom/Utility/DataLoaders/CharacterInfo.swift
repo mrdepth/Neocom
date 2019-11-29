@@ -19,83 +19,65 @@ class CharacterInfo: ObservableObject {
 	@Published var corporationImage: Result<UIImage, AFError>?
 	@Published var allianceImage: Result<UIImage, AFError>?
 	
-	var characterImageSize: ESI.Image.Size?
-	var corporationImageSize: ESI.Image.Size?
-	var allianceImageSize: ESI.Image.Size?
-	
-	init(characterImageSize: ESI.Image.Size?, corporationImageSize: ESI.Image.Size?, allianceImageSize: ESI.Image.Size?) {
-		self.characterImageSize = characterImageSize
-		self.corporationImageSize = corporationImageSize
-		self.allianceImageSize = allianceImageSize
-	}
-	
-	private var subscriptions: [AnyCancellable]?
-
-	func update(esi: ESI, characterID: Int64?) {
-        character = nil
-        corporation = nil
-        alliance = nil
-        characterImage = nil
-        corporationImage = nil
-        allianceImage = nil
-		guard let characterID = characterID else {return}
+	init(esi: ESI, characterID: Int64, characterImageSize: ESI.Image.Size? = nil, corporationImageSize: ESI.Image.Size? = nil, allianceImageSize: ESI.Image.Size? = nil) {
+        esi.characters.characterID(Int(characterID)).get()
+            .asResult()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                self?.character = result
+        }.store(in: &subscriptions)
         
-		subscriptions = [
-			esi.characters.characterID(Int(characterID)).get()
-				.asResult()
-				.receive(on: DispatchQueue.main)
-				.sink { [weak self] result in
-					self?.character = result
-			},
-			
-			$character.compactMap{$0}
-				.tryGet()
-				.flatMap{esi.corporations.corporationID($0.corporationID).get()}
-				.asResult()
-				.receive(on: DispatchQueue.main)
-				.sink { [weak self] result in
-					self?.corporation = result
-			},
-			
-			$corporation.compactMap{$0}
-				.tryGet()
+        $character.compactMap{$0}
+            .tryGet()
+            .flatMap{esi.corporations.corporationID($0.corporationID).get()}
+            .asResult()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                self?.corporation = result
+        }.store(in: &subscriptions)
+
+        $corporation.compactMap{$0}
+            .tryGet()
+            .compactMap{$0.allianceID}
+            .flatMap{esi.alliances.allianceID($0).get()}
+            .asResult()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                self?.alliance = result
+        }.store(in: &subscriptions)
+
+        characterImageSize.map {
+            esi.image.character(Int(characterID), size: $0)
+                .asResult()
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] result in
+                    self?.characterImage = result
+            }
+        }?.store(in: &subscriptions)
+
+        corporationImageSize.map { imageSize in
+            $character.compactMap{$0}
+                .tryGet()
+                .flatMap{esi.image.corporation($0.corporationID, size: imageSize)}
+                .asResult()
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] result in
+                    self?.corporationImage = result
+            }
+        }?.store(in: &subscriptions)
+
+        allianceImageSize.map { imageSize in
+            $corporation.compactMap{$0}
+                .tryGet()
                 .compactMap{$0.allianceID}
-				.flatMap{esi.alliances.allianceID($0).get()}
-				.asResult()
-				.receive(on: DispatchQueue.main)
-				.sink { [weak self] result in
-					self?.alliance = result
-			},
-			
-			characterImageSize.map {
-				esi.image.character(Int(characterID), size: $0)
-					.asResult()
-					.receive(on: DispatchQueue.main)
-					.sink { [weak self] result in
-						self?.characterImage = result
-				}
-			},
-			corporationImageSize.map { imageSize in
-				$character.compactMap{$0}
-					.tryGet()
-					.flatMap{esi.image.corporation($0.corporationID, size: imageSize)}
-					.asResult()
-					.receive(on: DispatchQueue.main)
-					.sink { [weak self] result in
-						self?.corporationImage = result
-				}
-			},
-			allianceImageSize.map { imageSize in
-				$corporation.compactMap{$0}
-					.tryGet()
-					.compactMap{$0.allianceID}
-					.flatMap{esi.image.alliance($0, size: imageSize)}
-					.asResult()
-					.receive(on: DispatchQueue.main)
-					.sink { [weak self] result in
-						self?.allianceImage = result
-				}
-			},
-			].compactMap{$0}
-	}
+                .flatMap{esi.image.alliance($0, size: imageSize)}
+                .asResult()
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] result in
+                    self?.allianceImage = result
+            }
+        }?.store(in: &subscriptions)
+    }
+	
+    private var subscriptions: [AnyCancellable] = []
 }

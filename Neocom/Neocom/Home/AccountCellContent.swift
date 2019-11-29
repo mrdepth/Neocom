@@ -38,7 +38,6 @@ struct AccountCellContent: View {
                 VStack(alignment: .leading, spacing: 0) {
                     (character?.name).map{Text($0)}.font(.title)
                     HStack {
-//                        corporation?.image?.resizable().frame(width: 24, height: 24)
                         (corporation?.name).map{Text($0)}
                         (alliance?.name).map{ name in
                             Group{
@@ -54,42 +53,31 @@ struct AccountCellContent: View {
             HStack(alignment: .top, spacing: 15) {
                 HStack {
                     VStack(alignment: .trailing) {
-                        if sp != nil {
-                            Text("SP:")
-                        }
-                        if isk != nil {
-                            Text("ISK:")
-                        }
+                        Text("SP:")
+                        Text("ISK:")
                     }.foregroundColor(.skyBlue)
                     VStack(alignment: .leading) {
-                        sp.map{Text(UnitFormatter.localizedString(from: $0, unit: .none, style: .short))}
-                        isk.map{Text(UnitFormatter.localizedString(from: $0, unit: .none, style: .short))}
+                        Text(sp.map{UnitFormatter.localizedString(from: $0, unit: .none, style: .short)} ?? "")
+                        Text(isk.map{UnitFormatter.localizedString(from: $0, unit: .none, style: .short)} ?? "")
                     }
                 }.frame(minWidth: 64)
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {
-                        ship.map{Text($0)}
-                        location.map{Text($0)}.foregroundColor(.secondary)
+                        Text(ship ?? "")
+                        Text(location ?? "").foregroundColor(.secondary)
                     }
                     HStack{
-                        skill.map { skill in
-                            Group {
-                                Text(skill.name + " ") + Text(String(roman: skill.level)).foregroundColor(.skyBlue)
-                                Spacer()
-                                Text(TimeIntervalFormatter.localizedString(from: skill.trainingTime, precision: .minutes))
-                            }
-                        }
+                        Text(skill.map{skill in "\(skill.name) \(String(roman: skill.level))"} ?? " ")
+                        Spacer()
+                        Text(skill.map{skill in TimeIntervalFormatter.localizedString(from: skill.trainingTime, precision: .minutes)} ?? " ")
                     }.padding(.horizontal).background(ProgressView(progress: 0.5).accentColor(Color(.systemGray2)))
-                    skillQueue.map{
-                        $0 > 0 ? Text("\($0) skills in queue") : Text("Skill queue is empty")
-                    }
+                    Text(skillQueue.map{$0 > 0 ? "\($0) skills in queue" : "Skill queue is empty"} ?? "")
                 }
                 Spacer(minLength: 0)
             }
         }
             .font(.subheadline)
             .lineLimit(1)
-//        .padding()
     }
 }
 

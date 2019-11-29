@@ -11,28 +11,31 @@ import EVEAPI
 
 class A: ObservableObject {
     @Published var t: String
-    init(_ s: String) {
-        t = s
+    init() {
+        t = Date().description
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.t = Date().description
+        }
     }
 }
 
 struct Nested: View {
-//    @Environment(\.esi) var esi
+    var b: Bool
+    @Environment(\.account) var account
+    @ObservedObject var a: A = A()
     
     var body: some View {
-//        print(esi)
-        print("Hi")
-        return Text("")
+        Text(a.t)
     }
 }
 
 struct ContentView: View {
-    @ObservedObject var a: A = A("a")
-    @State var esi: ESI = ESI()
-	@Environment(\.managedObjectContext) var managedObjectContext
+    @State var b = false
+    @ObservedObject var a: A = A()
     var body: some View {
+        
         NavigationView {
-            TypeCategories()
+            Home()
         }
     }
 }

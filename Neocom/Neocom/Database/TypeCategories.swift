@@ -23,19 +23,19 @@ struct TypeCategories: View {
     }
     
     var body: some View {
-        TypesSearch { searchResults in
-            List {
-                if searchResults == nil {
-                    FetchedResultsView(self.categories()) { categories in
+        FetchedResultsView(self.categories()) { categories in
+            TypesSearch { searchResults in
+                List {
+                    if searchResults == nil {
                         TypeCategoriesContent(categories: categories)
                     }
-                }
-                else {
-                    TypesContent(types: searchResults!)
-                }
-            }.listStyle(GroupedListStyle())
-                .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
-        }.navigationBarTitle("Categories")
+                    else {
+                        TypesContent(types: searchResults!)
+                    }
+                }.listStyle(GroupedListStyle())
+                    .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
+            }.navigationBarTitle("Categories")
+        }
     }
 }
 

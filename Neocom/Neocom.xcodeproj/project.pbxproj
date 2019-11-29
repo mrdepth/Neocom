@@ -25,6 +25,10 @@
 		12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F322384676F0061313D /* Storage.xcdatamodeld */; };
 		12F06F6923846C890061313D /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F6823846C890061313D /* Storage.swift */; };
 		12F06F6B23846D670061313D /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F6A23846D670061313D /* Main.swift */; };
+		1632472A2390FF5B00227480 /* HomeLoginHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163247292390FF5B00227480 /* HomeLoginHeader.swift */; };
+		1632472D239145FA00227480 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1632472C239145FA00227480 /* Cache.swift */; };
+		1632472F2391496500227480 /* Lazy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1632472E2391496500227480 /* Lazy.swift */; };
+		16324731239159A200227480 /* AccountInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16324730239159A200227480 /* AccountInfo.swift */; };
 		16674BE7238BB7FE00E6E547 /* Accounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16674BE6238BB7FE00E6E547 /* Accounts.swift */; };
 		16674BE9238BB80900E6E547 /* AccountCellContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16674BE8238BB80900E6E547 /* AccountCellContent.swift */; };
 		16674BEC238BB97400E6E547 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16674BEB238BB97400E6E547 /* ProgressView.swift */; };
@@ -104,6 +108,10 @@
 		12F06F3F238469C10061313D /* SDE.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDE.sqlite; sourceTree = SOURCE_ROOT; };
 		12F06F6823846C890061313D /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		12F06F6A23846D670061313D /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
+		163247292390FF5B00227480 /* HomeLoginHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeLoginHeader.swift; sourceTree = "<group>"; };
+		1632472C239145FA00227480 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		1632472E2391496500227480 /* Lazy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lazy.swift; sourceTree = "<group>"; };
+		16324730239159A200227480 /* AccountInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfo.swift; sourceTree = "<group>"; };
 		16674BE6238BB7FE00E6E547 /* Accounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accounts.swift; sourceTree = "<group>"; };
 		16674BE8238BB80900E6E547 /* AccountCellContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCellContent.swift; sourceTree = "<group>"; };
 		16674BEB238BB97400E6E547 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
@@ -163,6 +171,7 @@
 			children = (
 				16D8DC81238813A40057A6F4 /* DataLoader.swift */,
 				120E28EF238B12A1006B30EA /* CharacterInfo.swift */,
+				16324730239159A200227480 /* AccountInfo.swift */,
 			);
 			path = DataLoaders;
 			sourceTree = "<group>";
@@ -173,6 +182,7 @@
 				12AE040E23847EC600DEFFC5 /* Home.swift */,
 				169672D62387EA2F00EB860B /* HomeHeader.swift */,
 				12AE041023847EDE00DEFFC5 /* HomeAccountHeader.swift */,
+				163247292390FF5B00227480 /* HomeLoginHeader.swift */,
 				16674BE6238BB7FE00E6E547 /* Accounts.swift */,
 				16674BE8238BB80900E6E547 /* AccountCellContent.swift */,
 				16E3DBF4238BFACC005F5AAE /* AccountCell.swift */,
@@ -242,6 +252,8 @@
 				169A91A4238D1D81004E3DAA /* ESI+Extensions.swift */,
 				16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */,
 				16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */,
+				1632472C239145FA00227480 /* Cache.swift */,
+				1632472E2391496500227480 /* Lazy.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -404,6 +416,7 @@
 				169A91A3238D1D38004E3DAA /* Config.swift in Sources */,
 				1696F689238FD0E6009F03F3 /* CategoryCell.swift in Sources */,
 				169672D72387EA2F00EB860B /* HomeHeader.swift in Sources */,
+				1632472D239145FA00227480 /* Cache.swift in Sources */,
 				120E28F0238B12A1006B30EA /* CharacterInfo.swift in Sources */,
 				12F06F13238464920061313D /* AppDelegate.swift in Sources */,
 				1696F687238FCF88009F03F3 /* GroupCell.swift in Sources */,
@@ -417,10 +430,13 @@
 				169891A3238E53D600FBA0B3 /* TypeCell.swift in Sources */,
 				169A72CF238BE05600E4C181 /* String+Extensions.swift in Sources */,
 				16674BE9238BB80900E6E547 /* AccountCellContent.swift in Sources */,
+				16324731239159A200227480 /* AccountInfo.swift in Sources */,
 				16DFF831238D3A4F004C1185 /* SearchField.swift in Sources */,
 				12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */,
 				16AE40F1238FDAD000C6E25B /* ModuleTypeCell.swift in Sources */,
+				1632472F2391496500227480 /* Lazy.swift in Sources */,
 				169672D92387EA3F00EB860B /* EnvironmentValues.swift in Sources */,
+				1632472A2390FF5B00227480 /* HomeLoginHeader.swift in Sources */,
 				12F06F6923846C890061313D /* Storage.swift in Sources */,
 				12F06F15238464920061313D /* SceneDelegate.swift in Sources */,
 				16674BEC238BB97400E6E547 /* ProgressView.swift in Sources */,

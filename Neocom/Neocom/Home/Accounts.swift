@@ -16,26 +16,44 @@ struct Accounts: View {
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.characterName, ascending: true)])
     var accounts: FetchedResults<Account>
     
+    @State var cache = Cache<Account, AccountInfo>()
+    
+    private func info(for account: Account) -> AccountInfo {
+        cache[account, default: AccountInfo(esi: account.oAuth2Token.map{ESI(token: $0)} ?? ESI(),
+                                                 characterID: account.characterID,
+                                                 managedObjectContext: managedObjectContext,
+                                                 characterImageSize: .size256)]
+    }
+    
     var body: some View {
-        NavigationView {
-            List {
-                Button("Add new account") {
-                    
-                }
-                Section {
-                    ForEach(accounts, id: \Account.objectID) { account in
-                        AccountCell(account: account, esi: account.oAuth2Token.map{ESI(token: $0)} ?? ESI())
+        List {
+            Button("Add new account") {
+                _ = Account(token: oAuth2Token, context: self.managedObjectContext)
+                try? self.managedObjectContext.save()
+            }.frame(maxWidth: .infinity)
+            Section {
+                ForEach(accounts, id: \Account.objectID) { account in
+                    AccountCell(accountInfo: self.info(for: account))
+                }.onDelete { (indices) in
+                    withAnimation {
+                        indices.forEach { i in
+                            self.managedObjectContext.delete(self.accounts[i])
+                        }
+                        try? self.managedObjectContext.save()
                     }
                 }
             }
-            .listStyle(GroupedListStyle())
-            .navigationBarTitle("Accounts")
         }
+        .listStyle(GroupedListStyle())
+        .navigationBarTitle("Accounts")
+        .navigationBarItems(trailing: EditButton())
     }
 }
 
 struct Accounts_Previews: PreviewProvider {
     static var previews: some View {
-        Accounts().environment(\.managedObjectContext, AppDelegate.sharedDelegate.testingContainer.viewContext)
+        NavigationView {
+            Accounts().environment(\.managedObjectContext, AppDelegate.sharedDelegate.testingContainer.viewContext)
+        }
     }
 }

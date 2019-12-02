@@ -23,7 +23,7 @@ struct CategoryCell: View {
 struct CategoryCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            CategoryCell(category: (try! AppDelegate.sharedDelegate.storageContainer.viewContext.from(SDEInvCategory.self).first())!)
+            CategoryCell(category: (try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvCategory.self).first())!)
         }.listStyle(GroupedListStyle())
     }
 }

@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import EVEAPI
+import Expressible
 @_exported import UIKit
 
 //1554561480
@@ -20,15 +21,14 @@ let oAuth2Token = try! JSONDecoder().decode(OAuth2Token.self, from: "{\"scopes\"
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		ValueTransformer.setValueTransformer(ImageValueTransformer(), forName: NSValueTransformerName("ImageValueTransformer"))
-		
 		// Override point for customization after application launch.
+        NotificationCenter.default.addObserver(self, selector: #selector(didRefreshToken(_:)), name: ESI.didRefreshTokenNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didInvalidateToken(_:)), name: ESI.didInvalidateTokenNotification, object: nil)
 		return true
 	}
-
+    
 	// MARK: UISceneSession Lifecycle
 
 	func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return NSManagedObjectModel(byMerging: [storageModel, sdeModel])!
     }
 
-    lazy var storageContainer: NSPersistentCloudKitContainer = {
+    lazy var persistentContainer: NSPersistentCloudKitContainer = {
         
         let container = NSPersistentCloudKitContainer(name: "Neocom", managedObjectModel: managedObjectModel)
         let sde = NSPersistentStoreDescription(url: Bundle.main.url(forResource: "SDE", withExtension: "sqlite")!)
@@ -67,6 +67,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return container
     }()
+    
+    func saveContext () {
+        let context = persistentContainer.viewContext
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                #if DEBUG
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                #endif
+            }
+        }
+    }
     
     #if DEBUG
     lazy var testingContainer: NSPersistentContainer = {
@@ -98,3 +114,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     #endif
 }
 
+
+extension AppDelegate {
+    @objc func didRefreshToken(_ note: Notification) {
+        guard let token = note.userInfo?[ESI.tokenUserInfoKey] as? OAuth2Token else {return}
+        DispatchQueue.main.async {
+            guard let accounts = try? self.persistentContainer.viewContext.from(Account.self).filter(\Account.refreshToken == token.refreshToken).fetch() else {return}
+            accounts.forEach{$0.oAuth2Token = token}
+        }
+    }
+
+    @objc func didInvalidateToken(_ note: Notification) {
+//        guard let token = note.userInfo?[ESI.tokenUserInfoKey] as? OAuth2Token else {return}
+    }
+
+    
+}

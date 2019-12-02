@@ -29,7 +29,9 @@ struct Accounts: View {
         List {
             Button("Add new account") {
                 _ = Account(token: oAuth2Token, context: self.managedObjectContext)
-                try? self.managedObjectContext.save()
+                if self.managedObjectContext.hasChanges {
+                    try? self.managedObjectContext.save()
+                }
             }.frame(maxWidth: .infinity)
             Section {
                 ForEach(accounts, id: \Account.objectID) { account in
@@ -39,7 +41,9 @@ struct Accounts: View {
                         indices.forEach { i in
                             self.managedObjectContext.delete(self.accounts[i])
                         }
-                        try? self.managedObjectContext.save()
+                        if self.managedObjectContext.hasChanges {
+                            try? self.managedObjectContext.save()
+                        }
                     }
                 }
             }

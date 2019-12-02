@@ -14,10 +14,10 @@ import Combine
 import CoreData
 
 class AccountInfo: ObservableObject {
-    @Published var skillQueue: Result<[ESI.Characters.CharacterID.Skillqueue.Success], AFError>?
-    @Published var ship: Result<ESI.Characters.CharacterID.Ship.Success, AFError>?
+    @Published var skillQueue: Result<[ESI.SkillQueueItem], AFError>?
+    @Published var ship: Result<ESI.Ship, AFError>?
     @Published var location: Result<SDEMapSolarSystem, AFError>?
-    @Published var totalSP: Result<Int64, AFError>?
+    @Published var skills: Result<ESI.CharacterSkills, AFError>?
     @Published var balance: Result<Double, AFError>?
 
     let characterInfo: CharacterInfo
@@ -34,31 +34,30 @@ class AccountInfo: ObservableObject {
         
         character.ship().get()
             .asResult()
-            .receive(on: DispatchQueue.main)
+            .receive(on: RunLoop.main)
             .sink { [weak self] result in
                 self?.ship = result
         }.store(in: &subscriptions)
 
         character.skills().get()
-            .map{$0.totalSP}
             .asResult()
-            .receive(on: DispatchQueue.main)
+            .receive(on: RunLoop.main)
             .sink { [weak self] result in
-                self?.totalSP = result
+                self?.skills = result
         }.store(in: &subscriptions)
         
         character.wallet().get()
             .asResult()
-            .receive(on: DispatchQueue.main)
+            .receive(on: RunLoop.main)
             .sink { [weak self] result in
                 self?.balance = result
         }.store(in: &subscriptions)
 
-        character.location().get().receive(on: DispatchQueue.main).compactMap { location in
+        character.location().get().receive(on: RunLoop.main).compactMap { location in
             try? managedObjectContext.from(SDEMapSolarSystem.self).filter(\SDEMapSolarSystem.solarSystemID == Int32(location.solarSystemID)).first()
         }
         .asResult()
-        .receive(on: DispatchQueue.main)
+        .receive(on: RunLoop.main)
         .sink { [weak self] result in
             self?.location = result
         }.store(in: &subscriptions)
@@ -66,12 +65,11 @@ class AccountInfo: ObservableObject {
         character.skillqueue().get()
             .map{$0.filter{$0.finishDate.map{$0 > Date()} == true}}
             .asResult()
-            .receive(on: DispatchQueue.main)
+            .receive(on: RunLoop.main)
             .sink { [weak self] result in
                 self?.skillQueue = result
         }.store(in: &subscriptions)
-
     }
     
-    private var subscriptions: [AnyCancellable] = []
+    private var subscriptions = Set<AnyCancellable>()
 }

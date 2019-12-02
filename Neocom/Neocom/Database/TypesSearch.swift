@@ -40,7 +40,7 @@ struct TypesSearch<Content: View>: View {
                 }
                 
             }
-        }.receive(on: DispatchQueue.main).map { controller in
+        }.receive(on: RunLoop.main).map { controller in
             controller?.sections.map{ section in
                 FetchedResultsController<SDEInvType>.Section(name: section.name,
                                                              objects: section.objects
@@ -62,7 +62,7 @@ struct TypesSearch_Previews: PreviewProvider {
         TypesSearch { results in
             EmptyView()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.storageContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, (UIApplication.shared.delegate as! AppDelegate).storageContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, (UIApplication.shared.delegate as! AppDelegate).persistentContainer.newBackgroundContext())
     }
 }

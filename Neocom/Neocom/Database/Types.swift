@@ -58,7 +58,7 @@ struct TypesContent: View {
 struct Types_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            Types(predicate: \SDEInvType.group == (try! AppDelegate.sharedDelegate.storageContainer.viewContext.from(SDEInvType.self).filter(\SDEInvType.typeID == 645).first()?.group))
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.storageContainer.viewContext)
+            Types(predicate: \SDEInvType.group == (try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(\SDEInvType.typeID == 645).first()?.group))
+        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

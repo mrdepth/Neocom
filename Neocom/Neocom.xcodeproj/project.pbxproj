@@ -33,6 +33,10 @@
 		16674BE9238BB80900E6E547 /* AccountCellContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16674BE8238BB80900E6E547 /* AccountCellContent.swift */; };
 		16674BEC238BB97400E6E547 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16674BEB238BB97400E6E547 /* ProgressView.swift */; };
 		16674BF0238BC6F300E6E547 /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16674BEF238BC6F300E6E547 /* UnitFormatter.swift */; };
+		1686D74C23953C5600E88D3D /* SDE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D74B23953C5600E88D3D /* SDE.swift */; };
+		1686D74F23953C9A00E88D3D /* Pilot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D74E23953C9A00E88D3D /* Pilot.swift */; };
+		1686D7512395460F00E88D3D /* TrainingQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D7502395460F00E88D3D /* TrainingQueue.swift */; };
+		1686D75323955C2400E88D3D /* TypeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D75223955C2400E88D3D /* TypeInfo.swift */; };
 		169672D72387EA2F00EB860B /* HomeHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169672D62387EA2F00EB860B /* HomeHeader.swift */; };
 		169672D92387EA3F00EB860B /* EnvironmentValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169672D82387EA3F00EB860B /* EnvironmentValues.swift */; };
 		169672DB2387ECCD00EB860B /* EVEAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 169672DA2387ECCD00EB860B /* EVEAPI.framework */; };
@@ -116,6 +120,10 @@
 		16674BE8238BB80900E6E547 /* AccountCellContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCellContent.swift; sourceTree = "<group>"; };
 		16674BEB238BB97400E6E547 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		16674BEF238BC6F300E6E547 /* UnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitFormatter.swift; sourceTree = "<group>"; };
+		1686D74B23953C5600E88D3D /* SDE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDE.swift; sourceTree = "<group>"; };
+		1686D74E23953C9A00E88D3D /* Pilot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pilot.swift; sourceTree = "<group>"; };
+		1686D7502395460F00E88D3D /* TrainingQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingQueue.swift; sourceTree = "<group>"; };
+		1686D75223955C2400E88D3D /* TypeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfo.swift; sourceTree = "<group>"; };
 		169672D62387EA2F00EB860B /* HomeHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeader.swift; sourceTree = "<group>"; };
 		169672D82387EA3F00EB860B /* EnvironmentValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EnvironmentValues.swift; path = Neocom/Home/EnvironmentValues.swift; sourceTree = SOURCE_ROOT; };
 		169672DA2387ECCD00EB860B /* EVEAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EVEAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -242,6 +250,7 @@
 			children = (
 				120E28EE238B1293006B30EA /* DataLoaders */,
 				16674BEA238BB96400E6E547 /* Views */,
+				1686D74D23953C9200E88D3D /* Pilot */,
 				169672D82387EA3F00EB860B /* EnvironmentValues.swift */,
 				16D8DC7F238808870057A6F4 /* Combine.swift */,
 				169A72C8238BD9AA00E4C181 /* Colors.swift */,
@@ -266,6 +275,7 @@
 				12F06F3F238469C10061313D /* SDE.sqlite */,
 				12F06F3E238469C10061313D /* SDEVersion.swift */,
 				12F06F6823846C890061313D /* Storage.swift */,
+				1686D74B23953C5600E88D3D /* SDE.swift */,
 				124F06E2238D897E00395D54 /* ImageValueTransformer.swift */,
 			);
 			path = Model;
@@ -297,6 +307,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		1686D74D23953C9200E88D3D /* Pilot */ = {
+			isa = PBXGroup;
+			children = (
+				1686D74E23953C9A00E88D3D /* Pilot.swift */,
+				1686D7502395460F00E88D3D /* TrainingQueue.swift */,
+			);
+			path = Pilot;
+			sourceTree = "<group>";
+		};
 		16AE40F8239004E900C6E25B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -318,6 +337,7 @@
 				124F06E8238D908A00395D54 /* TypeGroups.swift */,
 				169891A0238E50AC00FBA0B3 /* Types.swift */,
 				1696F682238FA7F5009F03F3 /* TypesSearch.swift */,
+				1686D75223955C2400E88D3D /* TypeInfo.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -412,6 +432,7 @@
 				12F06F40238469C10061313D /* SDEVersion.swift in Sources */,
 				16D8DC82238813A40057A6F4 /* DataLoader.swift in Sources */,
 				16DFF833238D4C02004C1185 /* UIKit+Extensions.swift in Sources */,
+				1686D74C23953C5600E88D3D /* SDE.swift in Sources */,
 				16E3DBF3238BF944005F5AAE /* Avatar.swift in Sources */,
 				169A91A3238D1D38004E3DAA /* Config.swift in Sources */,
 				1696F689238FD0E6009F03F3 /* CategoryCell.swift in Sources */,
@@ -439,12 +460,15 @@
 				1632472A2390FF5B00227480 /* HomeLoginHeader.swift in Sources */,
 				12F06F6923846C890061313D /* Storage.swift in Sources */,
 				12F06F15238464920061313D /* SceneDelegate.swift in Sources */,
+				1686D74F23953C9A00E88D3D /* Pilot.swift in Sources */,
 				16674BEC238BB97400E6E547 /* ProgressView.swift in Sources */,
 				12F06F17238464920061313D /* ContentView.swift in Sources */,
+				1686D75323955C2400E88D3D /* TypeInfo.swift in Sources */,
 				16674BF0238BC6F300E6E547 /* UnitFormatter.swift in Sources */,
 				16E3DBF5238BFACC005F5AAE /* AccountCell.swift in Sources */,
 				16D8DC80238808870057A6F4 /* Combine.swift in Sources */,
 				169A72D3238BE10700E4C181 /* Math.swift in Sources */,
+				1686D7512395460F00E88D3D /* TrainingQueue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

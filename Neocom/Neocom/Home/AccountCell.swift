@@ -23,7 +23,7 @@ struct AccountCell: View {
                            alliance: (accountInfo.characterInfo.alliance?.value).map{AccountCellContent.Subject(name: $0.name, image: (accountInfo.characterInfo.allianceImage?.value).map{Image(uiImage: $0)})},
                            ship: accountInfo.ship?.value?.shipName,
                            location: (accountInfo.location?.value).map{"\($0.solarSystemName ?? "") / \($0.constellation?.region?.regionName ?? "")"},
-                           sp: accountInfo.totalSP?.value,
+                           sp: accountInfo.skills?.value?.totalSP,
                            isk: accountInfo.balance?.value,
                            skill: nil,
                            skillQueue: accountInfo.skillQueue?.value?.count)

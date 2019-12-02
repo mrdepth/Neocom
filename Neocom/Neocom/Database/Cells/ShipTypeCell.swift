@@ -40,7 +40,7 @@ struct ShipTypeCell: View {
 struct ShipTypeCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            ShipTypeCell(ship: (try! AppDelegate.sharedDelegate.storageContainer.viewContext.fetch(SDEInvType.dominix()).first?.dgmppItem?.shipResources)!)
+            ShipTypeCell(ship: (try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first?.dgmppItem?.shipResources)!)
         }.listStyle(GroupedListStyle())
     }
 }

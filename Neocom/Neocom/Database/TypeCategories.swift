@@ -59,8 +59,8 @@ struct TypeCategories_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             TypeCategories()
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.storageContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, (UIApplication.shared.delegate as! AppDelegate).storageContainer.newBackgroundContext())
+        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.backgroundManagedObjectContext, (UIApplication.shared.delegate as! AppDelegate).persistentContainer.newBackgroundContext())
     }
 }
 

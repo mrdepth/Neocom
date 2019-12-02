@@ -59,7 +59,7 @@ struct TypeGroupsContent: View {
 struct TypeGroups_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            TypeGroups(category: try! AppDelegate.sharedDelegate.storageContainer.viewContext.from(SDEInvCategory.self).first()!)
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.storageContainer.viewContext)
+            TypeGroups(category: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvCategory.self).first()!)
+        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

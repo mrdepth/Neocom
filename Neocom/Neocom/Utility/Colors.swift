@@ -30,5 +30,11 @@ extension Color {
     static var thermalDamage: Color {
         return Color("thermalDamage")
     }
+    
+}
 
+extension UIColor {
+    static var descriptionLabel: UIColor {
+        UIColor(named: "descriptionLabel")!
+    }
 }

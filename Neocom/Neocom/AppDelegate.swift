@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import EVEAPI
 import Expressible
+import Combine
 @_exported import UIKit
 
 //1554561480

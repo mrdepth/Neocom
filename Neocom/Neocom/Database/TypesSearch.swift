@@ -32,7 +32,7 @@ struct TypesSearch<Content: View>: View {
                     let controller = request.sort(by: \SDEInvType.metaGroup?.metaGroupID, ascending: true)
                         .sort(by: \SDEInvType.metaLevel, ascending: true)
                         .sort(by: \SDEInvType.typeName, ascending: true)
-                        .select([Self.as(NSManagedObjectID.self, name: "objectID"), (\SDEInvType.metaGroup?.metaGroupName).as(String.self, name: "metaGroupName")])
+                        .select([_self.as(NSManagedObjectID.self, name: "objectID"), (\SDEInvType.metaGroup?.metaGroupName).as(String.self, name: "metaGroupName")])
                         .fetchedResultsController(sectionName: (\SDEInvType.metaGroup?.metaGroupName).as(String.self, name: "metaGroupName"))
                     
                     try? controller.performFetch()

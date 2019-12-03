@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension String {
     private static let roman = ["0","I","II","III","IV","V"]
@@ -18,5 +19,36 @@ extension String {
         else {
             self = "\(number)"
         }
+    }
+}
+
+extension NSAttributedString.Key {
+    static let fontDescriptorSymbolicTraits = NSAttributedString.Key("UIFontDescriptorSymbolicTraits")
+    static let colorName = NSAttributedString.Key("ColorName")
+    static let recipientID = NSAttributedString.Key("RecipientID")
+}
+
+extension NSAttributedString {
+    func extract(with font: UIFont, color: UIColor) -> NSAttributedString {
+        let result = NSMutableAttributedString(string: string)
+        
+        enumerateAttributes(in: NSMakeRange(0, length), options: []) { (attributes, range, _) in
+            var font = font
+            var color = color
+            for (key, value) in attributes {
+                switch key {
+                case .colorName:
+                    guard let name = value as? String, let newColor = UIColor(named: name) else {break}
+                    color = newColor
+                case .fontDescriptorSymbolicTraits:
+                    guard let traits = value as? UInt32, let fontDescriptor = font.fontDescriptor.withSymbolicTraits(UIFontDescriptor.SymbolicTraits(rawValue: traits)) else {break}
+                    font = UIFont(descriptor: fontDescriptor, size: font.pointSize)
+                default:
+                    result.addAttribute(key, value: value, range: range)
+                }
+            }
+            result.addAttributes([.font: font, .foregroundColor: color], range: range)
+        }
+        return result
     }
 }

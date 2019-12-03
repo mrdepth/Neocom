@@ -29,10 +29,14 @@
 		1632472D239145FA00227480 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1632472C239145FA00227480 /* Cache.swift */; };
 		1632472F2391496500227480 /* Lazy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1632472E2391496500227480 /* Lazy.swift */; };
 		16324731239159A200227480 /* AccountInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16324730239159A200227480 /* AccountInfo.swift */; };
+		1655DE752396888200973258 /* TypeInfoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1655DE742396888200973258 /* TypeInfoData.swift */; };
+		1655DE7B23969BA900973258 /* TypeInfoAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1655DE7A23969BA900973258 /* TypeInfoAttributeCell.swift */; };
 		16674BE7238BB7FE00E6E547 /* Accounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16674BE6238BB7FE00E6E547 /* Accounts.swift */; };
 		16674BE9238BB80900E6E547 /* AccountCellContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16674BE8238BB80900E6E547 /* AccountCellContent.swift */; };
 		16674BEC238BB97400E6E547 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16674BEB238BB97400E6E547 /* ProgressView.swift */; };
 		16674BF0238BC6F300E6E547 /* UnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16674BEF238BC6F300E6E547 /* UnitFormatter.swift */; };
+		166EE98B23962F2500388D65 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166EE98A23962F2500388D65 /* AttributedText.swift */; };
+		166EE98F2396311200388D65 /* TypeInfoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166EE98E2396311200388D65 /* TypeInfoHeader.swift */; };
 		1686D74C23953C5600E88D3D /* SDE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D74B23953C5600E88D3D /* SDE.swift */; };
 		1686D74F23953C9A00E88D3D /* Pilot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D74E23953C9A00E88D3D /* Pilot.swift */; };
 		1686D7512395460F00E88D3D /* TrainingQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D7502395460F00E88D3D /* TrainingQueue.swift */; };
@@ -116,10 +120,14 @@
 		1632472C239145FA00227480 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		1632472E2391496500227480 /* Lazy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lazy.swift; sourceTree = "<group>"; };
 		16324730239159A200227480 /* AccountInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfo.swift; sourceTree = "<group>"; };
+		1655DE742396888200973258 /* TypeInfoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoData.swift; sourceTree = "<group>"; };
+		1655DE7A23969BA900973258 /* TypeInfoAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoAttributeCell.swift; sourceTree = "<group>"; };
 		16674BE6238BB7FE00E6E547 /* Accounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accounts.swift; sourceTree = "<group>"; };
 		16674BE8238BB80900E6E547 /* AccountCellContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCellContent.swift; sourceTree = "<group>"; };
 		16674BEB238BB97400E6E547 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		16674BEF238BC6F300E6E547 /* UnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitFormatter.swift; sourceTree = "<group>"; };
+		166EE98A23962F2500388D65 /* AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
+		166EE98E2396311200388D65 /* TypeInfoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoHeader.swift; sourceTree = "<group>"; };
 		1686D74B23953C5600E88D3D /* SDE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDE.swift; sourceTree = "<group>"; };
 		1686D74E23953C9A00E88D3D /* Pilot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pilot.swift; sourceTree = "<group>"; };
 		1686D7502395460F00E88D3D /* TrainingQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingQueue.swift; sourceTree = "<group>"; };
@@ -180,6 +188,7 @@
 				16D8DC81238813A40057A6F4 /* DataLoader.swift */,
 				120E28EF238B12A1006B30EA /* CharacterInfo.swift */,
 				16324730239159A200227480 /* AccountInfo.swift */,
+				1655DE742396888200973258 /* TypeInfoData.swift */,
 			);
 			path = DataLoaders;
 			sourceTree = "<group>";
@@ -303,6 +312,7 @@
 				1698919E238E4BA500FBA0B3 /* FetchedResultsView.swift */,
 				169891B4238EAF4000FBA0B3 /* SearchView.swift */,
 				16AE40F4238FEFD500C6E25B /* DamageView.swift */,
+				166EE98A23962F2500388D65 /* AttributedText.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -325,6 +335,7 @@
 				169891AC238E557900FBA0B3 /* ShipTypeCell.swift */,
 				16AE40F0238FDAD000C6E25B /* ModuleTypeCell.swift */,
 				16AE40F2238FDDE600C6E25B /* ChargeTypeCell.swift */,
+				1655DE7A23969BA900973258 /* TypeInfoAttributeCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -338,6 +349,7 @@
 				169891A0238E50AC00FBA0B3 /* Types.swift */,
 				1696F682238FA7F5009F03F3 /* TypesSearch.swift */,
 				1686D75223955C2400E88D3D /* TypeInfo.swift */,
+				166EE98E2396311200388D65 /* TypeInfoHeader.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -429,6 +441,7 @@
 				1698919F238E4BA500FBA0B3 /* FetchedResultsView.swift in Sources */,
 				169A72D1238BE0EF00E4C181 /* TimeIntervalFormatter.swift in Sources */,
 				16674BE7238BB7FE00E6E547 /* Accounts.swift in Sources */,
+				1655DE752396888200973258 /* TypeInfoData.swift in Sources */,
 				12F06F40238469C10061313D /* SDEVersion.swift in Sources */,
 				16D8DC82238813A40057A6F4 /* DataLoader.swift in Sources */,
 				16DFF833238D4C02004C1185 /* UIKit+Extensions.swift in Sources */,
@@ -445,9 +458,12 @@
 				169A72C9238BD9AA00E4C181 /* Colors.swift in Sources */,
 				12AE041123847EDE00DEFFC5 /* HomeAccountHeader.swift in Sources */,
 				1696F683238FA7F5009F03F3 /* TypesSearch.swift in Sources */,
+				166EE98F2396311200388D65 /* TypeInfoHeader.swift in Sources */,
 				124F06E7238D8EB400395D54 /* Icon.swift in Sources */,
+				166EE98B23962F2500388D65 /* AttributedText.swift in Sources */,
 				16AE40F3238FDDE600C6E25B /* ChargeTypeCell.swift in Sources */,
 				16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */,
+				1655DE7B23969BA900973258 /* TypeInfoAttributeCell.swift in Sources */,
 				169891A3238E53D600FBA0B3 /* TypeCell.swift in Sources */,
 				169A72CF238BE05600E4C181 /* String+Extensions.swift in Sources */,
 				16674BE9238BB80900E6E547 /* AccountCellContent.swift in Sources */,

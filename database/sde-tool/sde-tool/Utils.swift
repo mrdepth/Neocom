@@ -200,6 +200,23 @@ enum NCDBRegionID: Int {
 	case whSpace = 11000000
 }
 
+//var allColors = Set<String>()
+let colorMap: [String: [NSAttributedString.Key: Any]] = [
+    "#ff3399cc": [.colorName: "primary"],
+    "0xFFFF0000": [.colorName: "security0.0"],
+    "0xFFE53300": [.colorName: "security0.1"],
+    "0xFFFF4D00": [.colorName: "security0.2"],
+    "0xFFFF6600": [.colorName: "security0.3"],
+    "0xFFE58000": [.colorName: "security0.4"],
+    "0xFF00FF00": [.colorName: "security0.7"],
+    "0xFF4DFFCC": [.colorName: "security0.9"],
+    "0xFF33FFFF": [.colorName: "security1.0"],
+    "0xff0099FF": [.colorName: "primary"],
+    "0xff00CC00": [.colorName: "primary"],
+    "white": [.colorName: "primary"],
+    "yellow": [.colorName: "primary"]
+]
+
 extension NSColor {
 	
 	public convenience init(number: UInt) {
@@ -216,6 +233,7 @@ extension NSColor {
 	}
 
 	public convenience init?(string: String) {
+//        allColors.insert(string)
 		let scanner = Scanner(string: string)
 		var rgba: UInt32 = 0
 		if scanner.scanHexInt32(&rgba) {
@@ -227,6 +245,11 @@ extension NSColor {
 			self.init(cgColor: color.cgColor)
 		}
 	}
+}
+
+extension NSAttributedString.Key {
+    static let fontDescriptorSymbolicTraits = NSAttributedString.Key("UIFontDescriptorSymbolicTraits")
+    static let colorName = NSAttributedString.Key("ColorName")
 }
 
 extension NSAttributedString {
@@ -252,7 +275,7 @@ extension NSAttributedString {
 		
 		for result in expression.matches(in: s.string, options: [], range: NSMakeRange(0, s.length)).reversed() {
 			let replace = s.attributedSubstring(from: result.range(at: 1)).mutableCopy() as! NSMutableAttributedString
-			replace.addAttribute(NSAttributedStringKey(rawValue: "UIFontDescriptorSymbolicTraits"), value: CTFontSymbolicTraits.boldTrait.rawValue, range: NSMakeRange(0, replace.length))
+            replace.addAttribute(.fontDescriptorSymbolicTraits, value: CTFontSymbolicTraits.boldTrait.rawValue, range: NSMakeRange(0, replace.length))
 			s.replaceCharacters(in: result.range(at: 0), with: replace)
 		}
 		
@@ -260,7 +283,7 @@ extension NSAttributedString {
 		
 		for result in expression.matches(in: s.string, options: [], range: NSMakeRange(0, s.length)).reversed() {
 			let replace = s.attributedSubstring(from: result.range(at: 1)).mutableCopy() as! NSMutableAttributedString
-			replace.addAttribute(NSAttributedStringKey(rawValue: "UIFontDescriptorSymbolicTraits"), value: CTFontSymbolicTraits.italicTrait.rawValue, range: NSMakeRange(0, replace.length))
+            replace.addAttribute(.fontDescriptorSymbolicTraits, value: CTFontSymbolicTraits.italicTrait.rawValue, range: NSMakeRange(0, replace.length))
 			s.replaceCharacters(in: result.range(at: 0), with: replace)
 		}
 		
@@ -272,14 +295,18 @@ extension NSAttributedString {
 			s.replaceCharacters(in: result.range(at: 0), with: replace)
 		}
 		
-		expression = try! NSRegularExpression(pattern: "<(color|font)[^>]*=[\"']?(.*?)[\"']?\\s*?>(.*?)</(color|font)>", options: [.caseInsensitive])
+		expression = try! NSRegularExpression(pattern: "<(font)?[^>]*color\\s*=[\"']?(.*?)[\"']?\\s*?>(.*?)<\\/(color|font)>", options: [.caseInsensitive])
 		
 		for result in expression.matches(in: s.string, options: [], range: NSMakeRange(0, s.length)).reversed() {
 			let key = s.attributedSubstring(from: result.range(at: 2)).string
 			let replace = s.attributedSubstring(from: result.range(at: 3)).mutableCopy() as! NSMutableAttributedString
-			if let color = NSColor(string: key) {
-				replace.addAttribute(NSAttributedStringKey.foregroundColor, value: color, range: NSMakeRange(0, replace.length))
+			if let attributes = colorMap[key] {
+                replace.addAttributes(attributes, range: NSMakeRange(0, replace.length))
+//				replace.addAttribute(NSAttributedStringKey.foregroundColor, value: color, range: NSMakeRange(0, replace.length))
 			}
+            else {
+                fatalError("Unknown color \(key)")
+            }
 			s.replaceCharacters(in: result.range(at: 0), with: replace)
 		}
 		

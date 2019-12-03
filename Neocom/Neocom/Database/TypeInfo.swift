@@ -9,14 +9,22 @@
 import SwiftUI
 
 struct TypeInfo: View {
+    
     var type: SDEInvType
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            Section {
+                TypeInfoHeader(type: type, renderImage: Image("dominix")).listRowInsets(EdgeInsets())
+            }
+        }.listStyle(GroupedListStyle()).navigationBarTitle("Info")
     }
 }
 
 struct TypeInfo_Previews: PreviewProvider {
     static var previews: some View {
-        TypeInfo(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!)
+        NavigationView {
+            TypeInfo(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!)
+        }
     }
 }
+

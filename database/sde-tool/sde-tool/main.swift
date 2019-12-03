@@ -493,6 +493,8 @@ do {
 	
 	operationQueue.waitUntilAllOperationsAreFinished()
 	
+//    print(allColors.sorted())
+    
 	print("Save...")
 	try mainContext.save()
 

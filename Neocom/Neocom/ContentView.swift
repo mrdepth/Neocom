@@ -9,6 +9,29 @@
 import SwiftUI
 import EVEAPI
 
+indirect enum E: Identifiable {
+    case a(String)
+    case b(String, [E])
+    
+    var id: String {
+        switch self {
+        case let .a(id):
+            return id
+        case let .b(id, _):
+            return id
+        }
+    }
+    
+    var children: [E]? {
+        switch self {
+        case let .b(_, children):
+            return children
+        default:
+            return nil
+        }
+    }
+}
+
 class A: ObservableObject {
     @Published var t: String
     init() {
@@ -32,6 +55,20 @@ struct Nested: View {
 struct ContentView: View {
     @State var b = false
     @ObservedObject var a: A = A()
+    
+    
+    func rows(e: E) -> some View {
+        let v = Group {
+            Text(e.id)
+            e.children.map { a in
+                ForEach(a) {
+                    self.rows(e: $0)
+                }
+            }
+        }
+        return AnyView(v)
+    }
+    
     var body: some View {
         
         NavigationView {

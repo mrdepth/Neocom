@@ -67,10 +67,16 @@ struct AccountCellContent: View {
                         Text(location ?? "").foregroundColor(.secondary)
                     }
                     HStack{
-                        Text(skill.map{skill in "\(skill.name) \(String(roman: skill.level))"} ?? " ")
+                        if skill != nil {
+                            SkillName(name: skill!.name, level: skill!.level)
+                        }
+                        else {
+                            Text("")
+                        }
                         Spacer()
                         Text(skill.map{skill in TimeIntervalFormatter.localizedString(from: skill.trainingTime, precision: .minutes)} ?? " ")
-                    }.padding(.horizontal).background(ProgressView(progress: 0.5).accentColor(Color(.systemGray2)))
+                    }.padding(.horizontal).background(ProgressView(progress: 0.5).accentColor(Color(.systemGray2))
+                    )
                     Text(skillQueue.map{$0 > 0 ? "\($0) skills in queue" : "Skill queue is empty"} ?? "")
                 }
                 Spacer(minLength: 0)

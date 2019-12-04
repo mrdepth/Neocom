@@ -29,6 +29,7 @@
 		1632472D239145FA00227480 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1632472C239145FA00227480 /* Cache.swift */; };
 		1632472F2391496500227480 /* Lazy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1632472E2391496500227480 /* Lazy.swift */; };
 		16324731239159A200227480 /* AccountInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16324730239159A200227480 /* AccountInfo.swift */; };
+		164156172397E68A0063A39C /* TypeInfoSkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164156162397E68A0063A39C /* TypeInfoSkillCell.swift */; };
 		1655DE752396888200973258 /* TypeInfoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1655DE742396888200973258 /* TypeInfoData.swift */; };
 		1655DE7B23969BA900973258 /* TypeInfoAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1655DE7A23969BA900973258 /* TypeInfoAttributeCell.swift */; };
 		16674BE7238BB7FE00E6E547 /* Accounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16674BE6238BB7FE00E6E547 /* Accounts.swift */; };
@@ -76,6 +77,7 @@
 		16DFF833238D4C02004C1185 /* UIKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */; };
 		16E3DBF3238BF944005F5AAE /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBF2238BF944005F5AAE /* Avatar.swift */; };
 		16E3DBF5238BFACC005F5AAE /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBF4238BFACC005F5AAE /* AccountCell.swift */; };
+		16EEBDF52397E4DE00F2E216 /* SkillName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16EEBDF42397E4DE00F2E216 /* SkillName.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -120,6 +122,7 @@
 		1632472C239145FA00227480 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		1632472E2391496500227480 /* Lazy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lazy.swift; sourceTree = "<group>"; };
 		16324730239159A200227480 /* AccountInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfo.swift; sourceTree = "<group>"; };
+		164156162397E68A0063A39C /* TypeInfoSkillCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoSkillCell.swift; sourceTree = "<group>"; };
 		1655DE742396888200973258 /* TypeInfoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoData.swift; sourceTree = "<group>"; };
 		1655DE7A23969BA900973258 /* TypeInfoAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoAttributeCell.swift; sourceTree = "<group>"; };
 		16674BE6238BB7FE00E6E547 /* Accounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accounts.swift; sourceTree = "<group>"; };
@@ -165,6 +168,7 @@
 		16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Extensions.swift"; sourceTree = "<group>"; };
 		16E3DBF2238BF944005F5AAE /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		16E3DBF4238BFACC005F5AAE /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
+		16EEBDF42397E4DE00F2E216 /* SkillName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillName.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -313,6 +317,7 @@
 				169891B4238EAF4000FBA0B3 /* SearchView.swift */,
 				16AE40F4238FEFD500C6E25B /* DamageView.swift */,
 				166EE98A23962F2500388D65 /* AttributedText.swift */,
+				16EEBDF42397E4DE00F2E216 /* SkillName.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -336,6 +341,7 @@
 				16AE40F0238FDAD000C6E25B /* ModuleTypeCell.swift */,
 				16AE40F2238FDDE600C6E25B /* ChargeTypeCell.swift */,
 				1655DE7A23969BA900973258 /* TypeInfoAttributeCell.swift */,
+				164156162397E68A0063A39C /* TypeInfoSkillCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -458,6 +464,8 @@
 				169A72C9238BD9AA00E4C181 /* Colors.swift in Sources */,
 				12AE041123847EDE00DEFFC5 /* HomeAccountHeader.swift in Sources */,
 				1696F683238FA7F5009F03F3 /* TypesSearch.swift in Sources */,
+				16EEBDF52397E4DE00F2E216 /* SkillName.swift in Sources */,
+				164156172397E68A0063A39C /* TypeInfoSkillCell.swift in Sources */,
 				166EE98F2396311200388D65 /* TypeInfoHeader.swift in Sources */,
 				124F06E7238D8EB400395D54 /* Icon.swift in Sources */,
 				166EE98B23962F2500388D65 /* AttributedText.swift in Sources */,

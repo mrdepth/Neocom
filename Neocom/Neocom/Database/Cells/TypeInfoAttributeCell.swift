@@ -41,7 +41,7 @@ struct TypeInfoAttributeCell: View {
                 NavigationLink(destination: TypeInfo(type: managedObjectContext.object(with: attribute.targetType!) as! SDEInvType)) { content }
             }
             else if attribute.targetGroup != nil {
-                NavigationLink(destination: Types(predicate: \SDEInvType.group == managedObjectContext.object(with: attribute.targetGroup!) as! SDEInvGroup).navigationBarTitle(attribute.subtitle)) { content }
+                NavigationLink(destination: Types(.group(managedObjectContext.object(with: attribute.targetGroup!) as! SDEInvGroup))) { content }
             }
             else {
                 content

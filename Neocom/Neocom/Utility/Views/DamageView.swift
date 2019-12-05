@@ -38,9 +38,9 @@ extension DamageType {
 
 struct DamageView: View {
     let text: String
-    let percent: Float
+    let percent: Double
     let damageType: DamageType
-    @inlinable init(_ text: String, percent: Float, damageType: DamageType) {
+    @inlinable init(_ text: String, percent: Double, damageType: DamageType) {
         self.text = text
         self.percent = percent
         self.damageType = damageType
@@ -49,11 +49,10 @@ struct DamageView: View {
     var body: some View {
         HStack(spacing: 0) {
             Icon(damageType.image, size: .small)
-            Text(text).frame(maxWidth: .infinity)
+            Text(text).frame(maxWidth: .infinity, minHeight: 18)
                 .padding(.horizontal)
-                .background(ProgressView(progress: percent))
+                .background(ProgressView(progress: Float(percent)))
                 .background(Color(.black))
-                .font(.subheadline)
                 .foregroundColor(.white).lineLimit(1)
         }.accentColor(damageType.accentColor)
     }
@@ -73,7 +72,7 @@ struct DamageView_Previews: PreviewProvider {
                 DamageView("25%", percent: 0.25, damageType: .thermal)
                 DamageView("25%", percent: 0.25, damageType: .kinetic)
                 DamageView("25%", percent: 0.25, damageType: .explosive)
-            }.padding().background(Color(.systemGroupedBackground)).colorScheme(.dark)
+            }.padding().background(Color(.systemGroupedBackground)).colorScheme(.dark).font(.footnote)
         }
     }
 }

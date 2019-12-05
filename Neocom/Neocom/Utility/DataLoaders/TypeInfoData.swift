@@ -16,6 +16,7 @@ import SwiftUI
 class TypeInfoData: ObservableObject {
     @Published var renderImage: UIImage?
     @Published var pilot: Pilot?
+    @Published var sections: [Section] = []
     
     enum Row: Identifiable {
         struct Attribute: Identifiable {
@@ -23,34 +24,68 @@ class TypeInfoData: ObservableObject {
             var image: UIImage?
             var title: String
             var subtitle: String
-            var targetType: NSManagedObjectID?
-            var targetGroup: NSManagedObjectID?
+            var targetType: NSManagedObjectID? = nil
+            var targetGroup: NSManagedObjectID? = nil
         }
         
         struct Skill: Identifiable {
-            var id: Int
+            var id: NSManagedObjectID
             var image: Image
             var name: String
             var level: Int
-            var subtitle: String?
+            var trainingTime: String?
             var color: UIColor
-            var targetType: NSManagedObjectID?
+        }
+        
+        struct DamageRow: Identifiable {
+            var id: NSManagedObjectID
+            var damage: Damage
+            let percentStyle: Bool
+        }
+        
+        struct Variations: Identifiable {
+            var id: String { "Variations" }
+            var count: Int
+            var predicate: Predictable
+        }
+        
+        struct Mastery: Identifiable {
+            var id: NSManagedObjectID
+            var typeID: NSManagedObjectID
+            var title: String
+            var subtitle: String?
+            var image: UIImage?
         }
         
         var id: AnyHashable {
             switch self {
             case let .attribute(attribute):
                 return attribute.id
-            case let .skill(skill, _):
+            case let .skill(skill):
                 return skill.id
+            case let .damage(damage):
+                return damage.id
+            case let .variations(variations):
+                return variations.id
+            case let .mastery(mastery):
+                return mastery.id
             }
         }
         
         case attribute(Attribute)
-        indirect case skill(Skill, [Row])
+        case skill(Skill)
+        case damage(DamageRow)
+        case variations(Variations)
+        case mastery(Mastery)
     }
     
-    init(type: SDEInvType, esi: ESI, characterID: Int64?, managedObjectContext: NSManagedObjectContext) {
+    struct Section: Identifiable {
+        var id: AnyHashable
+        var name: String
+        var rows: [Row]
+    }
+    
+    init(type: SDEInvType, esi: ESI, characterID: Int64?, managedObjectContext: NSManagedObjectContext, override attributeValues: [Int: Double]?) {
         esi.image.type(Int(type.typeID), size: .size1024).receive(on: RunLoop.main).sink(receiveCompletion: {_ in}) { [weak self] (result) in
             self?.renderImage = result
         }.store(in: &subscriptions)
@@ -66,14 +101,209 @@ class TypeInfoData: ObservableObject {
         $pilot.flatMap { pilot in
             Future { promise in
                 managedObjectContext.perform {
-                    promise(.success(1))
+                    promise(.success(self.info(for: managedObjectContext.object(with: type.objectID) as! SDEInvType, pilot: pilot, managedObjectContext: managedObjectContext, override: attributeValues)))
                 }
             }
-        }.receive(on: RunLoop.main).sink { result in
+        }.receive(on: RunLoop.main).sink { [weak self] result in
+            self?.sections = result
         }.store(in: &subscriptions)
     }
     
     private var subscriptions = Set<AnyCancellable>()
+    
+    private func info(for type: SDEInvType, pilot: Pilot?, managedObjectContext: NSManagedObjectContext, override attributeValues: [Int: Double]?) -> [Section] {
+        
+        let results = managedObjectContext.from(SDEDgmTypeAttribute.self)
+            .filter(\SDEDgmTypeAttribute.type == type && \SDEDgmTypeAttribute.attributeType?.published == true)
+            .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, ascending: true)
+            .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeID, ascending: true)
+            .fetchedResultsController(sectionName: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, cacheName: nil)
+
+        var sections = [Section]()
+        
+        if let variations = variations(for: type) {
+            sections.append(variations)
+        }
+        if let mastery = masteries(for: type, pilot: pilot) {
+            sections.append(mastery)
+        }
+
+        do {
+            try results.performFetch()
+            sections.append(contentsOf:
+                results.sections?.compactMap { section -> Section? in
+                    guard let attributeCategory = (section.objects?.first as? SDEDgmTypeAttribute)?.attributeType?.attributeCategory else {return nil}
+                    
+                    if SDEAttributeCategoryID(rawValue: attributeCategory.categoryID) == .requiredSkills {
+                        return self.requiredSkills(for: type, pilot: pilot)
+//                        return section
+//                        guard let section = requiredSkillsPresentation(for: type, character: character, context: context) else {return nil}
+//                        return section.asAnyItem
+                    }
+                    else {
+                        let sectionTitle: String = SDEAttributeCategoryID(rawValue: attributeCategory.categoryID) == .null ? NSLocalizedString("Other", comment: "") : attributeCategory.categoryName ?? NSLocalizedString("Other", comment: "")
+                        
+                        var rows = [Row]()
+                        
+                        var damageRow: Row.DamageRow?
+                        func damage(_ attribute: SDEDgmTypeAttribute, update: (inout Row.DamageRow) -> Void) {
+                            if damageRow == nil {
+                                damageRow = Row.DamageRow(id: attribute.objectID, damage: Damage(), percentStyle: false)
+                            }
+                            update(&damageRow!)
+                        }
+                        
+                        var resistanceRow: Row.DamageRow?
+                        func resistance(_ attribute: SDEDgmTypeAttribute, update: (inout Row.DamageRow) -> Void) {
+                            if resistanceRow == nil {
+                                resistanceRow = Row.DamageRow(id: attribute.objectID, damage: Damage(), percentStyle: true)
+                            }
+                            update(&resistanceRow!)
+                        }
+                        
+                        (section.objects as? [SDEDgmTypeAttribute])?.forEach { attribute in
+                            let value = attributeValues?[Int(attribute.attributeType!.attributeID)] ?? attribute.value
+
+                            switch SDEAttributeID(rawValue: attribute.attributeType!.attributeID) {
+                            case .emDamageResonance?, .armorEmDamageResonance?, .shieldEmDamageResonance?,
+                                 .hullEmDamageResonance?, .passiveArmorEmDamageResonance?, .passiveShieldEmDamageResonance?:
+                                resistance(attribute) { row in
+                                    row.damage.em = max(row.damage.em, 1 - value)
+                                }
+                            case .thermalDamageResonance?, .armorThermalDamageResonance?, .shieldThermalDamageResonance?,
+                                 .hullThermalDamageResonance?, .passiveArmorThermalDamageResonance?, .passiveShieldThermalDamageResonance?:
+                                resistance(attribute) { row in
+                                    row.damage.thermal = max(row.damage.thermal, 1 - value)
+                                }
+                            case .kineticDamageResonance?, .armorKineticDamageResonance?, .shieldKineticDamageResonance?,
+                                 .hullKineticDamageResonance?, .passiveArmorKineticDamageResonance?, .passiveShieldKineticDamageResonance?:
+                                resistance(attribute) { row in
+                                    row.damage.kinetic = max(row.damage.kinetic, 1 - value)
+                                }
+                            case .explosiveDamageResonance?, .armorExplosiveDamageResonance?, .shieldExplosiveDamageResonance?,
+                                 .hullExplosiveDamageResonance?, .passiveArmorExplosiveDamageResonance?, .passiveShieldExplosiveDamageResonance?:
+                                resistance(attribute) { row in
+                                    row.damage.explosive = max(row.damage.explosive, 1 - value)
+                                }
+                            case .emDamage?:
+                                damage(attribute) { row in
+                                    row.damage.em = value
+                                }
+                            case .thermalDamage?:
+                                damage(attribute) { row in
+                                    row.damage.thermal = value
+                                }
+                            case .kineticDamage?:
+                                damage(attribute) { row in
+                                    row.damage.kinetic = value
+                                }
+                            case .explosiveDamage?:
+                                damage(attribute) { row in
+                                    row.damage.explosive = value
+                                }
+                                
+                            case .warpSpeedMultiplier?:
+                                guard let attributeType = attribute.attributeType else {return}
+                                
+                                let baseWarpSpeed =  attributeValues?[Int(SDEAttributeID.baseWarpSpeed.rawValue)] ?? type[SDEAttributeID.baseWarpSpeed]?.value ?? 1.0
+                                var s = UnitFormatter.localizedString(from: Double(value * baseWarpSpeed), unit: .none, style: .long)
+                                s += " " + NSLocalizedString("AU/sec", comment: "")
+                                rows.append(.attribute(Row.Attribute(id: attribute.objectID,
+                                                                                  image: attributeType.icon?.image?.image,
+                                                                                  title: NSLocalizedString("Warp Speed", comment: ""),
+                                                                                  subtitle: s)))
+                            default:
+                                rows.append(Row(attribute))
+                            }
+                        }
+                        
+                        if let resistanceRow = resistanceRow {
+                            rows.append(.damage(resistanceRow))
+                            
+                        }
+                        if let damageRow = damageRow {
+                            rows.append(.damage(damageRow))
+                        }
+                        guard !rows.isEmpty else {return nil}
+                        return Section(id: attributeCategory.objectID, name: sectionTitle.uppercased(), rows: rows)
+                    }
+                } ?? [])
+        }
+        catch {
+        }
+        
+        return sections
+    }
+    
+    private func requiredSkills(for type: SDEInvType, pilot: Pilot?) -> Section? {
+        var skills = [SDEInvType: (level: Int16, order: Int)]()
+        func enumerate(_ type: SDEInvType, _ order: Int) {
+            (type.requiredSkills?.array as? [SDEInvTypeRequiredSkill])?.forEach { i in
+                if var value = skills[type] {
+                    value.level = max(value.level, i.skillLevel)
+                    skills[type] = value
+                }
+                else {
+                    skills[type] = (i.skillLevel, order)
+                }
+                enumerate(i.skillType!, order + 1)
+            }
+        }
+        enumerate(type, 0)
+        
+        let rows = skills.sorted{$0.value.order < $1.value.order}.compactMap {
+            TypeInfoData.Row($0.key, level: Int($0.value.level), pilot: pilot)
+        }
+        let trainingQueue = TrainingQueue(pilot: pilot ?? .empty)
+        trainingQueue.addRequiredSkills(for: type)
+        let time = trainingQueue.trainingTime()
+        guard !rows.isEmpty else {return nil}
+        let title = time > 0 ? NSLocalizedString("Required Skills", comment: "").uppercased() + ": " + TimeIntervalFormatter.localizedString(from: time, precision: .seconds) : NSLocalizedString("Required Skills", comment: "").uppercased()
+        return Section(id: "RequiredSkills", name: title, rows: rows)
+    }
+    
+    private func variations(for type: SDEInvType) -> Section? {
+        guard type.parentType != nil || (type.variations?.count ?? 0) > 0 else {return nil}
+        let n = max(type.variations?.count ?? 0, type.parentType?.variations?.count ?? 0) + 1
+        let what = type.parentType ?? type
+        let predicate = \SDEInvType.parentType == what || _self == what
+        
+        return Section(id: "VariationsSection",
+                name: NSLocalizedString("Variations", comment: "").uppercased(),
+                rows: [.variations(TypeInfoData.Row.Variations(count: n, predicate: predicate))])
+    }
+
+    private func masteries(for type: SDEInvType, pilot: Pilot?) -> Section? {
+        var masteries = [Int: [SDECertMastery]]()
+        
+        (type.certificates?.allObjects as? [SDECertCertificate])?.forEach { certificate in
+            (certificate.masteries?.array as? [SDECertMastery])?.forEach { mastery in
+                masteries[Int(mastery.level?.level ?? 0), default: []].append(mastery)
+            }
+        }
+        
+        let unclaimedIcon = try? type.managedObjectContext?.fetch(SDEEveIcon.named(.mastery(nil))).first
+        
+        let pilot = pilot ?? .empty
+        
+        let rows = masteries.sorted {$0.key < $1.key}.compactMap { (key, array) -> Row? in
+            guard let mastery = array.first else {return nil}
+            guard let level = mastery.level else {return nil}
+            
+            let trainingQueue = TrainingQueue(pilot: pilot)
+            array.forEach {trainingQueue.add($0)}
+            let trainingTime = trainingQueue.trainingTime()
+            let title = NSLocalizedString("Level", comment: "").uppercased() + " \(String(roman: key + 1))"
+            let subtitle = trainingTime > 0 ? TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
+            let icon = trainingTime > 0 ? unclaimedIcon : level.icon
+            
+            return Row.mastery(TypeInfoData.Row.Mastery(id: level.objectID, typeID: type.objectID, title: title, subtitle: subtitle, image: icon?.image?.image))
+        }
+        
+        guard !rows.isEmpty else {return nil}
+        return Section(id: "Mastery", name: NSLocalizedString("Mastery", comment: "").uppercased(), rows: rows)
+//        return Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Mastery", comment: "").uppercased()), diffIdentifier: "Mastery", expandIdentifier: "Mastery", treeController: view?.treeController, children: rows)
+    }
 }
 
 
@@ -187,8 +417,6 @@ extension TypeInfoData.Row {
 //            trainingTime = 0
         }
         
-        let requirements = (skillType.requiredSkills?.array as? [SDEIndRequiredSkill])?.compactMap{TypeInfoData.Row($0.skillType!, level: Int($0.skillLevel), pilot: pilot)}
-        
-        self = .skill(TypeInfoData.Row.Skill(id: 0, image: image, name: skillType.typeName ?? "\(skillType.typeID)", level: level, subtitle: subtitle, color: color, targetType: skillType.objectID), requirements ?? [])
+        self = .skill(TypeInfoData.Row.Skill(id: skillType.objectID, image: image, name: skillType.typeName ?? "\(skillType.typeID)", level: level, trainingTime: subtitle, color: color))
     }
 }

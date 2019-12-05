@@ -23,7 +23,7 @@ struct TypeCategories: View {
     }
     
     var body: some View {
-        FetchedResultsView(self.categories()) { categories in
+        ObservedObjectView(self.categories()) { categories in
             TypesSearch { searchResults in
                 List {
                     if searchResults == nil {

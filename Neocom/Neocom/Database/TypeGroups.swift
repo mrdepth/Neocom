@@ -24,7 +24,7 @@ struct TypeGroups: View {
     }
     
     var body: some View {
-        FetchedResultsView(self.groups()) { groups in
+        ObservedObjectView(self.groups()) { groups in
             TypesSearch(predicate: \SDEInvType.group?.category == self.category) { searchResults in
                 List {
                     if searchResults == nil {
@@ -47,7 +47,7 @@ struct TypeGroupsContent: View {
         ForEach(groups.sections, id: \.name) { section in
             Section(header: section.name == "0" ? Text("UNPUBLISHED") : Text("PUBLISHED")) {
                 ForEach(section.objects, id: \.objectID) { group in
-                    NavigationLink(destination: Types(predicate: \SDEInvType.group == group).navigationBarTitle(group.groupName ?? "Unknown")) {
+                    NavigationLink(destination: Types(.group(group))) {
                         GroupCell(group: group)
                     }
                 }

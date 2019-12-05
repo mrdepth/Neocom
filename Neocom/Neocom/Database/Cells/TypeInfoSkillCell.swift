@@ -9,7 +9,7 @@
 import SwiftUI
 
 extension TypeInfoData.Row {
-    var skill: (Skill, [TypeInfoData.Row])? {
+    var skill: (Skill)? {
         switch self {
         case let .skill(skill):
             return skill
@@ -20,14 +20,17 @@ extension TypeInfoData.Row {
 }
 
 struct TypeInfoSkillCell: View {
+    @Environment(\.managedObjectContext) var managedObjectContext
     var skill: TypeInfoData.Row.Skill
     var body: some View {
-        HStack {
-            skill.image.font(.caption).foregroundColor(Color(skill.color))
-            VStack(alignment: .leading) {
-                SkillName(name: skill.name.uppercased(), level: skill.level).font(.footnote)
-//                Text(skill.title.uppercased()).font(.footnote)
-                skill.subtitle.map{Text($0).font(.footnote).foregroundColor(.secondary)}
+        NavigationLink(destination: TypeInfo(type: managedObjectContext.object(with: skill.id) as! SDEInvType)) {
+            HStack {
+                skill.image.font(.caption).foregroundColor(Color(skill.color))
+                VStack(alignment: .leading) {
+                    SkillName(name: skill.name.uppercased(), level: skill.level).font(.footnote)
+                    //                Text(skill.title.uppercased()).font(.footnote)
+                    skill.trainingTime.map{Text($0).font(.footnote).foregroundColor(.secondary)}
+                }
             }
         }
     }
@@ -37,7 +40,12 @@ struct TypeInfoSkillCell_Previews: PreviewProvider {
     static var previews: some View {
         let skill = TypeInfoData.Row((try? AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first?.requiredSkills?.firstObject as? SDEInvTypeRequiredSkill)!.skillType!,
                                      level: 5, pilot: nil)!.skill!
-        return TypeInfoSkillCell(skill: skill.0)
+        return NavigationView {
+            List {
+                TypeInfoSkillCell(skill: skill)
+            }.listStyle(GroupedListStyle())
+                .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        }
     }
 }
 

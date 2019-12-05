@@ -11,7 +11,25 @@ import Expressible
 
 struct Types: View {
     @Environment(\.managedObjectContext) var managedObjectContext
-    let predicate: Predictable
+    
+    enum Source {
+        case predicate(Predictable, String)
+        case group(SDEInvGroup)
+    }
+    
+    private let predicate: Predictable
+    private let title: String
+    
+    init(_ source: Source) {
+        switch source {
+        case let .predicate(predicate, title):
+            self.predicate = predicate
+            self.title = title
+        case let .group(group):
+            predicate = \SDEInvType.group == group
+            title = group.groupName ?? "\(group.groupID)"
+        }
+    }
     
     private func types() -> FetchedResultsController<SDEInvType> {
         let controller = managedObjectContext.from(SDEInvType.self)
@@ -25,7 +43,7 @@ struct Types: View {
     }
     
     var body: some View {
-        FetchedResultsView(self.types()) { types in
+        ObservedObjectView(self.types()) { types in
             TypesSearch(predicate: self.predicate) { searchResults in
                 List {
                     if searchResults == nil {
@@ -37,7 +55,7 @@ struct Types: View {
                 }.listStyle(GroupedListStyle())
                     .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
             }
-        }
+        }.navigationBarTitle(title)
     }
 }
 
@@ -58,7 +76,7 @@ struct TypesContent: View {
 struct Types_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            Types(predicate: \SDEInvType.group == (try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(\SDEInvType.typeID == 645).first()?.group))
+            Types(.group((try? AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(\SDEInvType.typeID == 645).first()?.group)!))
         }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

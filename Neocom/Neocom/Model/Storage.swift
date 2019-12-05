@@ -191,3 +191,10 @@ enum DamageType {
     case kinetic
     case explosive
 }
+
+struct Damage {
+    var em: Double = 0
+    var thermal: Double = 0
+    var kinetic: Double = 0
+    var explosive: Double = 0
+}

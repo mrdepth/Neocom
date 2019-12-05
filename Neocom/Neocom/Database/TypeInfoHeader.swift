@@ -11,6 +11,7 @@ import SwiftUI
 struct TypeInfoHeader: View {
     var type: SDEInvType
     var renderImage: Image?
+    var preferredMaxLayoutWidth: CGFloat
     
     private func title() -> some View {
         VStack(alignment: .leading) {
@@ -28,9 +29,9 @@ struct TypeInfoHeader: View {
                 HStack {
                     (renderImage ?? type.image).resizable().scaledToFit().frame(width: 64, height: 64).cornerRadius(8).edgesIgnoringSafeArea(.horizontal)
                     title()
-                }.padding([.horizontal, .top])
+                }.padding([.horizontal, .top], 15)
             }
-            AttributedText(type.typeDescription?.text?.extract(with: .preferredFont(forTextStyle: .body), color: .descriptionLabel) ?? NSAttributedString()).padding([.horizontal, .bottom])
+            AttributedText(type.typeDescription?.text?.extract(with: .preferredFont(forTextStyle: .body), color: .descriptionLabel) ?? NSAttributedString(), preferredMaxLayoutWidth: preferredMaxLayoutWidth).padding([.horizontal, .bottom], 15)
         }
     }
 }
@@ -38,16 +39,16 @@ struct TypeInfoHeader: View {
 struct TypeInfoHeader_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            TypeInfoHeader(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!, renderImage: nil)
-//                .padding()
-                .background(Color(UIColor.systemBackground))
-                .colorScheme(.light)
-            VStack {
-                TypeInfoHeader(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!, renderImage: Image("dominix"))
-//                    .padding()
-                    .background(Color(UIColor.systemBackground))
-                Spacer()
-            }.colorScheme(.dark)
+            GeometryReader { geometry in
+                TypeInfoHeader(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!, renderImage: nil, preferredMaxLayoutWidth: geometry.size.width - 30)
+            }
+            .background(Color(UIColor.systemBackground))
+            .colorScheme(.light)
+            GeometryReader { geometry in
+                TypeInfoHeader(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!, renderImage: Image("dominix"), preferredMaxLayoutWidth: geometry.size.width - 30)
+            }
+            .background(Color(UIColor.systemBackground))
+            .colorScheme(.dark)
                 //.background(Color.gray)
         }
     }

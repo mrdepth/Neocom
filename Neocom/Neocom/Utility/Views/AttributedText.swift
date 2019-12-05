@@ -22,19 +22,22 @@ struct SizePreferenceKey: PreferenceKey {
 
 struct AttributedText: View {
     private var text: NSAttributedString
-    @State var height: CGFloat = 24
+    private var preferredMaxLayoutWidth: CGFloat
+//    @State var height: CGFloat = 24
     
-    init(_ text: NSAttributedString) {
+    init(_ text: NSAttributedString, preferredMaxLayoutWidth: CGFloat) {
         self.text = text
+        self.preferredMaxLayoutWidth = preferredMaxLayoutWidth
     }
     
     var body: some View {
-        GeometryReader { geometry in
-            TextView(text: self.text, preferredMaxLayoutWidth: geometry.size.width).anchorPreference(key: SizePreferenceKey.self, value: Anchor<CGRect>.Source.bounds) {[geometry[$0].size]}
-        }.frame(height: height).onPreferenceChange(SizePreferenceKey.self) {
-            guard let height = $0.first?.height else {return}
-            self.height = height
-        }
+        TextView(text: self.text, preferredMaxLayoutWidth: preferredMaxLayoutWidth)
+//        GeometryReader { geometry in
+//            TextView(text: self.text, preferredMaxLayoutWidth: geometry.size.width).anchorPreference(key: SizePreferenceKey.self, value: Anchor<CGRect>.Source.bounds) {[geometry[$0].size]}
+//        }.frame(height: height).onPreferenceChange(SizePreferenceKey.self) {
+//            guard let height = $0.first?.height else {return}
+//            self.height = height
+//        }
     }
 }
 
@@ -44,6 +47,7 @@ fileprivate struct TextView: UIViewRepresentable {
     
     func makeUIView(context: UIViewRepresentableContext<TextView>) -> TextViewRepresentation {
         let view = TextViewRepresentation()
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.isScrollEnabled = false
         view.backgroundColor = .clear
         view.textContainerInset = .zero
@@ -62,10 +66,12 @@ fileprivate struct TextView: UIViewRepresentable {
 
 struct AttributedText_Previews: PreviewProvider {
     static var previews: some View {
-        VStack {
-            AttributedText(NSAttributedString(string: repeatElement("Hello World ", count: 50).joined()))
-            .background(Color.gray)
-        }.padding().background(Color.green)
+        GeometryReader { geometry in
+            VStack {
+                AttributedText(NSAttributedString(string: repeatElement("Hello World ", count: 50).joined()), preferredMaxLayoutWidth: geometry.size.width - 30)
+                .background(Color.gray)
+            }.padding().background(Color.green)
+        }
     }
 }
 

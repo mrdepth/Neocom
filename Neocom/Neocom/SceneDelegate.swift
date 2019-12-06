@@ -10,6 +10,7 @@ import UIKit
 import SwiftUI
 import CoreData
 import Expressible
+import EVEAPI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -22,9 +23,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
 		// Create the SwiftUI view that provides the window contents.
-		let contentView = ContentView()
+        let account = try? AppDelegate.sharedDelegate.persistentContainer.viewContext.from(Account.self).first()
+
+        let contentView = ContentView()
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
             .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+            .environment(\.esi, (account?.oAuth2Token).map{ESI(token: $0)} ?? ESI())
+            .environment(\.account, account)
 
 		// Use a UIHostingController as window root view controller.
 		if let windowScene = scene as? UIWindowScene {

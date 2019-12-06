@@ -37,7 +37,7 @@ struct Types: View {
             .sort(by: \SDEInvType.metaGroup?.metaGroupID, ascending: true)
             .sort(by: \SDEInvType.metaLevel, ascending: true)
             .sort(by: \SDEInvType.typeName, ascending: true)
-            .fetchedResultsController(sectionName: (\SDEInvType.metaGroup?.metaGroupName))
+            .fetchedResultsController(sectionName: (\SDEInvType.metaGroup?.metaGroupID))
         return FetchedResultsController(controller)
 
     }
@@ -46,12 +46,14 @@ struct Types: View {
         ObservedObjectView(self.types()) { types in
             TypesSearch(predicate: self.predicate) { searchResults in
                 List {
-                    if searchResults == nil {
-                        TypesContent(types: types.sections)
-                    }
-                    else {
-                        TypesContent(types: searchResults!)
-                    }
+                    TypesContent(types: searchResults ?? types.sections)
+
+//                    if searchResults == nil {
+//                        TypesContent(types: types.sections)
+//                    }
+//                    else {
+//                        TypesContent(types: searchResults!)
+//                    }
                 }.listStyle(GroupedListStyle())
                     .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
             }
@@ -63,10 +65,15 @@ struct TypesContent: View {
     var types: [FetchedResultsController<SDEInvType>.Section]
     
     var body: some View {
-        ForEach(types, id: \.name) { section in
-            Section(header: Text(section.name.uppercased())) {
+        print(types.map {
+            ($0.name, $0.objects.map{$0.typeName!})
+        })
+        return ForEach(types, id: \.name) { section in
+            Section(header: Text(section.objects.first?.metaGroup?.metaGroupName?.uppercased() ?? "")) {
                 ForEach(section.objects, id: \.objectID) { type in
-                    TypeCell(type: type)
+                    NavigationLink(destination: TypeInfo(type: type)) {
+                        TypeCell(type: type)
+                    }
                 }
             }
         }

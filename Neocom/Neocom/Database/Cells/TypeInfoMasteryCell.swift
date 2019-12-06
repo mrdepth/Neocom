@@ -26,10 +26,12 @@ struct TypeInfoMasteryCell: View {
 
 struct TypeInfoMasteryCell_Previews: PreviewProvider {
     static var previews: some View {
-        TypeInfoMasteryCell(mastery: TypeInfoData.Row.Mastery(id: NSManagedObjectID(),
-                                                              typeID: NSManagedObjectID(),
-                                                              title: "LEVEL V",
-                                                              subtitle: nil,
-                                                              image: UIImage()))
+        List {
+            TypeInfoMasteryCell(mastery: TypeInfoData.Row.Mastery(id: NSManagedObjectID(),
+                                                                  typeID: NSManagedObjectID(),
+                                                                  title: "LEVEL II",
+                                                                  subtitle: nil,
+                                                                  image: (try? AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEEveIcon.named(.mastery(1))).first?.image?.image) ?? UIImage()))
+        }.listStyle(GroupedListStyle()).colorScheme(.light)
     }
 }

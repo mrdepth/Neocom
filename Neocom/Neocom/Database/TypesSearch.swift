@@ -17,6 +17,11 @@ struct TypesSearch<Content: View>: View {
     var predicate: Predictable? = nil
     var content: ([FetchedResultsController<SDEInvType>.Section]?) -> Content
     
+    init(predicate: Predictable? = nil, @ViewBuilder content: @escaping ([FetchedResultsController<SDEInvType>.Section]?) -> Content) {
+        self.predicate = predicate
+        self.content = content
+    }
+    
     func search(_ string: String) -> AnyPublisher<[FetchedResultsController<SDEInvType>.Section]?, Never> {
         return Future<FetchedResultsController<NSDictionary>?, Never> { promise in
             self.backgroundManagedObjectContext.perform {
@@ -32,8 +37,8 @@ struct TypesSearch<Content: View>: View {
                     let controller = request.sort(by: \SDEInvType.metaGroup?.metaGroupID, ascending: true)
                         .sort(by: \SDEInvType.metaLevel, ascending: true)
                         .sort(by: \SDEInvType.typeName, ascending: true)
-                        .select([_self.as(NSManagedObjectID.self, name: "objectID"), (\SDEInvType.metaGroup?.metaGroupName).as(String.self, name: "metaGroupName")])
-                        .fetchedResultsController(sectionName: (\SDEInvType.metaGroup?.metaGroupName).as(String.self, name: "metaGroupName"))
+                        .select([_self.as(NSManagedObjectID.self, name: "objectID"), (\SDEInvType.metaGroup?.metaGroupID).as(Int.self, name: "metaGroupID")])
+                        .fetchedResultsController(sectionName: (\SDEInvType.metaGroup?.metaGroupName).as(Int.self, name: "metaGroupID"))
                     
                     try? controller.performFetch()
                     promise(.success(FetchedResultsController(controller)))

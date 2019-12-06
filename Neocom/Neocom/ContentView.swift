@@ -72,8 +72,9 @@ struct ContentView: View {
     var body: some View {
         
         NavigationView {
+            TypeCategories()
 //            Home()
-            TypeInfo(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!).environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+//            TypeInfo(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!).environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         }
     }
 }

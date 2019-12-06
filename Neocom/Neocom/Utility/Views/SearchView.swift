@@ -41,7 +41,13 @@ struct SearchView<Results: Publisher, Content: View, Output>: View where Results
     var body: some View {
         VStack(spacing: 0) {
             SearchField(text: $searchResults.searchString, isEditing: $isEditing)
-            content(searchResults.results).overlay(Color(.systemFill).opacity(searchResults.results == nil && isEditing ? 1.0 : 0.0).edgesIgnoringSafeArea(.all))
+            ZStack {
+                content(searchResults.results)
+                if searchResults.results == nil && isEditing {
+                    Color(.systemFill).edgesIgnoringSafeArea(.all).transition(.opacity)
+                }
+            }
+//            content(searchResults.results)//.overlay(Color(.systemFill).opacity(searchResults.results == nil && isEditing ? 1.0 : 0.0).edgesIgnoringSafeArea(.all))
         }
     }
 }

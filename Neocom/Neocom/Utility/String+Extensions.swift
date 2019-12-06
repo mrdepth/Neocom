@@ -10,14 +10,14 @@ import Foundation
 import UIKit
 
 extension String {
-    private static let roman = ["0","I","II","III","IV","V"]
+    private static let roman = ["","I","II","III","IV","V"]
 
     init(roman number: Int) {
         if String.roman.indices.contains(number) {
             self = String.roman[number]
         }
         else {
-            self = "\(number)"
+            self = ""
         }
     }
 }

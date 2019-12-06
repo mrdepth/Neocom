@@ -239,14 +239,15 @@ class TypeInfoData: ObservableObject {
         var skills = [SDEInvType: (level: Int16, order: Int)]()
         func enumerate(_ type: SDEInvType, _ order: Int) {
             (type.requiredSkills?.array as? [SDEInvTypeRequiredSkill])?.forEach { i in
-                if var value = skills[type] {
+                guard let skillType = i.skillType else {return}
+                if var value = skills[skillType] {
                     value.level = max(value.level, i.skillLevel)
-                    skills[type] = value
+                    skills[skillType] = value
                 }
                 else {
-                    skills[type] = (i.skillLevel, order)
+                    skills[skillType] = (i.skillLevel, order)
                 }
-                enumerate(i.skillType!, order + 1)
+                enumerate(skillType, order + 1)
             }
         }
         enumerate(type, 0)
@@ -345,6 +346,7 @@ extension TypeInfoData.Row {
         case .attributeID:
             let attributeType = try? attribute.managedObjectContext?.from(SDEDgmAttributeType.self)
                 .filter(\SDEDgmAttributeType.attributeID == Int(value)).first()
+            icon = attributeType?.icon?.image?.image
             subtitle = attributeType?.displayName ?? attributeType?.attributeName ?? toString(value)
         case .groupID:
             let group = try? attribute.managedObjectContext?.from(SDEInvGroup.self)
@@ -412,8 +414,11 @@ extension TypeInfoData.Row {
         }
         else {
             image = Image(systemName: "xmark.circle")
-            subtitle = nil
-            color = .label
+//            subtitle = nil
+            color = .secondaryLabel
+            let trainingTime = item.trainingTime(with: .default)
+            subtitle = trainingTime > 0 ? TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
+
 //            trainingTime = 0
         }
         

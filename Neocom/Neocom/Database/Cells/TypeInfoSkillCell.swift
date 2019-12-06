@@ -28,7 +28,6 @@ struct TypeInfoSkillCell: View {
                 skill.image.font(.caption).foregroundColor(Color(skill.color))
                 VStack(alignment: .leading) {
                     SkillName(name: skill.name.uppercased(), level: skill.level).font(.footnote)
-                    //                Text(skill.title.uppercased()).font(.footnote)
                     skill.trainingTime.map{Text($0).font(.footnote).foregroundColor(.secondary)}
                 }
             }

@@ -12,16 +12,22 @@ import Expressible
 
 struct TypeInfo: View {
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.backgroundManagedObjectContext) var backgroundManagedObjectContext
     @Environment(\.esi) var esi
     @Environment(\.account) var account
+    @ObservedObject var typeInfo: Lazy<TypeInfoData> = Lazy()
     
     var type: SDEInvType
-	
+    
+    init(type: SDEInvType) {
+        self.type = type
+    }
+    
     private func typeInfoData() -> TypeInfoData {
         let info = TypeInfoData(type: type,
 								esi: esi,
 								characterID: account?.characterID,
-								managedObjectContext: managedObjectContext.newBackgroundContext(),
+								managedObjectContext: backgroundManagedObjectContext,
 								override: nil)
         return info
     }
@@ -42,8 +48,10 @@ struct TypeInfo: View {
     }
     
     var body: some View {
-            GeometryReader { geometry in
-				ObservedObjectView(self.typeInfoData()) { info in
+        let info = self.typeInfo.get(initial: self.typeInfoData())
+            return GeometryReader { geometry in
+                
+//				ObservedObjectView(self.typeInfoData()) { info in
                 List {
                     Section {
                         TypeInfoHeader(type: self.type,
@@ -55,23 +63,11 @@ struct TypeInfo: View {
                         Section(header: Text(section.name)) {
                             ForEach(section.rows) { row in
                                 self.cell(for: row)
-//                                if row.attribute != nil {
-//                                    TypeInfoAttributeCell(attribute: row.attribute!)
-//                                }
-//                                else if row.damage != nil {
-//                                    TypeInfoDamageCell(damage: row.damage!)
-//                                }
-////                                else if row.skill != nil {
-////                                    TypeInfoSkillCell(skill: row.skill!)
-////                                }
-//                                else if row.variations != nil {
-//                                    TypeInfoVariationsCell(variations: row.variations!)
-//                                }
                             }
                         }
                     }
                 }.listStyle(GroupedListStyle()).navigationBarTitle("Info")
-            }
+//            }
         }
     }
 }
@@ -82,6 +78,7 @@ struct TypeInfo_Previews: PreviewProvider {
         return NavigationView {
             TypeInfo(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!)
                 .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+                .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
 //                .environment(\.account, account)
 //                .environment(\.esi, ESI(token: oAuth2Token))
         }

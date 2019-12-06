@@ -30,6 +30,14 @@ class Storage: NSPersistentCloudKitContainer {
     }
 }
 
+extension NSManagedObjectContext {
+	func newBackgroundContext() -> NSManagedObjectContext {
+		let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+		context.parent = self
+		return context
+	}
+}
+
 extension SDEInvCategory {
 	var image: Image {
 		let image = icon?.image?.image ??

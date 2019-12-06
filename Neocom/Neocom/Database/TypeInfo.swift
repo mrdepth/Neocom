@@ -16,9 +16,13 @@ struct TypeInfo: View {
     @Environment(\.account) var account
     
     var type: SDEInvType
-    
+	
     private func typeInfoData() -> TypeInfoData {
-        let info = TypeInfoData(type: type, esi: esi, characterID: account?.characterID, managedObjectContext: managedObjectContext, override: nil)
+        let info = TypeInfoData(type: type,
+								esi: esi,
+								characterID: account?.characterID,
+								managedObjectContext: managedObjectContext.newBackgroundContext(),
+								override: nil)
         return info
     }
     
@@ -38,8 +42,8 @@ struct TypeInfo: View {
     }
     
     var body: some View {
-        ObservedObjectView(typeInfoData()) { info in
             GeometryReader { geometry in
+				ObservedObjectView(self.typeInfoData()) { info in
                 List {
                     Section {
                         TypeInfoHeader(type: self.type,

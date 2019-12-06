@@ -13,6 +13,7 @@
 		124F06E9238D908A00395D54 /* TypeGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F06E8238D908A00395D54 /* TypeGroups.swift */; };
 		12AE040F23847EC600DEFFC5 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE040E23847EC600DEFFC5 /* Home.swift */; };
 		12AE041123847EDE00DEFFC5 /* HomeAccountHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE041023847EDE00DEFFC5 /* HomeAccountHeader.swift */; };
+		12CBA91D2399596B001C1C82 /* MasteryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CBA91C2399596B001C1C82 /* MasteryData.swift */; };
 		12F06F13238464920061313D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F12238464920061313D /* AppDelegate.swift */; };
 		12F06F15238464920061313D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F14238464920061313D /* SceneDelegate.swift */; };
 		12F06F17238464920061313D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F16238464920061313D /* ContentView.swift */; };
@@ -106,6 +107,7 @@
 		124F06E8238D908A00395D54 /* TypeGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeGroups.swift; sourceTree = "<group>"; };
 		12AE040E23847EC600DEFFC5 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		12AE041023847EDE00DEFFC5 /* HomeAccountHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAccountHeader.swift; sourceTree = "<group>"; };
+		12CBA91C2399596B001C1C82 /* MasteryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasteryData.swift; sourceTree = "<group>"; };
 		12F06F0F238464920061313D /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12F06F12238464920061313D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		12F06F14238464920061313D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 				120E28EF238B12A1006B30EA /* CharacterInfo.swift */,
 				16324730239159A200227480 /* AccountInfo.swift */,
 				1655DE742396888200973258 /* TypeInfoData.swift */,
+				12CBA91C2399596B001C1C82 /* MasteryData.swift */,
 			);
 			path = DataLoaders;
 			sourceTree = "<group>";
@@ -457,6 +460,7 @@
 				169A91A5238D1D81004E3DAA /* ESI+Extensions.swift in Sources */,
 				1698919F238E4BA500FBA0B3 /* ObservedObjectView.swift in Sources */,
 				169A72D1238BE0EF00E4C181 /* TimeIntervalFormatter.swift in Sources */,
+				12CBA91D2399596B001C1C82 /* MasteryData.swift in Sources */,
 				16674BE7238BB7FE00E6E547 /* Accounts.swift in Sources */,
 				1655DE752396888200973258 /* TypeInfoData.swift in Sources */,
 				12F06F40238469C10061313D /* SDEVersion.swift in Sources */,

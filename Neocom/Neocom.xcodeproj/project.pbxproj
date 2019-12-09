@@ -13,6 +13,7 @@
 		124F06E9238D908A00395D54 /* TypeGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F06E8238D908A00395D54 /* TypeGroups.swift */; };
 		12AE040F23847EC600DEFFC5 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE040E23847EC600DEFFC5 /* Home.swift */; };
 		12AE041123847EDE00DEFFC5 /* HomeAccountHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE041023847EDE00DEFFC5 /* HomeAccountHeader.swift */; };
+		12B1A3BE239D2F8F00BED705 /* MarketHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1A3BD239D2F8F00BED705 /* MarketHistory.swift */; };
 		12CBA91D2399596B001C1C82 /* MasteryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CBA91C2399596B001C1C82 /* MasteryData.swift */; };
 		12F06F13238464920061313D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F12238464920061313D /* AppDelegate.swift */; };
 		12F06F15238464920061313D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F14238464920061313D /* SceneDelegate.swift */; };
@@ -109,6 +110,7 @@
 		124F06E8238D908A00395D54 /* TypeGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeGroups.swift; sourceTree = "<group>"; };
 		12AE040E23847EC600DEFFC5 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		12AE041023847EDE00DEFFC5 /* HomeAccountHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAccountHeader.swift; sourceTree = "<group>"; };
+		12B1A3BD239D2F8F00BED705 /* MarketHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketHistory.swift; sourceTree = "<group>"; };
 		12CBA91C2399596B001C1C82 /* MasteryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasteryData.swift; sourceTree = "<group>"; };
 		12F06F0F238464920061313D /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12F06F12238464920061313D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -374,6 +376,7 @@
 				166EE98E2396311200388D65 /* TypeInfoHeader.swift */,
 				1698C05B239A8EB400193274 /* TypeMateryLevel.swift */,
 				1698C05D239A954000193274 /* TypeMasterySkills.swift */,
+				12B1A3BD239D2F8F00BED705 /* MarketHistory.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -482,6 +485,7 @@
 				1698C05E239A954000193274 /* TypeMasterySkills.swift in Sources */,
 				167CB4A82398F825008980EE /* TypeInfoDamageCell.swift in Sources */,
 				12F06F13238464920061313D /* AppDelegate.swift in Sources */,
+				12B1A3BE239D2F8F00BED705 /* MarketHistory.swift in Sources */,
 				1696F687238FCF88009F03F3 /* GroupCell.swift in Sources */,
 				169891B5238EAF4000FBA0B3 /* SearchView.swift in Sources */,
 				169A72C9238BD9AA00E4C181 /* Colors.swift in Sources */,

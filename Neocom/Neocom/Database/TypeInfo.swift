@@ -44,6 +44,10 @@ struct TypeInfo: View {
             return AnyView(TypeInfoVariationsCell(variations: variations))
         case let .mastery(mastery):
             return AnyView(TypeInfoMasteryCell(mastery: mastery))
+        case let .marketHistory(history):
+            fatalError()
+        case let .price(price):
+            return AnyView(TypeInfoPriceCell(price: price))
         }
     }
     

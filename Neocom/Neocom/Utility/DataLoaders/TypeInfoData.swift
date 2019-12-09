@@ -17,6 +17,7 @@ class TypeInfoData: ObservableObject {
     @Published var renderImage: UIImage?
     @Published var pilot: Pilot?
     @Published var sections: [Section] = []
+    @Published var price: ESI.MarketPrice?
     
     enum Row: Identifiable {
         struct Attribute: Identifiable {
@@ -57,6 +58,15 @@ class TypeInfoData: ObservableObject {
             var image: UIImage?
         }
         
+        struct MarketHistory: Identifiable {
+            var id: String { "MarketHistory" }
+            var volume: UIBezierPath
+            var median: UIBezierPath
+            var donchian: UIBezierPath
+            var donchianVisibleRange: CGRect
+            var dateRange: ClosedRange<Date>
+        }
+        
         var id: AnyHashable {
             switch self {
             case let .attribute(attribute):
@@ -69,6 +79,10 @@ class TypeInfoData: ObservableObject {
                 return variations.id
             case let .mastery(mastery):
                 return mastery.id
+            case let .marketHistory(history):
+                return history.id
+            case .price:
+                return "Price"
             }
         }
         
@@ -77,6 +91,8 @@ class TypeInfoData: ObservableObject {
         case damage(DamageRow)
         case variations(Variations)
         case mastery(Mastery)
+        case marketHistory(MarketHistory)
+        case price(Double)
     }
     
     struct Section: Identifiable {
@@ -90,18 +106,28 @@ class TypeInfoData: ObservableObject {
             self?.renderImage = result
         }.store(in: &subscriptions)
         
+        if type.marketGroup != nil {
+            let typeID = Int(type.typeID)
+            esi.markets.prices().get().compactMap {
+                $0.first{$0.typeID == typeID}
+            }.receive(on: RunLoop.main)
+            .sink(receiveCompletion: {_ in }) { [weak self] result in
+                self?.price = result
+            }.store(in: &subscriptions)
+        }
+        
         if let characterID = characterID {
             Pilot.load(esi.characters.characterID(Int(characterID)), in: managedObjectContext)
                 .receive(on: RunLoop.main)
-                .sink(receiveCompletion: {_ in }) { [weak self] (result) in
+                .sink(receiveCompletion: {_ in }) { [weak self] result in
                     self?.pilot = result
             }.store(in: &subscriptions)
         }
         
-        $pilot.flatMap { pilot in
+        Publishers.CombineLatest($pilot, $price).flatMap { (pilot, price) in
             Future { promise in
                 managedObjectContext.perform {
-                    promise(.success(self.info(for: managedObjectContext.object(with: type.objectID) as! SDEInvType, pilot: pilot, managedObjectContext: managedObjectContext, override: attributeValues)))
+                    promise(.success(self.info(for: managedObjectContext.object(with: type.objectID) as! SDEInvType, pilot: pilot, price: price, managedObjectContext: managedObjectContext, override: attributeValues)))
                 }
             }
         }.receive(on: RunLoop.main).sink { [weak self] result in
@@ -110,16 +136,26 @@ class TypeInfoData: ObservableObject {
     }
     
     private var subscriptions = Set<AnyCancellable>()
+}
+
+extension TypeInfoData {
     
-    private func info(for type: SDEInvType, pilot: Pilot?, managedObjectContext: NSManagedObjectContext, override attributeValues: [Int: Double]?) -> [Section] {
+    private func info(for type: SDEInvType, pilot: Pilot?, price: ESI.MarketPrice?, managedObjectContext: NSManagedObjectContext, override attributeValues: [Int: Double]?) -> [Section] {
         
         let results = managedObjectContext.from(SDEDgmTypeAttribute.self)
             .filter(\SDEDgmTypeAttribute.type == type && \SDEDgmTypeAttribute.attributeType?.published == true)
             .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, ascending: true)
             .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeID, ascending: true)
             .fetchedResultsController(sectionName: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, cacheName: nil)
-
+        
         var sections = [Section]()
+        
+        if let price = price?.averagePrice {
+            let section = Section(id: "Market",
+                    name: NSLocalizedString("Market", comment: "").uppercased(),
+                    rows: [.price(price)])
+            sections.append(section)
+        }
         
         if let variations = variations(for: type) {
             sections.append(variations)
@@ -127,7 +163,7 @@ class TypeInfoData: ObservableObject {
         if let mastery = masteries(for: type, pilot: pilot) {
             sections.append(mastery)
         }
-
+        
         do {
             try results.performFetch()
             sections.append(contentsOf:
@@ -136,9 +172,9 @@ class TypeInfoData: ObservableObject {
                     
                     if SDEAttributeCategoryID(rawValue: attributeCategory.categoryID) == .requiredSkills {
                         return self.requiredSkills(for: type, pilot: pilot)
-//                        return section
-//                        guard let section = requiredSkillsPresentation(for: type, character: character, context: context) else {return nil}
-//                        return section.asAnyItem
+                        //                        return section
+                        //                        guard let section = requiredSkillsPresentation(for: type, character: character, context: context) else {return nil}
+                        //                        return section.asAnyItem
                     }
                     else {
                         let sectionTitle: String = SDEAttributeCategoryID(rawValue: attributeCategory.categoryID) == .null ? NSLocalizedString("Other", comment: "") : attributeCategory.categoryName ?? NSLocalizedString("Other", comment: "")
@@ -163,7 +199,7 @@ class TypeInfoData: ObservableObject {
                         
                         (section.objects as? [SDEDgmTypeAttribute])?.forEach { attribute in
                             let value = attributeValues?[Int(attribute.attributeType!.attributeID)] ?? attribute.value
-
+                            
                             switch SDEAttributeID(rawValue: attribute.attributeType!.attributeID) {
                             case .emDamageResonance?, .armorEmDamageResonance?, .shieldEmDamageResonance?,
                                  .hullEmDamageResonance?, .passiveArmorEmDamageResonance?, .passiveShieldEmDamageResonance?:
@@ -209,9 +245,9 @@ class TypeInfoData: ObservableObject {
                                 var s = UnitFormatter.localizedString(from: Double(value * baseWarpSpeed), unit: .none, style: .long)
                                 s += " " + NSLocalizedString("AU/sec", comment: "")
                                 rows.append(.attribute(Row.Attribute(id: attribute.objectID,
-                                                                                  image: attributeType.icon?.image?.image,
-                                                                                  title: NSLocalizedString("Warp Speed", comment: ""),
-                                                                                  subtitle: s)))
+                                                                     image: attributeType.icon?.image?.image,
+                                                                     title: NSLocalizedString("Warp Speed", comment: ""),
+                                                                     subtitle: s)))
                             default:
                                 rows.append(Row(attribute))
                             }
@@ -227,7 +263,7 @@ class TypeInfoData: ObservableObject {
                         guard !rows.isEmpty else {return nil}
                         return Section(id: attributeCategory.objectID, name: sectionTitle.uppercased(), rows: rows)
                     }
-                } ?? [])
+                    } ?? [])
         }
         catch {
         }
@@ -270,10 +306,10 @@ class TypeInfoData: ObservableObject {
         let predicate = \SDEInvType.parentType == what || _self == what
         
         return Section(id: "VariationsSection",
-                name: NSLocalizedString("Variations", comment: "").uppercased(),
-                rows: [.variations(TypeInfoData.Row.Variations(count: n, predicate: predicate))])
+                       name: NSLocalizedString("Variations", comment: "").uppercased(),
+                       rows: [.variations(TypeInfoData.Row.Variations(count: n, predicate: predicate))])
     }
-
+    
     private func masteries(for type: SDEInvType, pilot: Pilot?) -> Section? {
         var masteries = [Int: [SDECertMastery]]()
         
@@ -303,10 +339,98 @@ class TypeInfoData: ObservableObject {
         
         guard !rows.isEmpty else {return nil}
         return Section(id: "Mastery", name: NSLocalizedString("Mastery", comment: "").uppercased(), rows: rows)
-//        return Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Mastery", comment: "").uppercased()), diffIdentifier: "Mastery", expandIdentifier: "Mastery", treeController: view?.treeController, children: rows)
+        //        return Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Mastery", comment: "").uppercased()), diffIdentifier: "Mastery", expandIdentifier: "Mastery", treeController: view?.treeController, children: rows)
+    }
+    
+    private func marketInfo(history: [ESI.MarketHistoryItem]) -> Row? {
+        guard !history.isEmpty else {return nil}
+        guard let date = history.last?.date.addingTimeInterval(-3600 * 24 * 365) else {return nil}
+        guard let i = history.firstIndex(where: { $0.date > date }) else { return nil }
+        
+        let range = history.suffix(from: i).indices
+        
+        let visibleRange = { () -> ClosedRange<Double> in
+            var h2 = 0 as Double
+            var h = 0 as Double
+            var l2 = 0 as Double
+            var l = 0 as Double
+            let n = Double(range.count)
+            for i in range {
+                let item = history[i]
+                h += Double(item.highest) / n
+                h2 += Double(item.highest * item.highest) / n
+                l += Double(item.lowest) / n
+                l2 += Double(item.lowest * item.lowest) / n
+            }
+            let avgl = l
+            let avgh = h
+            h *= h
+            l *= l
+            let devh = h < h2 ? sqrt(h2 - h) : 0
+            let devl = l < l2 ? sqrt(l2 - l) : 0
+            return (avgl - devl * 3)...(avgh + devh * 3)
+        }()
+        
+        let volume = UIBezierPath()
+        //            volume.move(to: CGPoint(x: 0, y: 0))
+        
+        let donchian = UIBezierPath()
+        let avg = UIBezierPath()
+        
+        var x: CGFloat = 0
+        var isFirst = true
+        
+        var v = 0...0 as ClosedRange<Int64>
+        var p = 0...0 as ClosedRange<Double>
+        let dateRange = history[range.first!].date...history[range.last!].date
+        var prevT: TimeInterval?
+        
+        var lowest = Double.greatestFiniteMagnitude as Double
+        var highest = 0 as Double
+        
+        for i in range {
+            let item = history[i]
+            if visibleRange.contains(Double(item.lowest)) {
+                lowest = min(lowest, Double(item.lowest))
+            }
+            if visibleRange.contains(Double(item.highest)) {
+                highest = max(highest, Double(item.highest))
+            }
+            
+            let t = item.date.timeIntervalSinceReferenceDate
+            x = CGFloat(item.date.timeIntervalSinceReferenceDate)
+            let lowest = history[max(i - 4, 0)...i].min {
+                $0.lowest < $1.lowest
+                }!
+            let highest = history[max(i - 4, 0)...i].max {
+                $0.highest < $1.highest
+                }!
+            if isFirst {
+                avg.move(to: CGPoint(x: x, y: CGFloat(item.average)))
+                isFirst = false
+            }
+            else {
+                avg.addLine(to: CGPoint(x: x, y: CGFloat(item.average)))
+            }
+            if let prevT = prevT {
+                volume.append(UIBezierPath(rect: CGRect(x: CGFloat(prevT), y: 0, width: CGFloat(t - prevT), height: CGFloat(item.volume))))
+                donchian.append(UIBezierPath(rect: CGRect(x: CGFloat(prevT), y: CGFloat(lowest.lowest), width: CGFloat(t - prevT), height: abs(CGFloat(highest.highest - lowest.lowest)))))
+            }
+            prevT = t
+            
+            v = min(v.lowerBound, item.volume)...max(v.upperBound, item.volume)
+            p = min(p.lowerBound, Double(lowest.lowest))...max(p.upperBound, Double(highest.highest))
+        }
+        
+        var donchianVisibleRange = donchian.bounds
+        if lowest < highest {
+            donchianVisibleRange.origin.y = CGFloat(lowest)
+            donchianVisibleRange.size.height = CGFloat(highest - lowest)
+        }
+        
+        return .marketHistory(Row.MarketHistory(volume: volume, median: avg, donchian: donchian, donchianVisibleRange: donchianVisibleRange, dateRange: dateRange))
     }
 }
-
 
 extension TypeInfoData.Row {
     
@@ -423,5 +547,102 @@ extension TypeInfoData.Row {
         }
         
         self = .skill(TypeInfoData.Row.Skill(id: skillType.objectID, image: image, name: skillType.typeName ?? "\(skillType.typeID)", level: level, trainingTime: subtitle, color: color))
+    }
+    
+}
+
+
+extension TypeInfoData.Row.MarketHistory {
+    init?(history: [ESI.MarketHistoryItem]) {
+        guard !history.isEmpty else {return nil}
+        guard let date = history.last?.date.addingTimeInterval(-3600 * 24 * 365) else {return nil}
+        guard let i = history.firstIndex(where: { $0.date > date }) else { return nil }
+        
+        let range = history.suffix(from: i).indices
+        
+        let visibleRange = { () -> ClosedRange<Double> in
+            var h2 = 0 as Double
+            var h = 0 as Double
+            var l2 = 0 as Double
+            var l = 0 as Double
+            let n = Double(range.count)
+            for i in range {
+                let item = history[i]
+                h += Double(item.highest) / n
+                h2 += Double(item.highest * item.highest) / n
+                l += Double(item.lowest) / n
+                l2 += Double(item.lowest * item.lowest) / n
+            }
+            let avgl = l
+            let avgh = h
+            h *= h
+            l *= l
+            let devh = h < h2 ? sqrt(h2 - h) : 0
+            let devl = l < l2 ? sqrt(l2 - l) : 0
+            return (avgl - devl * 3)...(avgh + devh * 3)
+        }()
+        
+        let volume = UIBezierPath()
+        //            volume.move(to: CGPoint(x: 0, y: 0))
+        
+        let donchian = UIBezierPath()
+        let avg = UIBezierPath()
+        
+        var x: CGFloat = 0
+        var isFirst = true
+        
+        var v = 0...0 as ClosedRange<Int64>
+        var p = 0...0 as ClosedRange<Double>
+        let dateRange = history[range.first!].date...history[range.last!].date
+        var prevT: TimeInterval?
+        
+        var lowest = Double.greatestFiniteMagnitude as Double
+        var highest = 0 as Double
+        
+        for i in range {
+            let item = history[i]
+            if visibleRange.contains(Double(item.lowest)) {
+                lowest = min(lowest, Double(item.lowest))
+            }
+            if visibleRange.contains(Double(item.highest)) {
+                highest = max(highest, Double(item.highest))
+            }
+            
+            let t = item.date.timeIntervalSinceReferenceDate
+            x = CGFloat(item.date.timeIntervalSinceReferenceDate)
+            let lowest = history[max(i - 4, 0)...i].min {
+                $0.lowest < $1.lowest
+                }!
+            let highest = history[max(i - 4, 0)...i].max {
+                $0.highest < $1.highest
+                }!
+            if isFirst {
+                avg.move(to: CGPoint(x: x, y: CGFloat(item.average)))
+                isFirst = false
+            }
+            else {
+                avg.addLine(to: CGPoint(x: x, y: CGFloat(item.average)))
+            }
+            if let prevT = prevT {
+                volume.append(UIBezierPath(rect: CGRect(x: CGFloat(prevT), y: 0, width: CGFloat(t - prevT), height: CGFloat(item.volume))))
+                donchian.append(UIBezierPath(rect: CGRect(x: CGFloat(prevT), y: CGFloat(lowest.lowest), width: CGFloat(t - prevT), height: abs(CGFloat(highest.highest - lowest.lowest)))))
+            }
+            prevT = t
+            
+            v = min(v.lowerBound, item.volume)...max(v.upperBound, item.volume)
+            p = min(p.lowerBound, Double(lowest.lowest))...max(p.upperBound, Double(highest.highest))
+        }
+        
+        var donchianVisibleRange = donchian.bounds
+        if lowest < highest {
+            donchianVisibleRange.origin.y = CGFloat(lowest)
+            donchianVisibleRange.size.height = CGFloat(highest - lowest)
+        }
+        
+        self.volume = volume
+        self.median = avg
+        self.donchian = donchian
+        self.donchianVisibleRange = donchianVisibleRange
+        self.dateRange = dateRange
     }
 }

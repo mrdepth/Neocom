@@ -8,18 +8,6 @@
 
 import SwiftUI
 
-struct SizePreferenceKey: PreferenceKey {
-    static var defaultValue: Value = []
-    
-    static func reduce(value: inout Value, nextValue: () -> Value) {
-        value += nextValue()
-    }
-    
-    typealias Value = [CGSize]
-    
-    
-}
-
 struct AttributedText: View {
     private var text: NSAttributedString
     private var preferredMaxLayoutWidth: CGFloat

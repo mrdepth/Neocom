@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		120E28F0238B12A1006B30EA /* CharacterInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120E28EF238B12A1006B30EA /* CharacterInfo.swift */; };
+		122B4AED239EAE2000461A1A /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122B4AEC239EAE2000461A1A /* Preferences.swift */; };
 		124F06E3238D897E00395D54 /* ImageValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F06E2238D897E00395D54 /* ImageValueTransformer.swift */; };
 		124F06E7238D8EB400395D54 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F06E6238D8EB400395D54 /* Icon.swift */; };
 		124F06E9238D908A00395D54 /* TypeGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F06E8238D908A00395D54 /* TypeGroups.swift */; };
@@ -106,6 +107,7 @@
 
 /* Begin PBXFileReference section */
 		120E28EF238B12A1006B30EA /* CharacterInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfo.swift; sourceTree = "<group>"; };
+		122B4AEC239EAE2000461A1A /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		124F06E2238D897E00395D54 /* ImageValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageValueTransformer.swift; sourceTree = "<group>"; };
 		124F06E6238D8EB400395D54 /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
 		124F06E8238D908A00395D54 /* TypeGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeGroups.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 				16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */,
 				1632472C239145FA00227480 /* Cache.swift */,
 				1632472E2391496500227480 /* Lazy.swift */,
+				122B4AEC239EAE2000461A1A /* Preferences.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -464,6 +467,7 @@
 				124F06E3238D897E00395D54 /* ImageValueTransformer.swift in Sources */,
 				12F06F31238467600061313D /* SDE.xcdatamodeld in Sources */,
 				16AE40F5238FEFD500C6E25B /* DamageView.swift in Sources */,
+				122B4AED239EAE2000461A1A /* Preferences.swift in Sources */,
 				167CB4AC23992828008980EE /* TypeInfoVariationsCell.swift in Sources */,
 				16D667CC238D66FB00A74C98 /* FetchedResultsController.swift in Sources */,
 				12AE040F23847EC600DEFFC5 /* Home.swift in Sources */,

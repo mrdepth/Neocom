@@ -11,8 +11,7 @@ import EVEAPI
 
 struct MarketHistory: View {
     var history: TypeInfoData.Row.MarketHistory
-	@State private var priceHeight: CGFloat = 24
-	@State private var volumeHeight: CGFloat = 24
+	@State private var height: CGFloat = 24
     
     private func grid(_ columns: Int, _ rows: Int) -> some View {
 		ZStack {
@@ -37,14 +36,29 @@ struct MarketHistory: View {
         let from = Calendar(identifier: .gregorian).component(.month, from: history.dateRange.lowerBound) - 1
 //        let months = [Text("Jan"), Text("Feb"), Text("Mar"), Text("Apr"), Text("May"), Text("Jun"), Text("Jul"), Text("Aug"), Text("Sep"), Text("Oct"), Text("Nov"), Text("Dec")]
         
-        return HStack(spacing: 0) {
-            ForEach(from..<from + 12) { i in
-                Text(Self.months[i % 12]).frame(maxWidth: .infinity)
+        let titles = (from..<from + 12).map{Self.months[$0 % 12]}
+        
+        let s = NSAttributedString(string: titles.joined(), attributes: [.font: UIFont.preferredFont(forTextStyle: .caption1)])
+        
+        func fontScale(_ string: NSAttributedString, _ geometry: GeometryProxy) -> CGFloat {
+            let context = NSStringDrawingContext()
+            context.minimumScaleFactor = 0.1
+
+            let rect = string.boundingRect(with: CGSize(width: geometry.size.width - 4 * CGFloat(titles.count), height: geometry.size.height), options: [.usesLineFragmentOrigin], context: context)
+            return context.actualScaleFactor
+        }
+        
+        return GeometryReader { geometry in
+            HStack(spacing: 0) {
+                ForEach(from..<from + 12) { i in
+                    Text(Self.months[i % 12]).frame(maxWidth: .infinity)//.padding(2)
+                }
             }
-		}
+//            .font(.system(.caption, design: .monospaced))
+            .font(.system(size: UIFont.preferredFont(forTextStyle: .caption1).pointSize * fontScale(s, geometry), weight: .regular, design: .default))
+//            .minimumScaleFactor(0.5)
+        }
 //		.lineLimit(1)
-		.font(.caption)
-		.minimumScaleFactor(0.5)
     }
 	
 	private func volume(_ geometry: GeometryProxy) -> some View {
@@ -56,26 +70,42 @@ struct MarketHistory: View {
 //			.background(Color(.systemGroupedBackground))
 	}
     
+    private var volumeTitles: some View {
+        let max = history.volume.bounds.maxY
+        return VStack(alignment: .leading, spacing: 0) {
+            Spacer().frame(height: 20)
+            ForEach(0..<2) {_ in Spacer(minLength: 0).frame(maxHeight: .infinity)}
+            Text(UnitFormatter.localizedString(from: Double(max), unit: .none, style: .short)).frame(maxHeight: .infinity, alignment: .bottom)
+            Spacer(minLength: 0).frame(maxHeight: .infinity)
+            Text("0").frame(maxHeight: .infinity, alignment: .bottom)
+        }.font(.caption)
+    }
+    
+//    private var priceTitles: some View {
+//        let max = history.donchianVisibleRange.maxY
+//    }
+    
     private static let months: [String] = [NSLocalizedString("JAN", comment: ""), NSLocalizedString("FEB", comment: ""), NSLocalizedString("MAR", comment: ""), NSLocalizedString("APR", comment: ""), NSLocalizedString("MAY", comment: ""), NSLocalizedString("JUN", comment: ""), NSLocalizedString("JUL", comment: ""), NSLocalizedString("AUG", comment: ""), NSLocalizedString("SEP", comment: ""), NSLocalizedString("OCT", comment: ""), NSLocalizedString("NOV", comment: ""), NSLocalizedString("DEC", comment: "")]
     
 	
     var body: some View {
-//		HStack(spacing: 4) {
+        HStack(alignment: .bottom, spacing: 4) {
 
-//			VStack(spacing: 1) {
-//				Text(" ").frame(height: 20)
-//                VStack(spacing: 0) {
-//                    Text("3000").frame(maxHeight: .infinity, alignment: .bottom)
-//                    Text("2000").frame(maxHeight: .infinity, alignment: .bottom)
-//                    Text("2000").frame(maxHeight: .infinity, alignment: .bottom)
-//                    Text("2000").frame(maxHeight: .infinity, alignment: .bottom)
-//                    Text("1000").frame(maxHeight: .infinity, alignment: .bottom)
-//					Text("0").frame(maxHeight: .infinity, alignment: .bottom)
-//				}.font(.caption).frame(height: priceHeight).minimumScaleFactor(0.5)
-//			}
+			VStack(spacing: 0) {
+                Spacer().frame(height: 20)
+                VStack(alignment: .trailing, spacing: 0) {
+//                    Text("3 000k").frame(maxHeight: .infinity, alignment: .bottom)
+                    Text("3 000k").frame(maxHeight: .infinity, alignment: .bottom)
+                    Text("2000").frame(maxHeight: .infinity, alignment: .bottom)
+                    Text("2000").frame(maxHeight: .infinity, alignment: .bottom)
+                    Text("2000").frame(maxHeight: .infinity, alignment: .bottom)
+                    Text("1000").frame(maxHeight: .infinity, alignment: .bottom)
+					Text("0").frame(maxHeight: .infinity, alignment: .bottom)
+                    }.font(.caption).frame(height: height)//.minimumScaleFactor(0.5)
+            }
 
-            VStack(spacing: 1) {
-				xTitles.frame(height: 24)
+            VStack(spacing: 0) {
+                xTitles.layoutPriority(1).frame(height: 20)
                 GeometryReader { geometry in
 					ZStack {
 						self.volume(geometry)
@@ -84,11 +114,12 @@ struct MarketHistory: View {
                 }.aspectRatio(12.0 / 6, contentMode: .fit)
 					.background(Color(.systemGroupedBackground))
 					.onPreferenceChange(SizePreferenceKey.self) {
-						self.priceHeight = $0.first?.height ?? 24
+						self.height = $0.first?.height ?? 24
 				}
-//            }
+            }
+            volumeTitles.frame(height: height)
         }
-        .padding()
+        .padding().lineLimit(1)
     }
 }
 

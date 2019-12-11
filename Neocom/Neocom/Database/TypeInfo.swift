@@ -17,6 +17,9 @@ struct TypeInfo: View {
     @Environment(\.account) var account
     @ObservedObject var typeInfo: Lazy<TypeInfoData> = Lazy()
     
+    @UserDefault(key: .marketRegionID)
+    var marketRegionID: Int = SDERegionID.default.rawValue
+    
     var type: SDEInvType
     
     init(type: SDEInvType) {
@@ -27,6 +30,7 @@ struct TypeInfo: View {
         let info = TypeInfoData(type: type,
 								esi: esi,
 								characterID: account?.characterID,
+                                marketRegionID: marketRegionID,
 								managedObjectContext: backgroundManagedObjectContext,
 								override: nil)
         return info
@@ -45,7 +49,7 @@ struct TypeInfo: View {
         case let .mastery(mastery):
             return AnyView(TypeInfoMasteryCell(mastery: mastery))
         case let .marketHistory(history):
-            fatalError()
+            return AnyView(TypeInfoMarketCell(history: history))
         case let .price(price):
             return AnyView(TypeInfoPriceCell(price: price))
         }

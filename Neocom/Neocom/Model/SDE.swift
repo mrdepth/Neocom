@@ -15,6 +15,7 @@ extension SDEInvType {
         return (try? managedObjectContext?.from(SDEDgmTypeAttribute.self).filter(\SDEDgmTypeAttribute.type == self && \SDEDgmTypeAttribute.attributeType?.attributeID == key.rawValue).first()) ?? nil
     }
 }
+
 public enum SDEAttributeID: Int32, Codable {
     case none = 0
     case charismaBonus = 175
@@ -154,6 +155,8 @@ public enum SDECategoryID: Int32 {
 public enum SDERegionID: Int {
     case theForge = 10000002
     case whSpace = 11000000
+    
+    static let `default` = SDERegionID.theForge
 }
 
 public enum SDEDgmppItemCategoryID: Int32 {

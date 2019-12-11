@@ -65,10 +65,7 @@ struct TypesContent: View {
     var types: [FetchedResultsController<SDEInvType>.Section]
     
     var body: some View {
-        print(types.map {
-            ($0.name, $0.objects.map{$0.typeName!})
-        })
-        return ForEach(types, id: \.name) { section in
+        ForEach(types, id: \.name) { section in
             Section(header: Text(section.objects.first?.metaGroup?.metaGroupName?.uppercased() ?? "")) {
                 ForEach(section.objects, id: \.objectID) { type in
                     NavigationLink(destination: TypeInfo(type: type)) {

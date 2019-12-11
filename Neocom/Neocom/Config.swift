@@ -8,6 +8,8 @@
 
 import Foundation
 
+let bundleID = Bundle.main.object(forInfoDictionaryKey: kCFBundleIdentifierKey as String) as! String
+
 struct Config {
     struct ESI {
         var clientID = "a0cc80b7006944249313dc22205ec645"

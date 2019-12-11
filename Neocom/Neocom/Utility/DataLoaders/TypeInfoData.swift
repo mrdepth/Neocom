@@ -18,6 +18,7 @@ class TypeInfoData: ObservableObject {
     @Published var pilot: Pilot?
     @Published var sections: [Section] = []
     @Published var price: ESI.MarketPrice?
+    @Published var marketHistory: [ESI.MarketHistoryItem]?
     
     enum Row: Identifiable {
         struct Attribute: Identifiable {
@@ -101,7 +102,7 @@ class TypeInfoData: ObservableObject {
         var rows: [Row]
     }
     
-    init(type: SDEInvType, esi: ESI, characterID: Int64?, managedObjectContext: NSManagedObjectContext, override attributeValues: [Int: Double]?) {
+    init(type: SDEInvType, esi: ESI, characterID: Int64?, marketRegionID: Int, managedObjectContext: NSManagedObjectContext, override attributeValues: [Int: Double]?) {
         esi.image.type(Int(type.typeID), size: .size1024).receive(on: RunLoop.main).sink(receiveCompletion: {_ in}) { [weak self] (result) in
             self?.renderImage = result
         }.store(in: &subscriptions)
@@ -114,6 +115,12 @@ class TypeInfoData: ObservableObject {
             .sink(receiveCompletion: {_ in }) { [weak self] result in
                 self?.price = result
             }.store(in: &subscriptions)
+            
+            esi.markets.regionID(marketRegionID).history().get(typeID: typeID)
+                .receive(on: RunLoop.main)
+                .sink(receiveCompletion: {_ in }) { [weak self] result in
+                    self?.marketHistory = result
+            }.store(in: &subscriptions)
         }
         
         if let characterID = characterID {
@@ -124,10 +131,10 @@ class TypeInfoData: ObservableObject {
             }.store(in: &subscriptions)
         }
         
-        Publishers.CombineLatest($pilot, $price).flatMap { (pilot, price) in
+        Publishers.CombineLatest3($pilot, $price, $marketHistory).flatMap { (pilot, price, marketHistory) in
             Future { promise in
                 managedObjectContext.perform {
-                    promise(.success(self.info(for: managedObjectContext.object(with: type.objectID) as! SDEInvType, pilot: pilot, price: price, managedObjectContext: managedObjectContext, override: attributeValues)))
+                    promise(.success(self.info(for: managedObjectContext.object(with: type.objectID) as! SDEInvType, pilot: pilot, price: price, marketHistory: marketHistory, managedObjectContext: managedObjectContext, override: attributeValues)))
                 }
             }
         }.receive(on: RunLoop.main).sink { [weak self] result in
@@ -140,7 +147,7 @@ class TypeInfoData: ObservableObject {
 
 extension TypeInfoData {
     
-    private func info(for type: SDEInvType, pilot: Pilot?, price: ESI.MarketPrice?, managedObjectContext: NSManagedObjectContext, override attributeValues: [Int: Double]?) -> [Section] {
+    private func info(for type: SDEInvType, pilot: Pilot?, price: ESI.MarketPrice?, marketHistory: [ESI.MarketHistoryItem]?, managedObjectContext: NSManagedObjectContext, override attributeValues: [Int: Double]?) -> [Section] {
         
         let results = managedObjectContext.from(SDEDgmTypeAttribute.self)
             .filter(\SDEDgmTypeAttribute.type == type && \SDEDgmTypeAttribute.attributeType?.published == true)
@@ -150,10 +157,11 @@ extension TypeInfoData {
         
         var sections = [Section]()
         
-        if let price = price?.averagePrice {
+        let market = [(price?.averagePrice).map{Row.price($0)}, marketHistory.flatMap { marketInfo(history: $0) }].compactMap{$0}
+        if !market.isEmpty {
             let section = Section(id: "Market",
                     name: NSLocalizedString("Market", comment: "").uppercased(),
-                    rows: [.price(price)])
+                    rows: market)
             sections.append(section)
         }
         

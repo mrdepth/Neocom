@@ -68,7 +68,7 @@ struct ContentView: View {
         }
         return AnyView(v)
     }
-    
+	
     var body: some View {
         
         NavigationView {

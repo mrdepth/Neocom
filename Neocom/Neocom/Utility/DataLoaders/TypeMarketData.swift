@@ -1,5 +1,5 @@
 //
-//  TypeMarketOrders.swift
+//  TypeMarketData.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 12/11/19.
@@ -12,7 +12,7 @@ import EVEAPI
 import CoreData
 import Alamofire
 
-class TypeMarketOrders: ObservableObject {
+class TypeMarketData: ObservableObject {
     
     struct Row: Identifiable {
         var id: Int64 {order.orderID}
@@ -39,7 +39,7 @@ class TypeMarketOrders: ObservableObject {
             let sell = orders[..<i].sorted{$0.price < $1.price}.map{Row(order: $0, location: locations[$0.locationID])}
             let buy = orders[i...].sorted{$0.price > $1.price}.map{Row(order: $0, location: locations[$0.locationID])}
             return Data(buyOrders: buy, sellOrders: sell)
-        }.asResult().sink { [weak self] result in
+        }.asResult().receive(on: RunLoop.main).sink { [weak self] result in
             self?.result = result
         }
     }

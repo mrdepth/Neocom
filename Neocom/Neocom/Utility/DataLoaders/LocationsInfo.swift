@@ -88,8 +88,8 @@ class EVELocation {
                 publishers.append(p)
             }
             return Publishers.MergeMany(publishers).collect().map {
-                Dictionary($0.joined()) { (a, _) in a }
+                Dictionary(($0 + [stations]).joined()) { (a, _) in a }
             }.eraseToAnyPublisher()
-        }.eraseToAnyPublisher()
+		}.eraseToAnyPublisher()
     }
 }

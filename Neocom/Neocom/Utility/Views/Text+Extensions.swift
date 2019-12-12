@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Expressible
+import Alamofire
 
 //struct LocationLabel: View {
 //    var location: EVELocation
@@ -47,12 +48,19 @@ extension Text {
             locationName = location.structureName ?? NSLocalizedString("Unknown Location", comment: "")
         }
         
-        self = Text(security).fontWeight(.bold).foregroundColor(.security(location.solarSystem?.security ?? 0)) + Text(solarSystemName).fontWeight(.bold) + Text(locationName)
+        self = Text(security).foregroundColor(.security(location.solarSystem?.security ?? 0)) + Text(solarSystemName).fontWeight(.bold) + Text(locationName)
     }
+	
+	init(_ error: Error) {
+		self = Text(error.localizedDescription).foregroundColor(.secondary)
+	}
 }
 
 struct LocationLabel_Previews: PreviewProvider {
     static var previews: some View {
+		VStack {
         try! Text(EVELocation(AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEStaStation.self).first()!))
+			Text(AFError.explicitlyCancelled)
+		}
     }
 }

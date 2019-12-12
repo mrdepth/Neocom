@@ -20,6 +20,9 @@ extension ESI {
     typealias AllianceInfo = ESI.Alliances.AllianceID.Success
     typealias MarketHistoryItem = ESI.Markets.RegionID.History.Success
     typealias MarketPrice = ESI.Markets.Prices.Success
+    typealias ItemName = ESI.Universe.Names.Success
+    typealias StructureInfo = ESI.Universe.Structures.StructureID.Success
+    typealias TypeMarketOrder = ESI.Markets.RegionID.Orders.Success
     
     convenience init(token: OAuth2Token) {
         self.init(token: token, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey)

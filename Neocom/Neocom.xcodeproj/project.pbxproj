@@ -28,6 +28,8 @@
 		12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F322384676F0061313D /* Storage.xcdatamodeld */; };
 		12F06F6923846C890061313D /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F6823846C890061313D /* Storage.swift */; };
 		12F06F6B23846D670061313D /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F6A23846D670061313D /* Main.swift */; };
+		1602719823A2792900067AA1 /* TypeMarketOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1602719723A2792900067AA1 /* TypeMarketOrderCell.swift */; };
+		1602719A23A27A5800067AA1 /* LocationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1602719923A27A5800067AA1 /* LocationLabel.swift */; };
 		161C6EE723A0EEE000777009 /* TypeInfoMarketCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161C6EE623A0EEE000777009 /* TypeInfoMarketCell.swift */; };
 		161C6EF723A11B8400777009 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161C6EF623A11B8400777009 /* UserDefault.swift */; };
 		161C6EFD23A12FBC00777009 /* TypeMarketOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161C6EFC23A12FBC00777009 /* TypeMarketOrders.swift */; };
@@ -134,6 +136,8 @@
 		12F06F3F238469C10061313D /* SDE.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDE.sqlite; sourceTree = SOURCE_ROOT; };
 		12F06F6823846C890061313D /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		12F06F6A23846D670061313D /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
+		1602719723A2792900067AA1 /* TypeMarketOrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMarketOrderCell.swift; sourceTree = "<group>"; };
+		1602719923A27A5800067AA1 /* LocationLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationLabel.swift; sourceTree = "<group>"; };
 		161C6EE623A0EEE000777009 /* TypeInfoMarketCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoMarketCell.swift; sourceTree = "<group>"; };
 		161C6EF623A11B8400777009 /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 		161C6EFC23A12FBC00777009 /* TypeMarketOrders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMarketOrders.swift; sourceTree = "<group>"; };
@@ -349,6 +353,7 @@
 				16AE40F4238FEFD500C6E25B /* DamageView.swift */,
 				166EE98A23962F2500388D65 /* AttributedText.swift */,
 				16EEBDF42397E4DE00F2E216 /* SkillName.swift */,
+				1602719923A27A5800067AA1 /* LocationLabel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -379,6 +384,7 @@
 				1653663A239E733C0096990F /* TypeInfoPriceCell.swift */,
 				161C6EE623A0EEE000777009 /* TypeInfoMarketCell.swift */,
 				12B1A3BD239D2F8F00BED705 /* MarketHistory.swift */,
+				1602719723A2792900067AA1 /* TypeMarketOrderCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -474,6 +480,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				12F06F6B23846D670061313D /* Main.swift in Sources */,
+				1602719A23A27A5800067AA1 /* LocationLabel.swift in Sources */,
 				161C6EE723A0EEE000777009 /* TypeInfoMarketCell.swift in Sources */,
 				169891B0238E696900FBA0B3 /* ShipTypeCell.swift in Sources */,
 				124F06E9238D908A00395D54 /* TypeGroups.swift in Sources */,
@@ -488,6 +495,7 @@
 				167CB4B123994B24008980EE /* TypeInfoMasteryCell.swift in Sources */,
 				169891A1238E50AC00FBA0B3 /* Types.swift in Sources */,
 				169A91A5238D1D81004E3DAA /* ESI+Extensions.swift in Sources */,
+				1602719823A2792900067AA1 /* TypeMarketOrderCell.swift in Sources */,
 				1698919F238E4BA500FBA0B3 /* ObservedObjectView.swift in Sources */,
 				169A72D1238BE0EF00E4C181 /* TimeIntervalFormatter.swift in Sources */,
 				12CBA91D2399596B001C1C82 /* MasteryData.swift in Sources */,

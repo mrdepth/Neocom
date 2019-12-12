@@ -46,22 +46,20 @@ extension Result {
 
 extension NSManagedObjectContext: Scheduler {
     
-    public func schedule(after date: DispatchQueue.SchedulerTimeType, interval: DispatchQueue.SchedulerTimeType.Stride, tolerance: DispatchQueue.SchedulerTimeType.Stride, options: DispatchQueue.SchedulerOptions?, _ action: @escaping () -> Void) -> Cancellable {
-        DispatchQueue.main.schedule(after: date, interval: interval, tolerance: tolerance, options: options) {
+    public func schedule(after date: DispatchQueue.SchedulerTimeType, interval: DispatchQueue.SchedulerTimeType.Stride, tolerance: DispatchQueue.SchedulerTimeType.Stride, options: SchedulerOptions?, _ action: @escaping () -> Void) -> Cancellable {
+        DispatchQueue.main.schedule(after: date, interval: interval, tolerance: tolerance, options: nil) {
             self.perform(action)
         }
     }
     
-    public func schedule(after date: DispatchQueue.SchedulerTimeType, tolerance: DispatchQueue.SchedulerTimeType.Stride, options: DispatchQueue.SchedulerOptions?, _ action: @escaping () -> Void) {
-        DispatchQueue.main.schedule(after: date, tolerance: tolerance, options: options) {
+    public func schedule(after date: DispatchQueue.SchedulerTimeType, tolerance: DispatchQueue.SchedulerTimeType.Stride, options: SchedulerOptions?, _ action: @escaping () -> Void) {
+        DispatchQueue.main.schedule(after: date, tolerance: tolerance, options: nil) {
             self.perform(action)
         }
     }
     
-    public func schedule(options: DispatchQueue.SchedulerOptions?, _ action: @escaping () -> Void) {
-        DispatchQueue.main.schedule(options: options) {
-            self.perform(action)
-        }
+    public func schedule(options: SchedulerOptions?, _ action: @escaping () -> Void) {
+        self.perform(action)
     }
     
     public var now: DispatchQueue.SchedulerTimeType {
@@ -74,7 +72,7 @@ extension NSManagedObjectContext: Scheduler {
     
     public typealias SchedulerTimeType = DispatchQueue.SchedulerTimeType
     
-    public typealias SchedulerOptions = DispatchQueue.SchedulerOptions
+    public typealias SchedulerOptions = Never
     
     
 }

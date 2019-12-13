@@ -52,6 +52,15 @@ struct Nested: View {
     }
 }
 
+struct SearchBar: UIViewRepresentable {
+    func makeUIView(context: UIViewRepresentableContext<SearchBar>) -> UISearchBar {
+        return UISearchBar()
+    }
+    
+    func updateUIView(_ uiView: UISearchBar, context: UIViewRepresentableContext<SearchBar>) {
+    }
+}
+
 struct ContentView: View {
     @State var b = false
     @ObservedObject var a: A = A()
@@ -72,7 +81,16 @@ struct ContentView: View {
     var body: some View {
         
         NavigationView {
-            TypeCategories()
+            List {
+                SearchBar()
+                Section(header: Text("H1")) {
+                    Text("a")
+                    Section(header: Text("H2")) {
+                        Text("b")
+                    }
+                }
+            }.listStyle(GroupedListStyle())
+//            TypeCategories()
 //            Home()
 //            TypeInfo(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!).environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         }

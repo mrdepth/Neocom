@@ -85,6 +85,7 @@
 		16AE40F1238FDAD000C6E25B /* ModuleTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AE40F0238FDAD000C6E25B /* ModuleTypeCell.swift */; };
 		16AE40F3238FDDE600C6E25B /* ChargeTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AE40F2238FDDE600C6E25B /* ChargeTypeCell.swift */; };
 		16AE40F5238FEFD500C6E25B /* DamageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AE40F4238FEFD500C6E25B /* DamageView.swift */; };
+		16B45EFF23A3663400A36A96 /* MarketRegionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B45EFE23A3663400A36A96 /* MarketRegionPicker.swift */; };
 		16D667CC238D66FB00A74C98 /* FetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */; };
 		16D8DC80238808870057A6F4 /* Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D8DC7F238808870057A6F4 /* Combine.swift */; };
 		16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DFF82E238D360B004C1185 /* TypeCategories.swift */; };
@@ -191,6 +192,7 @@
 		16AE40F0238FDAD000C6E25B /* ModuleTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleTypeCell.swift; sourceTree = "<group>"; };
 		16AE40F2238FDDE600C6E25B /* ChargeTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeTypeCell.swift; sourceTree = "<group>"; };
 		16AE40F4238FEFD500C6E25B /* DamageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamageView.swift; sourceTree = "<group>"; };
+		16B45EFE23A3663400A36A96 /* MarketRegionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketRegionPicker.swift; sourceTree = "<group>"; };
 		16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResultsController.swift; sourceTree = "<group>"; };
 		16D8DC7F238808870057A6F4 /* Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Combine.swift; path = Neocom/Home/Combine.swift; sourceTree = SOURCE_ROOT; };
 		16D8DC81238813A40057A6F4 /* DataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLoader.swift; sourceTree = "<group>"; };
@@ -403,6 +405,7 @@
 				1698C05B239A8EB400193274 /* TypeMateryLevel.swift */,
 				1698C05D239A954000193274 /* TypeMasterySkills.swift */,
 				1273F8D223A2C69B00DB755B /* TypeMarketOrders.swift */,
+				16B45EFE23A3663400A36A96 /* MarketRegionPicker.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -490,6 +493,7 @@
 				12F06F31238467600061313D /* SDE.xcdatamodeld in Sources */,
 				161C6EFF23A1303700777009 /* LocationsInfo.swift in Sources */,
 				16AE40F5238FEFD500C6E25B /* DamageView.swift in Sources */,
+				16B45EFF23A3663400A36A96 /* MarketRegionPicker.swift in Sources */,
 				122B4AED239EAE2000461A1A /* Preferences.swift in Sources */,
 				1273F8D323A2C69B00DB755B /* TypeMarketOrders.swift in Sources */,
 				167CB4AC23992828008980EE /* TypeInfoVariationsCell.swift in Sources */,

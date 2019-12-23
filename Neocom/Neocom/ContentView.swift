@@ -82,7 +82,8 @@ struct ContentView: View {
         
         NavigationView {
 //			MarketRegionPicker() { _ in }
-			            TypeCategories()
+//            TypeCategories()
+            TypeMarketGroup(parent: nil)
 //            Home()
 //            TypeInfo(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!).environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         }

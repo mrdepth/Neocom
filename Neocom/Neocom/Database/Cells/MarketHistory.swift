@@ -51,8 +51,8 @@ struct MarketHistory: View {
         
         return GeometryReader { geometry in
             HStack(spacing: 0) {
-                ForEach(from..<from + 12) { i in
-                    Text(Self.months[i % 12]).frame(maxWidth: .infinity)//.padding(2)
+                ForEach(0..<12) { i in
+                    Text(Self.months[(i + from) % 12]).frame(maxWidth: .infinity)//.padding(2)
                 }
             }
             .font(.system(size: UIFont.preferredFont(forTextStyle: .caption1).pointSize * fontScale(s, geometry), weight: .regular, design: .default))

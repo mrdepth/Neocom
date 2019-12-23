@@ -25,25 +25,24 @@ struct TypeMarketOrders: View {
     @Environment(\.esi) var esi
 	@Environment(\.self) var environment
 
-	@UserDefault(key: .marketRegionID)
-    var marketRegionID: Int = SDERegionID.default.rawValue
-	
+    @ObservedObject private var marketRegionID = UserDefault(wrappedValue: SDERegionID.default.rawValue,
+                                                       key: .marketRegionID)
+
 	@State private var mode = Mode.sell
 	@State private var isMarketRegionPickerPresented = false
 	
 	private var regionName: String {
-		(try? managedObjectContext.from(SDEMapRegion.self).filter(\SDEMapRegion.regionID == marketRegionID).first()?.regionName) ?? NSLocalizedString("Unknown", comment: "")
+        (try? managedObjectContext.from(SDEMapRegion.self).filter(\SDEMapRegion.regionID == marketRegionID.wrappedValue).first()?.regionName) ?? NSLocalizedString("Unknown", comment: "")
 	}
 
     var body: some View {
-//		let orders = self.orders[marketRegionID, default: TypeMarketData(type: type, esi: esi, regionID: marketRegionID, managedObjectContext: backgroundManagedObjectContext)]
-		let orders = marketOrders.get(initial: TypeMarketData(type: type, esi: esi, regionID: marketRegionID, managedObjectContext: backgroundManagedObjectContext))
+        let orders = marketOrders.get(initial: TypeMarketData(type: type, esi: esi, regionID: marketRegionID.wrappedValue, managedObjectContext: backgroundManagedObjectContext))
 		let error = orders.result?.error
 		let data = orders.result?.value
 
 		return List {
 			Section(header:
-				Picker(selection: $mode, label: Text("Filter")) {
+                Picker(selection: $mode, label: Text("Filter")) {
 					Text("Sellers").tag(Mode.sell)
 					Text("Buyers").tag(Mode.buy)
 				}.pickerStyle(SegmentedPickerStyle())) {
@@ -56,15 +55,17 @@ struct TypeMarketOrders: View {
 		}.listStyle(GroupedListStyle()).overlay(error.map{Text($0).padding()})
 			.navigationBarTitle("Market Orders")
 			.navigationBarItems(trailing: Button(regionName) {self.isMarketRegionPickerPresented = true})
+            .overlay(orders.result == nil ? ActivityIndicator(style: .large) : nil)
+            .overlay((orders.result?.error).map{Text($0)})
 			.sheet(isPresented: $isMarketRegionPickerPresented) {
 				NavigationView {
 					MarketRegionPicker { region in
-						self.marketRegionID = Int(region.regionID)
-						self.marketOrders.set(TypeMarketData(type: self.type, esi: self.esi, regionID: self.marketRegionID, managedObjectContext: self.backgroundManagedObjectContext))
+                        self.marketRegionID.wrappedValue = Int(region.regionID)
+//						self.marketOrders.set(TypeMarketData(type: self.type, esi: self.esi, regionID: self.marketRegionID, managedObjectContext: self.backgroundManagedObjectContext))
 						self.isMarketRegionPickerPresented = false
 					}.navigationBarItems(trailing: Button("Cancel") {self.isMarketRegionPickerPresented = false})
 				}.modifier(ServicesViewModifier(environment: self.environment))
-		}
+        }
     }
 }
 

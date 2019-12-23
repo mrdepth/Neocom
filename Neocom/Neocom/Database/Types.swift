@@ -15,6 +15,7 @@ struct Types: View {
     enum Source {
         case predicate(Predictable, String)
         case group(SDEInvGroup)
+        case marketGroup(SDEInvMarketGroup)
     }
     
     private let predicate: Predictable
@@ -28,6 +29,9 @@ struct Types: View {
         case let .group(group):
             predicate = \SDEInvType.group == group
             title = group.groupName ?? "\(group.groupID)"
+        case let .marketGroup(group):
+            predicate = \SDEInvType.marketGroup == group
+            title = group.marketGroupName ?? "\(group.marketGroupID)"
         }
     }
     

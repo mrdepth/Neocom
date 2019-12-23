@@ -77,8 +77,8 @@ class EVELocation {
                 }.replaceError(with: []).eraseToAnyPublisher()
             }
 
-            if !ids.isEmpty {
-                let p = esi.universe.names().post(ids: ids.map{Int($0)}).flatMap { names in
+            if !missingIDs.isEmpty {
+                let p = esi.universe.names().post(ids: missingIDs.map{Int($0)}).flatMap { names in
                     Future { promise in
                         managedObjectContext.perform {
                             promise(.success(names.map{(Int64($0.id), EVELocation($0, managedObjectContext: managedObjectContext))}))

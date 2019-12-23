@@ -56,6 +56,15 @@ extension SDEInvGroup {
     }
 }
 
+extension SDEInvMarketGroup {
+    var image: Image {
+        let image = icon?.image?.image ??
+            (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
+            UIImage()
+        return Image(uiImage: image)
+    }
+}
+
 extension SDEInvType {
     var image: Image {
         let image = icon?.image?.image ??

@@ -13,14 +13,8 @@ struct TypeInfoMarketHistoryCell: View {
 	var type: SDEInvType
 	
     @Environment(\.esi) var esi
-//	@UserDefault(key: .marketRegionID)
 	@ObservedObject private var regionID = UserDefault(wrappedValue: SDERegionID.default.rawValue,
 													   key: .marketRegionID)
-//	private var regionID: Int = SDERegionID.default.rawValue
-
-	//    @ObservedObject var history: Lazy<MarketHistoryData> = Lazy()
-
-//	var history: MarketHistoryData.History
     
     var body: some View {
 		ObservedObjectView(MarketHistoryData(type: type, regionID: regionID.wrappedValue, esi: esi)) { history in

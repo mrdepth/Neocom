@@ -8,13 +8,14 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 enum UserDefaultsKey: String {
     case marketRegionID = "marketRegion"
 }
 
 
-@propertyWrapper class UserDefault<Value>: ObservableObject {
+@propertyWrapper class UserDefault<Value>: ObservableObject, DynamicProperty {
     var wrappedValue: Value {
         get {
             return userDefaults.value(forKey: "\(bundleID).\(key.rawValue)") as? Value ?? initialValue
@@ -36,7 +37,9 @@ enum UserDefaultsKey: String {
         self.userDefaults = userDefaults
         initialValue = wrappedValue
         let willChange = objectWillChange
-        subscription = NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification, object: userDefaults).sink { _ in willChange.send() }
+        subscription = NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification, object: userDefaults).sink { [weak self] _ in willChange.send()
+			self?.update()
+		}
     }
 
     convenience init(wrappedValue: Value, key: UserDefaultsKey) {

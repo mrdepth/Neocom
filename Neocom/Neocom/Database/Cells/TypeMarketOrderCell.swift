@@ -12,7 +12,11 @@ import Expressible
 
 struct TypeMarketOrderCell: View {
     var order: TypeMarketData.Row
-    var body: some View {
+    
+	@UserDefault(key: .marketRegionID)
+    var regionID: Int = SDERegionID.default.rawValue
+
+	var body: some View {
         VStack(alignment: .leading) {
             HStack {
 				Text(UnitFormatter.localizedString(from: order.order.price, unit: .isk, style: .long))

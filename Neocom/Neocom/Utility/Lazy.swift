@@ -10,22 +10,30 @@ import Foundation
 import Combine
 
 class Lazy<Value: ObservableObject>: ObservableObject {
-    private var store: Value?
+	private var wrappedValue: Value? {
+		didSet {
+            let subject = objectWillChange
+            subscription = wrappedValue?.objectWillChange.sink { _ in
+                subject.send()
+            }
+		}
+	}
     private var subscription: AnyCancellable?
     
     var objectWillChange: ObservableObjectPublisher = ObservableObjectPublisher()
     
     func get(initial initialValue: @autoclosure () -> Value) -> Value {
-        if let value = store {
+        if let value = wrappedValue {
             return value
         }
         else {
-            store = initialValue()
-            let subject = objectWillChange
-            subscription = store!.objectWillChange.sink { _ in
-                subject.send()
-            }
-            return store!
+            wrappedValue = initialValue()
+            return wrappedValue!
         }
     }
+	
+	func set(_ value: Value) {
+		wrappedValue = value
+		objectWillChange.send()
+	}
 }

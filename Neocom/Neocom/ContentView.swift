@@ -81,16 +81,8 @@ struct ContentView: View {
     var body: some View {
         
         NavigationView {
-            List {
-                SearchBar()
-                Section(header: Text("H1")) {
-                    Text("a")
-                    Section(header: Text("H2")) {
-                        Text("b")
-                    }
-                }
-            }.listStyle(GroupedListStyle())
-//            TypeCategories()
+//			MarketRegionPicker() { _ in }
+			            TypeCategories()
 //            Home()
 //            TypeInfo(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!).environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         }

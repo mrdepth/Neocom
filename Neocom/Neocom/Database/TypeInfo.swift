@@ -48,8 +48,9 @@ struct TypeInfo: View {
             return AnyView(TypeInfoVariationsCell(variations: variations))
         case let .mastery(mastery):
             return AnyView(TypeInfoMasteryCell(mastery: mastery))
-        case let .marketHistory(history):
-            return AnyView(TypeInfoMarketCell(history: history))
+        case .marketHistory:
+			return AnyView(TypeInfoMarketHistoryCell(type: type))
+//            return AnyView(NavigationLink(destination: TypeMarketOrders(type: type)) {TypeInfoMarketHistoryCell(type: type)})
         case let .price(price):
             return AnyView(TypeInfoPriceCell(price: price))
         }

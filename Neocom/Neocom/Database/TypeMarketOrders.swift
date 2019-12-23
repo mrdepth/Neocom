@@ -19,20 +19,24 @@ struct TypeMarketOrders: View {
 	var type: SDEInvType
 
 	@ObservedObject var marketOrders = Lazy<TypeMarketData>()
+//	@State var orders = Cache<Int, TypeMarketData>()
 	@Environment(\.managedObjectContext) var managedObjectContext
 	@Environment(\.backgroundManagedObjectContext) var backgroundManagedObjectContext
     @Environment(\.esi) var esi
+	@Environment(\.self) var environment
 
 	@UserDefault(key: .marketRegionID)
     var marketRegionID: Int = SDERegionID.default.rawValue
 	
-	@State var mode = Mode.sell
+	@State private var mode = Mode.sell
+	@State private var isMarketRegionPickerPresented = false
 	
 	private var regionName: String {
 		(try? managedObjectContext.from(SDEMapRegion.self).filter(\SDEMapRegion.regionID == marketRegionID).first()?.regionName) ?? NSLocalizedString("Unknown", comment: "")
 	}
 
     var body: some View {
+//		let orders = self.orders[marketRegionID, default: TypeMarketData(type: type, esi: esi, regionID: marketRegionID, managedObjectContext: backgroundManagedObjectContext)]
 		let orders = marketOrders.get(initial: TypeMarketData(type: type, esi: esi, regionID: marketRegionID, managedObjectContext: backgroundManagedObjectContext))
 		let error = orders.result?.error
 		let data = orders.result?.value
@@ -50,9 +54,17 @@ struct TypeMarketOrders: View {
 					}
 			}
 		}.listStyle(GroupedListStyle()).overlay(error.map{Text($0).padding()})
-		.navigationBarTitle("Market Orders")
-		.navigationBarItems(trailing: NavigationLink(regionName, destination: Text("dummy")))
-
+			.navigationBarTitle("Market Orders")
+			.navigationBarItems(trailing: Button(regionName) {self.isMarketRegionPickerPresented = true})
+			.sheet(isPresented: $isMarketRegionPickerPresented) {
+				NavigationView {
+					MarketRegionPicker { region in
+						self.marketRegionID = Int(region.regionID)
+						self.marketOrders.set(TypeMarketData(type: self.type, esi: self.esi, regionID: self.marketRegionID, managedObjectContext: self.backgroundManagedObjectContext))
+						self.isMarketRegionPickerPresented = false
+					}.navigationBarItems(trailing: Button("Cancel") {self.isMarketRegionPickerPresented = false})
+				}.modifier(ServicesViewModifier(environment: self.environment))
+		}
     }
 }
 

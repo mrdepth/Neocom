@@ -1,5 +1,5 @@
 //
-//  Combine.swift
+//  Combine+Extensions.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 11/22/19.

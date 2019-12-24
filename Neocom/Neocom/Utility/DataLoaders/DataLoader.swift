@@ -16,16 +16,17 @@ class DataLoader<Success, Failure: Error>: ObservableObject {
 
     private var subscription: AnyCancellable?
 
-    func update<P>(_ publisher: P) where P: Publisher, P.Output == Success, P.Failure == Failure {
+    var result: Result<Success, Failure>? {
+        willSet {
+            objectWillChange.send()
+        }
+    }
+    
+    var objectWillChange = ObservableObjectPublisher()
+    
+    init<P: Publisher>(_ publisher: P) where P.Output == Success, P.Failure == Failure {
         subscription = publisher.asResult().sink { [weak self] result in
             self?.result = result
         }
     }
-    
-    @Published var result: Result<Success, Failure>?
-    
-    func publisher() -> Publishers.MapError<Publishers.TryMap<Publishers.CompactMap<Published<Result<Success, Failure>?>.Publisher, Result<Success, Failure>>, Success>, Failure> {
-		return $result.compactMap{$0}.tryGet()
-    }
-
 }

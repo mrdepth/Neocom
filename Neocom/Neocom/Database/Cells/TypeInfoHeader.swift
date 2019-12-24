@@ -27,7 +27,7 @@ struct TypeInfoHeader: View {
             }
             else {
                 HStack {
-                    (renderImage ?? type.image).resizable().scaledToFit().frame(width: 64, height: 64).cornerRadius(8).edgesIgnoringSafeArea(.horizontal)
+                    type.image.resizable().scaledToFit().frame(width: 64, height: 64).cornerRadius(8).edgesIgnoringSafeArea(.horizontal)
                     title()
                 }.padding([.horizontal, .top], 15)
             }
@@ -53,4 +53,3 @@ struct TypeInfoHeader_Previews: PreviewProvider {
         }
     }
 }
-

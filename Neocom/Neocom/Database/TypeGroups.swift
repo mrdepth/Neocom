@@ -36,7 +36,7 @@ struct TypeGroups: View {
                 }.listStyle(GroupedListStyle())
                     .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
             }
-        }.navigationBarTitle(category.categoryName ?? "Categories")
+        }.navigationBarTitle(category.categoryName ?? NSLocalizedString("Categories", comment: ""))
     }
 }
 

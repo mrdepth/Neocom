@@ -16,6 +16,7 @@ struct Types: View {
         case predicate(Predictable, String)
         case group(SDEInvGroup)
         case marketGroup(SDEInvMarketGroup)
+		case npc(SDENpcGroup)
     }
     
     private let predicate: Predictable
@@ -32,6 +33,9 @@ struct Types: View {
         case let .marketGroup(group):
             predicate = \SDEInvType.marketGroup == group
             title = group.marketGroupName ?? "\(group.marketGroupID)"
+		case let .npc(group):
+			predicate = \SDEInvType.group == group.group
+			title = group.npcGroupName ?? ""
         }
     }
     

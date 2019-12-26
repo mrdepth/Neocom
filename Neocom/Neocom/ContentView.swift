@@ -7,47 +7,40 @@
 //
 
 import SwiftUI
-import EVEAPI
+import Combine
 
 class A: ObservableObject {
-    @Published var text: String = "Hello World"
+    @Published var i = 10
     
     init() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.text = "Updated"
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.i = 20
         }
     }
 }
 
 struct Child: View {
-    var text: String
-    
     var body: some View {
-        Text(text)
-    }
-}
-
-struct Root: View {
-    @ObservedObject var a = A()
-    
-    var body: some View {
-        NavigationLink(destination: Child(text: a.text)) {
-            Text("Next")
+        ObservedObjectView(A()) { a in
+            Text("a.i = \(a.i)")
+            ForEach((0..<a.i).map{$0}, id: \.self) { i in
+                Text("\(i)")
+            }
         }
     }
 }
 
 struct ContentView: View {
+    @State var b = false
     var body: some View {
         
         NavigationView {
-//            List {
-//                ForEach(0..<2) { _ in
-//                    Root()
-//                }
-//            }
-//            TypeMarketGroup(parent: nil)
-            CertificateGroups()
+            List {
+//                Text("Row 1")
+                Child()
+
+            }.listStyle(GroupedListStyle())
+//            TypeCategories()
         }
     }
 }

@@ -13,7 +13,7 @@ struct ObservedObjectView<Content: View, Value: ObservableObject>: View {
     @ObservedObject var value: Value
     var content: (Value) -> Content
     
-    @inlinable init(_ value: Value, content: @escaping (Value) -> Content) {
+    @inlinable init(_ value: Value, @ViewBuilder content: @escaping (Value) -> Content) {
         self.value = value
         self.content = content
     }

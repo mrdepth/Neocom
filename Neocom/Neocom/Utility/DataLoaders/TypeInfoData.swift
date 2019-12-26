@@ -22,7 +22,7 @@ class TypeInfoData: ObservableObject {
     
     enum Row: Identifiable {
         struct Attribute: Identifiable {
-            var id: NSManagedObjectID
+            var id: AnyHashable
             var image: UIImage?
             var title: String
             var subtitle: String
@@ -31,7 +31,8 @@ class TypeInfoData: ObservableObject {
         }
         
         struct Skill: Identifiable {
-            var id: NSManagedObjectID
+            var id: AnyHashable { return objectID }
+            var objectID: NSManagedObjectID
             var image: Image
             var name: String
             var level: Int
@@ -40,7 +41,7 @@ class TypeInfoData: ObservableObject {
         }
         
         struct DamageRow: Identifiable {
-            var id: NSManagedObjectID
+            var id: AnyHashable
             var damage: Damage
             let percentStyle: Bool
         }
@@ -52,7 +53,7 @@ class TypeInfoData: ObservableObject {
         }
         
         struct Mastery: Identifiable {
-            var id: NSManagedObjectID
+            var id: AnyHashable
             var typeID: NSManagedObjectID
             var title: String
             var subtitle: String?
@@ -106,12 +107,6 @@ class TypeInfoData: ObservableObject {
             .sink(receiveCompletion: {_ in }) { [weak self] result in
                 self?.price = result
             }.store(in: &subscriptions)
-            
-//            esi.markets.regionID(marketRegionID).history().get(typeID: typeID)
-//                .receive(on: RunLoop.main)
-//                .sink(receiveCompletion: {_ in }) { [weak self] result in
-//                    self?.marketHistory = result
-//            }.store(in: &subscriptions)
         }
         
         if let characterID = characterID {
@@ -125,7 +120,8 @@ class TypeInfoData: ObservableObject {
         Publishers.CombineLatest($pilot, $price).flatMap { (pilot, price) in
             Future { promise in
                 managedObjectContext.perform {
-                    promise(.success(self.info(for: managedObjectContext.object(with: type.objectID) as! SDEInvType, pilot: pilot, price: price, managedObjectContext: managedObjectContext, override: attributeValues)))
+                    let type = managedObjectContext.object(with: type.objectID) as! SDEInvType
+                    promise(.success(self.info(for: type, pilot: pilot, price: price, managedObjectContext: managedObjectContext, override: attributeValues)))
                 }
             }
         }.receive(on: RunLoop.main).sink { [weak self] result in
@@ -139,6 +135,29 @@ class TypeInfoData: ObservableObject {
 extension TypeInfoData {
     
     private func info(for type: SDEInvType, pilot: Pilot?, price: ESI.MarketPrice?, managedObjectContext: NSManagedObjectContext, override attributeValues: [Int: Double]?) -> [Section] {
+
+        var sections: [Section]
+        
+        let categoryID = (type.group?.category?.categoryID).flatMap { SDECategoryID(rawValue: $0)}
+        switch categoryID {
+        case .entity:
+            sections = npcInfo(for: type, managedObjectContext: managedObjectContext)
+        default:
+            sections = basicInfo(for: type, pilot: pilot, price: price, managedObjectContext: managedObjectContext, override: attributeValues)
+        }
+
+        
+        if type.marketGroup != nil {
+            let rows = [(price?.averagePrice).map{Row.price($0)}, .marketHistory].compactMap{$0}
+            let section = Section(id: "Market",
+                    name: NSLocalizedString("Market", comment: "").uppercased(),
+                    rows: rows)
+            sections.insert(section, at: 0)
+        }
+        return sections
+    }
+    
+    private func basicInfo(for type: SDEInvType, pilot: Pilot?, price: ESI.MarketPrice?, managedObjectContext: NSManagedObjectContext, override attributeValues: [Int: Double]?) -> [Section] {
         
         let results = managedObjectContext.from(SDEDgmTypeAttribute.self)
             .filter(\SDEDgmTypeAttribute.type == type && \SDEDgmTypeAttribute.attributeType?.published == true)
@@ -341,6 +360,288 @@ extension TypeInfoData {
         //        return Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("Mastery", comment: "").uppercased()), diffIdentifier: "Mastery", expandIdentifier: "Mastery", treeController: view?.treeController, children: rows)
     }
     
+    private func npcInfo(for type: SDEInvType, managedObjectContext: NSManagedObjectContext) -> [Section] {
+        
+        let results = managedObjectContext.from(SDEDgmTypeAttribute.self)
+            .filter(\SDEDgmTypeAttribute.type == type && \SDEDgmTypeAttribute.attributeType?.published == true)
+            .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, ascending: true)
+            .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeID, ascending: true)
+            .fetchedResultsController(sectionName: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, cacheName: nil)
+        
+        var sections = [Section]()
+
+        do {
+            try results.performFetch()
+            var resultSections = results.sections
+            _ = resultSections?.partition{($0.objects?.first as? SDEDgmTypeAttribute)?.attributeType?.attributeCategory?.categoryID != SDEAttributeCategoryID.entityRewards.rawValue}
+            
+            sections.append(contentsOf:
+                resultSections?.compactMap { section -> Section? in
+                    guard let attributeCategory = (section.objects?.first as? SDEDgmTypeAttribute)?.attributeType?.attributeCategory else {return nil}
+                    
+                    let categoryID = SDEAttributeCategoryID(rawValue: attributeCategory.categoryID)
+                    
+                    let sectionTitle: String = categoryID == .null ? NSLocalizedString("Other", comment: "") : attributeCategory.categoryName ?? NSLocalizedString("Other", comment: "")
+                    
+                    var rows = [Row]()
+
+                    switch categoryID {
+                    case .turrets?:
+                        guard let speed = type[SDEAttributeID.speed] else {break}
+                        let damageMultiplier = type[SDEAttributeID.damageMultiplier]?.value ?? 1
+                        let maxRange = type[SDEAttributeID.maxRange]?.value ?? 0
+                        let falloff = type[SDEAttributeID.falloff]?.value ?? 0
+                        let duration: Double = speed.value / 1000
+                        
+                        let em = type[SDEAttributeID.emDamage]?.value ?? 0
+                        let explosive = type[SDEAttributeID.explosiveDamage]?.value ?? 0
+                        let kinetic = type[SDEAttributeID.kineticDamage]?.value ?? 0
+                        let thermal = type[SDEAttributeID.thermalDamage]?.value ?? 0
+                        let total = (em + explosive + kinetic + thermal) * damageMultiplier
+                        
+                        let interval = duration > 0 ? duration : 1
+                        let dps = total / interval
+                        
+                        rows.append(.damage(TypeInfoData.Row.DamageRow(id: "TurretsDamage",
+                                                                       damage: Damage(em: em * damageMultiplier,
+                                                                       thermal: thermal * damageMultiplier,
+                                                                       kinetic: kinetic * damageMultiplier,
+                                                                       explosive: explosive * damageMultiplier),
+                                                                       percentStyle: false)))
+                        
+                        rows.append(.attribute(TypeInfoData.Row.Attribute(id: "TurretsDPS",
+                                                                          image: #imageLiteral(resourceName: "turrets"),
+                                                                          title: NSLocalizedString("Damage per Second", comment: "").uppercased(),
+                                                                          subtitle: UnitFormatter.localizedString(from: dps, unit: .none, style: .long))))
+
+                        rows.append(.attribute(TypeInfoData.Row.Attribute(id: "TurretsRoF",
+                                                                          image: #imageLiteral(resourceName: "rateOfFire"),
+                                                                          title: NSLocalizedString("Rate of Fire", comment: "").uppercased(),
+                                                                          subtitle: TimeIntervalFormatter.localizedString(from: TimeInterval(duration), precision: .seconds))))
+
+                        rows.append(.attribute(TypeInfoData.Row.Attribute(id: "TurretsOptimal",
+                                                                          image: #imageLiteral(resourceName: "rateOfFire"),
+                                                                          title: NSLocalizedString("Optimal Range", comment: "").uppercased(),
+                                                                          subtitle: UnitFormatter.localizedString(from: maxRange, unit: .meter, style: .long))))
+
+                        rows.append(.attribute(TypeInfoData.Row.Attribute(id: "TurretsFalloff",
+                                                                          image: #imageLiteral(resourceName: "falloff"),
+                                                                          title: NSLocalizedString("Falloff", comment: "").uppercased(),
+                                                                          subtitle: UnitFormatter.localizedString(from: falloff, unit: .meter, style: .long))))
+                        
+                    case .missile?:
+                        guard let attribute = type[SDEAttributeID.entityMissileTypeID], let missile = try? managedObjectContext.from(SDEInvType.self).filter(\SDEInvType.typeID == Int(attribute.value)).first() else {break}
+                        
+                        rows.append(.attribute(TypeInfoData.Row.Attribute(id: attribute.objectID,
+                                                                          image: missile.uiImage,
+                                                                          title: NSLocalizedString("Missile", comment: "").uppercased(),
+                                                                          subtitle: missile.typeName ?? "",
+                                                                          targetType: missile.objectID)))
+
+                        let duration: Double = (type[SDEAttributeID.missileLaunchDuration]?.value ?? 1000) / 1000
+                        let damageMultiplier = type[SDEAttributeID.missileDamageMultiplier]?.value ?? 1
+                        let velocityMultiplier = type[SDEAttributeID.missileEntityVelocityMultiplier]?.value ?? 1
+                        let flightTimeMultiplier = type[SDEAttributeID.missileEntityFlightTimeMultiplier]?.value ?? 1
+                        
+                        let em = missile[SDEAttributeID.emDamage]?.value ?? 0
+                        let explosive = missile[SDEAttributeID.explosiveDamage]?.value ?? 0
+                        let kinetic = missile[SDEAttributeID.kineticDamage]?.value ?? 0
+                        let thermal = missile[SDEAttributeID.thermalDamage]?.value ?? 0
+                        let total = (em + explosive + kinetic + thermal) * damageMultiplier
+                        
+                        let velocity: Double = (missile[SDEAttributeID.maxVelocity]?.value ?? 0) * velocityMultiplier
+                        let flightTime: Double = (missile[SDEAttributeID.explosionDelay]?.value ?? 1) * flightTimeMultiplier / 1000
+                        let agility: Double = missile[SDEAttributeID.agility]?.value ?? 0
+                        let mass = missile.mass
+                        
+                        let accelTime = min(flightTime, mass * agility / 1000000.0)
+                        let duringAcceleration = velocity / 2 * accelTime
+                        let fullSpeed = velocity * (flightTime - accelTime)
+                        let optimal = duringAcceleration + fullSpeed;
+                        
+                        let interval = duration > 0 ? duration : 1
+                        let dps = total / interval
+
+                        rows.append(.damage(TypeInfoData.Row.DamageRow(id: "MissilesDamage",
+                                                                       damage: Damage(em: em * damageMultiplier,
+                                                                       thermal: thermal * damageMultiplier,
+                                                                       kinetic: kinetic * damageMultiplier,
+                                                                       explosive: explosive * damageMultiplier),
+                                                                       percentStyle: false)))
+
+                        rows.append(.attribute(TypeInfoData.Row.Attribute(id: "MissilesDPS",
+                                                                          image: #imageLiteral(resourceName: "launchers"),
+                                                                          title: NSLocalizedString("Damage per Second", comment: "").uppercased(),
+                                                                          subtitle: UnitFormatter.localizedString(from: dps, unit: .none, style: .long))))
+
+                        rows.append(.attribute(TypeInfoData.Row.Attribute(id: "MissilesRoF",
+                                                                          image: #imageLiteral(resourceName: "rateOfFire"),
+                                                                          title: NSLocalizedString("Rate of Fire", comment: "").uppercased(),
+                                                                          subtitle: TimeIntervalFormatter.localizedString(from: TimeInterval(duration), precision: .seconds))))
+
+                        rows.append(.attribute(TypeInfoData.Row.Attribute(id: "MissilesOptimal",
+                                                                          image: #imageLiteral(resourceName: "targetingRange"),
+                                                                          title: NSLocalizedString("Optimal Range", comment: "").uppercased(),
+                                                                          subtitle: UnitFormatter.localizedString(from: optimal, unit: .meter, style: .long))))
+
+                        
+                    default:
+                        
+                        var resistanceRow: Row.DamageRow?
+                        func resistance(_ attribute: SDEDgmTypeAttribute, update: (inout Row.DamageRow) -> Void) {
+                            if resistanceRow == nil {
+                                resistanceRow = Row.DamageRow(id: attribute.objectID, damage: Damage(), percentStyle: true)
+                            }
+                            update(&resistanceRow!)
+                        }
+
+                        
+                        (section.objects as? [SDEDgmTypeAttribute])?.forEach { attribute in
+                            let value = attribute.value
+                            
+                            switch SDEAttributeID(rawValue: attribute.attributeType!.attributeID) {
+                            case .emDamageResonance?, .armorEmDamageResonance?, .shieldEmDamageResonance?,
+                                 .hullEmDamageResonance?, .passiveArmorEmDamageResonance?, .passiveShieldEmDamageResonance?:
+                                resistance(attribute) { row in
+                                    row.damage.em = max(row.damage.em, 1 - value)
+                                }
+
+                            case .thermalDamageResonance?, .armorThermalDamageResonance?, .shieldThermalDamageResonance?,
+                                 .hullThermalDamageResonance?, .passiveArmorThermalDamageResonance?, .passiveShieldThermalDamageResonance?:
+                                resistance(attribute) { row in
+                                    row.damage.thermal = max(row.damage.thermal, 1 - value)
+                                }
+                            case .kineticDamageResonance?, .armorKineticDamageResonance?, .shieldKineticDamageResonance?,
+                                 .hullKineticDamageResonance?, .passiveArmorKineticDamageResonance?, .passiveShieldKineticDamageResonance?:
+                                resistance(attribute) { row in
+                                    row.damage.kinetic = max(row.damage.kinetic, 1 - value)
+                                }
+                            case .explosiveDamageResonance?, .armorExplosiveDamageResonance?, .shieldExplosiveDamageResonance?,
+                                 .hullExplosiveDamageResonance?, .passiveArmorExplosiveDamageResonance?, .passiveShieldExplosiveDamageResonance?:
+                                resistance(attribute) { row in
+                                    row.damage.explosive = max(row.damage.explosive, 1 - value)
+                                }
+                            default:
+                                rows.append(Row(attribute))
+                            }
+                        }
+                        
+                        if let resistanceRow = resistanceRow {
+                            rows.append(.damage(resistanceRow))
+                        }
+
+                        if categoryID == .shield {
+                            if let capacity = type[SDEAttributeID.shieldCapacity]?.value,
+                                let rechargeRate = type[SDEAttributeID.shieldRechargeRate]?.value,
+                                rechargeRate > 0 && capacity > 0 {
+                                let passive = 10.0 / (rechargeRate / 1000.0) * 0.5 * (1 - 0.5) * capacity
+                            
+                                rows.append(.attribute(TypeInfoData.Row.Attribute(id: "ShieldRecharge",
+                                                                                  image: #imageLiteral(resourceName: "shieldRecharge"),
+                                                                                  title: NSLocalizedString("Passive Recharge Rate", comment: "").uppercased(),
+                                                                                  subtitle: UnitFormatter.localizedString(from: passive, unit: .hpPerSecond, style: .long))))
+                            }
+                            
+                            if let amount = type[SDEAttributeID.entityShieldBoostAmount]?.value,
+                                let duration = type[SDEAttributeID.entityShieldBoostDuration]?.value,
+                                duration > 0 && amount > 0 {
+                                
+                                let chance = (type[SDEAttributeID.entityShieldBoostDelayChance] ??
+                                    type[SDEAttributeID.entityShieldBoostDelayChanceSmall] ??
+                                    type[SDEAttributeID.entityShieldBoostDelayChanceMedium] ??
+                                    type[SDEAttributeID.entityShieldBoostDelayChanceLarge])?.value ?? 0
+                                
+                                let repair = amount / (duration * (1 + chance) / 1000.0)
+
+                                rows.append(.attribute(TypeInfoData.Row.Attribute(id: "ShieldBooster",
+                                                                                  image: #imageLiteral(resourceName: "shieldBooster"),
+                                                                                  title: NSLocalizedString("Repair Rate", comment: "").uppercased(),
+                                                                                  subtitle: UnitFormatter.localizedString(from: repair, unit: .hpPerSecond, style: .long))))
+                            }
+                        }
+                        else if categoryID == .armor {
+                            if let amount = type[SDEAttributeID.entityArmorRepairAmount]?.value,
+                                let duration = type[SDEAttributeID.entityArmorRepairDuration]?.value,
+                                duration > 0 && amount > 0 {
+                                
+                                let chance = (type[SDEAttributeID.entityArmorRepairDelayChance] ??
+                                    type[SDEAttributeID.entityArmorRepairDelayChanceSmall] ??
+                                    type[SDEAttributeID.entityArmorRepairDelayChanceMedium] ??
+                                    type[SDEAttributeID.entityArmorRepairDelayChanceLarge])?.value ?? 0
+                                
+                                let repair = amount / (duration * (1 + chance) / 1000.0)
+                                
+                                rows.append(.attribute(TypeInfoData.Row.Attribute(id: "ArmorRepair",
+                                                                                  image: #imageLiteral(resourceName: "armorRepairer"),
+                                                                                  title: NSLocalizedString("Repair Rate", comment: "").uppercased(),
+                                                                                  subtitle: UnitFormatter.localizedString(from: repair, unit: .hpPerSecond, style: .long))))
+                            }
+                        }
+                    }
+                    
+                    guard !rows.isEmpty else {return nil}
+                    return Section(id: attributeCategory.objectID, name: sectionTitle.uppercased(), rows: rows)
+                    } ?? [])
+        }
+        catch {
+        }
+        
+        return sections
+    }
+
+    /*
+    private func blueprintInfo(for type: SDEInvType, managedObjectContext: NSManagedObjectContext) -> [Section] {
+        let activities = (type.blueprintType?.activities?.allObjects as? [SDEIndActivity])?.sorted {$0.activity!.activityID < $1.activity!.activityID}
+
+        return activities?.map { activity -> Section in
+            var rows = [Row]()
+            let time = TimeIntervalFormatter.localizedString(from: TimeInterval(activity.time), precision: .seconds)
+            let row = Row.attribute(TypeInfoData.Row.Attribute(id: [activity.objectID: "time"],
+                                                               image: #imageLiteral(resourceName: "skillRequirementQueued"),
+                                                               title: time,
+                                                               subtitle: ""))
+            
+            rows.append(row)
+            
+            let products = (activity.products?.allObjects as? [SDEIndProduct])?.filter {$0.productType?.typeName != nil}.sorted {$0.productType!.typeName! < $1.productType!.typeName!}.map { product -> Row in
+                let title = NSLocalizedString("PRODUCT", comment: "")
+                let row = Row.attribute(TypeInfoData.Row.Attribute(id: product.productType!.objectID,
+                                                                   image: product.productType!.uiImage,
+                                                                   title: title,
+                                                                   subtitle: product.productType?.typeName ?? "",
+                                                                   targetType: product.productType?.objectID))
+                return row
+            }
+            if let products = products {
+                rows.append(contentsOf: products)
+            }
+            
+            let materials = (activity.requiredMaterials?.allObjects as? [SDEIndRequiredMaterial])?.filter {$0.materialType?.typeName != nil}.sorted {$0.materialType!.typeName! < $1.materialType!.typeName!}.map { material -> Row in
+                let subtitle = UnitFormatter.localizedString(from: material.quantity, unit: .none, style: .long)
+                let image = material.materialType?.uiImage
+                
+                let row = Row.attribute(TypeInfoData.Row.Attribute(id: material.objectID,
+                                                                   image: image,
+                                                                   title: material.materialType?.typeName ?? "",
+                                                                   subtitle: subtitle,
+                                                                   targetType: material.materialType?.objectID))
+                return row
+            }
+            
+            if let materials = materials, !materials.isEmpty {
+                rows.append(Tree.Item.Section(Tree.Content.Section(title: NSLocalizedString("MATERIALS", comment: "")),
+                                              diffIdentifier: "\(activity.objectID).materials", treeController: view?.treeController, children: materials).asAnyItem)
+            }
+            
+            if let requiredSkills = requiredSkillsPresentation(for: activity, character: character, context: context) {
+                rows.append(requiredSkills.asAnyItem)
+            }
+            
+            return Tree.Item.Section(Tree.Content.Section(title: activity.activity?.activityName?.uppercased()), diffIdentifier: activity.objectID, treeController: view?.treeController, children: rows).asAnyItem
+        } ?? []
+    }
+     */
+
 }
 
 extension TypeInfoData.Row {
@@ -457,7 +758,7 @@ extension TypeInfoData.Row {
 //            trainingTime = 0
         }
         
-        self = .skill(TypeInfoData.Row.Skill(id: skillType.objectID, image: image, name: skillType.typeName ?? "\(skillType.typeID)", level: level, trainingTime: subtitle, color: color))
+        self = .skill(TypeInfoData.Row.Skill(objectID: skillType.objectID, image: image, name: skillType.typeName ?? "\(skillType.typeID)", level: level, trainingTime: subtitle, color: color))
     }
     
 }

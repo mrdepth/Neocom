@@ -30,7 +30,7 @@ struct TypeMarketOrders: View {
 
 	@State private var mode = Mode.sell
 	@State private var isMarketRegionPickerPresented = false
-	
+    
 	private var regionName: String {
         (try? managedObjectContext.from(SDEMapRegion.self).filter(\SDEMapRegion.regionID == marketRegionID.wrappedValue).first()?.regionName) ?? NSLocalizedString("Unknown", comment: "")
 	}
@@ -49,7 +49,7 @@ struct TypeMarketOrders: View {
 					if data != nil {
 						ForEach(mode == .sell ? data!.sellOrders : data!.buyOrders) { order in
 							TypeMarketOrderCell(order: order)
-						}
+                        }
 					}
 			}
 		}.listStyle(GroupedListStyle()).overlay(error.map{Text($0).padding()})

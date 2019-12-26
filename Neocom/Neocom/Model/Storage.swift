@@ -39,49 +39,65 @@ extension NSManagedObjectContext {
 }
 
 extension SDEInvCategory {
+    
+    var uiImage: UIImage {
+        icon?.image?.image ?? (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultCategory)).first?.image?.image) ?? UIImage()
+    }
+    
 	var image: Image {
-		let image = icon?.image?.image ??
-			(try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultCategory)).first?.image?.image) ??
-			UIImage()
-		return Image(uiImage: image)
+		Image(uiImage: uiImage)
 	}
 }
 
 extension SDEInvGroup {
+    var uiImage: UIImage {
+        icon?.image?.image ??
+        (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
+        UIImage()
+    }
+    
     var image: Image {
-        let image = icon?.image?.image ??
-            (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
-            UIImage()
-        return Image(uiImage: image)
+        Image(uiImage: uiImage)
     }
 }
 
 extension SDEInvMarketGroup {
-    var image: Image {
-        let image = icon?.image?.image ??
+    var uiImage: UIImage {
+        icon?.image?.image ??
             (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
             UIImage()
-        return Image(uiImage: image)
     }
+    
+    var image: Image {
+        Image(uiImage: uiImage)
+    }
+
 }
 
 extension SDENpcGroup {
-    var image: Image {
-        let image = icon?.image?.image ??
+    var uiImage: UIImage {
+        icon?.image?.image ??
             (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
             UIImage()
-        return Image(uiImage: image)
     }
+    
+    var image: Image {
+        Image(uiImage: uiImage)
+    }
+
 }
 
 extension SDEInvType {
-    var image: Image {
-        let image = icon?.image?.image ??
+    var uiImage: UIImage {
+        icon?.image?.image ??
             (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultType)).first?.image?.image) ??
             UIImage()
-        return Image(uiImage: image)
     }
     
+    var image: Image {
+        Image(uiImage: uiImage)
+    }
+
     class func dominix() -> NSFetchRequest<SDEInvType> {
         let request = NSFetchRequest<SDEInvType>(entityName: "InvType")
         request.predicate = (\SDEInvType.typeID == 645).predicate(for: .`self`)

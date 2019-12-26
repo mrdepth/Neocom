@@ -23,7 +23,7 @@ struct TypeInfoSkillCell: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     var skill: TypeInfoData.Row.Skill
     var body: some View {
-        NavigationLink(destination: TypeInfo(type: managedObjectContext.object(with: skill.id) as! SDEInvType)) {
+        NavigationLink(destination: TypeInfo(type: managedObjectContext.object(with: skill.objectID) as! SDEInvType)) {
             HStack {
                 skill.image.font(.caption).foregroundColor(Color(skill.color))
                 VStack(alignment: .leading) {

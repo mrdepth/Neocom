@@ -20,15 +20,46 @@ extension TypeInfoData.Row {
 }
 
 struct TypeInfoSkillCell: View {
-    @Environment(\.managedObjectContext) var managedObjectContext
-    var skill: TypeInfoData.Row.Skill
-    var body: some View {
-        NavigationLink(destination: TypeInfo(type: managedObjectContext.object(with: skill.objectID) as! SDEInvType)) {
+    var skillType: SDEInvType
+    var level: Int
+    var pilot: Pilot?
+    @Environment(\.managedObjectContext) private var managedObjectContext
+
+    private func content(image: Image?, trainingTime: TimeInterval?, color: Color) -> some View {
+        NavigationLink(destination: TypeInfo(type: skillType)) {
             HStack {
-                skill.image.font(.caption).foregroundColor(Color(skill.color))
+                image?.font(.caption).foregroundColor(color)
                 VStack(alignment: .leading) {
-                    SkillName(name: skill.name.uppercased(), level: skill.level).font(.footnote)
-                    skill.trainingTime.map{Text($0).font(.footnote).foregroundColor(.secondary)}
+                    SkillName(name: skillType.typeName?.uppercased() ?? "", level: level).font(.footnote)
+                    trainingTime.map{Text(TimeIntervalFormatter.localizedString(from: $0, precision: .seconds)).font(.footnote).foregroundColor(.secondary)}
+                }
+            }
+        }
+    }
+    
+    var body: some View {
+        let skill = Pilot.Skill(type: skillType)
+        let trainedSkill = pilot?.trainedSkills[Int(skillType.typeID)]
+        let item = skill.map{TrainingQueue.Item(skill: $0, targetLevel: level, startSP: Int(trainedSkill?.skillpointsInSkill ?? 0))}
+        let trainingTime = item?.trainingTime(with: pilot?.attributes ?? .default)
+        
+        return Group {
+            if item != nil {
+                if pilot != nil {
+                    if trainedSkill.map({$0.trainedSkillLevel >= level}) == true {
+                        content(image: Image(systemName: "checkmark.circle"), trainingTime: nil, color: .primary)
+                    }
+                    else if trainedSkill == nil {
+                        content(image: Image(systemName: "xmark.circle"), trainingTime: trainingTime, color: .secondary)
+                    }
+                    else {
+                        content(image: Image(systemName: "circle"), trainingTime: trainingTime, color: .secondary)
+                    }
+                }
+                else {
+                    content(image: nil,
+                            trainingTime: trainingTime,
+                            color: .secondary)
                 }
             }
         }
@@ -37,15 +68,14 @@ struct TypeInfoSkillCell: View {
 
 struct TypeInfoSkillCell_Previews: PreviewProvider {
     static var previews: some View {
-        let skill = TypeInfoData.Row((try? AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first?.requiredSkills?.firstObject as? SDEInvTypeRequiredSkill)!.skillType!,
-                                     level: 5, pilot: nil)!.skill!
+        let skill = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first?.requiredSkills?.firstObject as? SDEInvTypeRequiredSkill
         return NavigationView {
             List {
-                TypeInfoSkillCell(skill: skill)
+                TypeInfoSkillCell(skillType: skill!.skillType!, level: 5, pilot: nil)
+                TypeInfoSkillCell(skillType: skill!.skillType!, level: 5, pilot: .empty)
             }.listStyle(GroupedListStyle())
                 .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         }
     }
 }
 
- 

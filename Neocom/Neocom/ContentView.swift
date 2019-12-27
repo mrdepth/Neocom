@@ -32,15 +32,26 @@ struct Child: View {
 
 struct ContentView: View {
     @State var b = false
+    @State var l = (0..<10).map{"\($0)"}
+    
+    
+    func f(_ s: String) -> String {
+        print(s)
+        return s
+    }
+    
     var body: some View {
         
         NavigationView {
-            List {
-//                Text("Row 1")
-                Child()
-
-            }.listStyle(GroupedListStyle())
-//            TypeCategories()
+            NPCGroup()
+//            VStack {
+//                HStack {
+//                    Text("01").lineLimit(1).layoutPriority(1)
+//                    Text("01").lineLimit(1)
+//                }
+//                Text("01").lineLimit(1)
+//            }.minimumScaleFactor(0.1)
+//            .environment(\.sizeCategory, .accessibilityMedium)
         }
     }
 }

@@ -52,7 +52,8 @@ struct CertificateMasteryInfo: View {
             ForEach(self.masteries, id: \.objectID) { mastery in
                 Section(header: self.title(for: mastery)) {
                     ForEach(self.skills(for: mastery), id: \.objectID) { skill in
-                        TypeInfoSkillCell(skill: TypeInfoData.Row(skill.type!, level: Int(skill.skillLevel), pilot: self.pilot)!.skill!)
+                        TypeInfoSkillCell(skillType: skill.type!, level: Int(skill.skillLevel), pilot: self.pilot)
+//                        TypeInfoSkillCell(skill: TypeInfoData.Row(skill.type!, level: Int(skill.skillLevel), pilot: self.pilot)!.skill!)
                     }
                 }
             }

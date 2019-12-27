@@ -240,3 +240,10 @@ struct Damage {
     var kinetic: Double = 0
     var explosive: Double = 0
 }
+
+func - (lhs: Double, rhs: Damage) -> Damage {
+    return Damage(em: lhs - rhs.em,
+                  thermal: lhs - rhs.thermal,
+                  kinetic: lhs - rhs.kinetic,
+                  explosive: lhs - rhs.explosive)
+}

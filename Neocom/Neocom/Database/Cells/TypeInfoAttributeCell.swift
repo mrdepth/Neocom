@@ -22,29 +22,99 @@ extension TypeInfoData.Row {
 }
 
 struct TypeInfoAttributeCell: View {
-    var attribute: TypeInfoData.Row.Attribute
+    var attribute: SDEDgmTypeAttribute
+    var value: Double?
+    
     @Environment(\.managedObjectContext) var managedObjectContext
     
-    private var content: some View {
+    private func content(title: String, subtitle: String, image: UIImage?) -> some View {
         HStack {
-            attribute.image.map{Icon(Image(uiImage: $0))}
+            image.map{Icon(Image(uiImage: $0))}
             VStack(alignment: .leading) {
-                Text(attribute.title.uppercased()).font(.footnote)
-                Text(attribute.subtitle).font(.footnote).foregroundColor(.secondary)
+                Text(title.uppercased()).font(.footnote)
+                Text(subtitle).font(.footnote).foregroundColor(.secondary)
             }
         }
     }
 
     var body: some View {
-        Group {
-            if attribute.targetType != nil {
-                NavigationLink(destination: TypeInfo(type: managedObjectContext.object(with: attribute.targetType!) as! SDEInvType)) { content }
+        let title: String
+        
+        if let displayName = attribute.attributeType?.displayName, !displayName.isEmpty {
+            title = displayName
+        }
+        else if let attributeName = attribute.attributeType?.attributeName, !attributeName.isEmpty {
+            title = attributeName
+        }
+        else {
+            title = "\(attribute.attributeType?.attributeID ?? 0)"
+        }
+
+        
+        let unitID = (attribute.attributeType?.unit?.unitID).flatMap {SDEUnitID(rawValue: $0)} ?? .none
+        var icon: UIImage?
+        
+        let subtitle: String
+        
+        func toString(_ value: Double) -> String {
+            var s = UnitFormatter.localizedString(from: value, unit: .none, style: .long)
+            if let unit = attribute.attributeType?.unit?.displayName {
+                s += " " + unit
             }
-            else if attribute.targetGroup != nil {
-                NavigationLink(destination: Types(.group(managedObjectContext.object(with: attribute.targetGroup!) as! SDEInvGroup))) { content }
+            return s
+        }
+        
+        
+        let value = self.value ?? attribute.value
+        var targetType: NSManagedObjectID?
+        var targetGroup: NSManagedObjectID?
+        
+        switch unitID {
+        case .attributeID:
+            let attributeType = try? attribute.managedObjectContext?.from(SDEDgmAttributeType.self)
+                .filter(\SDEDgmAttributeType.attributeID == Int(value)).first()
+            icon = attributeType?.icon?.image?.image
+            subtitle = attributeType?.displayName ?? attributeType?.attributeName ?? toString(value)
+        case .groupID:
+            let group = try? attribute.managedObjectContext?.from(SDEInvGroup.self)
+                .filter(\SDEInvGroup.groupID == Int(value)).first()
+            subtitle = group?.groupName ?? toString(value)
+            icon = attribute.attributeType?.icon?.image?.image ?? group?.icon?.image?.image
+            targetGroup = group?.objectID
+        case .typeID:
+            let type = try? attribute.managedObjectContext?.from(SDEInvType.self)
+                .filter(\SDEInvType.typeID == Int(value)).first()
+            subtitle = type?.typeName ?? toString(value)
+            icon = type?.icon?.image?.image ?? attribute.attributeType?.icon?.image?.image
+            targetType = type?.objectID
+        case .sizeClass:
+            subtitle = SDERigSize(rawValue: Int(value))?.description ?? String(describing: Int(value))
+        case .bonus:
+            subtitle = "+" + UnitFormatter.localizedString(from: value, unit: .none, style: .long)
+        case .boolean:
+            subtitle = Int(value) == 0 ? NSLocalizedString("No", comment: "") : NSLocalizedString("Yes", comment: "")
+        case .inverseAbsolutePercent, .inversedModifierPercent:
+            subtitle = toString((1.0 - value) * 100.0)
+        case .modifierPercent:
+            subtitle = toString((value - 1.0) * 100.0)
+        case .absolutePercent:
+            subtitle = toString(value * 100.0)
+        case .milliseconds:
+            subtitle = toString(value / 1000.0)
+        default:
+            subtitle = toString(value)
+        }
+        
+        let image = icon ?? attribute.attributeType?.icon?.image?.image
+        return Group {
+            if targetType != nil {
+                NavigationLink(destination: TypeInfo(type: managedObjectContext.object(with: targetType!) as! SDEInvType)) { content(title: title, subtitle: subtitle, image: image) }
+            }
+            else if targetGroup != nil {
+                NavigationLink(destination: Types(.group(managedObjectContext.object(with: targetGroup!) as! SDEInvGroup))) { content(title: title, subtitle: subtitle, image: image) }
             }
             else {
-                content
+                content(title: title, subtitle: subtitle, image: image)
             }
         }
     }
@@ -55,8 +125,8 @@ struct TypeInfoAttributeCell_Previews: PreviewProvider {
         var attributes = (try? AppDelegate.sharedDelegate.testingContainer.viewContext.fetch(SDEInvType.dominix()).first?.attributes?.allObjects as? [SDEDgmTypeAttribute]) ?? []
         attributes.sort{$0.attributeType!.attributeName! < $1.attributeType!.attributeName!}
         return NavigationView {
-            List(attributes.map{TypeInfoData.Row($0)}) { row in
-                TypeInfoAttributeCell(attribute: row.attribute!)
+            List(attributes, id: \.objectID) { row in
+                TypeInfoAttributeCell(attribute: row)
             }.listStyle(GroupedListStyle())
         }
     }

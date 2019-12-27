@@ -22,31 +22,39 @@ extension TypeInfoData.Row {
 
 
 struct TypeInfoDamageCell: View {
-    var damage: TypeInfoData.Row.DamageRow
+    var damage: Damage
+    var percentStyle: Bool
     
     var body: some View {
-        var damages = [damage.damage.em, damage.damage.thermal, damage.damage.kinetic, damage.damage.explosive]
+        var damages = [damage.em, damage.thermal, damage.kinetic, damage.explosive]
+        
         var total = damages.reduce(0, +)
         if total == 0 {
             total = 1
         }
-        damages = damages.map{$0 / total}
+
+        if percentStyle {
+            damages = damages.map{$0 / total}
+        }
         let damageTypes: [DamageType] = [.em, .thermal, .kinetic, .explosive]
         
         return VStack(alignment: .leading, spacing: 0) {
-            HStack {
+            HStack(spacing: 8) {
                 ForEach(0..<4) { i in
-                    DamageView(String(format: "%.0f%%", damages[i] * 100), percent: damages[i], damageType: damageTypes[i]).font(.footnote)
+                    DamageView("\(Int(self.percentStyle ? (damages[i] * 100).rounded() : damages[i].rounded()))\(self.percentStyle ? "%" : "")",
+                        percent: self.percentStyle ? damages[i] : damages[i] / total,
+                        damageType: damageTypes[i])
                 }
             }
-        }
+        }.font(.footnote)
     }
 }
 
 struct TypeInfoDamageCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            TypeInfoDamageCell(damage: TypeInfoData.Row.DamageRow(id: NSManagedObjectID(), damage: Damage(em: 0.25, thermal: 0.25, kinetic: 0.25, explosive: 0.25), percentStyle: true))
+            TypeInfoDamageCell(damage: Damage(em: 0.25, thermal: 0.25, kinetic: 0.25, explosive: 0.25), percentStyle: true)
+            TypeInfoDamageCell(damage: Damage(em: 100, thermal: 100, kinetic: 100, explosive: 100), percentStyle: false)
         }.listStyle(GroupedListStyle())
     }
 }

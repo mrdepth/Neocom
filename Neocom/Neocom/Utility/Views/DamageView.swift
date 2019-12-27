@@ -49,11 +49,13 @@ struct DamageView: View {
     var body: some View {
         HStack(spacing: 0) {
             Icon(damageType.image, size: .small)
-            Text(text).frame(maxWidth: .infinity, minHeight: 18)
-                .padding(.horizontal)
+            Text(text)
+                .lineLimit(1)
+                .frame(maxWidth: .infinity, minHeight: 18)
+                .padding(.horizontal, 4)
                 .background(ProgressView(progress: Float(percent)))
                 .background(Color(.black))
-                .foregroundColor(.white).lineLimit(1)
+                .foregroundColor(.white)
         }.accentColor(damageType.accentColor)
     }
 }
@@ -66,7 +68,7 @@ struct DamageView_Previews: PreviewProvider {
                 DamageView("25%", percent: 0.25, damageType: .thermal)
                 DamageView("25%", percent: 0.25, damageType: .kinetic)
                 DamageView("25%", percent: 0.25, damageType: .explosive)
-            }.padding().background(Color(.systemGroupedBackground)).colorScheme(.light)
+            }.padding().background(Color(.systemGroupedBackground)).colorScheme(.light).font(.footnote)
             HStack {
                 DamageView("25%", percent: 0.25, damageType: .em)
                 DamageView("25%", percent: 0.25, damageType: .thermal)

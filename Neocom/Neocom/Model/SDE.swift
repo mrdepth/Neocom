@@ -12,8 +12,13 @@ import Expressible
 
 extension SDEInvType {
     subscript(key: SDEAttributeID) -> SDEDgmTypeAttribute? {
-        return (try? managedObjectContext?.from(SDEDgmTypeAttribute.self).filter(\SDEDgmTypeAttribute.type == self && \SDEDgmTypeAttribute.attributeType?.attributeID == key.rawValue).first()) ?? nil
+        return self[key.rawValue]
     }
+    
+    subscript(key: Int32) -> SDEDgmTypeAttribute? {
+        return (try? managedObjectContext?.from(SDEDgmTypeAttribute.self).filter(\SDEDgmTypeAttribute.type == self && \SDEDgmTypeAttribute.attributeType?.attributeID == key).first()) ?? nil
+    }
+
 }
 
 public enum SDEAttributeID: Int32, Codable {
@@ -233,6 +238,45 @@ extension SDEMapRegion {
         }
     }
 }
+
+var damageResonanceAttributes: [[DamageType: SDEAttributeID]] = [
+    [.em: .emDamageResonance,
+     .thermal: .thermalDamageResonance,
+     .kinetic: .kineticDamageResonance,
+     .explosive: .explosiveDamageResonance],
+    
+    [.em: .armorEmDamageResonance,
+     .thermal: .armorThermalDamageResonance,
+     .kinetic: .armorKineticDamageResonance,
+     .explosive: .armorExplosiveDamageResonance],
+    
+    [.em: .shieldEmDamageResonance,
+     .thermal: .shieldThermalDamageResonance,
+     .kinetic: .shieldKineticDamageResonance,
+     .explosive: .shieldExplosiveDamageResonance],
+
+    [.em: .hullEmDamageResonance,
+     .thermal: .hullThermalDamageResonance,
+     .kinetic: .hullKineticDamageResonance,
+     .explosive: .hullExplosiveDamageResonance],
+
+    [.em: .passiveArmorEmDamageResonance,
+     .thermal: .passiveArmorThermalDamageResonance,
+     .kinetic: .passiveArmorKineticDamageResonance,
+     .explosive: .passiveArmorExplosiveDamageResonance],
+
+    [.em: .passiveShieldEmDamageResonance,
+     .thermal: .passiveShieldThermalDamageResonance,
+     .kinetic: .passiveShieldKineticDamageResonance,
+     .explosive: .passiveShieldExplosiveDamageResonance],
+]
+
+var damageAttributes: [[DamageType: SDEAttributeID]] = [
+    [.em: .emDamage,
+     .thermal: .thermalDamage,
+     .kinetic: .kineticDamage,
+     .explosive: .explosiveDamage]
+]
 
 /*enum ItemFlag: Int32 {
     case hiSlot

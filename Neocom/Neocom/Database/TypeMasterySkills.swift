@@ -15,7 +15,7 @@ struct TypeMasterySkills: View {
     
     var body: some View {
         List(skills, id: \.self) { skill in
-            TypeInfoSkillCell(skill: TypeInfoData.Row(skill.type!, level: Int(skill.skillLevel), pilot: self.pilot)!.skill!)
+            TypeInfoSkillCell(skillType: skill.type!, level: Int(skill.skillLevel), pilot: self.pilot)
         }
     }
 }

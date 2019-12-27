@@ -726,7 +726,7 @@ extension TypeInfoData.Row {
     init?(_ skillType: SDEInvType, level: Int, pilot: Pilot?) {
         guard let skill = Pilot.Skill(type: skillType) else {return nil}
         let trainedSkill = pilot?.trainedSkills[Int(skillType.typeID)]
-        
+
         let item = TrainingQueue.Item(skill: skill, targetLevel: level, startSP: Int(trainedSkill?.skillpointsInSkill ?? 0))
         let image: Image
         let subtitle: String?

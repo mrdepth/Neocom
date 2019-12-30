@@ -100,6 +100,9 @@ struct TypeInfo: View {
                 if categoryID == .entity {
                     self.npcInfo()
                 }
+                else if categoryID == .blueprint {
+                    self.blueprintInfo(for: info.pilot)
+                }
                 else {
                     self.basicInfo(for: info.pilot)
                 }
@@ -109,24 +112,34 @@ struct TypeInfo: View {
 }
 
 extension TypeInfo {
-    private func cell(title: LocalizedStringKey, subtitle: String, image: UIImage?) -> some View {
+    private func cell(title: LocalizedStringKey, subtitle: String?, image: UIImage?) -> some View {
         HStack {
-            image.map{Icon(Image(uiImage: $0))}
+            image.map{Icon(Image(uiImage: $0)).cornerRadius(4)}
             VStack(alignment: .leading) {
                 Text(title).font(.footnote)
-                Text(subtitle).font(.footnote).foregroundColor(.secondary)
+                subtitle.map{Text($0).font(.footnote).foregroundColor(.secondary)}
             }
         }
     }
-    private func cell(title: String, subtitle: String, image: UIImage?) -> some View {
+    private func cell(title: String, subtitle: String?, image: UIImage?) -> some View {
         HStack {
-            image.map{Icon(Image(uiImage: $0))}
+            image.map{Icon(Image(uiImage: $0)).cornerRadius(4)}
             VStack(alignment: .leading) {
                 Text(title).font(.footnote)
-                Text(subtitle).font(.footnote).foregroundColor(.secondary)
+                subtitle.map{Text($0).font(.footnote).foregroundColor(.secondary)}
             }
         }
     }
+    private func cell(title: LocalizedStringKey, subtitle: String?, image: Image) -> some View {
+        HStack {
+            image.frame(width: 32, height: 32)
+            VStack(alignment: .leading) {
+                Text(title).font(.footnote)
+                subtitle.map{Text($0).font(.footnote).foregroundColor(.secondary)}
+            }
+        }
+    }
+
 }
 
 extension TypeInfo {
@@ -148,9 +161,15 @@ extension TypeInfo {
         }
         enumerate(type, 0)
         
-        let rows = skills.sorted{$0.value.order < $1.value.order}.compactMap {
-            TypeInfoSkillCell(skillType: $0.key, level: Int($0.value.level), pilot: pilot)
+        
+        
+//        let rows = skills.sorted{$0.value.order < $1.value.order}.compactMap {
+//            TypeInfoSkillCell(skillType: $0.key, level: Int($0.value.level), pilot: pilot)
+//        }
+        let rows = SkillsList(requiredSkillsFor: type).skills.compactMap {
+            TypeInfoSkillCell(skillType: $0.type, level: Int($0.level), pilot: pilot)
         }
+
         let trainingQueue = TrainingQueue(pilot: pilot ?? .empty)
         trainingQueue.addRequiredSkills(for: type)
         let time = trainingQueue.trainingTime()
@@ -217,8 +236,21 @@ extension TypeInfo {
     }
     
     private func basicInfo(for pilot: Pilot?) -> some View {
-        ForEach(attributes.sections, id: \.name) { section in
-            self.basicInfo(for: section, pilot: pilot)
+        let blueprints = Set((type.products?.allObjects as? [SDEIndProduct])?.compactMap{$0.activity?.blueprintType?.type} ?? []).sorted{$0.typeName! < $1.typeName!}
+        
+        return Group {
+            if !blueprints.isEmpty {
+                Section(header: Text("MANUFACTURING")) {
+                    ForEach(blueprints, id: \.objectID) { type in
+                        NavigationLink(destination: TypeInfo(type: type)) {
+                            self.cell(title: type.typeName?.uppercased() ?? "", subtitle: nil, image: type.uiImage)
+                        }
+                    }
+                }
+            }
+            ForEach(attributes.sections, id: \.name) { section in
+                self.basicInfo(for: section, pilot: pilot)
+            }
         }
     }
     
@@ -429,18 +461,22 @@ extension TypeInfo {
         
     }
     
-    private func activityInfo(for activity: SDEIndActivity) -> some View {
+    private func activityInfo(for activity: SDEIndActivity, pilot: Pilot?) -> some View {
         let products = (activity.products?.allObjects as? [SDEIndProduct])?.filter {$0.productType?.typeName != nil}.sorted {$0.productType!.typeName! < $1.productType!.typeName!}
+        let tq = TrainingQueue(pilot: pilot ?? .empty)
+        tq.addRequiredSkills(for: activity)
+        let s = TimeIntervalFormatter.localizedString(from: tq.trainingTime(), precision: .seconds)
+        
         
         return Section(header: Text(activity.activity?.activityName?.uppercased() ?? "")) {
             cell(title: "TIME",
                  subtitle: TimeIntervalFormatter.localizedString(from: TimeInterval(activity.time), precision: .seconds),
-                 image: #imageLiteral(resourceName: "skillRequirementQueued"))
+                 image: Image(systemName: "clock"))
             ForEach(products ?? [], id: \.objectID) { product in
                 NavigationLink(destination: TypeInfo(type: product.productType!)) {
                     self.cell(title: product.productType?.typeName?.uppercased() ?? "",
-                              subtitle: "x\(product.quantity) (\(Int(product.probability * 100))%)",
-                        image: product.productType?.uiImage)
+                              subtitle: product.probability > 0 ? "x\(product.quantity) (\(Int(product.probability * 100))%)" : "x\(product.quantity)",
+                              image: product.productType?.uiImage)
                 }
             }
             if activity.requiredMaterials?.count ?? 0 > 0 {
@@ -448,23 +484,32 @@ extension TypeInfo {
                     Text("MATERIALS").font(.footnote)
                 }
             }
+            if activity.requiredSkills?.count ?? 0 > 0 {
+                NavigationLink(destination: BlueprintActivityRequiredSkills(activity: activity, pilot: pilot)) {
+                    VStack(alignment: .leading) {
+                        Text("REQUIRED SKILLS").font(.footnote)
+                        Text(s).font(.footnote).foregroundColor(.secondary)
+                    }
+                }
+            }
         }
     }
 
-    private func blueprintInfo() -> some View {
+    private func blueprintInfo(for pilot: Pilot?) -> some View {
         let activities = (type.blueprintType?.activities?.allObjects as? [SDEIndActivity])?.sorted {$0.activity!.activityID < $1.activity!.activityID} ?? []
         return ForEach(activities, id: \.objectID) { activity in
-            self.activityInfo(for: activity)
+            self.activityInfo(for: activity, pilot: pilot)
         }
-        
     }
 }
 
 struct TypeInfo_Previews: PreviewProvider {
     static var previews: some View {
 //        let account = Account(token: oAuth2Token, context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        let dominix = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!
+        let blueprint = (dominix.products?.anyObject() as? SDEIndProduct)?.activity?.blueprintType?.type
         return NavigationView {
-            TypeInfo(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!)
+            TypeInfo(type: dominix)
                 .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
                 .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
 //                .environment(\.account, account)

@@ -28,7 +28,7 @@ struct TypeInfoSkillCell: View {
     private func content(image: Image?, trainingTime: TimeInterval?, color: Color) -> some View {
         NavigationLink(destination: TypeInfo(type: skillType)) {
             HStack {
-                image?.font(.caption).foregroundColor(color)
+                image?.foregroundColor(color).frame(width: 32, height: 32)
                 VStack(alignment: .leading) {
                     SkillName(name: skillType.typeName?.uppercased() ?? "", level: level).font(.footnote)
                     trainingTime.map{Text(TimeIntervalFormatter.localizedString(from: $0, precision: .seconds)).font(.footnote).foregroundColor(.secondary)}

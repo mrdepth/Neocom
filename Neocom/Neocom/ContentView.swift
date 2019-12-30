@@ -43,7 +43,8 @@ struct ContentView: View {
     var body: some View {
         
         NavigationView {
-            NPCGroup()
+            TypeCategories()
+//            NPCGroup()
 //            VStack {
 //                HStack {
 //                    Text("01").lineLimit(1).layoutPriority(1)

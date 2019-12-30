@@ -19,3 +19,15 @@ struct ServicesViewModifier: ViewModifier {
 			.environment(\.account, environment.account)
 	}
 }
+
+struct BlockModifier<Result: View>: ViewModifier {
+    var block: (Content) -> Result
+    init(@ViewBuilder _ block: @escaping (Content) -> Result) {
+        self.block = block
+    }
+    
+    func body(content: Content) -> Result {
+        block(content)
+    }
+
+}

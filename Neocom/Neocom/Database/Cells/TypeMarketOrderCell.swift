@@ -21,10 +21,10 @@ struct TypeMarketOrderCell: View {
             HStack {
 				Text(UnitFormatter.localizedString(from: order.order.price, unit: .isk, style: .long))
 				Spacer()
-                Text("Quantity:")
+                Text("Qty:")
 				Text(UnitFormatter.localizedString(from: order.order.volumeRemain, unit: .none, style: .long))
 			}
-			(order.location.map{Text($0)} ?? Text("Unknown Location")).font(.footnote)
+			(order.location.map{Text($0)} ?? Text("Unknown Location")).font(.caption)
         }
     }
 }

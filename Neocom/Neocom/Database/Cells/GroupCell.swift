@@ -23,7 +23,7 @@ struct GroupCell: View {
 struct GroupCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            GroupCell(group: (try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first?.group)!)
+            GroupCell(group: SDEInvType.dominix.group!)
         }.listStyle(GroupedListStyle())
     }
 }

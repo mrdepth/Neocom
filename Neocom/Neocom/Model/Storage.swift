@@ -98,11 +98,11 @@ extension SDEInvType {
         Image(uiImage: uiImage)
     }
 
-    class func dominix() -> NSFetchRequest<SDEInvType> {
-        let request = NSFetchRequest<SDEInvType>(entityName: "InvType")
-        request.predicate = (\SDEInvType.typeID == 645).predicate(for: .`self`)
-        return request
+    #if DEBUG
+    class var dominix: SDEInvType {
+        return try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(\SDEInvType.typeID == 645).first()!
     }
+    #endif
 }
 
 extension SDEEveIcon {

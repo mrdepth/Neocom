@@ -22,22 +22,13 @@ extension TypeInfoData.Row {
 }
 
 struct TypeInfoAttributeCell: View {
-    var attribute: SDEDgmTypeAttribute
-    var value: Double?
-    
-    @Environment(\.managedObjectContext) var managedObjectContext
-    
-    private func content(title: String, subtitle: String, image: UIImage?) -> some View {
-        HStack {
-            image.map{Icon(Image(uiImage: $0))}
-            VStack(alignment: .leading) {
-                Text(title.uppercased()).font(.footnote)
-                Text(subtitle).font(.footnote).foregroundColor(.secondary)
-            }
-        }
-    }
+    private var title: Text
+    private var subtitle: Text?
+    private var icon: Icon?
+    private var targetType: SDEInvType?
+    private var targetGroup: SDEInvGroup?
 
-    var body: some View {
+    init(attribute: SDEDgmTypeAttribute, value: Double? = nil) {
         let title: String
         
         if let displayName = attribute.attributeType?.displayName, !displayName.isEmpty {
@@ -65,9 +56,9 @@ struct TypeInfoAttributeCell: View {
         }
         
         
-        let value = self.value ?? attribute.value
-        var targetType: NSManagedObjectID?
-        var targetGroup: NSManagedObjectID?
+        let value = value ?? attribute.value
+        var targetType: SDEInvType?
+        var targetGroup: SDEInvGroup?
         
         switch unitID {
         case .attributeID:
@@ -80,13 +71,13 @@ struct TypeInfoAttributeCell: View {
                 .filter(\SDEInvGroup.groupID == Int(value)).first()
             subtitle = group?.groupName ?? toString(value)
             icon = attribute.attributeType?.icon?.image?.image ?? group?.icon?.image?.image
-            targetGroup = group?.objectID
+            targetGroup = group
         case .typeID:
             let type = try? attribute.managedObjectContext?.from(SDEInvType.self)
                 .filter(\SDEInvType.typeID == Int(value)).first()
             subtitle = type?.typeName ?? toString(value)
             icon = type?.icon?.image?.image ?? attribute.attributeType?.icon?.image?.image
-            targetType = type?.objectID
+            targetType = type
         case .sizeClass:
             subtitle = SDERigSize(rawValue: Int(value))?.description ?? String(describing: Int(value))
         case .bonus:
@@ -106,15 +97,42 @@ struct TypeInfoAttributeCell: View {
         }
         
         let image = icon ?? attribute.attributeType?.icon?.image?.image
+        
+        self.title = Text(title)
+        self.subtitle = Text(subtitle)
+        self.icon = image.map{Icon(Image(uiImage: $0))}
+        self.targetType = targetType
+        self.targetGroup = targetGroup
+    }
+    
+    init(title: Text, subtitle: Text? = nil, image: Image? = nil, targetType: SDEInvType? = nil, targetGroup: SDEInvGroup? = nil) {
+        self.title = title
+        self.subtitle = subtitle
+        self.icon = image.map{Icon($0)}
+        self.targetType = targetType
+        self.targetGroup = targetGroup
+    }
+    
+    @Environment(\.managedObjectContext) var managedObjectContext
+    
+    var body: some View {
+        let content = HStack {
+            icon.cornerRadius(4)
+            VStack(alignment: .leading) {
+                title
+                subtitle?.modifier(SecondaryLabelModifier())
+            }
+        }
+        
         return Group {
             if targetType != nil {
-                NavigationLink(destination: TypeInfo(type: managedObjectContext.object(with: targetType!) as! SDEInvType)) { content(title: title, subtitle: subtitle, image: image) }
+                NavigationLink(destination: TypeInfo(type: targetType!)) { content }
             }
             else if targetGroup != nil {
-                NavigationLink(destination: Types(.group(managedObjectContext.object(with: targetGroup!) as! SDEInvGroup))) { content(title: title, subtitle: subtitle, image: image) }
+                NavigationLink(destination: Types(.group(targetGroup!))) { content }
             }
             else {
-                content(title: title, subtitle: subtitle, image: image)
+                content
             }
         }
     }
@@ -122,7 +140,7 @@ struct TypeInfoAttributeCell: View {
 
 struct TypeInfoAttributeCell_Previews: PreviewProvider {
     static var previews: some View {
-        var attributes = (try? AppDelegate.sharedDelegate.testingContainer.viewContext.fetch(SDEInvType.dominix()).first?.attributes?.allObjects as? [SDEDgmTypeAttribute]) ?? []
+        var attributes = (SDEInvType.dominix.attributes?.allObjects as? [SDEDgmTypeAttribute]) ?? []
         attributes.sort{$0.attributeType!.attributeName! < $1.attributeType!.attributeName!}
         return NavigationView {
             List(attributes, id: \.objectID) { row in

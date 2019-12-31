@@ -72,7 +72,7 @@ struct TypeMarketOrders: View {
 struct TypeMarketOrders_Previews: PreviewProvider {
     static var previews: some View {
 		NavigationView {
-			TypeMarketOrders(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!)
+			TypeMarketOrders(type: .dominix)
 				.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
 				.environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
 		}

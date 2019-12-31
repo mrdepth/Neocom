@@ -29,7 +29,7 @@ struct ModuleTypeCell: View {
                 column("powerGrid", module.powerGrid, .megaWatts)
                 column("cpu", module.cpu, .teraflops)
                 column("calibration", module.calibration, .none)
-            }.font(.footnote)
+            }.modifier(SecondaryLabelModifier())
         }
     }
 }

@@ -32,7 +32,7 @@ struct ShipTypeCell: View {
                 column("slotRig", ship.rigSlots)
                 column("turrets", ship.turrets)
                 column("launchers", ship.launchers)
-            }.font(.footnote)
+            }.modifier(SecondaryLabelModifier())
         }
     }
 }
@@ -40,7 +40,7 @@ struct ShipTypeCell: View {
 struct ShipTypeCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            ShipTypeCell(ship: (try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first?.dgmppItem?.shipResources)!)
+            ShipTypeCell(ship: SDEInvType.dominix.dgmppItem!.shipResources!)
         }.listStyle(GroupedListStyle())
     }
 }

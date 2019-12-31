@@ -34,7 +34,7 @@ struct TypeMateryLevel: View {
 
 struct TypeMateryLevel_Previews: PreviewProvider {
     static var previews: some View {
-        let type = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!
+        let type = SDEInvType.dominix
         let level = ((type.certificates?.anyObject() as? SDECertCertificate)?.masteries?.firstObject as? SDECertMastery)?.level
         return NavigationView {
             TypeMateryLevel(type: type, level: level!, pilot: nil)

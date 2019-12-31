@@ -19,7 +19,7 @@ struct TypeInfoVariationsCell: View {
 
         
         return NavigationLink(destination: Types(.predicate(predicate, NSLocalizedString("Variations", comment: "")))) {
-            Text("\(n) TYPES").font(.footnote)
+            Text("Browse \(n) Variations")
         }
     }
 }
@@ -28,7 +28,7 @@ struct TypeInfoVariationsCell_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             List {
-                TypeInfoVariationsCell(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!)
+                TypeInfoVariationsCell(type: .dominix)
             }.listStyle(GroupedListStyle())
         }
     }

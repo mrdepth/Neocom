@@ -56,7 +56,7 @@ struct CertificateCell: View {
                     Icon(Image(uiImage: (try? self.managedObjectContext.fetch(SDEEveIcon.named(.mastery((trainingInfo.result?.value??.level).map{$0 - 1}))).first?.image?.image) ?? UIImage()))
                     VStack(alignment: .leading) {
                         Text(self.certificate.certificateName ?? "")
-                        (trainingInfo.result?.value ?? nil).map{Text("\(TimeIntervalFormatter.localizedString(from: $0.trainingTime, precision: .seconds)) to level \($0.level + 1)")}.font(.footnote).foregroundColor(.secondary)
+                        (trainingInfo.result?.value ?? nil).map{Text("\(TimeIntervalFormatter.localizedString(from: $0.trainingTime, precision: .seconds)) to level \($0.level + 1)")}.modifier(SecondaryLabelModifier())
                     }
                 }
             }

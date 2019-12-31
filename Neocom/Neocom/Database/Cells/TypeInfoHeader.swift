@@ -40,12 +40,12 @@ struct TypeInfoHeader_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             GeometryReader { geometry in
-                TypeInfoHeader(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!, renderImage: nil, preferredMaxLayoutWidth: geometry.size.width - 30)
+                TypeInfoHeader(type: .dominix, renderImage: nil, preferredMaxLayoutWidth: geometry.size.width - 30)
             }
             .background(Color(UIColor.systemBackground))
             .colorScheme(.light)
             GeometryReader { geometry in
-                TypeInfoHeader(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!, renderImage: Image("dominix"), preferredMaxLayoutWidth: geometry.size.width - 30)
+                TypeInfoHeader(type: .dominix, renderImage: Image("dominix"), preferredMaxLayoutWidth: geometry.size.width - 30)
             }
             .background(Color(UIColor.systemBackground))
             .colorScheme(.dark)

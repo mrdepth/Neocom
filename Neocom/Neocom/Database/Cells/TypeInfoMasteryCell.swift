@@ -17,8 +17,8 @@ struct TypeInfoMasteryCell: View {
         HStack {
             mastery.image.map{Icon(Image(uiImage: $0))}
             VStack(alignment: .leading) {
-                Text(mastery.title.uppercased()).font(.footnote)
-                mastery.subtitle.map{Text($0).font(.footnote).foregroundColor(.secondary)}
+                Text(mastery.title)
+                mastery.subtitle.map{Text($0).modifier(SecondaryLabelModifier())}
             }
         }
     }

@@ -40,20 +40,20 @@ struct TypeInfoPriceCell: View {
                 Icon(Image("priceTotal"))
                 VStack(alignment: .leading) {
                     HStack {
-                        Text("PRICE").font(.footnote)
+                        Text("Price")
                         if price.result == nil {
                             ActivityIndicator(style: .medium)
                         }
                     }
                     if price.result != nil {
                         if value != nil {
-                            Text(UnitFormatter.localizedString(from: value!, unit: .isk, style: .long)).font(.footnote).foregroundColor(.secondary)
+                            Text(UnitFormatter.localizedString(from: value!, unit: .isk, style: .long)).modifier(SecondaryLabelModifier())
                         }
                         else if price.result?.error != nil {
-                            Text(price.result!.error!).font(.footnote).foregroundColor(.secondary)
+                            Text(price.result!.error!).modifier(SecondaryLabelModifier())
                         }
                         else {
-                            Text("N/A").font(.footnote).foregroundColor(.secondary)
+                            Text("N/A").modifier(SecondaryLabelModifier())
                         }
                     }
                 }
@@ -66,7 +66,7 @@ struct TypeInfoPriceCell_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             List {
-                TypeInfoPriceCell(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!)
+                TypeInfoPriceCell(type: .dominix)
             }.listStyle(GroupedListStyle())
         }
     }

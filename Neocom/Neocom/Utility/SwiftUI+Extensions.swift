@@ -31,3 +31,9 @@ struct BlockModifier<Result: View>: ViewModifier {
     }
 
 }
+
+struct SecondaryLabelModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content.font(.caption).foregroundColor(.secondary)
+    }
+}

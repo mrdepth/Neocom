@@ -28,7 +28,7 @@ struct ChargeTypeCell: View {
             }
             HStack {
                 ForEach(0..<4) { i in
-                    DamageView(String(format: "%.0f%%", damages[i] * 100), percent: damages[i], damageType: damageTypes[i]).font(.footnote)
+                    DamageView(String(format: "%.0f%%", damages[i] * 100), percent: damages[i], damageType: damageTypes[i]).font(.caption)
                 }
             }
 

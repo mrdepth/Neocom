@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Expressible
 
 extension TypeInfoData.Row {
     var skill: (Skill)? {
@@ -28,12 +29,15 @@ struct TypeInfoSkillCell: View {
     private func content(image: Image?, trainingTime: TimeInterval?, color: Color) -> some View {
         NavigationLink(destination: TypeInfo(type: skillType)) {
             HStack {
-                image?.foregroundColor(color).frame(width: 32, height: 32)
+                image?.foregroundColor(color)//.frame(width: 32, height: 32)
                 VStack(alignment: .leading) {
-                    SkillName(name: skillType.typeName?.uppercased() ?? "", level: level).font(.footnote)
-                    trainingTime.map{Text(TimeIntervalFormatter.localizedString(from: $0, precision: .seconds)).font(.footnote).foregroundColor(.secondary)}
+                    SkillName(name: skillType.typeName ?? "", level: level)
+                    trainingTime.map{
+                        Text(TimeIntervalFormatter.localizedString(from: $0, precision: .seconds))
+                            .modifier(SecondaryLabelModifier())
+                    }
                 }
-            }
+            }.lineLimit(1).truncationMode(.middle)
         }
     }
     
@@ -68,11 +72,14 @@ struct TypeInfoSkillCell: View {
 
 struct TypeInfoSkillCell_Previews: PreviewProvider {
     static var previews: some View {
-        let skill = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first?.requiredSkills?.firstObject as? SDEInvTypeRequiredSkill
+        let skill = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self)
+            .filter(\SDEInvType.group?.category?.categoryID == SDECategoryID.skill.rawValue)
+            .fetch()
+            .max{$0.typeName!.count < $1.typeName!.count}
         return NavigationView {
             List {
-                TypeInfoSkillCell(skillType: skill!.skillType!, level: 5, pilot: nil)
-                TypeInfoSkillCell(skillType: skill!.skillType!, level: 5, pilot: .empty)
+                TypeInfoSkillCell(skillType: skill!, level: 5, pilot: nil)
+                TypeInfoSkillCell(skillType: skill!, level: 5, pilot: .empty)
             }.listStyle(GroupedListStyle())
                 .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         }

@@ -59,6 +59,10 @@
 		1686D74F23953C9A00E88D3D /* Pilot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D74E23953C9A00E88D3D /* Pilot.swift */; };
 		1686D7512395460F00E88D3D /* TrainingQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D7502395460F00E88D3D /* TrainingQueue.swift */; };
 		1686D75323955C2400E88D3D /* TypeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D75223955C2400E88D3D /* TypeInfo.swift */; };
+		169661B223BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169661B123BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift */; };
+		169661B523BB252E00D8E175 /* BlueprintInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169661B423BB252E00D8E175 /* BlueprintInfo.swift */; };
+		169661B723BB423100D8E175 /* NPCInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169661B623BB423100D8E175 /* NPCInfo.swift */; };
+		169661B923BB444D00D8E175 /* AttributeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169661B823BB444D00D8E175 /* AttributeInfo.swift */; };
 		169672D72387EA2F00EB860B /* HomeHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169672D62387EA2F00EB860B /* HomeHeader.swift */; };
 		169672D92387EA3F00EB860B /* EnvironmentValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169672D82387EA3F00EB860B /* EnvironmentValues.swift */; };
 		169672DB2387ECCD00EB860B /* EVEAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 169672DA2387ECCD00EB860B /* EVEAPI.framework */; };
@@ -187,6 +191,10 @@
 		1686D74E23953C9A00E88D3D /* Pilot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pilot.swift; sourceTree = "<group>"; };
 		1686D7502395460F00E88D3D /* TrainingQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingQueue.swift; sourceTree = "<group>"; };
 		1686D75223955C2400E88D3D /* TypeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfo.swift; sourceTree = "<group>"; };
+		169661B123BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoRequiredSkillsSection.swift; sourceTree = "<group>"; };
+		169661B423BB252E00D8E175 /* BlueprintInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueprintInfo.swift; sourceTree = "<group>"; };
+		169661B623BB423100D8E175 /* NPCInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPCInfo.swift; sourceTree = "<group>"; };
+		169661B823BB444D00D8E175 /* AttributeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeInfo.swift; sourceTree = "<group>"; };
 		169672D62387EA2F00EB860B /* HomeHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeader.swift; sourceTree = "<group>"; };
 		169672D82387EA3F00EB860B /* EnvironmentValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EnvironmentValues.swift; path = Neocom/Home/EnvironmentValues.swift; sourceTree = SOURCE_ROOT; };
 		169672DA2387ECCD00EB860B /* EVEAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EVEAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -414,6 +422,32 @@
 			path = Pilot;
 			sourceTree = "<group>";
 		};
+		169661B323BB24CC00D8E175 /* TypeInfo */ = {
+			isa = PBXGroup;
+			children = (
+				169661B823BB444D00D8E175 /* AttributeInfo.swift */,
+				169BFF9323B64D2300FDF759 /* BlueprintActivityMaterials.swift */,
+				16C39A4B23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift */,
+				169661B423BB252E00D8E175 /* BlueprintInfo.swift */,
+				169661B623BB423100D8E175 /* NPCInfo.swift */,
+				1686D75223955C2400E88D3D /* TypeInfo.swift */,
+				169661B123BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift */,
+				1698C05B239A8EB400193274 /* TypeMateryLevel.swift */,
+			);
+			path = TypeInfo;
+			sourceTree = "<group>";
+		};
+		169661BA23BB564D00D8E175 /* CertificateInfo */ = {
+			isa = PBXGroup;
+			children = (
+				16E2AD9C23B20FCE00B90204 /* CertificateInfo.swift */,
+				16D5DE7523B23898004CDA4A /* CertificateMasteryInfo.swift */,
+				16D5DE7723B238D4004CDA4A /* CertificateRequirementsInfo.swift */,
+				1698C05D239A954000193274 /* TypeMasterySkills.swift */,
+			);
+			path = CertificateInfo;
+			sourceTree = "<group>";
+		};
 		16AE40F8239004E900C6E25B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -443,22 +477,16 @@
 			isa = PBXGroup;
 			children = (
 				16AE40F8239004E900C6E25B /* Cells */,
-				169BFF9323B64D2300FDF759 /* BlueprintActivityMaterials.swift */,
-				16C39A4B23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift */,
+				169661B323BB24CC00D8E175 /* TypeInfo */,
+				169661BA23BB564D00D8E175 /* CertificateInfo */,
 				16A6A4B723B1E54F00CF0812 /* CertificateGroups.swift */,
-				16E2AD9C23B20FCE00B90204 /* CertificateInfo.swift */,
-				16D5DE7523B23898004CDA4A /* CertificateMasteryInfo.swift */,
-				16D5DE7723B238D4004CDA4A /* CertificateRequirementsInfo.swift */,
 				16A6A4B923B1E6F500CF0812 /* Certificates.swift */,
 				16B45EFE23A3663400A36A96 /* MarketRegionPicker.swift */,
 				12877E2B23B29FA1009FF71B /* NPCGroup.swift */,
 				16DFF82E238D360B004C1185 /* TypeCategories.swift */,
 				124F06E8238D908A00395D54 /* TypeGroups.swift */,
-				1686D75223955C2400E88D3D /* TypeInfo.swift */,
 				16D0093A23B0AF39000694C0 /* TypeMarketGroup.swift */,
 				1273F8D223A2C69B00DB755B /* TypeMarketOrders.swift */,
-				1698C05D239A954000193274 /* TypeMasterySkills.swift */,
-				1698C05B239A8EB400193274 /* TypeMateryLevel.swift */,
 				169891A0238E50AC00FBA0B3 /* Types.swift */,
 				1696F682238FA7F5009F03F3 /* TypesSearch.swift */,
 			);
@@ -571,10 +599,12 @@
 				1655DE752396888200973258 /* TypeInfoData.swift in Sources */,
 				12F06F40238469C10061313D /* SDEVersion.swift in Sources */,
 				16DFF833238D4C02004C1185 /* UIKit+Extensions.swift in Sources */,
+				169661B523BB252E00D8E175 /* BlueprintInfo.swift in Sources */,
 				1686D74C23953C5600E88D3D /* SDE.swift in Sources */,
 				16E3DBF3238BF944005F5AAE /* Avatar.swift in Sources */,
 				169A91A3238D1D38004E3DAA /* Config.swift in Sources */,
 				1696F689238FD0E6009F03F3 /* CategoryCell.swift in Sources */,
+				169661B223BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift in Sources */,
 				161C6EF723A11B8400777009 /* UserDefault.swift in Sources */,
 				169672D72387EA2F00EB860B /* HomeHeader.swift in Sources */,
 				1632472D239145FA00227480 /* Cache.swift in Sources */,
@@ -595,7 +625,9 @@
 				166EE98F2396311200388D65 /* TypeInfoHeader.swift in Sources */,
 				124F06E7238D8EB400395D54 /* Icon.swift in Sources */,
 				166EE98B23962F2500388D65 /* AttributedText.swift in Sources */,
+				169661B723BB423100D8E175 /* NPCInfo.swift in Sources */,
 				16AE40F3238FDDE600C6E25B /* ChargeTypeCell.swift in Sources */,
+				169661B923BB444D00D8E175 /* AttributeInfo.swift in Sources */,
 				16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */,
 				1653663B239E733C0096990F /* TypeInfoPriceCell.swift in Sources */,
 				16A6A4B823B1E54F00CF0812 /* CertificateGroups.swift in Sources */,

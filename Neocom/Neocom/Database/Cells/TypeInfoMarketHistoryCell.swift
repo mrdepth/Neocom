@@ -29,7 +29,7 @@ struct TypeInfoMarketCell_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             List {
-                TypeInfoMarketHistoryCell(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.fetch(SDEInvType.dominix()).first!)
+                TypeInfoMarketHistoryCell(type: .dominix)
             }.listStyle(GroupedListStyle())
         }
     }

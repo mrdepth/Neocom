@@ -1,5 +1,5 @@
 //
-//  TypeMateryLevel.swift
+//  TypeMasteryLevel.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 12/6/19.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct TypeMateryLevel: View {
+struct TypeMasteryLevel: View {
     var type: SDEInvType
     var level: SDECertMasteryLevel
     var pilot: Pilot?
@@ -19,12 +19,14 @@ struct TypeMateryLevel: View {
         
         return List {
             ForEach(mastery.sections) { section in
-                HStack {
-                    section.image.font(.caption).foregroundColor(Color(section.color))
-                    VStack(alignment: .leading) {
-                        Text(section.title)
-                        section.subtitle.map{Text($0).foregroundColor(.secondary)}
-                    }.font(.footnote)
+                NavigationLink(destination: TypeMasterySkills(data: section, pilot: self.pilot)) {
+                    HStack {
+                        section.image.font(.caption).foregroundColor(Color(section.color))
+                        VStack(alignment: .leading) {
+                            Text(section.title)
+                            section.subtitle.map{Text($0).modifier(SecondaryLabelModifier())}
+                        }
+                    }
                 }
             }
         }.listStyle(GroupedListStyle())
@@ -32,12 +34,12 @@ struct TypeMateryLevel: View {
     }
 }
 
-struct TypeMateryLevel_Previews: PreviewProvider {
+struct TypeMasteryLevel_Previews: PreviewProvider {
     static var previews: some View {
         let type = SDEInvType.dominix
         let level = ((type.certificates?.anyObject() as? SDECertCertificate)?.masteries?.firstObject as? SDECertMastery)?.level
         return NavigationView {
-            TypeMateryLevel(type: type, level: level!, pilot: nil)
+            TypeMasteryLevel(type: type, level: level!, pilot: nil)
         }
     }
 }

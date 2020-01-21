@@ -19,7 +19,6 @@ struct TypeMarketOrders: View {
 	var type: SDEInvType
 
 	@ObservedObject var marketOrders = Lazy<TypeMarketData>()
-//	@State var orders = Cache<Int, TypeMarketData>()
 	@Environment(\.managedObjectContext) var managedObjectContext
 	@Environment(\.backgroundManagedObjectContext) var backgroundManagedObjectContext
     @Environment(\.esi) var esi

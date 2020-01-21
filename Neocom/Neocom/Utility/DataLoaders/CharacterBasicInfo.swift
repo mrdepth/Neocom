@@ -1,5 +1,5 @@
 //
-//  CharacterInfo.swift
+//  CharacterBasicInfo.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 24.11.2019.
@@ -11,7 +11,7 @@ import Combine
 import EVEAPI
 import Alamofire
 
-class CharacterInfo: ObservableObject {
+class CharacterBasicInfo: ObservableObject {
     @Published var character: Result<ESI.CharacterInfo, AFError>?
 	@Published var corporation: Result<ESI.CorporationInfo, AFError>?
 	@Published var alliance: Result<ESI.AllianceInfo, AFError>?
@@ -79,5 +79,5 @@ class CharacterInfo: ObservableObject {
         }?.store(in: &subscriptions)
     }
 	
-    private var subscriptions = Set<AnyCancellable>()
+    var subscriptions = Set<AnyCancellable>()
 }

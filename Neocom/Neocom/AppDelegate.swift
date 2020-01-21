@@ -86,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     #if DEBUG
-    lazy var testingContainer: NSPersistentContainer = {
+    /*lazy var testingContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Neocom", managedObjectModel: managedObjectModel)
         let sde = NSPersistentStoreDescription(url: Bundle.main.url(forResource: "SDE", withExtension: "sqlite")!)
         sde.configuration = "SDE"
@@ -107,6 +107,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ = Account(token: oAuth2Token, context: container.viewContext)
         try? container.viewContext.save()
         return container
+    }()*/
+    
+    lazy var testingAccount: Account? = {
+        if let account = try? self.persistentContainer.viewContext.from(Account.self).first() {
+            return account
+        }
+        else {
+            let account = Account(token: oAuth2Token, context: self.persistentContainer.viewContext)
+            try? self.persistentContainer.viewContext.save()
+            return account
+        }
     }()
     
     static var sharedDelegate: AppDelegate {

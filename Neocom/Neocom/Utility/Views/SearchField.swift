@@ -32,7 +32,7 @@ struct SearchField: View {
             HStack {
                 Image(systemName: "magnifyingglass")
 
-                TextField("search", text: $text, onEditingChanged: { isEditing in
+                TextField("Search", text: $text, onEditingChanged: { isEditing in
                     withAnimation {
                         self.isEditing = isEditing
                     }

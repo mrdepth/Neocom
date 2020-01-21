@@ -15,12 +15,12 @@ struct HomeHeader: View {
     var characterID: Int64?
     @Environment(\.account) var account
     @Environment(\.esi) var esi
-    @ObservedObject var characterInfo = Lazy<CharacterInfo>()
+    @ObservedObject var characterInfo = Lazy<CharacterBasicInfo>()
     
 //	@ObservedObject private var characterInfo = CharacterInfo(characterImageSize: .size256, corporationImageSize: .size32, allianceImageSize: .size32)
 
     var body: some View {
-        let characterInfo = characterID.map{self.characterInfo.get(initial: CharacterInfo(esi: esi, characterID: $0, characterImageSize: .size256, corporationImageSize: .size32, allianceImageSize: .size32))}
+        let characterInfo = characterID.map{self.characterInfo.get(initial: CharacterBasicInfo(esi: esi, characterID: $0, characterImageSize: .size256, corporationImageSize: .size32, allianceImageSize: .size32))}
         return VStack {
             
             if characterInfo?.character != nil {

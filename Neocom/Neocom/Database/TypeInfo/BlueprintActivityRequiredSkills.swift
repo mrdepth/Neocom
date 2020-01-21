@@ -11,7 +11,6 @@ import Expressible
 
 struct BlueprintActivityRequiredSkills: View {
     @Environment(\.account) var account
-    @State private var sheetIsPresented = false
     @State private var isFinished = false
     
     var activity: SDEIndActivity
@@ -26,35 +25,8 @@ struct BlueprintActivityRequiredSkills: View {
         trainingQueue.addRequiredSkills(for: activity)
     }
     
-//    private func requiredSkills(for activity: SDEIndActivity, pilot: Pilot?) {
-//        (activity.requiredSkills?.allObjects as? [SDEIndRequiredSkill])?.filter {$0.skillType?.typeName != nil}.sorted {$0.skillType!.typeName! < $1.skillType!.typeName!}
-////            .compactMap { requiredSkill -> Tree.Item.InvTypeRequiredSkillRow? in
-////            guard let type = requiredSkill.skillType else {return nil}
-////            guard let row = Tree.Item.InvTypeRequiredSkillRow(requiredSkill, character: character) else {return nil}
-////            row.children = requiredSkills(for: type, character: character, context: context)
-////            return row
-//        }
-//    }
-
     private var trailingButton: some View {
-//        return (!trainingQueue.queue.isEmpty ? account?.activeSkillPlan : nil).map { skillPlan in
-            Button(action: {
-                self.sheetIsPresented.toggle()
-            }) {
-                Image(systemName: "ellipsis")
-            }
-//        }
-    }
-    
-    private var actionSheet: ActionSheet {
-        ActionSheet(title: Text(TimeIntervalFormatter.localizedString(from: trainingQueue.trainingTime(), precision: .seconds)), message: nil, buttons: [
-            .default(Text("Add to Skill Plan")) {
-                self.account?.activeSkillPlan?.add(self.trainingQueue)
-                withAnimation {
-                    self.isFinished.toggle()
-                }
-            },
-            .cancel()])
+        AddToSkillPlanButton(trainingQueue: trainingQueue)
     }
     
     var body: some View {
@@ -72,14 +44,9 @@ struct BlueprintActivityRequiredSkills: View {
                         }
                     }
                 }
-            }.listStyle(GroupedListStyle()).navigationBarTitle("Required Skills")
-            if isFinished {
-                FinishedView(isPresented: $isFinished)
-            }
+            }.listStyle(GroupedListStyle()).navigationBarTitle(activity.activity?.activityName ?? "")
         }
         .navigationBarItems(trailing: trailingButton)
-        .actionSheet(isPresented: $sheetIsPresented) {self.actionSheet}
-            
     }
     
 }

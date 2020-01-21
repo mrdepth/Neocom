@@ -18,9 +18,9 @@ struct AccountCell: View {
     @ObservedObject var accountInfo: AccountInfo
 
     var body: some View {
-        AccountCellContent(character: (accountInfo.characterInfo.character?.value).map{AccountCellContent.Subject(name: $0.name, image: (accountInfo.characterInfo.characterImage?.value).map{Image(uiImage: $0)})},
-                           corporation: (accountInfo.characterInfo.corporation?.value).map{AccountCellContent.Subject(name: $0.name, image: (accountInfo.characterInfo.corporationImage?.value).map{Image(uiImage: $0)})},
-                           alliance: (accountInfo.characterInfo.alliance?.value).map{AccountCellContent.Subject(name: $0.name, image: (accountInfo.characterInfo.allianceImage?.value).map{Image(uiImage: $0)})},
+        AccountCellContent(character: (accountInfo.character?.value).map{AccountCellContent.Subject(name: $0.name, image: (accountInfo.characterImage?.value).map{Image(uiImage: $0)})},
+                           corporation: (accountInfo.corporation?.value).map{AccountCellContent.Subject(name: $0.name, image: (accountInfo.corporationImage?.value).map{Image(uiImage: $0)})},
+                           alliance: (accountInfo.alliance?.value).map{AccountCellContent.Subject(name: $0.name, image: (accountInfo.allianceImage?.value).map{Image(uiImage: $0)})},
                            ship: accountInfo.ship?.value?.shipName,
                            location: (accountInfo.location?.value).map{"\($0.solarSystemName ?? "") / \($0.constellation?.region?.regionName ?? "")"},
                            sp: accountInfo.skills?.value?.totalSP,
@@ -33,10 +33,10 @@ struct AccountCell: View {
 
 struct AccountCell_Previews: PreviewProvider {
     static var previews: some View {
-        let context = (UIApplication.shared.delegate as! AppDelegate).testingContainer.viewContext
-        let account = try! context.from(Account.self).first()!
-        let esi = ESI(token: account.oAuth2Token!)
-        return AccountCell(accountInfo: AccountInfo(esi: esi, characterID: account.characterID, managedObjectContext: context, characterImageSize: .size256))
+        let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let account = AppDelegate.sharedDelegate.testingAccount
+        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
+        return AccountCell(accountInfo: AccountInfo(esi: esi, characterID: account!.characterID, managedObjectContext: context, characterImageSize: .size256))
 //        return AccountCell(account: account, esi: ESI(token: account.oAuth2Token!)).environment(\.managedObjectContext, context)
     }
 }

@@ -53,7 +53,7 @@ struct FinishedView: View {
         BlurView().frame(width: 128, height: 128)
             .transition(.asymmetric(insertion: AnyTransition.modifier(active: CheckmarkModifier(isIdentity: false, isPresented: $isPresented),
                                                                       identity: CheckmarkModifier(isIdentity: true, isPresented: $isPresented)),
-                                    removal: .opacity))
+                                    removal: .opacity)).zIndex(.infinity)
     }
 }
 

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CertificateMasteryInfo: View {
     var certificate: SDECertCertificate
-    var mastery: Int?
+    var masteryLevel: Int?
     var pilot: Pilot?
     
     @Environment(\.account) var account
@@ -48,7 +48,7 @@ struct CertificateMasteryInfo: View {
     
     var body: some View {
         Group {
-            CertificateInfoHeader(certificate: self.certificate, masteryLevel: self.mastery)
+            CertificateInfoHeader(certificate: self.certificate, masteryLevel: self.masteryLevel)
             ForEach(self.masteries, id: \.objectID) { mastery in
                 Section(header: self.title(for: mastery)) {
                     ForEach(self.skills(for: mastery), id: \.objectID) { skill in

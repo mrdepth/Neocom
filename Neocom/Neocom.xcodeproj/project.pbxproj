@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		120E28F0238B12A1006B30EA /* CharacterInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120E28EF238B12A1006B30EA /* CharacterInfo.swift */; };
+		120E28F0238B12A1006B30EA /* CharacterBasicInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120E28EF238B12A1006B30EA /* CharacterBasicInfo.swift */; };
 		122B4AED239EAE2000461A1A /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122B4AEC239EAE2000461A1A /* Preferences.swift */; };
 		124F06E3238D897E00395D54 /* ImageValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F06E2238D897E00395D54 /* ImageValueTransformer.swift */; };
 		124F06E7238D8EB400395D54 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F06E6238D8EB400395D54 /* Icon.swift */; };
@@ -38,6 +38,10 @@
 		161C6EF723A11B8400777009 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161C6EF623A11B8400777009 /* UserDefault.swift */; };
 		161C6EFD23A12FBC00777009 /* TypeMarketData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161C6EFC23A12FBC00777009 /* TypeMarketData.swift */; };
 		161C6EFF23A1303700777009 /* LocationsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161C6EFE23A1303700777009 /* LocationsInfo.swift */; };
+		1630ED7523CC65E0001DBAA7 /* TypeMasterySkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1630ED7423CC65E0001DBAA7 /* TypeMasterySkills.swift */; };
+		1630ED7923CC926E001DBAA7 /* CharacterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1630ED7823CC926E001DBAA7 /* CharacterSheet.swift */; };
+		1630ED7D23CC9D69001DBAA7 /* CharacterSheetHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1630ED7C23CC9D69001DBAA7 /* CharacterSheetHeader.swift */; };
+		1630ED7F23CCAC01001DBAA7 /* RuntimeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1630ED7E23CCAC01001DBAA7 /* RuntimeError.swift */; };
 		1632472A2390FF5B00227480 /* HomeLoginHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163247292390FF5B00227480 /* HomeLoginHeader.swift */; };
 		1632472D239145FA00227480 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1632472C239145FA00227480 /* Cache.swift */; };
 		1632472F2391496500227480 /* Lazy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1632472E2391496500227480 /* Lazy.swift */; };
@@ -59,6 +63,7 @@
 		1686D74F23953C9A00E88D3D /* Pilot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D74E23953C9A00E88D3D /* Pilot.swift */; };
 		1686D7512395460F00E88D3D /* TrainingQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D7502395460F00E88D3D /* TrainingQueue.swift */; };
 		1686D75323955C2400E88D3D /* TypeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D75223955C2400E88D3D /* TypeInfo.swift */; };
+		1688D00F23D6F0790012983C /* JumpClones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688D00E23D6F0790012983C /* JumpClones.swift */; };
 		169661B223BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169661B123BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift */; };
 		169661B523BB252E00D8E175 /* BlueprintInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169661B423BB252E00D8E175 /* BlueprintInfo.swift */; };
 		169661B723BB423100D8E175 /* NPCInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169661B623BB423100D8E175 /* NPCInfo.swift */; };
@@ -79,7 +84,6 @@
 		169891B0238E696900FBA0B3 /* ShipTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169891AC238E557900FBA0B3 /* ShipTypeCell.swift */; };
 		169891B5238EAF4000FBA0B3 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169891B4238EAF4000FBA0B3 /* SearchView.swift */; };
 		1698C05C239A8EB400193274 /* TypeMateryLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1698C05B239A8EB400193274 /* TypeMateryLevel.swift */; };
-		1698C05E239A954000193274 /* TypeMasterySkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1698C05D239A954000193274 /* TypeMasterySkills.swift */; };
 		169A72C9238BD9AA00E4C181 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A72C8238BD9AA00E4C181 /* Colors.swift */; };
 		169A72CF238BE05600E4C181 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A72CE238BE05600E4C181 /* String+Extensions.swift */; };
 		169A72D1238BE0EF00E4C181 /* TimeIntervalFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A72D0238BE0EF00E4C181 /* TimeIntervalFormatter.swift */; };
@@ -90,10 +94,12 @@
 		169A91A3238D1D38004E3DAA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A91A2238D1D38004E3DAA /* Config.swift */; };
 		169A91A5238D1D81004E3DAA /* ESI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A91A4238D1D81004E3DAA /* ESI+Extensions.swift */; };
 		169BFF9423B64D2300FDF759 /* BlueprintActivityMaterials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169BFF9323B64D2300FDF759 /* BlueprintActivityMaterials.swift */; };
+		16A1598523C712FB00778320 /* AddToSkillPlanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A1598423C712FB00778320 /* AddToSkillPlanButton.swift */; };
 		16A6A4B823B1E54F00CF0812 /* CertificateGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A6A4B723B1E54F00CF0812 /* CertificateGroups.swift */; };
 		16A6A4BA23B1E6F500CF0812 /* Certificates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A6A4B923B1E6F500CF0812 /* Certificates.swift */; };
 		16A6A4BB23B1EA3F00CF0812 /* DataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D8DC81238813A40057A6F4 /* DataLoader.swift */; };
 		16A6A4BD23B1ECC300CF0812 /* CertificateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A6A4BC23B1ECC300CF0812 /* CertificateCell.swift */; };
+		16ACE3A423D5B5BD009A6AF1 /* CharacterFullInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16ACE3A323D5B5BD009A6AF1 /* CharacterFullInfo.swift */; };
 		16AE40F1238FDAD000C6E25B /* ModuleTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AE40F0238FDAD000C6E25B /* ModuleTypeCell.swift */; };
 		16AE40F3238FDDE600C6E25B /* ChargeTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AE40F2238FDDE600C6E25B /* ChargeTypeCell.swift */; };
 		16AE40F5238FEFD500C6E25B /* DamageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AE40F4238FEFD500C6E25B /* DamageView.swift */; };
@@ -103,6 +109,8 @@
 		16C39A5423BA0B7200208F04 /* FinishedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C39A5323BA0B7200208F04 /* FinishedView.swift */; };
 		16C39A5623BA0BF000208F04 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C39A5523BA0BF000208F04 /* BlurView.swift */; };
 		16C39A5823BA0EEB00208F04 /* VibrancyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C39A5723BA0EEB00208F04 /* VibrancyView.swift */; };
+		16C435F623D6FDD3000A5446 /* ImplantsRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C435F523D6FDD3000A5446 /* ImplantsRows.swift */; };
+		16C435FA23D6FFC7000A5446 /* ImplantTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C435F923D6FFC7000A5446 /* ImplantTypeCell.swift */; };
 		16D0093723B09DF0000694C0 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D0093623B09DF0000694C0 /* ActivityIndicator.swift */; };
 		16D0093B23B0AF39000694C0 /* TypeMarketGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D0093A23B0AF39000694C0 /* TypeMarketGroup.swift */; };
 		16D5DE7623B23898004CDA4A /* CertificateMasteryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D5DE7523B23898004CDA4A /* CertificateMasteryInfo.swift */; };
@@ -136,7 +144,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		120E28EF238B12A1006B30EA /* CharacterInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfo.swift; sourceTree = "<group>"; };
+		120E28EF238B12A1006B30EA /* CharacterBasicInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterBasicInfo.swift; sourceTree = "<group>"; };
 		122B4AEC239EAE2000461A1A /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		124F06E2238D897E00395D54 /* ImageValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageValueTransformer.swift; sourceTree = "<group>"; };
 		124F06E6238D8EB400395D54 /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
@@ -170,6 +178,10 @@
 		161C6EF623A11B8400777009 /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 		161C6EFC23A12FBC00777009 /* TypeMarketData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMarketData.swift; sourceTree = "<group>"; };
 		161C6EFE23A1303700777009 /* LocationsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsInfo.swift; sourceTree = "<group>"; };
+		1630ED7423CC65E0001DBAA7 /* TypeMasterySkills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMasterySkills.swift; sourceTree = "<group>"; };
+		1630ED7823CC926E001DBAA7 /* CharacterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSheet.swift; sourceTree = "<group>"; };
+		1630ED7C23CC9D69001DBAA7 /* CharacterSheetHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSheetHeader.swift; sourceTree = "<group>"; };
+		1630ED7E23CCAC01001DBAA7 /* RuntimeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeError.swift; sourceTree = "<group>"; };
 		163247292390FF5B00227480 /* HomeLoginHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeLoginHeader.swift; sourceTree = "<group>"; };
 		1632472C239145FA00227480 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		1632472E2391496500227480 /* Lazy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lazy.swift; sourceTree = "<group>"; };
@@ -191,6 +203,7 @@
 		1686D74E23953C9A00E88D3D /* Pilot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pilot.swift; sourceTree = "<group>"; };
 		1686D7502395460F00E88D3D /* TrainingQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingQueue.swift; sourceTree = "<group>"; };
 		1686D75223955C2400E88D3D /* TypeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfo.swift; sourceTree = "<group>"; };
+		1688D00E23D6F0790012983C /* JumpClones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpClones.swift; sourceTree = "<group>"; };
 		169661B123BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoRequiredSkillsSection.swift; sourceTree = "<group>"; };
 		169661B423BB252E00D8E175 /* BlueprintInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueprintInfo.swift; sourceTree = "<group>"; };
 		169661B623BB423100D8E175 /* NPCInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPCInfo.swift; sourceTree = "<group>"; };
@@ -209,7 +222,6 @@
 		169891AC238E557900FBA0B3 /* ShipTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipTypeCell.swift; sourceTree = "<group>"; };
 		169891B4238EAF4000FBA0B3 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		1698C05B239A8EB400193274 /* TypeMateryLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMateryLevel.swift; sourceTree = "<group>"; };
-		1698C05D239A954000193274 /* TypeMasterySkills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMasterySkills.swift; sourceTree = "<group>"; };
 		169A72C8238BD9AA00E4C181 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		169A72CE238BE05600E4C181 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		169A72D0238BE0EF00E4C181 /* TimeIntervalFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalFormatter.swift; sourceTree = "<group>"; };
@@ -220,9 +232,11 @@
 		169A91A2238D1D38004E3DAA /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		169A91A4238D1D81004E3DAA /* ESI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ESI+Extensions.swift"; sourceTree = "<group>"; };
 		169BFF9323B64D2300FDF759 /* BlueprintActivityMaterials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueprintActivityMaterials.swift; sourceTree = "<group>"; };
+		16A1598423C712FB00778320 /* AddToSkillPlanButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToSkillPlanButton.swift; sourceTree = "<group>"; };
 		16A6A4B723B1E54F00CF0812 /* CertificateGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateGroups.swift; sourceTree = "<group>"; };
 		16A6A4B923B1E6F500CF0812 /* Certificates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Certificates.swift; sourceTree = "<group>"; };
 		16A6A4BC23B1ECC300CF0812 /* CertificateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateCell.swift; sourceTree = "<group>"; };
+		16ACE3A323D5B5BD009A6AF1 /* CharacterFullInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterFullInfo.swift; sourceTree = "<group>"; };
 		16AE40F0238FDAD000C6E25B /* ModuleTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleTypeCell.swift; sourceTree = "<group>"; };
 		16AE40F2238FDDE600C6E25B /* ChargeTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeTypeCell.swift; sourceTree = "<group>"; };
 		16AE40F4238FEFD500C6E25B /* DamageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamageView.swift; sourceTree = "<group>"; };
@@ -232,6 +246,8 @@
 		16C39A5323BA0B7200208F04 /* FinishedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedView.swift; sourceTree = "<group>"; };
 		16C39A5523BA0BF000208F04 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		16C39A5723BA0EEB00208F04 /* VibrancyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibrancyView.swift; sourceTree = "<group>"; };
+		16C435F523D6FDD3000A5446 /* ImplantsRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImplantsRows.swift; sourceTree = "<group>"; };
+		16C435F923D6FFC7000A5446 /* ImplantTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImplantTypeCell.swift; sourceTree = "<group>"; };
 		16D0093623B09DF0000694C0 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		16D0093A23B0AF39000694C0 /* TypeMarketGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMarketGroup.swift; sourceTree = "<group>"; };
 		16D5DE7523B23898004CDA4A /* CertificateMasteryInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateMasteryInfo.swift; sourceTree = "<group>"; };
@@ -268,8 +284,9 @@
 			isa = PBXGroup;
 			children = (
 				16D8DC81238813A40057A6F4 /* DataLoader.swift */,
-				120E28EF238B12A1006B30EA /* CharacterInfo.swift */,
+				120E28EF238B12A1006B30EA /* CharacterBasicInfo.swift */,
 				16324730239159A200227480 /* AccountInfo.swift */,
+				16ACE3A323D5B5BD009A6AF1 /* CharacterFullInfo.swift */,
 				1655DE742396888200973258 /* TypeInfoData.swift */,
 				12CBA91C2399596B001C1C82 /* MasteryData.swift */,
 				161C6EFC23A12FBC00777009 /* TypeMarketData.swift */,
@@ -318,6 +335,7 @@
 				12F06F2A238466EB0061313D /* Utility */,
 				12AE040D23847EB400DEFFC5 /* Home */,
 				16DFF82D238D35F6004C1185 /* Database */,
+				1630ED7723CC9254001DBAA7 /* Character */,
 				12F06F12238464920061313D /* AppDelegate.swift */,
 				12F06F14238464920061313D /* SceneDelegate.swift */,
 				12F06F16238464920061313D /* ContentView.swift */,
@@ -362,6 +380,7 @@
 				122B4AEC239EAE2000461A1A /* Preferences.swift */,
 				161C6EF623A11B8400777009 /* UserDefault.swift */,
 				16C39A4F23B9CF7D00208F04 /* SkillsList.swift */,
+				1630ED7E23CCAC01001DBAA7 /* RuntimeError.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -392,6 +411,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		1630ED7723CC9254001DBAA7 /* Character */ = {
+			isa = PBXGroup;
+			children = (
+				1630ED7823CC926E001DBAA7 /* CharacterSheet.swift */,
+				16C435F523D6FDD3000A5446 /* ImplantsRows.swift */,
+				1630ED7C23CC9D69001DBAA7 /* CharacterSheetHeader.swift */,
+				1688D00E23D6F0790012983C /* JumpClones.swift */,
+			);
+			path = Character;
+			sourceTree = "<group>";
+		};
 		16674BEA238BB96400E6E547 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -409,6 +439,7 @@
 				16C39A5323BA0B7200208F04 /* FinishedView.swift */,
 				16C39A5523BA0BF000208F04 /* BlurView.swift */,
 				16C39A5723BA0EEB00208F04 /* VibrancyView.swift */,
+				16A1598423C712FB00778320 /* AddToSkillPlanButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -433,6 +464,7 @@
 				1686D75223955C2400E88D3D /* TypeInfo.swift */,
 				169661B123BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift */,
 				1698C05B239A8EB400193274 /* TypeMateryLevel.swift */,
+				1630ED7423CC65E0001DBAA7 /* TypeMasterySkills.swift */,
 			);
 			path = TypeInfo;
 			sourceTree = "<group>";
@@ -443,7 +475,6 @@
 				16E2AD9C23B20FCE00B90204 /* CertificateInfo.swift */,
 				16D5DE7523B23898004CDA4A /* CertificateMasteryInfo.swift */,
 				16D5DE7723B238D4004CDA4A /* CertificateRequirementsInfo.swift */,
-				1698C05D239A954000193274 /* TypeMasterySkills.swift */,
 			);
 			path = CertificateInfo;
 			sourceTree = "<group>";
@@ -459,6 +490,7 @@
 				12B1A3BD239D2F8F00BED705 /* MarketHistory.swift */,
 				16AE40F0238FDAD000C6E25B /* ModuleTypeCell.swift */,
 				169891AC238E557900FBA0B3 /* ShipTypeCell.swift */,
+				16C435F923D6FFC7000A5446 /* ImplantTypeCell.swift */,
 				169891A2238E53D600FBA0B3 /* TypeCell.swift */,
 				1655DE7A23969BA900973258 /* TypeInfoAttributeCell.swift */,
 				167CB4A72398F825008980EE /* TypeInfoDamageCell.swift */,
@@ -585,6 +617,7 @@
 				1273F8D323A2C69B00DB755B /* TypeMarketOrders.swift in Sources */,
 				167CB4AC23992828008980EE /* TypeInfoVariationsCell.swift in Sources */,
 				16D667CC238D66FB00A74C98 /* FetchedResultsController.swift in Sources */,
+				1630ED7523CC65E0001DBAA7 /* TypeMasterySkills.swift in Sources */,
 				12AE040F23847EC600DEFFC5 /* Home.swift in Sources */,
 				16D5DE7623B23898004CDA4A /* CertificateMasteryInfo.swift in Sources */,
 				167CB4B123994B24008980EE /* TypeInfoMasteryCell.swift in Sources */,
@@ -593,6 +626,8 @@
 				1602719823A2792900067AA1 /* TypeMarketOrderCell.swift in Sources */,
 				1698919F238E4BA500FBA0B3 /* ObservedObjectView.swift in Sources */,
 				169A72D1238BE0EF00E4C181 /* TimeIntervalFormatter.swift in Sources */,
+				16C435FA23D6FFC7000A5446 /* ImplantTypeCell.swift in Sources */,
+				1688D00F23D6F0790012983C /* JumpClones.swift in Sources */,
 				16A6A4BA23B1E6F500CF0812 /* Certificates.swift in Sources */,
 				12CBA91D2399596B001C1C82 /* MasteryData.swift in Sources */,
 				16674BE7238BB7FE00E6E547 /* Accounts.swift in Sources */,
@@ -605,13 +640,14 @@
 				169A91A3238D1D38004E3DAA /* Config.swift in Sources */,
 				1696F689238FD0E6009F03F3 /* CategoryCell.swift in Sources */,
 				169661B223BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift in Sources */,
+				1630ED7F23CCAC01001DBAA7 /* RuntimeError.swift in Sources */,
 				161C6EF723A11B8400777009 /* UserDefault.swift in Sources */,
 				169672D72387EA2F00EB860B /* HomeHeader.swift in Sources */,
 				1632472D239145FA00227480 /* Cache.swift in Sources */,
-				120E28F0238B12A1006B30EA /* CharacterInfo.swift in Sources */,
-				1698C05E239A954000193274 /* TypeMasterySkills.swift in Sources */,
+				120E28F0238B12A1006B30EA /* CharacterBasicInfo.swift in Sources */,
 				167CB4A82398F825008980EE /* TypeInfoDamageCell.swift in Sources */,
 				12F06F13238464920061313D /* AppDelegate.swift in Sources */,
+				1630ED7D23CC9D69001DBAA7 /* CharacterSheetHeader.swift in Sources */,
 				16E2AD9F23B214EF00B90204 /* CertificateInfoHeader.swift in Sources */,
 				12B1A3BE239D2F8F00BED705 /* MarketHistory.swift in Sources */,
 				1696F687238FCF88009F03F3 /* GroupCell.swift in Sources */,
@@ -624,6 +660,7 @@
 				164156172397E68A0063A39C /* TypeInfoSkillCell.swift in Sources */,
 				166EE98F2396311200388D65 /* TypeInfoHeader.swift in Sources */,
 				124F06E7238D8EB400395D54 /* Icon.swift in Sources */,
+				1630ED7923CC926E001DBAA7 /* CharacterSheet.swift in Sources */,
 				166EE98B23962F2500388D65 /* AttributedText.swift in Sources */,
 				169661B723BB423100D8E175 /* NPCInfo.swift in Sources */,
 				16AE40F3238FDDE600C6E25B /* ChargeTypeCell.swift in Sources */,
@@ -641,6 +678,7 @@
 				16DFF831238D3A4F004C1185 /* SearchField.swift in Sources */,
 				12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */,
 				16AE40F1238FDAD000C6E25B /* ModuleTypeCell.swift in Sources */,
+				16ACE3A423D5B5BD009A6AF1 /* CharacterFullInfo.swift in Sources */,
 				1632472F2391496500227480 /* Lazy.swift in Sources */,
 				169672D92387EA3F00EB860B /* EnvironmentValues.swift in Sources */,
 				1632472A2390FF5B00227480 /* HomeLoginHeader.swift in Sources */,
@@ -652,6 +690,7 @@
 				16E2AD9D23B20FCE00B90204 /* CertificateInfo.swift in Sources */,
 				161C6EFD23A12FBC00777009 /* TypeMarketData.swift in Sources */,
 				16D5DE7823B238D4004CDA4A /* CertificateRequirementsInfo.swift in Sources */,
+				16A1598523C712FB00778320 /* AddToSkillPlanButton.swift in Sources */,
 				16674BEC238BB97400E6E547 /* ProgressView.swift in Sources */,
 				16D0093B23B0AF39000694C0 /* TypeMarketGroup.swift in Sources */,
 				16C39A5023B9CF7D00208F04 /* SkillsList.swift in Sources */,
@@ -660,6 +699,7 @@
 				16674BF0238BC6F300E6E547 /* UnitFormatter.swift in Sources */,
 				16E3DBF5238BFACC005F5AAE /* AccountCell.swift in Sources */,
 				169BFF9423B64D2300FDF759 /* BlueprintActivityMaterials.swift in Sources */,
+				16C435F623D6FDD3000A5446 /* ImplantsRows.swift in Sources */,
 				1698C05C239A8EB400193274 /* TypeMateryLevel.swift in Sources */,
 				16D8DC80238808870057A6F4 /* Combine+Extensions.swift in Sources */,
 				169A72D3238BE10700E4C181 /* Math.swift in Sources */,

@@ -57,7 +57,7 @@ struct Accounts: View {
 struct Accounts_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            Accounts().environment(\.managedObjectContext, AppDelegate.sharedDelegate.testingContainer.viewContext)
+            Accounts().environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         }
     }
 }

@@ -23,6 +23,7 @@ class MasteryData: ObservableObject {
         var image: Image
         var color: UIColor
         var skills: [SDECertSkill]
+        var trainingQueue: TrainingQueue
     }
 	
     init(for type: SDEInvType, with level: SDECertMasteryLevel, pilot: Pilot?) {
@@ -39,7 +40,7 @@ class MasteryData: ObservableObject {
             
             let trainingQueue = TrainingQueue(pilot: pilot ?? .empty)
             trainingQueue.add(mastery)
-            let title = mastery.certificate?.certificateName?.uppercased() ?? ""
+            let title = mastery.certificate?.certificateName ?? ""
             let trainingTime = trainingQueue.trainingTime()
             let subtitle = trainingTime > 0 ? TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds) : nil
             
@@ -58,7 +59,7 @@ class MasteryData: ObservableObject {
                 color = .label
             }
             
-            return Section(id: mastery, title: title, subtitle: subtitle, image: image, color: color, skills: skills ?? [])
+            return Section(id: mastery, title: title, subtitle: subtitle, image: image, color: color, skills: skills ?? [], trainingQueue: trainingQueue)
         } ?? []
 	}
 }

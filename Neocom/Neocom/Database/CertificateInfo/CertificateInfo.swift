@@ -11,7 +11,7 @@ import Expressible
 
 struct CertificateInfo: View {
     var certificate: SDECertCertificate
-    var mastery: Int?
+    var masteryLevel: Int?
     var pilot: Pilot?
     
     @State private var mode: Mode = .info
@@ -41,7 +41,7 @@ struct CertificateInfo: View {
                     Text("Requirements").tag(Mode.requirements)
                 }.pickerStyle(SegmentedPickerStyle())) {EmptyView()}
             if mode == .info {
-                CertificateMasteryInfo(certificate: certificate, mastery: nil, pilot: nil)
+                CertificateMasteryInfo(certificate: certificate, masteryLevel: masteryLevel, pilot: nil)
             }
             else {
                 CertificateRequirementsInfo(types: requirements.get(initial: types()))

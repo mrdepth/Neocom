@@ -13,23 +13,16 @@ import Expressible
 import Combine
 import CoreData
 
-class AccountInfo: ObservableObject {
+class AccountInfo: CharacterBasicInfo {
     @Published var skillQueue: Result<[ESI.SkillQueueItem], AFError>?
     @Published var ship: Result<ESI.Ship, AFError>?
     @Published var location: Result<SDEMapSolarSystem, AFError>?
     @Published var skills: Result<ESI.CharacterSkills, AFError>?
     @Published var balance: Result<Double, AFError>?
 
-    let characterInfo: CharacterInfo
-    
     init(esi: ESI, characterID: Int64, managedObjectContext: NSManagedObjectContext, characterImageSize: ESI.Image.Size? = nil, corporationImageSize: ESI.Image.Size? = nil, allianceImageSize: ESI.Image.Size? = nil) {
-        characterInfo = CharacterInfo(esi: esi, characterID: characterID, characterImageSize: characterImageSize, corporationImageSize: corporationImageSize, allianceImageSize: allianceImageSize)
+        super.init(esi: esi, characterID: characterID, characterImageSize: characterImageSize, corporationImageSize: corporationImageSize, allianceImageSize: allianceImageSize)
         
-        let subject = objectWillChange
-        characterInfo.objectWillChange.sink {
-            subject.send()
-        }.store(in: &subscriptions)
-
         let character = esi.characters.characterID(Int(characterID))
         
         character.ship().get()
@@ -37,6 +30,7 @@ class AccountInfo: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
                 self?.ship = result
+                self?.objectWillChange.send()
         }.store(in: &subscriptions)
 
         character.skills().get()
@@ -44,6 +38,7 @@ class AccountInfo: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
                 self?.skills = result
+                self?.objectWillChange.send()
         }.store(in: &subscriptions)
         
         character.wallet().get()
@@ -51,8 +46,9 @@ class AccountInfo: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
                 self?.balance = result
+                self?.objectWillChange.send()
         }.store(in: &subscriptions)
-
+        
         character.location().get().receive(on: RunLoop.main).compactMap { location in
             try? managedObjectContext.from(SDEMapSolarSystem.self).filter(\SDEMapSolarSystem.solarSystemID == Int32(location.solarSystemID)).first()
         }
@@ -60,6 +56,7 @@ class AccountInfo: ObservableObject {
         .receive(on: RunLoop.main)
         .sink { [weak self] result in
             self?.location = result
+            self?.objectWillChange.send()
         }.store(in: &subscriptions)
         
         character.skillqueue().get()
@@ -68,8 +65,7 @@ class AccountInfo: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
                 self?.skillQueue = result
+                self?.objectWillChange.send()
         }.store(in: &subscriptions)
     }
-    
-    private var subscriptions = Set<AnyCancellable>()
 }

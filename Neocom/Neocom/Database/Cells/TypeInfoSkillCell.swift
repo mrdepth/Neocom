@@ -32,9 +32,8 @@ struct TypeInfoSkillCell: View {
                 image?.foregroundColor(color)//.frame(width: 32, height: 32)
                 VStack(alignment: .leading) {
                     SkillName(name: skillType.typeName ?? "", level: level)
-                    trainingTime.map{
-                        Text(TimeIntervalFormatter.localizedString(from: $0, precision: .seconds))
-                            .modifier(SecondaryLabelModifier())
+                    trainingTime.flatMap{
+                        $0 > 0 ? Text(TimeIntervalFormatter.localizedString(from: $0, precision: .seconds)).modifier(SecondaryLabelModifier()) : nil
                     }
                 }
             }.lineLimit(1).truncationMode(.middle)

@@ -18,8 +18,14 @@ struct TypeInfoRequiredSkillsSection: View {
         let time = trainingQueue.trainingTime()
         let title = time > 0 ? NSLocalizedString("Required Skills", comment: "") + ": " + TimeIntervalFormatter.localizedString(from: time, precision: .seconds) : NSLocalizedString("Required Skills", comment: "")
 
+        let header = HStack {
+            Text(title.uppercased())
+            Spacer()
+            AddToSkillPlanButton(trainingQueue: trainingQueue)
+        }
+
         
-        return Section(header: Text(title.uppercased())) {
+        return Section(header: header) {
             ForEach(SkillsList(requiredSkillsFor: type).skills, id: \.type.objectID) {
                 TypeInfoSkillCell(skillType: $0.type, level: Int($0.level), pilot: self.pilot)
             }

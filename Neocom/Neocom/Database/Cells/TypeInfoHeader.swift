@@ -23,7 +23,10 @@ struct TypeInfoHeader: View {
     var body: some View {
         VStack(alignment: .leading) {
             if renderImage != nil {
-                renderImage!.resizable().scaledToFit().overlay(title().background(Color(.systemFill)).padding().colorScheme(.dark), alignment: .bottomLeading)
+                renderImage!.resizable().scaledToFit().overlay(title()
+                    .padding(8)
+                    .background(Color(.systemFill).cornerRadius(8))
+                    .padding().colorScheme(.dark), alignment: .bottomLeading)
             }
             else {
                 HStack {

@@ -51,7 +51,7 @@ struct CertificateCell: View {
     
     var body: some View {
         ObservedObjectView(DataLoader(trainingInfo())) { trainingInfo in
-            NavigationLink(destination: CertificateInfo(certificate: self.certificate, mastery: trainingInfo.result?.value??.level, pilot: self.pilot)) {
+            NavigationLink(destination: CertificateInfo(certificate: self.certificate, masteryLevel: trainingInfo.result?.value??.level, pilot: self.pilot)) {
                 HStack {
                     Icon(Image(uiImage: (try? self.managedObjectContext.fetch(SDEEveIcon.named(.mastery((trainingInfo.result?.value??.level).map{$0 - 1}))).first?.image?.image) ?? UIImage()))
                     VStack(alignment: .leading) {

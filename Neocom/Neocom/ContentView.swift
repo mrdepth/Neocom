@@ -40,20 +40,24 @@ struct ContentView: View {
         return s
     }
     
+    @State private var isFinished = false
+    
     var body: some View {
         
-        NavigationView {
-            TypeCategories()
-//            NPCGroup()
-//            VStack {
-//                HStack {
-//                    Text("01").lineLimit(1).layoutPriority(1)
-//                    Text("01").lineLimit(1)
-//                }
-//                Text("01").lineLimit(1)
-//            }.minimumScaleFactor(0.1)
-//            .environment(\.sizeCategory, .accessibilityMedium)
+        ZStack {
+            CharacterSheet_Previews.previews
+//            NavigationView {
+//                TypeCategories()
+//            }
+            if isFinished {
+                FinishedView(isPresented: $isFinished)
+            }
+        }.onReceive(NotificationCenter.default.publisher(for: .didUpdateSkillPlan)) { _ in
+            withAnimation {
+                self.isFinished = true
+            }
         }
+
     }
 }
 

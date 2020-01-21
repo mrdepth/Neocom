@@ -13,3 +13,8 @@ extension UIApplication {
         self.windows.first{$0.isKeyWindow}?.endEditing(force)
     }
 }
+
+
+extension Notification.Name {
+    static let didUpdateSkillPlan = Notification.Name(rawValue: "com.shimanski.neocom.didUpdateSkillPlan")
+}

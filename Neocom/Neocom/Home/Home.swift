@@ -40,6 +40,6 @@ struct Home_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             Home()
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.testingContainer.viewContext)
+        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

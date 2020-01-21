@@ -23,8 +23,12 @@ import Alamofire
 //}
 
 extension Text {
+    init(security: Float) {
+        self = Text(String(format: "%.1f ", security)).foregroundColor(.security(security))
+    }
+    
+    
     init(_ location: EVELocation) {
-        let security = location.solarSystem.map{String(format: "%.1f ", $0.security)} ?? ""
         let solarSystemName: String
         let locationName: String
         if let solarSystem = location.solarSystem {
@@ -48,7 +52,7 @@ extension Text {
             locationName = location.structureName ?? NSLocalizedString("Unknown Location", comment: "")
         }
         
-        self = Text(security).foregroundColor(.security(location.solarSystem?.security ?? 0)) + Text(solarSystemName).fontWeight(.bold) + Text(locationName)
+        self = ((location.solarSystem?.security).map{Text(security: $0) + Text(" ") } ?? Text("")) + Text(solarSystemName).fontWeight(.bold) + Text(locationName)
     }
 	
 	init(_ error: Error) {

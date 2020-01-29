@@ -43,6 +43,7 @@ struct Pilot: Codable {
 }
 
 extension Pilot {
+
     init(attributes: ESI.CharacterAttributes, skills: ESI.CharacterSkills, skillQueue: [ESI.SkillQueueItem], implants: [Int], context: NSManagedObjectContext) {
         let characterAttributes = Pilot.Attributes(intelligence: attributes.intelligence,
                                                        memory: attributes.memory,

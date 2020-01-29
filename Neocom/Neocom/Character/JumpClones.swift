@@ -69,7 +69,7 @@ struct JumpClones: View {
             else {
                 Text(RuntimeError.noAccount).padding()
             }
-        }
+        }.navigationBarTitle("Jump Clones")
     }
 }
 
@@ -78,8 +78,11 @@ struct JumpClones_Previews: PreviewProvider {
         let account = AppDelegate.sharedDelegate.testingAccount
         let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
 
-        return JumpClones().environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.account, account)
-            .environment(\.esi, esi)
+        return NavigationView {
+            JumpClones()
+        }
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.account, account)
+        .environment(\.esi, esi)
     }
 }

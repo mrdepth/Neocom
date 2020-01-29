@@ -45,7 +45,9 @@ struct ContentView: View {
     var body: some View {
         
         ZStack {
-            CharacterSheet_Previews.previews
+//            SkillCell_Previews.previews
+            SkillPlanSection_Previews.previews
+//            CharacterSheet_Previews.previews
 //            NavigationView {
 //                TypeCategories()
 //            }

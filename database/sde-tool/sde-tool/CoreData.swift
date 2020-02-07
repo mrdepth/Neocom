@@ -494,7 +494,7 @@ extension SDERamAssemblyLineType {
 		assemblyLineTypeName = assemblyLineType.assemblyLineTypeName
 		baseTimeMultiplier = Float(assemblyLineType.baseTimeMultiplier)
 		baseMaterialMultiplier = Float(assemblyLineType.baseMaterialMultiplier)
-		baseCostMultiplier = Float(assemblyLineType.baseCostMultiplier)
+		baseCostMultiplier = Float(assemblyLineType.baseCostMultiplier ?? 0)
 		minCostPerHour = Float(assemblyLineType.minCostPerHour ?? 0)
 		volume = Float(assemblyLineType.volume)
 		try activity = ramActivities.get()[assemblyLineType.activityID]!.object()

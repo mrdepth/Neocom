@@ -20,17 +20,17 @@ struct ServicesViewModifier: ViewModifier {
 	}
 }
 
-struct BlockModifier<Result: View>: ViewModifier {
-    var block: (Content) -> Result
-    init(@ViewBuilder _ block: @escaping (Content) -> Result) {
-        self.block = block
-    }
-    
-    func body(content: Content) -> Result {
-        block(content)
-    }
-
-}
+//struct BlockModifier<Result: View>: ViewModifier {
+//    var block: (Content) -> Result
+//    init(@ViewBuilder _ block: @escaping (Content) -> Result) {
+//        self.block = block
+//    }
+//    
+//    func body(content: Content) -> Result {
+//        block(content)
+//    }
+//
+//}
 
 struct SecondaryLabelModifier: ViewModifier {
     func body(content: Content) -> some View {

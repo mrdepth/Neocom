@@ -24,8 +24,8 @@ struct JumpClones: View {
     private func info(characterID: Int64) -> DataLoader<JumpClonesInfo, AFError> {
         let clones = esi.characters.characterID(Int(characterID)).clones().get()
             .flatMap { clones in
-                EVELocation.locations(with: Set(clones.jumpClones.map{$0.locationID}), esi: self.esi, managedObjectContext: self.managedObjectContext).setFailureType(to: AFError.self).map {
-                    JumpClonesInfo(clones: clones, locations: $0)
+                EVELocation.locations(with: Set(clones.value.jumpClones.map{$0.locationID}), esi: self.esi, managedObjectContext: self.managedObjectContext).setFailureType(to: AFError.self).map {
+                    JumpClonesInfo(clones: clones.value, locations: $0)
                 }
         }.receive(on: RunLoop.main)
         return DataLoader(clones)

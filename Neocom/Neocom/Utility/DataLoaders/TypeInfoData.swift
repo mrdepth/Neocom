@@ -102,7 +102,7 @@ class TypeInfoData: ObservableObject {
         if type.marketGroup != nil {
             let typeID = Int(type.typeID)
             esi.markets.prices().get().compactMap {
-                $0.first{$0.typeID == typeID}
+                $0.value.first{$0.typeID == typeID}
             }.receive(on: RunLoop.main)
             .sink(receiveCompletion: {_ in }) { [weak self] result in
                 self?.price = result

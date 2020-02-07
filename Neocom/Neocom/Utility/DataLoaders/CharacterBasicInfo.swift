@@ -24,7 +24,7 @@ class CharacterBasicInfo: ObservableObject {
             .asResult()
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
-                self?.character = result
+                self?.character = result.map{$0.value}
         }.store(in: &subscriptions)
         
         $character.compactMap{$0}
@@ -33,7 +33,7 @@ class CharacterBasicInfo: ObservableObject {
             .asResult()
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
-                self?.corporation = result
+                self?.corporation = result.map{$0.value}
         }.store(in: &subscriptions)
 
         $corporation.compactMap{$0}
@@ -43,7 +43,7 @@ class CharacterBasicInfo: ObservableObject {
             .asResult()
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
-                self?.alliance = result
+                self?.alliance = result.map{$0.value}
         }.store(in: &subscriptions)
 
         characterImageSize.map {

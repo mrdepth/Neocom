@@ -206,16 +206,16 @@ extension Account {
     }
 
     var activeSkillPlan: SkillPlan? {
-        if let skillPlan = (try? managedObjectContext?.from(SkillPlan.self).filter(\SkillPlan.account == self && \SkillPlan.active == true).first()) ?? nil {
+        if let skillPlan = (try? managedObjectContext?.from(SkillPlan.self).filter(\SkillPlan.account == self && \SkillPlan.isActive == true).first()) ?? nil {
             return skillPlan
         }
         else if let skillPlan = skillPlans?.anyObject() as? SkillPlan {
-            skillPlan.active = true
+            skillPlan.isActive = true
             return skillPlan
         }
         else if let managedObjectContext = managedObjectContext {
             let skillPlan = SkillPlan(context: managedObjectContext)
-            skillPlan.active = true
+            skillPlan.isActive = true
             skillPlan.account = self
             skillPlan.name = NSLocalizedString("Default", comment: "")
             return skillPlan
@@ -280,4 +280,10 @@ func - (lhs: Double, rhs: Damage) -> Damage {
                   thermal: lhs - rhs.thermal,
                   kinetic: lhs - rhs.kinetic,
                   explosive: lhs - rhs.explosive)
+}
+
+extension SkillPlan: Identifiable {
+    public var id: NSManagedObjectID {
+        return objectID
+    }
 }

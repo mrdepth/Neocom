@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import CoreData
+import Expressible
 
 class TrainingQueue {
     struct Item: Hashable {
@@ -21,7 +23,12 @@ class TrainingQueue {
     init(pilot: Pilot) {
         self.pilot = pilot
     }
-    
+
+    init(pilot: Pilot, skillPlan: SkillPlan) {
+        self.pilot = pilot
+        add(skillPlan)
+    }
+
     func add(_ skillType: SDEInvType, level: Int) {
         guard let skill = Pilot.Skill(type: skillType) else {return}
         addRequiredSkills(for: skillType)
@@ -62,6 +69,24 @@ class TrainingQueue {
             guard let requiredSkill = ($0 as? SDEIndRequiredSkill) else {return}
             guard let type = requiredSkill.skillType else {return}
             add(type, level: Int(requiredSkill.skillLevel))
+        }
+    }
+    
+    func add(_ skillPlan: SkillPlan) {
+        skillPlan.skills?.compactMap { skill in
+            (skill as? SkillPlanSkill).flatMap{ skill in
+                (try? skill.managedObjectContext?.from(SDEInvType.self).filter(\SDEInvType.typeID == skill.typeID).first()).map{($0, skill.level)}
+            }
+        }.forEach { (type, level) in
+            add(type, level: Int(level))
+        }
+    }
+    
+    func add(_ skillQueue: [Pilot.SkillQueueItem], managedObjectContext: NSManagedObjectContext) {
+        let skills = Dictionary(skillQueue.map{($0.queuedSkill.skillID, $0.queuedSkill.finishedLevel)}, uniquingKeysWith: {a, b in max(a, b)})
+        for (typeID, level) in skills {
+            guard let type = try? managedObjectContext.from(SDEInvType.self).filter(\SDEInvType.typeID == typeID).first() else {continue}
+            add(type, level: level)
         }
     }
     

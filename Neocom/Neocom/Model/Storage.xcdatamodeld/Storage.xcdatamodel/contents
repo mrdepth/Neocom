@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="19B88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19C57" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Account" representedClassName="Account" syncable="YES" codeGenerationType="class">
         <attribute name="accessToken" optional="YES" attributeType="String"/>
         <attribute name="characterID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -105,7 +105,7 @@
         <relationship name="shoppingItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ShoppingItem" inverseName="shoppingList" inverseEntity="ShoppingItem"/>
     </entity>
     <entity name="SkillPlan" representedClassName="SkillPlan" syncable="YES" codeGenerationType="class">
-        <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isActive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="skillPlans" inverseEntity="Account"/>
         <relationship name="skills" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SkillPlanSkill" inverseName="skillPlan" inverseEntity="SkillPlanSkill"/>
@@ -151,7 +151,7 @@
         <element name="Setting" positionX="18" positionY="63" width="128" height="73"/>
         <element name="ShoppingItem" positionX="-18" positionY="27" width="128" height="180"/>
         <element name="ShoppingList" positionX="45" positionY="90" width="128" height="90"/>
-        <element name="SkillPlan" positionX="9" positionY="54" width="128" height="105"/>
+        <element name="SkillPlan" positionX="9" positionY="54" width="128" height="103"/>
         <element name="SkillPlanSkill" positionX="9" positionY="126" width="128" height="105"/>
     </elements>
 </model>

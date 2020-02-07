@@ -25,7 +25,7 @@ struct TypeInfoPriceCell: View {
     private var pricePublisher: AnyPublisher<ESI.MarketPrice?, AFError> {
         let typeID = Int(type.typeID)
         let publisher = esi.markets.prices().get().map {
-            $0.first{$0.typeID == typeID}
+            $0.value.first{$0.typeID == typeID}
         }.receive(on: RunLoop.main)
         
         return AnyPublisher(publisher)

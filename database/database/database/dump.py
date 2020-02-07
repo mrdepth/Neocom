@@ -65,7 +65,11 @@ dgmTypeAttributes = [r for rows in cfg.dgmtypeattribs.values() for r in rows]
 dgmTypeEffects = [r for rows in cfg.dgmtypeeffects.values() for r in rows]
 invMetaTypes = [r for rows in cfg.invmetatypes.items.values() for r in rows]
 invMetaGroups = cfg.invmetagroups.items.values()
+ramActivities = cfg.ramactivities.items.values()
+ramAssemblyLineTypes = cfg.ramaltypes.items.values()
 dump ("dgmTypeAttributes", dgmTypeAttributes)
 dump ("dgmTypeEffects", dgmTypeEffects)
 dump ("invMetaTypes", invMetaTypes)
 dump ("invMetaGroups", invMetaGroups)
+dump ("ramActivities", ramActivities)
+dump ("ramAssemblyLineTypes", ramAssemblyLineTypes)

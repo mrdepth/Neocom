@@ -26,7 +26,7 @@ class CharacterFullInfo: AccountInfo {
             .asResult()
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
-                self?.attributes = result
+                self?.attributes = result.map{$0.value}
                 self?.objectWillChange.send()
         }.store(in: &subscriptions)
 
@@ -34,7 +34,7 @@ class CharacterFullInfo: AccountInfo {
             .asResult()
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
-                self?.implants = result
+                self?.implants = result.map{$0.value}
                 self?.objectWillChange.send()
         }.store(in: &subscriptions)
     }

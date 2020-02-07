@@ -10,11 +10,13 @@ import SwiftUI
 import Expressible
 
 struct SkillPlans: View {
-    @Environment(\.account) var account
+    var completion: (SkillPlan) -> Void
+    
+    @Environment(\.account) private var account
     
     var body: some View {
         account.map {
-            SkillPlansContent(account: $0)
+            SkillPlansContent(account: $0, pilot: Pilot.empty, completion: completion)
         }
     }
 }
@@ -22,25 +24,131 @@ struct SkillPlans: View {
 struct SkillPlansContent: View {
     @FetchRequest(sortDescriptors: [])
     var skillPlans: FetchedResults<SkillPlan>
+    var account: Account
+    var pilot: Pilot
+    var completion: (SkillPlan) -> Void
+
+    @State private var isTextAlertPresented = false
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    @State private var selectedSkillPlan: SkillPlan?
     
-    init(account: Account) {
+    @State private var renamedSkillPlan: SkillPlan?
+
+    init(account: Account, pilot: Pilot, completion: @escaping (SkillPlan) -> Void) {
+        self.account = account
+        self.pilot = pilot
+        self.completion = completion
         _skillPlans = FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \SkillPlan.name, ascending: true)],
                                    predicate: (\SkillPlan.account == account).predicate(),
                                    animation: nil)
     }
     
+    private func subtitle(for skillPlan: SkillPlan) -> some View {
+        let trainingTime = TrainingQueue(pilot: pilot, skillPlan: skillPlan).trainingTime()
+        if trainingTime > 0 {
+            return Text("\(skillPlan.skills?.count ?? 0) skills (\(TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds)))")
+        }
+        else {
+            return Text("Skill Plan is empty")
+        }
+    }
+    
+
+    private func onAddSkillPlan() {
+        withAnimation {
+            isTextAlertPresented = true
+        }
+    }
+    
+    
+    private func rename(_ skillPlan: SkillPlan) {
+        withAnimation {
+            self.renamedSkillPlan = skillPlan
+        }
+    }
+
+    private func makeActive(_ skillPlan: SkillPlan) {
+        skillPlans.forEach{$0.isActive = false}
+        skillPlan.isActive = true
+        completion(skillPlan)
+    }
+    
+    private func clear(_ skillPlan: SkillPlan) {
+        (skillPlan.skills?.allObjects as? [SkillPlanSkill])?.forEach { skill in
+            skillPlan.managedObjectContext?.delete(skill)
+        }
+    }
+
+    private func delete(_ skillPlan: SkillPlan) {
+        skillPlan.managedObjectContext?.delete(skillPlan)
+    }
+
+    private func actionSheet(for skillPlan: SkillPlan) -> ActionSheet {
+        var buttons: [ActionSheet.Button] = []
+        
+        if (skillPlan.skills?.count ?? 0) > 0 {
+            buttons.append(ActionSheet.Button.default(Text("Clear"), action: { self.clear(skillPlan) }))
+        }
+        buttons.append(ActionSheet.Button.default(Text("Make Active"), action: { self.makeActive(skillPlan) }))
+        buttons.append(ActionSheet.Button.default(Text("Rename"), action: { self.rename(skillPlan) }))
+        buttons.append(ActionSheet.Button.destructive(Text("Delete"), action: { self.delete(skillPlan) }))
+        buttons.append(ActionSheet.Button.cancel())
+
+        return ActionSheet(title: skillPlan.name.map{Text($0)} ?? Text("Unnamed"), message: nil, buttons: buttons)
+    }
+    
     var body: some View {
-        List {
-            ForEach(skillPlans, id: \.objectID) { skillPlan in
-                VStack(alignment: .leading) {
-                    skillPlan.name.map{Text($0)} ?? Text("Unnamed").italic()
-                    Text("\(skillPlan.skills?.count ?? 0) skills").modifier(SecondaryLabelModifier())
+        ZStack {
+            List {
+                ForEach(skillPlans, id: \.objectID) { skillPlan in
+                    Button(action: {self.makeActive(skillPlan)}) {
+                        HStack {
+                            if skillPlan.isActive {
+                                Image(systemName: "checkmark")
+                            }
+                            VStack(alignment: .leading) {
+                                skillPlan.name.map{Text($0)} ?? Text("Unnamed").italic()
+                                self.subtitle(for: skillPlan).modifier(SecondaryLabelModifier())
+                            }.accentColor(.primary)
+                            Spacer()
+                            Button(action: {
+                                self.selectedSkillPlan = skillPlan
+                            }) {
+                                Image(systemName: "ellipsis")
+                            }
+                        }
+                    }
+                }.onDelete { (indices) in
+                    indices.map{self.skillPlans[$0]}.forEach { $0.managedObjectContext?.delete($0) }
                 }
-            }.onDelete { (indices) in
+            }.listStyle(GroupedListStyle())
+            if isTextAlertPresented {
+                TextFieldAlert(title: "New Skill Plan", placeholder: "Name", text: "") { (result) in
+                    if case let .success(name) = result {
+                        let skillPlan = SkillPlan(context: self.managedObjectContext)
+                        skillPlan.name = name
+                        skillPlan.account = self.account
+                    }
+                    withAnimation {
+                        self.isTextAlertPresented = false
+                    }
+                }
             }
-        }.listStyle(GroupedListStyle())
+            if renamedSkillPlan != nil {
+                TextFieldAlert(title: "Rename", placeholder: "Name", text: renamedSkillPlan?.name ?? "") { (result) in
+                    if case let .success(name) = result {
+                        self.renamedSkillPlan?.name = name
+                    }
+                    withAnimation {
+                        self.renamedSkillPlan = nil
+                    }
+                }
+            }
+        }
         .navigationBarTitle("Skill Plans")
-        .navigationBarItems(trailing: EditButton())
+        .navigationBarItems(leading: CloseButton { },
+                            trailing: Button(action: onAddSkillPlan) { Image(systemName: "plus") })
+        .actionSheet(item: $selectedSkillPlan, content: actionSheet)
     }
 }
 
@@ -56,7 +164,7 @@ struct SkillPlans_Previews: PreviewProvider {
         skillPlan2.account = account
         
         return NavigationView {
-            SkillPlans()
+            SkillPlans() { _ in }
                 .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
                 .environment(\.account, account)
         }

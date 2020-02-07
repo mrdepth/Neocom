@@ -381,20 +381,20 @@ do {
 	
 	ramActivities = operationQueue.detach {
 		let from = Date(); defer {print("ramActivities\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/ramActivities.json"), type: Schema.Activities.self).map {($0.activityID, try .init(SDERamActivity($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/ramActivities.json"), type: Schema.Activities.self).map {($0.activityID, try .init(SDERamActivity($0)))})
 	}
 
 	ramAssemblyLineTypes = operationQueue.detach {
 		let from = Date(); defer {print("ramAssemblyLineTypes\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/ramAssemblyLineTypes.json"), type: Schema.AssemblyLineTypes.self).map {($0.assemblyLineTypeID, try .init(SDERamAssemblyLineType($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/ramAssemblyLineTypes.json"), type: Schema.AssemblyLineTypes.self).map {($0.assemblyLineTypeID, try .init(SDERamAssemblyLineType($0)))})
 	}
 
-	_ = operationQueue.detach {
-		let from = Date(); defer {print("ramInstallationTypeContents\t\(Date().timeIntervalSince(from))s")}
-		_ = try load(root.appendingPathComponent("/sde/bsd/ramInstallationTypeContents.json"), type: Schema.InstallationTypeContents.self).map {
-			try SDERamInstallationTypeContent($0)
-		}
-	}
+//	_ = operationQueue.detach {
+//		let from = Date(); defer {print("ramInstallationTypeContents\t\(Date().timeIntervalSince(from))s")}
+//		_ = try load(root.appendingPathComponent("/sde/bsd/ramInstallationTypeContents.json"), type: Schema.InstallationTypeContents.self).map {
+//			try SDERamInstallationTypeContent($0)
+//		}
+//	}
 
 	_ = operationQueue.detach {
 		let from = Date(); defer {print("npcGroups\t\(Date().timeIntervalSince(from))s")}

@@ -31,13 +31,13 @@ class TypeMarketData: ObservableObject {
     
     init(type: SDEInvType, esi: ESI, regionID: Int, managedObjectContext: NSManagedObjectContext) {
         subscription = esi.markets.regionID(regionID).orders().get(typeID: Int(type.typeID)).flatMap { orders in
-            Publishers.Zip(Just(orders), EVELocation.locations(with: Set(orders.map{$0.locationID}), esi: esi, managedObjectContext: managedObjectContext))
+            Publishers.Zip(Just(orders), EVELocation.locations(with: Set(orders.value.map{$0.locationID}), esi: esi, managedObjectContext: managedObjectContext))
                 .setFailureType(to: AFError.self)
         }.map { (orders, locations) -> Data in
             var orders = orders
-            let i = orders.partition { $0.isBuyOrder }
-            let sell = orders[..<i].sorted{$0.price < $1.price}.map{Row(order: $0, location: locations[$0.locationID])}
-            let buy = orders[i...].sorted{$0.price > $1.price}.map{Row(order: $0, location: locations[$0.locationID])}
+            let i = orders.value.partition { $0.isBuyOrder }
+            let sell = orders.value[..<i].sorted{$0.price < $1.price}.map{Row(order: $0, location: locations[$0.locationID])}
+            let buy = orders.value[i...].sorted{$0.price > $1.price}.map{Row(order: $0, location: locations[$0.locationID])}
             return Data(buyOrders: buy, sellOrders: sell)
         }.asResult().receive(on: RunLoop.main).sink { [weak self] result in
             self?.result = result

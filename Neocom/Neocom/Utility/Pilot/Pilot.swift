@@ -261,10 +261,10 @@ extension Pilot {
                                characterID.skillqueue().get()).flatMap { (attributes, implants, skills, skillQueue) in
                                 Future { promise in
                                     context.perform {
-                                        promise(.success(Pilot(attributes: attributes,
-                                                               skills: skills,
-                                                               skillQueue: skillQueue,
-                                                               implants: implants,
+                                        promise(.success(Pilot(attributes: attributes.value,
+                                                               skills: skills.value,
+                                                               skillQueue: skillQueue.value,
+                                                               implants: implants.value,
                                                                context: context)))
                                     }
                                 }

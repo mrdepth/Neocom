@@ -26,6 +26,7 @@ extension ESI {
     typealias Attributes = ESI.Characters.CharacterID.Attributes.Success
     typealias Implants = [Int]
     typealias Clones = ESI.Characters.CharacterID.Clones.Success
+    typealias Assets = [ESI.Characters.CharacterID.Assets.Success]
     
     convenience init(token: OAuth2Token) {
         self.init(token: token, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey)

@@ -27,7 +27,7 @@ class MarketHistoryData: ObservableObject {
 	
 	init(type: SDEInvType, regionID: Int, esi: ESI) {
 		subscription = esi.markets.regionID(regionID).history().get(typeID: Int(type.typeID)).map { history in
-			History(history: history)
+            History(history: history.value)
 		}.asResult()
 			.receive(on: RunLoop.main)
 			.sink { [weak self] result in

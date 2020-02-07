@@ -34,6 +34,7 @@
 		12F06F6B23846D670061313D /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F6A23846D670061313D /* Main.swift */; };
 		1602719823A2792900067AA1 /* TypeMarketOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1602719723A2792900067AA1 /* TypeMarketOrderCell.swift */; };
 		1602719A23A27A5800067AA1 /* Text+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1602719923A27A5800067AA1 /* Text+Extensions.swift */; };
+		160882EE23E2E70400BB7176 /* TextFieldAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160882ED23E2E70400BB7176 /* TextFieldAlert.swift */; };
 		161C6EE723A0EEE000777009 /* TypeInfoMarketHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161C6EE623A0EEE000777009 /* TypeInfoMarketHistoryCell.swift */; };
 		161C6EF723A11B8400777009 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161C6EF623A11B8400777009 /* UserDefault.swift */; };
 		161C6EFD23A12FBC00777009 /* TypeMarketData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161C6EFC23A12FBC00777009 /* TypeMarketData.swift */; };
@@ -48,7 +49,11 @@
 		1632472D239145FA00227480 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1632472C239145FA00227480 /* Cache.swift */; };
 		1632472F2391496500227480 /* Lazy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1632472E2391496500227480 /* Lazy.swift */; };
 		16324731239159A200227480 /* AccountInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16324730239159A200227480 /* AccountInfo.swift */; };
+		1638690923EC217400681612 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1638690823EC217400681612 /* Atomic.swift */; };
 		164156172397E68A0063A39C /* TypeInfoSkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164156162397E68A0063A39C /* TypeInfoSkillCell.swift */; };
+		164E418223EAC90400EF16CE /* OptimalAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164E418123EAC90400EF16CE /* OptimalAttributes.swift */; };
+		164E418723EAED0800EF16CE /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164E418623EAED0800EF16CE /* Assets.swift */; };
+		164E418923EAED1A00EF16CE /* AssetsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164E418823EAED1A00EF16CE /* AssetsData.swift */; };
 		1653663B239E733C0096990F /* TypeInfoPriceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1653663A239E733C0096990F /* TypeInfoPriceCell.swift */; };
 		1655DE752396888200973258 /* TypeInfoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1655DE742396888200973258 /* TypeInfoData.swift */; };
 		1655DE7B23969BA900973258 /* TypeInfoAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1655DE7A23969BA900973258 /* TypeInfoAttributeCell.swift */; };
@@ -107,6 +112,8 @@
 		16AE40F1238FDAD000C6E25B /* ModuleTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AE40F0238FDAD000C6E25B /* ModuleTypeCell.swift */; };
 		16AE40F3238FDDE600C6E25B /* ChargeTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AE40F2238FDDE600C6E25B /* ChargeTypeCell.swift */; };
 		16AE40F5238FEFD500C6E25B /* DamageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AE40F4238FEFD500C6E25B /* DamageView.swift */; };
+		16B04DE123ED55D500FBE380 /* AssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B04DE023ED55D500FBE380 /* AssetCell.swift */; };
+		16B04DE323ED655300FBE380 /* AssetsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B04DE223ED655300FBE380 /* AssetsList.swift */; };
 		16B45EFF23A3663400A36A96 /* MarketRegionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B45EFE23A3663400A36A96 /* MarketRegionPicker.swift */; };
 		16BBE17323E02C41001E251D /* SkillQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BBE17223E02C41001E251D /* SkillQueue.swift */; };
 		16BCB1B623D88437004712DB /* SkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BCB1B523D88437004712DB /* SkillCell.swift */; };
@@ -131,6 +138,7 @@
 		16E2AD9F23B214EF00B90204 /* CertificateInfoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E2AD9E23B214EF00B90204 /* CertificateInfoHeader.swift */; };
 		16E3DBF3238BF944005F5AAE /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBF2238BF944005F5AAE /* Avatar.swift */; };
 		16E3DBF5238BFACC005F5AAE /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBF4238BFACC005F5AAE /* AccountCell.swift */; };
+		16E8C42F23E431E0004BA2D3 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E8C42E23E431E0004BA2D3 /* CloseButton.swift */; };
 		16EEBDF52397E4DE00F2E216 /* SkillName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16EEBDF42397E4DE00F2E216 /* SkillName.swift */; };
 /* End PBXBuildFile section */
 
@@ -181,6 +189,7 @@
 		12F06F6A23846D670061313D /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		1602719723A2792900067AA1 /* TypeMarketOrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMarketOrderCell.swift; sourceTree = "<group>"; };
 		1602719923A27A5800067AA1 /* Text+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+Extensions.swift"; sourceTree = "<group>"; };
+		160882ED23E2E70400BB7176 /* TextFieldAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldAlert.swift; sourceTree = "<group>"; };
 		161C6EE623A0EEE000777009 /* TypeInfoMarketHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoMarketHistoryCell.swift; sourceTree = "<group>"; };
 		161C6EF623A11B8400777009 /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 		161C6EFC23A12FBC00777009 /* TypeMarketData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMarketData.swift; sourceTree = "<group>"; };
@@ -195,7 +204,11 @@
 		1632472C239145FA00227480 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		1632472E2391496500227480 /* Lazy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lazy.swift; sourceTree = "<group>"; };
 		16324730239159A200227480 /* AccountInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfo.swift; sourceTree = "<group>"; };
+		1638690823EC217400681612 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 		164156162397E68A0063A39C /* TypeInfoSkillCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoSkillCell.swift; sourceTree = "<group>"; };
+		164E418123EAC90400EF16CE /* OptimalAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimalAttributes.swift; sourceTree = "<group>"; };
+		164E418623EAED0800EF16CE /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
+		164E418823EAED1A00EF16CE /* AssetsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsData.swift; sourceTree = "<group>"; };
 		1653663A239E733C0096990F /* TypeInfoPriceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoPriceCell.swift; sourceTree = "<group>"; };
 		1655DE742396888200973258 /* TypeInfoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoData.swift; sourceTree = "<group>"; };
 		1655DE7A23969BA900973258 /* TypeInfoAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoAttributeCell.swift; sourceTree = "<group>"; };
@@ -251,6 +264,8 @@
 		16AE40F0238FDAD000C6E25B /* ModuleTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleTypeCell.swift; sourceTree = "<group>"; };
 		16AE40F2238FDDE600C6E25B /* ChargeTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeTypeCell.swift; sourceTree = "<group>"; };
 		16AE40F4238FEFD500C6E25B /* DamageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamageView.swift; sourceTree = "<group>"; };
+		16B04DE023ED55D500FBE380 /* AssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCell.swift; sourceTree = "<group>"; };
+		16B04DE223ED655300FBE380 /* AssetsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsList.swift; sourceTree = "<group>"; };
 		16B45EFE23A3663400A36A96 /* MarketRegionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketRegionPicker.swift; sourceTree = "<group>"; };
 		16BBE17223E02C41001E251D /* SkillQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillQueue.swift; sourceTree = "<group>"; };
 		16BCB1B523D88437004712DB /* SkillCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillCell.swift; sourceTree = "<group>"; };
@@ -276,6 +291,7 @@
 		16E2AD9E23B214EF00B90204 /* CertificateInfoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateInfoHeader.swift; sourceTree = "<group>"; };
 		16E3DBF2238BF944005F5AAE /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		16E3DBF4238BFACC005F5AAE /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
+		16E8C42E23E431E0004BA2D3 /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
 		16EEBDF42397E4DE00F2E216 /* SkillName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillName.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -306,6 +322,7 @@
 				161C6EFC23A12FBC00777009 /* TypeMarketData.swift */,
 				12A3EB9723A9704700CB9B0A /* MarketHistoryData.swift */,
 				161C6EFE23A1303700777009 /* LocationsInfo.swift */,
+				164E418823EAED1A00EF16CE /* AssetsData.swift */,
 			);
 			path = DataLoaders;
 			sourceTree = "<group>";
@@ -350,6 +367,7 @@
 				12AE040D23847EB400DEFFC5 /* Home */,
 				16DFF82D238D35F6004C1185 /* Database */,
 				1630ED7723CC9254001DBAA7 /* Character */,
+				164E418523EAECFA00EF16CE /* Business */,
 				12F06F12238464920061313D /* AppDelegate.swift */,
 				12F06F14238464920061313D /* SceneDelegate.swift */,
 				12F06F16238464920061313D /* ContentView.swift */,
@@ -391,6 +409,7 @@
 				16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */,
 				1632472C239145FA00227480 /* Cache.swift */,
 				1632472E2391496500227480 /* Lazy.swift */,
+				1638690823EC217400681612 /* Atomic.swift */,
 				122B4AEC239EAE2000461A1A /* Preferences.swift */,
 				161C6EF623A11B8400777009 /* UserDefault.swift */,
 				16C39A4F23B9CF7D00208F04 /* SkillsList.swift */,
@@ -439,8 +458,19 @@
 				161CE78D23E16E1B007619B8 /* SkillQueueSection.swift */,
 				161CE78F23E16E57007619B8 /* SkillPlanSection.swift */,
 				16A250D923E1BD83003F7904 /* SkillPlans.swift */,
+				164E418123EAC90400EF16CE /* OptimalAttributes.swift */,
 			);
 			path = Character;
+			sourceTree = "<group>";
+		};
+		164E418523EAECFA00EF16CE /* Business */ = {
+			isa = PBXGroup;
+			children = (
+				164E418623EAED0800EF16CE /* Assets.swift */,
+				16B04DE223ED655300FBE380 /* AssetsList.swift */,
+				16B04DE023ED55D500FBE380 /* AssetCell.swift */,
+			);
+			path = Business;
 			sourceTree = "<group>";
 		};
 		16674BEA238BB96400E6E547 /* Views */ = {
@@ -461,6 +491,8 @@
 				16C39A5523BA0BF000208F04 /* BlurView.swift */,
 				16C39A5723BA0EEB00208F04 /* VibrancyView.swift */,
 				16A1598423C712FB00778320 /* AddToSkillPlanButton.swift */,
+				16E8C42E23E431E0004BA2D3 /* CloseButton.swift */,
+				160882ED23E2E70400BB7176 /* TextFieldAlert.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -628,6 +660,7 @@
 				16D0093723B09DF0000694C0 /* ActivityIndicator.swift in Sources */,
 				124F06E9238D908A00395D54 /* TypeGroups.swift in Sources */,
 				124F06E3238D897E00395D54 /* ImageValueTransformer.swift in Sources */,
+				164E418723EAED0800EF16CE /* Assets.swift in Sources */,
 				12877E2C23B29FA1009FF71B /* NPCGroup.swift in Sources */,
 				16A250DA23E1BD83003F7904 /* SkillPlans.swift in Sources */,
 				12F06F31238467600061313D /* SDE.xcdatamodeld in Sources */,
@@ -635,6 +668,7 @@
 				16AE40F5238FEFD500C6E25B /* DamageView.swift in Sources */,
 				12B9E20423A7E8C2007DB0E0 /* SwiftUI+Extensions.swift in Sources */,
 				16B45EFF23A3663400A36A96 /* MarketRegionPicker.swift in Sources */,
+				164E418223EAC90400EF16CE /* OptimalAttributes.swift in Sources */,
 				122B4AED239EAE2000461A1A /* Preferences.swift in Sources */,
 				1273F8D323A2C69B00DB755B /* TypeMarketOrders.swift in Sources */,
 				167CB4AC23992828008980EE /* TypeInfoVariationsCell.swift in Sources */,
@@ -648,6 +682,7 @@
 				1602719823A2792900067AA1 /* TypeMarketOrderCell.swift in Sources */,
 				1698919F238E4BA500FBA0B3 /* ObservedObjectView.swift in Sources */,
 				169A72D1238BE0EF00E4C181 /* TimeIntervalFormatter.swift in Sources */,
+				160882EE23E2E70400BB7176 /* TextFieldAlert.swift in Sources */,
 				16C435FA23D6FFC7000A5446 /* ImplantTypeCell.swift in Sources */,
 				1688D00F23D6F0790012983C /* JumpClones.swift in Sources */,
 				16A6A4BA23B1E6F500CF0812 /* Certificates.swift in Sources */,
@@ -659,6 +694,7 @@
 				12F06F40238469C10061313D /* SDEVersion.swift in Sources */,
 				16DFF833238D4C02004C1185 /* UIKit+Extensions.swift in Sources */,
 				169661B523BB252E00D8E175 /* BlueprintInfo.swift in Sources */,
+				16B04DE123ED55D500FBE380 /* AssetCell.swift in Sources */,
 				1686D74C23953C5600E88D3D /* SDE.swift in Sources */,
 				16E3DBF3238BF944005F5AAE /* Avatar.swift in Sources */,
 				169A91A3238D1D38004E3DAA /* Config.swift in Sources */,
@@ -685,6 +721,7 @@
 				164156172397E68A0063A39C /* TypeInfoSkillCell.swift in Sources */,
 				166EE98F2396311200388D65 /* TypeInfoHeader.swift in Sources */,
 				124F06E7238D8EB400395D54 /* Icon.swift in Sources */,
+				164E418923EAED1A00EF16CE /* AssetsData.swift in Sources */,
 				1630ED7923CC926E001DBAA7 /* CharacterSheet.swift in Sources */,
 				166EE98B23962F2500388D65 /* AttributedText.swift in Sources */,
 				169661B723BB423100D8E175 /* NPCInfo.swift in Sources */,
@@ -699,11 +736,13 @@
 				16BCB1B623D88437004712DB /* SkillCell.swift in Sources */,
 				169A72CF238BE05600E4C181 /* String+Extensions.swift in Sources */,
 				16C39A5423BA0B7200208F04 /* FinishedView.swift in Sources */,
+				16E8C42F23E431E0004BA2D3 /* CloseButton.swift in Sources */,
 				16674BE9238BB80900E6E547 /* AccountCellContent.swift in Sources */,
 				16324731239159A200227480 /* AccountInfo.swift in Sources */,
 				16DFF831238D3A4F004C1185 /* SearchField.swift in Sources */,
 				16A97CFE23DF1E9900DFC511 /* SkillsPage.swift in Sources */,
 				12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */,
+				1638690923EC217400681612 /* Atomic.swift in Sources */,
 				16AE40F1238FDAD000C6E25B /* ModuleTypeCell.swift in Sources */,
 				16ACE3A423D5B5BD009A6AF1 /* CharacterFullInfo.swift in Sources */,
 				161CE78E23E16E1B007619B8 /* SkillQueueSection.swift in Sources */,
@@ -726,6 +765,7 @@
 				1686D75323955C2400E88D3D /* TypeInfo.swift in Sources */,
 				16674BF0238BC6F300E6E547 /* UnitFormatter.swift in Sources */,
 				16E3DBF5238BFACC005F5AAE /* AccountCell.swift in Sources */,
+				16B04DE323ED655300FBE380 /* AssetsList.swift in Sources */,
 				169BFF9423B64D2300FDF759 /* BlueprintActivityMaterials.swift in Sources */,
 				16C435F623D6FDD3000A5446 /* ImplantsRows.swift in Sources */,
 				1698C05C239A8EB400193274 /* TypeMateryLevel.swift in Sources */,

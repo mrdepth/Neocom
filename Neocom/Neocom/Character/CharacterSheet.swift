@@ -70,7 +70,7 @@ struct CharacterSheet: View {
                     Icon(ship.image).cornerRadius(4)
                     VStack(alignment: .leading) {
                         Text(ship.typeName ?? "")
-                        location.map{EVELocation(solarSystem: $0)}.map{Text($0)}.modifier(SecondaryLabelModifier())
+                        location.map{EVELocation(solarSystem: $0, id: Int64($0.solarSystemID))}.map{Text($0)}.modifier(SecondaryLabelModifier())
                     }
                 }
             }

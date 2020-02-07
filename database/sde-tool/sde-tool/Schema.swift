@@ -274,10 +274,12 @@ struct PlanetSchematicsTypeMap: Codable {
 
 struct Activity: Codable {
 	var activityID: Int
-	var activityName: String
-	var description: String
+	var activityName: String?
+	var description: String?
 	var iconNo: String?
 	var published: Bool
+    var descriptionID: Int
+    var activityNameID: Int
 }
 
 struct AssemblyLineStation: Codable {
@@ -310,13 +312,14 @@ struct AssemblyLineType: Codable {
 	var activityID: Int
 	var assemblyLineTypeID: Int
 	var assemblyLineTypeName: String
-	var baseCostMultiplier: Double
+	var baseCostMultiplier: Double?
 	var baseMaterialMultiplier: Double
 	var baseTimeMultiplier: Double
 	var description: String
 	var volume: Double
 	var minCostPerHour: Double?
 }
+
 
 struct InstallationTypeContent: Codable {
 	var assemblyLineTypeID: Int

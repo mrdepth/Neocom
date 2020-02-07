@@ -29,7 +29,7 @@ class AccountInfo: CharacterBasicInfo {
             .asResult()
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
-                self?.ship = result
+                self?.ship = result.map{$0.value}
                 self?.objectWillChange.send()
         }.store(in: &subscriptions)
 
@@ -37,7 +37,7 @@ class AccountInfo: CharacterBasicInfo {
             .asResult()
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
-                self?.skills = result
+                self?.skills = result.map{$0.value}
                 self?.objectWillChange.send()
         }.store(in: &subscriptions)
         
@@ -45,12 +45,12 @@ class AccountInfo: CharacterBasicInfo {
             .asResult()
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
-                self?.balance = result
+                self?.balance = result.map{$0.value}
                 self?.objectWillChange.send()
         }.store(in: &subscriptions)
         
         character.location().get().receive(on: RunLoop.main).compactMap { location in
-            try? managedObjectContext.from(SDEMapSolarSystem.self).filter(\SDEMapSolarSystem.solarSystemID == Int32(location.solarSystemID)).first()
+            try? managedObjectContext.from(SDEMapSolarSystem.self).filter(\SDEMapSolarSystem.solarSystemID == Int32(location.value.solarSystemID)).first()
         }
         .asResult()
         .receive(on: RunLoop.main)
@@ -60,7 +60,7 @@ class AccountInfo: CharacterBasicInfo {
         }.store(in: &subscriptions)
         
         character.skillqueue().get()
-            .map{$0.filter{$0.finishDate.map{$0 > Date()} == true}}
+            .map{$0.value.filter{$0.finishDate.map{$0 > Date()} == true}}
             .asResult()
             .receive(on: RunLoop.main)
             .sink { [weak self] result in

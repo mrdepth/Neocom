@@ -21,7 +21,6 @@ struct ProgressView: View {
                 .offset(x: -geometry.size.width * CGFloat(1.0 - self.progress) / 2, y: 0)
         }.overlay(Rectangle().strokeBorder(borderColor, lineWidth: 1, antialiased: false))
             .background(self.progressTrackColor)
-
     }
 }
 

@@ -47,20 +47,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var managedObjectModel: NSManagedObjectModel {
         let storageModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Storage", withExtension: "momd")!)!
         let sdeModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "SDE", withExtension: "momd")!)!
-        return NSManagedObjectModel(byMerging: [storageModel, sdeModel])!
+        let cacheModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Cache", withExtension: "momd")!)!
+        return NSManagedObjectModel(byMerging: [storageModel, sdeModel, cacheModel])!
     }
+    
+    #if DEBUG
+    private func migrate() {
+        let container = NSPersistentCloudKitContainer(name: "Neocom", managedObjectModel: managedObjectModel)
+        let sdeURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("SDE.sqlite")
+        try? FileManager.default.removeItem(at: sdeURL)
+        try? FileManager.default.copyItem(at: Bundle.main.url(forResource: "SDE", withExtension: "sqlite")!, to: sdeURL)
+        let sde = NSPersistentStoreDescription(url: sdeURL)
+        sde.configuration = "SDE"
+        sde.setValue("DELETE" as NSString, forPragmaNamed: "journal_mode")
+        sde.shouldMigrateStoreAutomatically = true
+        sde.shouldInferMappingModelAutomatically = true
+        
+        let storage = NSPersistentStoreDescription(url: URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!).appendingPathComponent("store.sqlite"))
+        storage.configuration = "Storage"
+        storage.shouldInferMappingModelAutomatically = true
+        storage.shouldInferMappingModelAutomatically = true
+        container.persistentStoreDescriptions = [sde, storage]
+        container.loadPersistentStores { (_, error) in
+            if let error = error {
+                print(error)
+            }
+        }
+    }
+    #endif
 
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
-        
+//        migrate()
         let container = NSPersistentCloudKitContainer(name: "Neocom", managedObjectModel: managedObjectModel)
         let sde = NSPersistentStoreDescription(url: Bundle.main.url(forResource: "SDE", withExtension: "sqlite")!)
         sde.configuration = "SDE"
         sde.isReadOnly = true
         sde.shouldMigrateStoreAutomatically = false
         
-        let storage = NSPersistentStoreDescription(url: URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!).appendingPathComponent("store.sqlite"))
+        let baseURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        
+        let storage = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("store.sqlite"))
         storage.configuration = "Storage"
-        container.persistentStoreDescriptions = [sde, storage]
+        
+        let cache = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("cache.sqlite"))
+        cache.configuration = "Cache"
+
+        container.persistentStoreDescriptions = [sde, storage, cache]
         container.loadPersistentStores { (_, error) in
             if let error = error {
                 print(error)

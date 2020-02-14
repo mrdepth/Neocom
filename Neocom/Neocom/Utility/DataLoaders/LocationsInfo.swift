@@ -96,42 +96,69 @@ struct EVELocation: Hashable {
     
     static var cache = Atomic<[Int64: EVELocation]>([:])
     
-    static func locations(with ids: Set<Int64>, esi: ESI, managedObjectContext: NSManagedObjectContext) -> AnyPublisher<[Int64: EVELocation], Never> {
+    static func locations(with ids: Set<Int64>, esi: ESI, managedObjectContext: NSManagedObjectContext, progress: Alamofire.Request.ProgressHandler? = nil) -> AnyPublisher<[Int64: EVELocation], Never> {
         return Just(ids).receive(on: managedObjectContext).flatMap { ids -> AnyPublisher<[Int64: EVELocation], Never> in
-            let structureIDs = ids.filter{$0 > Int64(Int32.max)}
-            var missingIDs = ids.subtracting(structureIDs)
             let cached = cache.wrappedValue.filter{ids.contains($0.key)}
+            var structureIDs = ids.filter{$0 > Int64(Int32.max)}
+            var missingIDs = ids.subtracting(structureIDs)
+
             missingIDs.subtract(cached.keys)
+            structureIDs.subtract(cached.keys)
+            
             let stations = (try? managedObjectContext.from(SDEStaStation.self).filter((\SDEStaStation.stationID).in(missingIDs)).fetch().map {(Int64($0.stationID), EVELocation($0))}) ?? []
             missingIDs.subtract(stations.map{$0.0})
             
-            var publishers = structureIDs.map { id in
-                esi.universe.structures().structureID(id).get().flatMap { structure in
-                    Future<[(Int64, EVELocation)], AFError> { promise in
-                        managedObjectContext.perform {
-                            let locations = [(id, EVELocation(structure.value, id: id, managedObjectContext: managedObjectContext))]
-                            cache.wrappedValue.merge(locations, uniquingKeysWith: {a, _ in a})
-                            promise(.success(locations))
+            let totalProgress = Progress(totalUnitCount: Int64(structureIDs.count) + 1)
+            
+            let names: AnyPublisher<[(Int64, EVELocation)], Never>
+            
+            names = totalProgress.performAsCurrent(withPendingUnitCount: 1, totalUnitCount: 100) { p in
+                if !missingIDs.isEmpty {
+                    return esi.universe.names().post(ids: missingIDs.map{Int($0)}) {
+                        p.completedUnitCount = Int64($0.fractionCompleted * 100)
+                        progress?(totalProgress)
+                    }.flatMap { names in
+                        Future<[(Int64, EVELocation)], AFError> { promise in
+                            managedObjectContext.perform {
+                                let locations = names.value.map{(Int64($0.id), EVELocation($0, managedObjectContext: managedObjectContext))}
+                                cache.transform { cache in
+                                    cache.merge(locations, uniquingKeysWith: {a, _ in a})
+                                }
+                                promise(.success(locations))
+                            }
                         }
                     }
-                }.replaceError(with: []).eraseToAnyPublisher()
-            }
-            if !missingIDs.isEmpty {
-                let p = esi.universe.names().post(ids: missingIDs.map{Int($0)}).flatMap { names in
-                    Future<[(Int64, EVELocation)], AFError> { promise in
-                        managedObjectContext.perform {
-                            let locations = names.value.map{(Int64($0.id), EVELocation($0, managedObjectContext: managedObjectContext))}
-                            cache.wrappedValue.merge(locations, uniquingKeysWith: {a, _ in a})
-                            promise(.success(locations))
-                        }
-                    }
+                    .replaceError(with: [])
+                    .eraseToAnyPublisher()
                 }
-                .replaceError(with: [])
-                .eraseToAnyPublisher()
-                publishers.append(p)
+                else {
+                    return Just([]).eraseToAnyPublisher()
+                }
             }
-            return Publishers.MergeMany(publishers).collect().map {
-                Dictionary(($0 + [stations]).joined()) { (a, _) in a }
+
+            return structureIDs.publisher.flatMap { id in
+                totalProgress.performAsCurrent(withPendingUnitCount: 1, totalUnitCount: 100) { p in
+                    esi.universe.structures().structureID(id).get {
+                        p.completedUnitCount = Int64($0.fractionCompleted * 100)
+                        progress?(totalProgress)
+                    }.flatMap { structure in
+                        Future<(Int64, EVELocation)?, AFError> { promise in
+                            managedObjectContext.perform {
+                                let location = EVELocation(structure.value, id: id, managedObjectContext: managedObjectContext)
+                                cache.transform { cache in
+                                    cache[id] = location
+                                }
+                                promise(.success((id, location)))
+                            }
+                        }
+                    }.replaceError(with: nil)
+                        .compactMap{$0}
+                }
+                }.collect()
+                .merge(with: names, Just(stations))
+                .reduce([], +)
+                .map {
+                    Dictionary($0) { (a, _) in a }
             }.eraseToAnyPublisher()
 		}.eraseToAnyPublisher()
     }

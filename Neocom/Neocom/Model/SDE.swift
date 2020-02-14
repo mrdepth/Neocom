@@ -9,6 +9,9 @@
 import Foundation
 import CoreData
 import Expressible
+import EVEAPI
+import Dgmpp
+import SwiftUI
 
 extension SDEInvType {
     subscript(key: SDEAttributeID) -> SDEDgmTypeAttribute? {
@@ -278,7 +281,7 @@ var damageAttributes: [[DamageType: SDEAttributeID]] = [
      .explosive: .explosiveDamage]
 ]
 
-/*enum ItemFlag: Int32 {
+enum ItemFlag: Int32, Hashable {
     case hiSlot
     case medSlot
     case lowSlot
@@ -291,7 +294,7 @@ var damageAttributes: [[DamageType: SDEAttributeID]] = [
     case skill
     case implant
     
-    init?(flag: ESI.Assets.Asset.Flag) {
+    init?(flag: ESI.LocationFlag) {
         switch flag {
         case .hiSlot0, .hiSlot1, .hiSlot2, .hiSlot3, .hiSlot4, .hiSlot5, .hiSlot6, .hiSlot7:
             self = .hiSlot
@@ -318,31 +321,9 @@ var damageAttributes: [[DamageType: SDEAttributeID]] = [
         }
     }
     
-    init?(flag: ESI.Assets.CorpAsset.Flag) {
-        switch flag {
-        case .hiSlot0, .hiSlot1, .hiSlot2, .hiSlot3, .hiSlot4, .hiSlot5, .hiSlot6, .hiSlot7:
-            self = .hiSlot
-        case .medSlot0, .medSlot1, .medSlot2, .medSlot3, .medSlot4, .medSlot5, .medSlot6, .medSlot7:
-            self = .medSlot
-        case .loSlot0, .loSlot1, .loSlot2, .loSlot3, .loSlot4, .loSlot5, .loSlot6, .loSlot7:
-            self = .lowSlot
-        case .rigSlot0, .rigSlot1, .rigSlot2, .rigSlot3, .rigSlot4, .rigSlot5, .rigSlot6, .rigSlot7:
-            self = .rigSlot
-        case .subSystemSlot0, .subSystemSlot1, .subSystemSlot2, .subSystemSlot3, .subSystemSlot4, .subSystemSlot5, .subSystemSlot6, .subSystemSlot7:
-            self = .subsystemSlot
-        case .droneBay, .fighterBay, .fighterTube0, .fighterTube1, .fighterTube2, .fighterTube3, .fighterTube4:
-            self = .drone
-        case .hangar, .fleetHangar, .hangarAll, .shipHangar, .specializedLargeShipHold, .specializedIndustrialShipHold, .specializedMediumShipHold, .specializedShipHold, .specializedSmallShipHold :
-            self = .hangar
-        case .cargo, .specializedAmmoHold, .specializedCommandCenterHold, .specializedFuelBay, .specializedGasHold, .specializedMaterialBay, .specializedMineralHold, .specializedOreHold, .specializedPlanetaryCommoditiesHold, .specializedSalvageHold:
-            self = .cargo
-        case .skill:
-            self = .skill
-        case .implant:
-            self = .implant
-        default:
-            return nil
-        }
+    init?(flag: ESI.CorporationLocationFlag) {
+        guard let flag = ESI.LocationFlag(rawValue: flag.rawValue) else {return nil}
+        self.init(flag: flag)
     }
     
     var image: UIImage? {
@@ -396,6 +377,13 @@ var damageAttributes: [[DamageType: SDEAttributeID]] = [
             return NSLocalizedString("Implant", comment: "")
         case .skill:
             return NSLocalizedString("Skill", comment: "")
+        }
+    }
+    
+    var tableSectionHeader: some View {
+        HStack {
+            image.map{Icon(Image(uiImage: $0), size: .small)}
+            Text(title ?? "")
         }
     }
 }
@@ -488,4 +476,4 @@ extension DGMModule.Slot {
         }
     }
 }
-*/
+

@@ -13,4 +13,7 @@
    <FileRef
       location = "group:ThirdParty/Expressible/Expressible.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:ThirdParty/dgmpp/XCode/dgmpp.xcodeproj">
+   </FileRef>
 </Workspace>

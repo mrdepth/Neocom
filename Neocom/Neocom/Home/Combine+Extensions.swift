@@ -76,3 +76,11 @@ extension NSManagedObjectContext: Scheduler {
     
     
 }
+
+extension Progress {
+    func performAsCurrent<ReturnType>(withPendingUnitCount unitCount: Int64, totalUnitCount: Int64, using work: (Progress) throws -> ReturnType) rethrows -> ReturnType {
+        try performAsCurrent(withPendingUnitCount: unitCount) {
+            try work(Progress(totalUnitCount: totalUnitCount))
+        }
+    }
+}

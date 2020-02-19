@@ -9,45 +9,42 @@
 import SwiftUI
 import Combine
 
-private class SearchResults<Results>: ObservableObject {
+class SearchController<Results, Predicate>: ObservableObject {
     @Published var results: Results
-    @Published var searchString: String = ""
+    @Published var predicate: Predicate
     
     private var subscription: AnyCancellable?
     
-    init<P>(initialValue: Results, _ search: @escaping (String) -> P) where P: Publisher, P.Output == Results, P.Failure == Never {
-        _results = Published(initialValue: initialValue)
-        searchString = ""
+    init<P>(initialValue value: Results, predicate: Predicate, _ search: @escaping (Predicate) -> P) where P: Publisher, P.Output == Results, P.Failure == Never {
+        self._results = Published(initialValue: value)
+        self._predicate = Published(initialValue: predicate)
         
-        subscription = $searchString.debounce(for: .seconds(0.25), scheduler: DispatchQueue.main).flatMap(search).sink { [weak self] in
+        subscription = $predicate.debounce(for: .seconds(0.25), scheduler: DispatchQueue.main).flatMap(search).sink { [weak self] in
             self?.results = $0
         }
     }
-
 }
 
 struct SearchView<Results: Publisher, Content: View, Output>: View where Results.Failure == Never, Results.Output == Output? {
-    @ObservedObject private var searchResults: SearchResults<Results.Output>
+    @ObservedObject private var searchResults: SearchController<Results.Output, String>
     @State var isEditing: Bool = false
     
     var content: (Results.Output) -> Content
     
     init(initialValue: Results.Output, search: @escaping (String) -> Results, @ViewBuilder content: @escaping (Results.Output) -> Content) {
         self.content = content
-        searchResults = SearchResults(initialValue: initialValue, search)
+        searchResults = SearchController(initialValue: initialValue, predicate: "", search)
     }
-        
         
     var body: some View {
         VStack(spacing: 0) {
-            SearchField(text: $searchResults.searchString, isEditing: $isEditing)
+            SearchField(text: $searchResults.predicate, isEditing: $isEditing)
             ZStack {
                 content(searchResults.results)
                 if searchResults.results == nil && isEditing {
                     Color(.systemFill).edgesIgnoringSafeArea(.all).transition(.opacity)
                 }
             }
-//            content(searchResults.results)//.overlay(Color(.systemFill).opacity(searchResults.results == nil && isEditing ? 1.0 : 0.0).edgesIgnoringSafeArea(.all))
         }
     }
 }

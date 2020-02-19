@@ -13,13 +13,13 @@ struct Types: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     
     enum Source {
-        case predicate(Predictable, String)
+        case predicate(PredicateProtocol, String)
         case group(SDEInvGroup)
         case marketGroup(SDEInvMarketGroup)
 		case npc(SDENpcGroup)
     }
     
-    private let predicate: Predictable
+    private let predicate: PredicateProtocol
     private let title: String
     
     init(_ source: Source) {
@@ -28,13 +28,13 @@ struct Types: View {
             self.predicate = predicate
             self.title = title
         case let .group(group):
-            predicate = \SDEInvType.group == group
+            predicate = Expressions.keyPath(\SDEInvType.group) == group
             title = group.groupName ?? "\(group.groupID)"
         case let .marketGroup(group):
-            predicate = \SDEInvType.marketGroup == group
+            predicate = Expressions.keyPath(\SDEInvType.marketGroup) == group
             title = group.marketGroupName ?? "\(group.marketGroupID)"
 		case let .npc(group):
-			predicate = \SDEInvType.group == group.group
+			predicate = Expressions.keyPath(\SDEInvType.group) == group.group
 			title = group.npcGroupName ?? ""
         }
     }
@@ -45,7 +45,7 @@ struct Types: View {
             .sort(by: \SDEInvType.metaGroup?.metaGroupID, ascending: true)
             .sort(by: \SDEInvType.metaLevel, ascending: true)
             .sort(by: \SDEInvType.typeName, ascending: true)
-            .fetchedResultsController(sectionName: (\SDEInvType.metaGroup?.metaGroupID))
+            .fetchedResultsController(sectionName: Expressions.keyPath(\SDEInvType.metaGroup?.metaGroupID))
         return FetchedResultsController(controller)
 
     }
@@ -88,7 +88,7 @@ struct TypesContent: View {
 struct Types_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            Types(.group((try? AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(\SDEInvType.typeID == 645).first()?.group)!))
+            Types(.group((try? AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == 645).first()?.group)!))
         }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

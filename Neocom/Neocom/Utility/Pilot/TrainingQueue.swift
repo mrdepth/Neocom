@@ -75,7 +75,7 @@ class TrainingQueue {
     func add(_ skillPlan: SkillPlan) {
         skillPlan.skills?.compactMap { skill in
             (skill as? SkillPlanSkill).flatMap{ skill in
-                (try? skill.managedObjectContext?.from(SDEInvType.self).filter(\SDEInvType.typeID == skill.typeID).first()).map{($0, skill.level)}
+                (try? skill.managedObjectContext?.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(skill.typeID)).first()).map{($0, skill.level)}
             }
         }.forEach { (type, level) in
             add(type, level: Int(level))
@@ -85,7 +85,7 @@ class TrainingQueue {
     func add(_ skillQueue: [Pilot.SkillQueueItem], managedObjectContext: NSManagedObjectContext) {
         let skills = Dictionary(skillQueue.map{($0.queuedSkill.skillID, $0.queuedSkill.finishedLevel)}, uniquingKeysWith: {a, b in max(a, b)})
         for (typeID, level) in skills {
-            guard let type = try? managedObjectContext.from(SDEInvType.self).filter(\SDEInvType.typeID == typeID).first() else {continue}
+            guard let type = try? managedObjectContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(typeID)).first() else {continue}
             add(type, level: level)
         }
     }

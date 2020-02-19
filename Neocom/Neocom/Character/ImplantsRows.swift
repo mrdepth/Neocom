@@ -14,7 +14,7 @@ struct ImplantsRows: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     
     var body: some View {
-        let implants = self.implants.compactMap { try? self.managedObjectContext.from(SDEInvType.self).filter(\SDEInvType.typeID == $0).first() }
+        let implants = self.implants.compactMap { try? self.managedObjectContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32($0)).first() }
             .map {(type: $0, slot: $0[SDEAttributeID.implantness]?.value ?? 100)}
             .sorted{$0.slot < $1.slot}
             .map{$0.type}
@@ -36,7 +36,7 @@ struct ImplantsRows_Previews: PreviewProvider {
     static var previews: some View {
         let implant = try? AppDelegate.sharedDelegate.persistentContainer.viewContext
             .from(SDEInvType.self)
-            .filter((\SDEInvType.attributes).subquery(\SDEDgmTypeAttribute.attributeType?.attributeID == SDEAttributeID.intelligenceBonus.rawValue).count > 0)
+            .filter(Expressions.keyPath(\SDEInvType.attributes).subquery(Expressions.keyPath(\SDEDgmTypeAttribute.attributeType?.attributeID) == SDEAttributeID.intelligenceBonus.rawValue).count > 0)
             .first()
 
         return List {

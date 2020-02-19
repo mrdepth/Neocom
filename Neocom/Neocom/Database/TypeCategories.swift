@@ -18,7 +18,7 @@ struct TypeCategories: View {
         let controller = managedObjectContext.from(SDEInvCategory.self)
             .sort(by: \SDEInvCategory.published, ascending: false)
             .sort(by: \SDEInvCategory.categoryName, ascending: true)
-            .fetchedResultsController(sectionName: \SDEInvCategory.published)
+            .fetchedResultsController(sectionName: Expressions.keyPath(\SDEInvCategory.published))
         return FetchedResultsController(controller)
     }
     

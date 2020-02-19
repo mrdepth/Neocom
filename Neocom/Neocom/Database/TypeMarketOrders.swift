@@ -31,11 +31,11 @@ struct TypeMarketOrders: View {
 	@State private var isMarketRegionPickerPresented = false
     
 	private var regionName: String {
-        (try? managedObjectContext.from(SDEMapRegion.self).filter(\SDEMapRegion.regionID == marketRegionID.wrappedValue).first()?.regionName) ?? NSLocalizedString("Unknown", comment: "")
+        (try? managedObjectContext.from(SDEMapRegion.self).filter(Expressions.keyPath(\SDEMapRegion.regionID) == Int32(marketRegionID.wrappedValue)).first()?.regionName) ?? NSLocalizedString("Unknown", comment: "")
 	}
 
     var body: some View {
-        let orders = marketOrders.get(initial: TypeMarketData(type: type, esi: esi, regionID: marketRegionID.wrappedValue, managedObjectContext: backgroundManagedObjectContext))
+        let orders = marketOrders.get(initial: TypeMarketData(type: type, esi: esi, regionID: Int(marketRegionID.wrappedValue), managedObjectContext: backgroundManagedObjectContext))
 		let error = orders.result?.error
 		let data = orders.result?.value
 
@@ -59,7 +59,7 @@ struct TypeMarketOrders: View {
 			.sheet(isPresented: $isMarketRegionPickerPresented) {
 				NavigationView {
 					MarketRegionPicker { region in
-                        self.marketRegionID.wrappedValue = Int(region.regionID)
+                        self.marketRegionID.wrappedValue = region.regionID
 //						self.marketOrders.set(TypeMarketData(type: self.type, esi: self.esi, regionID: self.marketRegionID, managedObjectContext: self.backgroundManagedObjectContext))
 						self.isMarketRegionPickerPresented = false
 					}.navigationBarItems(trailing: Button("Cancel") {self.isMarketRegionPickerPresented = false})

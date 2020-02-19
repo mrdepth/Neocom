@@ -49,7 +49,7 @@ class TypeInfoData: ObservableObject {
         struct Variations: Identifiable {
             var id: String { "Variations" }
             var count: Int
-            var predicate: Predictable
+            var predicate: PredicateProtocol
         }
         
         struct Mastery: Identifiable {
@@ -160,10 +160,10 @@ extension TypeInfoData {
     private func basicInfo(for type: SDEInvType, pilot: Pilot?, price: ESI.MarketPrice?, managedObjectContext: NSManagedObjectContext, override attributeValues: [Int: Double]?) -> [Section] {
         
         let results = managedObjectContext.from(SDEDgmTypeAttribute.self)
-            .filter(\SDEDgmTypeAttribute.type == type && \SDEDgmTypeAttribute.attributeType?.published == true)
+            .filter(Expressions.keyPath(\SDEDgmTypeAttribute.type) == type && Expressions.keyPath(\SDEDgmTypeAttribute.attributeType?.published) == true)
             .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, ascending: true)
             .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeID, ascending: true)
-            .fetchedResultsController(sectionName: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, cacheName: nil)
+            .fetchedResultsController(sectionName: Expressions.keyPath(\SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID), cacheName: nil)
         
         var sections = [Section]()
 		
@@ -321,7 +321,7 @@ extension TypeInfoData {
         guard type.parentType != nil || (type.variations?.count ?? 0) > 0 else {return nil}
         let n = max(type.variations?.count ?? 0, type.parentType?.variations?.count ?? 0) + 1
         let what = type.parentType ?? type
-        let predicate = \SDEInvType.parentType == what || _self == what
+        let predicate = Expressions.keyPath(\SDEInvType.parentType) == what || Expressions.this(SDEInvType.self) == what
         
         return Section(id: "VariationsSection",
                        name: NSLocalizedString("Variations", comment: "").uppercased(),
@@ -363,10 +363,10 @@ extension TypeInfoData {
     private func npcInfo(for type: SDEInvType, managedObjectContext: NSManagedObjectContext) -> [Section] {
         
         let results = managedObjectContext.from(SDEDgmTypeAttribute.self)
-            .filter(\SDEDgmTypeAttribute.type == type && \SDEDgmTypeAttribute.attributeType?.published == true)
+            .filter(Expressions.keyPath(\SDEDgmTypeAttribute.type) == type && Expressions.keyPath(\SDEDgmTypeAttribute.attributeType?.published) == true)
             .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, ascending: true)
             .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeID, ascending: true)
-            .fetchedResultsController(sectionName: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, cacheName: nil)
+            .fetchedResultsController(sectionName: Expressions.keyPath(\SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID), cacheName: nil)
         
         var sections = [Section]()
 
@@ -430,7 +430,7 @@ extension TypeInfoData {
                                                                           subtitle: UnitFormatter.localizedString(from: falloff, unit: .meter, style: .long))))
                         
                     case .missile?:
-                        guard let attribute = type[SDEAttributeID.entityMissileTypeID], let missile = try? managedObjectContext.from(SDEInvType.self).filter(\SDEInvType.typeID == Int(attribute.value)).first() else {break}
+                        guard let attribute = type[SDEAttributeID.entityMissileTypeID], let missile = try? managedObjectContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(attribute.value)).first() else {break}
                         
                         rows.append(.attribute(TypeInfoData.Row.Attribute(id: attribute.objectID,
                                                                           image: missile.uiImage,
@@ -681,18 +681,18 @@ extension TypeInfoData.Row {
         switch unitID {
         case .attributeID:
             let attributeType = try? attribute.managedObjectContext?.from(SDEDgmAttributeType.self)
-                .filter(\SDEDgmAttributeType.attributeID == Int(value)).first()
+                .filter(Expressions.keyPath(\SDEDgmAttributeType.attributeID) == Int32(value)).first()
             icon = attributeType?.icon?.image?.image
             subtitle = attributeType?.displayName ?? attributeType?.attributeName ?? toString(value)
         case .groupID:
             let group = try? attribute.managedObjectContext?.from(SDEInvGroup.self)
-                .filter(\SDEInvGroup.groupID == Int(value)).first()
+                .filter(Expressions.keyPath(\SDEInvGroup.groupID) == Int32(value)).first()
             subtitle = group?.groupName ?? toString(value)
             icon = attribute.attributeType?.icon?.image?.image ?? group?.icon?.image?.image
             targetGroup = group?.objectID
         case .typeID:
             let type = try? attribute.managedObjectContext?.from(SDEInvType.self)
-                .filter(\SDEInvType.typeID == Int(value)).first()
+                .filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(value)).first()
             subtitle = type?.typeName ?? toString(value)
             icon = type?.icon?.image?.image ?? attribute.attributeType?.icon?.image?.image
             targetType = type?.objectID

@@ -56,7 +56,7 @@ struct ImplantTypeCell_Previews: PreviewProvider {
     static var previews: some View {
         let implant = try? AppDelegate.sharedDelegate.persistentContainer.viewContext
             .from(SDEInvType.self)
-            .filter((\SDEInvType.attributes).subquery(\SDEDgmTypeAttribute.attributeType?.attributeID == SDEAttributeID.intelligenceBonus.rawValue).count > 0)
+            .filter(Expressions.keyPath(\SDEInvType.attributes).subquery(Expressions.keyPath(\SDEDgmTypeAttribute.attributeType?.attributeID) == SDEAttributeID.intelligenceBonus.rawValue).count > 0)
             .first()
         
         return List {

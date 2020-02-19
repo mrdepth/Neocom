@@ -14,7 +14,7 @@ struct TypeMarketOrderCell: View {
     var order: TypeMarketData.Row
     
 	@UserDefault(key: .marketRegionID)
-    var regionID: Int = SDERegionID.default.rawValue
+    var regionID: Int32 = SDERegionID.default.rawValue
 
 	var body: some View {
         VStack(alignment: .leading) {

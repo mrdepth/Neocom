@@ -14,10 +14,10 @@ struct NPCInfo: View {
 
     private var attributes: FetchedResultsController<SDEDgmTypeAttribute> {
         let controller = managedObjectContext.from(SDEDgmTypeAttribute.self)
-            .filter(\SDEDgmTypeAttribute.type == type && \SDEDgmTypeAttribute.attributeType?.published == true)
+            .filter(Expressions.keyPath(\SDEDgmTypeAttribute.type) == type && Expressions.keyPath(\SDEDgmTypeAttribute.attributeType?.published) == true)
             .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, ascending: true)
             .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeID, ascending: true)
-            .fetchedResultsController(sectionName: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, cacheName: nil)
+            .fetchedResultsController(sectionName: Expressions.keyPath(\SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID), cacheName: nil)
         return FetchedResultsController(controller)
     }
     
@@ -130,8 +130,8 @@ struct NPCInfo: View {
                                           image: Image("targetingRange"))
                 }
             }
-            let attribute = type[SDEAttributeID.entityMissileTypeID].map{Int($0.value)}
-            let missile = attribute.flatMap{attribute in try? managedObjectContext.from(SDEInvType.self).filter(\SDEInvType.typeID == attribute).first()}
+            let attribute = type[SDEAttributeID.entityMissileTypeID].map{Int32($0.value)}
+            let missile = attribute.flatMap{attribute in try? managedObjectContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == attribute).first()}
             return missile.map{row(missile: $0)}
         }
         
@@ -233,7 +233,7 @@ struct NPCInfo_Previews: PreviewProvider {
             List {
                 NPCInfo(type: try! AppDelegate.sharedDelegate.persistentContainer.viewContext
                     .from(SDEInvType.self)
-                    .filter((\SDEInvType.group?.npcGroups).count > 0)
+                    .filter(Expressions.keyPath(\SDEInvType.group?.npcGroups).count > 0)
                     .first()!)
             }.listStyle(GroupedListStyle())
         }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)

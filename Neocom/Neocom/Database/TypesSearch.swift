@@ -14,10 +14,10 @@ import CoreData
 struct TypesSearch<Content: View>: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) var backgroundManagedObjectContext
-    var predicate: Predictable? = nil
+    var predicate: PredicateProtocol? = nil
     var content: ([FetchedResultsController<SDEInvType>.Section]?) -> Content
     
-    init(predicate: Predictable? = nil, @ViewBuilder content: @escaping ([FetchedResultsController<SDEInvType>.Section]?) -> Content) {
+    init(predicate: PredicateProtocol? = nil, @ViewBuilder content: @escaping ([FetchedResultsController<SDEInvType>.Section]?) -> Content) {
         self.predicate = predicate
         self.content = content
     }
@@ -34,12 +34,12 @@ struct TypesSearch<Content: View>: View {
                     if let predicate = self.predicate {
                         request = request.filter(predicate)
                     }
-                    request = request.filter((\SDEInvType.typeName).caseInsensitive.contains(string))
+                    request = request.filter(Expressions.keyPath(\SDEInvType.typeName).caseInsensitive.contains(string))
                     let controller = request.sort(by: \SDEInvType.metaGroup?.metaGroupID, ascending: true)
                         .sort(by: \SDEInvType.metaLevel, ascending: true)
                         .sort(by: \SDEInvType.typeName, ascending: true)
-                        .select([_self.as(NSManagedObjectID.self, name: "objectID"), (\SDEInvType.metaGroup?.metaGroupID).as(Int.self, name: "metaGroupID")])
-                        .fetchedResultsController(sectionName: (\SDEInvType.metaGroup?.metaGroupName).as(Int.self, name: "metaGroupID"))
+                        .select([Expressions.this(SDEInvType.self).as(NSManagedObjectID.self, name: "objectID"), Expressions.keyPath(\SDEInvType.metaGroup?.metaGroupID).as(Int.self, name: "metaGroupID")])
+                        .fetchedResultsController(sectionName: Expressions.keyPath(\SDEInvType.metaGroup?.metaGroupName).as(Int.self, name: "metaGroupID"))
                     
                     try? controller.performFetch()
                     promise(.success(FetchedResultsController(controller)))

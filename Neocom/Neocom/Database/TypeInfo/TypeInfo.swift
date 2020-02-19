@@ -19,7 +19,7 @@ struct TypeInfo: View {
     @ObservedObject var typeInfo: Lazy<TypeInfoData> = Lazy()
     
     @UserDefault(key: .marketRegionID)
-    var marketRegionID: Int = SDERegionID.default.rawValue
+    var marketRegionID: Int32 = SDERegionID.default.rawValue
     
     var type: SDEInvType
     var attributeValues: [Int: Double]?
@@ -30,10 +30,10 @@ struct TypeInfo: View {
     
     private var attributes: FetchedResultsController<SDEDgmTypeAttribute> {
         let controller = managedObjectContext.from(SDEDgmTypeAttribute.self)
-            .filter(\SDEDgmTypeAttribute.type == type && \SDEDgmTypeAttribute.attributeType?.published == true)
+            .filter(Expressions.keyPath(\SDEDgmTypeAttribute.type) == type && Expressions.keyPath(\SDEDgmTypeAttribute.attributeType?.published) == true)
             .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, ascending: true)
             .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeID, ascending: true)
-            .fetchedResultsController(sectionName: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, cacheName: nil)
+            .fetchedResultsController(sectionName: Expressions.keyPath(\SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID), cacheName: nil)
         return FetchedResultsController(controller)
     }
     
@@ -41,7 +41,7 @@ struct TypeInfo: View {
         let info = TypeInfoData(type: type,
 								esi: esi,
 								characterID: account?.characterID,
-                                marketRegionID: marketRegionID,
+                                marketRegionID: Int(marketRegionID),
 								managedObjectContext: backgroundManagedObjectContext,
 								override: nil)
         return info

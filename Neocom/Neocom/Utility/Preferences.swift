@@ -17,3 +17,13 @@ struct SizePreferenceKey: PreferenceKey {
     
     typealias Value = [CGSize]
 }
+
+struct FramePreferenceKey: PreferenceKey {
+    static var defaultValue: Value = []
+    
+    static func reduce(value: inout Value, nextValue: () -> Value) {
+        value += nextValue()
+    }
+    
+    typealias Value = [CGRect]
+}

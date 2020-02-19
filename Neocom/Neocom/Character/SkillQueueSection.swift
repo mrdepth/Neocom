@@ -31,7 +31,7 @@ struct SkillQueueSection: View {
         
         return Section(header: title) {
             ForEach(skillQueue, id: \.self) { i in
-                (try? self.managedObjectContext.from(SDEInvType.self).filter(\SDEInvType.typeID == i.skill.typeID).first()).map { type in
+                (try? self.managedObjectContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(i.skill.typeID)).first()).map { type in
                     SkillCell(type: type, pilot: self.pilot, skillQueueItem: i)
                 }
             }

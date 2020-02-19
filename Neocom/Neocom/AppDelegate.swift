@@ -163,7 +163,7 @@ extension AppDelegate {
     @objc func didRefreshToken(_ note: Notification) {
         guard let token = note.userInfo?[ESI.tokenUserInfoKey] as? OAuth2Token else {return}
         DispatchQueue.main.async {
-            guard let accounts = try? self.persistentContainer.viewContext.from(Account.self).filter(\Account.refreshToken == token.refreshToken).fetch() else {return}
+            guard let accounts = try? self.persistentContainer.viewContext.from(Account.self).filter(Expressions.keyPath(\Account.refreshToken) == token.refreshToken).fetch() else {return}
             accounts.forEach{$0.oAuth2Token = token}
         }
     }

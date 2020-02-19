@@ -28,11 +28,7 @@ extension Contact {
     }
         
     static func contacts(with contactIDs: Set<Int64>, esi: ESI, characterID: Int64?, options: SearchOptions, managedObjectContext: NSManagedObjectContext) -> AnyPublisher<[Int64: Contact], Never> {
-//        let ids = ids.subtracting(invalidIDs.value)
-//
-//        var result = Dictionary(cachedContacts.filter {ids.contains($0.key)}, uniquingKeysWith: {(a, _) in a})
-//        var missing = ids.subtracting(Set(result.keys))
-        
+
         var missing = contactIDs
         let backgroundContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         backgroundContext.parent = managedObjectContext
@@ -44,7 +40,7 @@ extension Contact {
             Future { promise in
                 backgroundContext.perform {
                     let result = (try? Dictionary(backgroundContext.from(Contact.self)
-                        .filter((\Contact.contactID) .in(missing))
+                        .filter(Expressions.keyPath(\Contact.contactID).in(missing))
                         .fetch()
                         .map{($0.contactID, $0)}) {a, _ in a}) ?? [:]
                     promise(.success(PartialResult(contacts: result, missingIDs: missingIDs.subtracting(result.keys))))
@@ -57,7 +53,7 @@ extension Contact {
             return esi.characters.characterID(Int(characterID)).mail().lists().get().receive(on: backgroundContext).map { mailingLists -> PartialResult in
                 let ids = mailingLists.value.map{$0.mailingListID}
                 guard !ids.isEmpty else {return result}
-                let existing = (try? backgroundContext.from(Contact.self).filter((\Contact.contactID).in(ids)).fetch()) ?? []
+                let existing = (try? backgroundContext.from(Contact.self).filter(Expressions.keyPath(\Contact.contactID).in(ids)).fetch()) ?? []
                 let existingIDs = Set(existing.map{$0.contactID})
                 let new = mailingLists.value.filter{!existingIDs.contains(Int64($0.mailingListID))}.map { mailingList -> Contact in
                     let contact = Contact(context: backgroundContext)
@@ -131,5 +127,30 @@ extension Contact {
             .map {
                 $0.compactMapValues{try? managedObjectContext.existingObject(with: $0) as? Contact}
         }.eraseToAnyPublisher()
+    }
+    
+    static func searchContacts(containing string: String, esi: ESI, options: SearchOptions, managedObjectContext: NSManagedObjectContext) -> AnyPublisher<[Contact], Never> {
+        let s = string.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !s.isEmpty else {return Just([]).eraseToAnyPublisher()}
+        
+        let contacts = try? managedObjectContext.from(Contact.self).filter(Expressions.keyPath(\Contact.name).caseInsensitive.contains(s))
+            .fetch()
+        
+        let searchResults: AnyPublisher<[Contact], Never>
+        if s.count < 3 {
+            searchResults = Empty().eraseToAnyPublisher()
+        }
+        else {
+            searchResults = esi.search.get(categories: [.character, .corporation, .alliance], search: s).map {$0.value}.map {
+                Set([$0.character, $0.corporation, $0.alliance].compactMap{$0}.joined().map{Int64($0)})
+            }.flatMap { ids in
+                Contact.contacts(with: ids, esi: esi, characterID: nil, options: [.universe], managedObjectContext: managedObjectContext)
+                    .map{Array($0.values)}
+                    .setFailureType(to: AFError.self)
+            }.catch{_ in Empty()}
+                .eraseToAnyPublisher()
+            
+        }
+        return Just(contacts ?? []).merge(with: searchResults).eraseToAnyPublisher()
     }
 }

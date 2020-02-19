@@ -19,7 +19,7 @@ extension SDEInvType {
     }
     
     subscript(key: Int32) -> SDEDgmTypeAttribute? {
-        return (try? managedObjectContext?.from(SDEDgmTypeAttribute.self).filter(\SDEDgmTypeAttribute.type == self && \SDEDgmTypeAttribute.attributeType?.attributeID == key).first()) ?? nil
+        return (try? managedObjectContext?.from(SDEDgmTypeAttribute.self).filter(Expressions.keyPath(\SDEDgmTypeAttribute.type) == self && Expressions.keyPath(\SDEDgmTypeAttribute.attributeType?.attributeID) == key).first()) ?? nil
     }
 
 }
@@ -160,7 +160,7 @@ public enum SDECategoryID: Int32 {
     
 }
 
-public enum SDERegionID: Int {
+public enum SDERegionID: Int32 {
     case theForge = 10000002
     case whSpace = 11000000
     

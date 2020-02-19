@@ -28,7 +28,7 @@ struct MailPage: View {
                 ForEach(sections!, id: \.date) { section in
                     Section(header: Text(DateFormatter.localizedString(from: section.date, dateStyle: .medium, timeStyle: .none).uppercased())) {
                         ForEach(section.mails, id: \.mailID) { mail in
-                            MailHeader(header: mail, contacts: result?.contacts.compactMapValues{$0} ?? [:]).onAppear {
+                            MailHeader(mail: mail, contacts: result?.contacts.compactMapValues{$0} ?? [:]).onAppear {
                                 if mail.mailID == sections?.last?.mails.last?.mailID {
                                     result?.next()
                                 }

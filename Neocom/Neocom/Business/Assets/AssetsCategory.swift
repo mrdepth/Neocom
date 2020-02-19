@@ -14,7 +14,7 @@ struct AssetsCategory: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     
     private func cell(for type: AssetsData.Category.AssetType) -> some View {
-        let invType = try? managedObjectContext.from(SDEInvType.self).filter(\SDEInvType.typeID == type.typeID).first()
+        let invType = try? managedObjectContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(type.typeID)).first()
         let icon = invType?.image ?? (try? managedObjectContext.fetch(SDEEveIcon.named(.defaultType)).first?.image?.image).map{Image(uiImage: $0)}
         
         return NavigationLink(destination: AssetsCategoryLocations(assets: type.locations).navigationBarTitle(type.typeName)) {

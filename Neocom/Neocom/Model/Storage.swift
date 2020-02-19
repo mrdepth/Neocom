@@ -100,7 +100,7 @@ extension SDEInvType {
 
     #if DEBUG
     class var dominix: SDEInvType {
-        return try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(\SDEInvType.typeID == 645).first()!
+        return try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == 645).first()!
     }
     #endif
 }
@@ -108,7 +108,7 @@ extension SDEInvType {
 extension SDEEveIcon {
 	class func named(_ name: Name) -> NSFetchRequest<SDEEveIcon> {
 		let request = NSFetchRequest<SDEEveIcon>(entityName: "EveIcon")
-		request.predicate = (\SDEEveIcon.iconFile == name.name).predicate(for: .`self`)
+		request.predicate = (Expressions.keyPath(\SDEEveIcon.iconFile) == name.name).predicate(for: .`self`)
 		request.fetchLimit = 1
 		return request
 	}
@@ -206,7 +206,7 @@ extension Account {
     }
 
     var activeSkillPlan: SkillPlan? {
-        if let skillPlan = (try? managedObjectContext?.from(SkillPlan.self).filter(\SkillPlan.account == self && \SkillPlan.isActive == true).first()) ?? nil {
+        if let skillPlan = (try? managedObjectContext?.from(SkillPlan.self).filter(Expressions.keyPath(\SkillPlan.account) == self && Expressions.keyPath(\SkillPlan.isActive) == true).first()) ?? nil {
             return skillPlan
         }
         else if let skillPlan = skillPlans?.anyObject() as? SkillPlan {
@@ -285,5 +285,11 @@ func - (lhs: Double, rhs: Damage) -> Damage {
 extension SkillPlan: Identifiable {
     public var id: NSManagedObjectID {
         return objectID
+    }
+}
+
+extension Contact {
+    var recipientType: ESI.RecipientType? {
+        category.flatMap{ESI.RecipientType(rawValue: $0)}
     }
 }

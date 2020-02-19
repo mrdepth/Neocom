@@ -63,18 +63,18 @@ struct TypeInfoAttributeCell: View {
         switch unitID {
         case .attributeID:
             let attributeType = try? attribute.managedObjectContext?.from(SDEDgmAttributeType.self)
-                .filter(\SDEDgmAttributeType.attributeID == Int(value)).first()
+                .filter(Expressions.keyPath(\SDEDgmAttributeType.attributeID) == Int32(value)).first()
             icon = attributeType?.icon?.image?.image
             subtitle = attributeType?.displayName ?? attributeType?.attributeName ?? toString(value)
         case .groupID:
             let group = try? attribute.managedObjectContext?.from(SDEInvGroup.self)
-                .filter(\SDEInvGroup.groupID == Int(value)).first()
+                .filter(Expressions.keyPath(\SDEInvGroup.groupID) == Int32(value)).first()
             subtitle = group?.groupName ?? toString(value)
             icon = attribute.attributeType?.icon?.image?.image ?? group?.icon?.image?.image
             targetGroup = group
         case .typeID:
             let type = try? attribute.managedObjectContext?.from(SDEInvType.self)
-                .filter(\SDEInvType.typeID == Int(value)).first()
+                .filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(value)).first()
             subtitle = type?.typeName ?? toString(value)
             icon = type?.icon?.image?.image ?? attribute.attributeType?.icon?.image?.image
             targetType = type

@@ -15,7 +15,7 @@ struct TypeInfoVariationsCell: View {
     var body: some View {
         let n = max(type.variations?.count ?? 0, type.parentType?.variations?.count ?? 0) + 1
         let what = type.parentType ?? type
-        let predicate = \SDEInvType.parentType == what || _self == what
+        let predicate = Expressions.keyPath(\SDEInvType.parentType) == what || Expressions.this(SDEInvType.self) == what
 
         
         return NavigationLink(destination: Types(.predicate(predicate, NSLocalizedString("Variations", comment: "")))) {

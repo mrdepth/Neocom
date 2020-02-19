@@ -97,6 +97,7 @@
 		1696F683238FA7F5009F03F3 /* TypesSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1696F682238FA7F5009F03F3 /* TypesSearch.swift */; };
 		1696F687238FCF88009F03F3 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1696F686238FCF88009F03F3 /* GroupCell.swift */; };
 		1696F689238FD0E6009F03F3 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1696F688238FD0E6009F03F3 /* CategoryCell.swift */; };
+		16977BEB23FA66C0002725CD /* MailBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16977BEA23FA66C0002725CD /* MailBody.swift */; };
 		1698919F238E4BA500FBA0B3 /* ObservedObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1698919E238E4BA500FBA0B3 /* ObservedObjectView.swift */; };
 		169891A1238E50AC00FBA0B3 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169891A0238E50AC00FBA0B3 /* Types.swift */; };
 		169891A3238E53D600FBA0B3 /* TypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169891A2238E53D600FBA0B3 /* TypeCell.swift */; };
@@ -132,6 +133,10 @@
 		16B6A84523F2D24E00E0EB8B /* Dgmpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B6A84423F2D24E00E0EB8B /* Dgmpp.framework */; };
 		16B6A84623F2D24E00E0EB8B /* Dgmpp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 16B6A84423F2D24E00E0EB8B /* Dgmpp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		16B8458223F529E700A0B1F6 /* Contact+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8458123F529E700A0B1F6 /* Contact+Extensions.swift */; };
+		16B8E3B123FBDB440096B066 /* ContactsSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8E3B023FBDB440096B066 /* ContactsSearchResults.swift */; };
+		16B8E3B323FBDDA50096B066 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8E3B223FBDDA50096B066 /* ContactCell.swift */; };
+		16B8E3B523FBE6250096B066 /* ContactsSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8E3B423FBE6250096B066 /* ContactsSearch.swift */; };
+		16B8E3B723FBEDC10096B066 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8E3B623FBEDC10096B066 /* TextView.swift */; };
 		16B8F08823F670CB0093FEED /* ContractsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8F08723F670CB0093FEED /* ContractsData.swift */; };
 		16BBE17323E02C41001E251D /* SkillQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BBE17223E02C41001E251D /* SkillQueue.swift */; };
 		16BCB1B623D88437004712DB /* SkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BCB1B523D88437004712DB /* SkillCell.swift */; };
@@ -159,6 +164,7 @@
 		16D5DE7823B238D4004CDA4A /* CertificateRequirementsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D5DE7723B238D4004CDA4A /* CertificateRequirementsInfo.swift */; };
 		16D667CC238D66FB00A74C98 /* FetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */; };
 		16D8DC80238808870057A6F4 /* Combine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D8DC7F238808870057A6F4 /* Combine+Extensions.swift */; };
+		16DBDE8823FA875E006B0BC3 /* ComposeMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DBDE8723FA875E006B0BC3 /* ComposeMail.swift */; };
 		16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DFF82E238D360B004C1185 /* TypeCategories.swift */; };
 		16DFF831238D3A4F004C1185 /* SearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DFF830238D3A4F004C1185 /* SearchField.swift */; };
 		16DFF833238D4C02004C1185 /* UIKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */; };
@@ -279,6 +285,7 @@
 		1696F682238FA7F5009F03F3 /* TypesSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypesSearch.swift; sourceTree = "<group>"; };
 		1696F686238FCF88009F03F3 /* GroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
 		1696F688238FD0E6009F03F3 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		16977BEA23FA66C0002725CD /* MailBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailBody.swift; sourceTree = "<group>"; };
 		1698919E238E4BA500FBA0B3 /* ObservedObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservedObjectView.swift; sourceTree = "<group>"; };
 		169891A0238E50AC00FBA0B3 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		169891A2238E53D600FBA0B3 /* TypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeCell.swift; sourceTree = "<group>"; };
@@ -312,6 +319,10 @@
 		16B6A84023F2AC5D00E0EB8B /* AssetsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsCategory.swift; sourceTree = "<group>"; };
 		16B6A84423F2D24E00E0EB8B /* Dgmpp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dgmpp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16B8458123F529E700A0B1F6 /* Contact+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+Extensions.swift"; sourceTree = "<group>"; };
+		16B8E3B023FBDB440096B066 /* ContactsSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsSearchResults.swift; sourceTree = "<group>"; };
+		16B8E3B223FBDDA50096B066 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		16B8E3B423FBE6250096B066 /* ContactsSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsSearch.swift; sourceTree = "<group>"; };
+		16B8E3B623FBEDC10096B066 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		16B8F08723F670CB0093FEED /* ContractsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractsData.swift; sourceTree = "<group>"; };
 		16BBE17223E02C41001E251D /* SkillQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillQueue.swift; sourceTree = "<group>"; };
 		16BCB1B523D88437004712DB /* SkillCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillCell.swift; sourceTree = "<group>"; };
@@ -340,6 +351,7 @@
 		16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResultsController.swift; sourceTree = "<group>"; };
 		16D8DC7F238808870057A6F4 /* Combine+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Combine+Extensions.swift"; path = "Neocom/Home/Combine+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		16D8DC81238813A40057A6F4 /* DataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLoader.swift; sourceTree = "<group>"; };
+		16DBDE8723FA875E006B0BC3 /* ComposeMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMail.swift; sourceTree = "<group>"; };
 		16DFF82E238D360B004C1185 /* TypeCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeCategories.swift; sourceTree = "<group>"; };
 		16DFF830238D3A4F004C1185 /* SearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchField.swift; sourceTree = "<group>"; };
 		16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Extensions.swift"; sourceTree = "<group>"; };
@@ -558,7 +570,12 @@
 				1653796723F69EA8000F082A /* MailBox.swift */,
 				16709B1823F6A62C00BB6E90 /* MailPage.swift */,
 				16709B1A23F6A76800BB6E90 /* MailHeader.swift */,
+				16977BEA23FA66C0002725CD /* MailBody.swift */,
 				1653796923F6A1BC000F082A /* MailLabel.swift */,
+				16DBDE8723FA875E006B0BC3 /* ComposeMail.swift */,
+				16B8E3B023FBDB440096B066 /* ContactsSearchResults.swift */,
+				16B8E3B423FBE6250096B066 /* ContactsSearch.swift */,
+				16B8E3B223FBDDA50096B066 /* ContactCell.swift */,
 			);
 			path = Mail;
 			sourceTree = "<group>";
@@ -569,6 +586,7 @@
 				16D0093623B09DF0000694C0 /* ActivityIndicator.swift */,
 				16A1598423C712FB00778320 /* AddToSkillPlanButton.swift */,
 				166EE98A23962F2500388D65 /* AttributedText.swift */,
+				16B8E3B623FBEDC10096B066 /* TextView.swift */,
 				16E3DBF2238BF944005F5AAE /* Avatar.swift */,
 				16C39A5523BA0BF000208F04 /* BlurView.swift */,
 				16E8C42E23E431E0004BA2D3 /* CloseButton.swift */,
@@ -822,6 +840,7 @@
 				167CB4AC23992828008980EE /* TypeInfoVariationsCell.swift in Sources */,
 				16D667CC238D66FB00A74C98 /* FetchedResultsController.swift in Sources */,
 				1630ED7523CC65E0001DBAA7 /* TypeMasterySkills.swift in Sources */,
+				16DBDE8823FA875E006B0BC3 /* ComposeMail.swift in Sources */,
 				12AE040F23847EC600DEFFC5 /* Home.swift in Sources */,
 				16D5DE7623B23898004CDA4A /* CertificateMasteryInfo.swift in Sources */,
 				16C66D0623F56D48009AEB72 /* IndustryJobCell.swift in Sources */,
@@ -834,6 +853,7 @@
 				169A72D1238BE0EF00E4C181 /* TimeIntervalFormatter.swift in Sources */,
 				160882EE23E2E70400BB7176 /* TextFieldAlert.swift in Sources */,
 				16C435FA23D6FFC7000A5446 /* ImplantTypeCell.swift in Sources */,
+				16977BEB23FA66C0002725CD /* MailBody.swift in Sources */,
 				1688D00F23D6F0790012983C /* JumpClones.swift in Sources */,
 				16A6A4BA23B1E6F500CF0812 /* Certificates.swift in Sources */,
 				12CBA91D2399596B001C1C82 /* MasteryData.swift in Sources */,
@@ -869,6 +889,7 @@
 				12B1A3BE239D2F8F00BED705 /* MarketHistory.swift in Sources */,
 				1696F687238FCF88009F03F3 /* GroupCell.swift in Sources */,
 				169891B5238EAF4000FBA0B3 /* SearchView.swift in Sources */,
+				16B8E3B323FBDDA50096B066 /* ContactCell.swift in Sources */,
 				169A72C9238BD9AA00E4C181 /* Colors.swift in Sources */,
 				16BBE17323E02C41001E251D /* SkillQueue.swift in Sources */,
 				16C39A5623BA0BF000208F04 /* BlurView.swift in Sources */,
@@ -885,6 +906,7 @@
 				16AE40F3238FDDE600C6E25B /* ChargeTypeCell.swift in Sources */,
 				169661B923BB444D00D8E175 /* AttributeInfo.swift in Sources */,
 				16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */,
+				16B8E3B723FBEDC10096B066 /* TextView.swift in Sources */,
 				1653663B239E733C0096990F /* TypeInfoPriceCell.swift in Sources */,
 				1653796A23F6A1BC000F082A /* MailLabel.swift in Sources */,
 				16A6A4B823B1E54F00CF0812 /* CertificateGroups.swift in Sources */,
@@ -921,6 +943,7 @@
 				16E2AD9D23B20FCE00B90204 /* CertificateInfo.swift in Sources */,
 				161C6EFD23A12FBC00777009 /* TypeMarketData.swift in Sources */,
 				16D5DE7823B238D4004CDA4A /* CertificateRequirementsInfo.swift in Sources */,
+				16B8E3B523FBE6250096B066 /* ContactsSearch.swift in Sources */,
 				16A1598523C712FB00778320 /* AddToSkillPlanButton.swift in Sources */,
 				16674BEC238BB97400E6E547 /* ProgressView.swift in Sources */,
 				16D0093B23B0AF39000694C0 /* TypeMarketGroup.swift in Sources */,
@@ -933,6 +956,7 @@
 				169BFF9423B64D2300FDF759 /* BlueprintActivityMaterials.swift in Sources */,
 				16C435F623D6FDD3000A5446 /* ImplantsRows.swift in Sources */,
 				160FEDC123F434DD00F0B76E /* WalletTransactionCell.swift in Sources */,
+				16B8E3B123FBDB440096B066 /* ContactsSearchResults.swift in Sources */,
 				1698C05C239A8EB400193274 /* TypeMateryLevel.swift in Sources */,
 				16D8DC80238808870057A6F4 /* Combine+Extensions.swift in Sources */,
 				169A72D3238BE10700E4C181 /* Math.swift in Sources */,

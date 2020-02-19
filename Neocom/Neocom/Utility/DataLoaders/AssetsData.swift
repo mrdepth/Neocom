@@ -27,7 +27,7 @@ class AssetsData: ObservableObject {
     
     struct Category: Identifiable {
         struct AssetType {
-            var typeID: Int
+            var typeID: Int32
             var typeName: String
             var locations: [LocationGroup]
             var count: Int {
@@ -35,7 +35,7 @@ class AssetsData: ObservableObject {
             }
         }
         var categoryName: String
-        var id: Int
+        var id: Int32
         var types: [AssetType]
         var count: Int {
             types.map{$0.count}.reduce(0, +)
@@ -49,7 +49,7 @@ class AssetsData: ObservableObject {
         var typeName: String
         var groupName: String
         var categoryName: String
-        var categoryID: Int
+        var categoryID: Int32
         var count: Int {
             return nested.map{$0.count}.reduce(1, +)
         }
@@ -63,13 +63,13 @@ class AssetsData: ObservableObject {
     private static func getNames(of assets: ESI.Assets, managedObjectContext: NSManagedObjectContext, character: ESI.Characters.CharacterID, cache: [Int64: String?]) -> AnyPublisher<[Int64: String?], Never> {
         return Future<Set<Int64>, Never> { promise in
             managedObjectContext.perform {
-                let typeIDs = assets.map{$0.typeID}
+                let typeIDs = assets.map{Int32($0.typeID)}
                 let namedTypeIDs = typeIDs.isEmpty ? Set() : Set(
                     (try? managedObjectContext.from(SDEInvType.self)
-                        .filter((\SDEInvType.typeID).in(typeIDs) && \SDEInvType.group?.category?.categoryID == SDECategoryID.ship.rawValue)
-                        .select([\SDEInvType.typeID])
-                        .fetch().compactMap{$0["typeID"] as? Int}) ?? [])
-                let namedAssetIDs = Set(assets.filter {namedTypeIDs.contains($0.typeID)}.map{$0.itemID}).subtracting(cache.keys)
+                        .filter(Expressions.keyPath(\SDEInvType.typeID).in(typeIDs) && Expressions.keyPath(\SDEInvType.group?.category?.categoryID) == SDECategoryID.ship.rawValue)
+                        .select(Expressions.keyPath(\SDEInvType.typeID))
+                        .fetch().compactMap{$0}) ?? [])
+                let namedAssetIDs = Set(assets.filter {namedTypeIDs.contains(Int32($0.typeID))}.map{$0.itemID}).subtracting(cache.keys)
                 promise(.success(namedAssetIDs))
             }
         }.flatMap { namedAssetIDs -> AnyPublisher<[Int64: String?], Never> in
@@ -106,9 +106,9 @@ class AssetsData: ObservableObject {
     private static func regroup(assets: ESI.Assets, names: [Int64: String?], locations: [Int64: EVELocation?], managedObjectContext: NSManagedObjectContext) -> PartialResult {
         let locationGroup = Dictionary(grouping: assets, by: {$0.locationID})
         let items = Dictionary(assets.map{($0.itemID, $0)}, uniquingKeysWith: {a, _ in a})
-        let typeIDs = Set(assets.map{$0.typeID})
+        let typeIDs = Set(assets.map{Int32($0.typeID)})
         let invTypes = try? managedObjectContext.from(SDEInvType.self)
-            .filter((\SDEInvType.typeID).in(typeIDs))
+            .filter(Expressions.keyPath(\SDEInvType.typeID).in(typeIDs))
             .fetch()
         let typesMap = Dictionary(invTypes?.map{(Int($0.typeID), $0)} ?? [], uniquingKeysWith: {a, _ in a})
 
@@ -124,7 +124,7 @@ class AssetsData: ObservableObject {
                   typeName: type?.typeName ?? "",
                   groupName: type?.group?.groupName ?? "",
                   categoryName: type?.group?.category?.categoryName ?? "",
-                  categoryID: Int(type?.group?.category?.categoryID ?? 0))
+                  categoryID: type?.group?.category?.categoryID ?? 0)
             assetIDsMap[asset.itemID] = result
             return result
         }
@@ -175,7 +175,7 @@ class AssetsData: ObservableObject {
                 let typeName = i[0].typeName
                 let categoryName = i[0].categoryName
                 let typeID = i[0].underlyingAsset.typeID
-                categories[categoryName, default: [:]][typeID, default: Category.AssetType(typeID: typeID, typeName: typeName, locations: [])].locations.append(LocationGroup(location: location.location, assets: i))
+                categories[categoryName, default: [:]][typeID, default: Category.AssetType(typeID: Int32(typeID), typeName: typeName, locations: [])].locations.append(LocationGroup(location: location.location, assets: i))
             }
         }
         let byCategories = categories.sorted{$0.key < $1.key}.map { i in

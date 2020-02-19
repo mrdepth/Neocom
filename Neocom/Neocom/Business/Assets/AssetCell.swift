@@ -31,7 +31,7 @@ struct AssetCell: View {
     }
     
     var body: some View {
-        let type = try? managedObjectContext.from(SDEInvType.self).filter(\SDEInvType.typeID == asset.underlyingAsset.typeID).first()
+        let type = try? managedObjectContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(asset.underlyingAsset.typeID)).first()
         
         return Group {
             if asset.nested.isEmpty {

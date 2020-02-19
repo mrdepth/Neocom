@@ -50,7 +50,7 @@ class AccountInfo: CharacterBasicInfo {
         }.store(in: &subscriptions)
         
         character.location().get().receive(on: RunLoop.main).compactMap { location in
-            try? managedObjectContext.from(SDEMapSolarSystem.self).filter(\SDEMapSolarSystem.solarSystemID == Int32(location.value.solarSystemID)).first()
+            try? managedObjectContext.from(SDEMapSolarSystem.self).filter(Expressions.keyPath(\SDEMapSolarSystem.solarSystemID) == Int32(location.value.solarSystemID)).first()
         }
         .asResult()
         .receive(on: RunLoop.main)

@@ -24,7 +24,7 @@ struct SkillPlanSection: View {
         self.skillPlan = skillPlan
         self.pilot = pilot
         _skills = FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \SkillPlanSkill.position, ascending: true)],
-                               predicate: (\SkillPlanSkill.skillPlan == skillPlan).predicate(),
+                               predicate: (Expressions.keyPath(\SkillPlanSkill.skillPlan) == skillPlan).predicate(),
                                animation: nil)
     }
     
@@ -84,7 +84,7 @@ struct SkillPlanSection: View {
                 ForEach(skills, id: \.objectID) { skill in
                     Group {
                         if (self.pilot.trainedSkills[Int(skill.typeID)]?.trainedSkillLevel ?? 0) < Int(skill.level) {
-                            (try? self.managedObjectContext.from(SDEInvType.self).filter(\SDEInvType.typeID == skill.typeID).first()).map { type in
+                            (try? self.managedObjectContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(skill.typeID)).first()).map { type in
                                 SkillCell(type: type, pilot: self.pilot, skillPlanSkill: skill)
                             }
                         }
@@ -116,7 +116,7 @@ struct SkillPlanSection_Previews: PreviewProvider {
 
         let type = try! AppDelegate.sharedDelegate.persistentContainer.viewContext
             .from(SDEInvType.self)
-            .filter(\SDEInvType.group?.category?.categoryID == SDECategoryID.skill.rawValue)
+            .filter(Expressions.keyPath(\SDEInvType.group?.category?.categoryID) == SDECategoryID.skill.rawValue)
             .first()!
 
         let skillPlan = SkillPlan(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)

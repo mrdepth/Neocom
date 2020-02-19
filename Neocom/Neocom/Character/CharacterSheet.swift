@@ -52,7 +52,7 @@ struct CharacterSheet: View {
     }
     
     private func bloodline(from info: ESI.CharacterInfo) -> some View {
-        let bloodline = try? self.managedObjectContext.from(SDEChrBloodline.self).filter(\SDEChrBloodline.bloodlineID == info.bloodlineID).first()?.bloodlineName
+        let bloodline = try? self.managedObjectContext.from(SDEChrBloodline.self).filter(Expressions.keyPath(\SDEChrBloodline.bloodlineID) == Int32(info.bloodlineID)).first()?.bloodlineName
         return bloodline.map { bloodline in
             VStack(alignment: .leading) {
                 Text("Bloodline")
@@ -63,7 +63,7 @@ struct CharacterSheet: View {
     
     private func ship(_ ship: ESI.Ship?, location: SDEMapSolarSystem?) -> some View {
         ship.flatMap { ship in
-            try? self.managedObjectContext.from(SDEInvType.self).filter(\SDEInvType.typeID == ship.shipTypeID).first()
+            try? self.managedObjectContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(ship.shipTypeID)).first()
         }.map { ship in
             NavigationLink(destination: TypeInfo(type: ship)) {
                 HStack {

@@ -12,7 +12,7 @@ import EVEAPI
 struct MailLabel: View {
     var label: ESI.MailLabel
     var body: some View {
-        NavigationLink(destination: Text("")) {
+        NavigationLink(destination: MailPage(label: label)) {
             HStack {
                 Text(label.name ?? "Unnamed")
                 Spacer()

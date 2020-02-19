@@ -23,7 +23,7 @@ struct IndustryJobCell: View {
             DateFormatter.localizedString(from: self.job.endDate, dateStyle: .short, timeStyle: .short)
         }
         
-        let activity = try? managedObjectContext.from(SDERamActivity.self).filter(\SDERamActivity.activityID == job.activityID).first()
+        let activity = try? managedObjectContext.from(SDERamActivity.self).filter(Expressions.keyPath(\SDERamActivity.activityID) == Int32(job.activityID)).first()
 
         var status: Text
         let progress: Float
@@ -74,7 +74,7 @@ struct IndustryJobCell: View {
     }
     
     var body: some View {
-        let type = try? managedObjectContext.from(SDEInvType.self).filter(\SDEInvType.typeID == job.blueprintTypeID).first()
+        let type = try? managedObjectContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(job.blueprintTypeID)).first()
         
         return Group {
             if type != nil {

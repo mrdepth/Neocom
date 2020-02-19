@@ -45,7 +45,7 @@ struct MarketOrderCell: View {
         }
     }
     var body: some View {
-        let type = try? managedObjectContext.from(SDEInvType.self).filter(\SDEInvType.typeID == order.typeID).first()
+        let type = try? managedObjectContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(order.typeID)).first()
         return Group {
             if type != nil {
                 NavigationLink(destination: TypeInfo(type: type!)) {

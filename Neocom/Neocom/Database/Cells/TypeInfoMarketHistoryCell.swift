@@ -17,7 +17,7 @@ struct TypeInfoMarketHistoryCell: View {
 													   key: .marketRegionID)
     
     var body: some View {
-		ObservedObjectView(MarketHistoryData(type: type, regionID: regionID.wrappedValue, esi: esi)) { history in
+		ObservedObjectView(MarketHistoryData(type: type, regionID: Int(regionID.wrappedValue), esi: esi)) { history in
 			NavigationLink(destination: TypeMarketOrders(type: self.type)) {
 				MarketHistory(history: (history.result?.value ?? nil) ?? MarketHistoryData.History())
 			}

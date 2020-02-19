@@ -39,7 +39,7 @@ struct SkillPlansContent: View {
         self.pilot = pilot
         self.completion = completion
         _skillPlans = FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \SkillPlan.name, ascending: true)],
-                                   predicate: (\SkillPlan.account == account).predicate(),
+                                   predicate: (Expressions.keyPath(\SkillPlan.account) == account).predicate(),
                                    animation: nil)
     }
     

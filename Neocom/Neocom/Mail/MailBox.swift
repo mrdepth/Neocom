@@ -25,9 +25,7 @@ struct MailBox: View {
             if labels?.labels != nil {
                 Section(footer: Text("Total Unread: \(UnitFormatter.localizedString(from: labels!.totalUnreadCount ?? 0, unit: .none, style: .long))").frame(maxWidth: .infinity, alignment: .trailing)) {
                     ForEach(labels!.labels!, id: \.labelID) { label in
-                        NavigationLink(destination: MailPage(label: label)) {
-                            MailLabel(label: label)
-                        }
+                        MailLabel(label: label)
                     }
                 }
             }

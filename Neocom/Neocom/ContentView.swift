@@ -47,7 +47,8 @@ struct ContentView: View {
         ZStack {
 //            TextFieldAlert_Previews.previews
 //            SkillPlans_Previews.previews
-            MailBox_Previews.previews
+//            MailBox_Previews.previews
+            TextView_Previews.previews
 //            LoadingProgressView_Previews.previews
 //            NavigationView {
 //                TypeCategories()

@@ -43,6 +43,7 @@ extension ESI {
     typealias MailLabels = ESI.Characters.CharacterID.Mail.Labels.Success
     typealias MailLabel = ESI.Characters.CharacterID.Mail.Labels.Label
     typealias MailHeaders = [ESI.Characters.CharacterID.Mail.Success]
+    typealias MailBody = ESI.Characters.CharacterID.Mail.MailID.Success
     
     convenience init(token: OAuth2Token) {
         self.init(token: token, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey)

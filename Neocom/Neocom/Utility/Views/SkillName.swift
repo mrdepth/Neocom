@@ -16,7 +16,8 @@ struct SkillName: View {
         self.level = level
     }
     var body: some View {
-        Text(name + " ") + Text(String(roman: level)).foregroundColor(Color.skyBlue).fontWeight(.medium)
+        Text(name + " ") + Text(String(roman: level)).fontWeight(.medium)
+            //.foregroundColor(Color.skyBlue).fontWeight(.medium)
     }
 }
 

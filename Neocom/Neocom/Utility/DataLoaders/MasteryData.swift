@@ -30,7 +30,7 @@ class MasteryData: ObservableObject {
 //        let pilot = pilot ?? .empty
         let masteries = try? type.managedObjectContext?
             .from(SDECertMastery.self)
-            .filter(Expressions.keyPath(\SDECertMastery.level) == level && Expressions.keyPath(\SDECertMastery.certificate?.types).contains(type))
+            .filter(/\SDECertMastery.level == level && (/\SDECertMastery.certificate?.types).contains(type))
             .sort(by: \SDECertMastery.certificate?.certificateName, ascending: true)
             .fetch()
 

@@ -12,15 +12,22 @@ import Combine
 class SearchController<Results, Predicate>: ObservableObject {
     @Published var results: Results
     @Published var predicate: Predicate
+    var onUpdated: ((Predicate) -> Void)?
     
     private var subscription: AnyCancellable?
     
-    init<P>(initialValue value: Results, predicate: Predicate, _ search: @escaping (Predicate) -> P) where P: Publisher, P.Output == Results, P.Failure == Never {
+    init<P>(initialValue value: Results, predicate: Predicate, _ search: @escaping (Predicate) -> P, onUpdated: ((Predicate) -> Void)? = nil) where P: Publisher, P.Output == Results, P.Failure == Never {
         self._results = Published(initialValue: value)
         self._predicate = Published(initialValue: predicate)
+        self.onUpdated = onUpdated
         
-        subscription = $predicate.debounce(for: .seconds(0.25), scheduler: DispatchQueue.main).flatMap(search).sink { [weak self] in
-            self?.results = $0
+        subscription = $predicate.debounce(for: .seconds(0.25), scheduler: DispatchQueue.main)
+            .flatMap {
+                search($0).zip(Just($0))
+        }
+            .sink { [weak self] in
+                self?.onUpdated?($0.1)
+                self?.results = $0.0
         }
     }
 }
@@ -31,9 +38,9 @@ struct SearchView<Results: Publisher, Content: View, Output>: View where Results
     
     var content: (Results.Output) -> Content
     
-    init(initialValue: Results.Output, search: @escaping (String) -> Results, @ViewBuilder content: @escaping (Results.Output) -> Content) {
+    init(initialValue: Results.Output, predicate: String = "", search: @escaping (String) -> Results, onUpdated: ((String) -> Void)? = nil, @ViewBuilder content: @escaping (Results.Output) -> Content) {
         self.content = content
-        searchResults = SearchController(initialValue: initialValue, predicate: "", search)
+        searchResults = SearchController(initialValue: initialValue, predicate: predicate, search, onUpdated: onUpdated)
     }
         
     var body: some View {

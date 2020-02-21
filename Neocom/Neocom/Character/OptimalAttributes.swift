@@ -55,7 +55,7 @@ struct OptimalAttributes_Previews: PreviewProvider {
         let trainingQueue = TrainingQueue(pilot: pilot)
         let skill = try! AppDelegate.sharedDelegate.persistentContainer.viewContext
             .from(SDEInvType.self)
-            .filter(Expressions.keyPath(\SDEInvType.group?.category?.categoryID) == SDECategoryID.skill.rawValue)
+            .filter(/\SDEInvType.group?.category?.categoryID == SDECategoryID.skill.rawValue)
             .first()!
         trainingQueue.add(skill, level: 5)
         return NavigationView {

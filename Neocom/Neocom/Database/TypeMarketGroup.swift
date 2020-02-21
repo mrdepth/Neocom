@@ -16,7 +16,7 @@ struct TypeMarketGroup: View {
 
     private func marketGroups() -> FetchedResultsController<SDEInvMarketGroup> {
         let controller = managedObjectContext.from(SDEInvMarketGroup.self)
-            .filter(Expressions.keyPath(\SDEInvMarketGroup.parentGroup) == parent)
+            .filter(/\SDEInvMarketGroup.parentGroup == parent)
             .sort(by: \SDEInvMarketGroup.marketGroupName, ascending: true)
             .fetchedResultsController()
         return FetchedResultsController(controller)
@@ -24,13 +24,17 @@ struct TypeMarketGroup: View {
 
     var body: some View {
         ObservedObjectView(marketGroups()) { marketGroups in
-            TypesSearch(predicate: Expressions.keyPath(\SDEInvType.marketGroup) != nil) { searchResults in
+            TypesSearch(predicate: /\SDEInvType.marketGroup != nil) { searchResults in
                 List {
                     if searchResults == nil {
                         TypeMarketGroupContent(marketGroups: marketGroups)
                     }
                     else {
-                        TypesContent(types: searchResults!)
+                        TypesContent(types: searchResults!) { type in
+                            NavigationLink(destination: TypeInfo(type: type)) {
+                                TypeCell(type: type)
+                            }
+                        }
                     }
                 }.listStyle(GroupedListStyle())
                     .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)

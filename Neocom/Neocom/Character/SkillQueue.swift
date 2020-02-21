@@ -50,7 +50,7 @@ struct SkillPlanSectionWrapper: View {
     init(account: Account, pilot: Pilot) {
         self.pilot = pilot
         let request = NSFetchRequest<SkillPlan>(entityName: "SkillPlan")
-        request.predicate = (Expressions.keyPath(\SkillPlan.account) == account && Expressions.keyPath(\SkillPlan.isActive) == true).predicate()
+        request.predicate = (/\SkillPlan.account == account && /\SkillPlan.isActive == true).predicate()
         request.sortDescriptors = [NSSortDescriptor(keyPath: \SkillPlan.isActive, ascending: true),
                                    NSSortDescriptor(keyPath: \SkillPlan.name, ascending: true)]
         request.fetchLimit = 1

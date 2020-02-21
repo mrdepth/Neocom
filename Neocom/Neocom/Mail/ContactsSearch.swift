@@ -6,7 +6,7 @@
 //  Copyright © 2020 Artem Shimanski. All rights reserved.
 //
 
-import SwiftUI
+/*import SwiftUI
 import Combine
 import EVEAPI
 
@@ -90,3 +90,4 @@ struct ContactsSearch_Previews: PreviewProvider {
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
+*/

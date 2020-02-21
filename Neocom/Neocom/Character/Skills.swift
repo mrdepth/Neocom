@@ -17,10 +17,10 @@ struct Skills: View {
     private func skills() -> FetchedResultsController<SDEInvType> {
         let controller = managedObjectContext
             .from(SDEInvType.self)
-            .filter(Expressions.keyPath(\SDEInvType.published) == true && Expressions.keyPath(\SDEInvType.group?.category?.categoryID) == SDECategoryID.skill.rawValue)
+            .filter(/\SDEInvType.published == true && /\SDEInvType.group?.category?.categoryID == SDECategoryID.skill.rawValue)
             .sort(by: \SDEInvType.group?.groupName, ascending: true)
             .sort(by: \SDEInvType.typeName, ascending: true)
-            .fetchedResultsController(sectionName: Expressions.keyPath(\SDEInvType.group?.groupName), cacheName: nil)
+            .fetchedResultsController(sectionName: /\SDEInvType.group?.groupName, cacheName: nil)
         return FetchedResultsController(controller)
     }
 

@@ -18,3 +18,14 @@ extension UIApplication {
 extension Notification.Name {
     static let didUpdateSkillPlan = Notification.Name(rawValue: "com.shimanski.neocom.didUpdateSkillPlan")
 }
+
+extension NSAttributedString {
+    var attachments: [NSRange: NSTextAttachment] {
+        var result = [NSRange: NSTextAttachment]()
+        enumerateAttribute(.attachment, in: NSRange(location: 0, length: length), options: []) { value, range, _ in
+            guard let attachment = value as? NSTextAttachment else {return}
+            result[range] = attachment
+        }
+        return result
+    }
+}

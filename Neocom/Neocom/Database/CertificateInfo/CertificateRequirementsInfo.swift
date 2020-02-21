@@ -31,14 +31,14 @@ struct CertificateRequirementsInfo_Previews: PreviewProvider {
     static var previews: some View {
         let certificate = try! AppDelegate.sharedDelegate.persistentContainer.viewContext
             .from(SDECertCertificate.self)
-            .filter(Expressions.keyPath(\SDECertCertificate.certificateName).contains("Armor"))
+            .filter((/\SDECertCertificate.certificateName).contains("Armor"))
             .first()!
 
         func types() -> FetchedResultsController<SDEInvType> {
             let controller = AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self)
-                .filter(Expressions.keyPath(\SDEInvType.published) == true && Expressions.keyPath(\SDEInvType.certificates).contains(certificate))
+                .filter(/\SDEInvType.published == true && (/\SDEInvType.certificates).contains(certificate))
                 .sort(by: \SDEInvType.group?.groupName, ascending: true)
-                .fetchedResultsController(sectionName: Expressions.keyPath(\SDEInvType.group?.groupName), cacheName: nil)
+                .fetchedResultsController(sectionName: (/\SDEInvType.group?.groupName), cacheName: nil)
             return FetchedResultsController(controller)
         }
         

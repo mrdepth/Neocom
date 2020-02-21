@@ -56,7 +56,7 @@ struct BlueprintActivityRequiredSkills_Previews: PreviewProvider {
         NavigationView {
             BlueprintActivityRequiredSkills(activity: try! AppDelegate.sharedDelegate.persistentContainer.viewContext
                 .from(SDEIndActivity.self)
-                .filter(Expressions.keyPath(\SDEIndActivity.requiredSkills).count > 3)
+                .filter((/\SDEIndActivity.requiredSkills).count > 3)
                 .first()!)
         }
     }

@@ -17,6 +17,10 @@ class AssetsData: ObservableObject {
     @Published var locations: Result<[LocationGroup], AFError>?
     @Published var categories: Result<[Category], AFError>?
     
+    var categoriesPublisher: AnyPublisher<[Category], AFError> {
+        $categories.compactMap{$0}.tryGet().eraseToAnyPublisher()
+    }
+    
     struct LocationGroup {
         var location: EVELocation
         var assets: [Asset]
@@ -66,8 +70,8 @@ class AssetsData: ObservableObject {
                 let typeIDs = assets.map{Int32($0.typeID)}
                 let namedTypeIDs = typeIDs.isEmpty ? Set() : Set(
                     (try? managedObjectContext.from(SDEInvType.self)
-                        .filter(Expressions.keyPath(\SDEInvType.typeID).in(typeIDs) && Expressions.keyPath(\SDEInvType.group?.category?.categoryID) == SDECategoryID.ship.rawValue)
-                        .select(Expressions.keyPath(\SDEInvType.typeID))
+                        .filter((/\SDEInvType.typeID).in(typeIDs) && /\SDEInvType.group?.category?.categoryID == SDECategoryID.ship.rawValue)
+                        .select(/\SDEInvType.typeID)
                         .fetch().compactMap{$0}) ?? [])
                 let namedAssetIDs = Set(assets.filter {namedTypeIDs.contains(Int32($0.typeID))}.map{$0.itemID}).subtracting(cache.keys)
                 promise(.success(namedAssetIDs))
@@ -108,7 +112,7 @@ class AssetsData: ObservableObject {
         let items = Dictionary(assets.map{($0.itemID, $0)}, uniquingKeysWith: {a, _ in a})
         let typeIDs = Set(assets.map{Int32($0.typeID)})
         let invTypes = try? managedObjectContext.from(SDEInvType.self)
-            .filter(Expressions.keyPath(\SDEInvType.typeID).in(typeIDs))
+            .filter((/\SDEInvType.typeID).in(typeIDs))
             .fetch()
         let typesMap = Dictionary(invTypes?.map{(Int($0.typeID), $0)} ?? [], uniquingKeysWith: {a, _ in a})
 
@@ -248,182 +252,6 @@ class AssetsData: ObservableObject {
             self?.locations = result.map{$0.locations}
             self?.categories = result.map{$0.categories}
         }.store(in: &subscriptions)
-
-        //.scan(PartialResult(), +)
-        
-//            .map {response in (pages: getXPages(from: response).dropFirst(), response: response.value)}
-//            .flatMap { (pages, response) in
-//                progress.performAsCurrent(withPendingUnitCount: 1) {
-//
-//                }
-//        }
-
-        /*let first = Progress(totalUnitCount: 100, parent: progress, pendingUnitCount: 1)
-        
-        let assets = character.assets().get { p in
-            first.completedUnitCount += min(Int64(p.fractionCompleted * 100), 100)
-        }
-        .map {response in ((1..<max((response.httpHeaders?["x-pages"].flatMap{Int($0)} ?? 1), 1)).dropFirst(),
-                           response.value)}
-        .flatMap { (pages: Range<Int>, value: ESI.Assets) in
-            progress.performAsCurrent(withPendingUnitCount: 2) { () -> AnyPublisher<ESI.Assets, AFError> in
-                let p = Progress(totalUnitCount: Int64(pages.count))
-                return Publishers.Sequence(sequence: pages.map{ ($0, Progress(totalUnitCount: 100, parent: p, pendingUnitCount: 1)) })
-                    .setFailureType(to: AFError.self)
-                    .flatMap { (page, progress) in
-                        character.assets().get(page: page) { p in
-                            progress.completedUnitCount += min(Int64(p.fractionCompleted * 100), 100)
-                        }
-                    }
-                    .map{$0.value}
-//                    .replaceError(with: [])
-//                    .setFailureType(to: AFError.self)
-                    .scan(value, +)
-                    .eraseToAnyPublisher()
-            }
-        }
-        
-        var assetNames = [Int64: String?]()
-        var locations = [Int64: EVELocation?]()
-        
-        func regroup(_ assets: ESI.Assets, newLocations: [Int64: EVELocation?], names: [Int64: String?]) -> ([LocationGroup], [Category]) {
-            if !names.isEmpty {
-                assetNames.merge(names, uniquingKeysWith: {a, b in a ?? b})
-            }
-
-            if !newLocations.isEmpty {
-                locations.merge(newLocations, uniquingKeysWith: {a, b in a ?? b})
-            }
-
-            let locationGroup = Dictionary(grouping: assets, by: {$0.locationID})
-            let items = Dictionary(assets.map{($0.itemID, $0)}, uniquingKeysWith: {a, _ in a})
-            let typeIDs = Set(assets.map{$0.typeID})
-            let invTypes = try? managedObjectContext.from(SDEInvType.self)
-                .filter((\SDEInvType.typeID).in(typeIDs))
-                .fetch()
-            let typesMap = Dictionary(invTypes?.map{(Int($0.typeID), $0)} ?? [], uniquingKeysWith: {a, _ in a})
-
-            let locationIDs = Set(locationGroup.keys).subtracting(items.keys)
-            
-            
-            var assetIDsMap = [Int64: Asset]()
-
-            func makeAsset(underlying asset: ESI.Assets.Element) -> Asset {
-                let type = typesMap[asset.typeID]
-                let result = Asset(nested: extract(locationGroup[asset.itemID] ?? []).sorted{$0.typeName < $1.typeName},
-                      underlyingAsset: asset,
-                      assetName: assetNames[asset.itemID] ?? nil,
-                      typeName: type?.typeName ?? "",
-                      groupName: type?.group?.groupName ?? "",
-                      categoryName: type?.group?.category?.categoryName ?? "",
-                      categoryID: Int(type?.group?.category?.categoryID ?? 0))
-                assetIDsMap[asset.itemID] = result
-                return result
-            }
-
-            func extract(_ assets: ESI.Assets) -> [Asset] {
-                assets.map { asset -> Asset in
-                    makeAsset(underlying: asset)
-                }
-            }
-
-            func getRootLocation(from asset: ESI.Assets.Element) -> Int64 {
-                return items[asset.locationID].map{getRootLocation(from: $0)} ?? asset.locationID
-            }
-            
-            var unknownLocation = LocationGroup(location: .unknown(0), assets: [])
-            var byLocations = [LocationGroup]()
-
-            for locationID in locationIDs {
-                let assets = extract(locationGroup[locationID] ?? [])
-                if let location = locations[locationID] ?? nil {
-                    byLocations.append(LocationGroup(location: location, assets: assets))
-                }
-                else {
-                    unknownLocation.assets.append(contentsOf: assets)
-                }
-            }
-            
-            for i in byLocations.indices {
-                byLocations[i].assets.sort{$0.typeName < $1.typeName}
-            }
-            byLocations.sort{$0.location.name < $1.location.name}
-            if !unknownLocation.assets.isEmpty {
-                byLocations.append(unknownLocation)
-            }
-            
-            var categories = [String: [Int: Category.AssetType]]()
-            
-            for location in byLocations {
-                var types = [Int: [Asset]]()
-                func process(_ assets: [Asset]) {
-                    for asset in assets {
-                        types[asset.underlyingAsset.typeID, default: []].append(asset)
-                        process(asset.nested)
-                    }
-                }
-                process(location.assets)
-                for i in types.values {
-                    let typeName = i[0].typeName
-                    let categoryName = i[0].categoryName
-                    let typeID = i[0].underlyingAsset.typeID
-                    categories[categoryName, default: [:]][typeID, default: Category.AssetType(typeID: typeID, typeName: typeName, locations: [])].locations.append(LocationGroup(location: location.location, assets: i))
-                }
-            }
-            let byCategories = categories.sorted{$0.key < $1.key}.map { i in
-                Category(categoryName: i.key,
-                         id: i.value.first?.value.locations.first?.assets.first?.categoryID ?? 0,
-                         types: i.value.values.sorted{$0.typeName < $1.typeName})
-            }
-            
-            return (byLocations, byCategories)
-        }
-        
-        assets.map{$0.filter{$0.locationFlag != .implant && $0.locationFlag != .skill}}
-            .receive(on: managedObjectContext)
-            .flatMap { assets -> AnyPublisher<([LocationGroup], [Category]), AFError> in
-                let typeIDs = assets.map{$0.typeID}
-                let namedTypeIDs = typeIDs.isEmpty ? Set() : Set(
-                    (try? managedObjectContext.from(SDEInvType.self)
-                        .filter((\SDEInvType.typeID).in(typeIDs) && \SDEInvType.group?.category?.categoryID == SDECategoryID.ship.rawValue)
-                        .select([\SDEInvType.typeID])
-                        .fetch().compactMap{$0["typeID"] as? Int}) ?? [])
-                
-                let namedAssetIDs = Set(assets.filter {namedTypeIDs.contains($0.typeID)}.map{$0.itemID}).subtracting(assetNames.keys)
-                let locationIDs = Set(assets.map{$0.locationID}).subtracting(assets.map{$0.itemID}).subtracting(locations.keys)
-                
-                let names: AnyPublisher<[Int64: String?], Never>
-                if !namedAssetIDs.isEmpty {
-                    names = character.assets().names().post(itemIds: Array(namedAssetIDs))
-                        .map{$0.value}
-                        .replaceError(with: [])
-                        .map { names in
-                            Dictionary(names.map{($0.itemID, $0.name)}, uniquingKeysWith: {a, _ in a})
-                                .merging(namedAssetIDs.map{($0, nil)}, uniquingKeysWith: {a, b in a ?? b})
-                    }
-                    .eraseToAnyPublisher()
-                }
-                else {
-                    names = Just([:]).eraseToAnyPublisher()
-                }
-                return EVELocation.locations(with: locationIDs, esi: esi, managedObjectContext: managedObjectContext)
-                    .map{ result in
-                        result.mapValues{$0 as Optional}.merging(locationIDs.map{($0, nil)}, uniquingKeysWith: {a, b in a ?? b})
-                    }
-                    .zip(names)
-                    .receive(on: managedObjectContext)
-                    .map { (locations, names) in
-                        regroup(assets, newLocations: locations, names: names)
-                }
-                .setFailureType(to: AFError.self)
-                .eraseToAnyPublisher()
-        }
-        .asResult()
-        .receive(on: RunLoop.main)
-        .sink { [weak self] result in
-            self?.locations = result.map{$0.0}
-            self?.categories = result.map{$0.1}
-        }.store(in: &subscriptions)*/
     }
     
     var subscriptions = Set<AnyCancellable>()

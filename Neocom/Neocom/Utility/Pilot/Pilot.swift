@@ -54,7 +54,7 @@ extension Pilot {
         var augmentations = Pilot.Attributes.none
         
         for implant in implants {
-            guard let type = try? context.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(implant)).first() else {continue}
+            guard let type = try? context.from(SDEInvType.self).filter(/\SDEInvType.typeID == Int32(implant)).first() else {continue}
             let attributes = [SDEAttributeID.intelligenceBonus, SDEAttributeID.memoryBonus, SDEAttributeID.perceptionBonus, SDEAttributeID.willpowerBonus, SDEAttributeID.charismaBonus].lazy.map({($0, Int(type[$0]?.value ?? 0))})
             guard let value = attributes.first(where: {$0.1 > 0}) else {continue}
             augmentations[value.0] += value.1
@@ -68,14 +68,14 @@ extension Pilot {
         var validSkillQueue = skillQueue.filter{$0.finishDate != nil}
         let i = validSkillQueue.partition(by: {$0.finishDate! > currentDate})
         for skill in validSkillQueue[..<i] {
-            guard let endSP = try? skill.levelEndSP ?? context.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(skill.skillID)).first().flatMap({Pilot.Skill(type: $0)})?.skillPoints(at: skill.finishedLevel) else {continue}
+            guard let endSP = try? skill.levelEndSP ?? context.from(SDEInvType.self).filter(/\SDEInvType.typeID == Int32(skill.skillID)).first().flatMap({Pilot.Skill(type: $0)})?.skillPoints(at: skill.finishedLevel) else {continue}
             
             let skill = ESI.Skill(activeSkillLevel: skill.finishedLevel, skillID: skill.skillID, skillpointsInSkill: Int64(endSP), trainedSkillLevel: skill.finishedLevel)
             trainedSkills[skill.skillID] = trainedSkills[skill.skillID].map {$0.trainedSkillLevel > skill.trainedSkillLevel ? $0 : skill} ?? skill
         }
         
         let sq = validSkillQueue[i...].sorted{$0.queuePosition < $1.queuePosition}.compactMap { i -> Pilot.SkillQueueItem? in
-            guard let type = try? context.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(i.skillID)).first(), let skill = Pilot.Skill(type: type) else {return nil}
+            guard let type = try? context.from(SDEInvType.self).filter(/\SDEInvType.typeID == Int32(i.skillID)).first(), let skill = Pilot.Skill(type: type) else {return nil}
             let item = Pilot.SkillQueueItem(skill: skill, queuedSkill: i)
             trainedSkills[i.skillID]?.skillpointsInSkill = Int64(item.skillPoints)
             return item

@@ -15,6 +15,10 @@ extension Color {
         return Color("skyBlue")
     }
     
+    static var skyBlueBackground: Color {
+        return Color.skyBlue.opacity(0.5)
+    }
+    
     static var emDamage: Color {
         return Color("emDamage")
     }

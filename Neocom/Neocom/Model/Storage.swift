@@ -11,6 +11,7 @@ import CoreData
 import EVEAPI
 import Expressible
 import SwiftUI
+import Dgmpp
 
 class Storage: NSPersistentCloudKitContainer {
     init() {
@@ -38,100 +39,6 @@ extension NSManagedObjectContext {
 	}
 }
 
-extension SDEInvCategory {
-    
-    var uiImage: UIImage {
-        icon?.image?.image ?? (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultCategory)).first?.image?.image) ?? UIImage()
-    }
-    
-	var image: Image {
-		Image(uiImage: uiImage)
-	}
-}
-
-extension SDEInvGroup {
-    var uiImage: UIImage {
-        icon?.image?.image ??
-        (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
-        UIImage()
-    }
-    
-    var image: Image {
-        Image(uiImage: uiImage)
-    }
-}
-
-extension SDEInvMarketGroup {
-    var uiImage: UIImage {
-        icon?.image?.image ??
-            (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
-            UIImage()
-    }
-    
-    var image: Image {
-        Image(uiImage: uiImage)
-    }
-
-}
-
-extension SDENpcGroup {
-    var uiImage: UIImage {
-        icon?.image?.image ??
-            (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
-            UIImage()
-    }
-    
-    var image: Image {
-        Image(uiImage: uiImage)
-    }
-
-}
-
-extension SDEInvType {
-    var uiImage: UIImage {
-        icon?.image?.image ??
-            (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultType)).first?.image?.image) ??
-            UIImage()
-    }
-    
-    var image: Image {
-        Image(uiImage: uiImage)
-    }
-
-    #if DEBUG
-    class var dominix: SDEInvType {
-        return try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == 645).first()!
-    }
-    #endif
-}
-
-extension SDEEveIcon {
-	class func named(_ name: Name) -> NSFetchRequest<SDEEveIcon> {
-		let request = NSFetchRequest<SDEEveIcon>(entityName: "EveIcon")
-		request.predicate = (Expressions.keyPath(\SDEEveIcon.iconFile) == name.name).predicate(for: .`self`)
-		request.fetchLimit = 1
-		return request
-	}
-	
-	enum Name {
-		case defaultCategory
-		case defaultGroup
-		case defaultType
-		case mastery(Int?)
-		
-		var name: String {
-			switch self {
-			case .defaultCategory, .defaultGroup:
-				return "38_16_174"
-			case .defaultType:
-				return "7_64_15"
-			case let .mastery(level):
-				guard let level = level, (0...4).contains(level) else {return "79_64_1"}
-				return "79_64_\(level + 2)"
-			}
-		}
-	}
-}
 
 public class LoadoutDescription: NSObject {
 	
@@ -206,7 +113,7 @@ extension Account {
     }
 
     var activeSkillPlan: SkillPlan? {
-        if let skillPlan = (try? managedObjectContext?.from(SkillPlan.self).filter(Expressions.keyPath(\SkillPlan.account) == self && Expressions.keyPath(\SkillPlan.isActive) == true).first()) ?? nil {
+        if let skillPlan = (try? managedObjectContext?.from(SkillPlan.self).filter(/\SkillPlan.account == self && /\SkillPlan.isActive == true).first()) ?? nil {
             return skillPlan
         }
         else if let skillPlan = skillPlans?.anyObject() as? SkillPlan {

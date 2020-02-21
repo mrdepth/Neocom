@@ -30,10 +30,10 @@ struct TypeInfo: View {
     
     private var attributes: FetchedResultsController<SDEDgmTypeAttribute> {
         let controller = managedObjectContext.from(SDEDgmTypeAttribute.self)
-            .filter(Expressions.keyPath(\SDEDgmTypeAttribute.type) == type && Expressions.keyPath(\SDEDgmTypeAttribute.attributeType?.published) == true)
+            .filter(/\SDEDgmTypeAttribute.type == type && /\SDEDgmTypeAttribute.attributeType?.published == true)
             .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, ascending: true)
             .sort(by: \SDEDgmTypeAttribute.attributeType?.attributeID, ascending: true)
-            .fetchedResultsController(sectionName: Expressions.keyPath(\SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID), cacheName: nil)
+            .fetchedResultsController(sectionName: /\SDEDgmTypeAttribute.attributeType?.attributeCategory?.categoryID, cacheName: nil)
         return FetchedResultsController(controller)
     }
     

@@ -18,7 +18,7 @@ struct TypeCategories: View {
         let controller = managedObjectContext.from(SDEInvCategory.self)
             .sort(by: \SDEInvCategory.published, ascending: false)
             .sort(by: \SDEInvCategory.categoryName, ascending: true)
-            .fetchedResultsController(sectionName: Expressions.keyPath(\SDEInvCategory.published))
+            .fetchedResultsController(sectionName: /\SDEInvCategory.published)
         return FetchedResultsController(controller)
     }
     
@@ -30,7 +30,11 @@ struct TypeCategories: View {
                         TypeCategoriesContent(categories: categories)
                     }
                     else {
-                        TypesContent(types: searchResults!)
+                        TypesContent(types: searchResults!) { type in
+                            NavigationLink(destination: TypeInfo(type: type)) {
+                                TypeCell(type: type)
+                            }
+                        }
                     }
                 }.listStyle(GroupedListStyle())
                     .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)

@@ -6,7 +6,7 @@
 //  Copyright © 2019 Artem Shimanski. All rights reserved.
 //
 
-import Foundation
+import SwiftUI
 
 extension Comparable {
     func clamped(to limits: ClosedRange<Self>) -> Self {
@@ -58,4 +58,14 @@ func - (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
 
 func - (lhs: CGPoint, rhs: CGSize) -> CGPoint {
     return CGPoint(x: lhs.x - rhs.width, y: lhs.y - rhs.height)
+}
+
+prefix func - (lhs: UIEdgeInsets) -> UIEdgeInsets {
+    UIEdgeInsets(top: -lhs.top, left: -lhs.left, bottom: -lhs.bottom, right: -lhs.right)
+}
+
+extension CGRect {
+    var center: CGPoint {
+        return CGPoint(x: midX, y: midY)
+    }
 }

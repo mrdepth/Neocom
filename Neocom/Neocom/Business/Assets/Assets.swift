@@ -51,7 +51,7 @@ struct Assets: View {
                             else {
                                 if assets?.categories?.value != nil {
                                     ForEach(assets!.categories!.value!) { category in
-                                        (try? self.managedObjectContext.from(SDEInvCategory.self).filter(Expressions.keyPath(\SDEInvCategory.categoryID) == category.id).first()).map { invCategory in
+                                        (try? self.managedObjectContext.from(SDEInvCategory.self).filter(/\SDEInvCategory.categoryID == category.id).first()).map { invCategory in
                                             NavigationLink(destination: AssetsCategory(category: category)) {
                                                 HStack {
                                                     Icon(invCategory.image).cornerRadius(4)

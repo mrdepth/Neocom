@@ -15,7 +15,7 @@ struct NPCGroup: View {
 
     private func groups() -> FetchedResultsController<SDENpcGroup> {
         let controller = managedObjectContext.from(SDENpcGroup.self)
-            .filter(Expressions.keyPath(\SDENpcGroup.parentNpcGroup) == parent)
+            .filter(/\SDENpcGroup.parentNpcGroup == parent)
             .sort(by: \SDENpcGroup.npcGroupName, ascending: true)
             .fetchedResultsController()
         return FetchedResultsController(controller)
@@ -23,13 +23,17 @@ struct NPCGroup: View {
 
     var body: some View {
         ObservedObjectView(groups()) { groups in
-			TypesSearch(predicate: Expressions.keyPath(\SDEInvType.group?.npcGroups).count > 0) { searchResults in
+			TypesSearch(predicate: (/\SDEInvType.group?.npcGroups).count > 0) { searchResults in
                 List {
                     if searchResults == nil {
                         NPCGroupContent(groups: groups)
                     }
                     else {
-                        TypesContent(types: searchResults!)
+                        TypesContent(types: searchResults!) { type in
+                            NavigationLink(destination: TypeInfo(type: type)) {
+                                TypeCell(type: type)
+                            }
+                        }
                     }
                 }.listStyle(GroupedListStyle())
                     .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)

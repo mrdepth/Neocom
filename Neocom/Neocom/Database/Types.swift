@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Expressible
+import CoreData
 
 struct Types: View {
     @Environment(\.managedObjectContext) var managedObjectContext
@@ -28,40 +29,40 @@ struct Types: View {
             self.predicate = predicate
             self.title = title
         case let .group(group):
-            predicate = Expressions.keyPath(\SDEInvType.group) == group
+            predicate = /\SDEInvType.group == group
             title = group.groupName ?? "\(group.groupID)"
         case let .marketGroup(group):
-            predicate = Expressions.keyPath(\SDEInvType.marketGroup) == group
+            predicate = /\SDEInvType.marketGroup == group
             title = group.marketGroupName ?? "\(group.marketGroupID)"
 		case let .npc(group):
-			predicate = Expressions.keyPath(\SDEInvType.group) == group.group
+			predicate = /\SDEInvType.group == group.group
 			title = group.npcGroupName ?? ""
         }
     }
     
-    private func types() -> FetchedResultsController<SDEInvType> {
+    static func fetchResults(with predicate: PredicateProtocol, managedObjectContext: NSManagedObjectContext) -> FetchedResultsController<SDEInvType> {
         let controller = managedObjectContext.from(SDEInvType.self)
             .filter(predicate)
             .sort(by: \SDEInvType.metaGroup?.metaGroupID, ascending: true)
             .sort(by: \SDEInvType.metaLevel, ascending: true)
             .sort(by: \SDEInvType.typeName, ascending: true)
-            .fetchedResultsController(sectionName: Expressions.keyPath(\SDEInvType.metaGroup?.metaGroupID))
+            .fetchedResultsController(sectionName: /\SDEInvType.metaGroup?.metaGroupID)
         return FetchedResultsController(controller)
-
+    }
+    
+    private func types() -> FetchedResultsController<SDEInvType> {
+        Types.fetchResults(with: predicate, managedObjectContext: managedObjectContext)
     }
     
     var body: some View {
         ObservedObjectView(self.types()) { types in
             TypesSearch(predicate: self.predicate) { searchResults in
                 List {
-                    TypesContent(types: searchResults ?? types.sections)
-
-//                    if searchResults == nil {
-//                        TypesContent(types: types.sections)
-//                    }
-//                    else {
-//                        TypesContent(types: searchResults!)
-//                    }
+                    TypesContent(types: searchResults ?? types.sections) { type in
+                        NavigationLink(destination: TypeInfo(type: type)) {
+                            TypeCell(type: type)
+                        }
+                    }
                 }.listStyle(GroupedListStyle())
                     .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
             }
@@ -69,16 +70,15 @@ struct Types: View {
     }
 }
 
-struct TypesContent: View {
+struct TypesContent<Cell: View>: View {
     var types: [FetchedResultsController<SDEInvType>.Section]
+    var cell: (SDEInvType) -> Cell
     
     var body: some View {
         ForEach(types, id: \.name) { section in
             Section(header: Text(section.objects.first?.metaGroup?.metaGroupName?.uppercased() ?? "")) {
                 ForEach(section.objects, id: \.objectID) { type in
-                    NavigationLink(destination: TypeInfo(type: type)) {
-                        TypeCell(type: type)
-                    }
+                    self.cell(type)
                 }
             }
         }
@@ -88,7 +88,7 @@ struct TypesContent: View {
 struct Types_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            Types(.group((try? AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == 645).first()?.group)!))
+            Types(.group((try? AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 645).first()?.group)!))
         }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

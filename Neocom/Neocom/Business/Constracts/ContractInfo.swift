@@ -120,7 +120,7 @@ struct ContractInfoItems: View {
     var items: ESI.ContractItems
     
     private func cell(for item: ESI.ContractItems.Element) -> some View {
-        let type = try? managedObjectContext.from(SDEInvType.self).filter(Expressions.keyPath(\SDEInvType.typeID) == Int32(item.typeID)).first()
+        let type = try? managedObjectContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == Int32(item.typeID)).first()
         
         let content = HStack {
             type.map{Icon($0.image).cornerRadius(4)}

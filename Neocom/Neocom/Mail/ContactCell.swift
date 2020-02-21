@@ -26,7 +26,8 @@ struct ContactCell: View {
             else if contact.recipientType == .alliance {
                 Avatar(allianceID: contact.contactID, size: .size128).frame(width: 40, height: 40)
             }
-            contact.name.map{Text($0)} ?? Text("Unnamed")
+            contact.name.map{Text($0)} ?? Text("Unknown")
+            Spacer()
         }
         
     }

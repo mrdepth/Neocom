@@ -11,7 +11,7 @@ import EVEAPI
 import Alamofire
 
 struct Avatar: View {
-    private enum Source {
+    enum Source {
         case image(Image?)
         case character(Int64, ESI.Image.Size)
         case corporation(Int64, ESI.Image.Size)
@@ -19,7 +19,7 @@ struct Avatar: View {
     }
     
     private var source: Source
-    @ObservedObject private var imageLoader = Lazy<DataLoader<UIImage, AFError>>()
+//    @ObservedObject private var imageLoader = Lazy<DataLoader<UIImage, AFError>>()
     @Environment(\.esi) private var esi
 
     init(image: Image?) {
@@ -39,7 +39,7 @@ struct Avatar: View {
     }
 
     var body: some View {
-        let image: Image?
+        /*let image: Image?
         let isCharacter: Bool
         switch source {
         case let .image(value):
@@ -57,20 +57,62 @@ struct Avatar: View {
             let uiImage = imageLoader.get(initial: DataLoader(esi.image.alliance(Int(allianceID), size: size))).result?.value
             image = uiImage.map{Image(uiImage: $0)}
             isCharacter = false
+        }*/
+        let isCharacter: Bool
+        switch source {
+        case .character, .image:
+            isCharacter = true
+        default:
+            isCharacter = false
         }
+        
+        let image = AvatarImageView(esi: esi, source: source)
         
         return Group {
             if isCharacter {
                 ZStack {
                     Color(UIColor.systemGroupedBackground)
-                    image?.resizable()
+                    image
                 }
                 .clipShape(Circle())
                 .shadow(radius: 2)
                 .overlay(Circle().strokeBorder(Color(UIColor.tertiarySystemBackground), lineWidth: 2, antialiased: true))
             }
             else {
-                image?.resizable()
+                image
+            }
+        }
+    }
+}
+
+struct AvatarImageView: View {
+    var esi: ESI
+    var source: Avatar.Source
+    
+    @ObservedObject private var imageLoader = Lazy<DataLoader<UIImage, AFError>>()
+
+    var body: some View {
+        let image: Image?
+        switch source {
+        case let .image(value):
+            image = value
+        case let .character(characterID, size):
+            let uiImage = imageLoader.get(initial: DataLoader(esi.image.character(Int(characterID), size: size))).result?.value
+            image = uiImage.map{Image(uiImage: $0)}
+        case let .corporation(corporationID, size):
+            let uiImage = imageLoader.get(initial: DataLoader(esi.image.corporation(Int(corporationID), size: size))).result?.value
+            image = uiImage.map{Image(uiImage: $0)}
+        case let .alliance(allianceID, size):
+            let uiImage = imageLoader.get(initial: DataLoader(esi.image.alliance(Int(allianceID), size: size))).result?.value
+            image = uiImage.map{Image(uiImage: $0)}
+        }
+        
+        return Group {
+            if image != nil {
+                image!.resizable()
+            }
+            else {
+                Color.clear
             }
         }
     }

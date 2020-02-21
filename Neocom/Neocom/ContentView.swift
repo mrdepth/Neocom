@@ -8,6 +8,8 @@
 
 import SwiftUI
 import Combine
+import EVEAPI
+import CoreData
 
 class A: ObservableObject {
     @Published var i = 10
@@ -30,6 +32,12 @@ struct Child: View {
     }
 }
 
+struct CustomAlignmentID: AlignmentID {
+    static func defaultValue(in context: ViewDimensions) -> CGFloat {
+        context[.top]
+    }
+}
+
 struct ContentView: View {
     @State var b = false
     @State var l = (0..<10).map{"\($0)"}
@@ -43,12 +51,39 @@ struct ContentView: View {
     @State private var isFinished = false
     
     var body: some View {
+        let contact1 = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: AppDelegate.sharedDelegate.persistentContainer.viewContext)!, insertInto: nil)
+        contact1.name = "Artem Valiant"
+        contact1.contactID = 1554561480
+        contact1.category = ESI.RecipientType.character.rawValue
+
+        let attachment = TextAttachmentContact(contact1, esi: ESI())
         
-        ZStack {
+        
+        let string = NSMutableAttributedString(string: "Text\n\n\nHello\nHello Wrold")
+        string.append(NSAttributedString(attachment: attachment))
+        string.append(NSAttributedString(attachment: TextAttachmentContact(contact1, esi: ESI())))
+        string.append(NSAttributedString(attachment: TextAttachmentContact(contact1, esi: ESI())))
+        string.append(NSAttributedString(string: "Rest text\nBlaBlaBla"))
+
+        
+        return ZStack {
+//            VStack {
+//                VStack(spacing: 0) {
+//                    Text("Aloha").alignmentGuide(VerticalAlignment(CustomAlignmentID.self)) {$0[.bottom]}
+//                }
+//                Text("Hello World")
+//                Spacer()
+//            }.overlay(Rectangle(), alignment: .init(horizontal: .center, vertical: VerticalAlignment(CustomAlignmentID.self)))
+            
+//            ComposeMail_Previews.previews
+//            TextView(text: .constant(string))
+
 //            TextFieldAlert_Previews.previews
 //            SkillPlans_Previews.previews
 //            MailBox_Previews.previews
-            TextView_Previews.previews
+            FittingEditorShipModules_Previews.previews
+//            MailDrafts_Previews.previews
+//            TextView_Previews.previews
 //            LoadingProgressView_Previews.previews
 //            NavigationView {
 //                TypeCategories()
@@ -70,3 +105,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+

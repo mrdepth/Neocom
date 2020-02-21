@@ -35,7 +35,7 @@ struct Certificates: View {
         self.group = group
         let request = NSFetchRequest<SDECertCertificate>()
         request.entity = SDECertCertificate.entity()
-        request.predicate = (Expressions.keyPath(\SDECertCertificate.group) == group).predicate()
+        request.predicate = (/\SDECertCertificate.group == group).predicate()
         request.sortDescriptors = [NSSortDescriptor(keyPath: \SDECertCertificate.certificateName, ascending: true)]
         _certificates = FetchRequest(fetchRequest: request)
     }
@@ -54,7 +54,7 @@ struct Certificates_Previews: PreviewProvider {
         NavigationView {
             Certificates(group: try! AppDelegate.sharedDelegate.persistentContainer.viewContext
                 .from(SDEInvGroup.self)
-                .filter(Expressions.keyPath(\SDEInvGroup.certificates).count > 0)
+                .filter((/\SDEInvGroup.certificates).count > 0)
                 .first()!
             )}
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)

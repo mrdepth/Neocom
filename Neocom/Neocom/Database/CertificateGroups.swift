@@ -15,7 +15,7 @@ struct CertificateGroups: View {
     private func groups() -> FetchedResultsController<SDEInvGroup> {
         let controller = managedObjectContext
             .from(SDEInvGroup.self)
-            .filter(Expressions.keyPath(\SDEInvGroup.certificates).count > 0)
+            .filter((/\SDEInvGroup.certificates).count > 0)
             .sort(by: \SDEInvGroup.groupName, ascending: true)
             .fetchedResultsController()
         return FetchedResultsController(controller)

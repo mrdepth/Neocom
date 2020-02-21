@@ -19,7 +19,7 @@ extension SDEInvType {
     }
     
     subscript(key: Int32) -> SDEDgmTypeAttribute? {
-        return (try? managedObjectContext?.from(SDEDgmTypeAttribute.self).filter(Expressions.keyPath(\SDEDgmTypeAttribute.type) == self && Expressions.keyPath(\SDEDgmTypeAttribute.attributeType?.attributeID) == key).first()) ?? nil
+        return (try? managedObjectContext?.from(SDEDgmTypeAttribute.self).filter(/\SDEDgmTypeAttribute.type == self && /\SDEDgmTypeAttribute.attributeType?.attributeID == key).first()) ?? nil
     }
 
 }
@@ -326,7 +326,7 @@ enum ItemFlag: Int32, Hashable {
         self.init(flag: flag)
     }
     
-    var image: UIImage? {
+    var image: Image? {
         switch self {
         case .hiSlot:
             return DGMModule.Slot.hi.image
@@ -341,15 +341,15 @@ enum ItemFlag: Int32, Hashable {
         case .service:
             return DGMModule.Slot.service.image
         case .drone:
-            return #imageLiteral(resourceName: "drone")
+            return Image("drone")
         case .cargo:
-            return #imageLiteral(resourceName: "cargoBay")
+            return Image("cargoBay")
         case .hangar:
-            return #imageLiteral(resourceName: "ships")
+            return Image("ships")
         case .implant:
-            return #imageLiteral(resourceName: "implant")
+            return Image("implant")
         case .skill:
-            return #imageLiteral(resourceName: "skills")
+            return Image("skills")
         }
     }
     
@@ -382,98 +382,163 @@ enum ItemFlag: Int32, Hashable {
     
     var tableSectionHeader: some View {
         HStack {
-            image.map{Icon(Image(uiImage: $0), size: .small)}
+            image.map{Icon($0, size: .small)}
             Text(title ?? "")
         }
     }
 }
 
-extension DGMModule.Slot {
-    var image: UIImage? {
-        switch self {
-        case .hi:
-            return #imageLiteral(resourceName: "slotHigh")
-        case .med:
-            return #imageLiteral(resourceName: "slotMed")
-        case .low:
-            return #imageLiteral(resourceName: "slotLow")
-        case .rig:
-            return #imageLiteral(resourceName: "slotRig")
-        case .subsystem:
-            return #imageLiteral(resourceName: "slotSubsystem")
-        case .service:
-            return #imageLiteral(resourceName: "slotService")
-        case .mode:
-            return #imageLiteral(resourceName: "slotSubsystem")
-        default:
-            return nil
-        }
+
+
+extension SDEInvCategory {
+    
+    var uiImage: UIImage {
+        icon?.image?.image ?? (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultCategory)).first?.image?.image) ?? UIImage()
     }
     
-    var title: String? {
-        switch self {
-        case .hi:
-            return NSLocalizedString("Hi Slot", comment: "")
-        case .med:
-            return NSLocalizedString("Med Slot", comment: "")
-        case .low:
-            return NSLocalizedString("Low Slot", comment: "")
-        case .rig:
-            return NSLocalizedString("Rig Slot", comment: "")
-        case .subsystem:
-            return NSLocalizedString("Subsystem Slot", comment: "")
-        case .service:
-            return NSLocalizedString("Service Slot", comment: "")
-        case .mode:
-            return NSLocalizedString("Tactical Mode", comment: "")
-        default:
-            return nil
-        }
+    var image: Image {
+        Image(uiImage: uiImage)
+    }
+}
+
+extension SDEInvGroup {
+    var uiImage: UIImage {
+        icon?.image?.image ??
+        (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
+        UIImage()
     }
     
-    var name: String? {
-        switch self {
-        case .hi:
-            return "Hi Slot"
-        case .med:
-            return "Med Slot"
-        case .low:
-            return "Low Slot"
-        case .rig:
-            return "Rig Slot"
-        case .subsystem:
-            return "Subsystem Slot"
-        case .service:
-            return "Service Slot"
-        case .mode:
-            return "Tactical Mode"
-        default:
-            return nil
-        }
+    var image: Image {
+        Image(uiImage: uiImage)
+    }
+}
+
+extension SDEInvMarketGroup {
+    var uiImage: UIImage {
+        icon?.image?.image ??
+            (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
+            UIImage()
     }
     
-    init?(name: String) {
-        if name.range(of: "hi slot")?.lowerBound == name.startIndex {
-            self = .hi
-        }
-        else if name.range(of: "med slot")?.lowerBound == name.startIndex {
-            self = .med
-        }
-        else if name.range(of: "low slot")?.lowerBound == name.startIndex {
-            self = .low
-        }
-        else if name.range(of: "rig slot")?.lowerBound == name.startIndex {
-            self = .rig
-        }
-        else if name.range(of: "subsystem slot")?.lowerBound == name.startIndex {
-            self = .subsystem
-        }
-        else if name.range(of: "service slot")?.lowerBound == name.startIndex {
-            self = .service
-        }
-        else {
-            return nil
+    var image: Image {
+        Image(uiImage: uiImage)
+    }
+
+}
+
+extension SDENpcGroup {
+    var uiImage: UIImage {
+        icon?.image?.image ??
+            (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
+            UIImage()
+    }
+    
+    var image: Image {
+        Image(uiImage: uiImage)
+    }
+
+}
+
+extension SDEInvType {
+    var uiImage: UIImage {
+        icon?.image?.image ??
+            (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultType)).first?.image?.image) ??
+            UIImage()
+    }
+    
+    var image: Image {
+        Image(uiImage: uiImage)
+    }
+
+    #if DEBUG
+    class var dominix: SDEInvType {
+        return try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 645).first()!
+    }
+    #endif
+}
+
+extension SDEEveIcon {
+    class func named(_ name: Name) -> NSFetchRequest<SDEEveIcon> {
+        let request = NSFetchRequest<SDEEveIcon>(entityName: "EveIcon")
+        request.predicate = (/\SDEEveIcon.iconFile == name.name).predicate(for: .`self`)
+        request.fetchLimit = 1
+        return request
+    }
+    
+    enum Name {
+        case defaultCategory
+        case defaultGroup
+        case defaultType
+        case mastery(Int?)
+        
+        var name: String {
+            switch self {
+            case .defaultCategory, .defaultGroup:
+                return "38_16_174"
+            case .defaultType:
+                return "7_64_15"
+            case let .mastery(level):
+                guard let level = level, (0...4).contains(level) else {return "79_64_1"}
+                return "79_64_\(level + 2)"
+            }
         }
     }
 }
 
+extension SDEDgmppItemCategory {
+    class func category(categoryID: SDEDgmppItemCategoryID, subcategory: Int? = nil, race: SDEChrRace? = nil) -> NSFetchRequest<SDEDgmppItemCategory> {
+        let request = NSFetchRequest<SDEDgmppItemCategory>(entityName: "DgmppItemCategory")
+        var predicate: PredicateProtocol = (/\SDEDgmppItemCategory.category == categoryID.rawValue)//.predicate(for: .`self`)
+        
+        if let subcategory = subcategory {
+            predicate = predicate && /\SDEDgmppItemCategory.subcategory == Int32(subcategory)
+        }
+        
+        if let race = race {
+            predicate = predicate && /\SDEDgmppItemCategory.race == race
+        }
+        request.predicate = predicate.predicate(for: .self)
+        request.fetchLimit = 1
+        return request
+    }
+    
+    class func category(slot: DGMModule.Slot, subcategory: Int? = nil, race: SDEChrRace? = nil) -> NSFetchRequest<SDEDgmppItemCategory> {
+        let categoryID: SDEDgmppItemCategoryID
+        switch slot {
+        case .hi:
+            categoryID = .hi
+        case .med:
+            categoryID = .med
+        case .low:
+            categoryID = .low
+        case .rig:
+            categoryID = .rig
+        case .subsystem:
+            categoryID = .subsystem
+        case .mode:
+            categoryID = .mode
+        case .service:
+            categoryID = .service
+        case .starbaseStructure:
+            categoryID = .structure
+        default:
+            categoryID = .none
+        }
+        
+        return category(categoryID: categoryID, subcategory: subcategory, race: race)
+    }
+}
+
+extension SDEDgmppItemGroup {
+    var uiImage: UIImage {
+        icon?.image?.image ??
+        (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
+        UIImage()
+    }
+    
+    var image: Image {
+        Image(uiImage: uiImage)
+    }
+}
+
+extension SDEInvType: Identifiable {}

@@ -39,7 +39,7 @@ struct SkillPlansContent: View {
         self.pilot = pilot
         self.completion = completion
         _skillPlans = FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \SkillPlan.name, ascending: true)],
-                                   predicate: (Expressions.keyPath(\SkillPlan.account) == account).predicate(),
+                                   predicate: (/\SkillPlan.account == account).predicate(),
                                    animation: nil)
     }
     
@@ -146,7 +146,7 @@ struct SkillPlansContent: View {
             }
         }
         .navigationBarTitle("Skill Plans")
-        .navigationBarItems(leading: CloseButton { },
+        .navigationBarItems(leading: BarButtonItems.close { },
                             trailing: Button(action: onAddSkillPlan) { Image(systemName: "plus") })
         .actionSheet(item: $selectedSkillPlan, content: actionSheet)
     }

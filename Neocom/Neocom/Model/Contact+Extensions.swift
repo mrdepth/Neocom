@@ -40,7 +40,7 @@ extension Contact {
             Future { promise in
                 backgroundContext.perform {
                     let result = (try? Dictionary(backgroundContext.from(Contact.self)
-                        .filter(Expressions.keyPath(\Contact.contactID).in(missing))
+                        .filter((/\Contact.contactID).in(missing))
                         .fetch()
                         .map{($0.contactID, $0)}) {a, _ in a}) ?? [:]
                     promise(.success(PartialResult(contacts: result, missingIDs: missingIDs.subtracting(result.keys))))
@@ -53,7 +53,7 @@ extension Contact {
             return esi.characters.characterID(Int(characterID)).mail().lists().get().receive(on: backgroundContext).map { mailingLists -> PartialResult in
                 let ids = mailingLists.value.map{$0.mailingListID}
                 guard !ids.isEmpty else {return result}
-                let existing = (try? backgroundContext.from(Contact.self).filter(Expressions.keyPath(\Contact.contactID).in(ids)).fetch()) ?? []
+                let existing = (try? backgroundContext.from(Contact.self).filter((/\Contact.contactID).in(ids)).fetch()) ?? []
                 let existingIDs = Set(existing.map{$0.contactID})
                 let new = mailingLists.value.filter{!existingIDs.contains(Int64($0.mailingListID))}.map { mailingList -> Contact in
                     let contact = Contact(context: backgroundContext)
@@ -133,7 +133,7 @@ extension Contact {
         let s = string.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !s.isEmpty else {return Just([]).eraseToAnyPublisher()}
         
-        let contacts = try? managedObjectContext.from(Contact.self).filter(Expressions.keyPath(\Contact.name).caseInsensitive.contains(s))
+        let contacts = try? managedObjectContext.from(Contact.self).filter((/\Contact.name).caseInsensitive.contains(s))
             .fetch()
         
         let searchResults: AnyPublisher<[Contact], Never>

@@ -200,7 +200,7 @@ struct SkillCell_Previews: PreviewProvider {
     static var previews: some View {
         let type = try! AppDelegate.sharedDelegate.persistentContainer.viewContext
             .from(SDEInvType.self)
-            .filter(Expressions.keyPath(\SDEInvType.group?.category?.categoryID) == SDECategoryID.skill.rawValue)
+            .filter(/\SDEInvType.group?.category?.categoryID == SDECategoryID.skill.rawValue)
             .first()!
         var pilot = Pilot.empty
         let skill = Pilot.Skill(type: type)!

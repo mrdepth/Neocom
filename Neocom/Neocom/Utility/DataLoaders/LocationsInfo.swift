@@ -51,7 +51,7 @@ struct EVELocation: Hashable {
     
     init(_ name: ESI.ItemName, managedObjectContext: NSManagedObjectContext) {
         if name.category == .solarSystem {
-            let solarSystem = try? managedObjectContext.from(SDEMapSolarSystem.self).filter(Expressions.keyPath(\SDEMapSolarSystem.solarSystemID) == Int32(name.id)).first()
+            let solarSystem = try? managedObjectContext.from(SDEMapSolarSystem.self).filter(/\SDEMapSolarSystem.solarSystemID == Int32(name.id)).first()
             self.init(solarSystem: solarSystem, structureName: name.name, id: Int64(name.id))
         }
         else {
@@ -60,7 +60,7 @@ struct EVELocation: Hashable {
     }
     
     init(_ structure: ESI.StructureInfo, id: Int64, managedObjectContext: NSManagedObjectContext) {
-        let solarSystem = try? managedObjectContext.from(SDEMapSolarSystem.self).filter(Expressions.keyPath(\SDEMapSolarSystem.solarSystemID) == Int32(structure.solarSystemID)).first()
+        let solarSystem = try? managedObjectContext.from(SDEMapSolarSystem.self).filter(/\SDEMapSolarSystem.solarSystemID == Int32(structure.solarSystemID)).first()
         self.init(solarSystem: solarSystem, structureName: structure.name, id: id)
     }
     
@@ -105,7 +105,7 @@ struct EVELocation: Hashable {
             missingIDs.subtract(cached.keys)
             structureIDs.subtract(cached.keys)
             let stationIDs = missingIDs.compactMap{Int32(exactly: $0)}
-            let stations = stationIDs.isEmpty ? [] : (try? managedObjectContext.from(SDEStaStation.self).filter(Expressions.keyPath(\SDEStaStation.stationID).in(stationIDs)).fetch().map {(Int64($0.stationID), EVELocation($0))}) ?? []
+            let stations = stationIDs.isEmpty ? [] : (try? managedObjectContext.from(SDEStaStation.self).filter((/\SDEStaStation.stationID).in(stationIDs)).fetch().map {(Int64($0.stationID), EVELocation($0))}) ?? []
             missingIDs.subtract(stations.map{$0.0})
             
             let totalProgress = Progress(totalUnitCount: Int64(structureIDs.count) + 1)

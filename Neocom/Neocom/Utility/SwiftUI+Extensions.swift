@@ -37,3 +37,14 @@ struct SecondaryLabelModifier: ViewModifier {
         content.font(.caption).foregroundColor(.secondary)
     }
 }
+
+class IdentifiableWrapper<Value>: Identifiable {
+    var wrappedValue: Value
+    init(_ value: Value) {
+        wrappedValue = value
+    }
+}
+
+extension Font {
+    static let title2 = Font(UIFont.preferredFont(forTextStyle: .title2))
+}

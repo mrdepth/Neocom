@@ -31,7 +31,7 @@ struct TypeMarketOrders: View {
 	@State private var isMarketRegionPickerPresented = false
     
 	private var regionName: String {
-        (try? managedObjectContext.from(SDEMapRegion.self).filter(Expressions.keyPath(\SDEMapRegion.regionID) == Int32(marketRegionID.wrappedValue)).first()?.regionName) ?? NSLocalizedString("Unknown", comment: "")
+        (try? managedObjectContext.from(SDEMapRegion.self).filter(/\SDEMapRegion.regionID == Int32(marketRegionID.wrappedValue)).first()?.regionName) ?? NSLocalizedString("Unknown", comment: "")
 	}
 
     var body: some View {

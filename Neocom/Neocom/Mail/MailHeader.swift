@@ -17,42 +17,57 @@ struct MailHeader: View {
     var contacts: [Int64: Contact]
     
     var body: some View {
+        let recipientIDs: [Int64] = mail.recipients?.map{Int64($0.recipientID)} ?? []
+        let from = mail.from.map{Int64($0)}
+
+        return  NavigationLink(destination: MailBody(mail: mail, contacts: contacts)) {
+            MailHeaderContent(from: from, recipientIDs: recipientIDs, subject: mail.subject, timestamp: mail.timestamp, isRead: mail.isRead == true, contacts: contacts)
+        }
+    }
+}
+
+struct MailHeaderContent: View {
+    @Environment(\.account) private var account
+    let from: Int64?
+    let recipientIDs: [Int64]
+    let subject: String?
+    let timestamp: Date?
+    var isRead: Bool
+    var contacts: [Int64: Contact]?
+
+    var body: some View {
         let recipient: String?
         let recipientIDs: [Int64]
-        let from = mail.from.map{Int64($0)}
-        
+
         if let from = from, from == account?.characterID {
-            let recipients = mail.recipients?.prefix(3)
-            recipientIDs = recipients?//.filter{$0.recipientType == .character}
-                .map{Int64($0.recipientID)} ?? []
-            recipient = recipients?.compactMap {
-                contacts[Int64($0.recipientID)]?.name
-            }.joined(separator: ", ")
+            recipientIDs = Array(self.recipientIDs.prefix(3))
+            recipient = recipientIDs.compactMap { contacts?[$0]?.name }.joined(separator: ", ")
         }
         else {
             recipientIDs = from.map{[$0]} ?? []
-            recipient = from.flatMap{contacts[$0]?.name}
+            recipient = from.flatMap{contacts?[$0]?.name}
         }
+
         
-        return  NavigationLink(destination: MailBody(mail: mail, contacts: contacts)) {
-            HStack {
-                ZStack {
-                    ForEach(Array(Set(recipientIDs).sorted().enumerated()), id: \.offset) { (offset, element) in
-                        Avatar(characterID: element, size: .size128)
-                            .frame(width: 40, height: 40)
-                            .offset(x: CGFloat(offset * -4), y: 0)
-                            .zIndex(Double(-offset))
-                    }
+        return HStack {
+            ZStack {
+                ForEach(Array(recipientIDs.sorted().enumerated()), id: \.offset) { (offset, element) in
+                    Avatar(characterID: element, size: .size128)
+                        .frame(width: 40, height: 40)
+                        .offset(x: CGFloat(offset * -4), y: 0)
+                        .zIndex(Double(-offset))
                 }
-                
-                VStack(alignment: .leading) {
+            }
+            
+            VStack(alignment: .leading) {
+                if contacts != nil {
                     (recipient.map{Text($0)} ?? Text("Unknown"))
-                    mail.subject.map{Text($0).font(.caption).lineLimit(3)}
-                }.foregroundColor(mail.isRead == true ? .secondary : .primary)
-                Spacer()
-                mail.timestamp.map { date in
-                    Text(DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)).modifier(SecondaryLabelModifier()).layoutPriority(1)
                 }
+                subject.map{Text($0).font(.caption).lineLimit(3)}
+            }.foregroundColor(isRead ? .secondary : .primary)
+            Spacer()
+            timestamp.map { date in
+                Text(DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)).modifier(SecondaryLabelModifier())
             }
         }
     }

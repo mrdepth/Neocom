@@ -16,17 +16,21 @@ struct TypesSearch<Content: View>: View {
     @Environment(\.backgroundManagedObjectContext) var backgroundManagedObjectContext
     var predicate: PredicateProtocol? = nil
     var content: ([FetchedResultsController<SDEInvType>.Section]?) -> Content
+    var onUpdated: ((String) -> Void)?
+    var searchString: String
     
-    init(predicate: PredicateProtocol? = nil, @ViewBuilder content: @escaping ([FetchedResultsController<SDEInvType>.Section]?) -> Content) {
+    init(searchString: String = "", predicate: PredicateProtocol? = nil, onUpdated: ((String) -> Void)? = nil, @ViewBuilder content: @escaping ([FetchedResultsController<SDEInvType>.Section]?) -> Content) {
+        self.searchString = searchString
         self.predicate = predicate
         self.content = content
+        self.onUpdated = onUpdated
     }
     
     func search(_ string: String) -> AnyPublisher<[FetchedResultsController<SDEInvType>.Section]?, Never> {
         return Future<FetchedResultsController<NSDictionary>?, Never> { promise in
             self.backgroundManagedObjectContext.perform {
                 let string = string.trimmingCharacters(in: .whitespacesAndNewlines)
-                if string.count < 3 {
+                if string.isEmpty {
                     promise(.success(nil))
                 }
                 else {
@@ -34,12 +38,13 @@ struct TypesSearch<Content: View>: View {
                     if let predicate = self.predicate {
                         request = request.filter(predicate)
                     }
-                    request = request.filter(Expressions.keyPath(\SDEInvType.typeName).caseInsensitive.contains(string))
+                    request = request.filter((/\SDEInvType.typeName).caseInsensitive.contains(string))
                     let controller = request.sort(by: \SDEInvType.metaGroup?.metaGroupID, ascending: true)
                         .sort(by: \SDEInvType.metaLevel, ascending: true)
                         .sort(by: \SDEInvType.typeName, ascending: true)
-                        .select([Expressions.this(SDEInvType.self).as(NSManagedObjectID.self, name: "objectID"), Expressions.keyPath(\SDEInvType.metaGroup?.metaGroupID).as(Int.self, name: "metaGroupID")])
-                        .fetchedResultsController(sectionName: Expressions.keyPath(\SDEInvType.metaGroup?.metaGroupName).as(Int.self, name: "metaGroupID"))
+                        .select([(/\SDEInvType.self).as(NSManagedObjectID.self, name: "objectID"), (/\SDEInvType.metaGroup?.metaGroupID).as(Int.self, name: "metaGroupID")])
+                        .limit(100)
+                        .fetchedResultsController(sectionName: (/\SDEInvType.metaGroup?.metaGroupName).as(Int.self, name: "metaGroupID"))
                     
                     try? controller.performFetch()
                     promise(.success(FetchedResultsController(controller)))
@@ -57,7 +62,7 @@ struct TypesSearch<Content: View>: View {
     }
         
     var body: some View {
-        SearchView(initialValue: nil, search: search) { results in
+        SearchView(initialValue: nil, predicate: searchString, search: search, onUpdated: onUpdated) { results in
             self.content(results)
         }
     }

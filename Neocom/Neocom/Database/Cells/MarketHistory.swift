@@ -11,7 +11,6 @@ import EVEAPI
 
 struct MarketHistory: View {
 	var history: MarketHistoryData.History
-	@State private var height: CGFloat = 24
     static let volumeColor = Color.gray
     static let donchianColor = Color(.systemFill)
     static let medianColor = Color.skyBlue
@@ -105,7 +104,7 @@ struct MarketHistory: View {
 					Text(UnitFormatter.localizedString(from: Int64($0), unit: .none, style: .short)).frame(maxHeight: .infinity, alignment: .bottom)
 				}
 			}
-        }.font(.caption)
+        }.font(.caption).frame(width: 30, alignment: .leading).minimumScaleFactor(0.5)
     }
     
     private var priceTitles: some View {
@@ -119,7 +118,7 @@ struct MarketHistory: View {
 				}
 				ForEach(0..<2) {_ in Spacer(minLength: 0).frame(maxHeight: .infinity)}
 			}
-        }.font(.caption)
+        }.font(.caption).frame(width: 30, alignment: .trailing).minimumScaleFactor(0.5)
     }
     
     private static let months: [String] = [NSLocalizedString("JAN", comment: ""), NSLocalizedString("FEB", comment: ""), NSLocalizedString("MAR", comment: ""), NSLocalizedString("APR", comment: ""), NSLocalizedString("MAY", comment: ""), NSLocalizedString("JUN", comment: ""), NSLocalizedString("JUL", comment: ""), NSLocalizedString("AUG", comment: ""), NSLocalizedString("SEP", comment: ""), NSLocalizedString("OCT", comment: ""), NSLocalizedString("NOV", comment: ""), NSLocalizedString("DEC", comment: "")]
@@ -128,7 +127,7 @@ struct MarketHistory: View {
     var body: some View {
         VStack {
             HStack(alignment: .bottom, spacing: 4) {
-				priceTitles.frame(width: 30, height: height, alignment: .trailing).minimumScaleFactor(0.5)
+                Spacer().frame(width: 30)
                 VStack(spacing: 0) {
                     xTitles.layoutPriority(1).frame(height: 20)
                     GeometryReader { geometry in
@@ -139,16 +138,14 @@ struct MarketHistory: View {
                             }
                             self.volume.frame(height: geometry.size.height / 3)
                         }.overlay(self.grid(12, 6))
-                            .anchorPreference(key: SizePreferenceKey.self, value: Anchor<CGRect>.Source.bounds) { [geometry[$0].size] }
                             .clipped()
                     }.aspectRatio(12.0 / 6, contentMode: .fit)
                         .background(Color(.systemGroupedBackground))
-                        .onPreferenceChange(SizePreferenceKey.self) {
-                            self.height = $0.first?.height ?? 24
-                    }
+                        .overlay(priceTitles.offset(x: -35), alignment: .leading)
+                        .overlay(volumeTitles.offset(x: 35), alignment: .trailing)
                     
                 }
-				volumeTitles.frame(width: 30, height: height, alignment: .leading).minimumScaleFactor(0.5)
+                Spacer().frame(width: 30)
             }
             .lineLimit(1)
             HStack(spacing: 4) {
@@ -174,7 +171,7 @@ struct MarketHistory_Previews: PreviewProvider {
         let history = try! ESI.jsonDecoder.decode([ESI.MarketHistoryItem].self, from: data)
 		return VStack {
 			MarketHistory(history: MarketHistoryData.History(history: history)!).padding().background(Color(.systemBackground))//.colorScheme(.dark)
-			MarketHistory(history: MarketHistoryData.History()).padding().background(Color(.systemBackground))//.colorScheme(.dark)
+//			MarketHistory(history: MarketHistoryData.History()).padding().background(Color(.systemBackground))//.colorScheme(.dark)
 		}
     }
 }

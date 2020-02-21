@@ -84,6 +84,20 @@
 		1686D7512395460F00E88D3D /* TrainingQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D7502395460F00E88D3D /* TrainingQueue.swift */; };
 		1686D75323955C2400E88D3D /* TypeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D75223955C2400E88D3D /* TypeInfo.swift */; };
 		1688D00F23D6F0790012983C /* JumpClones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688D00E23D6F0790012983C /* JumpClones.swift */; };
+		1693A85423FD0FDC0033A793 /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1693A85323FD0FDC0033A793 /* ContactView.swift */; };
+		1693A85623FD15D10033A793 /* TextAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1693A85523FD15D10033A793 /* TextAttachmentView.swift */; };
+		1693A85823FD27A90033A793 /* TextAttachmentContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1693A85723FD27A90033A793 /* TextAttachmentContact.swift */; };
+		1693A85A23FD40060033A793 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1693A85923FD40060033A793 /* ActivityView.swift */; };
+		1693A85E23FD66E90033A793 /* MailDrafts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1693A85D23FD66E90033A793 /* MailDrafts.swift */; };
+		1693A86023FD67740033A793 /* MailDraftCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1693A85F23FD67740033A793 /* MailDraftCell.swift */; };
+		1694B22424066BA100E81E49 /* FittingEditorShipModulesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694B22324066BA100E81E49 /* FittingEditorShipModulesList.swift */; };
+		1694B22624066BAA00E81E49 /* FittingEditorShipModulesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694B22524066BAA00E81E49 /* FittingEditorShipModulesSection.swift */; };
+		1694B22924066E1E00E81E49 /* FittingEditorShipModulesHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694B22824066E1E00E81E49 /* FittingEditorShipModulesHeader.swift */; };
+		1694B22B2406797D00E81E49 /* ShipResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694B22A2406797D00E81E49 /* ShipResource.swift */; };
+		1694B22D240697E600E81E49 /* FittingModuleActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694B22C240697E600E81E49 /* FittingModuleActions.swift */; };
+		1694B22F2406A9AD00E81E49 /* InfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694B22E2406A9AD00E81E49 /* InfoButton.swift */; };
+		1694B2312406AECC00E81E49 /* FittingModuleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694B2302406AECC00E81E49 /* FittingModuleState.swift */; };
+		1695805423FFB63C006752B9 /* Wealth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1695805323FFB63C006752B9 /* Wealth.swift */; };
 		169661B223BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169661B123BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift */; };
 		169661B523BB252E00D8E175 /* BlueprintInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169661B423BB252E00D8E175 /* BlueprintInfo.swift */; };
 		169661B723BB423100D8E175 /* NPCInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169661B623BB423100D8E175 /* NPCInfo.swift */; };
@@ -97,6 +111,8 @@
 		1696F683238FA7F5009F03F3 /* TypesSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1696F682238FA7F5009F03F3 /* TypesSearch.swift */; };
 		1696F687238FCF88009F03F3 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1696F686238FCF88009F03F3 /* GroupCell.swift */; };
 		1696F689238FD0E6009F03F3 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1696F688238FD0E6009F03F3 /* CategoryCell.swift */; };
+		169724742404F3BE00B5152A /* TypePickerGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169724732404F3BE00B5152A /* TypePickerGroups.swift */; };
+		169724782404F8BB00B5152A /* TypePickerTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169724772404F8BB00B5152A /* TypePickerTypes.swift */; };
 		16977BEB23FA66C0002725CD /* MailBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16977BEA23FA66C0002725CD /* MailBody.swift */; };
 		1698919F238E4BA500FBA0B3 /* ObservedObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1698919E238E4BA500FBA0B3 /* ObservedObjectView.swift */; };
 		169891A1238E50AC00FBA0B3 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169891A0238E50AC00FBA0B3 /* Types.swift */; };
@@ -115,6 +131,15 @@
 		169A91A3238D1D38004E3DAA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A91A2238D1D38004E3DAA /* Config.swift */; };
 		169A91A5238D1D81004E3DAA /* ESI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A91A4238D1D81004E3DAA /* ESI+Extensions.swift */; };
 		169BFF9423B64D2300FDF759 /* BlueprintActivityMaterials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169BFF9323B64D2300FDF759 /* BlueprintActivityMaterials.swift */; };
+		169DA0FC23FE877E00AC7B54 /* WealthChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169DA0FB23FE877E00AC7B54 /* WealthChart.swift */; };
+		169DA0FE23FE8EAE00AC7B54 /* Sector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169DA0FD23FE8EAE00AC7B54 /* Sector.swift */; };
+		169DA10023FEAF6600AC7B54 /* WealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169DA0FF23FEAF6600AC7B54 /* WealthData.swift */; };
+		169F0ACB2403A7DE00B934E6 /* FittingEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169F0ACA2403A7DE00B934E6 /* FittingEditor.swift */; };
+		169F0ACD2403B2B800B934E6 /* FittingEditorShipModules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169F0ACC2403B2B800B934E6 /* FittingEditorShipModules.swift */; };
+		169F0AD22403B68300B934E6 /* FittingModuleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169F0AD12403B68300B934E6 /* FittingModuleCell.swift */; };
+		169F0AD42403D48D00B934E6 /* Dgmpp+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169F0AD32403D48D00B934E6 /* Dgmpp+Extension.swift */; };
+		169F0AD62403FA0B00B934E6 /* FittingModuleSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169F0AD52403FA0B00B934E6 /* FittingModuleSlot.swift */; };
+		169F0AD824040DC300B934E6 /* TypePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169F0AD724040DC300B934E6 /* TypePicker.swift */; };
 		16A1598523C712FB00778320 /* AddToSkillPlanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A1598423C712FB00778320 /* AddToSkillPlanButton.swift */; };
 		16A250DA23E1BD83003F7904 /* SkillPlans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A250D923E1BD83003F7904 /* SkillPlans.swift */; };
 		16A6A4B823B1E54F00CF0812 /* CertificateGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A6A4B723B1E54F00CF0812 /* CertificateGroups.swift */; };
@@ -129,9 +154,14 @@
 		16B04DE123ED55D500FBE380 /* AssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B04DE023ED55D500FBE380 /* AssetCell.swift */; };
 		16B04DE323ED655300FBE380 /* AssetsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B04DE223ED655300FBE380 /* AssetsList.swift */; };
 		16B45EFF23A3663400A36A96 /* MarketRegionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B45EFE23A3663400A36A96 /* MarketRegionPicker.swift */; };
+		16B4C6E4240792420009ACD4 /* DGMModuleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B4C6E3240792420009ACD4 /* DGMModuleGroup.swift */; };
+		16B4C6E6240798280009ACD4 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B4C6E5240798280009ACD4 /* BarButtonItem.swift */; };
 		16B6A84123F2AC5D00E0EB8B /* AssetsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B6A84023F2AC5D00E0EB8B /* AssetsCategory.swift */; };
 		16B6A84523F2D24E00E0EB8B /* Dgmpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B6A84423F2D24E00E0EB8B /* Dgmpp.framework */; };
 		16B6A84623F2D24E00E0EB8B /* Dgmpp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 16B6A84423F2D24E00E0EB8B /* Dgmpp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		16B7FC3F2408E0470076BD7C /* FittingTypeVariations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B7FC3E2408E0470076BD7C /* FittingTypeVariations.swift */; };
+		16B7FC442409073A0076BD7C /* FittingCharges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B7FC432409073A0076BD7C /* FittingCharges.swift */; };
+		16B7FC46240910C20076BD7C /* LineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B7FC45240910C20076BD7C /* LineChart.swift */; };
 		16B8458223F529E700A0B1F6 /* Contact+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8458123F529E700A0B1F6 /* Contact+Extensions.swift */; };
 		16B8E3B123FBDB440096B066 /* ContactsSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8E3B023FBDB440096B066 /* ContactsSearchResults.swift */; };
 		16B8E3B323FBDDA50096B066 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8E3B223FBDDA50096B066 /* ContactCell.swift */; };
@@ -172,7 +202,6 @@
 		16E2AD9F23B214EF00B90204 /* CertificateInfoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E2AD9E23B214EF00B90204 /* CertificateInfoHeader.swift */; };
 		16E3DBF3238BF944005F5AAE /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBF2238BF944005F5AAE /* Avatar.swift */; };
 		16E3DBF5238BFACC005F5AAE /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBF4238BFACC005F5AAE /* AccountCell.swift */; };
-		16E8C42F23E431E0004BA2D3 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E8C42E23E431E0004BA2D3 /* CloseButton.swift */; };
 		16EEBDF52397E4DE00F2E216 /* SkillName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16EEBDF42397E4DE00F2E216 /* SkillName.swift */; };
 /* End PBXBuildFile section */
 
@@ -274,6 +303,20 @@
 		1686D7502395460F00E88D3D /* TrainingQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingQueue.swift; sourceTree = "<group>"; };
 		1686D75223955C2400E88D3D /* TypeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfo.swift; sourceTree = "<group>"; };
 		1688D00E23D6F0790012983C /* JumpClones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpClones.swift; sourceTree = "<group>"; };
+		1693A85323FD0FDC0033A793 /* ContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
+		1693A85523FD15D10033A793 /* TextAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttachmentView.swift; sourceTree = "<group>"; };
+		1693A85723FD27A90033A793 /* TextAttachmentContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttachmentContact.swift; sourceTree = "<group>"; };
+		1693A85923FD40060033A793 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		1693A85D23FD66E90033A793 /* MailDrafts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailDrafts.swift; sourceTree = "<group>"; };
+		1693A85F23FD67740033A793 /* MailDraftCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailDraftCell.swift; sourceTree = "<group>"; };
+		1694B22324066BA100E81E49 /* FittingEditorShipModulesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorShipModulesList.swift; sourceTree = "<group>"; };
+		1694B22524066BAA00E81E49 /* FittingEditorShipModulesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorShipModulesSection.swift; sourceTree = "<group>"; };
+		1694B22824066E1E00E81E49 /* FittingEditorShipModulesHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorShipModulesHeader.swift; sourceTree = "<group>"; };
+		1694B22A2406797D00E81E49 /* ShipResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipResource.swift; sourceTree = "<group>"; };
+		1694B22C240697E600E81E49 /* FittingModuleActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingModuleActions.swift; sourceTree = "<group>"; };
+		1694B22E2406A9AD00E81E49 /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
+		1694B2302406AECC00E81E49 /* FittingModuleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingModuleState.swift; sourceTree = "<group>"; };
+		1695805323FFB63C006752B9 /* Wealth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wealth.swift; sourceTree = "<group>"; };
 		169661B123BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoRequiredSkillsSection.swift; sourceTree = "<group>"; };
 		169661B423BB252E00D8E175 /* BlueprintInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueprintInfo.swift; sourceTree = "<group>"; };
 		169661B623BB423100D8E175 /* NPCInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPCInfo.swift; sourceTree = "<group>"; };
@@ -285,6 +328,8 @@
 		1696F682238FA7F5009F03F3 /* TypesSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypesSearch.swift; sourceTree = "<group>"; };
 		1696F686238FCF88009F03F3 /* GroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
 		1696F688238FD0E6009F03F3 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		169724732404F3BE00B5152A /* TypePickerGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypePickerGroups.swift; sourceTree = "<group>"; };
+		169724772404F8BB00B5152A /* TypePickerTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypePickerTypes.swift; sourceTree = "<group>"; };
 		16977BEA23FA66C0002725CD /* MailBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailBody.swift; sourceTree = "<group>"; };
 		1698919E238E4BA500FBA0B3 /* ObservedObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservedObjectView.swift; sourceTree = "<group>"; };
 		169891A0238E50AC00FBA0B3 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
@@ -303,6 +348,15 @@
 		169A91A2238D1D38004E3DAA /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		169A91A4238D1D81004E3DAA /* ESI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ESI+Extensions.swift"; sourceTree = "<group>"; };
 		169BFF9323B64D2300FDF759 /* BlueprintActivityMaterials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueprintActivityMaterials.swift; sourceTree = "<group>"; };
+		169DA0FB23FE877E00AC7B54 /* WealthChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WealthChart.swift; sourceTree = "<group>"; };
+		169DA0FD23FE8EAE00AC7B54 /* Sector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sector.swift; sourceTree = "<group>"; };
+		169DA0FF23FEAF6600AC7B54 /* WealthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WealthData.swift; sourceTree = "<group>"; };
+		169F0ACA2403A7DE00B934E6 /* FittingEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditor.swift; sourceTree = "<group>"; };
+		169F0ACC2403B2B800B934E6 /* FittingEditorShipModules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorShipModules.swift; sourceTree = "<group>"; };
+		169F0AD12403B68300B934E6 /* FittingModuleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingModuleCell.swift; sourceTree = "<group>"; };
+		169F0AD32403D48D00B934E6 /* Dgmpp+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dgmpp+Extension.swift"; sourceTree = "<group>"; };
+		169F0AD52403FA0B00B934E6 /* FittingModuleSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingModuleSlot.swift; sourceTree = "<group>"; };
+		169F0AD724040DC300B934E6 /* TypePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypePicker.swift; sourceTree = "<group>"; };
 		16A1598423C712FB00778320 /* AddToSkillPlanButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToSkillPlanButton.swift; sourceTree = "<group>"; };
 		16A250D923E1BD83003F7904 /* SkillPlans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillPlans.swift; sourceTree = "<group>"; };
 		16A6A4B723B1E54F00CF0812 /* CertificateGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateGroups.swift; sourceTree = "<group>"; };
@@ -316,8 +370,13 @@
 		16B04DE023ED55D500FBE380 /* AssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCell.swift; sourceTree = "<group>"; };
 		16B04DE223ED655300FBE380 /* AssetsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsList.swift; sourceTree = "<group>"; };
 		16B45EFE23A3663400A36A96 /* MarketRegionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketRegionPicker.swift; sourceTree = "<group>"; };
+		16B4C6E3240792420009ACD4 /* DGMModuleGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DGMModuleGroup.swift; sourceTree = "<group>"; };
+		16B4C6E5240798280009ACD4 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
 		16B6A84023F2AC5D00E0EB8B /* AssetsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsCategory.swift; sourceTree = "<group>"; };
 		16B6A84423F2D24E00E0EB8B /* Dgmpp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dgmpp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		16B7FC3E2408E0470076BD7C /* FittingTypeVariations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingTypeVariations.swift; sourceTree = "<group>"; };
+		16B7FC432409073A0076BD7C /* FittingCharges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingCharges.swift; sourceTree = "<group>"; };
+		16B7FC45240910C20076BD7C /* LineChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChart.swift; sourceTree = "<group>"; };
 		16B8458123F529E700A0B1F6 /* Contact+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+Extensions.swift"; sourceTree = "<group>"; };
 		16B8E3B023FBDB440096B066 /* ContactsSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsSearchResults.swift; sourceTree = "<group>"; };
 		16B8E3B223FBDDA50096B066 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
@@ -398,6 +457,7 @@
 				16B8F08723F670CB0093FEED /* ContractsData.swift */,
 				16CE2A0623F6755E0043764B /* ContractInfoData.swift */,
 				16709B1C23F6C0B800BB6E90 /* MailHeadersData.swift */,
+				169DA0FF23FEAF6600AC7B54 /* WealthData.swift */,
 			);
 			path = DataLoaders;
 			sourceTree = "<group>";
@@ -444,6 +504,7 @@
 				1630ED7723CC9254001DBAA7 /* Character */,
 				164E418523EAECFA00EF16CE /* Business */,
 				1653796623F69E3B000F082A /* Mail */,
+				169F0AC92403A6DD00B934E6 /* Fitting */,
 				12F06F12238464920061313D /* AppDelegate.swift */,
 				12F06F14238464920061313D /* SceneDelegate.swift */,
 				12F06F16238464920061313D /* ContentView.swift */,
@@ -472,6 +533,7 @@
 				120E28EE238B1293006B30EA /* DataLoaders */,
 				1686D74D23953C9200E88D3D /* Pilot */,
 				16674BEA238BB96400E6E547 /* Views */,
+				16B4C6E2240792300009ACD4 /* Dgmpp */,
 				1638690823EC217400681612 /* Atomic.swift */,
 				1632472C239145FA00227480 /* Cache.swift */,
 				169A72C8238BD9AA00E4C181 /* Colors.swift */,
@@ -490,6 +552,8 @@
 				16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */,
 				16674BEF238BC6F300E6E547 /* UnitFormatter.swift */,
 				161C6EF623A11B8400777009 /* UserDefault.swift */,
+				1693A85523FD15D10033A793 /* TextAttachmentView.swift */,
+				1693A85723FD27A90033A793 /* TextAttachmentContact.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -554,6 +618,7 @@
 		164E418523EAECFA00EF16CE /* Business */ = {
 			isa = PBXGroup;
 			children = (
+				169DA0FA23FE877100AC7B54 /* Wealth */,
 				16C66D0923F5890F009AEB72 /* Constracts */,
 				1668A3BE23F42215000A96D8 /* Assets */,
 				1668A3BF23F4221E000A96D8 /* WalletJournal */,
@@ -571,7 +636,9 @@
 				16709B1823F6A62C00BB6E90 /* MailPage.swift */,
 				16709B1A23F6A76800BB6E90 /* MailHeader.swift */,
 				16977BEA23FA66C0002725CD /* MailBody.swift */,
+				1693A85F23FD67740033A793 /* MailDraftCell.swift */,
 				1653796923F6A1BC000F082A /* MailLabel.swift */,
+				1693A85D23FD66E90033A793 /* MailDrafts.swift */,
 				16DBDE8723FA875E006B0BC3 /* ComposeMail.swift */,
 				16B8E3B023FBDB440096B066 /* ContactsSearchResults.swift */,
 				16B8E3B423FBE6250096B066 /* ContactsSearch.swift */,
@@ -584,24 +651,31 @@
 			isa = PBXGroup;
 			children = (
 				16D0093623B09DF0000694C0 /* ActivityIndicator.swift */,
+				1693A85923FD40060033A793 /* ActivityView.swift */,
 				16A1598423C712FB00778320 /* AddToSkillPlanButton.swift */,
 				166EE98A23962F2500388D65 /* AttributedText.swift */,
-				16B8E3B623FBEDC10096B066 /* TextView.swift */,
 				16E3DBF2238BF944005F5AAE /* Avatar.swift */,
+				16B4C6E5240798280009ACD4 /* BarButtonItem.swift */,
 				16C39A5523BA0BF000208F04 /* BlurView.swift */,
 				16E8C42E23E431E0004BA2D3 /* CloseButton.swift */,
+				1693A85323FD0FDC0033A793 /* ContactView.swift */,
 				16AE40F4238FEFD500C6E25B /* DamageView.swift */,
 				16C39A5323BA0B7200208F04 /* FinishedView.swift */,
 				124F06E6238D8EB400395D54 /* Icon.swift */,
+				1694B22E2406A9AD00E81E49 /* InfoButton.swift */,
 				160D0BA823F2E3C300690134 /* LoadingProgressView.swift */,
 				1698919E238E4BA500FBA0B3 /* ObservedObjectView.swift */,
 				16674BEB238BB97400E6E547 /* ProgressView.swift */,
 				16DFF830238D3A4F004C1185 /* SearchField.swift */,
 				169891B4238EAF4000FBA0B3 /* SearchView.swift */,
+				169DA0FD23FE8EAE00AC7B54 /* Sector.swift */,
+				1694B22A2406797D00E81E49 /* ShipResource.swift */,
 				16EEBDF42397E4DE00F2E216 /* SkillName.swift */,
 				1602719923A27A5800067AA1 /* Text+Extensions.swift */,
 				160882ED23E2E70400BB7176 /* TextFieldAlert.swift */,
+				16B8E3B623FBEDC10096B066 /* TextView.swift */,
 				16C39A5723BA0EEB00208F04 /* VibrancyView.swift */,
+				16B7FC45240910C20076BD7C /* LineChart.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -635,6 +709,23 @@
 			path = Pilot;
 			sourceTree = "<group>";
 		};
+		1694B22724066DFC00E81E49 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				169F0AD12403B68300B934E6 /* FittingModuleCell.swift */,
+				169F0AD52403FA0B00B934E6 /* FittingModuleSlot.swift */,
+				1694B2302406AECC00E81E49 /* FittingModuleState.swift */,
+				169F0ACC2403B2B800B934E6 /* FittingEditorShipModules.swift */,
+				1694B22824066E1E00E81E49 /* FittingEditorShipModulesHeader.swift */,
+				1694B22324066BA100E81E49 /* FittingEditorShipModulesList.swift */,
+				1694B22524066BAA00E81E49 /* FittingEditorShipModulesSection.swift */,
+				1694B22C240697E600E81E49 /* FittingModuleActions.swift */,
+				16B7FC3E2408E0470076BD7C /* FittingTypeVariations.swift */,
+				16B7FC432409073A0076BD7C /* FittingCharges.swift */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
 		169661B323BB24CC00D8E175 /* TypeInfo */ = {
 			isa = PBXGroup;
 			children = (
@@ -661,6 +752,27 @@
 			path = CertificateInfo;
 			sourceTree = "<group>";
 		};
+		169DA0FA23FE877100AC7B54 /* Wealth */ = {
+			isa = PBXGroup;
+			children = (
+				169DA0FB23FE877E00AC7B54 /* WealthChart.swift */,
+				1695805323FFB63C006752B9 /* Wealth.swift */,
+			);
+			path = Wealth;
+			sourceTree = "<group>";
+		};
+		169F0AC92403A6DD00B934E6 /* Fitting */ = {
+			isa = PBXGroup;
+			children = (
+				1694B22724066DFC00E81E49 /* Modules */,
+				169F0ACA2403A7DE00B934E6 /* FittingEditor.swift */,
+				169F0AD724040DC300B934E6 /* TypePicker.swift */,
+				169724732404F3BE00B5152A /* TypePickerGroups.swift */,
+				169724772404F8BB00B5152A /* TypePickerTypes.swift */,
+			);
+			path = Fitting;
+			sourceTree = "<group>";
+		};
 		16AE40F8239004E900C6E25B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -685,6 +797,15 @@
 				1602719723A2792900067AA1 /* TypeMarketOrderCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		16B4C6E2240792300009ACD4 /* Dgmpp */ = {
+			isa = PBXGroup;
+			children = (
+				169F0AD32403D48D00B934E6 /* Dgmpp+Extension.swift */,
+				16B4C6E3240792420009ACD4 /* DGMModuleGroup.swift */,
+			);
+			path = Dgmpp;
 			sourceTree = "<group>";
 		};
 		16C66CFB23F5529A009AEB72 /* MarketOrders */ = {
@@ -811,9 +932,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				16B6A84123F2AC5D00E0EB8B /* AssetsCategory.swift in Sources */,
+				1694B22924066E1E00E81E49 /* FittingEditorShipModulesHeader.swift in Sources */,
 				12F06F6B23846D670061313D /* Main.swift in Sources */,
+				169DA10023FEAF6600AC7B54 /* WealthData.swift in Sources */,
 				1602719A23A27A5800067AA1 /* Text+Extensions.swift in Sources */,
 				16CE2A0523F6754E0043764B /* ContractInfo.swift in Sources */,
+				1695805423FFB63C006752B9 /* Wealth.swift in Sources */,
+				169F0ACB2403A7DE00B934E6 /* FittingEditor.swift in Sources */,
 				161C6EE723A0EEE000777009 /* TypeInfoMarketHistoryCell.swift in Sources */,
 				1653796823F69EA8000F082A /* MailBox.swift in Sources */,
 				169891B0238E696900FBA0B3 /* ShipTypeCell.swift in Sources */,
@@ -822,10 +947,15 @@
 				16D0093723B09DF0000694C0 /* ActivityIndicator.swift in Sources */,
 				124F06E9238D908A00395D54 /* TypeGroups.swift in Sources */,
 				124F06E3238D897E00395D54 /* ImageValueTransformer.swift in Sources */,
+				1694B22624066BAA00E81E49 /* FittingEditorShipModulesSection.swift in Sources */,
 				16C66D0423F561AA009AEB72 /* IndustryJobs.swift in Sources */,
+				16B7FC46240910C20076BD7C /* LineChart.swift in Sources */,
+				16B4C6E6240798280009ACD4 /* BarButtonItem.swift in Sources */,
 				1668A3C523F426BA000A96D8 /* WalletJournalCell.swift in Sources */,
+				1694B2312406AECC00E81E49 /* FittingModuleState.swift in Sources */,
 				164E418723EAED0800EF16CE /* Assets.swift in Sources */,
 				12877E2C23B29FA1009FF71B /* NPCGroup.swift in Sources */,
+				169DA0FE23FE8EAE00AC7B54 /* Sector.swift in Sources */,
 				16A250DA23E1BD83003F7904 /* SkillPlans.swift in Sources */,
 				12F06F31238467600061313D /* SDE.xcdatamodeld in Sources */,
 				160D0BA923F2E3C300690134 /* LoadingProgressView.swift in Sources */,
@@ -842,6 +972,7 @@
 				1630ED7523CC65E0001DBAA7 /* TypeMasterySkills.swift in Sources */,
 				16DBDE8823FA875E006B0BC3 /* ComposeMail.swift in Sources */,
 				12AE040F23847EC600DEFFC5 /* Home.swift in Sources */,
+				169F0AD824040DC300B934E6 /* TypePicker.swift in Sources */,
 				16D5DE7623B23898004CDA4A /* CertificateMasteryInfo.swift in Sources */,
 				16C66D0623F56D48009AEB72 /* IndustryJobCell.swift in Sources */,
 				167CB4B123994B24008980EE /* TypeInfoMasteryCell.swift in Sources */,
@@ -855,6 +986,8 @@
 				16C435FA23D6FFC7000A5446 /* ImplantTypeCell.swift in Sources */,
 				16977BEB23FA66C0002725CD /* MailBody.swift in Sources */,
 				1688D00F23D6F0790012983C /* JumpClones.swift in Sources */,
+				169F0AD22403B68300B934E6 /* FittingModuleCell.swift in Sources */,
+				1694B22F2406A9AD00E81E49 /* InfoButton.swift in Sources */,
 				16A6A4BA23B1E6F500CF0812 /* Certificates.swift in Sources */,
 				12CBA91D2399596B001C1C82 /* MasteryData.swift in Sources */,
 				16674BE7238BB7FE00E6E547 /* Accounts.swift in Sources */,
@@ -862,14 +995,17 @@
 				16C66D0D23F58947009AEB72 /* ContractCell.swift in Sources */,
 				1631291B23F68BD500E22CF3 /* ContractBidCell.swift in Sources */,
 				16C435FD23D85221000A5446 /* Skills.swift in Sources */,
+				169F0ACD2403B2B800B934E6 /* FittingEditorShipModules.swift in Sources */,
 				1655DE752396888200973258 /* TypeInfoData.swift in Sources */,
 				16B8F08823F670CB0093FEED /* ContractsData.swift in Sources */,
 				12F06F40238469C10061313D /* SDEVersion.swift in Sources */,
 				16DFF833238D4C02004C1185 /* UIKit+Extensions.swift in Sources */,
 				169661B523BB252E00D8E175 /* BlueprintInfo.swift in Sources */,
+				169F0AD62403FA0B00B934E6 /* FittingModuleSlot.swift in Sources */,
 				16B04DE123ED55D500FBE380 /* AssetCell.swift in Sources */,
 				1686D74C23953C5600E88D3D /* SDE.swift in Sources */,
 				1668A3C323F42677000A96D8 /* WalletJournal.swift in Sources */,
+				169F0AD42403D48D00B934E6 /* Dgmpp+Extension.swift in Sources */,
 				16E3DBF3238BF944005F5AAE /* Avatar.swift in Sources */,
 				169A91A3238D1D38004E3DAA /* Config.swift in Sources */,
 				1696F689238FD0E6009F03F3 /* CategoryCell.swift in Sources */,
@@ -877,6 +1013,10 @@
 				16B8458223F529E700A0B1F6 /* Contact+Extensions.swift in Sources */,
 				1630ED7F23CCAC01001DBAA7 /* RuntimeError.swift in Sources */,
 				161C6EF723A11B8400777009 /* UserDefault.swift in Sources */,
+				169DA0FC23FE877E00AC7B54 /* WealthChart.swift in Sources */,
+				169724742404F3BE00B5152A /* TypePickerGroups.swift in Sources */,
+				1693A85423FD0FDC0033A793 /* ContactView.swift in Sources */,
+				1693A85A23FD40060033A793 /* ActivityView.swift in Sources */,
 				16C66D0123F558AF009AEB72 /* MarketOrdersData.swift in Sources */,
 				169672D72387EA2F00EB860B /* HomeHeader.swift in Sources */,
 				1632472D239145FA00227480 /* Cache.swift in Sources */,
@@ -891,8 +1031,11 @@
 				169891B5238EAF4000FBA0B3 /* SearchView.swift in Sources */,
 				16B8E3B323FBDDA50096B066 /* ContactCell.swift in Sources */,
 				169A72C9238BD9AA00E4C181 /* Colors.swift in Sources */,
+				16B4C6E4240792420009ACD4 /* DGMModuleGroup.swift in Sources */,
 				16BBE17323E02C41001E251D /* SkillQueue.swift in Sources */,
+				1694B22D240697E600E81E49 /* FittingModuleActions.swift in Sources */,
 				16C39A5623BA0BF000208F04 /* BlurView.swift in Sources */,
+				1693A85623FD15D10033A793 /* TextAttachmentView.swift in Sources */,
 				12AE041123847EDE00DEFFC5 /* HomeAccountHeader.swift in Sources */,
 				1696F683238FA7F5009F03F3 /* TypesSearch.swift in Sources */,
 				16EEBDF52397E4DE00F2E216 /* SkillName.swift in Sources */,
@@ -905,6 +1048,7 @@
 				169661B723BB423100D8E175 /* NPCInfo.swift in Sources */,
 				16AE40F3238FDDE600C6E25B /* ChargeTypeCell.swift in Sources */,
 				169661B923BB444D00D8E175 /* AttributeInfo.swift in Sources */,
+				1693A86023FD67740033A793 /* MailDraftCell.swift in Sources */,
 				16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */,
 				16B8E3B723FBEDC10096B066 /* TextView.swift in Sources */,
 				1653663B239E733C0096990F /* TypeInfoPriceCell.swift in Sources */,
@@ -917,17 +1061,18 @@
 				16CE2A0723F6755E0043764B /* ContractInfoData.swift in Sources */,
 				169A72CF238BE05600E4C181 /* String+Extensions.swift in Sources */,
 				16C39A5423BA0B7200208F04 /* FinishedView.swift in Sources */,
-				16E8C42F23E431E0004BA2D3 /* CloseButton.swift in Sources */,
 				16674BE9238BB80900E6E547 /* AccountCellContent.swift in Sources */,
 				16324731239159A200227480 /* AccountInfo.swift in Sources */,
 				16DFF831238D3A4F004C1185 /* SearchField.swift in Sources */,
 				16A97CFE23DF1E9900DFC511 /* SkillsPage.swift in Sources */,
 				16C66D0823F57939009AEB72 /* IndustryJobsData.swift in Sources */,
 				16101BC723F5402B0028600F /* WalletTransactionsData.swift in Sources */,
+				1693A85823FD27A90033A793 /* TextAttachmentContact.swift in Sources */,
 				12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */,
 				1638690923EC217400681612 /* Atomic.swift in Sources */,
 				16AE40F1238FDAD000C6E25B /* ModuleTypeCell.swift in Sources */,
 				16ACE3A423D5B5BD009A6AF1 /* CharacterFullInfo.swift in Sources */,
+				1694B22424066BA100E81E49 /* FittingEditorShipModulesList.swift in Sources */,
 				161CE78E23E16E1B007619B8 /* SkillQueueSection.swift in Sources */,
 				16709B1D23F6C0B800BB6E90 /* MailHeadersData.swift in Sources */,
 				1632472F2391496500227480 /* Lazy.swift in Sources */,
@@ -936,10 +1081,12 @@
 				1632472A2390FF5B00227480 /* HomeLoginHeader.swift in Sources */,
 				12F06F6923846C890061313D /* Storage.swift in Sources */,
 				16C39A4C23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift in Sources */,
+				16B7FC442409073A0076BD7C /* FittingCharges.swift in Sources */,
 				16A6A4BB23B1EA3F00CF0812 /* DataLoader.swift in Sources */,
 				16C66CFF23F5530D009AEB72 /* MarketOrderCell.swift in Sources */,
 				12F06F15238464920061313D /* SceneDelegate.swift in Sources */,
 				1686D74F23953C9A00E88D3D /* Pilot.swift in Sources */,
+				1694B22B2406797D00E81E49 /* ShipResource.swift in Sources */,
 				16E2AD9D23B20FCE00B90204 /* CertificateInfo.swift in Sources */,
 				161C6EFD23A12FBC00777009 /* TypeMarketData.swift in Sources */,
 				16D5DE7823B238D4004CDA4A /* CertificateRequirementsInfo.swift in Sources */,
@@ -954,12 +1101,15 @@
 				16E3DBF5238BFACC005F5AAE /* AccountCell.swift in Sources */,
 				16B04DE323ED655300FBE380 /* AssetsList.swift in Sources */,
 				169BFF9423B64D2300FDF759 /* BlueprintActivityMaterials.swift in Sources */,
+				169724782404F8BB00B5152A /* TypePickerTypes.swift in Sources */,
 				16C435F623D6FDD3000A5446 /* ImplantsRows.swift in Sources */,
 				160FEDC123F434DD00F0B76E /* WalletTransactionCell.swift in Sources */,
 				16B8E3B123FBDB440096B066 /* ContactsSearchResults.swift in Sources */,
 				1698C05C239A8EB400193274 /* TypeMateryLevel.swift in Sources */,
 				16D8DC80238808870057A6F4 /* Combine+Extensions.swift in Sources */,
 				169A72D3238BE10700E4C181 /* Math.swift in Sources */,
+				16B7FC3F2408E0470076BD7C /* FittingTypeVariations.swift in Sources */,
+				1693A85E23FD66E90033A793 /* MailDrafts.swift in Sources */,
 				1686D7512395460F00E88D3D /* TrainingQueue.swift in Sources */,
 				160FEDEA23F4430C00F0B76E /* Cache.xcdatamodeld in Sources */,
 				16A6A4BD23B1ECC300CF0812 /* CertificateCell.swift in Sources */,
@@ -1110,7 +1260,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1133,7 +1283,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -49,10 +49,10 @@ struct SkillsPage_Previews: PreviewProvider {
     static var previews: some View {
         let controller = AppDelegate.sharedDelegate.persistentContainer.viewContext
             .from(SDEInvType.self)
-            .filter(Expressions.keyPath(\SDEInvType.published) == true && Expressions.keyPath(\SDEInvType.group?.category?.categoryID) == SDECategoryID.skill.rawValue)
+            .filter(/\SDEInvType.published == true && /\SDEInvType.group?.category?.categoryID == SDECategoryID.skill.rawValue)
             .sort(by: \SDEInvType.group?.groupName, ascending: true)
             .sort(by: \SDEInvType.typeName, ascending: true)
-            .fetchedResultsController(sectionName: Expressions.keyPath(\SDEInvType.group?.groupName), cacheName: nil)
+            .fetchedResultsController(sectionName: /\SDEInvType.group?.groupName, cacheName: nil)
 
         let frc = FetchedResultsController(controller)
         

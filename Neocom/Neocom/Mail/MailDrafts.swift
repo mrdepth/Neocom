@@ -1,0 +1,70 @@
+//
+//  MailDrafts.swift
+//  Neocom
+//
+//  Created by Artem Shimanski on 2/19/20.
+//  Copyright © 2020 Artem Shimanski. All rights reserved.
+//
+
+import SwiftUI
+import CoreData
+import EVEAPI
+
+struct MailDrafts: View {
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    @Environment(\.self) private var environment
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \MailDraft.date, ascending: false)]) var drafts: FetchedResults<MailDraft>
+    @State private var selectedDraft: MailDraft?
+    
+    var body: some View {
+        List {
+            ForEach(drafts) { draft in
+                Button(action: {
+                    self.selectedDraft = draft
+                }) {
+                    MailDraftCell(draft: draft)
+                }.buttonStyle(PlainButtonStyle())
+            }.onDelete { indices in
+                indices.map{self.drafts[$0]}.forEach {
+                    $0.managedObjectContext?.delete($0)
+                }
+            }
+        }.listStyle(GroupedListStyle())
+        .overlay(drafts.isEmpty ? Text(RuntimeError.noResult) : nil)
+        .sheet(item: $selectedDraft) { draft in
+            ComposeMail(draft: draft) {
+                self.selectedDraft = nil
+            }.modifier(ServicesViewModifier(environment: self.environment))
+        }.navigationBarTitle("Drafts")
+        .navigationBarItems(trailing: EditButton())
+    }
+}
+
+struct MailDrafts_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        let account = AppDelegate.sharedDelegate.testingAccount
+        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
+        let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let draft = MailDraft(entity: NSEntityDescription.entity(forEntityName: "MailDraft", in: context)!, insertInto: context)
+        draft.date = Date()
+        draft.subject = "Subject"
+        draft.body = NSAttributedString(string: "Some Body")
+        draft.to = [1554561480]
+
+        
+        return NavigationView {
+            MailDrafts()
+        }
+            .environment(\.account, account)
+            .environment(\.esi, esi)
+            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+
+    }
+}
+
+extension MailDraft: Identifiable {
+    public var id: NSManagedObjectID {
+        return objectID
+    }
+}

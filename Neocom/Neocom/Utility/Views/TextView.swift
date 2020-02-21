@@ -42,15 +42,16 @@ private struct TextViewRepresentation: UIViewRepresentable {
     var onEndEditing: ((UITextView) -> Void)?
 
     class Coordinator: NSObject, UITextViewDelegate {
-        @Binding var text: NSAttributedString
+        var text: Binding<NSAttributedString>
         var placeholder: NSAttributedString
         var typingAttributes: [NSAttributedString.Key: Any]
         var onBeginEditing: ((UITextView) -> Void)?
         var onEndEditing: ((UITextView) -> Void)?
         var textView: SelfSizedTextView?
+        private var attachments = [TextAttachmentViewProtocol]()
 
         init(text: Binding<NSAttributedString>, placeholder: NSAttributedString, typingAttributes: [NSAttributedString.Key: Any], onBeginEditing: ((UITextView) -> Void)?, onEndEditing: ((UITextView) -> Void)?) {
-            self._text = text
+            self.text = text
             self.placeholder = placeholder
             self.typingAttributes = typingAttributes
             self.onBeginEditing = onBeginEditing
@@ -72,20 +73,20 @@ private struct TextViewRepresentation: UIViewRepresentable {
         }
         
         func textViewDidBeginEditing(_ textView: UITextView) {
-            textView.attributedText = text
+            textView.attributedText = text.wrappedValue
             textView.typingAttributes = typingAttributes
             onBeginEditing?(textView)
         }
         
         func textViewDidEndEditing(_ textView: UITextView) {
-            if text.length == 0 {
+            if text.wrappedValue.length == 0 {
                 textView.attributedText = placeholder
             }
             onEndEditing?(textView)
         }
         
         func textViewDidChange(_ textView: UITextView) {
-            text = textView.attributedText
+            text.wrappedValue = textView.attributedText//.copy() as! NSAttributedString
         }
     }
 
@@ -102,6 +103,7 @@ private struct TextViewRepresentation: UIViewRepresentable {
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
         textView.layoutManager.usesFontLeading = false
+        textView.layoutManager.delegate = context.coordinator
         
         if case .default = style {
             textView.isScrollEnabled = true
@@ -115,6 +117,7 @@ private struct TextViewRepresentation: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: SelfSizedTextView, context: UIViewRepresentableContext<TextViewRepresentation>) {
+        context.coordinator.text = $text
         func attributes() -> [NSAttributedString.Key: Any] {
             var attributes = self.typingAttributes
             attributes[.foregroundColor] = UIColor.secondaryLabel
@@ -135,7 +138,7 @@ private struct TextViewRepresentation: UIViewRepresentable {
     
 }
 
-struct TextPreview: View {
+struct TextViewPreview: View {
 //    @State var text: NSAttributedString = NSAttributedString(string: repeatElement("Hello World ", count: 50).joined())
     @State var text: NSAttributedString = NSAttributedString(string: "")
     var body: some View {
@@ -150,7 +153,7 @@ struct TextPreview: View {
 
 struct TextView_Previews: PreviewProvider {
     static var previews: some View {
-        TextPreview()
+        TextViewPreview()
     }
 }
 
@@ -169,5 +172,28 @@ class SelfSizedTextView: UITextView {
             size.height = max(size.height, 24)
             return size
         }
+    }
+}
+
+extension TextViewRepresentation.Coordinator: NSLayoutManagerDelegate {
+    func layoutManager(_ layoutManager: NSLayoutManager, didCompleteLayoutFor textContainer: NSTextContainer?, atEnd layoutFinishedFlag: Bool) {
+        guard let textView = textView else {return}
+        let storage = textView.textStorage
+        
+        var currentAttachments = [TextAttachmentViewProtocol]()
+        storage.enumerateAttribute(.attachment, in: NSRange(location: 0, length: storage.length)) { value, range, _ in
+            guard let attachment = value as? NSTextAttachment & TextAttachmentViewProtocol else {return}
+            currentAttachments.append(attachment)
+            if !attachments.contains(where: {$0 === attachment}) {
+                textView.addSubview(attachment.view)
+            }
+            attachment.view.frame = layoutManager.boundingRect(forGlyphRange: range, in: textView.textContainer).inset(by: -attachment.insets)
+        }
+        for attachment in attachments {
+            if (!currentAttachments.contains(where: {$0 === attachment})) {
+                attachment.view.removeFromSuperview()
+            }
+        }
+        attachments = currentAttachments
     }
 }

@@ -72,7 +72,7 @@ struct TypeInfoSkillCell: View {
 struct TypeInfoSkillCell_Previews: PreviewProvider {
     static var previews: some View {
         let skill = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self)
-            .filter(Expressions.keyPath(\SDEInvType.group?.category?.categoryID) == SDECategoryID.skill.rawValue)
+            .filter(/\SDEInvType.group?.category?.categoryID == SDECategoryID.skill.rawValue)
             .fetch()
             .max{$0.typeName!.count < $1.typeName!.count}
         return NavigationView {

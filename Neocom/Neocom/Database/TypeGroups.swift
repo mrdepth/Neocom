@@ -16,22 +16,26 @@ struct TypeGroups: View {
     
     private func groups() -> FetchedResultsController<SDEInvGroup> {
         let controller = managedObjectContext.from(SDEInvGroup.self)
-            .filter(Expressions.keyPath(\SDEInvGroup.category) == category)
+            .filter(/\SDEInvGroup.category == category)
             .sort(by: \SDEInvGroup.published, ascending: false)
             .sort(by: \SDEInvGroup.groupName, ascending: true)
-            .fetchedResultsController(sectionName: Expressions.keyPath(\SDEInvGroup.published))
+            .fetchedResultsController(sectionName: /\SDEInvGroup.published)
         return FetchedResultsController(controller)
     }
     
     var body: some View {
         ObservedObjectView(self.groups()) { groups in
-            TypesSearch(predicate: Expressions.keyPath(\SDEInvType.group?.category) == self.category) { searchResults in
+            TypesSearch(predicate: /\SDEInvType.group?.category == self.category) { searchResults in
                 List {
                     if searchResults == nil {
                         TypeGroupsContent(groups: groups)
                     }
                     else {
-                        TypesContent(types: searchResults!)
+                        TypesContent(types: searchResults!) { type in
+                            NavigationLink(destination: TypeInfo(type: type)) {
+                                TypeCell(type: type)
+                            }
+                        }
                     }
                 }.listStyle(GroupedListStyle())
                     .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)

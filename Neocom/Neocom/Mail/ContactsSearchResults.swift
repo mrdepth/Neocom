@@ -28,7 +28,7 @@ struct ContactsSearchResults: View {
         let corporations = contacts[j..<i].sorted{($0.name ?? "") < ($1.name ?? "")}.prefix(100)
         let characters = contacts[..<j].sorted{($0.name ?? "") < ($1.name ?? "")}.prefix(100)
         
-        return Group {
+        return List {
             if !characters.isEmpty {
                 Section(header: Text("CHARACTERS")) {
                     ForEach(characters, id: \.objectID) { contact in
@@ -50,7 +50,7 @@ struct ContactsSearchResults: View {
                     }
                 }
             }
-        }
+        }.listStyle(GroupedListStyle())
     }
 }
 

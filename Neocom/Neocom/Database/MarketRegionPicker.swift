@@ -32,7 +32,7 @@ struct MarketRegionPicker: View {
         let controller = managedObjectContext.from(SDEMapRegion.self)
             .sort(by: \SDEMapRegion.securityClass, ascending: false)
             .sort(by: \SDEMapRegion.regionName, ascending: true)
-            .fetchedResultsController(sectionName: Expressions.keyPath(\SDEMapRegion.securityClassDisplayName))
+            .fetchedResultsController(sectionName: /\SDEMapRegion.securityClassDisplayName)
         return FetchedResultsController(controller)
     }
 
@@ -43,15 +43,15 @@ struct MarketRegionPicker: View {
 		return Future { promise in
             self.backgroundManagedObjectContext.perform {
 				let regions = try? self.managedObjectContext.from(SDEMapRegion.self)
-					.filter(Expressions.keyPath(\SDEMapRegion.regionName).caseInsensitive.contains(string))
+					.filter((/\SDEMapRegion.regionName).caseInsensitive.contains(string))
 					.sort(by: \SDEMapRegion.regionName, ascending: true)
 					.fetch()
 					.map{Row(id: $0.objectID, regionID: $0.objectID, title: $0.regionName ?? "", subtitle: nil)}
 
 				let solarSystems = try? self.managedObjectContext
 					.from(SDEMapSolarSystem.self)
-					.filter(Expressions.keyPath(\SDEMapSolarSystem.constellation?.region?.regionID) < SDERegionID.whSpace.rawValue)
-					.filter(Expressions.keyPath(\SDEMapSolarSystem.solarSystemName).caseInsensitive.contains(string))
+					.filter(/\SDEMapSolarSystem.constellation?.region?.regionID < SDERegionID.whSpace.rawValue)
+					.filter((/\SDEMapSolarSystem.solarSystemName).caseInsensitive.contains(string))
 					.sort(by: \SDEMapSolarSystem.solarSystemName, ascending: true)
 					.subrange(0..<50)
 					.fetch()

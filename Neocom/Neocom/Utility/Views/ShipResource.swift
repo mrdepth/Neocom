@@ -41,7 +41,7 @@ struct ShipResource: View {
             if style == .progress {
                 HStack(spacing: 2) {
                     Icon(image, size: .small)
-                    Text("\(UnitFormatter.localizedString(from: used, unit: unit, style: .short))/\(UnitFormatter.localizedString(from: total, unit: unit, style: .short))")
+                    Text("\(UnitFormatter.localizedString(from: used, unit: .none, style: .short))/\(UnitFormatter.localizedString(from: total, unit: unit, style: .short))")
                         .frame(maxWidth: .infinity)
                         .padding(2)
                         .background(ProgressView(progress: Float(total > 0 ? used / total : 0)))
@@ -51,8 +51,8 @@ struct ShipResource: View {
             else {
                 HStack() {
                     Icon(image, size: .small)
-                    Text("\(UnitFormatter.localizedString(from: used, unit: unit, style: .short))/\(UnitFormatter.localizedString(from: total, unit: unit, style: .short))")
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text("\(UnitFormatter.localizedString(from: used, unit: .none, style: .short))/\(UnitFormatter.localizedString(from: total, unit: unit, style: .short))")
+//                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
         }

@@ -10,31 +10,11 @@ import SwiftUI
 import Dgmpp
 
 struct FittingModuleCell: View {
-    @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.managedObjectContext) private var managedObjectContext
     @ObservedObject var module: DGMModuleGroup
-    
-    private var optimal: some View {
-        let optimal = module.optimal
-        let falloff = module.falloff
-        
-        return Group {
-            if optimal > 0 {
-                HStack(spacing: 0) {
-                    Icon(Image("targetingRange"), size: .small)
-                    if falloff > 0 {
-                        Text(" optimal + falloff: ") +
-                        Text(UnitFormatter.localizedString(from: optimal, unit: .meter, style: .long)).fontWeight(.semibold) +
-                        Text(" + ") +
-                        Text(UnitFormatter.localizedString(from: falloff, unit: .meter, style: .long)).fontWeight(.semibold)
-                    }
-                    else {
-                        Text(" optimal: \(UnitFormatter.localizedString(from: optimal, unit: .meter, style: .long))")
-                    }
-                }.modifier(SecondaryLabelModifier())
-            }
-        }
-    }
-    
+    @State private var isActionsPresented = false
+    @Environment(\.self) private var environment
+
     private var accuracy: some View {
         let ship = module.parent as? DGMShip
         let signature = ship?[Int(SDEAttributeID.signatureRadius.rawValue)]?.initialValue ?? 0
@@ -94,20 +74,22 @@ struct FittingModuleCell: View {
     var body: some View {
         let type = module.type(from: managedObjectContext)
         let slotsWithState: Set<DGMModule.Slot> = [.hi, .low, .med, .starbaseStructure]
-
-        return type.map { type in
+        
+        return Button(action: {
+            self.isActionsPresented = true
+        }) {
             HStack {
-                Icon(type.image)
+                (type?.image).map{Icon($0).cornerRadius(4)}
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(type.typeName ?? "")
-                    optimal
+                    (type?.typeName).map{Text($0)} ?? Text("Unknown")
+                    OptimalInfo(optimal: module.optimal, falloff: module.falloff).modifier(SecondaryLabelModifier())
                     accuracy
                     cycleTime
                     lifeTime
                 }
                 Spacer()
                 HStack(spacing: 0) {
-                    if module.target == nil {
+                    if module.target != nil {
                         Icon(Image("targets"), size: .small)
                     }
                     if slotsWithState.contains(module.slot) {
@@ -118,7 +100,16 @@ struct FittingModuleCell: View {
                     Text("x\(module.modules.count)").fontWeight(.semibold).modifier(SecondaryLabelModifier())
                 }
             }
+        }.buttonStyle(PlainButtonStyle())
+            .sheet(isPresented: $isActionsPresented) {
+                NavigationView {
+                    FittingModuleActions(module: self.module)
+                        .navigationBarItems(leading: BarButtonItems.close {
+                            self.isActionsPresented = false
+                        })
+                }.modifier(ServicesViewModifier(environment: self.environment))
         }
+        
     }
 }
 

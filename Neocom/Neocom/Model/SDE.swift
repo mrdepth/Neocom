@@ -542,3 +542,4 @@ extension SDEDgmppItemGroup {
 }
 
 extension SDEInvType: Identifiable {}
+extension SDEDgmppItemCategory: Identifiable {}

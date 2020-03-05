@@ -84,6 +84,10 @@
 		1686D7512395460F00E88D3D /* TrainingQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D7502395460F00E88D3D /* TrainingQueue.swift */; };
 		1686D75323955C2400E88D3D /* TypeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D75223955C2400E88D3D /* TypeInfo.swift */; };
 		1688D00F23D6F0790012983C /* JumpClones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688D00E23D6F0790012983C /* JumpClones.swift */; };
+		168960D1240FE217004E4630 /* TypeInfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168960D0240FE217004E4630 /* TypeInfoButton.swift */; };
+		168960D4240FE6BD004E4630 /* FittingEditorShipDrones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168960D3240FE6BD004E4630 /* FittingEditorShipDrones.swift */; };
+		168960D6240FE6F8004E4630 /* DGMDroneGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168960D5240FE6F8004E4630 /* DGMDroneGroup.swift */; };
+		168960D8240FEF30004E4630 /* FittingDroneCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168960D7240FEF30004E4630 /* FittingDroneCell.swift */; };
 		1693A85423FD0FDC0033A793 /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1693A85323FD0FDC0033A793 /* ContactView.swift */; };
 		1693A85623FD15D10033A793 /* TextAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1693A85523FD15D10033A793 /* TextAttachmentView.swift */; };
 		1693A85823FD27A90033A793 /* TextAttachmentContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1693A85723FD27A90033A793 /* TextAttachmentContact.swift */; };
@@ -98,6 +102,9 @@
 		1694B22F2406A9AD00E81E49 /* InfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694B22E2406A9AD00E81E49 /* InfoButton.swift */; };
 		1694B2312406AECC00E81E49 /* FittingModuleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694B2302406AECC00E81E49 /* FittingModuleState.swift */; };
 		1695805423FFB63C006752B9 /* Wealth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1695805323FFB63C006752B9 /* Wealth.swift */; };
+		16963AB32410D4B000A26E4A /* OptimalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16963AB22410D4B000A26E4A /* OptimalInfo.swift */; };
+		16963AB52410D61A00A26E4A /* FittingEditorShipDronesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16963AB42410D61A00A26E4A /* FittingEditorShipDronesList.swift */; };
+		16963AB72410E3CA00A26E4A /* FittingDroneActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16963AB62410E3CA00A26E4A /* FittingDroneActions.swift */; };
 		169661B223BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169661B123BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift */; };
 		169661B523BB252E00D8E175 /* BlueprintInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169661B423BB252E00D8E175 /* BlueprintInfo.swift */; };
 		169661B723BB423100D8E175 /* NPCInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169661B623BB423100D8E175 /* NPCInfo.swift */; };
@@ -153,6 +160,9 @@
 		16AE40F5238FEFD500C6E25B /* DamageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AE40F4238FEFD500C6E25B /* DamageView.swift */; };
 		16B04DE123ED55D500FBE380 /* AssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B04DE023ED55D500FBE380 /* AssetCell.swift */; };
 		16B04DE323ED655300FBE380 /* AssetsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B04DE223ED655300FBE380 /* AssetsList.swift */; };
+		16B3C7EF2411336300F21DE5 /* FittingEditorImplants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B3C7EE2411336300F21DE5 /* FittingEditorImplants.swift */; };
+		16B3C7F12411337400F21DE5 /* FittingEditorShipDronesHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B3C7F02411337400F21DE5 /* FittingEditorShipDronesHeader.swift */; };
+		16B3C7F524113C7A00F21DE5 /* FittingImplantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B3C7F424113C7A00F21DE5 /* FittingImplantCell.swift */; };
 		16B45EFF23A3663400A36A96 /* MarketRegionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B45EFE23A3663400A36A96 /* MarketRegionPicker.swift */; };
 		16B4C6E4240792420009ACD4 /* DGMModuleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B4C6E3240792420009ACD4 /* DGMModuleGroup.swift */; };
 		16B4C6E6240798280009ACD4 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B4C6E5240798280009ACD4 /* BarButtonItem.swift */; };
@@ -303,6 +313,10 @@
 		1686D7502395460F00E88D3D /* TrainingQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingQueue.swift; sourceTree = "<group>"; };
 		1686D75223955C2400E88D3D /* TypeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfo.swift; sourceTree = "<group>"; };
 		1688D00E23D6F0790012983C /* JumpClones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpClones.swift; sourceTree = "<group>"; };
+		168960D0240FE217004E4630 /* TypeInfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoButton.swift; sourceTree = "<group>"; };
+		168960D3240FE6BD004E4630 /* FittingEditorShipDrones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorShipDrones.swift; sourceTree = "<group>"; };
+		168960D5240FE6F8004E4630 /* DGMDroneGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DGMDroneGroup.swift; sourceTree = "<group>"; };
+		168960D7240FEF30004E4630 /* FittingDroneCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingDroneCell.swift; sourceTree = "<group>"; };
 		1693A85323FD0FDC0033A793 /* ContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
 		1693A85523FD15D10033A793 /* TextAttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttachmentView.swift; sourceTree = "<group>"; };
 		1693A85723FD27A90033A793 /* TextAttachmentContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAttachmentContact.swift; sourceTree = "<group>"; };
@@ -317,6 +331,9 @@
 		1694B22E2406A9AD00E81E49 /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
 		1694B2302406AECC00E81E49 /* FittingModuleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingModuleState.swift; sourceTree = "<group>"; };
 		1695805323FFB63C006752B9 /* Wealth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wealth.swift; sourceTree = "<group>"; };
+		16963AB22410D4B000A26E4A /* OptimalInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimalInfo.swift; sourceTree = "<group>"; };
+		16963AB42410D61A00A26E4A /* FittingEditorShipDronesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorShipDronesList.swift; sourceTree = "<group>"; };
+		16963AB62410E3CA00A26E4A /* FittingDroneActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingDroneActions.swift; sourceTree = "<group>"; };
 		169661B123BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoRequiredSkillsSection.swift; sourceTree = "<group>"; };
 		169661B423BB252E00D8E175 /* BlueprintInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueprintInfo.swift; sourceTree = "<group>"; };
 		169661B623BB423100D8E175 /* NPCInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NPCInfo.swift; sourceTree = "<group>"; };
@@ -369,6 +386,9 @@
 		16AE40F4238FEFD500C6E25B /* DamageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamageView.swift; sourceTree = "<group>"; };
 		16B04DE023ED55D500FBE380 /* AssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCell.swift; sourceTree = "<group>"; };
 		16B04DE223ED655300FBE380 /* AssetsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsList.swift; sourceTree = "<group>"; };
+		16B3C7EE2411336300F21DE5 /* FittingEditorImplants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorImplants.swift; sourceTree = "<group>"; };
+		16B3C7F02411337400F21DE5 /* FittingEditorShipDronesHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorShipDronesHeader.swift; sourceTree = "<group>"; };
+		16B3C7F424113C7A00F21DE5 /* FittingImplantCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingImplantCell.swift; sourceTree = "<group>"; };
 		16B45EFE23A3663400A36A96 /* MarketRegionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketRegionPicker.swift; sourceTree = "<group>"; };
 		16B4C6E3240792420009ACD4 /* DGMModuleGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DGMModuleGroup.swift; sourceTree = "<group>"; };
 		16B4C6E5240798280009ACD4 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
@@ -676,6 +696,7 @@
 				16B8E3B623FBEDC10096B066 /* TextView.swift */,
 				16C39A5723BA0EEB00208F04 /* VibrancyView.swift */,
 				16B7FC45240910C20076BD7C /* LineChart.swift */,
+				168960D0240FE217004E4630 /* TypeInfoButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -707,6 +728,18 @@
 				1686D7502395460F00E88D3D /* TrainingQueue.swift */,
 			);
 			path = Pilot;
+			sourceTree = "<group>";
+		};
+		168960D2240FE6A4004E4630 /* Drones */ = {
+			isa = PBXGroup;
+			children = (
+				168960D7240FEF30004E4630 /* FittingDroneCell.swift */,
+				168960D3240FE6BD004E4630 /* FittingEditorShipDrones.swift */,
+				16963AB42410D61A00A26E4A /* FittingEditorShipDronesList.swift */,
+				16B3C7F02411337400F21DE5 /* FittingEditorShipDronesHeader.swift */,
+				16963AB62410E3CA00A26E4A /* FittingDroneActions.swift */,
+			);
+			path = Drones;
 			sourceTree = "<group>";
 		};
 		1694B22724066DFC00E81E49 /* Modules */ = {
@@ -765,10 +798,13 @@
 			isa = PBXGroup;
 			children = (
 				1694B22724066DFC00E81E49 /* Modules */,
+				168960D2240FE6A4004E4630 /* Drones */,
+				16B3C7ED2411334500F21DE5 /* Implants */,
 				169F0ACA2403A7DE00B934E6 /* FittingEditor.swift */,
 				169F0AD724040DC300B934E6 /* TypePicker.swift */,
 				169724732404F3BE00B5152A /* TypePickerGroups.swift */,
 				169724772404F8BB00B5152A /* TypePickerTypes.swift */,
+				16963AB22410D4B000A26E4A /* OptimalInfo.swift */,
 			);
 			path = Fitting;
 			sourceTree = "<group>";
@@ -799,11 +835,21 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		16B3C7ED2411334500F21DE5 /* Implants */ = {
+			isa = PBXGroup;
+			children = (
+				16B3C7F424113C7A00F21DE5 /* FittingImplantCell.swift */,
+				16B3C7EE2411336300F21DE5 /* FittingEditorImplants.swift */,
+			);
+			path = Implants;
+			sourceTree = "<group>";
+		};
 		16B4C6E2240792300009ACD4 /* Dgmpp */ = {
 			isa = PBXGroup;
 			children = (
 				169F0AD32403D48D00B934E6 /* Dgmpp+Extension.swift */,
 				16B4C6E3240792420009ACD4 /* DGMModuleGroup.swift */,
+				168960D5240FE6F8004E4630 /* DGMDroneGroup.swift */,
 			);
 			path = Dgmpp;
 			sourceTree = "<group>";
@@ -943,6 +989,7 @@
 				1653796823F69EA8000F082A /* MailBox.swift in Sources */,
 				169891B0238E696900FBA0B3 /* ShipTypeCell.swift in Sources */,
 				16C39A5823BA0EEB00208F04 /* VibrancyView.swift in Sources */,
+				168960D6240FE6F8004E4630 /* DGMDroneGroup.swift in Sources */,
 				16C66D0B23F58920009AEB72 /* Constracts.swift in Sources */,
 				16D0093723B09DF0000694C0 /* ActivityIndicator.swift in Sources */,
 				124F06E9238D908A00395D54 /* TypeGroups.swift in Sources */,
@@ -959,6 +1006,7 @@
 				16A250DA23E1BD83003F7904 /* SkillPlans.swift in Sources */,
 				12F06F31238467600061313D /* SDE.xcdatamodeld in Sources */,
 				160D0BA923F2E3C300690134 /* LoadingProgressView.swift in Sources */,
+				16B3C7F524113C7A00F21DE5 /* FittingImplantCell.swift in Sources */,
 				161C6EFF23A1303700777009 /* LocationsInfo.swift in Sources */,
 				16AE40F5238FEFD500C6E25B /* DamageView.swift in Sources */,
 				12B9E20423A7E8C2007DB0E0 /* SwiftUI+Extensions.swift in Sources */,
@@ -1004,12 +1052,15 @@
 				169F0AD62403FA0B00B934E6 /* FittingModuleSlot.swift in Sources */,
 				16B04DE123ED55D500FBE380 /* AssetCell.swift in Sources */,
 				1686D74C23953C5600E88D3D /* SDE.swift in Sources */,
+				16B3C7F12411337400F21DE5 /* FittingEditorShipDronesHeader.swift in Sources */,
 				1668A3C323F42677000A96D8 /* WalletJournal.swift in Sources */,
+				16963AB32410D4B000A26E4A /* OptimalInfo.swift in Sources */,
 				169F0AD42403D48D00B934E6 /* Dgmpp+Extension.swift in Sources */,
 				16E3DBF3238BF944005F5AAE /* Avatar.swift in Sources */,
 				169A91A3238D1D38004E3DAA /* Config.swift in Sources */,
 				1696F689238FD0E6009F03F3 /* CategoryCell.swift in Sources */,
 				169661B223BB242A00D8E175 /* TypeInfoRequiredSkillsSection.swift in Sources */,
+				16963AB52410D61A00A26E4A /* FittingEditorShipDronesList.swift in Sources */,
 				16B8458223F529E700A0B1F6 /* Contact+Extensions.swift in Sources */,
 				1630ED7F23CCAC01001DBAA7 /* RuntimeError.swift in Sources */,
 				161C6EF723A11B8400777009 /* UserDefault.swift in Sources */,
@@ -1036,8 +1087,10 @@
 				1694B22D240697E600E81E49 /* FittingModuleActions.swift in Sources */,
 				16C39A5623BA0BF000208F04 /* BlurView.swift in Sources */,
 				1693A85623FD15D10033A793 /* TextAttachmentView.swift in Sources */,
+				16B3C7EF2411336300F21DE5 /* FittingEditorImplants.swift in Sources */,
 				12AE041123847EDE00DEFFC5 /* HomeAccountHeader.swift in Sources */,
 				1696F683238FA7F5009F03F3 /* TypesSearch.swift in Sources */,
+				168960D4240FE6BD004E4630 /* FittingEditorShipDrones.swift in Sources */,
 				16EEBDF52397E4DE00F2E216 /* SkillName.swift in Sources */,
 				164156172397E68A0063A39C /* TypeInfoSkillCell.swift in Sources */,
 				166EE98F2396311200388D65 /* TypeInfoHeader.swift in Sources */,
@@ -1052,6 +1105,7 @@
 				16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */,
 				16B8E3B723FBEDC10096B066 /* TextView.swift in Sources */,
 				1653663B239E733C0096990F /* TypeInfoPriceCell.swift in Sources */,
+				168960D1240FE217004E4630 /* TypeInfoButton.swift in Sources */,
 				1653796A23F6A1BC000F082A /* MailLabel.swift in Sources */,
 				16A6A4B823B1E54F00CF0812 /* CertificateGroups.swift in Sources */,
 				12A3EB9823A9704700CB9B0A /* MarketHistoryData.swift in Sources */,
@@ -1094,8 +1148,10 @@
 				16A1598523C712FB00778320 /* AddToSkillPlanButton.swift in Sources */,
 				16674BEC238BB97400E6E547 /* ProgressView.swift in Sources */,
 				16D0093B23B0AF39000694C0 /* TypeMarketGroup.swift in Sources */,
+				16963AB72410E3CA00A26E4A /* FittingDroneActions.swift in Sources */,
 				16C39A5023B9CF7D00208F04 /* SkillsList.swift in Sources */,
 				12F06F17238464920061313D /* ContentView.swift in Sources */,
+				168960D8240FEF30004E4630 /* FittingDroneCell.swift in Sources */,
 				1686D75323955C2400E88D3D /* TypeInfo.swift in Sources */,
 				16674BF0238BC6F300E6E547 /* UnitFormatter.swift in Sources */,
 				16E3DBF5238BFACC005F5AAE /* AccountCell.swift in Sources */,

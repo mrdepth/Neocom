@@ -13,7 +13,7 @@ struct FittingModuleState: View {
     @ObservedObject var module: DGMModuleGroup
 
     var body: some View {
-        Picker(selection: $module.state, label: Text("State")) {
+        Picker("State", selection: $module.state) {
             ForEach(module.availableStates, id: \.self) { i in
                 i.title.map{Text($0).tag($0)}
             }

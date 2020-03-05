@@ -36,7 +36,7 @@ struct CertificateInfo: View {
     var body: some View {
         List {
             Section(header:
-                Picker(selection: $mode, label: Text("Filter")) {
+                Picker("Filter", selection: $mode) {
                     Text("Info").tag(Mode.info)
                     Text("Requirements").tag(Mode.requirements)
                 }.pickerStyle(SegmentedPickerStyle())) {EmptyView()}

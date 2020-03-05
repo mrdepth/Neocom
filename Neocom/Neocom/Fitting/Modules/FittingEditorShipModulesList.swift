@@ -19,7 +19,7 @@ struct FittingEditorShipModulesList: View {
     }
 
     
-    @EnvironmentObject var ship: DGMShip
+    @EnvironmentObject private var ship: DGMShip
     
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
@@ -29,22 +29,26 @@ struct FittingEditorShipModulesList: View {
     private let typePickerState = Cache<DGMModule.Slot, TypePickerState>()
     
     private func typePicker(_ selection: SelectedSlot) -> some View {
-        NavigationView {
-            TypePicker(category: try! self.managedObjectContext.fetch(SDEDgmppItemCategory.category(slot: selection.slot)).first!) { (type) in
-                do {
-                    for i in selection.sockets {
-                        let module = try DGMModule(typeID: DGMTypeID(type.typeID))
-                        try self.ship.add(module, socket: i)
+        let category = try? self.managedObjectContext.fetch(SDEDgmppItemCategory.category(slot: selection.slot)).first
+        
+        return category.map { category in
+            NavigationView {
+                TypePicker(category: category) { (type) in
+                    do {
+                        for i in selection.sockets {
+                            let module = try DGMModule(typeID: DGMTypeID(type.typeID))
+                            try self.ship.add(module, socket: i)
+                        }
                     }
-                }
-                catch {
-                }
-                self.selectedSlot = nil
-            }.navigationBarItems(leading: BarButtonItems.close {
-                self.selectedSlot = nil
-            })
-        }.modifier(ServicesViewModifier(environment: self.environment))
-            .environmentObject(typePickerState[selection.slot, default: TypePickerState()])
+                    catch {
+                    }
+                    self.selectedSlot = nil
+                }.navigationBarItems(leading: BarButtonItems.close {
+                    self.selectedSlot = nil
+                })
+            }.modifier(ServicesViewModifier(environment: self.environment))
+                .environmentObject(typePickerState[selection.slot, default: TypePickerState()])
+        }
     }
     
     var body: some View {

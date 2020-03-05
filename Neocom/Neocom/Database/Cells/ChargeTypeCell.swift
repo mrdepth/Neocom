@@ -13,7 +13,21 @@ struct ChargeTypeCell: View {
     var charge: SDEDgmppItemDamage
     
     var body: some View {
-        var damages = [charge.emAmount, charge.thermalAmount, charge.kineticAmount, charge.explosiveAmount].map{Double($0)}
+        VStack(alignment: .leading, spacing: 2) {
+            HStack {
+                Icon(charge.item!.type!.image).cornerRadius(4)
+                Text(charge.item?.type?.typeName ?? "")
+            }
+            ChargeDamage(damage: charge)
+        }
+    }
+}
+
+struct ChargeDamage: View {
+    var damage: SDEDgmppItemDamage
+    
+    var body: some View {
+        var damages = [damage.emAmount, damage.thermalAmount, damage.kineticAmount, damage.explosiveAmount].map{Double($0)}
         var total = damages.reduce(0, +)
         if total == 0 {
             total = 1
@@ -23,15 +37,10 @@ struct ChargeTypeCell: View {
         
         return VStack(alignment: .leading, spacing: 2) {
             HStack {
-                Icon(charge.item!.type!.image).cornerRadius(4)
-                Text(charge.item?.type?.typeName ?? "")
-            }
-            HStack {
                 ForEach(0..<4) { i in
                     DamageView(String(format: "%.0f%%", damages[i] * 100), percent: damages[i], damageType: damageTypes[i]).font(.caption)
                 }
             }
-
         }
     }
 }

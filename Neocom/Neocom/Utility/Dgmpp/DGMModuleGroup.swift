@@ -33,14 +33,6 @@ class DGMModuleGroup: ObservableObject {
     
     private var subscription: AnyCancellable?
     
-    var typeID: DGMTypeID {
-        modules.first?.typeID ?? 0
-    }
-    
-    var parent: DGMType? {
-        modules.first?.parent
-    }
-    
     func canHaveState(_ state: DGMModule.State) -> Bool {
         modules.first?.canHaveState(state) ?? false
     }
@@ -201,6 +193,14 @@ class DGMModuleGroup: ObservableObject {
         modules.first?.accuracy(targetSignature: targetSignature, hitChance: hitChance) ?? .none
     }
     
+    var typeID: DGMTypeID {
+        modules.first?.typeID ?? 0
+    }
+    
+    var parent: DGMType? {
+        modules.first?.parent
+    }
+
     func type(from managedObjectContext: NSManagedObjectContext) -> SDEInvType? {
         modules.first?.type(from: managedObjectContext)
     }

@@ -202,6 +202,7 @@ extension DGMCharacter {
     static func testCharacter() -> DGMCharacter {
         let pilot = try! DGMCharacter()
         pilot.ship = .testDominix()
+        try! pilot.add(DGMImplant(typeID: 10211))
         return pilot
     }
 }
@@ -212,6 +213,10 @@ extension DGMShip {
         try! dominix.add(DGMModule(typeID: 3154))
         try! dominix.add(DGMModule(typeID: 405))
         try! dominix.add(DGMModule(typeID: 3154))
+        
+        for _ in 0..<5 {
+            try! dominix.add(DGMDrone(typeID: 2446))
+        }
         return dominix
     }
 }

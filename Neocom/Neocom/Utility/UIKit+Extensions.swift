@@ -29,3 +29,12 @@ extension NSAttributedString {
         return result
     }
 }
+
+extension UIBezierPath {
+    convenience init(points: [CGPoint]) {
+        self.init()
+        guard !points.isEmpty else {return}
+        move(to: points[0])
+        points.dropFirst().forEach { addLine(to: $0) }
+    }
+}

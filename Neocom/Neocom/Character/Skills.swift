@@ -104,7 +104,7 @@ struct SkillsFilter: View {
     }
 
     var body: some View {
-        Picker(selection: $filter, label: Text("Filter")) {
+        Picker("Filter", selection: $filter) {
             Text("My").tag(Filter.my)
             Text("Can Train").tag(Filter.canTrain)
             Text("Not Known").tag(Filter.notKnown)

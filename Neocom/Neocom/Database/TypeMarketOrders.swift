@@ -41,7 +41,7 @@ struct TypeMarketOrders: View {
 
 		return List {
 			Section(header:
-                Picker(selection: $mode, label: Text("Filter")) {
+                Picker("Filter", selection: $mode) {
 					Text("Sellers").tag(Mode.sell)
 					Text("Buyers").tag(Mode.buy)
 				}.pickerStyle(SegmentedPickerStyle())) {

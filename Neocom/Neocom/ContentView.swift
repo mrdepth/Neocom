@@ -81,7 +81,7 @@ struct ContentView: View {
 //            TextFieldAlert_Previews.previews
 //            SkillPlans_Previews.previews
 //            MailBox_Previews.previews
-            FittingEditorShipModules_Previews.previews
+            FittingEditorImplants_Previews.previews
 //            MailDrafts_Previews.previews
 //            TextView_Previews.previews
 //            LoadingProgressView_Previews.previews

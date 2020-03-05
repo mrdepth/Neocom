@@ -10,25 +10,7 @@ import SwiftUI
 import Dgmpp
 
 struct FittingEditorShipModulesHeader: View {
-    @EnvironmentObject var ship: DGMShip
-    
-    func progress(used: Double, total: Double, image: Image, unit: UnitFormatter.Unit) -> some View {
-        HStack(spacing: 0) {
-            Icon(image, size: .small)
-            Text("\(UnitFormatter.localizedString(from: used, unit: unit, style: .short))/\(UnitFormatter.localizedString(from: total, unit: unit, style: .short))")
-                .frame(maxWidth: .infinity)
-                .background(ProgressView(progress: Float(total > 0 ? used / total : 0)))
-                .accentColor(.skyBlueBackground)
-        }
-    }
-    
-    func counter(used: Int, total: Int, image: Image, unit: UnitFormatter.Unit) -> some View {
-        HStack() {
-            Icon(image, size: .small)
-            Text("\(UnitFormatter.localizedString(from: used, unit: unit, style: .short))/\(UnitFormatter.localizedString(from: total, unit: unit, style: .short))")
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-    }
+    @EnvironmentObject private var ship: DGMShip
     
     var body: some View {
         let powerGrid = ShipResource(used: ship.usedPowerGrid, total: ship.totalPowerGrid, unit: .megaWatts, image: Image("powerGrid"), style: .progress)
@@ -45,8 +27,8 @@ struct FittingEditorShipModulesHeader: View {
             HStack {
                 calibration
                 HStack {
-                    turrets
-                    launchers
+                    turrets.frame(maxWidth: .infinity, alignment: .leading)
+                    launchers.frame(maxWidth: .infinity, alignment: .leading)
                 }.frame(maxWidth: .infinity)
             }
         }.font(.caption)

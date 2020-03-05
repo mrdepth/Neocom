@@ -10,29 +10,93 @@ import SwiftUI
 import Dgmpp
 import Expressible
 
+struct FittingModuleTypeInfo: View {
+    @ObservedObject var module: DGMModuleGroup
+    var type: SDEInvType
+    @Environment(\.self) private var environment
+    @State private var isTypeVariationsPresented = false
+    
+    private func replace(with type: SDEInvType) {
+        guard let ship = module.parent as? DGMShip else {return}
+        do {
+            let newModules = try module.modules.map { i -> DGMModule in
+                let charge = i.charge?.typeID
+                let socket = i.socket
+                ship.remove(i)
+                let newModule = try DGMModule(typeID: DGMTypeID(type.typeID))
+                if let chargeID = charge {
+                    try? newModule.setCharge(DGMCharge(typeID: DGMTypeID(chargeID)))
+                }
+                try ship.add(newModule, socket: socket)
+                return newModule
+            }
+            self.module.modules = newModules
+        }
+        catch {
+        }
+    }
+    
+    var body: some View {
+        Button(action: {self.isTypeVariationsPresented = true}) {
+            HStack(spacing: 0) {
+                TypeCell(type: type)
+                Spacer()
+            }.contentShape(Rectangle())
+        }.buttonStyle(PlainButtonStyle())
+        .sheet(isPresented: $isTypeVariationsPresented) {
+            NavigationView {
+                FittingTypeVariations(type: self.type) { newType in
+                    self.isTypeVariationsPresented = false
+                    self.replace(with: newType)
+                }
+                .navigationBarItems(leading: BarButtonItems.close {self.isTypeVariationsPresented = false})
+            }.modifier(ServicesViewModifier(environment: self.environment))
+        }
+    }
+}
+
+struct FittingChargeCell: View {
+    @ObservedObject var module: DGMModuleGroup
+    var charge: SDEDgmppItemDamage
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            HStack {
+                Icon(charge.item!.type!.image).cornerRadius(4)
+                Text(charge.item?.type?.typeName ?? "")
+                Text("x\(UnitFormatter.localizedString(from: module.charges, unit: .none, style: .long))").modifier(SecondaryLabelModifier())
+            }
+            ChargeDamage(damage: charge)
+        }
+    }
+}
+
 struct FittingModuleActions: View {
 
     @ObservedObject var module: DGMModuleGroup
 
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
-    @State var selectedType: SDEInvType?
-    @State var selectedTypeVariations: SDEInvType?
-    @State var isTypeVariationsPresented = false
+    @State private var selectedType: SDEInvType?
+    @State private var selectedChargeCategory: SDEDgmppItemCategory?
     
-    func moduleCell(_ type: SDEInvType) -> some View {
+    private func moduleCell(_ type: SDEInvType) -> some View {
         HStack(spacing: 0) {
-            Button(action: {self.isTypeVariationsPresented = true}) {
+            FittingModuleTypeInfo(module: module, type: type)
+            TypeInfoButton(type: type)
+        }
+        .buttonStyle(BorderlessButtonStyle())
+    }
+    
+    private func chargeCell(_ type: SDEInvType, chargeCategory: SDEDgmppItemCategory) -> some View {
+        HStack(spacing: 0) {
+            Button(action: {self.selectedChargeCategory = chargeCategory}) {
                 HStack(spacing: 0) {
-                    TypeCell(type: type)
+                    type.dgmppItem?.damage.map { FittingChargeCell(module: module, charge: $0) }
                     Spacer()
                 }.contentShape(Rectangle())
             }.buttonStyle(PlainButtonStyle())
-            
-            InfoButton {
-                self.selectedType = type
-            }
-            .sheet(isPresented: $isTypeVariationsPresented) { self.typeVariations(type) }
+            TypeInfoButton(type: type)
         }
     }
     
@@ -42,26 +106,31 @@ struct FittingModuleActions: View {
         }.modifier(ServicesViewModifier(environment: self.environment))
     }
 
-    private func typeVariations(_ type: SDEInvType) -> some View {
+    private func charges(_ category: SDEDgmppItemCategory) -> some View {
         NavigationView {
-            FittingTypeVariations(type: type) { newType in
-                self.isTypeVariationsPresented = false
-                self.replace(with: newType)
+            FittingCharges(category: category) { type in
+                do {
+                    let charge = try DGMCharge(typeID: DGMTypeID(type.typeID))
+                    try self.module.setCharge(charge)
+                }
+                catch {
+                }
+                self.selectedChargeCategory = nil
             }
-            .navigationBarItems(leading: BarButtonItems.close {self.isTypeVariationsPresented = false})
+            .navigationBarItems(leading: BarButtonItems.close {self.selectedChargeCategory = nil})
         }.modifier(ServicesViewModifier(environment: self.environment))
     }
-    
+
     private func replace(with type: SDEInvType) {
         guard let ship = module.parent as? DGMShip else {return}
         do {
             let newModules = try module.modules.map { i -> DGMModule in
-                let charge = i.charge
+                let charge = i.charge?.typeID
                 let socket = i.socket
                 ship.remove(i)
                 let newModule = try DGMModule(typeID: DGMTypeID(type.typeID))
-                if let chargeID = charge?.typeID {
-                    try module.setCharge(DGMCharge(typeID: DGMTypeID(DGMTypeID(chargeID))))
+                if let chargeID = charge {
+                    try? module.setCharge(DGMCharge(typeID: DGMTypeID(chargeID)))
                 }
                 try ship.add(newModule, socket: socket)
                 return newModule
@@ -81,7 +150,7 @@ struct FittingModuleActions: View {
     var body: some View {
         let type = try? managedObjectContext.from(SDEInvType.self)
             .filter(/\SDEInvType.typeID == Int32(module.typeID)).first()
-        
+        let charge = module.charge?.type(from: managedObjectContext)
         return List {
             Section(header: Text("MODULE")) {
                 type.map{ moduleCell($0) }
@@ -89,21 +158,27 @@ struct FittingModuleActions: View {
                     FittingModuleState(module: module)
                 }
             }
-            
-            type?.dgmppItem?.charge.map { charge in
+            type?.dgmppItem?.charge.map { chargeCategory in
                 Section(header: Text("CHARGE")) {
-                    Button(action: {}) {
-                        Text("Select Ammo")
-                            .frame(maxWidth: .infinity)
-                            .frame(minHeight: 30)
-                            .contentShape(Rectangle())
+                    if charge != nil {
+                        self.chargeCell(charge!, chargeCategory: chargeCategory)
+                    }
+                    else {
+                        Button(action: {self.selectedChargeCategory = chargeCategory}) {
+                                Text("Select Ammo")
+                                    .frame(maxWidth: .infinity)
+                                    .frame(minHeight: 30)
+                                    .contentShape(Rectangle())
+                        }
                     }
                 }
             }
         }.listStyle(GroupedListStyle())
-            .navigationBarItems(leading: BarButtonItems.close {}, trailing: BarButtonItems.trash {})
             .navigationBarTitle("Actions")
+            .navigationBarItems(leading: BarButtonItems.close {}, trailing: BarButtonItems.trash {})
             .sheet(item: $selectedType) { self.typeInfo($0)}
+            .sheet(item: $selectedChargeCategory) { self.charges($0) }
+            
     }
 }
 

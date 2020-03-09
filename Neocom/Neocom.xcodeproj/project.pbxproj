@@ -179,6 +179,9 @@
 		16B8E3B723FBEDC10096B066 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8E3B623FBEDC10096B066 /* TextView.swift */; };
 		16B8F08823F670CB0093FEED /* ContractsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8F08723F670CB0093FEED /* ContractsData.swift */; };
 		16BBE17323E02C41001E251D /* SkillQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BBE17223E02C41001E251D /* SkillQueue.swift */; };
+		16BC888A24167AC300C6149A /* FittingImplantSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BC888924167AC300C6149A /* FittingImplantSlot.swift */; };
+		16BC888E24167D5F00C6149A /* FittingBoosterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BC888D24167D5F00C6149A /* FittingBoosterCell.swift */; };
+		16BC889024167DFC00C6149A /* FittingBoosterSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BC888F24167DFC00C6149A /* FittingBoosterSlot.swift */; };
 		16BCB1B623D88437004712DB /* SkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BCB1B523D88437004712DB /* SkillCell.swift */; };
 		16C39A4C23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C39A4B23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift */; };
 		16C39A5023B9CF7D00208F04 /* SkillsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C39A4F23B9CF7D00208F04 /* SkillsList.swift */; };
@@ -404,6 +407,9 @@
 		16B8E3B623FBEDC10096B066 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		16B8F08723F670CB0093FEED /* ContractsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractsData.swift; sourceTree = "<group>"; };
 		16BBE17223E02C41001E251D /* SkillQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillQueue.swift; sourceTree = "<group>"; };
+		16BC888924167AC300C6149A /* FittingImplantSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingImplantSlot.swift; sourceTree = "<group>"; };
+		16BC888D24167D5F00C6149A /* FittingBoosterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingBoosterCell.swift; sourceTree = "<group>"; };
+		16BC888F24167DFC00C6149A /* FittingBoosterSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingBoosterSlot.swift; sourceTree = "<group>"; };
 		16BCB1B523D88437004712DB /* SkillCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillCell.swift; sourceTree = "<group>"; };
 		16C39A4B23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueprintActivityRequiredSkills.swift; sourceTree = "<group>"; };
 		16C39A4F23B9CF7D00208F04 /* SkillsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillsList.swift; sourceTree = "<group>"; };
@@ -839,6 +845,9 @@
 			isa = PBXGroup;
 			children = (
 				16B3C7F424113C7A00F21DE5 /* FittingImplantCell.swift */,
+				16BC888924167AC300C6149A /* FittingImplantSlot.swift */,
+				16BC888D24167D5F00C6149A /* FittingBoosterCell.swift */,
+				16BC888F24167DFC00C6149A /* FittingBoosterSlot.swift */,
 				16B3C7EE2411336300F21DE5 /* FittingEditorImplants.swift */,
 			);
 			path = Implants;
@@ -1029,6 +1038,7 @@
 				169A91A5238D1D81004E3DAA /* ESI+Extensions.swift in Sources */,
 				1602719823A2792900067AA1 /* TypeMarketOrderCell.swift in Sources */,
 				1698919F238E4BA500FBA0B3 /* ObservedObjectView.swift in Sources */,
+				16BC889024167DFC00C6149A /* FittingBoosterSlot.swift in Sources */,
 				169A72D1238BE0EF00E4C181 /* TimeIntervalFormatter.swift in Sources */,
 				160882EE23E2E70400BB7176 /* TextFieldAlert.swift in Sources */,
 				16C435FA23D6FFC7000A5446 /* ImplantTypeCell.swift in Sources */,
@@ -1103,6 +1113,7 @@
 				169661B923BB444D00D8E175 /* AttributeInfo.swift in Sources */,
 				1693A86023FD67740033A793 /* MailDraftCell.swift in Sources */,
 				16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */,
+				16BC888E24167D5F00C6149A /* FittingBoosterCell.swift in Sources */,
 				16B8E3B723FBEDC10096B066 /* TextView.swift in Sources */,
 				1653663B239E733C0096990F /* TypeInfoPriceCell.swift in Sources */,
 				168960D1240FE217004E4630 /* TypeInfoButton.swift in Sources */,
@@ -1131,6 +1142,7 @@
 				16709B1D23F6C0B800BB6E90 /* MailHeadersData.swift in Sources */,
 				1632472F2391496500227480 /* Lazy.swift in Sources */,
 				169672D92387EA3F00EB860B /* EnvironmentValues.swift in Sources */,
+				16BC888A24167AC300C6149A /* FittingImplantSlot.swift in Sources */,
 				16709B1B23F6A76800BB6E90 /* MailHeader.swift in Sources */,
 				1632472A2390FF5B00227480 /* HomeLoginHeader.swift in Sources */,
 				12F06F6923846C890061313D /* Storage.swift in Sources */,

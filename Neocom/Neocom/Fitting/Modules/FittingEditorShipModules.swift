@@ -22,10 +22,12 @@ struct FittingEditorShipModules: View {
 
 struct FittingEditorShipModules_Previews: PreviewProvider {
     static var previews: some View {
+        let gang = DGMGang.testGang()
         return NavigationView {
             FittingEditorShipModules()
         }
-        .environmentObject(DGMShip.testDominix())
+        .environmentObject(gang.pilots.first!.ship!)
+        .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

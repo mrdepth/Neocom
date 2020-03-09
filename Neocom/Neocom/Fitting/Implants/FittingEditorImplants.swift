@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Dgmpp
+import Expressible
 
 struct FittingEditorImplants: View {
     @EnvironmentObject private var ship: DGMShip
@@ -54,11 +55,17 @@ struct FittingEditorImplants: View {
     
     var body: some View {
         let pilot = ship.parent as? DGMCharacter
-//        let implantPairs = pilot?.implants.map{}
         let implants = Dictionary(pilot?.implants.map{($0.slot, $0)} ?? []) {a, _ in a}
         
         let implantRows: [Row] = stride(from: 1, through: 10, by: 1).map { i in
             implants[i].map{.implant($0, slot: i)} ?? .slot(i)
+        }
+        
+        let boosterSlots = (try? managedObjectContext.from(SDEDgmppItemCategory.self).filter(/\SDEDgmppItemCategory.category == SDEDgmppItemCategoryID.booster.rawValue).fetch().map{Int($0.subcategory)})?.sorted() ?? [1,2,3,4]
+
+        let boosters = Dictionary(pilot?.boosters.map{($0.slot, $0)} ?? []) {a, _ in a}
+        let boosterRows: [Row] = boosterSlots.map { i in
+            boosters[i].map{.booster($0, slot: i)} ?? .slot(i)
         }
         
         return List {
@@ -66,6 +73,19 @@ struct FittingEditorImplants: View {
                 ForEach(implantRows) { row in
                     if row.implant != nil {
                         FittingImplantCell(implant: row.implant!)
+                    }
+                    else {
+                        FittingImplantSlot(slot: row.slot)
+                    }
+                }
+            }
+            Section(header: Text("BOOSTERS")) {
+                ForEach(boosterRows) { row in
+                    if row.booster != nil {
+                        FittingBoosterCell(booster: row.booster!)
+                    }
+                    else {
+                        FittingBoosterSlot(slot: row.slot)
                     }
                 }
             }
@@ -81,5 +101,6 @@ struct FittingEditorImplants_Previews: PreviewProvider {
             .environmentObject(gang)
             .environmentObject(gang.pilots[0].ship!)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

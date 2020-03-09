@@ -203,6 +203,8 @@ extension DGMCharacter {
         let pilot = try! DGMCharacter()
         pilot.ship = .testDominix()
         try! pilot.add(DGMImplant(typeID: 10211))
+        try! pilot.add(DGMBooster(typeID: 10151))
+        
         return pilot
     }
 }

@@ -54,7 +54,7 @@ let availableCategoryIDs = [2,3,4,5,6,7,8,9,11,16,17,18,20,22,23,24,25,30,32,34,
 
 let iconIDs: Future<[Int: IconID]>
 let invMetaGroups: Future<[Int: ObjectID<SDEInvMetaGroup>]>
-let metaTypes: Future<[Int: MetaType]>
+//let metaTypes: Future<[Int: MetaType]>
 
 let invCategories: Future<[Int: ObjectID<SDEInvCategory>]>
 let invGroups: Future<[Int: ObjectID<SDEInvGroup>]>
@@ -66,6 +66,8 @@ let dgmAttributeTypes: Future<[Int: ObjectID<SDEDgmAttributeType>]>
 let dgmEffects: Future<[Int: ObjectID<SDEDgmEffect>]>
 let chrRaces: Future<[Int: ObjectID<SDEChrRace>]>
 let chrFactions: Future<[Int: ObjectID<SDEChrFaction>]>
+let chrAncestries: Future<[Int: ObjectID<SDEChrAncestry>]>
+let chrBloodlines: Future<[Int: ObjectID<SDEChrBloodline>]>
 let certMasteryLevels: Future<[ObjectID<SDECertMasteryLevel>]>
 let invNames: Future<[Int: String]>
 
@@ -76,7 +78,7 @@ let staStations: Future<[Int: ObjectID<SDEStaStation>]>
 //let mapDenormalize: Future<[Int: ObjectID<SDEMapDenormalize>]>
 
 let ramActivities: Future<[Int:ObjectID<SDERamActivity>]>
-let ramAssemblyLineTypes: Future<[Int:ObjectID<SDERamAssemblyLineType>]>
+//let ramAssemblyLineTypes: Future<[Int:ObjectID<SDERamAssemblyLineType>]>
 
 var eveIcons: [Int: ObjectID<SDEEveIcon>] = [:]
 var typeIcons: [Int: ObjectID<SDEEveIcon>] = [:]
@@ -119,18 +121,28 @@ do {
 	}
 	
 	chrFactions = operationQueue.detach {
-		let from = Date(); defer {print("chrRaces\t\(Date().timeIntervalSince(from))s")}
+		let from = Date(); defer {print("chrFactions\t\(Date().timeIntervalSince(from))s")}
 		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/chrFactions.json"), type: Schema.Factions.self).map {($0.factionID, try .init(SDEChrFaction($0)))})
 	}
-	
+
+    chrAncestries = operationQueue.detach {
+        let from = Date(); defer {print("chrAncestries\t\(Date().timeIntervalSince(from))s")}
+        return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/chrAncestries.json"), type: Schema.Ancestries.self).map {($0.ancestryID, try .init(SDEChrAncestry($0)))})
+    }
+
+    chrBloodlines = operationQueue.detach {
+        let from = Date(); defer {print("chrBloodlines\t\(Date().timeIntervalSince(from))s")}
+        return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/chrBloodlines.json"), type: Schema.Bloodlines.self).map {($0.bloodlineID, try .init(SDEChrBloodline($0)))})
+    }
+
 	invMetaGroups = operationQueue.detach {
 		let from = Date(); defer {print("invMetaGroups\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/invMetaGroups.json"), type: Schema.MetaGroups.self).map {($0.metaGroupID, .init(SDEInvMetaGroup($0)))})
+        return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/fsd/metaGroups.json"), type: Schema.MetaGroups.self).map {($0.key, .init(SDEInvMetaGroup($0.key, $0.value)))})
 	}
-	metaTypes = operationQueue.detach {
-		let from = Date(); defer {print("metaTypes\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/invMetaTypes.json"), type: Schema.MetaTypes.self).map {($0.typeID, $0)})
-	}
+//	metaTypes = operationQueue.detach {
+//		let from = Date(); defer {print("metaTypes\t\(Date().timeIntervalSince(from))s")}
+//		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/invMetaTypes.json"), type: Schema.MetaTypes.self).map {($0.typeID, $0)})
+//	}
 	
 	invCategories = operationQueue.detach {
 		let from = Date(); defer {print("invCategories\t\(Date().timeIntervalSince(from))s")}
@@ -148,7 +160,11 @@ do {
 		let keys = try invGroups.get().keys
 		let typeIDs: Schema.TypeIDs = try load(root.appendingPathComponent("/sde/fsd/typeIDs.json"))
 		
-		return try Dictionary(uniqueKeysWithValues: typeIDs.filter{keys.contains($0.value.groupID)}.map{($0.key, try .init(SDEInvType($0, typeIDs: typeIDs)))})
+        let types: [Int: SDEInvType] = try Dictionary(uniqueKeysWithValues: typeIDs.filter{keys.contains($0.value.groupID)}.map{($0.key, try SDEInvType($0, typeIDs: typeIDs))})
+        for (id, type) in typeIDs where type.variationParentTypeID != nil {
+            types[id]?.parentType = types[type.variationParentTypeID!]
+        }
+        return types.mapValues{.init($0)}
 	}
 	
 	invMarketGroups = operationQueue.detach {
@@ -203,13 +219,13 @@ do {
 		}
 	}
 	
-	_ = operationQueue.detach {
-		let from = Date(); defer {print("parentTypes\t\(Date().timeIntervalSince(from))s")}
-		let types = try invTypes.get()
-		try metaTypes.get().forEach { (typeID, value) in
-			try types[typeID]?.object().parentType = types[value.parentTypeID]!.object()
-		}
-	}
+//	_ = operationQueue.detach {
+//		let from = Date(); defer {print("parentTypes\t\(Date().timeIntervalSince(from))s")}
+//		let types = try invTypes.get()
+//		try metaTypes.get().forEach { (typeID, value) in
+//			try types[typeID]?.object().parentType = types[value.parentTypeID]!.object()
+//		}
+//	}
 
 	eveUnits = operationQueue.detach {
 		let from = Date(); defer {print("eveUnits\t\(Date().timeIntervalSince(from))s")}
@@ -235,7 +251,7 @@ do {
 		let from = Date(); defer {print("typeAttributes\t\(Date().timeIntervalSince(from))s")}
 		var typeAttributes: [Int: [Int: TypeAttribute]] = [:]
 //		try load(root.appendingPathComponent("/sde/bsd/dgmTypeAttributes.json"), type: Schema.TypeAttributes.self).forEach { typeAttributes[$0.typeID, default: [:]][$0.attributeID] = $0 }
-		try load(root.appendingPathComponent("/dgmTypeAttributes.json"), type: Schema.TypeAttributes.self).forEach { typeAttributes[$0.typeID, default: [:]][$0.attributeID] = $0 }
+		try load(root.appendingPathComponent("/sde/bsd/dgmTypeAttributes.json"), type: Schema.TypeAttributes.self).forEach { typeAttributes[$0.typeID, default: [:]][$0.attributeID] = $0 }
 		return typeAttributes
 	}
 
@@ -244,7 +260,7 @@ do {
 		let from = Date(); defer {print("typeEffects\t\(Date().timeIntervalSince(from))s")}
 		let types = try invTypes.get()
 		let effects = try dgmEffects.get()
-		try load(root.appendingPathComponent("/dgmTypeEffects.json"), type: Schema.TypeEffects.self).forEach {
+		try load(root.appendingPathComponent("/sde/bsd/dgmTypeEffects.json"), type: Schema.TypeEffects.self).forEach {
 			guard let effect = try effects[$0.effectID]?.object() else {return}
 			try types[$0.typeID]?.object().addToEffects(effect)
 		}
@@ -380,14 +396,25 @@ do {
 	}
 	
 	ramActivities = operationQueue.detach {
-		let from = Date(); defer {print("ramActivities\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/ramActivities.json"), type: Schema.Activities.self).map {($0.activityID, try .init(SDERamActivity($0)))})
+        let activities = try [
+            SDERamActivity(0, "None", true, nil),
+            SDERamActivity(1, "Manufacturing", true, "18_02"),
+            SDERamActivity(2, "Researching Technology", false, "33_02"),
+            SDERamActivity(3, "Researching Time Productivity", true, "33_02"),
+            SDERamActivity(4, "Researching Material productivity", true, "33_02"),
+            SDERamActivity(5, "Copying", true, "33_02"),
+            SDERamActivity(6, "Duplicating", false, nil),
+            SDERamActivity(7, "Reverse Engineering", true, "33_02"),
+            SDERamActivity(8, "Invention", true, "33_02"),
+            SDERamActivity(11, "Unnamed", true, "18_02"),
+        ]
+        return Dictionary(uniqueKeysWithValues: activities.map{(Int($0.activityID), .init($0))})
 	}
 
-	ramAssemblyLineTypes = operationQueue.detach {
-		let from = Date(); defer {print("ramAssemblyLineTypes\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/ramAssemblyLineTypes.json"), type: Schema.AssemblyLineTypes.self).map {($0.assemblyLineTypeID, try .init(SDERamAssemblyLineType($0)))})
-	}
+//	ramAssemblyLineTypes = operationQueue.detach {
+//		let from = Date(); defer {print("ramAssemblyLineTypes\t\(Date().timeIntervalSince(from))s")}
+//		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/ramAssemblyLineTypes.json"), type: Schema.AssemblyLineTypes.self).map {($0.assemblyLineTypeID, try .init(SDERamAssemblyLineType($0)))})
+//	}
 
 //	_ = operationQueue.detach {
 //		let from = Date(); defer {print("ramInstallationTypeContents\t\(Date().timeIntervalSince(from))s")}

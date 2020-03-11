@@ -207,7 +207,8 @@ extension SDEInvType {
 		}
 		
 		if published {
-			try metaGroup = invMetaGroups.get()[metaTypes.get()[type.key]?.metaGroupID ?? defaultMetaGroupID]?.object()
+            try metaGroup = invMetaGroups.get()[type.value.metaGroupID ?? defaultMetaGroupID]?.object()
+//			try metaGroup = invMetaGroups.get()[metaTypes.get()[type.key]?.metaGroupID ?? defaultMetaGroupID]?.object()
 		}
 		else {
 			try metaGroup = unpublishedMetaGroup.object()
@@ -281,10 +282,10 @@ extension SDEInvType {
 }
 
 extension SDEInvMetaGroup {
-	convenience init(_ metaGroup: MetaGroup) {
+    convenience init(_ id: Int, _ metaGroup: MetaGroup) {
 		self.init(context: .current)
-		metaGroupID = Int32(metaGroup.metaGroupID)
-		metaGroupName = metaGroup.metaGroupName
+		metaGroupID = Int32(id)
+        metaGroupName = metaGroup.nameID.en
 	}
 }
 
@@ -350,6 +351,22 @@ extension SDEChrRace {
 			try icon = .icon(iconID: iconID)
 		}
 	}
+}
+
+extension SDEChrAncestry {
+    convenience init(_ ancestry: Ancestry) throws {
+        self.init(context: .current)
+        ancestryID = Int32(ancestry.ancestryID)
+        ancestryName = ancestry.ancestryName
+    }
+}
+
+extension SDEChrBloodline {
+    convenience init(_ bloodline: Bloodline) throws {
+        self.init(context: .current)
+        bloodlineID = Int32(bloodline.bloodlineID)
+        bloodlineName = bloodline.bloodlineName
+    }
 }
 
 extension SDEChrFaction {
@@ -476,39 +493,39 @@ extension SDEStaStation {
 //}
 
 extension SDERamActivity {
-	convenience init(_ activity: Activity) throws {
+    convenience init(_ id: Int32, _ name: String, _ published: Bool, _ icon: String?) throws {
 		self.init(context: .current)
-		activityID = Int32(activity.activityID)
-		activityName = activity.activityName
-		published = activity.published
-		if let iconName = activity.iconNo {
-			try icon = .icon(iconName: iconName)
+		activityID = id
+		activityName = name
+        self.published = published
+		if let iconName = icon {
+            try self.icon = .icon(iconName: iconName)
 		}
 	}
 }
 
-extension SDERamAssemblyLineType {
-	convenience init(_ assemblyLineType: AssemblyLineType) throws {
-		self.init(context: .current)
-		assemblyLineTypeID = Int32(assemblyLineType.assemblyLineTypeID)
-		assemblyLineTypeName = assemblyLineType.assemblyLineTypeName
-		baseTimeMultiplier = Float(assemblyLineType.baseTimeMultiplier)
-		baseMaterialMultiplier = Float(assemblyLineType.baseMaterialMultiplier)
-		baseCostMultiplier = Float(assemblyLineType.baseCostMultiplier ?? 0)
-		minCostPerHour = Float(assemblyLineType.minCostPerHour ?? 0)
-		volume = Float(assemblyLineType.volume)
-		try activity = ramActivities.get()[assemblyLineType.activityID]!.object()
-	}
-}
+//extension SDERamAssemblyLineType {
+//	convenience init(_ assemblyLineType: AssemblyLineType) throws {
+//		self.init(context: .current)
+//		assemblyLineTypeID = Int32(assemblyLineType.assemblyLineTypeID)
+//		assemblyLineTypeName = assemblyLineType.assemblyLineTypeName
+//		baseTimeMultiplier = Float(assemblyLineType.baseTimeMultiplier)
+//		baseMaterialMultiplier = Float(assemblyLineType.baseMaterialMultiplier)
+//		baseCostMultiplier = Float(assemblyLineType.baseCostMultiplier ?? 0)
+//		minCostPerHour = Float(assemblyLineType.minCostPerHour ?? 0)
+//		volume = Float(assemblyLineType.volume)
+//		try activity = ramActivities.get()[assemblyLineType.activityID]!.object()
+//	}
+//}
 
-extension SDERamInstallationTypeContent {
-	convenience init(_ installationTypeContent: InstallationTypeContent) throws {
-		self.init(context: .current)
-		quantity = Int32(installationTypeContent.quantity)
-		try assemblyLineType = ramAssemblyLineTypes.get()[installationTypeContent.assemblyLineTypeID]!.object()
-		try installationType = invTypes.get()[installationTypeContent.installationTypeID]!.object()
-	}
-}
+//extension SDERamInstallationTypeContent {
+//	convenience init(_ installationTypeContent: InstallationTypeContent) throws {
+//		self.init(context: .current)
+//		quantity = Int32(installationTypeContent.quantity)
+//		try assemblyLineType = ramAssemblyLineTypes.get()[installationTypeContent.assemblyLineTypeID]!.object()
+//		try installationType = invTypes.get()[installationTypeContent.installationTypeID]!.object()
+//	}
+//}
 
 extension SDENpcGroup {
 	convenience init (_ npcGroup: NPCGroup) throws {

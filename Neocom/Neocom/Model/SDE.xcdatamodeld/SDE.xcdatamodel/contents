@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="19B88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19D76" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CertCertificate" representedClassName="SDECertCertificate" syncable="YES" codeGenerationType="class">
         <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="certificateName" optional="YES" attributeType="String"/>
@@ -382,7 +382,6 @@
         <attribute name="activityID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="activityName" optional="YES" attributeType="String"/>
         <attribute name="published" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <relationship name="assemblyLineTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamAssemblyLineType" inverseName="activity" inverseEntity="RamAssemblyLineType"/>
         <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon"/>
         <relationship name="indActivities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="activity" inverseEntity="IndActivity"/>
         <fetchIndex name="byActivityIDIndex">
@@ -391,25 +390,6 @@
         <fetchIndex name="byPublishedIndex">
             <fetchIndexElement property="published" type="Binary" order="ascending"/>
         </fetchIndex>
-    </entity>
-    <entity name="RamAssemblyLineType" representedClassName="SDERamAssemblyLineType" syncable="YES" codeGenerationType="class">
-        <attribute name="assemblyLineTypeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="assemblyLineTypeName" optional="YES" attributeType="String"/>
-        <attribute name="baseCostMultiplier" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="baseMaterialMultiplier" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="baseTimeMultiplier" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="minCostPerHour" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="volume" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RamActivity" inverseName="assemblyLineTypes" inverseEntity="RamActivity"/>
-        <relationship name="installationTypeContents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamInstallationTypeContent" inverseName="assemblyLineType" inverseEntity="RamInstallationTypeContent"/>
-        <fetchIndex name="byAssemblyLineTypeIDIndex">
-            <fetchIndexElement property="assemblyLineTypeID" type="Binary" order="ascending"/>
-        </fetchIndex>
-    </entity>
-    <entity name="RamInstallationTypeContent" representedClassName="SDERamInstallationTypeContent" syncable="YES" codeGenerationType="class">
-        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="assemblyLineType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RamAssemblyLineType" inverseName="installationTypeContents" inverseEntity="RamAssemblyLineType"/>
-        <relationship name="installationType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType"/>
     </entity>
     <entity name="StaStation" representedClassName="SDEStaStation" syncable="YES" codeGenerationType="class">
         <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -479,8 +459,6 @@
         <memberEntity name="MapUniverse"/>
         <memberEntity name="NpcGroup"/>
         <memberEntity name="RamActivity"/>
-        <memberEntity name="RamAssemblyLineType"/>
-        <memberEntity name="RamInstallationTypeContent"/>
         <memberEntity name="StaStation"/>
         <memberEntity name="TxtDescription"/>
         <memberEntity name="WhType"/>
@@ -526,9 +504,7 @@
         <element name="MapSolarSystem" positionX="108" positionY="252" width="128" height="150"/>
         <element name="MapUniverse" positionX="-189" positionY="180" width="128" height="90"/>
         <element name="NpcGroup" positionX="117" positionY="261" width="128" height="120"/>
-        <element name="RamActivity" positionX="63" positionY="207" width="128" height="135"/>
-        <element name="RamAssemblyLineType" positionX="72" positionY="216" width="128" height="180"/>
-        <element name="RamInstallationTypeContent" positionX="81" positionY="225" width="128" height="90"/>
+        <element name="RamActivity" positionX="63" positionY="207" width="128" height="118"/>
         <element name="StaStation" positionX="99" positionY="243" width="128" height="120"/>
         <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="90"/>
         <element name="WhType" positionX="-189" positionY="180" width="128" height="135"/>

@@ -221,20 +221,18 @@ struct MarketGroup: Codable {
 }
 
 struct MetaGroup: Codable {
-	var metaGroupID: Int
-	var metaGroupName: String?
-	var description: String?
-    var dataID: Int?
+    var nameID: LocalizedString
     var iconID: Int?
-    var metaGroupNameID: Int?
-    var descriptionID: Int?
+    var iconSuffix: String?
+//    var metaGroupNameID: Int?
+    var descriptionID: LocalizedString?
 }
 
-struct MetaType: Codable {
-	var metaGroupID: Int
-	var parentTypeID: Int
-	var typeID: Int
-}
+//struct MetaType: Codable {
+//	var metaGroupID: Int
+//	var parentTypeID: Int
+//	var typeID: Int
+//}
 
 struct Name: Codable {
 	var itemID: Int
@@ -538,9 +536,12 @@ struct AttributeType: Codable {
 struct TypeAttribute: Codable {
 	var attributeID: Int
 	var typeID: Int
-	var value: Double?
-//	var valueInt: Int?
-//	var valueFloat: Double?
+//	var value: Double?
+	var valueInt: Int?
+	var valueFloat: Double?
+    var value: Double? {
+        valueFloat ?? valueInt.map{Double($0)}
+    }
 }
 
 struct Effect: Codable {
@@ -601,8 +602,8 @@ enum Schema {
 	typealias Flags = [Flag]
 	typealias Items = [Item]
     typealias MarketGroups = [Int: MarketGroup]
-	typealias MetaGroups = [MetaGroup]
-	typealias MetaTypes = [MetaType]
+    typealias MetaGroups = [Int: MetaGroup]
+//	typealias MetaTypes = [MetaType]
 	typealias Names = [Name]
 	typealias TypeMaterials = [TypeMaterial]
 	typealias TypeReactions = [TypeReaction]

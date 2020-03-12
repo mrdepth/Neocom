@@ -63,14 +63,9 @@ struct WealthTitle: View {
     var body: some View {
         let label = title.modifier(AnimatableISKModifier(isk: isk))
             .padding(4)
-//            .aspectRatio(1, contentMode: .fill)
             .background(Color(.quaternarySystemFill).cornerRadius(8))
             .foregroundColor(.accentColor)
-
-            .background(GeometryReader { geometry in
-                Color.clear.preference(key: SizePreferenceKey.self, value: [geometry.size])
-            })
-//            .frame(height: 10)
+            .sizePreference(WealthTitle.self)
             .opacity(isk > 0.0 ? 1.0 : 0.0)
             .font(.footnote)
             .rotationEffect(angle)
@@ -160,7 +155,7 @@ struct WealthChart: View {
         }
         .animation(.easeOut(duration: 1)).aspectRatio(1, contentMode: .fit)
         .padding(80)
-        .onPreferenceChange(SizePreferenceKey.self) { self.titleSizes = $0}
+        .onSizeChange(WealthTitle.self) { self.titleSizes = $0}
     }
 }
 

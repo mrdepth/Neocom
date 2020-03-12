@@ -48,3 +48,19 @@ class IdentifiableWrapper<Value>: Identifiable {
 extension Font {
     static let title2 = Font(UIFont.preferredFont(forTextStyle: .title2))
 }
+
+
+extension View {
+    /**Append preference AppendPreferenceKey<CGSize, ID>*/
+    func sizePreference<ID>(_ id: ID.Type = ID.self) -> some View {
+        self.background(GeometryReader { geometry in
+            Color.clear.preference(key: AppendPreferenceKey<CGSize, ID>.self, value: [geometry.size])
+        })
+    }
+    
+    func onSizeChange<ID>(_ id: ID.Type = ID.self, perform action: @escaping (AppendPreferenceKey<CGSize, ID>.Value) -> Void) -> some View {
+        onPreferenceChange(AppendPreferenceKey<CGSize, ID>.self, perform: action)
+    }
+}
+
+

@@ -13,25 +13,19 @@ struct FittingEditorShipModulesHeader: View {
     @EnvironmentObject private var ship: DGMShip
     
     var body: some View {
-        let powerGrid = ShipResource(used: ship.usedPowerGrid, total: ship.totalPowerGrid, unit: .megaWatts, image: Image("powerGrid"), style: .progress)
-        let cpu = ShipResource(used: ship.usedCPU, total: ship.totalCPU, unit: .teraflops, image: Image("cpu"), style: .progress)
-        let calibration = ShipResource(used: ship.usedCalibration, total: ship.totalCalibration, unit: .none, image: Image("calibration"), style: .progress)
-        let turrets = ShipResource(used: ship.usedHardpoints(.turret), total: ship.totalHardpoints(.turret), unit: .none, image: Image("turrets"), style: .counter)
-        let launchers = ShipResource(used: ship.usedHardpoints(.launcher), total: ship.totalHardpoints(.launcher), unit: .none, image: Image("launchers"), style: .counter)
-
-        return VStack(spacing: 2) {
+        VStack(spacing: 2) {
             HStack {
-                powerGrid
-                cpu
+                PowerGridResource()
+                CPUResource()
             }
             HStack {
-                calibration
+                CalibrationResource()
                 HStack {
-                    turrets.frame(maxWidth: .infinity, alignment: .leading)
-                    launchers.frame(maxWidth: .infinity, alignment: .leading)
+                    TurretsResource().frame(maxWidth: .infinity, alignment: .leading)
+                    LaunchersResource().frame(maxWidth: .infinity, alignment: .leading)
                 }.frame(maxWidth: .infinity)
             }
-        }.font(.caption)
+        }
     }
 }
 

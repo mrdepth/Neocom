@@ -13,14 +13,10 @@ struct FittingEditorShipDronesHeader: View {
     @EnvironmentObject private var ship: DGMShip
     
     var body: some View {
-        let droneBandwidth = ShipResource(used: ship.usedDroneBandwidth, total: ship.totalDroneBandwidth, unit: .megaBitsPerSecond, image: Image("droneBandwidth"), style: .progress)
-        let droneBay = ShipResource(used: ship.usedDroneBay, total: ship.totalDroneBay, unit: .cubicMeter, image: Image("droneCapacity"), style: .progress)
-        let dronesCount = ShipResource(used: ship.usedDroneSquadron(.none), total: ship.totalDroneSquadron(.none), unit: .none, image: Image("drone"), style: .counter)
-
-        return HStack {
-            droneBandwidth.frame(maxWidth: .infinity)
-            droneBay.frame(maxWidth: .infinity)
-            dronesCount
+        HStack {
+            DroneBandwidthResource()
+            DroneBayResource()
+            DronesCountResource()
         }.font(.caption)
     }
 }

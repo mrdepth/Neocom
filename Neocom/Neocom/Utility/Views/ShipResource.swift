@@ -55,7 +55,7 @@ struct ShipResource: View {
 //                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-        }
+        }.font(.caption)
     }
 }
 
@@ -64,6 +64,6 @@ struct ShipResource_Previews: PreviewProvider {
         HStack {
             ShipResource(used: 100, total: 200, unit: .teraflops, image: Image("cpu"), style: .progress)
             ShipResource(used: 100, total: 200, unit: .teraflops, image: Image("cpu"), style: .counter)
-        }.font(.caption)
+        }
     }
 }

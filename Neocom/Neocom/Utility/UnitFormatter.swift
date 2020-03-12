@@ -19,8 +19,18 @@ class UnitFormatter: Formatter {
         return numberFormatter
     }()
     
-    var style: Style = .long
     var unit: Unit = .none
+    var style: Style = .long
+    
+    init(unit: Unit = .none, style: Style = .long) {
+        self.unit = unit
+        self.style = style
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
     
     func string(from value: Double) -> String {
         let scale: Scale
@@ -62,53 +72,25 @@ class UnitFormatter: Formatter {
         return string(from: value)
     }
     
-    class func localizedString(from value: Double, unit: Unit, style: Style) -> String {
-        let formatter = UnitFormatter()
-        formatter.style = style
-        formatter.unit = unit
-        return formatter.string(from: value)
+    class func localizedString<T: BinaryFloatingPoint>(from value: T, unit: Unit, style: Style) -> String {
+        let formatter = UnitFormatter(unit: unit, style: style)
+        return formatter.string(from: Double(value))
     }
     
-    class func localizedString(from value: Float, unit: Unit, style: Style) -> String {
-        return localizedString(from: Double(value), unit: unit, style: style)
+    class func localizedString<T: BinaryInteger>(from value: T, unit: Unit, style: Style) -> String {
+        localizedString(from: Double(value), unit: unit, style: style)
     }
     
-    class func localizedString(from value: Int, unit: Unit, style: Style) -> String {
-        return localizedString(from: Double(value), unit: unit, style: style)
-    }
-
-    class func localizedString(from value: Int32, unit: Unit, style: Style) -> String {
-        return localizedString(from: Double(value), unit: unit, style: style)
-    }
-
-    class func localizedString(from value: Int64, unit: Unit, style: Style) -> String {
-        return localizedString(from: Double(value), unit: unit, style: style)
-    }
-
-    class func localizedString(from range: ClosedRange<Double>, unit: Unit, style: Style) -> String {
-        let formatter = UnitFormatter()
-        formatter.style = style
-        formatter.unit = .none
-        let a = formatter.string(from: range.lowerBound)
+    class func localizedString<T: BinaryFloatingPoint>(from range: ClosedRange<T>, unit: Unit, style: Style) -> String {
+        let formatter = UnitFormatter(unit: .none, style: style)
+        let a = formatter.string(from: Double(range.lowerBound))
         formatter.unit = unit
-        let b = formatter.string(from: range.upperBound)
+        let b = formatter.string(from: Double(range.upperBound))
         return "\(a)/\(b)"
     }
     
-    class func localizedString(from range: ClosedRange<Float>, unit: Unit, style: Style) -> String {
-        return localizedString(from: Double(range.lowerBound)...Double(range.upperBound), unit: unit, style: style)
-    }
-
-    class func localizedString(from range: ClosedRange<Int>, unit: Unit, style: Style) -> String {
-        return localizedString(from: Double(range.lowerBound)...Double(range.upperBound), unit: unit, style: style)
-    }
-
-    class func localizedString(from range: ClosedRange<Int32>, unit: Unit, style: Style) -> String {
-        return localizedString(from: Double(range.lowerBound)...Double(range.upperBound), unit: unit, style: style)
-    }
-
-    class func localizedString(from range: ClosedRange<Int64>, unit: Unit, style: Style) -> String {
-        return localizedString(from: Double(range.lowerBound)...Double(range.upperBound), unit: unit, style: style)
+    class func localizedString<T: BinaryInteger>(from range: ClosedRange<T>, unit: Unit, style: Style) -> String {
+        localizedString(from: Double(range.lowerBound)...Double(range.upperBound), unit: unit, style: style)
     }
 
 }

@@ -8,15 +8,23 @@
 
 import SwiftUI
 
-struct SizePreferenceKey: PreferenceKey {
-    static var defaultValue: Value = []
-    
+struct AppendPreferenceKey<Element: Equatable, ID>: PreferenceKey {
+    static var defaultValue: Value { [] }
     static func reduce(value: inout Value, nextValue: () -> Value) {
         value += nextValue()
     }
-    
-    typealias Value = [CGSize]
+    typealias Value = [Element]
 }
+
+//struct SizePreferenceKey: PreferenceKey {
+//    static var defaultValue: Value = []
+//
+//    static func reduce(value: inout Value, nextValue: () -> Value) {
+//        value += nextValue()
+//    }
+//
+//    typealias Value = [CGSize]
+//}
 
 struct FramePreferenceKey: PreferenceKey {
     static var defaultValue: Value = []

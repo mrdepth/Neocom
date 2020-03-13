@@ -72,7 +72,9 @@ struct FittingEditorPriceStats: View {
                                 cell(title: Text(type?.typeName ?? ""), image: type?.image ?? Image("priceShip"), price: ship)
                             }
                             if modules > 0 {
-                                cell(title: Text("Modules"), image: Image("priceFitting"), price: modules)
+                                NavigationLink(destination: FittingEditorModulesPrice(prices: prices ?? [:])) {
+                                    cell(title: Text("Modules"), image: Image("priceFitting"), price: modules)
+                                }
                             }
                             if charges > 0 {
                                 cell(title: Text("Charges"), image: Image("damagePattern"), price: charges)
@@ -99,11 +101,13 @@ struct FittingEditorPriceStats: View {
 struct FittingEditorPriceStats_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
-        return List {
-            FittingEditorPriceStats()
-        }.listStyle(GroupedListStyle())
-            .environmentObject(gang.pilots.first!.ship!)
-            .environmentObject(gang)
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        return NavigationView {
+            List {
+                FittingEditorPriceStats()
+            }.listStyle(GroupedListStyle())
+        }
+        .environmentObject(gang.pilots.first!.ship!)
+        .environmentObject(gang)
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

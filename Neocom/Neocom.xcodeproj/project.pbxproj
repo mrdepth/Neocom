@@ -123,6 +123,7 @@
 		169724742404F3BE00B5152A /* TypePickerGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169724732404F3BE00B5152A /* TypePickerGroups.swift */; };
 		169724782404F8BB00B5152A /* TypePickerTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169724772404F8BB00B5152A /* TypePickerTypes.swift */; };
 		16977BEB23FA66C0002725CD /* MailBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16977BEA23FA66C0002725CD /* MailBody.swift */; };
+		169780BC241B5914001679AD /* FittingEditorModulesPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169780BB241B5914001679AD /* FittingEditorModulesPrice.swift */; };
 		1698919F238E4BA500FBA0B3 /* ObservedObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1698919E238E4BA500FBA0B3 /* ObservedObjectView.swift */; };
 		169891A1238E50AC00FBA0B3 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169891A0238E50AC00FBA0B3 /* Types.swift */; };
 		169891A3238E53D600FBA0B3 /* TypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169891A2238E53D600FBA0B3 /* TypeCell.swift */; };
@@ -371,6 +372,7 @@
 		169724732404F3BE00B5152A /* TypePickerGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypePickerGroups.swift; sourceTree = "<group>"; };
 		169724772404F8BB00B5152A /* TypePickerTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypePickerTypes.swift; sourceTree = "<group>"; };
 		16977BEA23FA66C0002725CD /* MailBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailBody.swift; sourceTree = "<group>"; };
+		169780BB241B5914001679AD /* FittingEditorModulesPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorModulesPrice.swift; sourceTree = "<group>"; };
 		1698919E238E4BA500FBA0B3 /* ObservedObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservedObjectView.swift; sourceTree = "<group>"; };
 		169891A0238E50AC00FBA0B3 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		169891A2238E53D600FBA0B3 /* TypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeCell.swift; sourceTree = "<group>"; };
@@ -840,6 +842,7 @@
 				16D16EB5241A685200EF9F76 /* FittingEditorMiningStats.swift */,
 				16D16EB7241A6A2600EF9F76 /* FittingEditorMiscStats.swift */,
 				167725EC241A71AB0089BB94 /* FittingEditorPriceStats.swift */,
+				169780BB241B5914001679AD /* FittingEditorModulesPrice.swift */,
 				169D2800241A0D25002AB469 /* PowerGridResource.swift */,
 				169D2802241A0E0F002AB469 /* CPUResource.swift */,
 				169D2804241A0E3A002AB469 /* CalibrationResource.swift */,
@@ -1208,6 +1211,7 @@
 				16C66D0823F57939009AEB72 /* IndustryJobsData.swift in Sources */,
 				16101BC723F5402B0028600F /* WalletTransactionsData.swift in Sources */,
 				1693A85823FD27A90033A793 /* TextAttachmentContact.swift in Sources */,
+				169780BC241B5914001679AD /* FittingEditorModulesPrice.swift in Sources */,
 				12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */,
 				1638690923EC217400681612 /* Atomic.swift in Sources */,
 				16AE40F1238FDAD000C6E25B /* ModuleTypeCell.swift in Sources */,

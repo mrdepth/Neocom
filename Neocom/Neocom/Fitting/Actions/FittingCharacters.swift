@@ -9,10 +9,12 @@
 import SwiftUI
 
 struct FittingCharacters: View {
+    var onSelect: (URL, DGMSkillLevels) -> Void
+    
     var body: some View {
 		List {
-			FittingCharactersAccounts()
-			FittingCharactersPredefined()
+			FittingCharactersAccounts(onSelect: onSelect)
+			FittingCharactersPredefined(onSelect: onSelect)
 		}.listStyle(GroupedListStyle())
 		.navigationBarTitle("Characters")
     }
@@ -22,7 +24,9 @@ struct FittingCharacters_Previews: PreviewProvider {
     static var previews: some View {
 		_ = AppDelegate.sharedDelegate.testingAccount!
 		return NavigationView {
-			FittingCharacters()
+            FittingCharacters { _, _ in
+                
+            }
 		}.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

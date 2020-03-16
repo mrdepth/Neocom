@@ -9,7 +9,8 @@
 import SwiftUI
 
 struct FittingCharactersPredefined: View {
-	
+	var onSelect: (URL, DGMSkillLevels) -> Void
+    
 	private func level(_ l: Int) -> String {
 		l == 0 ? "0" : String(roman: l)
 	}
@@ -17,7 +18,7 @@ struct FittingCharactersPredefined: View {
     var body: some View {
 		Section(header: Text("PREDEFINED")) {
 			ForEach(0..<5) { i in
-				FittingCharacterCell(i)
+                FittingCharacterCell(i, onSelect: self.onSelect)
 			}
 		}
     }
@@ -26,7 +27,7 @@ struct FittingCharactersPredefined: View {
 struct FittingCharactersPredefined_Previews: PreviewProvider {
     static var previews: some View {
 		List {
-			FittingCharactersPredefined()
+            FittingCharactersPredefined {_, _ in}
 		}.listStyle(GroupedListStyle())
     }
 }

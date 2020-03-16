@@ -296,15 +296,28 @@ extension DGMCharacter {
 	var url: URL? {
 		return URL(string: name)
 	}
+    
+    func setSkillLevels(_ levels: DGMSkillLevels) {
+        switch levels {
+        case let .levelsMap(levels):
+            setSkillLevels(levels)
+        case let .level(level):
+            setSkillLevels(level)
+        }
+    }
 }
 
 enum DGMSkillLevels {
     case levelsMap([DGMTypeID: Int])
     case level(Int)
     
-    static func fromAccount(_ account: Account, esi: ESI) -> AnyPublisher<DGMSkillLevels, AFError> {
-        esi.characters.characterID(Int(account.characterID)).skills().get().map { skills in
+    static func fromAccount(_ account: Account) -> AnyPublisher<DGMSkillLevels, Error> {
+        guard let token = account.oAuth2Token else {return Fail(error: RuntimeError.invalidOAuth2TOken).eraseToAnyPublisher()}
+        let esi = ESI(token: token)
+        return esi.characters.characterID(Int(account.characterID)).skills().get().map { skills in
             .levelsMap(Dictionary(skills.value.skills.map{(DGMTypeID($0.skillID), $0.trainedSkillLevel)}) {a, b in max(a, b)})
-        }.eraseToAnyPublisher()
+        }
+        .mapError{$0 as Error}
+        .eraseToAnyPublisher()
     }
 }

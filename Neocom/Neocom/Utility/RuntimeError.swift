@@ -11,4 +11,5 @@ import Foundation
 enum RuntimeError: Error {
     case noAccount
     case noResult
+    case invalidOAuth2TOken
 }

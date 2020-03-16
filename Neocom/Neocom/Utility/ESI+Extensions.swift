@@ -35,11 +35,11 @@ extension ESI {
     typealias RecipientType = ESI.Characters.CharacterID.Mail.RecipientType
     typealias MarketOrders = [ESI.Characters.CharacterID.Orders.Success]
     typealias IndustryJobs = [ESI.Characters.CharacterID.Industry.Jobs.Success]
-    typealias IndustryJobStatus = ESI.Characters.CharacterID.Industry.Jobs.Status
-    typealias PersonalContracts = [ESI.Characters.CharacterID.Contracts.Success]
-    typealias ContractStatus = ESI.Characters.CharacterID.Contracts.Status
-    typealias ContractItems = [ESI.Characters.CharacterID.Contracts.ContractID.Items.Success]
-    typealias ContractBids = [ESI.Characters.CharacterID.Contracts.ContractID.Bids.Success]
+    typealias IndustryJobStatus = ESI.Corporations.CorporationID.Industry.Jobs.Status
+    typealias PersonalContracts = [ESI.Corporations.CorporationID.Contracts.Success]
+    typealias ContractStatus = ESI.Corporations.CorporationID.Contracts.Status
+    typealias ContractItems = [ESI.Corporations.CorporationID.Contracts.ContractID.Items.Success]
+    typealias ContractBids = [ESI.Corporations.CorporationID.Contracts.ContractID.Bids.Success]
     typealias MailLabels = ESI.Characters.CharacterID.Mail.Labels.Success
     typealias MailLabel = ESI.Characters.CharacterID.Mail.Labels.Label
     typealias MailHeaders = [ESI.Characters.CharacterID.Mail.Success]
@@ -69,7 +69,7 @@ extension ESI.Characters.CharacterID.Industry.Jobs.Success {
     }
 }
 
-extension ESI.Characters.CharacterID.Contracts.Success {
+extension ESI.Corporations.CorporationID.Contracts.Success {
     var currentStatus: ESI.ContractStatus {
         switch status {
         case .outstanding, .inProgress:
@@ -115,7 +115,7 @@ extension ESI.ContractStatus {
     
 }
 
-extension ESI.Characters.ValueType {
+extension ESI.Contracts.ValueType {
     var title: String {
         switch self {
         case .auction:
@@ -132,7 +132,7 @@ extension ESI.Characters.ValueType {
     }
 }
 
-extension ESI.Characters.Availability {
+extension ESI.Corporations.Availability {
     var title: String {
         switch self {
         case .alliance:

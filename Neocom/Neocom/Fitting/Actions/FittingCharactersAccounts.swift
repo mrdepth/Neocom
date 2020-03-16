@@ -10,13 +10,15 @@ import SwiftUI
 import EVEAPI
 
 struct FittingCharactersAccounts: View {
+    var onSelect: (URL, DGMSkillLevels) -> Void
+    
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.characterName, ascending: true)])
-    var accounts: FetchedResults<Account>
+    private var accounts: FetchedResults<Account>
 
     var body: some View {
 		Section(header: Text("ACCOUNTS")) {
 			ForEach(accounts, id: \.objectID) { account in
-				FittingCharacterCell(account)
+                FittingCharacterCell(account, onSelect: self.onSelect)
 			}
 		}
     }
@@ -26,7 +28,7 @@ struct FittingCharactersAccounts_Previews: PreviewProvider {
     static var previews: some View {
 		_ = AppDelegate.sharedDelegate.testingAccount!
 		return List {
-			FittingCharactersAccounts()
+			FittingCharactersAccounts {_, _ in}
 		}.listStyle(GroupedListStyle())
 		.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }

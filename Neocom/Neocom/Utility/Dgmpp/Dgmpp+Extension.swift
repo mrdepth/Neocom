@@ -11,6 +11,8 @@ import Dgmpp
 import CoreData
 import Expressible
 import Combine
+import EVEAPI
+import Alamofire
 
 extension DGMType {
     func type(from managedObjectContext: NSManagedObjectContext) -> SDEInvType? {
@@ -294,5 +296,15 @@ extension DGMCharacter {
 	var url: URL? {
 		return URL(string: name)
 	}
-	
+}
+
+enum DGMSkillLevels {
+    case levelsMap([DGMTypeID: Int])
+    case level(Int)
+    
+    static func fromAccount(_ account: Account, esi: ESI) -> AnyPublisher<DGMSkillLevels, AFError> {
+        esi.characters.characterID(Int(account.characterID)).skills().get().map { skills in
+            .levelsMap(Dictionary(skills.value.skills.map{(DGMTypeID($0.skillID), $0.trainedSkillLevel)}) {a, b in max(a, b)})
+        }.eraseToAnyPublisher()
+    }
 }

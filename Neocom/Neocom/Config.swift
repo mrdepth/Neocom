@@ -17,6 +17,7 @@ struct Config {
         var callbackURL = URL(string: "eveauthnc://sso/")!
     }
     var esi = ESI()
+	var urlScheme = "nc"
 }
 
 

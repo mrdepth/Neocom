@@ -157,7 +157,10 @@ public enum SDECategoryID: Int32 {
     case planetaryResource = 42
     case reaction = 24
     case entity = 11
-    
+}
+
+public enum SDEGroupID: Int32 {
+	case effectBeacon = 920
 }
 
 public enum SDERegionID: Int32 {

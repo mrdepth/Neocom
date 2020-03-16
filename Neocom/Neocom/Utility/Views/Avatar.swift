@@ -19,7 +19,6 @@ struct Avatar: View {
     }
     
     private var source: Source
-//    @ObservedObject private var imageLoader = Lazy<DataLoader<UIImage, AFError>>()
     @Environment(\.esi) private var esi
 
     init(image: Image?) {
@@ -39,25 +38,6 @@ struct Avatar: View {
     }
 
     var body: some View {
-        /*let image: Image?
-        let isCharacter: Bool
-        switch source {
-        case let .image(value):
-            image = value
-            isCharacter = true
-        case let .character(characterID, size):
-            let uiImage = imageLoader.get(initial: DataLoader(esi.image.character(Int(characterID), size: size))).result?.value
-            image = uiImage.map{Image(uiImage: $0)}
-            isCharacter = true
-        case let .corporation(corporationID, size):
-            let uiImage = imageLoader.get(initial: DataLoader(esi.image.corporation(Int(corporationID), size: size))).result?.value
-            image = uiImage.map{Image(uiImage: $0)}
-            isCharacter = false
-        case let .alliance(allianceID, size):
-            let uiImage = imageLoader.get(initial: DataLoader(esi.image.alliance(Int(allianceID), size: size))).result?.value
-            image = uiImage.map{Image(uiImage: $0)}
-            isCharacter = false
-        }*/
         let isCharacter: Bool
         switch source {
         case .character, .image:

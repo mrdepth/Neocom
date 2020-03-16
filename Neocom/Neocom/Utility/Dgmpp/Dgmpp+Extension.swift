@@ -225,3 +225,74 @@ extension DGMShip {
 
 #endif
 
+
+extension DGMCharacter {
+	class func url(account: Account) -> URL? {
+		guard let uuid = account.uuid else {return nil}
+		var components = URLComponents()
+		components.scheme = Config.current.urlScheme
+		components.host = "character"
+		
+		var queryItems = [URLQueryItem(name: "accountUUID", value: uuid)]
+		
+		if let name = account.characterName {
+			queryItems.append(URLQueryItem(name: "name", value: name))
+		}
+		queryItems.append(URLQueryItem(name: "characterID", value: "\(account.characterID)"))
+		
+		components.queryItems = queryItems
+		return components.url!
+	}
+	
+	class func url(level: Int) -> URL {
+		var components = URLComponents()
+		components.scheme = Config.current.urlScheme
+		components.host = "character"
+		components.queryItems = [
+			URLQueryItem(name: "level", value: String(level)),
+			URLQueryItem(name: "name", value: NSLocalizedString("All Skills", comment: "") + " " + String(roman: level))
+		]
+		return components.url!
+	}
+	
+	class func url(character: FitCharacter) -> URL? {
+		guard let uuid = character.uuid else {return nil}
+		var components = URLComponents()
+		components.scheme = Config.current.urlScheme
+		components.host = "character"
+		components.queryItems = [
+			URLQueryItem(name: "characterUUID", value: uuid),
+			URLQueryItem(name: "name", value: character.name ?? "")
+		]
+		return components.url!
+	}
+	
+	var account: NSFetchRequest<Account>? {
+		guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
+		guard let accountUUID = components.queryItems?.first(where: {$0.name == "accountUUID"})?.value else {return nil}
+		let request = NSFetchRequest<Account>(entityName: "Account")
+		request.predicate = (/\Account.uuid == accountUUID).predicate()
+		request.fetchLimit = 1
+		return request
+	}
+	
+	var fitCharacter: NSFetchRequest<FitCharacter>? {
+		guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
+		guard let characterUUID = components.queryItems?.first(where: {$0.name == "characterUUID"})?.value else {return nil}
+		let request = NSFetchRequest<FitCharacter>(entityName: "FitCharacter")
+		request.predicate = (/\FitCharacter.uuid == characterUUID).predicate()
+		request.fetchLimit = 1
+		return request
+	}
+	
+	var level: Int? {
+		guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
+		guard let level = components.queryItems?.first(where: {$0.name == "level"})?.value else {return nil}
+		return Int(level)
+	}
+	
+	var url: URL? {
+		return URL(string: name)
+	}
+	
+}

@@ -39,19 +39,6 @@ extension NSManagedObjectContext {
 	}
 }
 
-
-public class LoadoutDescription: NSObject {
-	
-}
-
-public class ImplantSetDescription: NSObject {
-	
-}
-
-public class FleetDescription: NSObject {
-	
-}
-
 extension Account {
     
     convenience init(token: OAuth2Token, context: NSManagedObjectContext) {

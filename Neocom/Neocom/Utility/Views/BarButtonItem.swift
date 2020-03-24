@@ -17,6 +17,11 @@ enum BarButtonItems {
     static func trash(_ action: @escaping () -> Void) -> some View {
         BarButtonItem(action: action) { Image(systemName: "trash") }
     }
+    
+    static func actions(_ action: @escaping () -> Void) -> some View {
+        BarButtonItem(action: action) { Image(systemName: "ellipsis") }
+    }
+
 }
 
 
@@ -45,6 +50,7 @@ struct BarButtonItem_Previews: PreviewProvider {
             Color.clear
                 .navigationBarTitle(Text("Title"), displayMode: .inline)
                 .navigationBarItems(leading: BarButtonItems.close {}, trailing: BarButtonItems.trash {})
+                .overlay(BarButtonItems.actions {})
         }
     }
 }

@@ -10,34 +10,12 @@ import SwiftUI
 import Expressible
 import EVEAPI
 
-extension AnyTransition {
-    static func repeating<T: ViewModifier>(from: T, to: T, duration: Double = 1) -> AnyTransition {
-       .asymmetric(
-            insertion: AnyTransition
-                .modifier(active: from, identity: to)
-                .animation(Animation.easeInOut(duration: duration).repeatForever())
-                .combined(with: .opacity),
-            removal: .opacity
-        )
-    }
-}
-
-struct Opacity: ViewModifier {
-    private let opacity: Double
-    init(_ opacity: Double) {
-        self.opacity = opacity
-    }
-
-    func body(content: Content) -> some View {
-        content.opacity(opacity)
-    }
-}
-
 struct SkillCell: View {
     var type: SDEInvType
     var pilot: Pilot?
     var skillQueueItem: Pilot.SkillQueueItem?
     var skillPlanSkill: SkillPlanSkill?
+    var targetLevel: Int?
 
     private static var counter: Int = 0
     private static func getID() -> Int {
@@ -62,6 +40,12 @@ struct SkillCell: View {
         self.skillPlanSkill = skillPlanSkill
     }
 
+    init(type: SDEInvType, pilot: Pilot?, targetLevel: Int) {
+        self.type = type
+        self.pilot = pilot
+        self.targetLevel = targetLevel
+    }
+
     var body: some View {
         let skill = Pilot.Skill(type: type)
         
@@ -69,7 +53,7 @@ struct SkillCell: View {
         let trainedSkill = pilot?.trainedSkills[typeID]
 
         let trainedLevel = trainedSkill?.trainedSkillLevel ?? 0
-        let level = skillQueueItem?.queuedSkill.finishedLevel ?? trainedSkill?.trainedSkillLevel
+        let level = skillQueueItem?.queuedSkill.finishedLevel ?? targetLevel ?? trainedSkill?.trainedSkillLevel ?? 0
 
         let rank = Int(skill?.rank ?? 0)
         let sps = skill?.skillPointsPerSecond(with: pilot?.attributes ?? .default) ?? 0
@@ -98,6 +82,16 @@ struct SkillCell: View {
                 sp = max(skill.skillPoints(at: Int(skillPlanSkill.level - 1)), Int(trainedSkill?.skillpointsInSkill ?? 0))
                 endSP = skill.skillPoints(at: Int(skillPlanSkill.level))
                 trainingTime = TrainingQueue.Item(skill: skill, targetLevel: Int(skillPlanSkill.level), startSP: sp).trainingTime(with: pilot?.attributes ?? .default)
+            }
+            else {
+                trainingTime = 0
+            }
+        }
+        else if let target = self.targetLevel {
+            targetLevel = target
+            isActive = false
+            if let skill = skill {
+                trainingTime = trainedLevel < 5 ? TrainingQueue.Item(skill: skill, targetLevel: targetLevel, startSP: trainedSkill.map{Int($0.skillpointsInSkill)}).trainingTime(with: pilot?.attributes ?? .default) : 0
             }
             else {
                 trainingTime = 0
@@ -144,7 +138,7 @@ struct SkillCell: View {
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {
                     HStack {
-                        level.map{Text("LEVEL \(String(roman: $0))")}
+                        Text("LEVEL \(level > 0 ? String(roman: level) : "0")")
                         HStack(spacing: 1) {
                             ForEach(0..<5) { i in
                                 if isActive && i == trainedLevel {

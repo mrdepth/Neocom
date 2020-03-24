@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Dgmpp
 
 struct AttributeInfo: View {
     var attribute: SDEDgmTypeAttribute
@@ -41,26 +42,26 @@ struct AttributeInfo: View {
         return cell(title: "Warp Speed", subtitle: s, image: attributeType.icon?.image?.image)
     }
 
-    private func damageInfo() -> TypeInfoDamageCell {
+    private func damageInfo() -> DamageVectorView {
         let attributeID = (attribute.attributeType?.attributeID).flatMap{SDEAttributeID(rawValue:$0)}
         let type = attribute.type
 
-        func damage(from attributes: [DamageType: SDEAttributeID]) -> Damage {
+        func damage(from attributes: [DamageType: SDEAttributeID]) -> DGMDamageVector {
             func get(_ damageType: DamageType) -> Double {
                 attributes[damageType].flatMap{attributeValues?[Int($0.rawValue)] ?? type?[$0]?.value} ?? 0
             }
-            return Damage(em: get(.em), thermal: get(.thermal), kinetic: get(.kinetic), explosive: get(.explosive))
+            return DGMDamageVector(em: get(.em), thermal: get(.thermal), kinetic: get(.kinetic), explosive: get(.explosive))
         }
         
         if let attributes = damageAttributes.first(where: {$0[.em] == attributeID}) {
-            return TypeInfoDamageCell(damage: damage(from: attributes), percentStyle: false)
+            return DamageVectorView(damage: damage(from: attributes), percentStyle: false)
             
         }
         else if let attributes = damageResonanceAttributes.first(where: {$0[.em] == attributeID}) {
-            return TypeInfoDamageCell(damage: damage(from: attributes), percentStyle: true)
+            return DamageVectorView(damage: damage(from: attributes), percentStyle: true)
         }
         else {
-            return TypeInfoDamageCell(damage: Damage(), percentStyle: false)
+            return DamageVectorView(damage: .zero, percentStyle: false)
         }
     }
     

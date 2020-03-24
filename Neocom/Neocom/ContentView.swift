@@ -32,7 +32,7 @@ struct Child: View {
     }
 }
 
-struct CustomAlignmentID: AlignmentID {
+private struct CustomAlignmentID: AlignmentID {
     static func defaultValue(in context: ViewDimensions) -> CGFloat {
         context[.top]
     }
@@ -81,7 +81,10 @@ struct ContentView: View {
 //            TextFieldAlert_Previews.previews
 //            SkillPlans_Previews.previews
 //            MailBox_Previews.previews
-            FittingEditorImplants_Previews.previews
+//            NavigationView {
+//                NavigationLink("Next", destination: ShipLoadouts())
+//            }
+            ShipLoadouts_Previews.previews
 //            MailDrafts_Previews.previews
 //            TextView_Previews.previews
 //            LoadingProgressView_Previews.previews

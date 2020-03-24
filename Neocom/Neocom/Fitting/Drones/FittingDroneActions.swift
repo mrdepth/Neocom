@@ -24,7 +24,7 @@ struct FittingDroneTypeInfo: View {
                 Text("x\(UnitFormatter.localizedString(from: drone.count, unit: .none, style: .long))").modifier(SecondaryLabelModifier())
             }
             type.dgmppItem?.damage.map {
-                ChargeDamage(damage: $0)
+                DamageVectorView(damage: DGMDamageVector($0))
             }
             
         }

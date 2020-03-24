@@ -11,6 +11,7 @@ import CoreData
 import EVEAPI
 import Expressible
 import Combine
+import SwiftUI
 @_exported import UIKit
 
 //1554561480
@@ -143,10 +144,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     lazy var testingAccount: Account? = {
         if let account = try? self.persistentContainer.viewContext.from(Account.self).first() {
+            if account.uuid == nil {
+                account.uuid = "1"
+                try? self.persistentContainer.viewContext.save()
+            }
             return account
         }
         else {
             let account = Account(token: oAuth2Token, context: self.persistentContainer.viewContext)
+            account.uuid = "1"
             try? self.persistentContainer.viewContext.save()
             return account
         }

@@ -106,7 +106,7 @@ struct TextFieldAlertTestView: View {
             }
             VStack {
                 TextFieldAlert(title: "Rename", placeholder: "Edit", text: "") { result in }
-                TextFieldAlert(title: "Rename weofi jweofi jwoiefj woiefj weofi jwoei fjwoiefj oweijf owiejf", placeholder: "Edit", text: "") { result in }
+                TextFieldAlert(title: "Rename", placeholder: "Edit", text: "") { result in }
             }
         }
     }

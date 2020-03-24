@@ -11,32 +11,8 @@ import Dgmpp
 
 struct FittingEditorShipDronesList: View {
     @EnvironmentObject private var ship: DGMShip
-    @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.self) private var environment
 
-    @State private var selectedCategory: SDEDgmppItemCategory?
     private let typePickerState = TypePickerState()
-
-    private func typePicker(_ category: SDEDgmppItemCategory) -> some View {
-        NavigationView {
-            TypePicker(category: category) { (type) in
-                do {
-                    let tag = (self.ship.drones.compactMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -1) + 1
-                    for _ in 0..<5 {
-                        try self.ship.add(DGMDrone(typeID: DGMTypeID(type.typeID)), squadronTag: tag)
-                    }
-                }
-                catch {
-                    
-                }
-                self.selectedCategory = nil
-            }.navigationBarItems(leading: BarButtonItems.close {
-                self.selectedCategory = nil
-            })
-        }.modifier(ServicesViewModifier(environment: self.environment))
-            .environmentObject(typePickerState)
-    }
-
     
     private struct GroupingKey: Hashable {
         var squadronTag: Int
@@ -60,14 +36,47 @@ struct FittingEditorShipDronesList: View {
                 }
             }
             Section {
-                Button("Add Drone") {
-                    self.selectedCategory = try? self.managedObjectContext.fetch(SDEDgmppItemCategory.category(categoryID: .drone)).first
-                }.frame(maxWidth: .infinity)
+                FittingEditorAddDroneCell(typePickerState: typePickerState)
             }
         }.listStyle(GroupedListStyle())
+    }
+}
+
+struct FittingEditorAddDroneCell: View {
+    var typePickerState: TypePickerState
+    @EnvironmentObject private var ship: DGMShip
+    @State private var selectedCategory: SDEDgmppItemCategory?
+    @Environment(\.self) private var environment
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    
+    private func typePicker(_ category: SDEDgmppItemCategory) -> some View {
+        NavigationView {
+            TypePicker(category: category) { (type) in
+                do {
+                    let tag = (self.ship.drones.compactMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -1) + 1
+                    for _ in 0..<5 {
+                        try self.ship.add(DGMDrone(typeID: DGMTypeID(type.typeID)), squadronTag: tag)
+                    }
+                }
+                catch {
+                    
+                }
+                self.selectedCategory = nil
+            }.navigationBarItems(leading: BarButtonItems.close {
+                self.selectedCategory = nil
+            })
+        }.modifier(ServicesViewModifier(environment: self.environment))
+            .environmentObject(typePickerState)
+    }
+    
+    var body: some View {
+        Button("Add Drone") {
+            self.selectedCategory = try? self.managedObjectContext.fetch(SDEDgmppItemCategory.category(categoryID: .drone)).first
+        }.frame(maxWidth: .infinity)
         .sheet(item: $selectedCategory) { category in
             self.typePicker(category)
         }
+
     }
 }
 

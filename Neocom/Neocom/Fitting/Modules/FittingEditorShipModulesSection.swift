@@ -95,6 +95,7 @@ struct FittingEditorShipModulesSection: View {
                 self.grouped.toggle()
             }
         }
+        let freeSockets = IndexSet(0..<n).subtracting(IndexSet(modules.map{$0.socket}))
         
         return Section(header: header) {
             ForEach(rows) { i in
@@ -103,7 +104,7 @@ struct FittingEditorShipModulesSection: View {
                         .foregroundColor(i.modules![0].socket >= n ? .red : nil)
                 }
                 else {
-                    Button(action: {
+                    /*Button(action: {
                         if self.grouped {
                             let sockets = IndexSet(0..<n).subtracting(IndexSet(modules.map{$0.socket}))
                             self.selectedSlot = .init(slot: self.slot, sockets: sockets)
@@ -111,12 +112,13 @@ struct FittingEditorShipModulesSection: View {
                         else {
                             self.selectedSlot = .init(slot: self.slot, sockets: IndexSet(integer: i.socket!))
                         }
-                    }) {
-                        HStack(spacing: 0) {
-                            FittingModuleSlot(slot: self.slot, socket: i.socket!)
-                            Spacer()
-                        }.contentShape(Rectangle())
-                    }.buttonStyle(PlainButtonStyle())
+                    }) {*/
+//                        HStack(spacing: 0) {
+                            FittingModuleSlot(slot: self.slot,
+                                              sockets: self.grouped ? freeSockets : IndexSet(integer: i.socket!))
+//                            Spacer()
+//                        }.contentShape(Rectangle())
+//                    }.buttonStyle(PlainButtonStyle())
                 }
             }
         }
@@ -134,6 +136,7 @@ struct FittingEditorShipModulesSection_Previews: PreviewProvider {
         }
         .environmentObject(DGMShip.testDominix())
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environmentObject(TypePickerState())
 //        .colorScheme(.dark)
     }
 }

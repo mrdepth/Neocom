@@ -17,7 +17,7 @@ struct FittingCharactersPredefined: View {
 	
     var body: some View {
 		Section(header: Text("PREDEFINED")) {
-			ForEach(0..<5) { i in
+            ForEach(0..<6) { i in
                 FittingCharacterCell(i, onSelect: self.onSelect)
 			}
 		}

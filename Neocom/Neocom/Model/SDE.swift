@@ -544,5 +544,69 @@ extension SDEDgmppItemGroup {
     }
 }
 
-extension SDEInvType: Identifiable {}
-extension SDEDgmppItemCategory: Identifiable {}
+extension SDEInvType: Identifiable {
+    public var id: NSManagedObjectID {
+        return objectID
+    }
+}
+extension SDEDgmppItemCategory: Identifiable {
+    public var id: NSManagedObjectID {
+        return objectID
+    }
+}
+extension DamagePattern: Identifiable {
+    public var id: NSManagedObjectID {
+        return objectID
+    }
+    
+    var damageVector: DGMDamageVector {
+        get {
+            DGMDamageVector(em: DGMHP(em), thermal: DGMHP(thermal), kinetic: DGMHP(kinetic), explosive: DGMHP(explosive)).normalized
+        }
+        set {
+            let vector = newValue.normalized
+            em = Float(vector.em)
+            thermal = Float(vector.thermal)
+            kinetic = Float(vector.kinetic)
+            explosive = Float(vector.explosive)
+        }
+    }
+}
+
+extension SDEInvType {
+    var npcDPS: DGMDamageVector? {
+        func getAttributes(from type: SDEInvType) -> [Int32: Double] {
+            let pairs = (type.attributes?.allObjects as? [SDEDgmTypeAttribute])?.map{($0.attributeType!.attributeID, $0.value)} ?? []
+            return Dictionary(pairs) {a, _ in a}
+        }
+        
+        let attributes = getAttributes(from: self)
+
+        let turrets: DGMDamageVector = {
+            let damage = DGMDamageVector(em: attributes[SDEAttributeID.emDamage.rawValue] ?? 0,
+                                         thermal: attributes[SDEAttributeID.thermalDamage.rawValue] ?? 0,
+                                         kinetic: attributes[SDEAttributeID.kineticDamage.rawValue] ?? 0,
+                                         explosive: attributes[SDEAttributeID.explosiveDamage.rawValue] ?? 0)
+            
+            let multiplier = attributes[SDEAttributeID.damageMultiplier.rawValue] ?? 1
+            let rof = (attributes[SDEAttributeID.speed.rawValue] ?? 1000) / 1000
+            return rof > 0 ? damage * (multiplier / rof) : .zero
+        }()
+        
+        let launchers: DGMDamageVector = {
+            guard let missileID = attributes[SDEAttributeID.entityMissileTypeID.rawValue], let missile = try? managedObjectContext?.from(SDEInvType.self).filter(/\SDEInvType.typeID == Int32(missileID)).first() else {return .zero}
+            
+            let missileAttributes = getAttributes(from: missile)
+            let damage = DGMDamageVector(em: missileAttributes[SDEAttributeID.emDamage.rawValue] ?? 0,
+                                         thermal: missileAttributes[SDEAttributeID.thermalDamage.rawValue] ?? 0,
+                                         kinetic: missileAttributes[SDEAttributeID.kineticDamage.rawValue] ?? 0,
+                                         explosive: missileAttributes[SDEAttributeID.explosiveDamage.rawValue] ?? 0)
+            
+            let multiplier = attributes[SDEAttributeID.missileDamageMultiplier.rawValue] ?? 1
+            let rof = (attributes[SDEAttributeID.missileLaunchDuration.rawValue] ?? 1000) / 1000
+            return rof > 0 ? damage * (multiplier / rof) : .zero
+        }()
+        let dps = turrets + launchers
+        return dps.total > 0 ? dps : nil
+    }
+}

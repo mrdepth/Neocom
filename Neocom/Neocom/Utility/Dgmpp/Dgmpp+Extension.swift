@@ -268,56 +268,152 @@ extension DGMCharacter {
 		]
 		return components.url!
 	}
+    
+    class func account(from url: URL) -> NSFetchRequest<Account>? {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
+        guard let accountUUID = components.queryItems?.first(where: {$0.name == "accountUUID"})?.value else {return nil}
+        let request = NSFetchRequest<Account>(entityName: "Account")
+        request.predicate = (/\Account.uuid == accountUUID).predicate()
+        request.fetchLimit = 1
+        return request
+    }
 	
-	var account: NSFetchRequest<Account>? {
-		guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
-		guard let accountUUID = components.queryItems?.first(where: {$0.name == "accountUUID"})?.value else {return nil}
-		let request = NSFetchRequest<Account>(entityName: "Account")
-		request.predicate = (/\Account.uuid == accountUUID).predicate()
-		request.fetchLimit = 1
-		return request
-	}
-	
-	var fitCharacter: NSFetchRequest<FitCharacter>? {
-		guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
+    class func fitCharacter(from url: URL) -> NSFetchRequest<FitCharacter>? {
+		guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
 		guard let characterUUID = components.queryItems?.first(where: {$0.name == "characterUUID"})?.value else {return nil}
 		let request = NSFetchRequest<FitCharacter>(entityName: "FitCharacter")
 		request.predicate = (/\FitCharacter.uuid == characterUUID).predicate()
 		request.fetchLimit = 1
 		return request
 	}
-	
-	var level: Int? {
-		guard let url = url, let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
-		guard let level = components.queryItems?.first(where: {$0.name == "level"})?.value else {return nil}
-		return Int(level)
-	}
+    
+    class func level(from url: URL) -> Int? {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {return nil}
+        guard let level = components.queryItems?.first(where: {$0.name == "level"})?.value else {return nil}
+        return Int(level)
+    }
 	
 	var url: URL? {
-		return URL(string: name)
+        get {
+            return URL(string: name)
+        }
+        set {
+            name = newValue?.absoluteString ?? ""
+        }
 	}
     
     func setSkillLevels(_ levels: DGMSkillLevels) {
         switch levels {
-        case let .levelsMap(levels):
+        case let .levelsMap(levels, url):
             setSkillLevels(levels)
+            self.url = url
         case let .level(level):
             setSkillLevels(level)
+            self.url = DGMCharacter.url(level: level)
         }
     }
 }
 
-enum DGMSkillLevels {
-    case levelsMap([DGMTypeID: Int])
-    case level(Int)
+
+
+extension DGMDamageVector {
+    init(_ damage: SDEDgmppItemDamage) {
+        self.init(em: DGMHP(damage.emAmount),
+                  thermal: DGMHP(damage.thermalAmount),
+                  kinetic: DGMHP(damage.kineticAmount),
+                  explosive: DGMHP(damage.explosiveAmount))
+    }
     
-    static func fromAccount(_ account: Account) -> AnyPublisher<DGMSkillLevels, Error> {
-        guard let token = account.oAuth2Token else {return Fail(error: RuntimeError.invalidOAuth2TOken).eraseToAnyPublisher()}
-        let esi = ESI(token: token)
-        return esi.characters.characterID(Int(account.characterID)).skills().get().map { skills in
-            .levelsMap(Dictionary(skills.value.skills.map{(DGMTypeID($0.skillID), $0.trainedSkillLevel)}) {a, b in max(a, b)})
+//    init(_ damage: DamagePattern) {
+//        self.init(em: DGMHP(damage.em),
+//                  thermal: DGMHP(damage.thermal),
+//                  kinetic: DGMHP(damage.kinetic),
+//                  explosive: DGMHP(damage.explosive))
+//    }
+}
+
+
+extension DGMShip {
+    var loadout: LoadoutDescription {
+        get {
+            let loadout = LoadoutDescription()
+            
+            var drones = [Int: LoadoutDescription.Item.Drone]()
+            for drone in self.drones {
+                let identifier = drone.identifier
+                if let drone = drones[identifier] {
+                    drone.count += 1
+                }
+                else {
+                    drones[identifier] = LoadoutDescription.Item.Drone(drone: drone)
+                }
+            }
+            
+            loadout.drones = Array(drones.values)
+            
+            var modules = [DGMModule.Slot: [LoadoutDescription.Item.Module]]()
+            
+            for module in self.modules {
+                modules[module.slot, default: []].append(LoadoutDescription.Item.Module(module: module))
+            }
+            
+            loadout.modules = modules
+            
+            return loadout
         }
-        .mapError{$0 as Error}
-        .eraseToAnyPublisher()
+        set {
+            for drone in newValue.drones ?? [] {
+                do {
+                    let identifier = drone.identifier ?? UUID().hashValue
+                    for _ in 0..<drone.count {
+                        let item = try DGMDrone(typeID: drone.typeID)
+                        try add(item, squadronTag: drone.squadronTag)
+                        item.isActive = drone.isActive
+                        item.isKamikaze = drone.isKamikaze
+                        item.identifier = identifier
+                    }
+                }
+                catch {
+                }
+            }
+            for (_, modules) in newValue.modules?.sorted(by: { $0.key.rawValue > $1.key.rawValue }) ?? [] {
+                for module in modules {
+                    do {
+                        let identifier = module.identifier ?? UUID().hashValue
+                        for _ in 0..<module.count {
+                            let item = try DGMModule(typeID: module.typeID)
+                            try add(item, socket: module.socket, ignoringRequirements: true)
+                            item.identifier = identifier
+                            item.state = module.state
+                            if let charge = module.charge {
+                                try item.setCharge(DGMCharge(typeID: charge.typeID))
+                            }
+                        }
+                    }
+                    catch {
+                    }
+                }
+            }
+        }
+    }
+}
+
+extension DGMCharacter {
+    var loadout: LoadoutDescription {
+        get {
+            let loadout = self.ship?.loadout ?? LoadoutDescription()
+            loadout.implants = implants.map{ LoadoutDescription.Item(type: $0) }
+            loadout.boosters = boosters.map{ LoadoutDescription.Item(type: $0) }
+            return loadout
+        }
+        set {
+            for implant in newValue.implants ?? [] {
+                try? add(DGMImplant(typeID: implant.typeID))
+            }
+            for booster in newValue.boosters ?? [] {
+                try? add(DGMBooster(typeID: booster.typeID))
+            }
+            ship?.loadout = newValue
+        }
     }
 }

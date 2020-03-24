@@ -64,3 +64,25 @@ extension View {
 }
 
 
+extension AnyTransition {
+    static func repeating<T: ViewModifier>(from: T, to: T, duration: Double = 1) -> AnyTransition {
+       .asymmetric(
+            insertion: AnyTransition
+                .modifier(active: from, identity: to)
+                .animation(Animation.easeInOut(duration: duration).repeatForever())
+                .combined(with: .opacity),
+            removal: .opacity
+        )
+    }
+}
+
+struct Opacity: ViewModifier {
+    private let opacity: Double
+    init(_ opacity: Double) {
+        self.opacity = opacity
+    }
+
+    func body(content: Content) -> some View {
+        content.opacity(opacity)
+    }
+}

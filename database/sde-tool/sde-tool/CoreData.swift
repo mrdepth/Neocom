@@ -320,8 +320,8 @@ extension SDEDgmAttributeType {
 	convenience init(_ attributeType: AttributeType) throws {
 		self.init(context: .current)
 		attributeID = Int32(attributeType.attributeID)
-		attributeName = attributeType.attributeName
-		displayName = attributeType.displayName
+        attributeName = attributeType.name
+        displayName = attributeType.displayNameID?.en
 		published = attributeType.published
 		if let categoryID = attributeType.categoryID {
 			try attributeCategory = dgmAttributeCategories.get()[categoryID]?.object()

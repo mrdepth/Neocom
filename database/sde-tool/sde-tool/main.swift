@@ -84,6 +84,7 @@ var eveIcons: [Int: ObjectID<SDEEveIcon>] = [:]
 var typeIcons: [Int: ObjectID<SDEEveIcon>] = [:]
 var nameIcons: [String: ObjectID<SDEEveIcon>] = [:]
 
+let typesDogma: Future<[Int: TypeDogma]>
 
 let typeAttributes: Future<[Int: [Int: TypeAttribute]]>
 let unpublishedMetaGroup: ObjectID<SDEInvMetaGroup> = {
@@ -239,31 +240,39 @@ do {
 
 	dgmAttributeTypes = operationQueue.detach {
 		let from = Date(); defer {print("dgmAttributeTypes\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/dgmAttributeTypes.json"), type: Schema.AttributeTypes.self).map {($0.attributeID, .init(try SDEDgmAttributeType($0)))})
+        return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/fsd/dogmaAttributes.json"), type: Schema.AttributeTypes.self).map {($0.key, .init(try SDEDgmAttributeType($0.value)))})
 	}
 
 	dgmEffects = operationQueue.detach {
 		let from = Date(); defer {print("dgmEffects\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/dgmEffects.json"), type: Schema.Effects.self).map {($0.effectID, .init(SDEDgmEffect($0)))})
+        return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/fsd/dogmaEffects.json"), type: Schema.Effects.self).map {($0.key, .init(SDEDgmEffect($0.value)))})
 	}
+    
+    typesDogma = operationQueue.detach {
+        let from = Date(); defer {print("typesDogma\t\(Date().timeIntervalSince(from))s")}
+        return try load(root.appendingPathComponent("/sde/fsd/typeDogma.json"), type: Schema.TypesDogma.self)
+    }
 
 	typeAttributes = operationQueue.detach {
 		let from = Date(); defer {print("typeAttributes\t\(Date().timeIntervalSince(from))s")}
-		var typeAttributes: [Int: [Int: TypeAttribute]] = [:]
-//		try load(root.appendingPathComponent("/sde/bsd/dgmTypeAttributes.json"), type: Schema.TypeAttributes.self).forEach { typeAttributes[$0.typeID, default: [:]][$0.attributeID] = $0 }
-		try load(root.appendingPathComponent("/sde/bsd/dgmTypeAttributes.json"), type: Schema.TypeAttributes.self).forEach { typeAttributes[$0.typeID, default: [:]][$0.attributeID] = $0 }
-		return typeAttributes
+        let typeAttributes = try typesDogma.get().map { (typeID, type) in
+            (typeID, Dictionary(uniqueKeysWithValues: type.dogmaAttributes.map { i in (i.attributeID, TypeAttribute(attributeID: i.attributeID, typeID: typeID, valueInt: nil, valueFloat: i.value)) }))
+        }
+        return Dictionary(uniqueKeysWithValues: typeAttributes)
 	}
 
-	
 	_ = operationQueue.detach {
 		let from = Date(); defer {print("typeEffects\t\(Date().timeIntervalSince(from))s")}
 		let types = try invTypes.get()
 		let effects = try dgmEffects.get()
-		try load(root.appendingPathComponent("/sde/bsd/dgmTypeEffects.json"), type: Schema.TypeEffects.self).forEach {
-			guard let effect = try effects[$0.effectID]?.object() else {return}
-			try types[$0.typeID]?.object().addToEffects(effect)
-		}
+        let dogma = try typesDogma.get()
+        
+        for (typeID, type) in dogma {
+            for effect in type.dogmaEffects {
+                guard let effect = try effects[effect.effectID]?.object() else {return}
+                try types[typeID]?.object().addToEffects(effect)
+            }
+        }
 	}
 	
 	certMasteryLevels = operationQueue.detach {

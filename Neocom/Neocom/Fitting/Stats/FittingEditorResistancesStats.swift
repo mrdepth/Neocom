@@ -26,6 +26,18 @@ struct ResistanceView: View {
     }
 }
 
+struct ResistancesLayerView: View {
+    var damage: DGMDamageVector
+    var body: some View {
+        Group {
+            ResistanceView(resistance: damage.em, damageType: .em)
+            ResistanceView(resistance: damage.thermal, damageType: .thermal)
+            ResistanceView(resistance: damage.kinetic, damageType: .kinetic)
+            ResistanceView(resistance: damage.explosive, damageType: .explosive)
+        }
+    }
+}
+
 struct FittingEditorResistancesStats: View {
     private enum HPColumn {}
     
@@ -51,35 +63,23 @@ struct FittingEditorResistancesStats: View {
                 }
                 HStack {
                     Icon(Image("shield"), size: .small)
-                    ResistanceView(resistance: resistances.shield.em, damageType: .em)
-                    ResistanceView(resistance: resistances.shield.thermal, damageType: .thermal)
-                    ResistanceView(resistance: resistances.shield.kinetic, damageType: .kinetic)
-                    ResistanceView(resistance: resistances.shield.explosive, damageType: .explosive)
+                    ResistancesLayerView(damage: DGMDamageVector(resistances.shield))
                     Text("\(formatter.string(from: hp.shield))").sizePreference(HPColumn.self).frame(width: hpColumnWidth)
                 }
                 HStack {
                     Icon(Image("armor"), size: .small)
-                    ResistanceView(resistance: resistances.armor.em, damageType: .em)
-                    ResistanceView(resistance: resistances.armor.thermal, damageType: .thermal)
-                    ResistanceView(resistance: resistances.armor.kinetic, damageType: .kinetic)
-                    ResistanceView(resistance: resistances.armor.explosive, damageType: .explosive)
+                    ResistancesLayerView(damage: DGMDamageVector(resistances.armor))
                     Text("\(formatter.string(from: hp.armor))").sizePreference(HPColumn.self).frame(width: hpColumnWidth)
                 }
                 HStack {
                     Icon(Image("hull"), size: .small)
-                    ResistanceView(resistance: resistances.hull.em, damageType: .em)
-                    ResistanceView(resistance: resistances.hull.thermal, damageType: .thermal)
-                    ResistanceView(resistance: resistances.hull.kinetic, damageType: .kinetic)
-                    ResistanceView(resistance: resistances.hull.explosive, damageType: .explosive)
+                    ResistancesLayerView(damage: DGMDamageVector(resistances.hull))
                     Text("\(formatter.string(from: hp.hull))").sizePreference(HPColumn.self).frame(width: hpColumnWidth)
                 }
                 Divider()
                 HStack {
                     Icon(Image("damagePattern"), size: .small)
-                    ResistanceView(resistance: damagePattern.em, damageType: .em)
-                    ResistanceView(resistance: damagePattern.thermal, damageType: .thermal)
-                    ResistanceView(resistance: damagePattern.kinetic, damageType: .kinetic)
-                    ResistanceView(resistance: damagePattern.explosive, damageType: .explosive)
+                    ResistancesLayerView(damage: damagePattern)
                     Color.clear.frame(width: hpColumnWidth)
                 }
                 Divider()

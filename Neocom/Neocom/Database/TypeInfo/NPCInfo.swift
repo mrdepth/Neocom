@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Expressible
+import Dgmpp
 
 struct NPCInfo: View {
     var type: SDEInvType
@@ -53,10 +54,10 @@ struct NPCInfo: View {
                 let dps = total / interval
                 
                 return Group {
-                    TypeInfoDamageCell(damage: Damage(em: em * damageMultiplier,
-                                                      thermal: thermal * damageMultiplier,
-                                                      kinetic: kinetic * damageMultiplier,
-                                                      explosive: explosive * damageMultiplier), percentStyle: false)
+                    DamageVectorView(damage: DGMDamageVector(em: em * damageMultiplier,
+                                                             thermal: thermal * damageMultiplier,
+                                                             kinetic: kinetic * damageMultiplier,
+                                                             explosive: explosive * damageMultiplier), percentStyle: false)
 
                     TypeInfoAttributeCell(title: Text("Damage per Second"),
                                           subtitle: Text(UnitFormatter.localizedString(from: dps, unit: .none, style: .long)),
@@ -112,10 +113,10 @@ struct NPCInfo: View {
                                               image: missile.image,
                                               targetType: missile)
                     }
-                    TypeInfoDamageCell(damage: Damage(em: em * damageMultiplier,
-                                                      thermal: thermal * damageMultiplier,
-                                                      kinetic: kinetic * damageMultiplier,
-                                                      explosive: explosive * damageMultiplier), percentStyle: false)
+                    DamageVectorView(damage: DGMDamageVector(em: em * damageMultiplier,
+                                                             thermal: thermal * damageMultiplier,
+                                                             kinetic: kinetic * damageMultiplier,
+                                                             explosive: explosive * damageMultiplier), percentStyle: false)
                     
                     TypeInfoAttributeCell(title: Text("Damage per Second"),
                                           subtitle: Text(UnitFormatter.localizedString(from: dps, unit: .none, style: .long)),

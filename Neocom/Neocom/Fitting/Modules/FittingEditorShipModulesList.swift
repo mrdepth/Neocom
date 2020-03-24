@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Dgmpp
+import CoreData
 
 struct FittingEditorShipModulesList: View {
     struct SelectedSlot: Hashable, Identifiable {
@@ -29,7 +30,7 @@ struct FittingEditorShipModulesList: View {
     private let typePickerState = Cache<DGMModule.Slot, TypePickerState>()
     
     private func typePicker(_ selection: SelectedSlot) -> some View {
-        let category = try? self.managedObjectContext.fetch(SDEDgmppItemCategory.category(slot: selection.slot)).first
+        let category = try? self.managedObjectContext.fetch(SDEDgmppItemCategory.category(slot: selection.slot, subcategory: Int(SDECategoryID.module.rawValue))).first
         
         return category.map { category in
             NavigationView {
@@ -59,6 +60,7 @@ struct FittingEditorShipModulesList: View {
         return List {
             ForEach(availableSlots, id: \.self) { slot in
                 FittingEditorShipModulesSection(slot: slot, selectedSlot: self.$selectedSlot)
+                    .environmentObject(self.typePickerState[slot, default: TypePickerState()])
             }
         }.listStyle(GroupedListStyle())
             .sheet(item: $selectedSlot) { selection in

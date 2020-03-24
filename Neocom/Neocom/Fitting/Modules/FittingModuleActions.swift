@@ -66,7 +66,7 @@ struct FittingChargeCell: View {
                 Text(charge.item?.type?.typeName ?? "")
                 Text("x\(UnitFormatter.localizedString(from: module.charges, unit: .none, style: .long))").modifier(SecondaryLabelModifier())
             }
-            ChargeDamage(damage: charge)
+            DamageVectorView(damage: DGMDamageVector(charge))
         }
     }
 }

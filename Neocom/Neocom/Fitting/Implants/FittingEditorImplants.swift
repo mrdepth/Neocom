@@ -13,6 +13,9 @@ import Expressible
 struct FittingEditorImplants: View {
     @EnvironmentObject private var ship: DGMShip
     @Environment(\.managedObjectContext) var managedObjectContext
+    @State private var selectedCategory: SDEDgmppItemCategory?
+    @Environment(\.self) private var environment
+    private let typePickerState = Cache<SDEDgmppItemCategory, TypePickerState>()
     
     private enum Row: Identifiable {
         case implant(DGMImplant, slot: Int)
@@ -53,6 +56,29 @@ struct FittingEditorImplants: View {
         }
     }
     
+    private func typePicker(_ category: SDEDgmppItemCategory) -> some View {
+        NavigationView {
+            TypePicker(category: category) { (type) in
+                do {
+                    if category.category == SDEDgmppItemCategoryID.implant.rawValue {
+                        let implant = try DGMImplant(typeID: DGMTypeID(type.typeID))
+                        try (self.ship.parent as? DGMCharacter)?.add(implant)
+                    }
+                    else {
+                        let booster = try DGMBooster(typeID: DGMTypeID(type.typeID))
+                        try (self.ship.parent as? DGMCharacter)?.add(booster)
+                    }
+                }
+                catch {
+                }
+                self.selectedCategory = nil
+            }.navigationBarItems(leading: BarButtonItems.close {
+                self.selectedCategory = nil
+            })
+        }.modifier(ServicesViewModifier(environment: self.environment))
+            .environmentObject(typePickerState[category, default: TypePickerState()])
+    }
+
     var body: some View {
         let pilot = ship.parent as? DGMCharacter
         let implants = Dictionary(pilot?.implants.map{($0.slot, $0)} ?? []) {a, _ in a}
@@ -75,7 +101,9 @@ struct FittingEditorImplants: View {
                         FittingImplantCell(implant: row.implant!)
                     }
                     else {
-                        FittingImplantSlot(slot: row.slot)
+                        Button (action: {self.selectedCategory = try? self.managedObjectContext.fetch(SDEDgmppItemCategory.category(categoryID: .implant, subcategory: row.slot, race: nil)).first}) {
+                            FittingImplantSlot(slot: row.slot)
+                        }.buttonStyle(PlainButtonStyle())
                     }
                 }
             }
@@ -85,11 +113,17 @@ struct FittingEditorImplants: View {
                         FittingBoosterCell(booster: row.booster!)
                     }
                     else {
-                        FittingBoosterSlot(slot: row.slot)
+                        Button (action: {self.selectedCategory = try? self.managedObjectContext.fetch(SDEDgmppItemCategory.category(categoryID: .booster, subcategory: row.slot, race: nil)).first}) {
+                            FittingBoosterSlot(slot: row.slot)
+                        }.buttonStyle(PlainButtonStyle())
                     }
                 }
             }
         }.listStyle(GroupedListStyle())
+            .sheet(item: $selectedCategory) { category in
+                self.typePicker(category)
+        }
+
     }
 }
 

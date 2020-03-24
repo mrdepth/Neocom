@@ -520,17 +520,33 @@ struct AttributeCategory: Codable {
 }
 
 struct AttributeType: Codable {
-	var attributeID: Int
-	var attributeName: String
-	var categoryID: Int?
-	var defaultValue: Double
-	var description: String
-	var highIsGood: Bool
-	var published: Bool
-	var stackable: Bool
-	var iconID: Int?
-	var unitID: Int?
-	var displayName: String?
+    var attributeID: Int
+    var categoryID: Int?
+    var dataType: String?
+    var defaultValue: Double
+    var description: String?
+    var displayNameID: LocalizedString?
+    var highIsGood: Bool
+    var iconID: Int?
+    var name: String
+    var published: Bool
+    var stackable: Bool
+    var tooltipDescriptionID: LocalizedString?
+    var tooltipTitleID: LocalizedString?
+    var unitID: Int?
+    var maxAttributeID: Int?
+    var chargeRechargeTimeID: Int?
+//	var attributeID: Int
+//	var attributeName: String
+//	var categoryID: Int?
+//	var defaultValue: Double
+//	var description: String
+//	var highIsGood: Bool
+//	var published: Bool
+//	var stackable: Bool
+//	var iconID: Int?
+//	var unitID: Int?
+//	var displayName: String?
 }
 
 struct TypeAttribute: Codable {
@@ -545,13 +561,13 @@ struct TypeAttribute: Codable {
 }
 
 struct Effect: Codable {
-	var description: String?
+	var descriptionID: LocalizedString?
 	var disallowAutoRepeat: Bool
 	var dischargeAttributeID: Int?
-	var displayName: String
-	var distribution: Int?
+	var displayNameID: LocalizedString?
+	var distribution: String?
 	var durationAttributeID: Int?
-	var effectCategory: Int
+	var effectCategory: String
 	var effectID: Int
 	var effectName: String
 	var electronicChance: Bool
@@ -569,8 +585,23 @@ struct Effect: Codable {
 	var iconID: Int?
 	var falloffAttributeID: Int?
 	var fittingUsageChanceAttributeID: Int?
-	var modifierInfo: String?
 	var npcActivationChanceAttributeID: Int?
+    var resistanceAttributeID: Int?
+    var npcUsageChanceAttributeID: Int?
+    var trackingSpeedAttributeID: Int?
+    var modifierInfo: [Modifier]?
+    
+    struct Modifier: Codable {
+        var domain: String
+        var `func`: String
+        var modifiedAttributeID: Int?
+        var modifyingAttributeID: Int?
+        var operation: String?
+        var skillTypeID: Int?
+        var groupID: Int?
+        var domainID: Int?
+        var effectID: Int?
+    }
 }
 
 struct TypeEffect: Codable {
@@ -585,6 +616,20 @@ struct NPCGroup: Codable {
 	var iconName: String?
 	var groupID: Int?
 	var groups: [NPCGroup]?
+}
+
+struct TypeDogma: Codable {
+    struct Attribute: Codable {
+        var attributeID: Int
+        var value: Double
+    }
+    struct Effect: Codable {
+        var effectID: Int
+        var isDefault: Bool
+    }
+    
+    var dogmaAttributes: [Attribute]
+    var dogmaEffects: [Effect]
 }
 
 enum Schema {
@@ -618,10 +663,11 @@ enum Schema {
 	typealias InstallationTypeContents = [InstallationTypeContent]
 	typealias Stations = [Station]
 	typealias AttributeCategories = [AttributeCategory]
-	typealias AttributeTypes = [AttributeType]
-	typealias TypeAttributes = [TypeAttribute]
-	typealias Effects = [Effect]
-	typealias TypeEffects = [TypeEffect]
+    typealias AttributeTypes = [Int: AttributeType]
+//	typealias TypeAttributes = [TypeAttribute]
+    typealias Effects = [Int: Effect]
+//	typealias TypeEffects = [TypeEffect]
 	typealias Universes = [Universe]
+    typealias TypesDogma = [Int: TypeDogma]
 }
 

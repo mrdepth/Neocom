@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Expressible
+import Dgmpp
 
 struct ChargeTypeCell: View {
     var charge: SDEDgmppItemDamage
@@ -18,29 +19,7 @@ struct ChargeTypeCell: View {
                 Icon(charge.item!.type!.image).cornerRadius(4)
                 Text(charge.item?.type?.typeName ?? "")
             }
-            ChargeDamage(damage: charge)
-        }
-    }
-}
-
-struct ChargeDamage: View {
-    var damage: SDEDgmppItemDamage
-    
-    var body: some View {
-        var damages = [damage.emAmount, damage.thermalAmount, damage.kineticAmount, damage.explosiveAmount].map{Double($0)}
-        var total = damages.reduce(0, +)
-        if total == 0 {
-            total = 1
-        }
-        damages = damages.map{$0 / total}
-        let damageTypes: [DamageType] = [.em, .thermal, .kinetic, .explosive]
-        
-        return VStack(alignment: .leading, spacing: 2) {
-            HStack {
-                ForEach(0..<4) { i in
-                    DamageView(String(format: "%.0f%%", damages[i] * 100), percent: damages[i], damageType: damageTypes[i]).font(.caption)
-                }
-            }
+            DamageVectorView(damage: DGMDamageVector(charge))
         }
     }
 }

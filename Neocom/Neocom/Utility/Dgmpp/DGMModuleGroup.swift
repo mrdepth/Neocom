@@ -11,7 +11,8 @@ import Dgmpp
 import Combine
 import CoreData
 
-class DGMModuleGroup: ObservableObject {
+class DGMModuleGroup: ObservableObject, Identifiable {
+    
     var modules: [DGMModule] {
         didSet {
             objectWillChange.send()

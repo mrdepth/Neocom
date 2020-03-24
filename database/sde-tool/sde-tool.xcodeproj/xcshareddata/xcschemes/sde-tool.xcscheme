@@ -64,7 +64,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "&quot;/Users/artem.shimanski/Library/Developer/Xcode/DerivedData/toolset-frdomskbsknbfccyfmkkqilnskwk/Build/Intermediates.noindex/database.build/Debug/database.build/Invasion_1.0&quot;"
+            argument = "&quot;/Users/artem.shimanski/Library/Developer/Xcode/DerivedData/toolset-frdomskbsknbfccyfmkkqilnskwk/Build/Intermediates.noindex/database.build/Debug/database.build/Invasion_1.0/&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

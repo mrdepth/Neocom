@@ -70,6 +70,18 @@ struct FittingModuleCell: View {
             }
         }
     }
+    
+    private var charge: some View {
+        let charge = module.charge?.type(from: managedObjectContext)
+        return Group {
+            if charge != nil {
+                HStack(spacing: 0) {
+                    Icon(charge!.image, size: .small)
+                    Text(" \(charge?.typeName ?? "") ") + Text("x\(module.charges)").fontWeight(.semibold)
+                }.modifier(SecondaryLabelModifier())
+            }
+        }
+    }
 
     var body: some View {
         let type = module.type(from: managedObjectContext)
@@ -82,6 +94,7 @@ struct FittingModuleCell: View {
                 (type?.image).map{Icon($0).cornerRadius(4)}
                 VStack(alignment: .leading, spacing: 0) {
                     (type?.typeName).map{Text($0)} ?? Text("Unknown")
+                    charge
                     OptimalInfo(optimal: module.optimal, falloff: module.falloff).modifier(SecondaryLabelModifier())
                     accuracy
                     cycleTime

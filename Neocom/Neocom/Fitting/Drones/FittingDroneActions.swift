@@ -33,6 +33,7 @@ struct FittingDroneTypeInfo: View {
 
 struct FittingDroneActions: View {
     @ObservedObject var drone: DGMDroneGroup
+    var completion: () -> Void
     
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
@@ -66,6 +67,12 @@ struct FittingDroneActions: View {
             }
         }.listStyle(GroupedListStyle())
             .navigationBarTitle("Actions")
+            .navigationBarItems(leading: BarButtonItems.close(completion), trailing: BarButtonItems.trash {
+                let ship = self.drone.parent as? DGMShip
+                self.drone.drones.forEach { ship?.remove($0) }
+                self.completion()
+            })
+
     }
 }
 
@@ -75,7 +82,7 @@ struct FittingDroneActions_Previews: PreviewProvider {
         let drone = DGMDroneGroup(gang.pilots.first!.ship!.drones)
         
         return NavigationView {
-            FittingDroneActions(drone: drone)
+            FittingDroneActions(drone: drone) {}
                 .environmentObject(gang)
                 .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
                 .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)

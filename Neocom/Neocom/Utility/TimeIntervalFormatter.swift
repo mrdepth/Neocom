@@ -40,7 +40,7 @@ class TimeIntervalFormatter: Formatter {
             case .minutes:
                 return String(format: "%.2d:%.2d", m, s)
             case .seconds:
-                return String(format: "%%.2d", m, s)
+                return String(format: "%.2d", m, s)
             }
         }
         else {

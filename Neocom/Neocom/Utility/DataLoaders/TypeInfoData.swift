@@ -117,16 +117,16 @@ class TypeInfoData: ObservableObject {
             }.store(in: &subscriptions)
         }
         
-        Publishers.CombineLatest($pilot, $price).flatMap { (pilot, price) in
+        /*Publishers.CombineLatest($pilot, $price).flatMap { (pilot, price) in
             Future { promise in
                 managedObjectContext.perform {
-                    let type = managedObjectContext.object(with: type.objectID) as! SDEInvType
-                    promise(.success(self.info(for: type, pilot: pilot, price: price, managedObjectContext: managedObjectContext, override: attributeValues)))
+                    let localType = managedObjectContext.object(with: type.objectID) as! SDEInvType
+                    promise(.success(self.info(for: localType, pilot: pilot, price: price, managedObjectContext: managedObjectContext, override: attributeValues)))
                 }
             }
         }.receive(on: RunLoop.main).sink { [weak self] result in
             self?.sections = result
-        }.store(in: &subscriptions)
+        }.store(in: &subscriptions)*/
     }
     
     private var subscriptions = Set<AnyCancellable>()
@@ -143,7 +143,12 @@ extension TypeInfoData {
         case .entity:
             sections = npcInfo(for: type, managedObjectContext: managedObjectContext)
         default:
-            sections = basicInfo(for: type, pilot: pilot, price: price, managedObjectContext: managedObjectContext, override: attributeValues)
+            if type.wormhole != nil {
+                sections = whInfo(for: type, managedObjectContext: managedObjectContext)
+            }
+            else {
+                sections = basicInfo(for: type, pilot: pilot, price: price, managedObjectContext: managedObjectContext, override: attributeValues)
+            }
         }
 
         
@@ -587,6 +592,49 @@ extension TypeInfoData {
         }
         
         return sections
+    }
+    
+    private func whInfo(for type: SDEInvType, managedObjectContext: NSManagedObjectContext) -> [Section] {
+        guard let wh = type.wormhole else {return []}
+        var rows = [Row]()
+        if wh.targetSystemClass > 0 {
+            rows.append(Row.attribute(Row.Attribute(id: "LeadsInto",
+                                                    image: UIImage(named: "systems"),
+                                                    title: NSLocalizedString("Leads Into", comment: ""),
+                                                    subtitle: wh.targetSystemClassDisplayName ?? "")))
+        }
+        if wh.maxStableTime > 0 {
+            let icon = try? managedObjectContext.fetch(SDEEveIcon.named(.custom("22_32_16"))).first
+            rows.append(Row.attribute(Row.Attribute(id: "MaximumStableTime",
+                                                    image: icon?.image?.image,
+                                                    title: NSLocalizedString("Maximum Stable Time", comment: ""),
+                                                    subtitle: TimeIntervalFormatter.localizedString(from: TimeInterval(wh.maxStableTime) * 60, precision: .hours))))
+            
+        }
+        if wh.maxStableMass > 0 {
+            let icon = try? managedObjectContext.fetch(SDEEveIcon.named(.custom("2_64_10"))).first
+            rows.append(Row.attribute(Row.Attribute(id: "MaximumStableMass",
+                                                    image: icon?.image?.image,
+                                                    title: NSLocalizedString("Maximum Stable Mass", comment: ""),
+                                                    subtitle: UnitFormatter.localizedString(from: wh.maxStableMass, unit: .kilogram, style: .long))))
+        }
+        
+        if wh.maxJumpMass > 0 {
+            let icon = try? managedObjectContext.fetch(SDEEveIcon.named(.custom("36_64_13"))).first
+            rows.append(Row.attribute(Row.Attribute(id: "MaximumJumpMass",
+                                                    image: icon?.image?.image,
+                                                    title: NSLocalizedString("Maximum Jump Mass", comment: ""),
+                                                    subtitle: UnitFormatter.localizedString(from: wh.maxJumpMass, unit: .kilogram, style: .long))))
+        }
+        
+        if wh.maxRegeneration > 0 {
+            let icon = try? managedObjectContext.fetch(SDEEveIcon.named(.custom("23_64_3"))).first
+            rows.append(Row.attribute(Row.Attribute(id: "MaximumMassRegeneration",
+                                                    image: icon?.image?.image,
+                                                    title: NSLocalizedString("Maximum Mass Regeneration", comment: ""),
+                                                    subtitle: UnitFormatter.localizedString(from: wh.maxRegeneration, unit: .kilogram, style: .long))))
+        }
+        return [Section(id: "wh", name: "", rows: rows)]
     }
 
     /*

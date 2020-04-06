@@ -13,7 +13,7 @@ import Expressible
 struct FleetPilotCell: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
-
+    @EnvironmentObject var ship: DGMShip
     
     var pilot: DGMCharacter
     var body: some View {
@@ -22,16 +22,20 @@ struct FleetPilotCell: View {
         
         let account = url.flatMap{DGMCharacter.account(from: $0)}.flatMap{try? managedObjectContext.fetch($0).first}
         let level = url.flatMap{DGMCharacter.level(from: $0)} ?? 0
+        let name = pilot.ship?.name
 
         return Group {
             HStack {
                 if type != nil {
                     Icon(type!.image).cornerRadius(4)
-                    Text(type?.typeName ?? "")
                 }
-                else {
-                    Text("Unknown")
+                VStack(alignment: .leading) {
+                    type?.typeName.map {Text($0)} ?? Text("Unknown")
+                    if name?.isEmpty == false {
+                        Text(name!).modifier(SecondaryLabelModifier())
+                    }
                 }
+
                 Spacer()
                 HStack {
                     if account != nil {
@@ -43,7 +47,7 @@ struct FleetPilotCell: View {
                         LevelAvatar(level: level).frame(width: 24, height: 24)
                     }
                 }.modifier(SecondaryLabelModifier())
-            }
+            }.opacity(ship == pilot.ship ? 1 : 0.5)
         }
     }
 }

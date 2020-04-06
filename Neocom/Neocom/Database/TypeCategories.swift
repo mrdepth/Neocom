@@ -12,7 +12,7 @@ import Expressible
 import Combine
 
 struct TypeCategories: View {
-    @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.managedObjectContext) private var managedObjectContext
 	
     private func categories() -> FetchedResultsController<SDEInvCategory> {
         let controller = managedObjectContext.from(SDEInvCategory.self)

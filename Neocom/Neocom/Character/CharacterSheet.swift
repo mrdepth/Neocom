@@ -11,11 +11,13 @@ import EVEAPI
 import Expressible
 
 struct CharacterSheet: View {
-    @ObservedObject private var characterInfo = Lazy<CharacterFullInfo>()
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @Environment(\.esi) var esi
-    @Environment(\.account) var account
-
+    @ObservedObject private var characterInfo = Lazy<CharacterInfo>()
+    @ObservedObject private var accountInfo = Lazy<AccountInfo>()
+    @ObservedObject private var attributesInfo = Lazy<CharacterAttributesInfo>()
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    @Environment(\.esi) private var esi
+    @Environment(\.account) private var account
+    
     private var title: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Artem Valiant").font(.title)
@@ -160,7 +162,9 @@ struct CharacterSheet: View {
     }
     
     var body: some View {
-        let characterInfo = account.map {account in self.characterInfo.get(initial: CharacterFullInfo(esi: esi, characterID: account.characterID, managedObjectContext: managedObjectContext, characterImageSize: .size1024, corporationImageSize: .size128, allianceImageSize: .size128))}
+        let characterInfo = account.map {account in self.characterInfo.get(initial: CharacterInfo(esi: esi, characterID: account.characterID, characterImageSize: .size1024, corporationImageSize: .size128, allianceImageSize: .size128))}
+        let accountInfo = account.map {account in self.accountInfo.get(initial: AccountInfo(esi: esi, characterID: account.characterID, managedObjectContext: managedObjectContext))}
+        let attributesInfo = account.map {account in self.attributesInfo.get(initial: CharacterAttributesInfo(esi: esi, characterID: account.characterID))}
         return Group {
             if characterInfo != nil {
                 List {
@@ -179,29 +183,29 @@ struct CharacterSheet: View {
                             self.dateOfBirth(from: info)
                             self.securityStatus(from: info)
                             self.bloodline(from: info)
-                            self.ship(characterInfo?.ship?.value, location: characterInfo?.location?.value)
+                            self.ship(accountInfo?.ship?.value, location: accountInfo?.location?.value)
                         }
                     }
-                    (characterInfo?.balance?.value).map{ balance in
+                    (accountInfo?.balance?.value).map{ balance in
                         Section(header: Text("ACCOUNT")) {
                             self.balance(from: balance)
                         }
                     }
-                    if characterInfo?.skills?.value != nil || characterInfo?.attributes?.value != nil {
+                    if accountInfo?.skills?.value != nil || attributesInfo?.attributes?.value != nil {
                         Section(header: Text("SKILLS")) {
-                            self.skills(from: characterInfo?.skills?.value)
-                            self.bonusRemaps(from: characterInfo?.attributes?.value)
-                            self.neuralRemap(from: characterInfo?.attributes?.value)
+                            self.skills(from: accountInfo?.skills?.value)
+                            self.bonusRemaps(from: attributesInfo?.attributes?.value)
+                            self.neuralRemap(from: attributesInfo?.attributes?.value)
                         }
                     }
-                    attributesSection(from: characterInfo?.attributes?.value)
-                    implantsSection(from: characterInfo?.implants?.value)
+                    attributesSection(from: attributesInfo?.attributes?.value)
+                    implantsSection(from: attributesInfo?.implants?.value)
                 }.listStyle(GroupedListStyle())
             }
             else {
                 Text(RuntimeError.noAccount).padding()
             }
-        }
+        }.navigationBarTitle("Character Sheet")
     }
 }
 

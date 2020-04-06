@@ -13,4 +13,5 @@ enum RuntimeError: Error {
     case noResult
     case invalidOAuth2TOken
     case invalidGang
+    case invalidPlanetLayout
 }

@@ -94,7 +94,6 @@ struct WalletJournal_Previews: PreviewProvider {
         }
         
         return NavigationView {
-//            WalletJournal()
             List {
                 WalletJournalContent(journal: journal)
             }.listStyle(GroupedListStyle())

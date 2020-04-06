@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Dgmpp
+import Expressible
 
 struct FittingEditorShipModulesSection: View {
     private struct GroupKey: Hashable {
@@ -51,7 +52,7 @@ struct FittingEditorShipModulesSection: View {
     }
     
     var slot: DGMModule.Slot
-    @Binding var selectedSlot: FittingEditorShipModulesList.SelectedSlot?
+    @Binding var selection: FittingEditorShipModules.Selection?
     
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
@@ -95,30 +96,45 @@ struct FittingEditorShipModulesSection: View {
                 self.grouped.toggle()
             }
         }
-        let freeSockets = IndexSet(0..<n).subtracting(IndexSet(modules.map{$0.socket}))
         
         return Section(header: header) {
             ForEach(rows) { i in
                 if i.modules?.isEmpty == false {
-                    FittingModuleCell(module: DGMModuleGroup(i.modules!))
-                        .foregroundColor(i.modules![0].socket >= n ? .red : nil)
+                    Button(action: {self.selection = .module(DGMModuleGroup(i.modules!))}) {
+                        FittingModuleCell(module: DGMModuleGroup(i.modules!))
+                            .foregroundColor(i.modules![0].socket >= n ? .red : nil)
+                    }.buttonStyle(PlainButtonStyle())
                 }
                 else {
-                    /*Button(action: {
+                    Button(action: {
+                        let subcategory: Int?
+                        let race: SDEChrRace?
+                        switch self.slot {
+                        case .rig:
+                            subcategory = self.ship.rigSize.rawValue
+                            race = nil
+                        case .subsystem:
+                            subcategory = nil
+                            race = try? self.managedObjectContext.from(SDEChrRace.self).filter(/\SDEChrRace.raceID == Int32(self.ship.raceID.rawValue)).first()
+                        case .mode:
+                            subcategory = self.ship.typeID
+                            race = nil
+                        default:
+                            subcategory = Int(SDECategoryID.module.rawValue)
+                            race = nil
+                        }
+                        guard let group = try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(slot: self.slot, subcategory: subcategory, race: race)).first else {return}
+
                         if self.grouped {
                             let sockets = IndexSet(0..<n).subtracting(IndexSet(modules.map{$0.socket}))
-                            self.selectedSlot = .init(slot: self.slot, sockets: sockets)
+                            self.selection = .slot(group, sockets)
                         }
                         else {
-                            self.selectedSlot = .init(slot: self.slot, sockets: IndexSet(integer: i.socket!))
+                            self.selection = .slot(group, IndexSet(integer: i.socket!))
                         }
-                    }) {*/
-//                        HStack(spacing: 0) {
-                            FittingModuleSlot(slot: self.slot,
-                                              sockets: self.grouped ? freeSockets : IndexSet(integer: i.socket!))
-//                            Spacer()
-//                        }.contentShape(Rectangle())
-//                    }.buttonStyle(PlainButtonStyle())
+                    }) {
+                        FittingModuleSlot(slot: self.slot)
+                    }.buttonStyle(PlainButtonStyle())
                 }
             }
         }
@@ -126,12 +142,11 @@ struct FittingEditorShipModulesSection: View {
 }
 
 
-#if DEBUG
 struct FittingEditorShipModulesSection_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             List {
-                FittingEditorShipModulesSection(slot: .hi, selectedSlot: .constant(nil))
+                FittingEditorShipModulesSection(slot: .hi, selection: .constant(nil))
             }.listStyle(GroupedListStyle())
         }
         .environmentObject(DGMShip.testDominix())
@@ -140,5 +155,3 @@ struct FittingEditorShipModulesSection_Previews: PreviewProvider {
 //        .colorScheme(.dark)
     }
 }
-
-#endif

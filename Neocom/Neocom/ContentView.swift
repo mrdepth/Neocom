@@ -84,8 +84,8 @@ struct ContentView: View {
 //            NavigationView {
 //                NavigationLink("Next", destination: ShipLoadouts())
 //            }
-            ShipLoadouts_Previews.previews
-//            MailDrafts_Previews.previews
+            Home_Previews.previews
+//            ZKillboardSearchForm_Previews.previews
 //            TextView_Previews.previews
 //            LoadingProgressView_Previews.previews
 //            NavigationView {

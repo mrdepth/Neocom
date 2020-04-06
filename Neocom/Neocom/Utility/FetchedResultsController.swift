@@ -54,7 +54,9 @@ class FetchedResultsController<ResultType: NSFetchRequestResult>: NSObject, NSFe
     init(_ controller: NSFetchedResultsController<ResultType>) {
         self.controller = controller
         super.init()
-        controller.delegate = self
+        if controller.fetchRequest.resultType == .managedObjectResultType {
+            controller.delegate = self
+        }
     }
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

@@ -7,20 +7,26 @@
 //
 
 import SwiftUI
+import EVEAPI
 
 struct Main: View {
     var body: some View {
 		NavigationView {
-			Text("Left")
-				.navigationViewStyle(DoubleColumnNavigationViewStyle())
-				.navigationBarTitle("One")
-			Text("Right").navigationBarTitle("Two")
-		}
+            Home()
+            Text("Detail")
+		}.navigationViewStyle(DoubleColumnNavigationViewStyle())
     }
 }
 
 struct Main_Previews: PreviewProvider {
     static var previews: some View {
-        Main()
+        let account = AppDelegate.sharedDelegate.testingAccount
+        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
+
+        return Main()
+            .environment(\.account, account)
+            .environment(\.esi, esi)
+            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+
     }
 }

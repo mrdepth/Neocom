@@ -189,45 +189,6 @@ extension DGMModule {
     }
 }
 
-#if DEBUG
-extension DGMGang {
-    static func testGang(_ pilots: Int = 1) -> DGMGang {
-        let gang = try! DGMGang()
-        for _ in 0..<pilots {
-            gang.add(.testCharacter())
-        }
-        return gang
-    }
-}
-
-extension DGMCharacter {
-    static func testCharacter() -> DGMCharacter {
-        let pilot = try! DGMCharacter()
-        pilot.ship = .testDominix()
-        try! pilot.add(DGMImplant(typeID: 10211))
-        try! pilot.add(DGMBooster(typeID: 10151))
-        
-        return pilot
-    }
-}
-
-extension DGMShip {
-    static func testDominix() -> DGMShip {
-        let dominix = try! DGMShip(typeID: 645)
-        try! dominix.add(DGMModule(typeID: 3154))
-        try! dominix.add(DGMModule(typeID: 405))
-        try! dominix.add(DGMModule(typeID: 3154))
-        
-        for _ in 0..<5 {
-            try! dominix.add(DGMDrone(typeID: 2446))
-        }
-        return dominix
-    }
-}
-
-#endif
-
-
 extension DGMCharacter {
 	class func url(account: Account) -> URL? {
 		guard let uuid = account.uuid else {return nil}
@@ -414,6 +375,61 @@ extension DGMCharacter {
                 try? add(DGMBooster(typeID: booster.typeID))
             }
             ship?.loadout = newValue
+        }
+    }
+}
+
+extension DGMPlanet {
+    convenience init(planet: ESI.Planets.Element, info: ESI.PlanetInfo) throws {
+        self.init()
+        for pin in info.pins {
+            guard self[pin.pinID] == nil else {throw RuntimeError.invalidPlanetLayout}
+            let facility = try add(facility: DGMTypeID(pin.typeID), identifier: pin.pinID)
+            
+            switch facility {
+            case let ecu as DGMExtractorControlUnit:
+                ecu.launchTime = pin.lastCycleStart ?? Date(timeIntervalSinceReferenceDate: 0)
+                ecu.installTime = pin.installTime ?? Date(timeIntervalSinceReferenceDate: 0)
+                ecu.expiryTime = pin.expiryTime ?? Date(timeIntervalSinceReferenceDate: 0)
+                ecu.cycleTime = TimeInterval(pin.extractorDetails?.cycleTime ?? 0)
+                ecu.quantityPerCycle = pin.extractorDetails?.qtyPerCycle ?? 0
+//                ecu.quantityPerCycle *= 10
+            case let factory as DGMFactory:
+                factory.launchTime = pin.lastCycleStart ?? Date(timeIntervalSinceReferenceDate: 0)
+                if let schematicID = pin.schematicID {
+                    factory.schematicID = schematicID
+                }
+            default:
+                break
+            }
+            pin.contents?.filter {$0.amount > 0}.forEach {
+                try? facility.add(DGMCommodity(typeID: $0.typeID, quantity: Int($0.amount)))
+            }
+        }
+        
+        for route in info.routes {
+            guard let source = self[route.sourcePinID], let destination = self[route.destinationPinID] else {throw RuntimeError.invalidPlanetLayout}
+            let route = try DGMRoute(from: source, to: destination, commodity: DGMCommodity(typeID: route.contentTypeID, quantity: Int(route.quantity)))
+            add(route: route)
+        }
+
+        lastUpdate = planet.lastUpdate
+    }
+}
+
+extension DGMFacility {
+    var sortDescriptor: (Int, String) {
+        if self is DGMExtractorControlUnit {
+            return (0, name)
+        }
+        else if self is DGMStorage {
+            return (1, name)
+        }
+        else if self is DGMFactory {
+            return (2, name)
+        }
+        else {
+            return (3, name)
         }
     }
 }

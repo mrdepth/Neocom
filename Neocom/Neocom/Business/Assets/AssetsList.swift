@@ -9,11 +9,18 @@
 import SwiftUI
 import EVEAPI
 import Expressible
+import Combine
+import Dgmpp
 
 struct AssetsList: View {
     var assets: [AssetsData.Asset]
     var title: String
     var ship: AssetsData.Asset?
+    
+    @State private var selectedProject: FittingProject?
+    @State private var projectLoading: AnyPublisher<Result<FittingProject, Error>, Never>?
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    @Environment(\.account) private var account
     
     init(_ location: AssetsData.LocationGroup) {
         assets = location.assets
@@ -28,15 +35,37 @@ struct AssetsList: View {
         }
     }
 
+    private var fittingButton: some View {
+        Button("Fitting") {
+            self.projectLoading = DGMSkillLevels.load(self.account, managedObjectContext: self.managedObjectContext).tryMap { try FittingProject(asset: self.ship!, skillLevels: $0) }
+                .asResult()
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
+        }
+    }
+
     var body: some View {
-        List {
+        Group {
             if ship != nil {
-                AssetsShipContent(ship: ship!)
+                List {
+                    AssetsShipContent(ship: ship!)
+                }.listStyle(GroupedListStyle())
+                    .overlay(self.projectLoading != nil ? ActivityView() : nil)
+                    .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+                    .onReceive(projectLoading ?? Empty().eraseToAnyPublisher()) { result in
+                        self.projectLoading = nil
+                        self.selectedProject = result.value
+                }
+                .navigationBarItems(trailing: fittingButton)
+                
             }
             else {
-                AssetsListContent(assets: assets)
+                List {
+                    AssetsListContent(assets: assets)
+                }.listStyle(GroupedListStyle())
             }
-        }.listStyle(GroupedListStyle()).navigationBarTitle(title)
+        }
+        .navigationBarTitle(title)
     }
 }
 

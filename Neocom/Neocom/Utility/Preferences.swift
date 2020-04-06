@@ -35,3 +35,4 @@ struct FramePreferenceKey: PreferenceKey {
     
     typealias Value = [CGRect]
 }
+

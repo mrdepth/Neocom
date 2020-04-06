@@ -86,7 +86,6 @@ struct AvatarImageView: View {
             let uiImage = imageLoader.get(initial: DataLoader(esi.image.alliance(Int(allianceID), size: size))).result?.value
             image = uiImage.map{Image(uiImage: $0)}
         }
-        
         return Group {
             if image != nil {
                 image!.resizable()

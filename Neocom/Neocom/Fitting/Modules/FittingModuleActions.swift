@@ -56,17 +56,23 @@ struct FittingModuleTypeInfo: View {
 }
 
 struct FittingChargeCell: View {
+    @Environment(\.managedObjectContext) private var managedObjectContext
     @ObservedObject var module: DGMModuleGroup
-    var charge: SDEDgmppItemDamage
+    var charge: SDEDgmppItemDamage?
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
+        let type = charge?.item?.type ?? module.charge?.type(from: managedObjectContext)
+        
+        return VStack(alignment: .leading, spacing: 2) {
             HStack {
-                Icon(charge.item!.type!.image).cornerRadius(4)
-                Text(charge.item?.type?.typeName ?? "")
+                type.map {Icon($0.image).cornerRadius(4)}
+                
+                Text(type?.typeName ?? "")
                 Text("x\(UnitFormatter.localizedString(from: module.charges, unit: .none, style: .long))").modifier(SecondaryLabelModifier())
             }
-            DamageVectorView(damage: DGMDamageVector(charge))
+            if charge != nil {
+                DamageVectorView(damage: DGMDamageVector(charge!))
+            }
         }
     }
 }
@@ -74,6 +80,7 @@ struct FittingChargeCell: View {
 struct FittingModuleActions: View {
 
     @ObservedObject var module: DGMModuleGroup
+    var completion: () -> Void
 
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
@@ -92,7 +99,7 @@ struct FittingModuleActions: View {
         HStack(spacing: 0) {
             Button(action: {self.selectedChargeCategory = chargeCategory}) {
                 HStack(spacing: 0) {
-                    type.dgmppItem?.damage.map { FittingChargeCell(module: module, charge: $0) }
+                    FittingChargeCell(module: module, charge: type.dgmppItem?.damage)
                     Spacer()
                 }.contentShape(Rectangle())
             }.buttonStyle(PlainButtonStyle())
@@ -175,7 +182,11 @@ struct FittingModuleActions: View {
             }
         }.listStyle(GroupedListStyle())
             .navigationBarTitle("Actions")
-            .navigationBarItems(leading: BarButtonItems.close {}, trailing: BarButtonItems.trash {})
+            .navigationBarItems(leading: BarButtonItems.close(completion), trailing: BarButtonItems.trash {
+                let ship = self.module.parent as? DGMShip
+                self.module.modules.forEach { ship?.remove($0) }
+                self.completion()
+            })
             .sheet(item: $selectedType) { self.typeInfo($0)}
             .sheet(item: $selectedChargeCategory) { self.charges($0) }
             
@@ -187,7 +198,7 @@ struct FittingModuleActions_Previews: PreviewProvider {
         let gang = DGMGang.testGang()
         let module = gang.pilots.first?.ship?.modules.first
         return NavigationView {
-            FittingModuleActions(module: DGMModuleGroup([module!]))
+            FittingModuleActions(module: DGMModuleGroup([module!])) {}
         }
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)

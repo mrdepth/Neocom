@@ -75,12 +75,7 @@ fileprivate struct ComposeMailContent: View {
         
         let contactsInitialLoading: AnyPublisher<[Int64:Contact], Never>
         if let ids = draft?.to, !ids.isEmpty {
-//            var subscription: AnyCancellable?
             contactsInitialLoading = Contact.contacts(with: Set(ids), esi: esi, characterID: account.characterID, options: [.all], managedObjectContext: managedObjectContext).receive(on: RunLoop.main).eraseToAnyPublisher()
-//            subscription = Contact.contacts(with: Set(ids), esi: esi, characterID: account.characterID, options: [.all], managedObjectContext: managedObjectContext).receive(on: RunLoop.main).sink { contacts in
-//                subscription?.cancel()
-//                subscription = nil
-//            }
         }
         else {
             contactsInitialLoading = Empty().eraseToAnyPublisher()

@@ -10,6 +10,22 @@ import SwiftUI
 import Expressible
 import CoreData
 
+class TypePickerManager {
+    private let typePickerState = Cache<SDEDgmppItemGroup, TypePickerState>()
+    func get(_ parentGroup: SDEDgmppItemGroup, environment: EnvironmentValues, completion: @escaping (SDEInvType?) -> Void) -> some View {
+        NavigationView {
+            TypePicker(parentGroup: parentGroup) {
+                completion($0)
+            }
+            .navigationBarItems(leading: BarButtonItems.close {
+                completion(nil)
+            })
+        }
+        .modifier(ServicesViewModifier(environment: environment))
+        .environmentObject(typePickerState[parentGroup, default: TypePickerState()])
+    }
+}
+
 class TypePickerState: ObservableObject {
     class Node: ObservableObject {
         var parentGroup: SDEDgmppItemGroup
@@ -30,24 +46,21 @@ struct TypePicker: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var state: TypePickerState
     
-    var category: SDEDgmppItemCategory
-    var parentGroup: SDEDgmppItemGroup?
+    var parentGroup: SDEDgmppItemGroup
     var completion: (SDEInvType) -> Void
     
+    init(parentGroup: SDEDgmppItemGroup, completion: @escaping (SDEInvType) -> Void) {
+        self.parentGroup = parentGroup
+        self.completion = completion
+    }
+    
     var body: some View {
-        let group = try? parentGroup ?? managedObjectContext.from(SDEDgmppItemGroup.self).filter(/\SDEDgmppItemGroup.category == category && /\SDEDgmppItemGroup.parentGroup == nil).first()
-        
-        return group.map { group in
-            
-            TypePickerPage(category: category,
-                           currentState: sequence(first: state.current ?? TypePickerState.Node(group)){$0.previous}.reversed().first!,
-                           completion: completion)
-        }
+        TypePickerPage(currentState: sequence(first: state.current ?? TypePickerState.Node(parentGroup)){$0.previous}.reversed().first!,
+                       completion: completion)
     }
 }
 
 struct TypePickerPage: View {
-    var category: SDEDgmppItemCategory
     var completion: (SDEInvType) -> Void
 
     @EnvironmentObject private var state: TypePickerState
@@ -56,9 +69,8 @@ struct TypePickerPage: View {
     @State private var nextState: TypePickerState.Node?
     private var currentState: TypePickerState.Node
     
-    init(category: SDEDgmppItemCategory, currentState: TypePickerState.Node, completion: @escaping (SDEInvType) -> Void) {
+    init(currentState: TypePickerState.Node, completion: @escaping (SDEInvType) -> Void) {
         self.currentState = currentState
-        self.category = category
         self.completion = completion
         _selectedGroup = State(initialValue: currentState.next?.parentGroup)
         _nextState = State(initialValue: currentState.next)
@@ -68,15 +80,17 @@ struct TypePickerPage: View {
     var body: some View {
         Group {
             if (currentState.parentGroup.subGroups?.count ?? 0) > 0 {
-                TypePickerGroups(category: category, currentState: currentState, completion: completion, selectedGroup: $selectedGroup)
+                TypePickerGroups(currentState: currentState, completion: completion, selectedGroup: $selectedGroup)
             }
             else {
                 TypePickerTypes(currentState: currentState, completion: completion)
             }
         }.onAppear {
-            self.state.current = self.currentState
-            self.currentState.previous?.next = self.currentState
-            self.nextState = nil
+            DispatchQueue.main.async {
+                self.state.current = self.currentState
+                self.currentState.previous?.next = self.currentState
+                self.nextState = nil
+            }
         }
     }
 }
@@ -84,9 +98,9 @@ struct TypePickerPage: View {
 struct TypePicker_Previews: PreviewProvider {
     static var previews: some View {
         let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
-        let category = try! context.fetch(SDEDgmppItemCategory.category(categoryID: .ship)).first!
+        let group = try! context.fetch(SDEDgmppItemGroup.rootGroup(categoryID: .ship)).first!
         return NavigationView {
-            TypePicker(category: category) { _ in
+            TypePicker(parentGroup: group) { _ in
                 
             }
         }

@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "killmail.json",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

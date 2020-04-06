@@ -25,6 +25,10 @@ struct BackgroundManagedObjectContextKey: EnvironmentKey {
     static var defaultValue: NSManagedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
 }
 
+struct TypePickerManagerKey: EnvironmentKey {
+    static var defaultValue = TypePickerManager()
+}
+
 extension EnvironmentValues {
     var esi: ESI {
         get {
@@ -50,6 +54,14 @@ extension EnvironmentValues {
         }
         set {
             self[BackgroundManagedObjectContextKey.self] = newValue
+        }
+    }
+    var typePicker: TypePickerManager {
+        get {
+            self[TypePickerManagerKey.self]
+        }
+        set {
+            self[TypePickerManagerKey.self] = newValue
         }
     }
 }

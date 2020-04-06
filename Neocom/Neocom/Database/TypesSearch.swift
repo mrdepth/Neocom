@@ -27,7 +27,7 @@ struct TypesSearch<Content: View>: View {
     }
     
     func search(_ string: String) -> AnyPublisher<[FetchedResultsController<SDEInvType>.Section]?, Never> {
-        return Future<FetchedResultsController<NSDictionary>?, Never> { promise in
+        Future<FetchedResultsController<NSDictionary>?, Never> { promise in
             self.backgroundManagedObjectContext.perform {
                 let string = string.trimmingCharacters(in: .whitespacesAndNewlines)
                 if string.isEmpty {

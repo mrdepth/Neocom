@@ -25,7 +25,7 @@ struct TypeGroups: View {
     
     var body: some View {
         ObservedObjectView(self.groups()) { groups in
-            TypesSearch(predicate: /\SDEInvType.group?.category == self.category) { searchResults in
+            TypesSearch(predicate: /\SDEInvType.group?.category == self.category && /\SDEInvType.published == true) { searchResults in
                 List {
                     if searchResults == nil {
                         TypeGroupsContent(groups: groups)

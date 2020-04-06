@@ -40,8 +40,13 @@ struct MailPage: View {
                     }
                 }
             }
-        }.listStyle(GroupedListStyle())
-            .navigationBarTitle(label.name ?? "")
+        }
+        .listStyle(GroupedListStyle())
+        .overlay(result == nil ? Text(RuntimeError.noAccount).padding() : nil)
+        .overlay(result?.sections?.error.map{Text($0)})
+        .overlay(sections?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
+        .navigationBarTitle(Text("Planetaries"))
+        .navigationBarTitle(label.name ?? "")
     }
 }
 

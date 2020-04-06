@@ -12,8 +12,6 @@ import Dgmpp
 struct FittingModuleCell: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @ObservedObject var module: DGMModuleGroup
-    @State private var isActionsPresented = false
-    @Environment(\.self) private var environment
 
     private var accuracy: some View {
         let ship = module.parent as? DGMShip
@@ -87,42 +85,29 @@ struct FittingModuleCell: View {
         let type = module.type(from: managedObjectContext)
         let slotsWithState: Set<DGMModule.Slot> = [.hi, .low, .med, .starbaseStructure]
         
-        return Button(action: {
-            self.isActionsPresented = true
-        }) {
-            HStack {
-                (type?.image).map{Icon($0).cornerRadius(4)}
-                VStack(alignment: .leading, spacing: 0) {
-                    (type?.typeName).map{Text($0)} ?? Text("Unknown")
-                    charge
-                    OptimalInfo(optimal: module.optimal, falloff: module.falloff).modifier(SecondaryLabelModifier())
-                    accuracy
-                    cycleTime
-                    lifeTime
+        return HStack {
+            (type?.image).map{Icon($0).cornerRadius(4)}
+            VStack(alignment: .leading, spacing: 0) {
+                (type?.typeName).map{Text($0)} ?? Text("Unknown")
+                charge
+                OptimalInfo(optimal: module.optimal, falloff: module.falloff).modifier(SecondaryLabelModifier())
+                accuracy
+                cycleTime
+                lifeTime
+            }
+            Spacer()
+            HStack(spacing: 0) {
+                if module.target != nil {
+                    Icon(Image("targets"), size: .small)
                 }
-                Spacer()
-                HStack(spacing: 0) {
-                    if module.target != nil {
-                        Icon(Image("targets"), size: .small)
-                    }
-                    if slotsWithState.contains(module.slot) {
-                        module.state.image.map{Icon($0, size: .small)}
-                    }
-                }
-                if module.modules.count > 1 {
-                    Text("x\(module.modules.count)").fontWeight(.semibold).modifier(SecondaryLabelModifier())
+                if slotsWithState.contains(module.slot) {
+                    module.state.image.map{Icon($0, size: .small)}
                 }
             }
-        }.buttonStyle(PlainButtonStyle())
-            .sheet(isPresented: $isActionsPresented) {
-                NavigationView {
-                    FittingModuleActions(module: self.module)
-                        .navigationBarItems(leading: BarButtonItems.close {
-                            self.isActionsPresented = false
-                        })
-                }.modifier(ServicesViewModifier(environment: self.environment))
-        }
-        
+            if module.modules.count > 1 {
+                Text("x\(module.modules.count)").fontWeight(.semibold).modifier(SecondaryLabelModifier())
+            }
+        }.contentShape(Rectangle())
     }
 }
 

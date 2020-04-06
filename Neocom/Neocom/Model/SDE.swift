@@ -386,7 +386,7 @@ enum ItemFlag: Int32, Hashable {
     var tableSectionHeader: some View {
         HStack {
             image.map{Icon($0, size: .small)}
-            Text(title ?? "")
+            Text(title?.uppercased() ?? "")
         }
     }
 }
@@ -453,11 +453,6 @@ extension SDEInvType {
         Image(uiImage: uiImage)
     }
 
-    #if DEBUG
-    class var dominix: SDEInvType {
-        return try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 645).first()!
-    }
-    #endif
 }
 
 extension SDEEveIcon {
@@ -473,6 +468,7 @@ extension SDEEveIcon {
         case defaultGroup
         case defaultType
         case mastery(Int?)
+        case custom(String)
         
         var name: String {
             switch self {
@@ -483,29 +479,50 @@ extension SDEEveIcon {
             case let .mastery(level):
                 guard let level = level, (0...4).contains(level) else {return "79_64_1"}
                 return "79_64_\(level + 2)"
+            case let .custom(name):
+                return name
             }
         }
     }
 }
 
-extension SDEDgmppItemCategory {
-    class func category(categoryID: SDEDgmppItemCategoryID, subcategory: Int? = nil, race: SDEChrRace? = nil) -> NSFetchRequest<SDEDgmppItemCategory> {
-        let request = NSFetchRequest<SDEDgmppItemCategory>(entityName: "DgmppItemCategory")
-        var predicate: PredicateProtocol = (/\SDEDgmppItemCategory.category == categoryID.rawValue)//.predicate(for: .`self`)
+extension SDEDgmppItemGroup {
+    var uiImage: UIImage {
+        icon?.image?.image ??
+        (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
+        UIImage()
+    }
+    
+    var image: Image {
+        Image(uiImage: uiImage)
+    }
+    
+    class func rootGroup(categoryID: SDEDgmppItemCategoryID, subcategory: Int? = nil, race: SDEChrRace? = nil) -> NSFetchRequest<SDEDgmppItemGroup> {
+        var predicate = /\SDEDgmppItemGroup.parentGroup == nil && /\SDEDgmppItemGroup.category?.category == categoryID.rawValue
         
         if let subcategory = subcategory {
-            predicate = predicate && /\SDEDgmppItemCategory.subcategory == Int32(subcategory)
+            predicate = predicate && /\SDEDgmppItemGroup.category?.subcategory == Int32(subcategory)
         }
         
         if let race = race {
-            predicate = predicate && /\SDEDgmppItemCategory.race == race
+            predicate = predicate && /\SDEDgmppItemGroup.category?.race == race
         }
+
+        if let subcategory = subcategory {
+            predicate = predicate && /\SDEDgmppItemGroup.category?.subcategory == Int32(subcategory)
+        }
+        
+        if let race = race {
+            predicate = predicate && /\SDEDgmppItemGroup.category?.race == race
+        }
+        
+        let request = NSFetchRequest<SDEDgmppItemGroup>(entityName: "DgmppItemGroup")
         request.predicate = predicate.predicate(for: .self)
         request.fetchLimit = 1
         return request
     }
     
-    class func category(slot: DGMModule.Slot, subcategory: Int? = nil, race: SDEChrRace? = nil) -> NSFetchRequest<SDEDgmppItemCategory> {
+    class func rootGroup(slot: DGMModule.Slot, subcategory: Int? = nil, race: SDEChrRace? = nil) -> NSFetchRequest<SDEDgmppItemGroup> {
         let categoryID: SDEDgmppItemCategoryID
         switch slot {
         case .hi:
@@ -527,20 +544,7 @@ extension SDEDgmppItemCategory {
         default:
             categoryID = .none
         }
-        
-        return category(categoryID: categoryID, subcategory: subcategory, race: race)
-    }
-}
-
-extension SDEDgmppItemGroup {
-    var uiImage: UIImage {
-        icon?.image?.image ??
-        (try? managedObjectContext?.fetch(SDEEveIcon.named(.defaultGroup)).first?.image?.image) ??
-        UIImage()
-    }
-    
-    var image: Image {
-        Image(uiImage: uiImage)
+        return rootGroup(categoryID: categoryID, subcategory: subcategory, race: race)
     }
 }
 
@@ -554,6 +558,12 @@ extension SDEDgmppItemCategory: Identifiable {
         return objectID
     }
 }
+extension SDEDgmppItemGroup: Identifiable {
+    public var id: NSManagedObjectID {
+        return objectID
+    }
+}
+
 extension DamagePattern: Identifiable {
     public var id: NSManagedObjectID {
         return objectID
@@ -608,5 +618,38 @@ extension SDEInvType {
         }()
         let dps = turrets + launchers
         return dps.total > 0 ? dps : nil
+    }
+}
+
+extension SDEWhType {
+    @objc var targetSystemClassDisplayName: String? {
+        switch targetSystemClass {
+        case 0:
+            return NSLocalizedString("Exit WH", comment: "")
+        case 1...6:
+            return String(format: NSLocalizedString("W-Space Class %d", comment: ""), targetSystemClass)
+        case 7:
+            return NSLocalizedString("High-Sec", comment: "")
+        case 8:
+            return NSLocalizedString("Low-Sec", comment: "")
+        case 9:
+            return NSLocalizedString("0.0 System", comment: "")
+        case 12:
+            return NSLocalizedString("Thera", comment: "")
+        case 13:
+            return NSLocalizedString("W-Frig", comment: "")
+        case 14:
+            return NSLocalizedString("Sentinel", comment: "")
+        case 15:
+            return NSLocalizedString("Barbican", comment: "")
+        case 16:
+            return NSLocalizedString("Vidette", comment: "")
+        case 17:
+            return NSLocalizedString("Conflux", comment: "")
+        case 18:
+            return NSLocalizedString("Redoubt", comment: "")
+        default:
+            return String(format: NSLocalizedString("Unknown Class %d", comment: ""), targetSystemClass)
+        }
     }
 }

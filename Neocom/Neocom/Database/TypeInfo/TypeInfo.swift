@@ -78,6 +78,9 @@ struct TypeInfo: View {
                 else if categoryID == .blueprint {
                     BlueprintInfo(type: self.type, pilot: info.pilot)
                 }
+                else if self.type.wormhole != nil {
+                    WormholeInfo(type: self.type)
+                }
                 else {
                     self.basicInfo(for: info.pilot)
                 }

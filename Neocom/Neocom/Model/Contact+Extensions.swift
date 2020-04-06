@@ -147,10 +147,16 @@ extension Contact {
                 Contact.contacts(with: ids, esi: esi, characterID: nil, options: [.universe], managedObjectContext: managedObjectContext)
                     .map{Array($0.values)}
                     .setFailureType(to: AFError.self)
-            }.catch{_ in Empty()}
-                .eraseToAnyPublisher()
+            }
+            .catch{_ in Empty()}
+            .eraseToAnyPublisher()
             
         }
-        return Just(contacts ?? []).merge(with: searchResults).eraseToAnyPublisher()
+        if contacts?.isEmpty == false {
+            return Just(contacts ?? []).merge(with: searchResults).eraseToAnyPublisher()
+        }
+        else {
+            return searchResults
+        }
     }
 }

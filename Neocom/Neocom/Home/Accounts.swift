@@ -16,15 +16,21 @@ struct Accounts: View {
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.characterName, ascending: true)])
     var accounts: FetchedResults<Account>
     
-    @State var cache = Cache<Account, AccountInfo>()
+    @State private var accountInfoCache = Cache<Account, AccountInfo>()
+    @State private var characterInfoCache = Cache<Account, CharacterInfo>()
     
-    private func info(for account: Account) -> AccountInfo {
-        cache[account, default: AccountInfo(esi: account.oAuth2Token.map{ESI(token: $0)} ?? ESI(),
+    private func accountInfo(for account: Account) -> AccountInfo {
+        accountInfoCache[account, default: AccountInfo(esi: account.oAuth2Token.map{ESI(token: $0)} ?? ESI(),
                                                  characterID: account.characterID,
-                                                 managedObjectContext: managedObjectContext,
-                                                 characterImageSize: .size256)]
+                                                 managedObjectContext: managedObjectContext)]
     }
-    
+
+    private func characterInfo(for account: Account) -> CharacterInfo {
+        characterInfoCache[account, default: CharacterInfo(esi: account.oAuth2Token.map{ESI(token: $0)} ?? ESI(),
+                                                           characterID: account.characterID,
+                                                           characterImageSize: .size256)]
+    }
+
     var body: some View {
         List {
             Button("Add new account") {
@@ -35,7 +41,7 @@ struct Accounts: View {
             }.frame(maxWidth: .infinity)
             Section {
                 ForEach(accounts, id: \Account.objectID) { account in
-                    AccountCell(accountInfo: self.info(for: account))
+                    AccountCell(characterInfo: self.characterInfo(for: account), accountInfo: self.accountInfo(for: account))
                 }.onDelete { (indices) in
                     withAnimation {
                         indices.forEach { i in

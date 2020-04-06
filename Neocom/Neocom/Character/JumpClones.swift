@@ -13,9 +13,9 @@ import Alamofire
 struct JumpClones: View {
     @ObservedObject private var info = Lazy<DataLoader<JumpClonesInfo, AFError>>()
     @Environment(\.managedObjectContext) var managedObjectContext
-    @Environment(\.esi) var esi
-    @Environment(\.account) var account
-    
+    @Environment(\.esi) private var esi
+    @Environment(\.account) private var account
+
     private struct JumpClonesInfo {
         var clones: ESI.Clones
         var locations: [Int64: EVELocation]
@@ -36,8 +36,7 @@ struct JumpClones: View {
         let subtitle = t > 0 ? Text(TimeIntervalFormatter.localizedString(from: t, precision: .minutes)) : Text("Now")
         
         return VStack(alignment: .leading) {
-            Text("Next Clone Jump Availability")
-            (Text("Clone jump availability: ") + subtitle).modifier(SecondaryLabelModifier())
+            Text("Clone jump availability: ") + subtitle
         }
     }
     

@@ -7,6 +7,8 @@
 //
 
 import SwiftUI
+import EVEAPI
+import Alamofire
 
 struct Home: View {
     @Environment(\.managedObjectContext) var managedObjectContext
@@ -14,15 +16,50 @@ struct Home: View {
     
     @State var accountsVisible = false
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             Button(action: {
                 self.accountsVisible = true
             }) {
-                HomeHeader(characterID: account?.characterID)
-            }
+                HomeHeader()
+            }.buttonStyle(PlainButtonStyle())
+            Divider()
+            ServerStatus().frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal).padding(.vertical, 4)
+            Divider()
             
             List {
-                Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+                Section(header: Text("CHARACTER")) {
+                    CharacterSheetItem()
+                    JumpClonesItem()
+                    SkillsItem()
+                    MailItem()
+                    CalendarItem()
+                    WealthMenuItem()
+                    LoyaltyPointsItem()
+                }
+                Section(header: Text("DATABASE")) {
+                    DatabaseItem()
+                    CertificatesItem()
+                    MarketItem()
+                    NPCItem()
+                    WormholesItem()
+                    IncursionsItem()
+                }
+                
+                Section(header: Text("BUSINESS")) {
+                    AssetsItem()
+                    MarketOrdersItem()
+                    ContractsItem()
+                    WalletTransactionsItem()
+                    WalletJournalItem()
+                    IndustryJobsItem()
+                    PlanetariesItem()
+                }
+                
+                Section(header: Text("KILLBOARD")) {
+                    RecentKillsItem()
+                    ZKillboardItem()
+                }
+                
             }.listStyle(GroupedListStyle())
         }.sheet(isPresented: $accountsVisible) {
             NavigationView {
@@ -31,15 +68,24 @@ struct Home: View {
                 }).environment(\.managedObjectContext, self.managedObjectContext)
             }
         }
-        .navigationBarHidden(true)
         .navigationBarTitle("Neocom")
+//        .navigationBarHidden(true)
+//            .navigationBarTitle(account?.characterName ?? "Neocom")
     }
 }
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        let account = AppDelegate.sharedDelegate.testingAccount
+        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
+
+        return NavigationView {
             Home()
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        }
+        .environment(\.account, account)
+        .environment(\.esi, esi)
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+
     }
 }

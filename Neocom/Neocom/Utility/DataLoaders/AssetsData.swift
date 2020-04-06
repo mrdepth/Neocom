@@ -107,6 +107,7 @@ class AssetsData: ObservableObject {
         }.eraseToAnyPublisher()
     }
     
+    ///Group assets by location
     private static func regroup(assets: ESI.Assets, names: [Int64: String?], locations: [Int64: EVELocation?], managedObjectContext: NSManagedObjectContext) -> PartialResult {
         let locationGroup = Dictionary(grouping: assets, by: {$0.locationID})
         let items = Dictionary(assets.map{($0.itemID, $0)}, uniquingKeysWith: {a, _ in a})
@@ -120,6 +121,7 @@ class AssetsData: ObservableObject {
         
         var assetIDsMap = [Int64: Asset]()
 
+        //Process single asset
         func makeAsset(underlying asset: ESI.Assets.Element) -> Asset {
             let type = typesMap[asset.typeID]
             let result = Asset(nested: extract(locationGroup[asset.itemID] ?? []).sorted{$0.typeName < $1.typeName},
@@ -202,7 +204,7 @@ class AssetsData: ObservableObject {
         
         func getXPages<T>(from response: ESIResponse<T>) -> Range<Int> {
             guard let header = response.httpHeaders?["x-pages"], let pages = Int(header) else {return 1..<1}
-            return 1..<max(pages, 1)
+            return 1..<max(min(pages, 20), 1)
         }
         
         var assetNames = [Int64: String?]()

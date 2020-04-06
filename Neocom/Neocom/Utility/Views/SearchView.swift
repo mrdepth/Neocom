@@ -20,10 +20,10 @@ class SearchController<Results, Predicate>: ObservableObject {
         self._results = Published(initialValue: value)
         self._predicate = Published(initialValue: predicate)
         self.onUpdated = onUpdated
-        
+
         subscription = $predicate.debounce(for: .seconds(0.25), scheduler: DispatchQueue.main)
             .flatMap {
-                search($0).zip(Just($0))
+                search($0).combineLatest(Just($0))
         }
             .sink { [weak self] in
                 self?.onUpdated?($0.1)
@@ -40,18 +40,23 @@ struct SearchView<Results: Publisher, Content: View, Output>: View where Results
     
     init(initialValue: Results.Output, predicate: String = "", search: @escaping (String) -> Results, onUpdated: ((String) -> Void)? = nil, @ViewBuilder content: @escaping (Results.Output) -> Content) {
         self.content = content
+        _results = State(initialValue: initialValue)
         searchResults = SearchController(initialValue: initialValue, predicate: predicate, search, onUpdated: onUpdated)
     }
+    
+    @State private var results: Results.Output
         
     var body: some View {
         VStack(spacing: 0) {
             SearchField(text: $searchResults.predicate, isEditing: $isEditing)
             ZStack {
-                content(searchResults.results)
-                if searchResults.results == nil && isEditing {
+                content(results)
+                if results == nil && isEditing {
                     Color(.systemFill).edgesIgnoringSafeArea(.all).transition(.opacity)
                 }
             }
+        }.onReceive(searchResults.$results) {
+            self.results = $0
         }
     }
 }

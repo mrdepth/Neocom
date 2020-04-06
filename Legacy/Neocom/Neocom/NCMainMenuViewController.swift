@@ -400,7 +400,7 @@ class NCMainMenuViewController: NCTreeViewController {
 			                   children: [
 								NCMainMenuRow(nodeIdentifier: "Fitting", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("Fitting", comment: ""), route: Router.MainMenu.Fitting()),
 								NCMainMenuRow(nodeIdentifier: "KillReports",
-								              image: #imageLiteral(resourceName: "killreport"),
+//								              image: #imageLiteral(resourceName: "killreport"),
 								              title: NSLocalizedString("Kill Reports", comment: ""),
 								              route: Router.MainMenu.KillReports(),
 								              scopes: [.esiKillmailsReadKillmailsV1],
@@ -447,7 +447,7 @@ class NCMainMenuViewController: NCTreeViewController {
 								              scopes: [.esiIndustryReadCharacterJobsV1],
 								              account: account),
 								NCMainMenuRow(nodeIdentifier: "Planetaries",
-								              image: #imageLiteral(resourceName: "planets"),
+//								              image: #imageLiteral(resourceName: "planets"),
 								              title: NSLocalizedString("Planetaries", comment: ""),
 								              route: Router.MainMenu.Planetaries(),
 								              scopes: [.esiPlanetsManagePlanetsV1],

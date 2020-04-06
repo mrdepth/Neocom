@@ -128,6 +128,7 @@ extension UnitFormatter {
     enum Unit {
         case none
         case isk
+        case loyaltyPoints
         case skillPoints
         case gigaJoule
         case gigaJoulePerSecond
@@ -149,6 +150,8 @@ extension UnitFormatter {
                 return ""
             case .isk:
                 return NSLocalizedString("ISK", comment: "isk")
+            case .loyaltyPoints:
+                return NSLocalizedString("LP", comment: "loyaltyPoints")
             case .skillPoints:
                 return NSLocalizedString("SP", comment: "skillPoints")
             case .gigaJoule:
@@ -196,7 +199,7 @@ extension UnitFormatter {
                 case .tera:
                     return "T"
                 }
-            case .isk:
+            case .isk, .loyaltyPoints:
                 switch scale {
                 case .natural:
                     return " \(symbol)"
@@ -212,7 +215,7 @@ extension UnitFormatter {
             case .skillPoints, .gigaJoule, .gigaJoulePerSecond, .megaWatts, .teraflops, .kilogram, .millimeter, .megaBitsPerSecond, .cubicMeter, .auPerSecond, .hpPerSecond, .skillPointsPerSecond:
                 switch scale {
                 case .natural:
-                    return symbol
+                    return " \(symbol)"
                 case .kilo:
                     return "k \(symbol)"
                 case .mega:

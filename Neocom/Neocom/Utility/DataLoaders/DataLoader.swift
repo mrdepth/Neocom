@@ -25,6 +25,13 @@ class DataLoader<Success, Failure: Error>: ObservableObject {
     var objectWillChange = ObservableObjectPublisher()
     
     init<P: Publisher>(_ publisher: P) where P.Output == Success, P.Failure == Failure {
+        update(publisher)
+//        subscription = publisher.asResult().sink { [weak self] result in
+//            self?.result = result
+//        }
+    }
+    
+    func update<P: Publisher>(_ publisher: P) where P.Output == Success, P.Failure == Failure {
         subscription = publisher.asResult().sink { [weak self] result in
             self?.result = result
         }

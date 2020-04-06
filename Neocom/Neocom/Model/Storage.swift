@@ -118,6 +118,12 @@ extension Account {
             return nil
         }
     }
+    
+    func verifyCredentials(_ scopes: [ESI.Scope]) -> Bool {
+        guard !scopes.isEmpty else {return true}
+        let current = self.scopes?.compactMap {($0 as? Scope)?.name}.compactMap {ESI.Scope($0)} ?? []
+        return Set(scopes).isSubset(of: current)
+    }
 }
 
 fileprivate struct Pair<A, B> {

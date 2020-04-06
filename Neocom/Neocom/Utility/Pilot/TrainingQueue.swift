@@ -128,46 +128,51 @@ extension Pilot.Attributes {
     }
     
     init(optimalFor trainingQueue: TrainingQueue) {
-        var skillPoints: [Key: Int] = [:]
-        for item in trainingQueue.queue {
-            let sp = item.finishSP - item.startSP
-            let key = Key(primary: item.skill.primaryAttributeID, secondary: item.skill.secondaryAttributeID)
-            skillPoints[key, default: 0] += sp
+        if trainingQueue.queue.isEmpty {
+            self = .default
         }
-        
-        let basePoints = 17
-        let bonusPoints = 14
-        let maxPoints = 27
-        let totalMaxPoints = basePoints * 5 + bonusPoints
-        var minTrainingTime = TimeInterval.greatestFiniteMagnitude
-        
-        var optimal = Pilot.Attributes.default
-        
-        for intelligence in basePoints...maxPoints {
-            for memory in basePoints...maxPoints {
-                for perception in basePoints...maxPoints {
-                    guard intelligence + memory + perception < totalMaxPoints - basePoints * 2 else {break}
-                    for willpower in basePoints...maxPoints {
-                        guard intelligence + memory + perception + willpower < totalMaxPoints - basePoints else {break}
-                        let charisma = totalMaxPoints - (intelligence + memory + perception + willpower)
-                        guard charisma <= maxPoints else {continue}
-                        
-                        let attributes = Pilot.Attributes(intelligence: intelligence, memory: memory, perception: perception, willpower: willpower, charisma: charisma)
-                        
-                        let trainingTime = skillPoints.reduce(0) { (t, i) -> TimeInterval in
-                            let primary = attributes[i.key.primary]
-                            let secondary = attributes[i.key.secondary]
-                            return t + TimeInterval(i.value) / (TimeInterval(primary) + TimeInterval(secondary) / 2)
-                        }
-                        
-                        if trainingTime < minTrainingTime {
-                            minTrainingTime = trainingTime
-                            optimal = attributes
+        else {
+            var skillPoints: [Key: Int] = [:]
+            for item in trainingQueue.queue {
+                let sp = item.finishSP - item.startSP
+                let key = Key(primary: item.skill.primaryAttributeID, secondary: item.skill.secondaryAttributeID)
+                skillPoints[key, default: 0] += sp
+            }
+            
+            let basePoints = 17
+            let bonusPoints = 14
+            let maxPoints = 27
+            let totalMaxPoints = basePoints * 5 + bonusPoints
+            var minTrainingTime = TimeInterval.greatestFiniteMagnitude
+            
+            var optimal = Pilot.Attributes.default
+            
+            for intelligence in basePoints...maxPoints {
+                for memory in basePoints...maxPoints {
+                    for perception in basePoints...maxPoints {
+                        guard intelligence + memory + perception < totalMaxPoints - basePoints * 2 else {break}
+                        for willpower in basePoints...maxPoints {
+                            guard intelligence + memory + perception + willpower < totalMaxPoints - basePoints else {break}
+                            let charisma = totalMaxPoints - (intelligence + memory + perception + willpower)
+                            guard charisma <= maxPoints else {continue}
+                            
+                            let attributes = Pilot.Attributes(intelligence: intelligence, memory: memory, perception: perception, willpower: willpower, charisma: charisma)
+                            
+                            let trainingTime = skillPoints.reduce(0) { (t, i) -> TimeInterval in
+                                let primary = attributes[i.key.primary]
+                                let secondary = attributes[i.key.secondary]
+                                return t + TimeInterval(i.value) / (TimeInterval(primary) + TimeInterval(secondary) / 2)
+                            }
+                            
+                            if trainingTime < minTrainingTime {
+                                minTrainingTime = trainingTime
+                                optimal = attributes
+                            }
                         }
                     }
                 }
             }
+            self = optimal
         }
-        self = optimal
     }
 }

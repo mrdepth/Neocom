@@ -11,7 +11,7 @@ import Dgmpp
 import Combine
 import CoreData
 
-class DGMDroneGroup: ObservableObject {
+class DGMDroneGroup: ObservableObject, Identifiable {
     var drones: [DGMDrone] {
         didSet {
             objectWillChange.send()

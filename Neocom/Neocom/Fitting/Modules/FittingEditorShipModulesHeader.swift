@@ -29,7 +29,6 @@ struct FittingEditorShipModulesHeader: View {
     }
 }
 
-#if DEBUG
 struct FittingEditorShipModulesHeader_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -42,4 +41,3 @@ struct FittingEditorShipModulesHeader_Previews: PreviewProvider {
             
     }
 }
-#endif

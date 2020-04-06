@@ -10,18 +10,10 @@ import SwiftUI
 
 struct HomeLoginHeader: View {
     var body: some View {
-        HStack {
-            Image(systemName: "person")
-                .resizable()
-                .foregroundColor(.secondary)
-                .scaledToFit()
-                .padding()
-                .frame(width: 64, height: 64)
-                .background(Color(.systemBackground))
-                .clipShape(Circle()).shadow(radius: 2).overlay(Circle().strokeBorder(Color(UIColor.tertiarySystemBackground), lineWidth: 2, antialiased: true))
-            Text("Login").font(.title)
-            Spacer()
-        }.padding()
+        VStack {
+            Avatar(image: nil).frame(width: 64, height: 64).overlay(Image(systemName: "person").resizable().padding())
+            Text("Tap to Login").font(.title2)
+        }.padding().foregroundColor(.secondary)
     }
 }
 

@@ -25,32 +25,7 @@ struct FittingEditorShipModulesList: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
     
-
-    @State private var selectedSlot: SelectedSlot?
-    private let typePickerState = Cache<DGMModule.Slot, TypePickerState>()
-    
-    private func typePicker(_ selection: SelectedSlot) -> some View {
-        let category = try? self.managedObjectContext.fetch(SDEDgmppItemCategory.category(slot: selection.slot, subcategory: Int(SDECategoryID.module.rawValue))).first
-        
-        return category.map { category in
-            NavigationView {
-                TypePicker(category: category) { (type) in
-                    do {
-                        for i in selection.sockets {
-                            let module = try DGMModule(typeID: DGMTypeID(type.typeID))
-                            try self.ship.add(module, socket: i)
-                        }
-                    }
-                    catch {
-                    }
-                    self.selectedSlot = nil
-                }.navigationBarItems(leading: BarButtonItems.close {
-                    self.selectedSlot = nil
-                })
-            }.modifier(ServicesViewModifier(environment: self.environment))
-                .environmentObject(typePickerState[selection.slot, default: TypePickerState()])
-        }
-    }
+    @Binding var selection: FittingEditorShipModules.Selection?
     
     var body: some View {
         let slots: [DGMModule.Slot] = [.hi, .med, .low, .rig, .subsystem, .service, .mode]
@@ -59,22 +34,16 @@ struct FittingEditorShipModulesList: View {
         
         return List {
             ForEach(availableSlots, id: \.self) { slot in
-                FittingEditorShipModulesSection(slot: slot, selectedSlot: self.$selectedSlot)
-                    .environmentObject(self.typePickerState[slot, default: TypePickerState()])
+                FittingEditorShipModulesSection(slot: slot, selection: self.$selection)
             }
         }.listStyle(GroupedListStyle())
-            .sheet(item: $selectedSlot) { selection in
-                self.typePicker(selection)
-        }
     }
 }
 
-#if DEBUG
 struct FittingEditorShipModulesList_Previews: PreviewProvider {
     static var previews: some View {
-        FittingEditorShipModulesList()
+        FittingEditorShipModulesList(selection: .constant(nil))
             .environmentObject(DGMShip.testDominix())
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
-#endif

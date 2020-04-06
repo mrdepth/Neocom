@@ -93,7 +93,7 @@ class MailHeadersData: ObservableObject {
         }
     }
     
-    var subscription: AnyCancellable?
+    private var subscription: AnyCancellable?
 }
 
 

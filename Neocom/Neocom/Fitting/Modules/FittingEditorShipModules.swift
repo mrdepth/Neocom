@@ -14,14 +14,14 @@ struct FittingEditorShipModules: View {
         
         var id: AnyHashable {
             switch self {
-            case let .slot(category, _):
-                return category.id
+            case let .slot(group, _):
+                return group.id
             case let .module(module):
                 return module.id
             }
         }
         
-        case slot(SDEDgmppItemCategory, IndexSet)
+        case slot(SDEDgmppItemGroup, IndexSet)
         case module(DGMModuleGroup)
         
         var module: DGMModuleGroup? {
@@ -33,10 +33,10 @@ struct FittingEditorShipModules: View {
             }
         }
         
-        var slot: (category: SDEDgmppItemCategory, sockets: IndexSet)? {
+        var slot: (group: SDEDgmppItemGroup, sockets: IndexSet)? {
             switch self {
-            case let .slot(category, sockets):
-                return (category, sockets)
+            case let .slot(group, sockets):
+                return (group, sockets)
             default:
                 return nil
             }
@@ -45,46 +45,42 @@ struct FittingEditorShipModules: View {
     }
     
     @State private var selection: Selection?
-    private let typePickerState = Cache<SDEDgmppItemCategory, TypePickerState>()
     @Environment(\.self) private var environment
     @EnvironmentObject private var ship: DGMShip
+    @Environment(\.typePicker) private var typePicker
     
-    private func typePicker(_ category: SDEDgmppItemCategory, sockets: IndexSet) -> some View {
-        return NavigationView {
-            TypePicker(category: category) { (type) in
-                do {
-                    for i in sockets {
-                        let module = try DGMModule(typeID: DGMTypeID(type.typeID))
-                        try self.ship.add(module, socket: i)
-                    }
+    private func typePicker(_ group: SDEDgmppItemGroup, sockets: IndexSet) -> some View {
+        typePicker.get(group, environment: environment) {
+            self.selection = nil
+            guard let type = $0 else {return}
+            do {
+                for i in sockets {
+                    let module = try DGMModule(typeID: DGMTypeID(type.typeID))
+                    try self.ship.add(module, socket: i)
                 }
-                catch {
-                }
-                self.selection = nil
-            }.navigationBarItems(leading: BarButtonItems.close {
-                self.selection = nil
-            })
-        }.modifier(ServicesViewModifier(environment: self.environment))
-            .environmentObject(typePickerState[category, default: TypePickerState()])
+            }
+            catch {
+            }
+        }
     }
     
     private func moduleActions(_ module: DGMModuleGroup) -> some View {
         NavigationView {
-            FittingModuleActions(module: module)
-                .navigationBarItems(leading: BarButtonItems.close {
-                    self.selection = nil
-                })
+            FittingModuleActions(module: module) {
+                self.selection = nil
+            }
         }.modifier(ServicesViewModifier(environment: self.environment))
     }
     
     var body: some View {
-        VStack(spacing: 4) {
-            FittingEditorShipModulesHeader().padding(.horizontal, 8)
-            FittingEditorShipModulesList()
+        VStack(spacing: 0) {
+            FittingEditorShipModulesHeader().padding(8)
+            Divider()
+            FittingEditorShipModulesList(selection: $selection)
         }
         .sheet(item: $selection) { selection in
             if selection.slot != nil {
-                self.typePicker(selection.slot!.category, sockets: selection.slot!.sockets)
+                self.typePicker(selection.slot!.group, sockets: selection.slot!.sockets)
             }
             else if selection.module != nil {
                 self.moduleActions(selection.module!)
@@ -92,8 +88,6 @@ struct FittingEditorShipModules: View {
         }
     }
 }
-
-#if DEBUG
 
 struct FittingEditorShipModules_Previews: PreviewProvider {
     static var previews: some View {
@@ -106,5 +100,3 @@ struct FittingEditorShipModules_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
-
-#endif

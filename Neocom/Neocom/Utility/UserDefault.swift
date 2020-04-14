@@ -12,16 +12,23 @@ import SwiftUI
 
 enum UserDefaultsKey: String {
     case marketRegionID = "marketRegion"
+    case activeAccountID = "activeAccountID"
 }
 
 
-@propertyWrapper class UserDefault<Value>: ObservableObject, DynamicProperty {
+@propertyWrapper class UserDefault<Value>: ObservableObject {
     var wrappedValue: Value {
         get {
-            return userDefaults.value(forKey: "\(bundleID).\(key.rawValue)") as? Value ?? initialValue
+            return userDefaults.value(forKey: key) as? Value ?? initialValue
         }
         set {
-            userDefaults.set(newValue, forKey: "\(bundleID).\(key.rawValue)")
+            if let value = newValue as? NSObject {
+                userDefaults.set(value, forKey: key)
+                userDefaults.synchronize()
+            }
+            else {
+                userDefaults.removeObject(forKey: key)
+            }
         }
     }
     
@@ -29,21 +36,23 @@ enum UserDefaultsKey: String {
 
     private var userDefaults: UserDefaults
     private var initialValue: Value
-    private var key: UserDefaultsKey
+    private var key: String
+//    private var key: UserDefaultsKey
     private var subscription: AnyCancellable?
     
     init(wrappedValue: Value, key: UserDefaultsKey, userDefaults: UserDefaults) {
-        self.key = key
+//        self.key = key
+        self.key = "\(bundleID).\(key.rawValue)"
         self.userDefaults = userDefaults
         initialValue = wrappedValue
         let willChange = objectWillChange
-        subscription = NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification, object: userDefaults).sink { [weak self] _ in willChange.send()
-			self?.update()
+        subscription = NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification, object: userDefaults).sink { _ in
+            willChange.send()
 		}
     }
-
+    
     convenience init(wrappedValue: Value, key: UserDefaultsKey) {
         self.init(wrappedValue: wrappedValue, key: key, userDefaults: .standard)
     }
-
+    
 }

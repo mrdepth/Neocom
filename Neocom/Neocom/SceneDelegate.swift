@@ -25,11 +25,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// Create the SwiftUI view that provides the window contents.
         let account = try? AppDelegate.sharedDelegate.persistentContainer.viewContext.from(Account.self).first()
 
-        let contentView = ContentView()
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-            .environment(\.esi, (account?.oAuth2Token).map{ESI(token: $0)} ?? ESI())
-            .environment(\.account, account)
+//        let contentView = ContentView()
+            let contentView = Main()
+                .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+                .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+                .environment(\.esi, (account?.oAuth2Token).map{ESI(token: $0)} ?? ESI())
+                .environment(\.account, account)
+                .environmentObject(SharedState(managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext))
 
 		// Use a UIHostingController as window root view controller.
 		if let windowScene = scene as? UIWindowScene {
@@ -68,7 +70,42 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// Use this method to save data, release shared resources, and store enough scene-specific state information
 		// to restore the scene back to its current state.
 	}
-
-
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        for context in URLContexts {
+            if OAuth2.handleOpenURL(context.url, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey, completionHandler: { (result) in
+                
+                let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
+                switch result {
+                case let .success(token):
+                    let data = try? JSONEncoder().encode(token)
+                    let s = String(data: data!, encoding: .utf8)
+                    print(s)
+                    if let account = try? context.from(Account.self).filter(/\Account.characterID == token.characterID).first() {
+                        account.oAuth2Token = token
+                    }
+                    else {
+                        let account = Account(context: context)
+                        account.oAuth2Token = token
+                        account.uuid = UUID().uuidString
+                    }
+                    if context.hasChanges {
+                        try? context.save()
+                    }
+                    
+                case let .failure(error):
+                    //                let controller = self.window?.rootViewController?.topMostPresentedViewController
+                    //                controller?.present(UIAlertController(error: error), animated: true, completion: nil)
+                    break
+                }
+            }) {
+                //            if let controller = self.window?.rootViewController?.topMostPresentedViewController as? SFSafariViewController {
+                //                controller.dismiss(animated: true, completion: nil)
+                //            }
+            }
+            
+        }
+        print(URLContexts)
+    }
 }
 

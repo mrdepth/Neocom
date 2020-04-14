@@ -21,7 +21,7 @@ struct ZKillboardItem_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             List {
-                DatabaseItem()
+                ZKillboardItem()
             }.listStyle(GroupedListStyle())
         }
     }

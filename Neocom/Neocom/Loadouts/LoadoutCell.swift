@@ -11,20 +11,22 @@ import CoreData
 import Expressible
 
 struct LoadoutCell: View {
-    var typeID: Int32
+    var typeID: Int
     var name: String?
-    var loadoutID: NSManagedObjectID
+//    var loadoutID: NSManagedObjectID
     
     @Environment(\.managedObjectContext) private var managedObjectContext
     
     var body: some View {
-        let type = try? managedObjectContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == typeID).first()
+        let type = try? managedObjectContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == Int32(typeID)).first()
         
         return HStack {
             type.map{Icon($0.image).cornerRadius(4)}
             VStack(alignment: .leading) {
                 type?.typeName.map{Text($0)} ?? Text("Unknown")
-                name.map{Text($0)}.modifier(SecondaryLabelModifier())
+                if name?.isEmpty == false {
+                    name.map{Text($0).modifier(SecondaryLabelModifier())}
+                }
             }
         }
     }
@@ -37,7 +39,7 @@ struct LoadoutCell_Previews: PreviewProvider {
         loadout.typeID = 645
         
         return List {
-            LoadoutCell(typeID: 645, name: "Test Loadout", loadoutID: loadout.objectID)
+            LoadoutCell(typeID: 645, name: "Test Loadout")
         }.listStyle(GroupedListStyle())
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }

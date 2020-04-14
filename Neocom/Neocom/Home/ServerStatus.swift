@@ -56,6 +56,8 @@ struct ServerStatusContent: View {
 
 struct ServerStatus_Previews: PreviewProvider {
     static var previews: some View {
-        ServerStatusContent(status: ESI.ServerStatus(players: 1000, serverVersion: "1.0", startTime: Date(timeIntervalSinceNow: -3600), vip: false))
+        List {
+            ServerStatusContent(status: ESI.ServerStatus(players: 1000, serverVersion: "1.0", startTime: Date(timeIntervalSinceNow: -3600), vip: false))
+        }.listStyle(GroupedListStyle())
     }
 }

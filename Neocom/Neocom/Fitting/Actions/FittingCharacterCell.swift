@@ -50,7 +50,7 @@ struct FittingCharacterCell: View {
                 Button(action: accountAction) {
                     FittingCharacterAccountCell(account: account!).contentShape(Rectangle())
                         .opacity(skillLoadingPublisher == nil ? 1 : 0.5)
-                        .overlay(skillLoadingPublisher != nil ? ActivityIndicator(style: .medium) : nil)
+                        .overlay(skillLoadingPublisher != nil ? ActivityIndicatorView(style: .medium) : nil)
                 }.buttonStyle(PlainButtonStyle())
 			}
 			else if level != nil {

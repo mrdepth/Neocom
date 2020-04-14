@@ -42,9 +42,10 @@ struct ShipResource: View {
                 HStack(spacing: 2) {
                     Icon(image, size: .small)
                     Text("\(UnitFormatter.localizedString(from: used, unit: .none, style: .short))/\(UnitFormatter.localizedString(from: total, unit: unit, style: .short))")
+                        .foregroundColor(used <= total ? .primary : .red)
                         .frame(maxWidth: .infinity)
                         .padding(2)
-                        .background(ProgressView(progress: Float(total > 0 ? used / total : 0)))
+                        .background(ProgressView(progress: Float(total > 0 ? used / total : 0).clamped(to: 0...1)))
                         .accentColor(.skyBlueBackground)
                 }
             }
@@ -52,6 +53,7 @@ struct ShipResource: View {
                 HStack() {
                     Icon(image, size: .small)
                     Text("\(UnitFormatter.localizedString(from: used, unit: .none, style: .short))/\(UnitFormatter.localizedString(from: total, unit: unit, style: .short))")
+                    .foregroundColor(used <= total ? .primary : .red)
 //                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }

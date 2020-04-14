@@ -14,7 +14,9 @@ struct FittingEditorShipDronesHeader: View {
     
     var body: some View {
         HStack {
-            DroneBandwidthResource()
+            if ship.totalFighterLaunchTubes == 0 {
+                DroneBandwidthResource()
+            }
             DroneBayResource()
             DronesCountResource()
         }.font(.caption)

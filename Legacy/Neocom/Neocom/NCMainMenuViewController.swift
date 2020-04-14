@@ -398,7 +398,7 @@ class NCMainMenuViewController: NCTreeViewController {
 			
 			DefaultTreeSection(nodeIdentifier: "Fitting", title: NSLocalizedString("Fitting/Kills", comment: "").uppercased(),
 			                   children: [
-								NCMainMenuRow(nodeIdentifier: "Fitting", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("Fitting", comment: ""), route: Router.MainMenu.Fitting()),
+//								NCMainMenuRow(nodeIdentifier: "Fitting", image: #imageLiteral(resourceName: "fitting"), title: NSLocalizedString("Fitting", comment: ""), route: Router.MainMenu.Fitting()),
 								NCMainMenuRow(nodeIdentifier: "KillReports",
 //								              image: #imageLiteral(resourceName: "killreport"),
 								              title: NSLocalizedString("Kill Reports", comment: ""),

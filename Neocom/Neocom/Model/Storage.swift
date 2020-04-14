@@ -193,3 +193,14 @@ extension Contact {
         category.flatMap{ESI.RecipientType(rawValue: $0)}
     }
 }
+
+extension Loadout {
+    var ship: Ship? {
+        get {
+            LoadoutTransformer().reverseTransformedValue(data?.data) as? Ship
+        }
+        set {
+            data?.data = LoadoutTransformer().transformedValue(newValue) as? Data
+        }
+    }
+}

@@ -18,6 +18,12 @@ struct Config {
     }
     var esi = ESI()
 	var urlScheme = "nc"
+    var supportEmail = "support@eveuniverseiphone.com"
+    let homepage = URL(string: "https://facebook.com/groups/Neocom")!
+    let sources = URL(string: "https://github.com/mrdepth/Neocom")!
+    let terms = URL(string: "https://mrdepth.github.io/Neocom/terms.html")!
+    let privacy = URL(string: "https://mrdepth.github.io/Neocom/privacy.html")!
+
 }
 
 

@@ -8,6 +8,7 @@
 
 import SwiftUI
 import EVEAPI
+import Combine
 
 struct MailPage: View {
     var label: ESI.MailLabel
@@ -16,6 +17,7 @@ struct MailPage: View {
     @ObservedObject private var mailHeaders = Lazy<MailHeadersData>()
     @Environment(\.esi) private var esi
     @Environment(\.account) private var account
+    @State private var deleteSubscription: AnyPublisher<[Int], Never> = Empty().eraseToAnyPublisher()
 
     var body: some View {
         let result = account.map { account in
@@ -34,8 +36,16 @@ struct MailPage: View {
                                 }
                             }
                         }.onDelete { indices in
+                            guard let characerID = self.account?.characterID else {return}
                             let mailIDs = indices.compactMap{section.mails[$0].mailID}
-                            result?.delete(mailIDs: Set(mailIDs))
+                            self.deleteSubscription = Publishers.Sequence(sequence: mailIDs).flatMap { mailID in
+                                self.esi.characters.characterID(Int(characerID)).mail().mailID(mailID).delete()
+                                    .map { _ in mailID }
+                                    .catch {_ in Empty<Int, Never>()}
+                            }
+                            .collect()
+                            .receive(on: RunLoop.main)
+                            .eraseToAnyPublisher()
                         }
                     }
                 }
@@ -47,6 +57,10 @@ struct MailPage: View {
         .overlay(sections?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
         .navigationBarTitle(Text("Planetaries"))
         .navigationBarTitle(label.name ?? "")
+        .onReceive(deleteSubscription) { mailIDs in
+            result?.delete(mailIDs: Set(mailIDs))
+            self.deleteSubscription = Empty().eraseToAnyPublisher()
+        }
     }
 }
 

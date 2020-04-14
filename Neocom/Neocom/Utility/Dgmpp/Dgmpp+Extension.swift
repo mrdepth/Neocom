@@ -295,37 +295,44 @@ extension DGMDamageVector {
 
 
 extension DGMShip {
-    var loadout: LoadoutDescription {
+    var loadout: Ship {
         get {
-            let loadout = LoadoutDescription()
+
+            var dronesDic = [Ship.Drone: Int]()
             
-            var drones = [Int: LoadoutDescription.Item.Drone]()
             for drone in self.drones {
-                let identifier = drone.identifier
-                if let drone = drones[identifier] {
-                    drone.count += 1
-                }
-                else {
-                    drones[identifier] = LoadoutDescription.Item.Drone(drone: drone)
-                }
+                let key = Ship.Drone(typeID: drone.typeID, count: 0, id: drone.identifier, isActive: drone.isActive, isKamikaze: drone.isKamikaze, squadronTag: drone.squadronTag)
+                dronesDic[key, default: 0] += 1
             }
             
-            loadout.drones = Array(drones.values)
-            
-            var modules = [DGMModule.Slot: [LoadoutDescription.Item.Module]]()
+            var modules = [DGMModule.Slot: [Ship.Module]]()
             
             for module in self.modules {
-                modules[module.slot, default: []].append(LoadoutDescription.Item.Module(module: module))
+                modules[module.slot, default: []].append(Ship.Module(typeID: module.typeID, count: 1, id: module.identifier, state: module.state, charge: module.charge?.typeID, socket: module.socket))
             }
             
-            loadout.modules = modules
+            let drones = dronesDic.map{ (key, value) -> Ship.Drone in
+                var drone = key
+                drone.count = value
+                return drone
+            }
             
-            return loadout
+            return Ship(typeID: typeID,
+                 name: name,
+                 modules: modules,
+                 drones: drones,
+                 cargo: nil,
+                 implants: nil,
+                 boosters: nil)
         }
         set {
+            name = newValue.name
+            var ids = IndexSet(integersIn: 1..<Int.max)
+
             for drone in newValue.drones ?? [] {
                 do {
-                    let identifier = drone.identifier ?? UUID().hashValue
+                    let identifier = drone.id ?? ids.first ?? 0
+                    ids.remove(identifier)
                     for _ in 0..<drone.count {
                         let item = try DGMDrone(typeID: drone.typeID)
                         try add(item, squadronTag: drone.squadronTag)
@@ -340,14 +347,16 @@ extension DGMShip {
             for (_, modules) in newValue.modules?.sorted(by: { $0.key.rawValue > $1.key.rawValue }) ?? [] {
                 for module in modules {
                     do {
-                        let identifier = module.identifier ?? UUID().hashValue
+                        let identifier = module.id ?? ids.first ?? 0
+                        ids.remove(identifier)
+                        
                         for _ in 0..<module.count {
                             let item = try DGMModule(typeID: module.typeID)
                             try add(item, socket: module.socket, ignoringRequirements: true)
                             item.identifier = identifier
                             item.state = module.state
                             if let charge = module.charge {
-                                try item.setCharge(DGMCharge(typeID: charge.typeID))
+                                try item.setCharge(DGMCharge(typeID: charge))
                             }
                         }
                     }
@@ -360,21 +369,60 @@ extension DGMShip {
 }
 
 extension DGMCharacter {
-    var loadout: LoadoutDescription {
+    var loadout: Ship {
         get {
-            let loadout = self.ship?.loadout ?? LoadoutDescription()
-            loadout.implants = implants.map{ LoadoutDescription.Item(type: $0) }
-            loadout.boosters = boosters.map{ LoadoutDescription.Item(type: $0) }
+            var loadout = self.ship?.loadout ?? Ship(typeID: 0, name: "", modules: nil, drones: nil, cargo: nil, implants: nil, boosters: nil)
+            loadout.implants = implants.map{ $0.typeID }
+            loadout.boosters = boosters.map{ $0.typeID }
             return loadout
         }
         set {
-            for implant in newValue.implants ?? [] {
-                try? add(DGMImplant(typeID: implant.typeID))
+            newValue.implants?.forEach {try? add(DGMImplant(typeID: $0))}
+            newValue.boosters?.forEach {try? add(DGMBooster(typeID: $0))}
+//            ship = try? DGMShip(typeID: newValue.typeID)
+//            ship?.loadout = newValue
+        }
+    }
+}
+
+extension DGMGang {
+    var fleetConfiguration: FleetConfiguration {
+        get {
+            let pilots = self.pilots
+            
+            let pilotsLevels = Dictionary(pilots.map{($0.identifier, $0.url?.absoluteString ?? DGMCharacter.url(level: 5).absoluteString)}) {a, _ in a}
+            
+            
+            var links = [Int: Int]()
+            for pilot in pilots {
+                for module in pilot.ship?.modules ?? [] {
+                    if let target = module.target?.parent {
+                        links[module.identifier] = target.identifier
+                    }
+                }
+                for drone in pilot.ship?.drones ?? [] {
+                    if let target = drone.target?.parent {
+                        links[drone.identifier] = target.identifier
+                    }
+                }
             }
-            for booster in newValue.boosters ?? [] {
-                try? add(DGMBooster(typeID: booster.typeID))
+            return FleetConfiguration(pilots: pilotsLevels, links: links)
+        }
+        set {
+            let pilots = self.pilots
+            
+            let pilotsMap = Dictionary(pilots.map{($0.identifier, $0)}) {a, _ in a}
+            
+            for pilot in pilots {
+                for module in pilot.ship?.modules ?? [] {
+                    guard let link = newValue.links[module.identifier] else {continue}
+                    module.target = pilotsMap[link]?.ship
+                }
+                for drone in pilot.ship?.drones ?? [] {
+                    guard let link = newValue.links[drone.identifier] else {continue}
+                    drone.target = pilotsMap[link]?.ship
+                }
             }
-            ship?.loadout = newValue
         }
     }
 }
@@ -430,6 +478,21 @@ extension DGMFacility {
         }
         else {
             return (3, name)
+        }
+    }
+}
+
+extension DGMDrone.Squadron {
+    var title: String {
+        switch self {
+        case .heavy, .standupHeavy:
+            return NSLocalizedString("Heavy", comment: "")
+        case .light, .standupLight:
+            return NSLocalizedString("Light", comment: "")
+        case .support, .standupSupport:
+            return NSLocalizedString("Support", comment: "")
+        case .none:
+            return NSLocalizedString("Drone", comment: "")
         }
     }
 }

@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Dgmpp
+import EVEAPI
 
 struct FittingEditorStats: View {
     var body: some View {
@@ -18,6 +19,7 @@ struct FittingEditorStats: View {
             FittingEditorTankStats()
             FittingEditorFirepowerStats()
             FittingEditorMiningStats()
+            FittingEditorFuelStats()
             FittingEditorMiscStats()
             FittingEditorPriceStats()
         }.listStyle(GroupedListStyle())
@@ -30,8 +32,10 @@ struct FittingEditorStats_Previews: PreviewProvider {
         return NavigationView {
             FittingEditorStats()
         }
-        .environmentObject(gang.pilots.first!.ship!)
-        .environmentObject(gang)
+        .environmentObject(PricesData(esi: ESI()))
+        .environmentObject(DGMStructure.testKeepstar() as DGMShip)
+//        .environmentObject(gang.pilots.first!.ship!)
+//        .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

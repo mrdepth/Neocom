@@ -15,8 +15,8 @@ struct FittingEditorTankStats: View {
     
     private func cell(_ keyPath: KeyPath<DGMTank, DGMHPPerSecond>, tank: DGMTank, effectiveTank: DGMTank) -> some View {
         VStack {
-            Text(formatter.string(from: tank[keyPath: keyPath] * DGMSeconds(1)))
-            Text(formatter.string(from: effectiveTank[keyPath: keyPath] * DGMSeconds(1)))
+            Text(formatter.string(from: tank[keyPath: keyPath] * DGMSeconds(1))).fixedSize()
+            Text(formatter.string(from: effectiveTank[keyPath: keyPath] * DGMSeconds(1))).fixedSize()
         }.frame(maxWidth: .infinity)
     }
     

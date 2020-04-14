@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class Lazy<Value>: ObservableObject {
+class Lazy<Value, Tag: Equatable>: ObservableObject {
 	private var wrappedValue: Value?
     private var subscription: AnyCancellable?
     
@@ -17,7 +17,7 @@ class Lazy<Value>: ObservableObject {
     
 }
 
-extension Lazy {
+extension Lazy where Tag == Never{
     func get(initial initialValue: @autoclosure () -> Value) -> Value {
         if let value = wrappedValue {
             return value

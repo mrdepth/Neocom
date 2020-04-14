@@ -13,7 +13,14 @@ struct DronesCountResource: View {
     @EnvironmentObject private var ship: DGMShip
     
     var body: some View {
-        ShipResource(used: ship.usedDroneSquadron(.none), total: ship.totalDroneSquadron(.none), unit: .none, image: Image("drone"), style: .counter)
+        Group {
+            if ship.totalFighterLaunchTubes > 0 {
+                ShipResource(used: ship.usedFighterLaunchTubes, total: ship.totalFighterLaunchTubes, unit: .none, image: Image("drone"), style: .counter)
+            }
+            else {
+                ShipResource(used: ship.usedDroneSquadron(.none), total: ship.totalDroneSquadron(.none), unit: .none, image: Image("drone"), style: .counter)
+            }
+        }
     }
 }
 

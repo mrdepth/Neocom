@@ -49,7 +49,7 @@ struct FittingEditorFleet: View {
 struct FittingEditorFleet_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
-        let project = FittingProject(gang: gang, loadouts: [:])
+        let project = FittingProject(gang: gang)
         
         return FittingEditorFleet(ship: .constant(gang.pilots[0].ship!))
             .environmentObject(gang)

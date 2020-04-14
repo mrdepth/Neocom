@@ -29,7 +29,7 @@ struct SkillsItem: View {
             let date = Date()
             let queue = result.compactMap{$0.finishDate}.filter{$0 > date}
             if let finishDate = queue.max() {
-                return Text("\(queue.count) skills in queue (\(TimeIntervalFormatter.localizedString(from: finishDate.timeIntervalSinceNow, precision: .minutes))")
+                return Text("\(queue.count) skills in queue (\(TimeIntervalFormatter.localizedString(from: finishDate.timeIntervalSinceNow, precision: .minutes)))")
             }
             else {
                 return Text("No skills in training")

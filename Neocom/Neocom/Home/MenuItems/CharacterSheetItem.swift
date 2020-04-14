@@ -11,8 +11,7 @@ import EVEAPI
 import Alamofire
 
 struct CharacterSheetItem: View {
-    @Environment(\.account) private var account
-    @Environment(\.esi) private var esi
+    @EnvironmentObject private var sharedState: SharedState
     @ObservedObject private var skills = Lazy<DataLoader<ESI.CharacterSkills, AFError>>()
     
     let require: [ESI.Scope] = [.esiWalletReadCharacterWalletV1,
@@ -22,11 +21,11 @@ struct CharacterSheetItem: View {
                                 .esiClonesReadImplantsV1]
     
     var body: some View {
-        let result = account.map{self.skills.get(initial: DataLoader(esi.characters.characterID(Int($0.characterID)).skills().get().map{$0.value}.receive(on: RunLoop.main)))}?.result
+        let result = sharedState.account.map{self.skills.get(initial: DataLoader(sharedState.esi.characters.characterID(Int($0.characterID)).skills().get().map{$0.value}.receive(on: RunLoop.main)))}?.result
         let skills = result?.value
         let error = result?.error
         return Group {
-            if account?.verifyCredentials(require) == true {
+            if sharedState.account?.verifyCredentials(require) == true {
                 NavigationLink(destination: CharacterSheet()) {
                     Icon(Image("charactersheet"))
                     VStack(alignment: .leading) {
@@ -46,17 +45,13 @@ struct CharacterSheetItem: View {
 
 struct CharacterSheetItem_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
-        return NavigationView {
+        NavigationView {
             List {
                 CharacterSheetItem()
             }.listStyle(GroupedListStyle())
         }
-        .environment(\.account, account)
-        .environment(\.esi, esi)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environmentObject(SharedState.testState())
 
     }
 }

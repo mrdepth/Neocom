@@ -17,6 +17,7 @@ struct LoadoutsList: View {
         case loadout(NSManagedObjectID)
     }
     @ObservedObject var loadouts: LoadoutsLoader
+    var category: SDEDgmppItemCategoryID
     var onSelect: (Result) -> Void
     
     @Environment(\.account) private var account
@@ -35,12 +36,28 @@ struct LoadoutsList: View {
     }
     
     @State private var selectedLoadouts: Set<NSManagedObjectID> = Set()
+    
+    private func onShare() {
+        
+    }
+    
+    private func onDelete() {
+        for objectID in selectedLoadouts {
+            managedObjectContext.delete(managedObjectContext.object(with: objectID))
+        }
+        if managedObjectContext.hasChanges {
+            try? managedObjectContext.save()
+        }
+        withAnimation {
+            selectedLoadouts.removeAll()
+        }
+    }
 
     var body: some View {
         VStack(spacing: 0) {
             List(selection: $selectedLoadouts.animation()) {
                 Section {
-                    Button(action: {self.selectedGroup = try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(categoryID: .ship, subcategory: nil, race: nil)).first}) {
+                    Button(action: {self.selectedGroup = try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(categoryID: self.category, subcategory: nil, race: nil)).first}) {
                         HStack {
                             Icon(Image("fitting"))
                             Text("New Loadout")
@@ -55,7 +72,7 @@ struct LoadoutsList: View {
                 HStack {
                     Button("Share") {}
                     Spacer()
-                    Button("Delete") {}.accentColor(Color.red)
+                    Button("Delete", action: onDelete).accentColor(Color.red)
                 }.padding().transition(.offset(x: 0, y: 100))
                     .background(Color(.systemBackground).edgesIgnoringSafeArea(.all))
             }
@@ -72,7 +89,7 @@ struct LoadoutsList_Previews: PreviewProvider {
     static var previews: some View {
         _ = Loadout.testLoadouts()
         return NavigationView {
-            LoadoutsList(loadouts: LoadoutsLoader(.ship, managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext)) { _ in}
+            LoadoutsList(loadouts: LoadoutsLoader(.ship, managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext), category: .ship) { _ in}
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())

@@ -35,13 +35,13 @@ struct RecentKills: View {
         let killmails =  filter == .kills ? result?.killmails?.value?.kills : result?.killmails?.value?.losses
         
         return List {
-            Section(header: picker, footer: ActivityIndicator(style: .medium).frame(maxWidth: .infinity).padding().opacity(killmails != nil && result?.isLoading == true ? 1 : 0)) {
+            Section(header: picker, footer: ActivityIndicatorView(style: .medium).frame(maxWidth: .infinity).padding().opacity(killmails != nil && result?.isLoading == true ? 1 : 0)) {
                 if killmails != nil {
                     RecentKillsPage(killmails: killmails!, contacts: contacts, cache: cache, result: result!)
                 }
             }
         }.listStyle(GroupedListStyle())
-            .overlay(result?.killmails == nil && result?.isLoading == true ? ActivityIndicator(style: .large) : nil)
+            .overlay(result?.killmails == nil && result?.isLoading == true ? ActivityIndicatorView(style: .large) : nil)
         .overlay(result?.killmails?.error.map{Text($0)})
         .overlay(killmails?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
         .navigationBarTitle("Kill Reports")

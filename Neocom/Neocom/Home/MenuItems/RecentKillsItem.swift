@@ -32,7 +32,7 @@ struct RecentKillsItem_Previews: PreviewProvider {
         
         return NavigationView {
             List {
-                PlanetariesItem()
+                RecentKillsItem()
             }.listStyle(GroupedListStyle())
         }
         .environment(\.account, account)

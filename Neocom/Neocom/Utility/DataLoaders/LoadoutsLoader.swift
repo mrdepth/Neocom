@@ -34,6 +34,7 @@ class LoadoutsLoader: ObservableObject {
     private var subscription: AnyCancellable?
     
     init(_ category: SDECategoryID, managedObjectContext: NSManagedObjectContext) {
+        managedObjectContext.automaticallyMergesChangesFromParent = true
         let controller = managedObjectContext.from(Loadout.self).sort(by: \Loadout.typeID, ascending: true).fetchedResultsController()
         results = FetchedResultsController(controller)
         
@@ -42,6 +43,7 @@ class LoadoutsLoader: ObservableObject {
                 var sections = [Int32?: Section]()
                 for loadout in loadouts {
                     let type = try? managedObjectContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == loadout.typeID).first()
+                    guard type?.group?.category?.categoryID == category.rawValue else {continue}
                     let groupID = type?.group?.groupID
                     sections[groupID, default: Section(title: type?.group?.groupName, id: groupID, loadouts: [])].loadouts.append(Section.Loadout(typeID: loadout.typeID, name: loadout.name, typeName: type?.typeName ?? "", objectID: loadout.objectID))
                 }

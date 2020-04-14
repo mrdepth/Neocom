@@ -42,7 +42,7 @@ struct TypeInfoPriceCell: View {
                     HStack {
                         Text("Price")
                         if price.result == nil {
-                            ActivityIndicator(style: .medium)
+                            ActivityIndicatorView(style: .medium)
                         }
                     }
                     if price.result != nil {

@@ -33,6 +33,25 @@ enum DGMSkillLevels {
             .replaceEmpty(with: .level(5))
             .eraseToAnyPublisher()
     }
+    
+    static func from(url: URL, managedObjectContext: NSManagedObjectContext) -> AnyPublisher<DGMSkillLevels, Error> {
+        if let request = DGMCharacter.account(from: url), let account = try? managedObjectContext.fetch(request).first {
+            return fromAccount(account, managedObjectContext: managedObjectContext)
+        }
+        else if let request = DGMCharacter.fitCharacter(from: url), let character = try? managedObjectContext.fetch(request).first {
+            return Just(DGMSkillLevels.levelsMap(character.skills ?? [:], url))
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+        else if let level = DGMCharacter.level(from: url) {
+            return Just(DGMSkillLevels.level(level))
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+        else {
+            return Fail(error: RuntimeError.invalidCharacterURL).eraseToAnyPublisher()
+        }
+    }
 }
 
 class SkillLevelsLoader: ObservableObject {

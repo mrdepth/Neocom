@@ -16,57 +16,91 @@ import EVEAPI
 
 class FittingProject: ObservableObject, Identifiable, Hashable {
     let gang: DGMGang
-    var loadouts: [DGMCharacter: Loadout]
+    var loadouts: [DGMShip: Loadout]
+    var fleet: Fleet?
+    var structure: DGMStructure?
     
-    
+    init() throws {
+        gang = try DGMGang()
+        loadouts = [:]
+    }
     
     convenience init(ship: DGMTypeID, skillLevels: DGMSkillLevels) throws {
-        let gang = try DGMGang()
-        let pilot = try DGMCharacter()
-        pilot.setSkillLevels(skillLevels)
-        gang.add(pilot)
-        pilot.ship = try DGMShip(typeID: ship)
-        self.init(gang: gang, loadouts: [:])
+        try self.init()
+        try add(ship: ship, skillLevels: skillLevels)
+    }
+    
+    @discardableResult
+    func add(ship: DGMTypeID, skillLevels: DGMSkillLevels) throws -> DGMShip {
+        if let structure = try? DGMStructure(typeID: ship) {
+            self.structure = structure
+            return structure
+        }
+        else {
+            let pilot = try DGMCharacter()
+            pilot.setSkillLevels(skillLevels)
+            gang.add(pilot)
+            pilot.ship = try DGMShip(typeID: ship)
+            return pilot.ship!
+        }
     }
     
     convenience init(loadout: Loadout, skillLevels: DGMSkillLevels) throws {
-        let gang = try DGMGang()
-        let pilot = try DGMCharacter()
-        pilot.setSkillLevels(skillLevels)
-        gang.add(pilot)
-        pilot.ship = try DGMShip(typeID: DGMTypeID(loadout.typeID))
-        pilot.ship?.name = loadout.name ?? ""
-        if let data = loadout.data?.data {
-            pilot.loadout = data
+        try self.init()
+        try add(loadout: loadout, skillLevels: skillLevels)
+    }
+    
+    @discardableResult
+    func add(loadout: Loadout, skillLevels: DGMSkillLevels) throws -> DGMShip {
+        let ship = try add(ship: DGMTypeID(loadout.typeID), skillLevels: skillLevels)
+        
+        ship.name = loadout.name ?? ""
+        if let loadout = loadout.ship {
+            if let pilot = ship.parent as? DGMCharacter {
+                pilot.loadout = loadout
+            }
+            else {
+                ship.loadout = loadout
+            }
         }
-        self.init(gang: gang, loadouts: [pilot: loadout])
+        loadouts[ship] = loadout
+        return ship
     }
     
     convenience init(killmail: ESI.Killmail, skillLevels: DGMSkillLevels) throws {
-        let gang = try DGMGang()
-        let pilot = try DGMCharacter()
-        pilot.setSkillLevels(skillLevels)
-        gang.add(pilot)
-        let ship = try DGMShip(typeID: DGMTypeID(killmail.victim.shipTypeID))
-        pilot.ship = ship
+        try self.init()
+        try add(killmail: killmail, skillLevels: skillLevels)
+    }
+    
+    @discardableResult
+    func add(killmail: ESI.Killmail, skillLevels: DGMSkillLevels) throws -> DGMShip {
+        let items = killmail.victim.items?.map {
+            (typeID: DGMTypeID($0.itemTypeID), quantity: ($0.quantityDropped ?? 0) + ($0.quantityDestroyed ?? 0), flag: ESI.LocationFlag(rawValue: $0.flag) ?? .cargo)
+        }
+        
+        return try add(ship: DGMTypeID(killmail.victim.shipTypeID), items: items ?? [], skillLevels: skillLevels)
+    }
+    
+    @discardableResult
+    func add<Flag: FittingFlag>(ship: DGMTypeID, items: [(typeID: DGMTypeID, quantity: Int64, flag: Flag)], skillLevels: DGMSkillLevels) throws -> DGMShip {
+        let ship = try add(ship: ship, skillLevels: skillLevels)
         
         var cargo = Set<DGMTypeID>()
         var requiresAmmo = [DGMModule]()
         
-        try killmail.victim.items?.forEach { item in
-            let typeID = DGMTypeID(item.itemTypeID)
-            let qty = max((item.quantityDropped ?? 0) + (item.quantityDestroyed ?? 0), 1)
-            switch ESI.LocationFlag(rawValue: item.flag) {
-            case .droneBay, .fighterBay, .fighterTube0, .fighterTube1, .fighterTube2, .fighterTube3, .fighterTube4:
-                for _ in 0..<qty {
-                    try ship.add(DGMDrone(typeID: typeID))
+        for item in items {
+            if item.flag.isDrone {
+                for _ in 0..<item.quantity {
+                    try ship.add(DGMDrone(typeID: item.typeID))
                 }
-            case .cargo?:
-                cargo.insert(typeID)
-            default:
+            }
+            else if item.flag.isCargo {
+                cargo.insert(item.typeID)
+            }
+            else {
                 do {
-                    for _ in 0..<max(qty, 1) {
-                        let module = try DGMModule(typeID: typeID)
+                    for _ in 0..<max(item.quantity, 1) {
+                        let module = try DGMModule(typeID: item.typeID)
                         try ship.add(module, ignoringRequirements: true)
                         if (!module.chargeGroups.isEmpty) {
                             requiresAmmo.append(module)
@@ -74,7 +108,7 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
                     }
                 }
                 catch {
-                    cargo.insert(typeID)
+                    cargo.insert(item.typeID)
                 }
             }
         }
@@ -89,88 +123,69 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
                 }
             }
         }
-
-        
-        self.init(gang: gang, loadouts: [:])
+        return ship
     }
     
     convenience init(asset: AssetsData.Asset, skillLevels: DGMSkillLevels) throws {
-        let gang = try DGMGang()
-        let pilot = try DGMCharacter()
-        pilot.setSkillLevels(skillLevels)
-        gang.add(pilot)
-        let ship = try DGMShip(typeID: DGMTypeID(asset.underlyingAsset.typeID))
-        pilot.ship = ship
-        ship.name = asset.assetName ?? ""
-        
-        var cargo = Set<DGMTypeID>()
-        var requiresAmmo = [DGMModule]()
-
-        
-        for asset in asset.nested {
-            
-            let typeID = DGMTypeID(asset.underlyingAsset.typeID)
-
-            let qty = max(asset.underlyingAsset.quantity, 1)
-            switch asset.underlyingAsset.locationFlag {
-            case .droneBay, .fighterBay, .fighterTube0, .fighterTube1, .fighterTube2, .fighterTube3, .fighterTube4:
-                do {
-                    for _ in 0..<qty {
-                        try ship.add(DGMDrone(typeID: typeID))
-                    }
-                }
-                catch {
-                }
-            case .cargo:
-                cargo.insert(typeID)
-            default:
-                do {
-                    for _ in 0..<max(qty, 1) {
-                        let module = try DGMModule(typeID: typeID)
-                        try ship.add(module, ignoringRequirements: true)
-                        if (!module.chargeGroups.isEmpty) {
-                            requiresAmmo.append(module)
-                        }
-                    }
-                }
-                catch {
-                    cargo.insert(typeID)
-                }
-            }
-        }
-
-        for module in requiresAmmo {
-            for typeID in cargo {
-                do {
-                    try module.setCharge(DGMCharge(typeID: typeID))
-                    break
-                }
-                catch {
-                }
-            }
-        }
-
-        self.init(gang: gang, loadouts: [:])
+        try self.init()
+        try add(asset: asset, skillLevels: skillLevels)
     }
-    init(gang: DGMGang, loadouts: [DGMCharacter: Loadout]) {
+    
+    @discardableResult
+    func add(asset: AssetsData.Asset, skillLevels: DGMSkillLevels) throws -> DGMShip {
+        let items = asset.nested.map {
+            (typeID: DGMTypeID($0.underlyingAsset.typeID), quantity: Int64($0.underlyingAsset.quantity), flag: $0.underlyingAsset.locationFlag)
+        }
+        
+        return try add(ship: DGMTypeID(asset.underlyingAsset.typeID), items: items, skillLevels: skillLevels)
+    }
+    
+    convenience init(fitting: ESI.Fittings.Element, skillLevels: DGMSkillLevels) throws {
+        try self.init()
+        try add(fitting: fitting, skillLevels: skillLevels)
+    }
+    
+    @discardableResult
+    func add(fitting: ESI.Fittings.Element, skillLevels: DGMSkillLevels) throws -> DGMShip {
+        let items = fitting.items.map {
+            (typeID: DGMTypeID($0.typeID), quantity: Int64($0.quantity), flag: $0.flag)
+        }
+        
+        return try add(ship: DGMTypeID(fitting.shipTypeID), items: items, skillLevels: skillLevels)
+    }
+    
+    init(gang: DGMGang) {
         self.gang = gang
-        self.loadouts = loadouts
+        self.loadouts = [:]
+    }
+    
+    convenience init(fleet: Fleet, configuration: FleetConfiguration, skillLevels: [URL: DGMSkillLevels]) throws {
+        try self.init()
+        try (fleet.loadouts?.allObjects as? [Loadout])?.forEach {
+            let pilot = try add(loadout: $0, skillLevels: .level(5)).parent as? DGMCharacter
+            if let url = pilot?.url, let skills = skillLevels[url] {
+                pilot?.setSkillLevels(skills)
+            }
+        }
+        gang.fleetConfiguration = configuration
+        self.fleet = fleet
     }
     
     func save(managedObjectContext: NSManagedObjectContext) {
-        gang.pilots.forEach { pilot in
+        let pilots = gang.pilots
+        pilots.forEach { pilot in
             guard let ship = pilot.ship else {return}
             
             
-            let loadout: Loadout? = loadouts[pilot] ?? {
-                let isEmpty = ship.modules.isEmpty && ship.drones.isEmpty
+            let loadout: Loadout? = loadouts[ship] ?? {
+                let isEmpty = ship.modules.isEmpty && ship.drones.isEmpty && pilots.count == 1
                 
                 if !isEmpty {
                     let loadout = Loadout(context: managedObjectContext)
                     loadout.data = LoadoutData(context: managedObjectContext)
                     loadout.typeID = Int32(ship.typeID)
                     loadout.uuid = UUID().uuidString
-                    loadouts[pilot] = loadout
+                    loadouts[ship] = loadout
                     return loadout
                 }
                 else {
@@ -182,8 +197,58 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
                 if loadout.data == nil {
                     loadout.data = LoadoutData(context: managedObjectContext)
                 }
-                loadout.data?.data = pilot.loadout
+                loadout.ship = pilot.loadout
             }
+        }
+        
+        if pilots.count > 1 {
+            if fleet == nil {
+                fleet = Fleet(context: managedObjectContext)
+            }
+            fleet?.configuration = try? JSONEncoder().encode(gang.fleetConfiguration)
+            let fleetLoadouts = Set(fleet?.loadouts?.allObjects as? [Loadout] ?? [])
+            fleetLoadouts.subtracting(loadouts.values).forEach {
+                fleet?.removeFromLoadouts($0)
+            }
+            Set(loadouts.values).subtracting(fleetLoadouts).forEach {
+                fleet?.addToLoadouts($0)
+            }
+            fleet?.name = pilots.compactMap{$0.ship}.compactMap{$0.type(from: managedObjectContext)?.typeName}.joined(separator: ", ")
+            
+        }
+        else {
+            if let fleet = self.fleet {
+                managedObjectContext.delete(fleet)
+            }
+        }
+        
+        if let structure = self.structure {
+            let loadout: Loadout? = loadouts[structure] ?? {
+                let isEmpty = structure.modules.isEmpty && structure.drones.isEmpty
+                
+                if !isEmpty {
+                    let loadout = Loadout(context: managedObjectContext)
+                    loadout.data = LoadoutData(context: managedObjectContext)
+                    loadout.typeID = Int32(structure.typeID)
+                    loadout.uuid = UUID().uuidString
+                    loadouts[structure] = loadout
+                    return loadout
+                }
+                else {
+                    return nil
+                }
+            }()
+            if let loadout = loadout {
+                loadout.name = structure.name
+                if loadout.data == nil {
+                    loadout.data = LoadoutData(context: managedObjectContext)
+                }
+                loadout.ship = structure.loadout
+            }
+        }
+        
+        if managedObjectContext.hasChanges {
+            try? managedObjectContext.save()
         }
     }
     

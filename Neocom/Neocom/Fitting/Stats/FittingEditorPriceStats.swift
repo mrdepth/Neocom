@@ -8,11 +8,12 @@
 
 import SwiftUI
 import Dgmpp
+import EVEAPI
 
 struct FittingEditorPriceStats: View {
     @Environment(\.esi) private var esi
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @ObservedObject private var prices = Lazy<PricesData>()
+    @EnvironmentObject private var prices: PricesData
     @EnvironmentObject private var ship: DGMShip
     
     private func ship(_ prices: [Int: Double]) -> Double {
@@ -50,7 +51,7 @@ struct FittingEditorPriceStats: View {
     }
     
     var body: some View {
-        let prices = self.prices.get(initial: PricesData(esi: esi)).prices?.value
+        let prices = self.prices.prices?.value
         
         let costs = prices.map {
             (ship($0), modules($0), drones($0), charges($0), implants($0), boosters($0))
@@ -108,6 +109,7 @@ struct FittingEditorPriceStats_Previews: PreviewProvider {
         }
         .environmentObject(gang.pilots.first!.ship!)
         .environmentObject(gang)
+        .environmentObject(PricesData(esi: ESI()))
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

@@ -14,18 +14,29 @@ import CoreData
 
 struct FittingEditor: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
+    @Environment(\.esi) private var esi
     var project: FittingProject
-
+    @State private var isModified = false
+    let priceData = Lazy<PricesData>()
 
     var body: some View {
-        let ship = project.gang.pilots.first?.ship
+        let ship = project.structure ?? project.gang.pilots.first?.ship
         
         return Group {
             if ship != nil {
-                FittingEditorBody(gang: project.gang, ship: ship!)
-                    .environmentObject(project)
-                    .onReceive(project.gang.objectWillChange) {
-                        print("onReceive")
+                if ship is DGMStructure {
+                    FittingStructureEditor(structure: ship as! DGMStructure)
+                        .environmentObject(project)
+                        .onReceive(project.structure!.objectWillChange) {
+                            self.isModified = true
+                    }
+                }
+                else {
+                    FittingShipEditor(gang: project.gang, ship: ship!)
+                        .environmentObject(project)
+                        .onReceive(project.gang.objectWillChange) {
+                            self.isModified = true
+                    }
                 }
             }
             else {
@@ -33,21 +44,25 @@ struct FittingEditor: View {
             }
         }
         .environmentObject(project)
+        .environmentObject(priceData.get(initial: PricesData(esi: esi)))
         .onDisappear() {
-            self.project.save(managedObjectContext: self.managedObjectContext)
-//            self.context.save(managedObjectContext: self.managedObjectContext)
+            if self.isModified {
+                self.project.save(managedObjectContext: self.managedObjectContext)
+            }
         }
     }
 }
 
-struct FittingEditorBody: View {
-    enum Page: CaseIterable {
-        case modules
-        case drones
-        case implants
-        case fleet
-        case stats
-    }
+fileprivate enum Page: CaseIterable {
+    case modules
+    case drones
+    case implants
+    case fleet
+    case stats
+}
+
+
+struct FittingShipEditor: View {
     
     @State private var currentPage = Page.modules
     @State private var isActionsPresented = false
@@ -55,6 +70,7 @@ struct FittingEditorBody: View {
     @ObservedObject private var gang: DGMGang
     @Environment(\.self) private var environment
     @Environment(\.managedObjectContext) private var managedObjectContext
+    @EnvironmentObject private var project: FittingProject
     
     init(gang: DGMGang, ship: DGMShip) {
         _gang = ObservedObject(initialValue: gang)
@@ -79,12 +95,13 @@ struct FittingEditorBody: View {
         .sheet(isPresented: $isActionsPresented) {
             NavigationView {
                 FittingEditorActions().modifier(ServicesViewModifier(environment: self.environment))
-                    .environmentObject(self.gang)
-                    .environmentObject(self.currentShip)
                     .navigationBarItems(leading: BarButtonItems.close {
                         self.isActionsPresented = false
                     })
             }
+            .environmentObject(self.gang)
+            .environmentObject(self.currentShip)
+            .environmentObject(self.project)
         }
     }
 
@@ -92,9 +109,11 @@ struct FittingEditorBody: View {
     var body: some View {
         VStack(spacing: 0) {
             Picker("Page", selection: $currentPage) {
-                ForEach(Page.allCases, id: \.self) { page in
-                    Text(String(describing: page).capitalized).tag(page)
-                }
+                Text("Modules").tag(Page.modules)
+                Text("Drones").tag(Page.drones)
+                Text("Implants").tag(Page.implants)
+                Text("Fleet").tag(Page.fleet)
+                Text("Stats").tag(Page.stats)
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding(.horizontal)
@@ -122,6 +141,70 @@ struct FittingEditorBody: View {
     }
 }
 
+struct FittingStructureEditor: View {
+    
+    @State private var currentPage = Page.modules
+    @State private var isActionsPresented = false
+    @ObservedObject var structure: DGMStructure
+    @Environment(\.self) private var environment
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    @EnvironmentObject private var project: FittingProject
+    
+    private var title: String {
+        let typeName = structure.type(from: self.managedObjectContext)?.typeName ?? "Unknown"
+        let name = structure.name
+        if name.isEmpty {
+            return typeName
+        }
+        else {
+            return "\(typeName) / \(name)"
+        }
+    }
+    
+    private var actionsButton: some View {
+        BarButtonItems.actions {
+            self.isActionsPresented = true
+        }
+        .sheet(isPresented: $isActionsPresented) {
+            NavigationView {
+                FittingEditorActions().modifier(ServicesViewModifier(environment: self.environment))
+                    .navigationBarItems(leading: BarButtonItems.close {
+                        self.isActionsPresented = false
+                    })
+            }
+            .environmentObject(self.structure as DGMShip)
+            .environmentObject(self.project)
+
+        }
+    }
+
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            Picker("Page", selection: $currentPage) {
+                Text("Modules").tag(Page.modules)
+                Text("Fighters").tag(Page.drones)
+                Text("Stats").tag(Page.stats)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+            Divider()
+            if currentPage == .modules {
+                FittingEditorShipModules()
+            }
+            else if currentPage == .drones {
+                FittingEditorShipDrones()
+            }
+            else if currentPage == .stats {
+                FittingEditorStats()
+            }
+        }.navigationBarItems(trailing: actionsButton)
+        .environmentObject(structure as DGMShip)
+        .navigationBarTitle(Text(title), displayMode: .inline)
+    }
+}
+
 struct FittingEditor_Previews: PreviewProvider {
     static var previews: some View {
         let account = AppDelegate.sharedDelegate.testingAccount
@@ -129,7 +212,7 @@ struct FittingEditor_Previews: PreviewProvider {
 
         let gang = DGMGang.testGang()
         return NavigationView {
-            FittingEditor(project: FittingProject(gang: gang, loadouts: [:]))
+            FittingEditor(project: FittingProject(gang: gang))
         }
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)

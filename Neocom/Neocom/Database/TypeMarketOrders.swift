@@ -54,7 +54,7 @@ struct TypeMarketOrders: View {
 		}.listStyle(GroupedListStyle()).overlay(error.map{Text($0).padding()})
 			.navigationBarTitle("Market Orders")
 			.navigationBarItems(trailing: Button(regionName) {self.isMarketRegionPickerPresented = true})
-            .overlay(orders.result == nil ? ActivityIndicator(style: .large) : nil)
+            .overlay(orders.result == nil ? ActivityIndicatorView(style: .large) : nil)
             .overlay((orders.result?.error).map{Text($0)})
 			.sheet(isPresented: $isMarketRegionPickerPresented) {
 				NavigationView {

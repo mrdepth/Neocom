@@ -13,7 +13,9 @@ struct HomeLoginHeader: View {
         VStack {
             Avatar(image: nil).frame(width: 64, height: 64).overlay(Image(systemName: "person").resizable().padding())
             Text("Tap to Login").font(.title2)
-        }.padding().foregroundColor(.secondary)
+        }
+        .foregroundColor(.secondary)
+        .padding()
     }
 }
 

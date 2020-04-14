@@ -13,7 +13,14 @@ struct DroneBayResource: View {
     @EnvironmentObject private var ship: DGMShip
     
     var body: some View {
-        ShipResource(used: ship.usedDroneBay, total: ship.totalDroneBay, unit: .cubicMeter, image: Image("droneCapacity"), style: .progress)
+        Group {
+            if ship.totalFighterLaunchTubes > 0 {
+                ShipResource(used: ship.usedFighterHangar, total: ship.totalFighterHangar, unit: .cubicMeter, image: Image("droneCapacity"), style: .progress)
+            }
+            else {
+                ShipResource(used: ship.usedDroneBay, total: ship.totalDroneBay, unit: .cubicMeter, image: Image("droneCapacity"), style: .progress)
+            }
+        }
     }
 }
 

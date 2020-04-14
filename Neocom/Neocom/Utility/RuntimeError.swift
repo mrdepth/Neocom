@@ -14,4 +14,7 @@ enum RuntimeError: Error {
     case invalidOAuth2TOken
     case invalidGang
     case invalidPlanetLayout
+    case invalidDNAFormat
+    case invalidCharacterURL
+    case invalidLoadoutFormat
 }

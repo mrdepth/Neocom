@@ -55,15 +55,8 @@ struct FittingDroneActions: View {
                     Text("Active").tag(true)
                 }.pickerStyle(SegmentedPickerStyle())
             }
-            Section(header: Text("COUNT")) {
-                Picker("Count", selection: $drone.count) {
-                    ForEach(Array(1..<6), id: \.self) { i in
-                        Text("\(i)")
-                    }
-                }.pickerStyle(WheelPickerStyle())
-                    .labelsHidden()
-                    .frame(maxWidth: .infinity)
-                
+            Section {
+                Stepper("\(drone.count) Drones", value: $drone.count, in: 1...drone.squadronSize)
             }
         }.listStyle(GroupedListStyle())
             .navigationBarTitle("Actions")

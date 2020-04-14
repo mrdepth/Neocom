@@ -24,7 +24,7 @@ struct ZKillboardSearchResults: View {
         
         return List {
             if killmails != nil {
-                Section(footer: ActivityIndicator(style: .medium).frame(maxWidth: .infinity).padding().opacity(result.isLoading ? 1 : 0)) {
+                Section(footer: ActivityIndicatorView(style: .medium).frame(maxWidth: .infinity).padding().opacity(result.isLoading ? 1 : 0)) {
                     ForEach(killmails!) { killmail in
                         KillmailCell(killmail: killmail.result, contacts: contacts, cache: self.cache)
                             .onAppear {
@@ -36,7 +36,7 @@ struct ZKillboardSearchResults: View {
                 }
             }
         }.listStyle(GroupedListStyle())
-            .overlay(result.killmails == nil && result.isLoading ? ActivityIndicator(style: .large) : nil)
+            .overlay(result.killmails == nil && result.isLoading ? ActivityIndicatorView(style: .large) : nil)
         .overlay(result.killmails?.error.map{Text($0)})
         .overlay(killmails?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
         .navigationBarTitle("zKillboard")

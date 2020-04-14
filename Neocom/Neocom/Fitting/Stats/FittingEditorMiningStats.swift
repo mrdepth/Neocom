@@ -21,7 +21,7 @@ struct FittingEditorMiningStats: View {
     }
     
     private func cell(_ damage: Double) -> some View {
-        Text(formatter.string(from: damage)).frame(maxWidth: .infinity)
+        Text(formatter.string(from: damage)).fixedSize().frame(maxWidth: .infinity)
     }
 
     var body: some View {

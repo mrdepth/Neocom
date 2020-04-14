@@ -120,7 +120,7 @@ struct FittingEditorShipModulesSection: View {
                             subcategory = self.ship.typeID
                             race = nil
                         default:
-                            subcategory = Int(SDECategoryID.module.rawValue)
+                            subcategory = Int(self.ship is DGMStructure ? SDECategoryID.structureModule.rawValue : SDECategoryID.module.rawValue)
                             race = nil
                         }
                         guard let group = try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(slot: self.slot, subcategory: subcategory, race: race)).first else {return}

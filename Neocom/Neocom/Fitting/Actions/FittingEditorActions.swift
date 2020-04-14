@@ -89,6 +89,7 @@ struct FittingEditorActions: View {
                 })
             }.modifier(ServicesViewModifier(environment: self.environment))
         }
+    .navigationBarTitle("Actions")
     }
 }
 

@@ -112,6 +112,13 @@ struct FittingModuleActions: View {
             TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
         }.modifier(ServicesViewModifier(environment: self.environment))
     }
+    
+    private var removeChargeButton: some View {
+        BarButtonItems.trash {
+            try? self.module.setCharge(nil)
+            self.selectedChargeCategory = nil
+        }
+    }
 
     private func charges(_ category: SDEDgmppItemCategory) -> some View {
         NavigationView {
@@ -124,7 +131,7 @@ struct FittingModuleActions: View {
                 }
                 self.selectedChargeCategory = nil
             }
-            .navigationBarItems(leading: BarButtonItems.close {self.selectedChargeCategory = nil})
+            .navigationBarItems(leading: BarButtonItems.close {self.selectedChargeCategory = nil}, trailing: self.module.charge != nil ? removeChargeButton : nil)
         }.modifier(ServicesViewModifier(environment: self.environment))
     }
 

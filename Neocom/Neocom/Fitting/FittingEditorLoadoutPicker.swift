@@ -27,12 +27,13 @@ struct FittingEditorLoadoutPicker: View {
                 let loadout = managedObjectContext.object(with: objectID) as! Loadout
                 pilot.ship = try DGMShip(typeID: DGMTypeID(loadout.typeID))
                 pilot.ship?.name = loadout.name ?? ""
-                if let data = loadout.data?.data {
-                    pilot.loadout = data
+                
+                if let loadout = loadout.ship {
+                    pilot.loadout = loadout
                 }
                 
-                if !project.loadouts.values.contains(loadout) {
-                    project.loadouts[pilot] = loadout
+                if let ship = pilot.ship, !project.loadouts.values.contains(loadout) {
+                    project.loadouts[ship] = loadout
                 }
                 project.gang.add(pilot)
             }
@@ -44,7 +45,7 @@ struct FittingEditorLoadoutPicker: View {
     
     var body: some View {
         let loadouts = self.loadouts.get(initial: LoadoutsLoader(.ship, managedObjectContext: backgroundManagedObjectContext))
-        return LoadoutsList(loadouts: loadouts, onSelect: onSelect)
+        return LoadoutsList(loadouts: loadouts, category: .ship, onSelect: onSelect)
     }
 }
 
@@ -53,7 +54,7 @@ struct FittingEditorLoadoutPicker_Previews: PreviewProvider {
         _ = Loadout.testLoadouts()
 
         return NavigationView {
-            FittingEditorLoadoutPicker(project: FittingProject(gang: DGMGang.testGang(), loadouts: [:])) {}
+            FittingEditorLoadoutPicker(project: FittingProject(gang: DGMGang.testGang())) {}
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())

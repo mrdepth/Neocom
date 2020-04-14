@@ -18,9 +18,9 @@ struct HomeAccountHeader: View {
     
     var body: some View {
 		HStack {
-            Avatar(image: characterImage).frame(width: 64, height: 64)
+            Avatar(image: characterImage).frame(width: 64, height: 64).padding(4)
 			VStack(alignment: .leading, spacing: 0) {
-				Text(characterName).font(.title)
+//				Text(characterName).font(.title)
 				HStack {
                     corporationImage?.resizable().frame(width: 24, height: 24)
                     corporationName.map{Text($0)}.font(.body).foregroundColor(.secondary)
@@ -31,15 +31,15 @@ struct HomeAccountHeader: View {
 				}
 			}
 			Spacer()
-		}.padding()
+        }
+//        .padding()
     }
 }
 
 struct HomeAccountHeader_Previews: PreviewProvider {
     static var previews: some View {
-		VStack {
+		List {
             HomeAccountHeader(characterName: "Artem Valiant", corporationName: "Necrorise Squadron", allianceName: "Red Alert", characterImage: Image("character"), corporationImage: Image("corporationImage"), allianceImage: Image("alliance"))
-			Spacer()
-        }
+        }.listStyle(GroupedListStyle())
     }
 }

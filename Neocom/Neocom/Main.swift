@@ -8,24 +8,60 @@
 
 import SwiftUI
 import EVEAPI
+import Expressible
+
+struct FinishedViewWrapper: View {
+    @State private var isFinished = false
+    
+    var body: some View {
+        Group {
+            if isFinished {
+                FinishedView(isPresented: $isFinished)
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .didUpdateSkillPlan)) { _ in
+            withAnimation {
+                self.isFinished = true
+            }
+        }
+
+    }
+}
 
 struct Main: View {
+    @Environment(\.managedObjectContext) private var managedObjectContext
+//    @ObservedObject private var accountID = UserDefault(wrappedValue: String?.none, key: .activeAccountID)
+    @EnvironmentObject private var sharedState: SharedState
+    
+    private let home = Home()
+
     var body: some View {
-		NavigationView {
-            Home()
-            Text("Detail")
-		}.navigationViewStyle(DoubleColumnNavigationViewStyle())
+//        let account = try? managedObjectContext.from(Account.self).filter(/\Account.uuid == accountID.wrappedValue).first()
+//        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
+        
+        let account = sharedState.account
+        let esi = sharedState.esi
+        return ZStack {
+            NavigationView {
+                home
+            }
+            .navigationViewStyle(DoubleColumnNavigationViewStyle())
+            FinishedViewWrapper()
+        }
+        .environmentObject(sharedState)
+        .environment(\.account, account)
+        .environment(\.esi, esi)
+
     }
 }
 
 struct Main_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
+        _ = AppDelegate.sharedDelegate.testingAccount
+        _ = AppDelegate.sharedDelegate.testingAccount
+//        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
 
         return Main()
-            .environment(\.account, account)
-            .environment(\.esi, esi)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
 
     }

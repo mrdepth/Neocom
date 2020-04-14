@@ -25,7 +25,7 @@ struct LoadoutsSection: View {
                 ForEach(section.loadouts) { loadout in
                     Button(action: {self.onSelect(loadout.objectID)}) {
                         HStack {
-                            LoadoutCell(typeID: loadout.typeID, name: loadout.name, loadoutID: loadout.objectID)
+                            LoadoutCell(typeID: Int(loadout.typeID), name: loadout.name)
                             Spacer()
                         }.contentShape(Rectangle())
                     }.buttonStyle(PlainButtonStyle()).id(loadout.objectID)

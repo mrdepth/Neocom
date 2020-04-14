@@ -214,7 +214,7 @@ fileprivate struct ComposeMailContent: View {
                 Divider()
                 TextView(text: self.$text, typingAttributes: [.font: UIFont.preferredFont(forTextStyle: .body)]).padding(.horizontal, 16)
             }.overlay(self.contactsSearchView, alignment: Alignment(horizontal: .center, vertical: VerticalAlignment(ContactsSearchAlignmentID.self)))
-                .overlay(self.sendSubscription != nil ? ActivityView() : nil)
+                .overlay(self.sendSubscription != nil ? ActivityIndicator() : nil)
         }
         .onPreferenceChange(FramePreferenceKey.self) {
             if self.recipientsFieldFrame?.size != $0.first?.integral.size {

@@ -30,56 +30,74 @@ struct AccountCellContent: View {
     var skill: Skill?
     var skillQueue: Int?
     
-    var body: some View {
-        VStack {
-            HStack(spacing: 15) {
-                Avatar(image: character?.image).frame(width: 64, height: 64)
-                
-                VStack(alignment: .leading, spacing: 0) {
-                    (character?.name).map{Text($0)}.font(.title)
-                    HStack {
-                        (corporation?.name).map{Text($0)}
-                        (alliance?.name).map{ name in
-                            Group{
-                                Text("/")
-                                //                                allianceImage?.resizable().frame(width: 24, height: 24)
-                                Text(name)
-                            }
-                        }
-                    }.foregroundColor(.secondary)
+    private var shipAndLocation: some View {
+        HStack {
+            Text(ship ?? "")
+            Text(location ?? "").foregroundColor(.secondary)
+        }
+    }
+    
+    private var skills: some View {
+        Group {
+            HStack{
+                if skill != nil {
+                    SkillName(name: skill!.name, level: skill!.level)
+                }
+                else {
+                    Text("")
                 }
                 Spacer()
+                Text(skill.map{skill in TimeIntervalFormatter.localizedString(from: skill.trainingTime, precision: .minutes)} ?? " ")
+            }.padding(.horizontal).background(ProgressView(progress: 0.5).accentColor(.skyBlueBackground))
+            Text(skillQueue.map{$0 > 0 ? "\($0) skills in queue" : "Skill queue is empty"} ?? "")
+        }
+    }
+    
+    private var iskAndSP: some View {
+        HStack {
+            VStack(alignment: .trailing) {
+                Text("SP:")
+                Text("ISK:")
+            }.foregroundColor(.skyBlue)
+            VStack(alignment: .leading) {
+                Text(sp.map{UnitFormatter.localizedString(from: $0, unit: .none, style: .short)} ?? "")
+                Text(isk.map{UnitFormatter.localizedString(from: $0, unit: .none, style: .short)} ?? "")
             }
-            HStack(alignment: .top, spacing: 15) {
-                HStack {
-                    VStack(alignment: .trailing) {
-                        Text("SP:")
-                        Text("ISK:")
-                    }.foregroundColor(.skyBlue)
-                    VStack(alignment: .leading) {
-                        Text(sp.map{UnitFormatter.localizedString(from: $0, unit: .none, style: .short)} ?? "")
-                        Text(isk.map{UnitFormatter.localizedString(from: $0, unit: .none, style: .short)} ?? "")
-                    }
-                }.frame(minWidth: 64)
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack {
-                        Text(ship ?? "")
-                        Text(location ?? "").foregroundColor(.secondary)
-                    }
-                    HStack{
-                        if skill != nil {
-                            SkillName(name: skill!.name, level: skill!.level)
-                        }
-                        else {
-                            Text("")
-                        }
-                        Spacer()
-                        Text(skill.map{skill in TimeIntervalFormatter.localizedString(from: skill.trainingTime, precision: .minutes)} ?? " ")
-                    }.padding(.horizontal).background(ProgressView(progress: 0.5).accentColor(.skyBlueBackground)
-                    )
-                    Text(skillQueue.map{$0 > 0 ? "\($0) skills in queue" : "Skill queue is empty"} ?? "")
+        }.frame(minWidth: 64)
+    }
+    
+    private var characterName: some View {
+        (character?.name).map{Text($0)}.font(.title2)
+    }
+    
+    private var corporationAndAlliance: some View {
+        HStack {
+            (corporation?.name).map{Text($0)}
+            (alliance?.name).map{ name in
+                Group{
+                    Text("/")
+//                                allianceImage?.resizable().frame(width: 24, height: 24)
+                    Text(name)
                 }
-                Spacer(minLength: 0)
+            }
+        }.foregroundColor(.secondary)
+    }
+    
+    var body: some View {
+        HStack(alignment: .top, spacing: 15) {
+            VStack(spacing: 8) {
+                Avatar(image: character?.image).frame(width: 64, height: 64)
+                iskAndSP
+            }
+            VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading) {
+                    characterName
+                    corporationAndAlliance
+                }.frame(height: 64)
+                VStack(alignment: .leading, spacing: 0) {
+                    shipAndLocation
+                    skills
+                }
             }
         }
             .font(.subheadline)

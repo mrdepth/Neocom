@@ -17,7 +17,7 @@ struct ShipLoadouts: View {
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @State private var selectedProject: FittingProject?
     @State private var projectLoading: AnyPublisher<Result<FittingProject, Error>, Never>?
-    private var loadouts = Lazy<LoadoutsLoader>()
+    @ObservedObject private var loadouts = Lazy<LoadoutsLoader>()
     
     private func onSelect(_ type: SDEInvType) {
         let typeID = DGMTypeID(type.typeID)
@@ -45,12 +45,12 @@ struct ShipLoadouts: View {
     
     var body: some View {
         let loadouts = self.loadouts.get(initial: LoadoutsLoader(.ship, managedObjectContext: backgroundManagedObjectContext))
-        return LoadoutsList(loadouts: loadouts, onSelect: onSelect)
+        return LoadoutsList(loadouts: loadouts, category: .ship, onSelect: onSelect)
             .onReceive(projectLoading ?? Empty().eraseToAnyPublisher()) { result in
                 self.projectLoading = nil
                 self.selectedProject = result.value
         }
-        .overlay(self.projectLoading != nil ? ActivityView() : nil)
+        .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
         .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .navigationBarTitle("Loadouts")
     }

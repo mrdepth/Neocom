@@ -12,7 +12,7 @@ import SwiftUI
 struct ServicesViewModifier: ViewModifier {
 	var environment: EnvironmentValues
 
-	func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
 		content.environment(\.managedObjectContext, environment.managedObjectContext)
 			.environment(\.backgroundManagedObjectContext, environment.backgroundManagedObjectContext)
 			.environment(\.esi, environment.esi)
@@ -60,6 +60,16 @@ extension View {
     
     func onSizeChange<ID>(_ id: ID.Type = ID.self, perform action: @escaping (AppendPreferenceKey<CGSize, ID>.Value) -> Void) -> some View {
         onPreferenceChange(AppendPreferenceKey<CGSize, ID>.self, perform: action)
+    }
+    
+    func framePreference<ID>(in coordinateSpace: CoordinateSpace, _ id: ID.Type = ID.self) -> some View {
+        self.background(GeometryReader { geometry in
+            Color.clear.preference(key: AppendPreferenceKey<CGRect, ID>.self, value: [geometry.frame(in: coordinateSpace)])
+        })
+    }
+    
+    func onFrameChange<ID>(_ id: ID.Type = ID.self, perform action: @escaping (AppendPreferenceKey<CGRect, ID>.Value) -> Void) -> some View {
+        onPreferenceChange(AppendPreferenceKey<CGRect, ID>.self, perform: action)
     }
 }
 

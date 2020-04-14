@@ -143,6 +143,7 @@ extension UnitFormatter {
         case auPerSecond
         case hpPerSecond
         case skillPointsPerSecond
+        case seconds
         
         var symbol: String {
             switch (self) {
@@ -180,6 +181,8 @@ extension UnitFormatter {
                 return NSLocalizedString("HP/s", comment: "hpPerSecond")
             case .skillPointsPerSecond:
                 return NSLocalizedString("SP/s", comment: "spPerSecond")
+            case .seconds:
+                return NSLocalizedString("s", comment: "seconds")
             }
         }
         
@@ -199,10 +202,10 @@ extension UnitFormatter {
                 case .tera:
                     return "T"
                 }
-            case .isk, .loyaltyPoints:
+            case .seconds:
                 switch scale {
                 case .natural:
-                    return " \(symbol)"
+                    return "\(symbol)"
                 case .kilo:
                     return "k \(symbol)"
                 case .mega:
@@ -212,7 +215,7 @@ extension UnitFormatter {
                 case .tera:
                     return "T \(symbol)"
                 }
-            case .skillPoints, .gigaJoule, .gigaJoulePerSecond, .megaWatts, .teraflops, .kilogram, .millimeter, .megaBitsPerSecond, .cubicMeter, .auPerSecond, .hpPerSecond, .skillPointsPerSecond:
+            case .skillPoints, .gigaJoule, .gigaJoulePerSecond, .megaWatts, .teraflops, .kilogram, .millimeter, .megaBitsPerSecond, .cubicMeter, .auPerSecond, .hpPerSecond, .skillPointsPerSecond, .isk, .loyaltyPoints:
                 switch scale {
                 case .natural:
                     return " \(symbol)"

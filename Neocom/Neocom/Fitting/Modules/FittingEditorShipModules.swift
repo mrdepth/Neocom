@@ -95,6 +95,7 @@ struct FittingEditorShipModules_Previews: PreviewProvider {
         return NavigationView {
             FittingEditorShipModules()
         }
+//        .environmentObject(DGMStructure.testKeepstar() as DGMShip)
         .environmentObject(gang.pilots.first!.ship!)
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)

@@ -141,7 +141,7 @@ struct KillImailInfo: View {
             }
         }
         .listStyle(GroupedListStyle())
-        .overlay(self.projectLoading != nil ? ActivityView() : nil)
+        .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
         .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .onReceive(projectLoading ?? Empty().eraseToAnyPublisher()) { result in
             self.projectLoading = nil

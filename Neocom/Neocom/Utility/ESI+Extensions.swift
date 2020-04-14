@@ -9,6 +9,8 @@
 import Foundation
 import EVEAPI
 import SwiftUI
+import CoreData
+import Expressible
 
 extension ESI {
     typealias SkillQueueItem = ESI.Characters.CharacterID.Skillqueue.Success
@@ -58,9 +60,58 @@ extension ESI {
     typealias Killmail = ESI.Killmails.KillmailID.KillmailHash.Success
     typealias Attacker = ESI.Killmails.KillmailID.KillmailHash.Attacker
     typealias KillmailHash = ESI.Characters.CharacterID.Killmails.Recent.Success
+    typealias Fittings = [ESI.Characters.CharacterID.Fittings.Success]
+    typealias MutableFitting = ESI.Characters.CharacterID.Fittings.Fitting
+    typealias FittingItem = ESI.Characters.CharacterID.Fittings.Item
+    typealias FittingItemFlag = ESI.Characters.CharacterID.Fittings.Flag
     
     convenience init(token: OAuth2Token) {
         self.init(token: token, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey)
+    }
+}
+
+protocol FittingFlag {
+    var isDrone: Bool {get}
+    var isCargo: Bool {get}
+}
+
+extension ESI.LocationFlag: FittingFlag {
+    var isDrone: Bool {
+        switch self {
+        case .droneBay, .fighterBay, .fighterTube0, .fighterTube1, .fighterTube2, .fighterTube3, .fighterTube4:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var isCargo: Bool {
+        switch self {
+        case .cargo:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+extension ESI.FittingItemFlag: FittingFlag {
+    var isDrone: Bool {
+        switch self {
+        case .droneBay, .fighterBay:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var isCargo: Bool {
+        switch self {
+        case .cargo:
+            return true
+        default:
+            return false
+        }
     }
 }
 
@@ -722,5 +773,64 @@ extension ESI.LocationFlag {
         case .autoFit, .corpseBay, .hangarAll, .subSystemBay, .skill, .boosterBay, .frigateEscapeBay:
             return 0
         }
+    }
+}
+
+extension ESI.MutableFitting {
+    init(_ ship: Ship, managedObjectContext: NSManagedObjectContext) {
+        let shipType = try? managedObjectContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == Int32(ship.typeID)).first()
+        
+        let modules = ship.modules?.map { i -> FlattenCollection<[[ESI.FittingItem]]> in
+            let flags: [ESI.FittingItemFlag]
+            switch i.key {
+            case .hi:
+                flags = [.hiSlot0, .hiSlot1, .hiSlot2, .hiSlot3, .hiSlot4, .hiSlot5, .hiSlot6, .hiSlot7]
+            case .med:
+                flags = [.medSlot0, .medSlot1, .medSlot2, .medSlot3, .medSlot4, .medSlot5, .medSlot6, .medSlot7]
+            case .low:
+                flags = [.loSlot0, .loSlot1, .loSlot2, .loSlot3, .loSlot4, .loSlot5, .loSlot6, .loSlot7]
+            case .rig:
+                flags = [.rigSlot0, .rigSlot1, .rigSlot2]
+            case .subsystem:
+                flags = [.subSystemSlot0, .subSystemSlot1, .subSystemSlot2, .subSystemSlot3]
+            case .service:
+                flags = [.serviceSlot0, .serviceSlot1, .serviceSlot2, .serviceSlot3, .serviceSlot4, .serviceSlot5, .serviceSlot6, .serviceSlot7]
+            default:
+                flags = [.cargo]
+            }
+            var slot = 0
+            let items = i.value.map { j -> [ESI.FittingItem] in
+                var items: [ESI.FittingItem] = []
+                for _ in 0..<j.count {
+                    let item = ESI.FittingItem(flag: flags[min(slot, flags.count - 1)], quantity: 1, typeID: j.typeID)
+                    slot += 1
+                    items.append(item)
+                }
+                return items
+            }.joined()
+            return items
+        }.joined()
+        
+        let drones = ship.drones?.compactMap { i -> ESI.FittingItem? in
+            guard let type = try? managedObjectContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == Int32(i.typeID)).first() else {return nil}
+            guard let categoryID = type.group?.category?.categoryID, let category = SDECategoryID(rawValue: categoryID) else {return nil}
+
+            let flag = category == .fighter ? ESI.FittingItemFlag.fighterBay : ESI.FittingItemFlag.droneBay
+            let item = ESI.FittingItem(flag: flag, quantity: i.count, typeID: i.typeID)
+            return item
+        }
+        
+        var items: [ESI.FittingItem] = []
+        if let modules = modules {
+            items.append(contentsOf: modules)
+        }
+        if let drones = drones {
+            items.append(contentsOf: drones)
+        }
+        
+        self.init(localizedDescription: NSLocalizedString("Created with Neocom on iOS", comment: ""),
+                  items: items,
+                  name: ship.name.isEmpty ? shipType?.typeName ?? NSLocalizedString("Unnamed", comment: "") : ship.name,
+                  shipTypeID: ship.typeID)
     }
 }

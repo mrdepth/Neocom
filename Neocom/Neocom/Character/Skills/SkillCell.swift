@@ -17,7 +17,7 @@ struct SkillCell: View {
     var skillPlanSkill: SkillPlanSkill?
     var targetLevel: Int?
     var editMode: Bool
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
 
     private static var counter: Int = 0
     private static func getID() -> Int {
@@ -61,7 +61,7 @@ struct SkillCell: View {
                 guard let pilot = self.pilot else {return}
                 let trainingQueue = TrainingQueue(pilot: pilot)
                 trainingQueue.add(self.type, level: level)
-                let skillPlan = self.account?.activeSkillPlan
+                let skillPlan = self.sharedState.account?.activeSkillPlan
                 skillPlan?.add(trainingQueue)
                 NotificationCenter.default.post(name: .didUpdateSkillPlan, object: skillPlan)
             }
@@ -72,7 +72,7 @@ struct SkillCell: View {
     var body: some View {
         let trainedLevel = pilot?.trainedSkills[Int(type.typeID)]?.trainedSkillLevel ?? 0
         let canTrain: Range<Int>?
-        if let skillPlan = account?.activeSkillPlan, editMode && trainedLevel < 5  {
+        if let skillPlan = sharedState.account?.activeSkillPlan, editMode && trainedLevel < 5  {
             let from = (skillPlan.skills?.allObjects as? [SkillPlanSkill])?.filter{$0.typeID == type.typeID}.map{Int($0.level)}.max() ?? trainedLevel
             canTrain = (from + 1)..<6
         }
@@ -293,5 +293,6 @@ struct SkillCell_Previews: PreviewProvider {
             SkillCell(type: type, pilot: pilot, skillQueueItem: pilot.skillQueue.last!)
             SkillCell(type: type, pilot: pilot, skillPlanSkill: skillPlanSkill)
         }.listStyle(GroupedListStyle())
+        .environmentObject(SharedState.testState())
     }
 }

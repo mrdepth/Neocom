@@ -16,6 +16,7 @@ struct FittingEditorImplants: View {
     @State private var selectedGroup: SDEDgmppItemGroup?
     @Environment(\.self) private var environment
     @Environment(\.typePicker) private var typePicker
+    @EnvironmentObject private var sharedState: SharedState
     
     
     private enum Row: Identifiable {
@@ -58,7 +59,7 @@ struct FittingEditorImplants: View {
     }
     
     private func typePicker(_ group: SDEDgmppItemGroup) -> some View {
-        typePicker.get(group, environment: environment) {
+        typePicker.get(group, environment: environment, sharedState: sharedState) {
             self.selectedGroup = nil
             guard let type = $0 else {return}
             do {

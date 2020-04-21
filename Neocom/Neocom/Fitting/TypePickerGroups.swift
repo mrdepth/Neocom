@@ -17,7 +17,8 @@ struct TypePickerGroups: View {
     @State private var selectedType: SDEInvType?
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
-
+    @EnvironmentObject private var sharedState: SharedState
+    
     private func groups() -> FetchedResultsController<SDEDgmppItemGroup> {
         let controller = managedObjectContext.from(SDEDgmppItemGroup.self)
             .filter(/\SDEDgmppItemGroup.parentGroup == currentState.parentGroup)
@@ -58,7 +59,7 @@ struct TypePickerGroups: View {
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
     }
 }

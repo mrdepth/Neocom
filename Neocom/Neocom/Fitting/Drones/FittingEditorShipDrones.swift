@@ -47,6 +47,7 @@ struct FittingEditorShipDrones: View {
     @Environment(\.self) private var environment
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.typePicker) private var typePicker
+    @EnvironmentObject private var sharedState: SharedState
     @State private var selection: Selection?
     
     private struct GroupingKey: Hashable {
@@ -58,7 +59,7 @@ struct FittingEditorShipDrones: View {
     }
 
     private func typePicker(_ group: SDEDgmppItemGroup) -> some View {
-        typePicker.get(group, environment: environment) {
+        typePicker.get(group, environment: environment, sharedState: sharedState) {
             self.selection = nil
             guard let type = $0 else {return}
             do {
@@ -80,7 +81,7 @@ struct FittingEditorShipDrones: View {
             FittingDroneActions(drone: drone) {
                 self.selection = nil
             }
-        }.modifier(ServicesViewModifier(environment: self.environment))
+        }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
     }
     
     private func section(squadron: DGMDrone.Squadron, drones: [(key: GroupingKey, value: DGMDroneGroup)]) -> some View {

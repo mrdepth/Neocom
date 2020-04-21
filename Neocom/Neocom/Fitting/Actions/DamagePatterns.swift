@@ -14,6 +14,7 @@ struct DamagePatterns: View {
     var completion: (DGMDamageVector) -> Void
     @State private var isNpcPickerPresented = false
     @Environment(\.self) private var environment
+    @EnvironmentObject private var sharedState: SharedState
     
     var npcPicker: some View {
         NavigationView {
@@ -24,7 +25,7 @@ struct DamagePatterns: View {
             .navigationBarItems(leading: BarButtonItems.close {
                 self.isNpcPickerPresented = false
             })
-        }.modifier(ServicesViewModifier(environment: environment))
+        }.modifier(ServicesViewModifier(environment: environment, sharedState: sharedState))
     }
     
     var body: some View {

@@ -14,6 +14,7 @@ struct ShipPickerGroups: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @State private var selectedType: SDEInvType?
     @Environment(\.self) private var environment
+    @EnvironmentObject private var sharedState: SharedState
     var category: SDEInvCategory
     var completion: (NSManagedObject) -> Void
     
@@ -42,7 +43,7 @@ struct ShipPickerGroups: View {
             .sheet(item: $selectedType) { type in
                 NavigationView {
                     TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
-                }.modifier(ServicesViewModifier(environment: self.environment))
+                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
     }
     
@@ -78,6 +79,7 @@ struct ShipPickerTypes: View {
     
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
+    @EnvironmentObject private var sharedState: SharedState
     
     var predicate: PredicateProtocol {
         /\SDEInvType.group == parentGroup && /\SDEInvType.published == true
@@ -99,7 +101,7 @@ struct ShipPickerTypes: View {
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
 
     }

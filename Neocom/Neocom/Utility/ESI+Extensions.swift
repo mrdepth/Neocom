@@ -819,6 +819,9 @@ extension ESI.MutableFitting {
             let item = ESI.FittingItem(flag: flag, quantity: i.count, typeID: i.typeID)
             return item
         }
+        let cargo = ship.cargo?.map { i -> ESI.FittingItem in
+            ESI.FittingItem(flag: .cargo, quantity: i.count, typeID: i.typeID)
+        }
         
         var items: [ESI.FittingItem] = []
         if let modules = modules {
@@ -827,10 +830,17 @@ extension ESI.MutableFitting {
         if let drones = drones {
             items.append(contentsOf: drones)
         }
+        if let cargo = cargo {
+            items.append(contentsOf: cargo)
+        }
         
         self.init(localizedDescription: NSLocalizedString("Created with Neocom on iOS", comment: ""),
                   items: items,
                   name: ship.name.isEmpty ? shipType?.typeName ?? NSLocalizedString("Unnamed", comment: "") : ship.name,
                   shipTypeID: ship.typeID)
+    }
+    
+    var isEmpty: Bool {
+        items.isEmpty
     }
 }

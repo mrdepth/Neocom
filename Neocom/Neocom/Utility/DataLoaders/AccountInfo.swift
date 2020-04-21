@@ -14,53 +14,87 @@ import Combine
 import CoreData
 
 class AccountInfo: ObservableObject {
+    @Published var isLoading = false
     @Published var skillQueue: Result<[ESI.SkillQueueItem], AFError>?
     @Published var ship: Result<ESI.Ship, AFError>?
     @Published var location: Result<SDEMapSolarSystem, AFError>?
     @Published var skills: Result<ESI.CharacterSkills, AFError>?
     @Published var balance: Result<Double, AFError>?
+    
+    private var esi: ESI
+    private var characterID: Int64
+    private var managedObjectContext: NSManagedObjectContext
 
     init(esi: ESI, characterID: Int64, managedObjectContext: NSManagedObjectContext) {
+        self.esi = esi
+        self.characterID = characterID
+        self.managedObjectContext = managedObjectContext
+        update(cachePolicy: .useProtocolCachePolicy)
+    }
+    
+    func update(cachePolicy: URLRequest.CachePolicy) {
+        let esi = self.esi
+        let managedObjectContext = self.managedObjectContext
+        subscriptions.removeAll()
+        isLoading = true
 
         let character = esi.characters.characterID(Int(characterID))
         
-        character.ship().get()
-            .asResult()
+        let ship = character.ship().get()
+            .map{$0.value}
             .receive(on: RunLoop.main)
-            .sink { [weak self] result in
-                self?.ship = result.map{$0.value}
+            .share()
+
+        ship.asResult().sink { [weak self] result in
+            self?.ship = result
         }.store(in: &subscriptions)
 
-        character.skills().get()
-            .asResult()
+        let skills = character.skills().get()
+            .map{$0.value}
             .receive(on: RunLoop.main)
-            .sink { [weak self] result in
-                self?.skills = result.map{$0.value}
+            .share()
+        
+        skills.asResult().sink { [weak self] result in
+            self?.skills = result
         }.store(in: &subscriptions)
         
-        character.wallet().get()
-            .asResult()
+        let wallet = character.wallet().get()
+            .map{$0.value}
             .receive(on: RunLoop.main)
-            .sink { [weak self] result in
-                self?.balance = result.map{$0.value}
+            .share()
+            
+        wallet.asResult().sink { [weak self] result in
+            self?.balance = result
         }.store(in: &subscriptions)
         
-        character.location().get().receive(on: RunLoop.main).compactMap { location in
-            try? managedObjectContext.from(SDEMapSolarSystem.self).filter(/\SDEMapSolarSystem.solarSystemID == Int32(location.value.solarSystemID)).first()
+        let location = character.location().get()
+            .map{$0.value}
+            .receive(on: RunLoop.main)
+            .share()
+        
+        location.compactMap { location in
+            try? managedObjectContext.from(SDEMapSolarSystem.self).filter(/\SDEMapSolarSystem.solarSystemID == Int32(location.solarSystemID)).first()
         }
         .asResult()
-        .receive(on: RunLoop.main)
         .sink { [weak self] result in
             self?.location = result
         }.store(in: &subscriptions)
         
-        character.skillqueue().get()
-            .map{$0.value.filter{$0.finishDate.map{$0 > Date()} == true}}
-            .asResult()
+        let skillQueue = character.skillqueue().get()
+            .map{$0.value}
             .receive(on: RunLoop.main)
+            .share()
+
+        skillQueue.map{$0.filter{$0.finishDate.map{$0 > Date()} == true}}
+            .asResult()
             .sink { [weak self] result in
                 self?.skillQueue = result
         }.store(in: &subscriptions)
+        
+        ship.zip(skills).zip(wallet).zip(location).zip(skillQueue).sink(receiveCompletion: {[weak self] _ in
+            self?.isLoading = false
+            }, receiveValue: {_ in})
+            .store(in: &subscriptions)
     }
     
     private var subscriptions = Set<AnyCancellable>()

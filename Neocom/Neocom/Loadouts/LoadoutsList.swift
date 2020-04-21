@@ -20,15 +20,15 @@ struct LoadoutsList: View {
     var category: SDEDgmppItemCategoryID
     var onSelect: (Result) -> Void
     
-    @Environment(\.account) private var account
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @Environment(\.self) private var environment
     @Environment(\.typePicker) private var typePicker
     @State private var selectedGroup: SDEDgmppItemGroup?
+    @EnvironmentObject private var sharedState: SharedState
     
     private func typePicker(_ group: SDEDgmppItemGroup) -> some View {
-        typePicker.get(group, environment: environment) {
+        typePicker.get(group, environment: environment, sharedState: sharedState) {
             defer {self.selectedGroup = nil}
             guard let type = $0 else {return}
             self.onSelect(.type(type))
@@ -93,5 +93,6 @@ struct LoadoutsList_Previews: PreviewProvider {
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environmentObject(SharedState.testState())
     }
 }

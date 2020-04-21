@@ -12,9 +12,8 @@ import CoreData
 
 struct Wealth: View {
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
-    @ObservedObject var wealth = Lazy<WealthData>()
+    @EnvironmentObject private var sharedState: SharedState
+    @ObservedObject var wealth = Lazy<WealthData, Account>()
     
     private func cell(_ title: Text, value: Double?) -> some View {
         Group {
@@ -28,7 +27,7 @@ struct Wealth: View {
     }
     
     var body: some View {
-        let wealth = account.map{self.wealth.get(initial: WealthData(esi: esi, characterID: $0.characterID, managedObjectContext: backgroundManagedObjectContext))}
+        let wealth = sharedState.account.map{self.wealth.get($0, initial: WealthData(esi: sharedState.esi, characterID: $0.characterID, managedObjectContext: backgroundManagedObjectContext))}
 
         return List {
             Section {
@@ -59,15 +58,12 @@ struct Wealth: View {
 
 struct Wealth_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-        return NavigationView {
+        NavigationView {
             Wealth()
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
 
     }
 }

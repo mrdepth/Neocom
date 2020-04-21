@@ -17,14 +17,14 @@ struct Loadouts: View {
     }
     
     @State private var page = Page.ships
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
     
     var picker: some View {
         Picker("Filter", selection: $page) {
             Text("Ships").tag(Page.ships)
             Text("Structures").tag(Page.structures)
             Text("Fleets").tag(Page.fleets)
-            if self.account != nil {
+            if self.sharedState.account != nil {
                 Text("In-Game").tag(Page.ingame)
             }
         }
@@ -60,6 +60,7 @@ struct Loadouts_Previews: PreviewProvider {
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environmentObject(SharedState.testState())
 
     }
 }

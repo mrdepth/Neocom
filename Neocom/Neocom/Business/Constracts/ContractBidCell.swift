@@ -15,9 +15,6 @@ struct ContractBidCell: View {
     var bid: ESI.ContractBids.Element
     var contact: Contact?
     
-    @Environment(\.esi) private var esi
-    
-
     var body: some View {
         HStack {
             Avatar(characterID: Int64(bid.bidderID), size: .size128).frame(width: 40, height: 40)
@@ -45,5 +42,6 @@ struct ContractBidCell_Previews: PreviewProvider {
         return List {
             ContractBidCell(bid: bid, contact: contact)
         }.listStyle(GroupedListStyle())
+        .environmentObject(SharedState.testState())
     }
 }

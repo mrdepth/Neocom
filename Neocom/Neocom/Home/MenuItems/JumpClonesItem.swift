@@ -11,15 +11,14 @@ import EVEAPI
 import Alamofire
 
 struct JumpClonesItem: View {
-    @Environment(\.account) private var account
-    @Environment(\.esi) private var esi
-    @ObservedObject private var skills = Lazy<DataLoader<ESI.Clones, AFError>>()
+    @EnvironmentObject private var sharedState: SharedState
+    @ObservedObject private var skills = Lazy<DataLoader<ESI.Clones, AFError>, Account>()
     
     let require: [ESI.Scope] = [.esiClonesReadClonesV1,
                                 .esiClonesReadImplantsV1]
     
     var body: some View {
-        let result = account.map{self.skills.get(initial: DataLoader(esi.characters.characterID(Int($0.characterID)).clones().get().map{$0.value}.receive(on: RunLoop.main)))}?.result
+        let result = sharedState.account.map{self.skills.get($0, initial: DataLoader(sharedState.esi.characters.characterID(Int($0.characterID)).clones().get().map{$0.value}.receive(on: RunLoop.main)))}?.result
         let clones = result?.value
         let error = result?.error
         
@@ -30,7 +29,7 @@ struct JumpClonesItem: View {
         }
         
         return Group {
-            if account?.verifyCredentials(require) == true {
+            if sharedState.account?.verifyCredentials(require) == true {
                 NavigationLink(destination: JumpClones()) {
                     Icon(Image("jumpclones"))
                     VStack(alignment: .leading) {
@@ -50,16 +49,12 @@ struct JumpClonesItem: View {
 
 struct JumpClonesItem_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
-        return NavigationView {
+        NavigationView {
             List {
                 JumpClonesItem()
             }.listStyle(GroupedListStyle())
         }
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

@@ -17,6 +17,7 @@ struct TypePickerTypes: View {
     
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
+    @EnvironmentObject private var sharedState: SharedState
     
     var predicate: PredicateProtocol {
         (/\SDEInvType.dgmppItem?.groups).contains(currentState.parentGroup)
@@ -38,7 +39,7 @@ struct TypePickerTypes: View {
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
 
     }

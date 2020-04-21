@@ -12,22 +12,22 @@ import Combine
 import CoreData
 
 struct ShipLoadouts: View {
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @State private var selectedProject: FittingProject?
     @State private var projectLoading: AnyPublisher<Result<FittingProject, Error>, Never>?
-    @ObservedObject private var loadouts = Lazy<LoadoutsLoader>()
+    @ObservedObject private var loadouts = Lazy<LoadoutsLoader, Never>()
     
     private func onSelect(_ type: SDEInvType) {
         let typeID = DGMTypeID(type.typeID)
-        projectLoading = DGMSkillLevels.load(account, managedObjectContext: managedObjectContext).tryMap {
+        projectLoading = DGMSkillLevels.load(sharedState.account, managedObjectContext: managedObjectContext).tryMap {
             try FittingProject(ship: typeID, skillLevels: $0)
         }.asResult().receive(on: RunLoop.main).eraseToAnyPublisher()
     }
 
     private func onSelect(_ loadout: Loadout) {
-        projectLoading = DGMSkillLevels.load(account, managedObjectContext: managedObjectContext)
+        projectLoading = DGMSkillLevels.load(sharedState.account, managedObjectContext: managedObjectContext)
             .receive(on: RunLoop.main)
             .tryMap {
                 try FittingProject(loadout: loadout, skillLevels: $0)
@@ -64,5 +64,6 @@ struct ShipLoadouts_Previews: PreviewProvider {
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environmentObject(SharedState.testState())
     }
 }

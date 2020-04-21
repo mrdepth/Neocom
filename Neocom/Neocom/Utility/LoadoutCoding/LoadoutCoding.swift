@@ -15,7 +15,7 @@ struct Ship: Codable, Hashable {
         var count: Int = 1
         var id: Int? = nil
         var state: DGMModule.State = .active
-        var charge: Int? = nil
+        var charge: Item? = nil
         var socket: Int = -1
     }
     

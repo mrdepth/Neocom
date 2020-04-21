@@ -14,8 +14,9 @@ import EVEAPI
 struct SkillPlanSection: View {
     var skillPlan: SkillPlan
     var pilot: Pilot
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @Environment(\.self) var environment
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    @Environment(\.self) private var environment
+    @EnvironmentObject private var sharedState: SharedState
     
     @FetchRequest(sortDescriptors: [])
     var skills: FetchedResults<SkillPlanSkill>
@@ -104,7 +105,7 @@ struct SkillPlanSection: View {
                 SkillPlans() { newSkillPlan in
                     self.isSkillPlansPresented = false
                 }
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
     }
 }
@@ -112,7 +113,6 @@ struct SkillPlanSection: View {
 struct SkillPlanSection_Previews: PreviewProvider {
     static var previews: some View {
         let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
 
         let type = try! AppDelegate.sharedDelegate.persistentContainer.viewContext
             .from(SDEInvType.self)
@@ -135,17 +135,12 @@ struct SkillPlanSection_Previews: PreviewProvider {
         return NavigationView {
             List {
                 SkillPlanSection(skillPlan: skillPlan, pilot: .empty)
-                    .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-                    .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-                    .environment(\.account, account)
-                    .environment(\.esi, esi)
                 SkillPlanSection(skillPlan: skillPlan2, pilot: .empty)
-                    .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-                    .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-                    .environment(\.account, account)
-                    .environment(\.esi, esi)
             }.listStyle(GroupedListStyle())
         }
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environmentObject(SharedState.testState())
 
 
     }

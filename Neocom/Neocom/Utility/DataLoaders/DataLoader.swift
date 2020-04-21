@@ -14,15 +14,13 @@ import EVEAPI
 
 class DataLoader<Success, Failure: Error>: ObservableObject {
 
+    @Published var isLoading = false
+    
     private var subscription: AnyCancellable?
 
-    var result: Result<Success, Failure>? {
-        willSet {
-            objectWillChange.send()
-        }
-    }
+    @Published var result: Result<Success, Failure>?
     
-    var objectWillChange = ObservableObjectPublisher()
+//    var objectWillChange = ObservableObjectPublisher()
     
     init<P: Publisher>(_ publisher: P) where P.Output == Success, P.Failure == Failure {
         update(publisher)
@@ -32,8 +30,10 @@ class DataLoader<Success, Failure: Error>: ObservableObject {
     }
     
     func update<P: Publisher>(_ publisher: P) where P.Output == Success, P.Failure == Failure {
+        isLoading = true
         subscription = publisher.asResult().sink { [weak self] result in
             self?.result = result
+            self?.isLoading = false
         }
     }
 }

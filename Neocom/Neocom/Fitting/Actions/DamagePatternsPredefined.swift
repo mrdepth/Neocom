@@ -47,6 +47,7 @@ struct PredefinedDamagePatternCell: View {
     @Environment(\.self) private var environment
     @Environment(\.managedObjectContext) private var managedObjectContext
     @State private var selectedDamagePattern: DamagePattern?
+    @EnvironmentObject private var sharedState: SharedState
     
     private func action() {
         if editMode?.wrappedValue == .active {
@@ -70,7 +71,7 @@ struct PredefinedDamagePatternCell: View {
             NavigationView {
                 DamagePatternEditor(damagePattern: pattern) {
                     self.selectedDamagePattern = nil
-                }.modifier(ServicesViewModifier(environment: self.environment))
+                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             }
         }
     }

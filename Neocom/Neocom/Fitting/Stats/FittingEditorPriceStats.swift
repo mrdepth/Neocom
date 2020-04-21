@@ -11,7 +11,6 @@ import Dgmpp
 import EVEAPI
 
 struct FittingEditorPriceStats: View {
-    @Environment(\.esi) private var esi
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var prices: PricesData
     @EnvironmentObject private var ship: DGMShip
@@ -40,6 +39,10 @@ struct FittingEditorPriceStats: View {
         (ship.parent as? DGMCharacter)?.boosters.reduce(0) {$0 + (prices[$1.typeID] ?? 0)} ?? 0
     }
 
+    private func cargo(_ prices: [Int: Double]) -> Double {
+        ship.cargo.reduce(0) {$0 + (prices[$1.typeID] ?? 0) * Double($1.quantity)}
+    }
+
     private func cell(title: Text, image: Image, price: Double) -> some View {
         HStack {
             Icon(image).cornerRadius(4)
@@ -54,17 +57,17 @@ struct FittingEditorPriceStats: View {
         let prices = self.prices.prices?.value
         
         let costs = prices.map {
-            (ship($0), modules($0), drones($0), charges($0), implants($0), boosters($0))
+            (ship($0), modules($0), drones($0), charges($0), implants($0), boosters($0), cargo($0))
         }
         
-        let total = costs.map { (ship, modules, drones, charges, implants, boosters) in
-            ship + modules + drones + charges + implants + boosters
+        let total = costs.map { (ship, modules, drones, charges, implants, boosters, cargo) in
+            ship + modules + drones + charges + implants + boosters + cargo
         } ?? Double(0)
         
 //        let total: Double = 0
         let type = ship.type(from: managedObjectContext)
         
-        return costs.map { (ship, modules, drones, charges, implants, boosters) in
+        return costs.map { (ship, modules, drones, charges, implants, boosters, cargo) in
             Group {
                 if total > 0 {
                     Section(header: Text("PRICE")) {
@@ -89,7 +92,10 @@ struct FittingEditorPriceStats: View {
                             if boosters > 0 {
                                 cell(title: Text("Boosters"), image: Image("booster"), price: boosters)
                             }
-                            
+                            if cargo > 0 {
+                                cell(title: Text("Cargo"), image: Image("cargoBay"), price: cargo)
+                            }
+
                             cell(title: Text("Total"), image: Image("priceTotal"), price: total)
                         }
                     }
@@ -111,5 +117,6 @@ struct FittingEditorPriceStats_Previews: PreviewProvider {
         .environmentObject(gang)
         .environmentObject(PricesData(esi: ESI()))
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environmentObject(SharedState.testState())
     }
 }

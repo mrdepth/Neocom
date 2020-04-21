@@ -23,14 +23,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
 		// Create the SwiftUI view that provides the window contents.
-        let account = try? AppDelegate.sharedDelegate.persistentContainer.viewContext.from(Account.self).first()
-
-//        let contentView = ContentView()
-            let contentView = Main()
+        let contentView = ContentView()
+//            let contentView = Main()
                 .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
                 .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-                .environment(\.esi, (account?.oAuth2Token).map{ESI(token: $0)} ?? ESI())
-                .environment(\.account, account)
                 .environmentObject(SharedState(managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext))
 
 		// Use a UIHostingController as window root view controller.

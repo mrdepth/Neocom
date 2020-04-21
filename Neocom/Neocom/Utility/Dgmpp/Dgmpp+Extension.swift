@@ -308,7 +308,12 @@ extension DGMShip {
             var modules = [DGMModule.Slot: [Ship.Module]]()
             
             for module in self.modules {
-                modules[module.slot, default: []].append(Ship.Module(typeID: module.typeID, count: 1, id: module.identifier, state: module.state, charge: module.charge?.typeID, socket: module.socket))
+                modules[module.slot, default: []].append(Ship.Module(typeID: module.typeID,
+                                                                     count: 1,
+                                                                     id: module.identifier,
+                                                                     state: module.state,
+                                                                     charge: module.charge.map{Ship.Item(typeID: $0.typeID, count: module.charges)},
+                                                                     socket: module.socket))
             }
             
             let drones = dronesDic.map{ (key, value) -> Ship.Drone in
@@ -316,12 +321,15 @@ extension DGMShip {
                 drone.count = value
                 return drone
             }
+            let cargo = self.cargo.map {
+                Ship.Item(typeID: $0.typeID, count: $0.quantity)
+            }
             
             return Ship(typeID: typeID,
                  name: name,
                  modules: modules,
                  drones: drones,
-                 cargo: nil,
+                 cargo: cargo,
                  implants: nil,
                  boosters: nil)
         }
@@ -356,12 +364,22 @@ extension DGMShip {
                             item.identifier = identifier
                             item.state = module.state
                             if let charge = module.charge {
-                                try item.setCharge(DGMCharge(typeID: charge))
+                                try item.setCharge(DGMCharge(typeID: charge.typeID))
                             }
                         }
                     }
                     catch {
                     }
+                }
+            }
+            newValue.cargo?.forEach {
+                do {
+                    let cargo = try DGMCargo(typeID: $0.typeID)
+                    cargo.quantity = $0.count
+                    try add(cargo)
+                }
+                catch {
+                    
                 }
             }
         }

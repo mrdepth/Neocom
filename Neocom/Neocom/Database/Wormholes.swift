@@ -13,7 +13,7 @@ import Combine
 
 struct Wormholes: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
-    private let wormholes = Lazy<FetchedResultsController<SDEWhType>>()
+    private let wormholes = Lazy<FetchedResultsController<SDEWhType>, Never>()
     
     private func getWormholes() -> FetchedResultsController<SDEWhType> {
         let controller = managedObjectContext.from(SDEWhType.self)

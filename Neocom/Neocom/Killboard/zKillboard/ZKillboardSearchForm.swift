@@ -26,8 +26,7 @@ struct ZKillboardSearchForm: View {
         var whOnly = false
     }
 
-    
-    @Environment(\.esi) private var esi
+    @EnvironmentObject private var sharedState: SharedState
     @Environment(\.self) private var environment
     @State private var filter = Filter()
 
@@ -67,7 +66,7 @@ struct ZKillboardSearchForm: View {
                 }.navigationBarItems(leading: BarButtonItems.close {
                     self.isContactsPresented = false
                 })
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
     }
     
@@ -111,7 +110,7 @@ struct ZKillboardSearchForm: View {
                 }.navigationBarItems(leading: BarButtonItems.close {
                     self.isShipPickerPresented = false
                 })
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
     }
     
@@ -155,7 +154,7 @@ struct ZKillboardSearchForm: View {
                 }.navigationBarItems(leading: BarButtonItems.close {
                     self.isLocationPickerPresented = false
                 })
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
     }
     
@@ -266,7 +265,8 @@ struct ZKillboardSearchForm_Previews: PreviewProvider {
         NavigationView {
             ZKillboardSearchForm()
         }
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environmentObject(SharedState.testState())
     }
 }

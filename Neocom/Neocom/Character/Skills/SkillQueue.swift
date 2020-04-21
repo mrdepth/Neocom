@@ -13,35 +13,44 @@ import Expressible
 import CoreData
 
 struct SkillQueue: View {
-    @ObservedObject private var pilot = Lazy<DataLoader<Pilot, AFError>>()
+    @ObservedObject private var pilot = Lazy<DataLoader<Pilot, AFError>, Account>()
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
 
     private func loadPilot(account: Account) -> DataLoader<Pilot, AFError> {
-        DataLoader(Pilot.load(esi.characters.characterID(Int(account.characterID)), in: self.backgroundManagedObjectContext).receive(on: RunLoop.main))
+        DataLoader(Pilot.load(sharedState.esi.characters.characterID(Int(account.characterID)), in: self.backgroundManagedObjectContext).receive(on: RunLoop.main))
     }
 
     var body: some View {
-        let pilot = account.map{account in self.pilot.get(initial: self.loadPilot(account: account))}?.result?.value
-        
+        let loader = sharedState.account.map{account in self.pilot.get(account, initial: self.loadPilot(account: account))}
+        let pilot = loader?.result?.value
 
-        return List {
+        let list = List {
             Section {
                 NavigationLink(destination: Skills(editMode: false)) {
                     Text("Browse All Skills")
                 }
-                if pilot != nil && account != nil {
-                    OptimalAttributesRow(account: account!, pilot: pilot!)
+                if pilot != nil && sharedState.account != nil {
+                    OptimalAttributesRow(account: sharedState.account!, pilot: pilot!)
                 }
             }
             if pilot != nil {
                 SkillQueueSection(pilot: pilot!)
-                account.map { SkillPlanSectionWrapper(account: $0, pilot: pilot!) }
+                sharedState.account.map { SkillPlanSectionWrapper(account: $0, pilot: pilot!) }
             }
-        }.listStyle(GroupedListStyle())
-            .navigationBarTitle("Skill Queue")
+        }
+        .listStyle(GroupedListStyle())
+        return Group {
+            if loader != nil {
+                list.onRefresh(isRefreshing: loader!.isLoading) {
+                }
+            }
+            else {
+                list
+            }
+        }
+        .navigationBarTitle("Skill Queue")
         .navigationBarItems(trailing: EditButton())
     }
 }
@@ -124,7 +133,6 @@ struct SkillPlanSectionWrapper: View {
 struct SkillQueue_Previews: PreviewProvider {
     static var previews: some View {
         let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
         let skillPlan = SkillPlan(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
         skillPlan.account = account
         skillPlan.name = "SkillPlan 1"
@@ -135,7 +143,6 @@ struct SkillQueue_Previews: PreviewProvider {
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
     }
 }

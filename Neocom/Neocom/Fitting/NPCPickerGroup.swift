@@ -16,6 +16,7 @@ struct NPCPickerGroup: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
     @State private var selectedType: SDEInvType?
+    @EnvironmentObject private var sharedState: SharedState
     
     private func groups() -> FetchedResultsController<SDENpcGroup> {
         let controller = managedObjectContext.from(SDENpcGroup.self)
@@ -42,7 +43,7 @@ struct NPCPickerGroup: View {
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
 
     }

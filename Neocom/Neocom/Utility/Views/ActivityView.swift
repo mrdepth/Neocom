@@ -57,7 +57,12 @@ class ActivityViewWrapper: UIViewController {
                 controller.completionWithItemsHandler = { (activityType, completed, _, _) in
                     self.isPresented.wrappedValue = false
                 }
-                present(controller, animated: true, completion: nil)
+                controller.modalPresentationStyle = .popover
+                controller.popoverPresentationController?.sourceView = self.view
+                controller.popoverPresentationController?.sourceRect = self.view.bounds
+                DispatchQueue.main.async {
+                    self.present(controller, animated: true, completion: nil)
+                }
             }
             else {
                 self.presentedViewController?.dismiss(animated: true, completion: nil)
@@ -68,24 +73,27 @@ class ActivityViewWrapper: UIViewController {
 
 struct ActivityViewTest: View {
     @State private var isActivityPresented = false
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
+    @Environment(\.self) private var environment
+    @Environment(\.managedObjectContext) private var managedObjectContext
 
     var body: some View {
-        Button("Preset") {
+        let ship = Ship(typeID: 645, modules: [.hi: [Ship.Module(typeID: 35928)]])
+//        let data = try? LoadoutPlainTextEncoder(managedObjectContext: managedObjectContext).encode(ship)
+//        let text = String(data: data!, encoding: .utf8)
+        let loadout = LoadoutActivityItem(ships: [ship, ship], managedObjectContext: managedObjectContext)
+        return Button("Present") {
             self.isActivityPresented = true
-        }.background(ActivityView(activityItems: [LoadoutActivity(ship: Ship(typeID: 645))], applicationActivities: [InGameActivity(esi: esi, characterID: account?.characterID ?? 0)], isPresented: $isActivityPresented))
+        }.background(ActivityView(activityItems: [loadout], applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)], isPresented: $isActivityPresented))
     }
 }
 
 struct ActivityView_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
-        return ActivityViewTest()
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        ActivityViewTest()
+            .environmentObject(SharedState.testState())
+            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
 
     }
 }

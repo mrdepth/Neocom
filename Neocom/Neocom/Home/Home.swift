@@ -13,13 +13,12 @@ import Alamofire
 struct Home: View {
     private enum HeaderFrame {}
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.account) private var account
     @Environment(\.self) private var environment
     @EnvironmentObject private var sharedState: SharedState
     
     @State private var isAccountsPresented = false
     @State private var navigationAvatarItemVisible = false
-    @UserDefault(key: .activeAccountID) private var accountID: String? = nil
+//    @UserDefault(key: .activeAccountID) private var accountID: String? = nil
     
     private let headerContent = HomeHeader()
     private let serverStatus = ServerStatus()
@@ -29,27 +28,33 @@ struct Home: View {
     private let wealth = WealthMenuItem()
     
     private var header: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Button(action: {
-                self.isAccountsPresented = true
-            }) {
+        Button(action: {
+            self.isAccountsPresented = true
+        }) {
+            VStack(alignment: .leading, spacing: 0) {
                 headerContent
-            }.buttonStyle(PlainButtonStyle())
-            serverStatus.frame(maxWidth: .infinity, alignment: .leading).padding(4)
-        }
+                serverStatus.padding(4)
+            }.contentShape(Rectangle())
+        }.buttonStyle(PlainButtonStyle())
     }
     
     private var navigationAvatarItem: some View {
-        account.map{ account in
-            Group {
-                if navigationAvatarItemVisible {
-                    Button(action: {
-                        self.isAccountsPresented = true
-                    }) {
-                        Avatar(characterID: account.characterID, size: .size256).frame(width: 36, height: 36)
+        Group {
+            if navigationAvatarItemVisible {
+                Button(action: {
+                    self.isAccountsPresented = true
+                }) {
+                    if sharedState.account != nil {
+                        Avatar(characterID: sharedState.account!.characterID, size: .size256).frame(width: 36, height: 36)
                             .animation(.linear)
-                    }.buttonStyle(PlainButtonStyle())
-                }
+                    }
+                    else {
+                        Avatar(image: nil)
+                            .frame(width: 36, height: 36)
+                            .overlay(Image(systemName: "person").resizable().padding())
+                            .animation(.linear)
+                    }
+                }.buttonStyle(PlainButtonStyle())
             }
         }
     }
@@ -102,6 +107,10 @@ struct Home: View {
                     FittingItem()
                 }
                 
+                Section {
+                    AboutItem()
+                }
+                
             }.listStyle(GroupedListStyle())
                 
         }.sheet(isPresented: $isAccountsPresented) {
@@ -119,12 +128,12 @@ struct Home: View {
                     self.isAccountsPresented = false
                 }, trailing: EditButton())
                     
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
 //        .navigationBarTitle("Neocom")
 //        .navigationBarHidden(true)
-            .navigationBarTitle(account?.characterName ?? "Neocom")
-            .navigationBarItems(leading: navigationAvatarItem, trailing: account != nil ? Button("Logout") {self.accountID = nil} : nil)
+            .navigationBarTitle(sharedState.account?.characterName ?? "Neocom")
+            .navigationBarItems(leading: navigationAvatarItem, trailing: sharedState.account != nil ? Button("Logout") {self.sharedState.account = nil} : nil)
             .onFrameChange(HeaderFrame.self) { frame in
                 self.navigationAvatarItemVisible = (frame.first?.minY ?? -100) < -35
         }
@@ -133,16 +142,12 @@ struct Home: View {
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
-        return NavigationView {
+        NavigationView {
             Home()
         }
-        .environment(\.account, account)
-        .environment(\.esi, esi)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environmentObject(SharedState.testState())
 
     }
 }

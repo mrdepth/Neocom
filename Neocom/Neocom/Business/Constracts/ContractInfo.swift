@@ -13,14 +13,13 @@ import CoreData
 
 struct ContractInfo: View {
     var contract: ESI.PersonalContracts.Element
-    @ObservedObject private var contractInfo: Lazy<ContractInfoData> = Lazy()
+    @ObservedObject private var contractInfo: Lazy<ContractInfoData, Account> = Lazy()
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
 
     var body: some View {
-        let result = account.map { account in
-            self.contractInfo.get(initial: ContractInfoData(esi: esi, characterID: account.characterID, contract: contract, managedObjectContext: managedObjectContext))
+        let result = sharedState.account.map { account in
+            self.contractInfo.get(account, initial: ContractInfoData(esi: sharedState.esi, characterID: account.characterID, contract: contract, managedObjectContext: managedObjectContext))
         }
 
         return List {
@@ -168,8 +167,6 @@ struct ContractInfoItems: View {
 
 
 struct ContractInfoBids: View {
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @Environment(\.esi) var esi
     var bids: ESI.ContractBids
     var contacts: [Int64: Contact]
 

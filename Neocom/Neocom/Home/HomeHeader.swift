@@ -13,12 +13,10 @@ import Alamofire
 
 struct HomeHeader: View {
     @EnvironmentObject private var sharedState: SharedState
-//    @Environment(\.account) var account
-//    @Environment(\.esi) var esi
-    @ObservedObject var characterInfo = Lazy<CharacterInfo>()
+    @ObservedObject var characterInfo = Lazy<CharacterInfo, Account>()
     
     var body: some View {
-        let characterInfo = sharedState.account.map{self.characterInfo.get(initial: CharacterInfo(esi: sharedState.esi, characterID: $0.characterID, characterImageSize: .size256, corporationImageSize: .size32, allianceImageSize: .size32))}
+        let characterInfo = sharedState.account.map{self.characterInfo.get($0, initial: CharacterInfo(esi: sharedState.esi, characterID: $0.characterID, characterImageSize: .size256, corporationImageSize: .size32, allianceImageSize: .size32))}
         let error = characterInfo?.character?.error
         return VStack(spacing: 0) {
             if characterInfo != nil {

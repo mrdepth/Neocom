@@ -14,7 +14,7 @@ import Combine
 
 struct KillImailInfo: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
 
     var killmail: ESI.Killmail
     var contacts: [Int64: Contact]
@@ -107,7 +107,7 @@ struct KillImailInfo: View {
 
     private var fittingButton: some View {
         Button("Fitting") {
-            self.projectLoading = DGMSkillLevels.load(self.account, managedObjectContext: self.managedObjectContext).tryMap { try FittingProject(killmail: self.killmail, skillLevels: $0) }
+            self.projectLoading = DGMSkillLevels.load(self.sharedState.account, managedObjectContext: self.managedObjectContext).tryMap { try FittingProject(killmail: self.killmail, skillLevels: $0) }
                 .asResult()
                 .receive(on: RunLoop.main)
                 .eraseToAnyPublisher()
@@ -218,6 +218,7 @@ struct KillImailInfo_Previews: PreviewProvider {
         return NavigationView {
             KillImailInfo(killmail: killmail, contacts: contacts)
         }
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environmentObject(SharedState.testState())
     }
 }

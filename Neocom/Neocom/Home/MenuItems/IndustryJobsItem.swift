@@ -10,12 +10,12 @@ import SwiftUI
 import EVEAPI
 
 struct IndustryJobsItem: View {
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
     let require: [ESI.Scope] = [.esiIndustryReadCharacterJobsV1]
     
     var body: some View {
         Group {
-            if account?.verifyCredentials(require) == true {
+            if sharedState.account?.verifyCredentials(require) == true {
                 NavigationLink(destination: IndustryJobs()) {
                     Icon(Image("industry"))
                     Text("Industry Jobs")
@@ -27,16 +27,12 @@ struct IndustryJobsItem: View {
 
 struct IndustryJobsItem_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-        
-        return NavigationView {
+        NavigationView {
             List {
                 IndustryJobsItem()
             }.listStyle(GroupedListStyle())
         }
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

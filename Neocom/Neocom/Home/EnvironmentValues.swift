@@ -11,15 +11,15 @@ import SwiftUI
 import EVEAPI
 import CoreData
 
-struct ESIKey: EnvironmentKey {
-    static var defaultValue: ESI {
-        ESI()
-    }
-}
-
-struct AccountKey: EnvironmentKey {
-    static var defaultValue: Account? = nil
-}
+//struct ESIKey: EnvironmentKey {
+//    static var defaultValue: ESI {
+//        ESI()
+//    }
+//}
+//
+//struct AccountKey: EnvironmentKey {
+//    static var defaultValue: Account? = nil
+//}
 
 struct BackgroundManagedObjectContextKey: EnvironmentKey {
     static var defaultValue: NSManagedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
@@ -30,23 +30,23 @@ struct TypePickerManagerKey: EnvironmentKey {
 }
 
 extension EnvironmentValues {
-    var esi: ESI {
-        get {
-            self[ESIKey.self]
-        }
-        set {
-            self[ESIKey.self] = newValue
-        }
-    }
-    
-    var account: Account? {
-        get {
-            self[AccountKey.self]
-        }
-        set {
-            self[AccountKey.self] = newValue
-        }
-    }
+//    var esi: ESI {
+//        get {
+//            self[ESIKey.self]
+//        }
+//        set {
+//            self[ESIKey.self] = newValue
+//        }
+//    }
+//
+//    var account: Account? {
+//        get {
+//            self[AccountKey.self]
+//        }
+//        set {
+//            self[AccountKey.self] = newValue
+//        }
+//    }
     
     var backgroundManagedObjectContext: NSManagedObjectContext {
         get {

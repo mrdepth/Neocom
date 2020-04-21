@@ -10,17 +10,20 @@ import SwiftUI
 
 struct HomeLoginHeader: View {
     var body: some View {
-        VStack {
-            Avatar(image: nil).frame(width: 64, height: 64).overlay(Image(systemName: "person").resizable().padding())
+        HStack {
+            Avatar(image: nil).frame(width: 64, height: 64).overlay(Image(systemName: "person").resizable().padding()).padding(4)
             Text("Tap to Login").font(.title2)
+            Spacer()
         }
         .foregroundColor(.secondary)
-        .padding()
+//        .padding()
     }
 }
 
 struct HomeLoginHeader_Previews: PreviewProvider {
     static var previews: some View {
+        List {
         HomeLoginHeader()
+        }.listStyle(GroupedListStyle())
     }
 }

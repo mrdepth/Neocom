@@ -56,10 +56,7 @@ struct ContactsSearchResults: View {
 
 struct ContactsSearchResults_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
-        return ContactsSearchResults(contacts: []) { _ in}
-            .environment(\.esi, esi)
+        ContactsSearchResults(contacts: []) { _ in}
+            .environmentObject(SharedState.testState())
     }
 }

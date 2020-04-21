@@ -19,6 +19,7 @@ struct FittingEditorActions: View {
 	@State private var isAreaEffectsPresented = false
     @State private var isCharactersPresented = false
     @State private var isDamagePatternsPresented = false
+    @EnvironmentObject private var sharedState: SharedState
 	
 	private var areaEffects: some View {
 		AreaEffects { type in
@@ -87,7 +88,7 @@ struct FittingEditorActions: View {
                 }.navigationBarItems(leading: BarButtonItems.close {
                     self.isDamagePatternsPresented = false
                 })
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
     .navigationBarTitle("Actions")
     }
@@ -117,8 +118,6 @@ private struct FittingEditorActionsCharacterCell: View {
 
 struct FittingEditorActions_Previews: PreviewProvider {
     static var previews: some View {  
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
         let gang = DGMGang.testGang()
         return NavigationView {
             FittingEditorActions()
@@ -127,8 +126,7 @@ struct FittingEditorActions_Previews: PreviewProvider {
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
 
     }
 }

@@ -16,13 +16,12 @@ struct AffectingSkills: View {
     @EnvironmentObject private var ship: DGMShip
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
-    @ObservedObject private var skills = Lazy<FetchedResultsController<SDEInvType>>()
-    @ObservedObject private var pilot = Lazy<DataLoader<Pilot, AFError>>()
+    @EnvironmentObject private var sharedState: SharedState
+    @ObservedObject private var skills = Lazy<FetchedResultsController<SDEInvType>, Never>()
+    @ObservedObject private var pilot = Lazy<DataLoader<Pilot, AFError>, Never>()
     
     private func loadPilot(account: Account) -> DataLoader<Pilot, AFError> {
-        DataLoader(Pilot.load(esi.characters.characterID(Int(account.characterID)), in: self.backgroundManagedObjectContext).receive(on: RunLoop.main))
+        DataLoader(Pilot.load(sharedState.esi.characters.characterID(Int(account.characterID)), in: self.backgroundManagedObjectContext).receive(on: RunLoop.main))
     }
 
     private func getSkills() -> FetchedResultsController<SDEInvType> {
@@ -39,7 +38,7 @@ struct AffectingSkills: View {
 
     var body: some View {
         let skills = self.skills.get(initial: self.getSkills())
-        let pilot = account.map{account in self.pilot.get(initial: self.loadPilot(account: account))}?.result?.value
+        let pilot = sharedState.account.map{account in self.pilot.get(initial: self.loadPilot(account: account))}?.result?.value
 
         return List {
             ForEach(skills.sections, id: \.name) { section in
@@ -76,7 +75,6 @@ struct AffectingSkills_Previews: PreviewProvider {
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
     }
 }

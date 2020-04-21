@@ -11,12 +11,11 @@ import EVEAPI
 import Alamofire
 
 struct EVECalendar: View {
-    @ObservedObject private var calendar = Lazy<DataLoader<ESI.Calendar, AFError>>()
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @ObservedObject private var calendar = Lazy<DataLoader<ESI.Calendar, AFError>, Account>()
+    @EnvironmentObject private var sharedState: SharedState
 
     private func calendar(characterID: Int64) -> DataLoader<ESI.Calendar, AFError> {
-        let calendar = esi.characters.characterID(Int(characterID)).calendar().get(fromEvent: nil).map{$0.value}
+        let calendar = sharedState.esi.characters.characterID(Int(characterID)).calendar().get(fromEvent: nil).map{$0.value}
             .receive(on: RunLoop.main)
         return DataLoader(calendar)
     }
@@ -27,8 +26,8 @@ struct EVECalendar: View {
     }
 
     var body: some View {
-        let calendar = account.map { account in
-            self.calendar.get(initial: self.calendar(characterID: account.characterID))
+        let calendar = sharedState.account.map { account in
+            self.calendar.get(account, initial: self.calendar(characterID: account.characterID))
         }
         
         let date = Date()
@@ -98,7 +97,6 @@ struct EVECalendar_Previews: PreviewProvider {
             
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
     }
 }

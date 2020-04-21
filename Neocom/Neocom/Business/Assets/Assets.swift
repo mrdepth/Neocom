@@ -19,9 +19,8 @@ struct Assets: View {
     
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
-    @ObservedObject var assets = Lazy<AssetsData>()
+    @EnvironmentObject private var sharedState: SharedState
+    @ObservedObject var assets = Lazy<AssetsData, Account>()
     @State private var filter = Filter.byLocation
     
     private var filterControl: some View {
@@ -32,7 +31,7 @@ struct Assets: View {
     }
     
     var body: some View {
-        let assets = account.map{self.assets.get(initial: AssetsData(esi: esi, characterID: $0.characterID, managedObjectContext: backgroundManagedObjectContext))}
+        let assets = sharedState.account.map{self.assets.get($0, initial: AssetsData(esi: sharedState.esi, characterID: $0.characterID, managedObjectContext: backgroundManagedObjectContext))}
         return ZStack {
             AssetsSearch(assets: assets?.locations?.value ?? []) { results in
                 List {
@@ -134,15 +133,12 @@ fileprivate struct AssetsSearch<Content: View>: View {
 
 struct Assets_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-        return NavigationView {
+        NavigationView {
             Assets()
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
 
     }
 }

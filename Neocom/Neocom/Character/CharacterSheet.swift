@@ -11,12 +11,11 @@ import EVEAPI
 import Expressible
 
 struct CharacterSheet: View {
-    @ObservedObject private var characterInfo = Lazy<CharacterInfo>()
-    @ObservedObject private var accountInfo = Lazy<AccountInfo>()
-    @ObservedObject private var attributesInfo = Lazy<CharacterAttributesInfo>()
+    @ObservedObject private var characterInfo = Lazy<CharacterInfo, Account>()
+    @ObservedObject private var accountInfo = Lazy<AccountInfo, Account>()
+    @ObservedObject private var attributesInfo = Lazy<CharacterAttributesInfo, Account>()
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
     
     private var title: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -162,9 +161,9 @@ struct CharacterSheet: View {
     }
     
     var body: some View {
-        let characterInfo = account.map {account in self.characterInfo.get(initial: CharacterInfo(esi: esi, characterID: account.characterID, characterImageSize: .size1024, corporationImageSize: .size128, allianceImageSize: .size128))}
-        let accountInfo = account.map {account in self.accountInfo.get(initial: AccountInfo(esi: esi, characterID: account.characterID, managedObjectContext: managedObjectContext))}
-        let attributesInfo = account.map {account in self.attributesInfo.get(initial: CharacterAttributesInfo(esi: esi, characterID: account.characterID))}
+        let characterInfo = sharedState.account.map {account in self.characterInfo.get(account, initial: CharacterInfo(esi: sharedState.esi, characterID: account.characterID, characterImageSize: .size1024, corporationImageSize: .size128, allianceImageSize: .size128))}
+        let accountInfo = sharedState.account.map {account in self.accountInfo.get(account, initial: AccountInfo(esi: sharedState.esi, characterID: account.characterID, managedObjectContext: managedObjectContext))}
+        let attributesInfo = sharedState.account.map {account in self.attributesInfo.get(account, initial: CharacterAttributesInfo(esi: sharedState.esi, characterID: account.characterID))}
         return Group {
             if characterInfo != nil {
                 List {
@@ -200,7 +199,13 @@ struct CharacterSheet: View {
                     }
                     attributesSection(from: attributesInfo?.attributes?.value)
                     implantsSection(from: attributesInfo?.implants?.value)
-                }.listStyle(GroupedListStyle())
+                }
+                .onRefresh(isRefreshing: characterInfo!.isLoading, onRefresh: {
+                    characterInfo?.update(cachePolicy: .reloadIgnoringLocalCacheData)
+                    accountInfo?.update(cachePolicy: .reloadIgnoringLocalCacheData)
+                    attributesInfo?.update(cachePolicy: .reloadIgnoringLocalCacheData)
+                })
+                .listStyle(GroupedListStyle())
             }
             else {
                 Text(RuntimeError.noAccount).padding()
@@ -211,13 +216,10 @@ struct CharacterSheet: View {
 
 struct CharacterSheet_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
-        return NavigationView {
+        NavigationView {
             CharacterSheet()
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.account, account)
-            .environment(\.esi, esi)
+        }
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environmentObject(SharedState.testState())
     }
 }

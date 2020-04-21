@@ -55,7 +55,7 @@ extension DGMShip {
         try! dominix.add(DGMModule(typeID: 3154))
         try! dominix.add(DGMModule(typeID: 405))
         try! dominix.add(DGMModule(typeID: 3154))
-        
+        try! dominix.add(DGMCargo(typeID: 3154))
         for _ in 0..<5 {
             try! dominix.add(DGMDrone(typeID: 2446))
         }

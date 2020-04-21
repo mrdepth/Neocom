@@ -11,13 +11,13 @@ import SwiftUI
 struct AddToSkillPlanButton: View {
     var trainingQueue: TrainingQueue
     
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
     @State private var sheetIsPresented = false
     
     private var actionSheet: ActionSheet {
         ActionSheet(title: Text(TimeIntervalFormatter.localizedString(from: trainingQueue.trainingTime(), precision: .seconds)), message: nil, buttons: [
             .default(Text("Add to Skill Plan")) {
-                let skillPlan = self.account?.activeSkillPlan
+                let skillPlan = self.sharedState.account?.activeSkillPlan
                 skillPlan?.add(self.trainingQueue)
                 NotificationCenter.default.post(name: .didUpdateSkillPlan, object: skillPlan)
             },
@@ -38,5 +38,6 @@ struct AddToSkillPlanButton: View {
 struct AddToSkillPlanButton_Previews: PreviewProvider {
     static var previews: some View {
         AddToSkillPlanButton(trainingQueue: TrainingQueue(pilot: .empty))
+            .environmentObject(SharedState.testState())
     }
 }

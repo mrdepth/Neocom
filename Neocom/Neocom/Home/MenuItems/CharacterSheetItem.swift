@@ -12,7 +12,7 @@ import Alamofire
 
 struct CharacterSheetItem: View {
     @EnvironmentObject private var sharedState: SharedState
-    @ObservedObject private var skills = Lazy<DataLoader<ESI.CharacterSkills, AFError>>()
+    @ObservedObject private var skills = Lazy<DataLoader<ESI.CharacterSkills, AFError>, Account>()
     
     let require: [ESI.Scope] = [.esiWalletReadCharacterWalletV1,
                                 .esiSkillsReadSkillsV1,
@@ -21,7 +21,7 @@ struct CharacterSheetItem: View {
                                 .esiClonesReadImplantsV1]
     
     var body: some View {
-        let result = sharedState.account.map{self.skills.get(initial: DataLoader(sharedState.esi.characters.characterID(Int($0.characterID)).skills().get().map{$0.value}.receive(on: RunLoop.main)))}?.result
+        let result = sharedState.account.map{self.skills.get($0, initial: DataLoader(sharedState.esi.characters.characterID(Int($0.characterID)).skills().get().map{$0.value}.receive(on: RunLoop.main)))}?.result
         let skills = result?.value
         let error = result?.error
         return Group {

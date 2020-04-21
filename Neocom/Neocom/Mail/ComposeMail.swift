@@ -16,14 +16,13 @@ struct ComposeMail: View {
     var draft: MailDraft? = nil
     var onComplete: () -> Void
     
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
     @Environment(\.managedObjectContext) private var managedObjectContext
 
     var body: some View {
         NavigationView {
-            if account != nil {
-                ComposeMailContent(esi: esi, account: account!, managedObjectContext: managedObjectContext, draft: draft, onComplete: onComplete)
+            if sharedState.account != nil {
+                ComposeMailContent(esi: sharedState.esi, account: sharedState.account!, managedObjectContext: managedObjectContext, draft: draft, onComplete: onComplete)
             }
         }
     }
@@ -244,12 +243,8 @@ fileprivate struct ComposeMailContent: View {
 
 struct ComposeMail_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
-        return ComposeMail {}
-            .environment(\.account, account)
-            .environment(\.esi, esi)
+        ComposeMail {}
+            .environmentObject(SharedState.testState())
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         
     }

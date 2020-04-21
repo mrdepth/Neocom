@@ -24,7 +24,6 @@ struct KillmailData {
 }
 
 struct KillmailCell: View {
-    @Environment(\.esi) private var esi
     @Environment(\.managedObjectContext) private var managedObjectContext
     var killmail: Result<ESI.Killmail, AFError>
     var contacts: [Int64: Contact]
@@ -106,6 +105,7 @@ struct KillmailCell_Previews: PreviewProvider {
         }.listStyle(GroupedListStyle())
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environmentObject(SharedState.testState())
 //        KillmailCell(killmailID: 82925944, hash: "3a20a8149ea41a80554d2469383caef1a8e4cdad")
     }
 }

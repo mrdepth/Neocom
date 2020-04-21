@@ -26,7 +26,7 @@ struct Skills: View {
         return FetchedResultsController(controller)
     }
     
-    private let skills: Lazy<FetchedResultsController<SDEInvType>> = Lazy()
+    private let skills: Lazy<FetchedResultsController<SDEInvType>, Never> = Lazy()
 
     var body: some View {
         let skills = self.skills.get(initial: getSkills())
@@ -38,13 +38,12 @@ struct SkillsContent: View {
     var skills: FetchedResultsController<SDEInvType>
     var editMode: Bool
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
     @State private var filter = SkillsFilter.Filter.my
-    @ObservedObject private var pilot = Lazy<DataLoader<Pilot, AFError>>()
+    @ObservedObject private var pilot = Lazy<DataLoader<Pilot, AFError>, Account>()
     
     private func loadPilot(account: Account) -> DataLoader<Pilot, AFError> {
-        DataLoader(Pilot.load(esi.characters.characterID(Int(account.characterID)), in: self.backgroundManagedObjectContext).receive(on: RunLoop.main))
+        DataLoader(Pilot.load(sharedState.esi.characters.characterID(Int(account.characterID)), in: self.backgroundManagedObjectContext).receive(on: RunLoop.main))
     }
     
     private func subtitle(for skills: [SDEInvType], pilot: Pilot) -> Text {
@@ -77,7 +76,7 @@ struct SkillsContent: View {
     }
     
     var body: some View {
-        let pilot = account.map{account in self.pilot.get(initial: self.loadPilot(account: account))}?.result?.value// ?? .some(.empty)
+        let pilot = sharedState.account.map{account in self.pilot.get(account, initial: self.loadPilot(account: account))}?.result?.value// ?? .some(.empty)
         
         return List {
             Section(header: SkillsFilter(filter: $filter)) {
@@ -128,7 +127,6 @@ struct Skills_Previews: PreviewProvider {
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
     }
 }

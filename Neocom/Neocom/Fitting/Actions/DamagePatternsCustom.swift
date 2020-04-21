@@ -35,6 +35,7 @@ struct CustomDamagePatternCell: View {
     @Environment(\.editMode) private var editMode
     @Environment(\.self) private var environment
     @State private var selectedDamagePattern: DamagePattern?
+    @EnvironmentObject private var sharedState: SharedState
     
     private func action() {
         if editMode?.wrappedValue == .active {
@@ -61,7 +62,7 @@ struct CustomDamagePatternCell: View {
             NavigationView {
                 DamagePatternEditor(damagePattern: pattern) {
                     self.selectedDamagePattern = nil
-                }.modifier(ServicesViewModifier(environment: self.environment))
+                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             }
         }
     }
@@ -71,6 +72,7 @@ struct NewDamagePatternButton: View {
     @State private var selectedDamagePattern: DamagePattern?
     @Environment(\.self) private var environment
     @Environment(\.managedObjectContext) private var managedObjectContext
+    @EnvironmentObject private var sharedState: SharedState
     
     var body: some View {
         Button(action: {
@@ -86,7 +88,7 @@ struct NewDamagePatternButton: View {
             NavigationView {
                 DamagePatternEditor(damagePattern: pattern) {
                     self.selectedDamagePattern = nil
-                }.modifier(ServicesViewModifier(environment: self.environment))
+                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             }
         }
     }

@@ -12,12 +12,11 @@ import Combine
 import CoreData
 
 struct StructureLoadouts: View {
-    @Environment(\.account) private var account
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @State private var selectedProject: FittingProject?
     @State private var projectLoading: AnyPublisher<Result<FittingProject, Error>, Never>?
-    @ObservedObject private var loadouts = Lazy<LoadoutsLoader>()
+    @ObservedObject private var loadouts = Lazy<LoadoutsLoader, Never>()
     
     private func onSelect(_ type: SDEInvType) {
         let typeID = DGMTypeID(type.typeID)
@@ -58,5 +57,6 @@ struct StructureLoadouts_Previews: PreviewProvider {
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environmentObject(SharedState.testState())
     }
 }

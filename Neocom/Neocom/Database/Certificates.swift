@@ -17,16 +17,11 @@ struct Certificates: View {
     
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) var backgroundManagedObjectContext
-    @Environment(\.esi) var esi
-    @Environment(\.account) var account
+    @EnvironmentObject private var sharedState: SharedState
+    @ObservedObject private var pilot = Lazy<DataLoader<Pilot, AFError>, Account>()
     
-    private func pilot() -> DataLoader<Pilot?, AFError> {
-        if let characterID = account?.characterID {
-            return DataLoader(Pilot.load(esi.characters.characterID(Int(characterID)), in: backgroundManagedObjectContext).map{$0 as Optional}.receive(on: RunLoop.main))
-        }
-        else {
-            return DataLoader(Just(nil).setFailureType(to: AFError.self).receive(on: RunLoop.main))
-        }
+    private func getPilot(_ characterID: Int64) -> DataLoader<Pilot, AFError> {
+        DataLoader(Pilot.load(sharedState.esi.characters.characterID(Int(characterID)), in: backgroundManagedObjectContext).receive(on: RunLoop.main))
     }
     
     @FetchRequest var certificates: FetchedResults<SDECertCertificate>
@@ -41,11 +36,12 @@ struct Certificates: View {
     }
     
     var body: some View {
-        ObservedObjectView(pilot()) { pilot in
-            List(self.certificates, id: \.objectID) { certificate in
-                CertificateCell(certificate: certificate, pilot: pilot.result?.value ?? nil)
-            }.listStyle(GroupedListStyle())
-        }.navigationBarTitle(group.groupName ?? "\(group.groupID)")
+        let pilot = sharedState.account.map{self.pilot.get($0, initial: getPilot($0.characterID))}?.result?.value
+        
+        return List(self.certificates, id: \.objectID) { certificate in
+            CertificateCell(certificate: certificate, pilot: pilot)
+        }.listStyle(GroupedListStyle())
+            .navigationBarTitle(group.groupName ?? "\(group.groupID)")
     }
 }
 
@@ -57,7 +53,8 @@ struct Certificates_Previews: PreviewProvider {
                 .filter((/\SDEInvGroup.certificates).count > 0)
                 .first()!
             )}
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
+        .environmentObject(SharedState.testState())
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
     }
 }

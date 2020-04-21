@@ -11,7 +11,6 @@ import CoreData
 import EVEAPI
 
 struct ContactCell: View {
-    @Environment(\.esi) private var esi
     
     var contact: Contact
     
@@ -50,5 +49,6 @@ struct ContactCell_Previews: PreviewProvider {
             ContactCell(contact: contact1)
             ContactCell(contact: contact2)
         }.listStyle(GroupedListStyle())
+        .environmentObject(SharedState.testState())
     }
 }

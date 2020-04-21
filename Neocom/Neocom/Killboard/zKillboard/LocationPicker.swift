@@ -15,7 +15,7 @@ struct LocationPicker: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) var backgroundManagedObjectContext
     
-    let regions = Lazy<FetchedResultsController<SDEMapRegion>>()
+    let regions = Lazy<FetchedResultsController<SDEMapRegion>, Never>()
     
     var completion: (NSManagedObject) -> Void
     

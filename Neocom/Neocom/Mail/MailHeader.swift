@@ -11,7 +11,6 @@ import EVEAPI
 import CoreData
 
 struct MailHeader: View {
-    @Environment(\.account) private var account
     
     var mail: ESI.MailHeaders.Element
     var contacts: [Int64: Contact]
@@ -27,7 +26,7 @@ struct MailHeader: View {
 }
 
 struct MailHeaderContent: View {
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
     let from: Int64?
     let recipientIDs: [Int64]
     let subject: String?
@@ -39,7 +38,7 @@ struct MailHeaderContent: View {
         let recipient: String?
         let recipientIDs: [Int64]
 
-        if let from = from, from == account?.characterID {
+        if let from = from, from == sharedState.account?.characterID {
             recipientIDs = Array(self.recipientIDs.prefix(3))
             recipient = recipientIDs.compactMap { contacts?[$0]?.name }.joined(separator: ", ")
         }
@@ -75,9 +74,6 @@ struct MailHeaderContent: View {
 
 struct MailHeader_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
         let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: AppDelegate.sharedDelegate.persistentContainer.viewContext)!, insertInto: nil)
         contact.name = "Artem Valiant"
         contact.contactID = 1554561480
@@ -101,8 +97,7 @@ struct MailHeader_Previews: PreviewProvider {
         return List {
             MailHeader(mail: mail, contacts: [contact.contactID: contact, contact2.contactID: contact2])
         }.listStyle(GroupedListStyle())
-            .environment(\.account, account)
-            .environment(\.esi, esi)
+            .environmentObject(SharedState.testState())
 
     }
 }

@@ -48,9 +48,10 @@ struct FittingEditorShipModules: View {
     @Environment(\.self) private var environment
     @EnvironmentObject private var ship: DGMShip
     @Environment(\.typePicker) private var typePicker
+    @EnvironmentObject private var sharedState: SharedState
     
     private func typePicker(_ group: SDEDgmppItemGroup, sockets: IndexSet) -> some View {
-        typePicker.get(group, environment: environment) {
+        typePicker.get(group, environment: environment, sharedState: sharedState) {
             self.selection = nil
             guard let type = $0 else {return}
             do {
@@ -69,7 +70,7 @@ struct FittingEditorShipModules: View {
             FittingModuleActions(module: module) {
                 self.selection = nil
             }
-        }.modifier(ServicesViewModifier(environment: self.environment))
+        }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
     }
     
     var body: some View {

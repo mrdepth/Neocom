@@ -18,10 +18,10 @@ struct TypeMarketOrders: View {
 
 	var type: SDEInvType
 
-	@ObservedObject var marketOrders = Lazy<TypeMarketData>()
-	@Environment(\.managedObjectContext) var managedObjectContext
-	@Environment(\.backgroundManagedObjectContext) var backgroundManagedObjectContext
-    @Environment(\.esi) var esi
+	@ObservedObject var marketOrders = Lazy<TypeMarketData, Never>()
+	@Environment(\.managedObjectContext) private var managedObjectContext
+	@Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
+    @EnvironmentObject private var sharedState: SharedState
 	@Environment(\.self) var environment
 
     @ObservedObject private var marketRegionID = UserDefault(wrappedValue: SDERegionID.default.rawValue,
@@ -35,7 +35,7 @@ struct TypeMarketOrders: View {
 	}
 
     var body: some View {
-        let orders = marketOrders.get(initial: TypeMarketData(type: type, esi: esi, regionID: Int(marketRegionID.wrappedValue), managedObjectContext: backgroundManagedObjectContext))
+        let orders = marketOrders.get(initial: TypeMarketData(type: type, esi: sharedState.esi, regionID: Int(marketRegionID.wrappedValue), managedObjectContext: backgroundManagedObjectContext))
 		let error = orders.result?.error
 		let data = orders.result?.value
 
@@ -63,7 +63,7 @@ struct TypeMarketOrders: View {
 //						self.marketOrders.set(TypeMarketData(type: self.type, esi: self.esi, regionID: self.marketRegionID, managedObjectContext: self.backgroundManagedObjectContext))
 						self.isMarketRegionPickerPresented = false
 					}.navigationBarItems(trailing: Button("Cancel") {self.isMarketRegionPickerPresented = false})
-				}.modifier(ServicesViewModifier(environment: self.environment))
+                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
     }
 }
@@ -75,5 +75,6 @@ struct TypeMarketOrders_Previews: PreviewProvider {
 				.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
 				.environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
 		}
+        .environmentObject(SharedState.testState())
     }
 }

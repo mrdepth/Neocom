@@ -15,9 +15,8 @@ struct RecentKills: View {
         case losses
     }
     
-    @ObservedObject private var killmails = Lazy<KillmailsLoader>()
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @ObservedObject private var killmails = Lazy<KillmailsLoader, Account>()
+    @EnvironmentObject private var sharedState: SharedState
     @Environment(\.managedObjectContext) private var managedObjectContext
     @State private var filter: Filter = .kills
     private let cache = Cache<Int64, DataLoader<KillmailData, Never>>()
@@ -30,7 +29,7 @@ struct RecentKills: View {
     }
 
     var body: some View {
-        let result = account.map { self.killmails.get(initial: KillmailsLoader(esi: esi, characterID: $0.characterID, managedObjectContext: managedObjectContext)) }
+        let result = sharedState.account.map { self.killmails.get($0, initial: KillmailsLoader(esi: sharedState.esi, characterID: $0.characterID, managedObjectContext: managedObjectContext)) }
         let contacts = result?.contacts ?? [:]
         let killmails =  filter == .kills ? result?.killmails?.value?.kills : result?.killmails?.value?.losses
         
@@ -67,16 +66,12 @@ struct RecentKillsPage: View {
 
 struct RecentKills_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
-        return NavigationView {
+        NavigationView {
             RecentKills()
         }
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
             .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
 
     }
 }

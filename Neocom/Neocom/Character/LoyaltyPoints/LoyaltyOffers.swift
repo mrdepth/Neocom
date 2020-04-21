@@ -13,14 +13,13 @@ import Alamofire
 struct LoyaltyOffers: View {
     var corporationID: Int
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
-    @ObservedObject private var loyaltyOffers = Lazy<LoyaltyOffersLoader>()
+    @EnvironmentObject private var sharedState: SharedState
+    @ObservedObject private var loyaltyOffers = Lazy<LoyaltyOffersLoader, Never>()
 
     var body: some View {
         
-        let result = account.map { account in
-            self.loyaltyOffers.get(initial: LoyaltyOffersLoader(esi: esi, corporationID: Int64(corporationID), managedObjectContext: managedObjectContext))
+        let result = sharedState.account.map { account in
+            self.loyaltyOffers.get(initial: LoyaltyOffersLoader(esi: sharedState.esi, corporationID: Int64(corporationID), managedObjectContext: managedObjectContext))
         }
         let loyaltyOffers = result?.result?.value
         let error = result?.result?.error
@@ -101,13 +100,10 @@ struct LoyaltyOffersTypes: View {
 
 struct LoyaltyOffers_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
-        return NavigationView {
+        NavigationView {
             LoyaltyOffers(corporationID: 1000049)
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.account, account)
-            .environment(\.esi, esi)
+        }
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environmentObject(SharedState.testState())
     }
 }

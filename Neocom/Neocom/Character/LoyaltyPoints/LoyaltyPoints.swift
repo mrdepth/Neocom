@@ -12,13 +12,12 @@ import Alamofire
 
 struct LoyaltyPoints: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
-    @ObservedObject private var loyaltyPoints = Lazy<LoyaltyPointsLoader>()
+    @EnvironmentObject private var sharedState: SharedState
+    @ObservedObject private var loyaltyPoints = Lazy<LoyaltyPointsLoader, Account>()
 
     var body: some View {
-        let result = account.map { account in
-            self.loyaltyPoints.get(initial: LoyaltyPointsLoader(esi: esi, characterID: account.characterID, managedObjectContext: managedObjectContext))
+        let result = sharedState.account.map { account in
+            self.loyaltyPoints.get(account, initial: LoyaltyPointsLoader(esi: sharedState.esi, characterID: account.characterID, managedObjectContext: managedObjectContext))
             }
         let loyaltyPoints = result?.result?.value?.loyaltyPoints
         let contacts = result?.result?.value?.contacts
@@ -54,7 +53,6 @@ struct LoyaltyPoints_Previews: PreviewProvider {
         return NavigationView {
             LoyaltyPoints()
         }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.account, account)
-            .environment(\.esi, esi)
+            .environmentObject(SharedState.testState())
     }
 }

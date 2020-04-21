@@ -13,15 +13,14 @@ import Expressible
 
 struct Contracts: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
 
-    @ObservedObject var contracts: Lazy<ContractsData> = Lazy()
+    @ObservedObject var contracts: Lazy<ContractsData, Account> = Lazy()
 
     
     var body: some View {
-        let result = account.map { account in
-            self.contracts.get(initial: ContractsData(esi: esi, characterID: account.characterID, managedObjectContext: managedObjectContext))
+        let result = sharedState.account.map { account in
+            self.contracts.get(account, initial: ContractsData(esi: sharedState.esi, characterID: account.characterID, managedObjectContext: managedObjectContext))
         }
         let contracts = (result?.result?.value).map{$0.open + $0.closed}
 
@@ -62,5 +61,7 @@ struct ContractsContent: View {
 struct Contracts_Previews: PreviewProvider {
     static var previews: some View {
         Contracts()
+            .environmentObject(SharedState.testState())
+            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

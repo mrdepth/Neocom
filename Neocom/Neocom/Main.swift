@@ -39,8 +39,6 @@ struct Main: View {
 //        let account = try? managedObjectContext.from(Account.self).filter(/\Account.uuid == accountID.wrappedValue).first()
 //        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
         
-        let account = sharedState.account
-        let esi = sharedState.esi
         return ZStack {
             NavigationView {
                 home
@@ -49,20 +47,15 @@ struct Main: View {
             FinishedViewWrapper()
         }
         .environmentObject(sharedState)
-        .environment(\.account, account)
-        .environment(\.esi, esi)
 
     }
 }
 
 struct Main_Previews: PreviewProvider {
     static var previews: some View {
-        _ = AppDelegate.sharedDelegate.testingAccount
-        _ = AppDelegate.sharedDelegate.testingAccount
-//        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
         return Main()
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environmentObject(SharedState.testState())
 
     }
 }

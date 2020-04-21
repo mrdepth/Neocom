@@ -14,6 +14,7 @@ struct FittingTypeVariations: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
     @State private var selectedType: SDEInvType?
+    @EnvironmentObject private var sharedState: SharedState
 
     var type: SDEInvType
     var completion: (SDEInvType) -> Void
@@ -35,7 +36,7 @@ struct FittingTypeVariations: View {
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
     }
 }

@@ -8,15 +8,24 @@
 
 import SwiftUI
 import Expressible
+import Alamofire
 
 struct SkillPlans: View {
     var completion: (SkillPlan) -> Void
     
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
+    @Environment(\.backgroundManagedObjectContext) var backgroundManagedObjectContext
+    @ObservedObject private var pilot = Lazy<DataLoader<Pilot, AFError>, Account>()
     
+    private func getPilot(_ characterID: Int64) -> DataLoader<Pilot, AFError> {
+        DataLoader(Pilot.load(sharedState.esi.characters.characterID(Int(characterID)), in: backgroundManagedObjectContext).receive(on: RunLoop.main))
+    }
+
     var body: some View {
-        account.map {
-            SkillPlansContent(account: $0, pilot: Pilot.empty, completion: completion)
+        let pilot = sharedState.account.map{self.pilot.get($0, initial: getPilot($0.characterID))}?.result?.value
+
+        return sharedState.account.map {
+            SkillPlansContent(account: $0, pilot: pilot ?? .empty, completion: completion)
         }
     }
 }
@@ -166,7 +175,7 @@ struct SkillPlans_Previews: PreviewProvider {
         return NavigationView {
             SkillPlans() { _ in }
                 .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-                .environment(\.account, account)
+                .environmentObject(SharedState.testState())
         }
     }
 }

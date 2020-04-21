@@ -254,11 +254,11 @@ extension Pilot.SkillQueueItem {
 }
 
 extension Pilot {
-    static func load(_ characterID: ESI.Characters.CharacterID, in context: NSManagedObjectContext) -> AnyPublisher<Pilot, AFError> {
-        return Publishers.Zip4(characterID.attributes().get(),
-                               characterID.implants().get(),
-                               characterID.skills().get(),
-                               characterID.skillqueue().get()).flatMap { (attributes, implants, skills, skillQueue) in
+    static func load(_ characterID: ESI.Characters.CharacterID, in context: NSManagedObjectContext, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) -> AnyPublisher<Pilot, AFError> {
+        return Publishers.Zip4(characterID.attributes().get(cachePolicy: cachePolicy),
+                               characterID.implants().get(cachePolicy: cachePolicy),
+                               characterID.skills().get(cachePolicy: cachePolicy),
+                               characterID.skillqueue().get(cachePolicy: cachePolicy)).flatMap { (attributes, implants, skills, skillQueue) in
                                 Future { promise in
                                     context.perform {
                                         promise(.success(Pilot(attributes: attributes.value,

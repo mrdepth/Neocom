@@ -189,6 +189,7 @@ enum SDEDgmppItemCategoryID: Int32 {
 	case service
 	case structureFighter
 	case structureRig
+    case cargo
 }
 
 enum SDEDgmAttributeID: Int {

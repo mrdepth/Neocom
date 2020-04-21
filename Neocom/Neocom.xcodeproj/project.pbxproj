@@ -99,6 +99,7 @@
 		1668A3C523F426BA000A96D8 /* WalletJournalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1668A3C423F426BA000A96D8 /* WalletJournalCell.swift */; };
 		166EE98B23962F2500388D65 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166EE98A23962F2500388D65 /* AttributedText.swift */; };
 		166EE98F2396311200388D65 /* TypeInfoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166EE98E2396311200388D65 /* TypeInfoHeader.swift */; };
+		16701763244837E300363F93 /* PlainText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16701762244837E300363F93 /* PlainText.swift */; };
 		16709B1923F6A62C00BB6E90 /* MailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16709B1823F6A62C00BB6E90 /* MailPage.swift */; };
 		16709B1B23F6A76800BB6E90 /* MailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16709B1A23F6A76800BB6E90 /* MailHeader.swift */; };
 		16709B1D23F6C0B800BB6E90 /* MailHeadersData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16709B1C23F6C0B800BB6E90 /* MailHeadersData.swift */; };
@@ -139,7 +140,7 @@
 		1685E70F242E7E3000F85F14 /* LoyaltyPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1685E70E242E7E3000F85F14 /* LoyaltyPoints.swift */; };
 		1685E711242E7FA400F85F14 /* LoyaltyPointsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1685E710242E7FA400F85F14 /* LoyaltyPointsLoader.swift */; };
 		1685E713242E841000F85F14 /* LoyaltyOffers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1685E712242E841000F85F14 /* LoyaltyOffers.swift */; };
-		16865CC7243E045F00EDDF15 /* LoadoutActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16865CC6243E045F00EDDF15 /* LoadoutActivity.swift */; };
+		16865CC7243E045F00EDDF15 /* LoadoutActivityItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16865CC6243E045F00EDDF15 /* LoadoutActivityItem.swift */; };
 		16865CC9243E080200EDDF15 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16865CC8243E080200EDDF15 /* ActivityView.swift */; };
 		16865CCC243E252A00EDDF15 /* InGameActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16865CCB243E252A00EDDF15 /* InGameActivity.swift */; };
 		1686D74C23953C5600E88D3D /* SDE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686D74B23953C5600E88D3D /* SDE.swift */; };
@@ -160,11 +161,17 @@
 		16888419242CF3910099C769 /* FittingEditorLoadoutPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16888418242CF3910099C769 /* FittingEditorLoadoutPicker.swift */; };
 		1688841C242D11490099C769 /* CharacterSheetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688841B242D11490099C769 /* CharacterSheetItem.swift */; };
 		1688D00F23D6F0790012983C /* JumpClones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688D00E23D6F0790012983C /* JumpClones.swift */; };
+		1688D7EA24472F560043DF53 /* AboutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7E924472F560043DF53 /* AboutItem.swift */; };
 		1688DB2C242FCF3300C59DCD /* LoyaltyPointsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688DB2B242FCF3300C59DCD /* LoyaltyPointsItem.swift */; };
 		168960D1240FE217004E4630 /* TypeInfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168960D0240FE217004E4630 /* TypeInfoButton.swift */; };
 		168960D4240FE6BD004E4630 /* FittingEditorShipDrones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168960D3240FE6BD004E4630 /* FittingEditorShipDrones.swift */; };
 		168960D6240FE6F8004E4630 /* DGMDroneGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168960D5240FE6F8004E4630 /* DGMDroneGroup.swift */; };
 		168960D8240FEF30004E4630 /* FittingDroneCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168960D7240FEF30004E4630 /* FittingDroneCell.swift */; };
+		16898DF22449BB2300E7CD7B /* FittingCargo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16898DF12449BB2300E7CD7B /* FittingCargo.swift */; };
+		16898DF42449BE8300E7CD7B /* FittingCargoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16898DF32449BE8300E7CD7B /* FittingCargoCell.swift */; };
+		16898DF62449DED900E7CD7B /* FittingCargoActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16898DF52449DED900E7CD7B /* FittingCargoActions.swift */; };
+		16898DF82449EF5200E7CD7B /* FittingCargoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16898DF72449EF5200E7CD7B /* FittingCargoHeader.swift */; };
+		168A74F6244C719C005491CF /* RefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168A74F5244C719C005491CF /* RefreshControl.swift */; };
 		168CC1462438C94300B0A1AC /* KillImailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168CC1452438C94300B0A1AC /* KillImailInfo.swift */; };
 		168E4048242F536E00C03F00 /* LoyaltyOffersLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E4047242F536E00C03F00 /* LoyaltyOffersLoader.swift */; };
 		168E404A242F659800C03F00 /* LoyaltyOfferRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E4049242F659800C03F00 /* LoyaltyOfferRequirement.swift */; };
@@ -442,6 +449,7 @@
 		1668A3C423F426BA000A96D8 /* WalletJournalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletJournalCell.swift; sourceTree = "<group>"; };
 		166EE98A23962F2500388D65 /* AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
 		166EE98E2396311200388D65 /* TypeInfoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoHeader.swift; sourceTree = "<group>"; };
+		16701762244837E300363F93 /* PlainText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainText.swift; sourceTree = "<group>"; };
 		16709B1823F6A62C00BB6E90 /* MailPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailPage.swift; sourceTree = "<group>"; };
 		16709B1A23F6A76800BB6E90 /* MailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailHeader.swift; sourceTree = "<group>"; };
 		16709B1C23F6C0B800BB6E90 /* MailHeadersData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailHeadersData.swift; sourceTree = "<group>"; };
@@ -485,7 +493,7 @@
 		1685E70E242E7E3000F85F14 /* LoyaltyPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyPoints.swift; sourceTree = "<group>"; };
 		1685E710242E7FA400F85F14 /* LoyaltyPointsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyPointsLoader.swift; sourceTree = "<group>"; };
 		1685E712242E841000F85F14 /* LoyaltyOffers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyOffers.swift; sourceTree = "<group>"; };
-		16865CC6243E045F00EDDF15 /* LoadoutActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadoutActivity.swift; sourceTree = "<group>"; };
+		16865CC6243E045F00EDDF15 /* LoadoutActivityItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadoutActivityItem.swift; sourceTree = "<group>"; };
 		16865CC8243E080200EDDF15 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		16865CCB243E252A00EDDF15 /* InGameActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InGameActivity.swift; sourceTree = "<group>"; };
 		1686D74B23953C5600E88D3D /* SDE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDE.swift; sourceTree = "<group>"; };
@@ -505,11 +513,17 @@
 		16888418242CF3910099C769 /* FittingEditorLoadoutPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorLoadoutPicker.swift; sourceTree = "<group>"; };
 		1688841B242D11490099C769 /* CharacterSheetItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSheetItem.swift; sourceTree = "<group>"; };
 		1688D00E23D6F0790012983C /* JumpClones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpClones.swift; sourceTree = "<group>"; };
+		1688D7E924472F560043DF53 /* AboutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutItem.swift; sourceTree = "<group>"; };
 		1688DB2B242FCF3300C59DCD /* LoyaltyPointsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyPointsItem.swift; sourceTree = "<group>"; };
 		168960D0240FE217004E4630 /* TypeInfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoButton.swift; sourceTree = "<group>"; };
 		168960D3240FE6BD004E4630 /* FittingEditorShipDrones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorShipDrones.swift; sourceTree = "<group>"; };
 		168960D5240FE6F8004E4630 /* DGMDroneGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DGMDroneGroup.swift; sourceTree = "<group>"; };
 		168960D7240FEF30004E4630 /* FittingDroneCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingDroneCell.swift; sourceTree = "<group>"; };
+		16898DF12449BB2300E7CD7B /* FittingCargo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingCargo.swift; sourceTree = "<group>"; };
+		16898DF32449BE8300E7CD7B /* FittingCargoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingCargoCell.swift; sourceTree = "<group>"; };
+		16898DF52449DED900E7CD7B /* FittingCargoActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingCargoActions.swift; sourceTree = "<group>"; };
+		16898DF72449EF5200E7CD7B /* FittingCargoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingCargoHeader.swift; sourceTree = "<group>"; };
+		168A74F5244C719C005491CF /* RefreshControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshControl.swift; sourceTree = "<group>"; };
 		168CC1452438C94300B0A1AC /* KillImailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillImailInfo.swift; sourceTree = "<group>"; };
 		168E4047242F536E00C03F00 /* LoyaltyOffersLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyOffersLoader.swift; sourceTree = "<group>"; };
 		168E4049242F659800C03F00 /* LoyaltyOfferRequirement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyOfferRequirement.swift; sourceTree = "<group>"; };
@@ -1003,6 +1017,7 @@
 				16C39A5723BA0EEB00208F04 /* VibrancyView.swift */,
 				16859F5824321EC000824552 /* BarChart.swift */,
 				16865CC8243E080200EDDF15 /* ActivityView.swift */,
+				168A74F5244C719C005491CF /* RefreshControl.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1032,6 +1047,7 @@
 			children = (
 				16856688243CB98000F74517 /* LoadoutCoding.swift */,
 				1685668A243CBBA500F74517 /* DNA.swift */,
+				16701762244837E300363F93 /* PlainText.swift */,
 				1685668C243CDA6C00F74517 /* LoadoutTransformer.swift */,
 			);
 			path = LoadoutCoding;
@@ -1113,7 +1129,7 @@
 		16865CCA243E250900EDDF15 /* Activities */ = {
 			isa = PBXGroup;
 			children = (
-				16865CC6243E045F00EDDF15 /* LoadoutActivity.swift */,
+				16865CC6243E045F00EDDF15 /* LoadoutActivityItem.swift */,
 				16865CCB243E252A00EDDF15 /* InGameActivity.swift */,
 			);
 			path = Activities;
@@ -1154,6 +1170,7 @@
 				168F2FF6243B2F35006CE01A /* RecentKillsItem.swift */,
 				168F2FF8243B2F91006CE01A /* ZKillboardItem.swift */,
 				1610ACEE2441D5E000D9B089 /* FittingItem.swift */,
+				1688D7E924472F560043DF53 /* AboutItem.swift */,
 			);
 			path = MenuItems;
 			sourceTree = "<group>";
@@ -1167,6 +1184,17 @@
 				16963AB62410E3CA00A26E4A /* FittingDroneActions.swift */,
 			);
 			path = Drones;
+			sourceTree = "<group>";
+		};
+		16898DF02449BAEE00E7CD7B /* Cargo */ = {
+			isa = PBXGroup;
+			children = (
+				16898DF12449BB2300E7CD7B /* FittingCargo.swift */,
+				16898DF32449BE8300E7CD7B /* FittingCargoCell.swift */,
+				16898DF52449DED900E7CD7B /* FittingCargoActions.swift */,
+				16898DF72449EF5200E7CD7B /* FittingCargoHeader.swift */,
+			);
+			path = Cargo;
 			sourceTree = "<group>";
 		};
 		1694B22724066DFC00E81E49 /* Modules */ = {
@@ -1257,8 +1285,9 @@
 				169D27FB241A0C52002AB469 /* Stats */,
 				12DE901D241B77F90010C60D /* Actions */,
 				16CB5FA32424F02200A91370 /* Fleet */,
-				169F0ACA2403A7DE00B934E6 /* FittingEditor.swift */,
+				16898DF02449BAEE00E7CD7B /* Cargo */,
 				169F0AD724040DC300B934E6 /* TypePicker.swift */,
+				169F0ACA2403A7DE00B934E6 /* FittingEditor.swift */,
 				169724732404F3BE00B5152A /* TypePickerGroups.swift */,
 				169724772404F8BB00B5152A /* TypePickerTypes.swift */,
 				169185562424071400393116 /* NPCPickerGroup.swift */,
@@ -1479,7 +1508,7 @@
 				16B6A84123F2AC5D00E0EB8B /* AssetsCategory.swift in Sources */,
 				12F06F6B23846D670061313D /* Main.swift in Sources */,
 				168F1CC12435050200F8EF41 /* PlanetariesItem.swift in Sources */,
-				16865CC7243E045F00EDDF15 /* LoadoutActivity.swift in Sources */,
+				16865CC7243E045F00EDDF15 /* LoadoutActivityItem.swift in Sources */,
 				168FF310242D3A57009FCE58 /* JumpClonesItem.swift in Sources */,
 				16918559242409BA00393116 /* NPCPickerTypes.swift in Sources */,
 				169DA10023FEAF6600AC7B54 /* WealthData.swift in Sources */,
@@ -1502,6 +1531,7 @@
 				16918548242371C200393116 /* DamagePatterns.swift in Sources */,
 				168F69472430FEF000D80A24 /* WormholeInfo.swift in Sources */,
 				16859F422431F3EB00824552 /* WormholesItem.swift in Sources */,
+				1688D7EA24472F560043DF53 /* AboutItem.swift in Sources */,
 				16D0093723B09DF0000694C0 /* ActivityIndicatorView.swift in Sources */,
 				124F06E9238D908A00395D54 /* TypeGroups.swift in Sources */,
 				16859E6324363FAA0037C01B /* LocationPicker.swift in Sources */,
@@ -1526,6 +1556,7 @@
 				16CB5FA72424F04D00A91370 /* FittingEditorFleet.swift in Sources */,
 				16A250DA23E1BD83003F7904 /* SkillPlans.swift in Sources */,
 				12F06F31238467600061313D /* SDE.xcdatamodeld in Sources */,
+				16701763244837E300363F93 /* PlainText.swift in Sources */,
 				169D2805241A0E3A002AB469 /* CalibrationResource.swift in Sources */,
 				160D0BA923F2E3C300690134 /* LoadingProgressView.swift in Sources */,
 				16B3C7F524113C7A00F21DE5 /* FittingImplantCell.swift in Sources */,
@@ -1662,6 +1693,8 @@
 				164E6A28243F5C6400215A98 /* Fleets.swift in Sources */,
 				1696F683238FA7F5009F03F3 /* TypesSearch.swift in Sources */,
 				168960D4240FE6BD004E4630 /* FittingEditorShipDrones.swift in Sources */,
+				168A74F6244C719C005491CF /* RefreshControl.swift in Sources */,
+				16898DF82449EF5200E7CD7B /* FittingCargoHeader.swift in Sources */,
 				16EEBDF52397E4DE00F2E216 /* SkillName.swift in Sources */,
 				164156172397E68A0063A39C /* TypeInfoSkillCell.swift in Sources */,
 				166EE98F2396311200388D65 /* TypeInfoHeader.swift in Sources */,
@@ -1677,6 +1710,7 @@
 				16C9102624337B9F00BCEBA7 /* FactorySection.swift in Sources */,
 				169661B923BB444D00D8E175 /* AttributeInfo.swift in Sources */,
 				1693A86023FD67740033A793 /* MailDraftCell.swift in Sources */,
+				16898DF22449BB2300E7CD7B /* FittingCargo.swift in Sources */,
 				16064B00243A4602003B4BDA /* KillmailsLoader.swift in Sources */,
 				16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */,
 				16888417242CF0670099C769 /* LoadoutsSection.swift in Sources */,
@@ -1686,6 +1720,7 @@
 				1685668D243CDA6C00F74517 /* LoadoutTransformer.swift in Sources */,
 				162571F4242B9E140022C605 /* FittingCharges.swift in Sources */,
 				1653663B239E733C0096990F /* TypeInfoPriceCell.swift in Sources */,
+				16898DF42449BE8300E7CD7B /* FittingCargoCell.swift in Sources */,
 				16859E65243641BB0037C01B /* LocationPickerSolarSystems.swift in Sources */,
 				168960D1240FE217004E4630 /* TypeInfoButton.swift in Sources */,
 				1653796A23F6A1BC000F082A /* MailLabel.swift in Sources */,
@@ -1739,6 +1774,7 @@
 				167725ED241A71AB0089BB94 /* FittingEditorPriceStats.swift in Sources */,
 				16C39A4C23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift in Sources */,
 				16A6A4BB23B1EA3F00CF0812 /* DataLoader.swift in Sources */,
+				16898DF62449DED900E7CD7B /* FittingCargoActions.swift in Sources */,
 				16859F572432186400824552 /* ExtractorSection.swift in Sources */,
 				16C66CFF23F5530D009AEB72 /* MarketOrderCell.swift in Sources */,
 				12F06F15238464920061313D /* SceneDelegate.swift in Sources */,

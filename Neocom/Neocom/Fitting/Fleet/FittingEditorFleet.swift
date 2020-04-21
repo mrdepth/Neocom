@@ -16,6 +16,7 @@ struct FittingEditorFleet: View {
     @Environment(\.self) private var environment
     @EnvironmentObject private var gang: DGMGang
     @EnvironmentObject private var project: FittingProject
+    @EnvironmentObject private var sharedState: SharedState
     @State private var isLoadoutPickerPresented = false
 
     var body: some View {
@@ -41,7 +42,7 @@ struct FittingEditorFleet: View {
                     }.navigationBarItems(leading: BarButtonItems.close {
                         self.isLoadoutPickerPresented = false
                     })
-                }.modifier(ServicesViewModifier(environment: self.environment))
+                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
     }
 }

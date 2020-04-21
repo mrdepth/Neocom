@@ -12,12 +12,12 @@ import EVEAPI
 struct TypeInfoMarketHistoryCell: View {
 	var type: SDEInvType
 	
-    @Environment(\.esi) var esi
+    @EnvironmentObject private var sharedState: SharedState
 	@ObservedObject private var regionID = UserDefault(wrappedValue: SDERegionID.default.rawValue,
 													   key: .marketRegionID)
     
     var body: some View {
-		ObservedObjectView(MarketHistoryData(type: type, regionID: Int(regionID.wrappedValue), esi: esi)) { history in
+        ObservedObjectView(MarketHistoryData(type: type, regionID: Int(regionID.wrappedValue), esi: sharedState.esi)) { history in
 			NavigationLink(destination: TypeMarketOrders(type: self.type)) {
 				MarketHistory(history: (history.result?.value ?? nil) ?? MarketHistoryData.History())
 			}
@@ -32,5 +32,6 @@ struct TypeInfoMarketCell_Previews: PreviewProvider {
                 TypeInfoMarketHistoryCell(type: .dominix)
             }.listStyle(GroupedListStyle())
         }
+        .environmentObject(SharedState.testState())
     }
 }

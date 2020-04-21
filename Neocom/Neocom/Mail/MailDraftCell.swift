@@ -12,17 +12,16 @@ import Combine
 import EVEAPI
 
 struct MailDraftCell: View {
-    @ObservedObject private var contacts = Lazy<DataLoader<[Int64: Contact], Never>>()
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @ObservedObject private var contacts = Lazy<DataLoader<[Int64: Contact], Never>, Never>()
+    @EnvironmentObject private var sharedState: SharedState
     @Environment(\.managedObjectContext) private var managedObjectContext
     
     private func loadContacts() -> AnyPublisher<[Int64: Contact], Never> {
         guard var ids = draft.to else {return Just([:]).eraseToAnyPublisher()}
-        if let id = account?.characterID {
+        if let id = sharedState.account?.characterID {
             ids.append(id)
         }
-        return Contact.contacts(with: Set(ids), esi: esi, characterID: account?.characterID, options: [.all], managedObjectContext: managedObjectContext).receive(on: RunLoop.main).eraseToAnyPublisher()
+        return Contact.contacts(with: Set(ids), esi: sharedState.esi, characterID: sharedState.account?.characterID, options: [.all], managedObjectContext: managedObjectContext).receive(on: RunLoop.main).eraseToAnyPublisher()
     }
     
     var draft: MailDraft
@@ -30,7 +29,7 @@ struct MailDraftCell: View {
         let contacts = self.contacts.get(initial: DataLoader(loadContacts())).result?.value
         let subject = draft.subject?.isEmpty == false ? draft.subject : draft.body?.string
         return Group {
-            MailHeaderContent(from: account?.characterID,
+            MailHeaderContent(from: sharedState.account?.characterID,
                               recipientIDs: draft.to ?? [],
                               subject: subject,
                               timestamp: draft.date,
@@ -42,9 +41,6 @@ struct MailDraftCell: View {
 
 struct MailDraftCell_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
         let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
         let draft = MailDraft(entity: NSEntityDescription.entity(forEntityName: "MailDraft", in: context)!, insertInto: nil)
         draft.date = Date()
@@ -54,7 +50,6 @@ struct MailDraftCell_Previews: PreviewProvider {
         
         return MailDraftCell(draft: draft)
             .environment(\.managedObjectContext, context)
-            .environment(\.account, account)
-            .environment(\.esi, esi)
+            .environmentObject(SharedState.testState())
     }
 }

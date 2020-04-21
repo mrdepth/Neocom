@@ -14,7 +14,7 @@ struct FittingEditorLoadoutPicker: View {
     var completion: () -> Void
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @Environment(\.managedObjectContext) private var managedObjectContext
-    private let loadouts = Lazy<LoadoutsLoader>()
+    private let loadouts = Lazy<LoadoutsLoader, Never>()
     
     private func onSelect(_ result: LoadoutsList.Result) {
         do {

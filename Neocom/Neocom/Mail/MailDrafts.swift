@@ -15,6 +15,7 @@ struct MailDrafts: View {
     @Environment(\.self) private var environment
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \MailDraft.date, ascending: false)]) var drafts: FetchedResults<MailDraft>
     @State private var selectedDraft: MailDraft?
+    @EnvironmentObject private var sharedState: SharedState
     
     var body: some View {
         List {
@@ -34,7 +35,7 @@ struct MailDrafts: View {
         .sheet(item: $selectedDraft) { draft in
             ComposeMail(draft: draft) {
                 self.selectedDraft = nil
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }.navigationBarTitle("Drafts")
         .navigationBarItems(trailing: EditButton())
     }
@@ -43,8 +44,6 @@ struct MailDrafts: View {
 struct MailDrafts_Previews: PreviewProvider {
     
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
         let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
         let draft = MailDraft(entity: NSEntityDescription.entity(forEntityName: "MailDraft", in: context)!, insertInto: context)
         draft.date = Date()
@@ -56,8 +55,7 @@ struct MailDrafts_Previews: PreviewProvider {
         return NavigationView {
             MailDrafts()
         }
-            .environment(\.account, account)
-            .environment(\.esi, esi)
+            .environmentObject(SharedState.testState())
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
 
     }

@@ -18,13 +18,13 @@ struct TypeInfoPriceCell: View {
         self.type = type
     }
     
-    @ObservedObject private var price = Lazy<DataLoader<ESI.MarketPrice?, AFError>>()
+    @ObservedObject private var price = Lazy<DataLoader<ESI.MarketPrice?, AFError>, Never>()
 
-    @Environment(\.esi) private var esi
+    @EnvironmentObject private var sharedState: SharedState
 
     private var pricePublisher: AnyPublisher<ESI.MarketPrice?, AFError> {
         let typeID = Int(type.typeID)
-        let publisher = esi.markets.prices().get().map {
+        let publisher = sharedState.esi.markets.prices().get().map {
             $0.value.first{$0.typeID == typeID}
         }.receive(on: RunLoop.main)
         
@@ -69,5 +69,6 @@ struct TypeInfoPriceCell_Previews: PreviewProvider {
                 TypeInfoPriceCell(type: .dominix)
             }.listStyle(GroupedListStyle())
         }
+        .environmentObject(SharedState.testState())
     }
 }

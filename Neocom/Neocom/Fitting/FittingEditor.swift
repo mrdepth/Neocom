@@ -14,10 +14,10 @@ import CoreData
 
 struct FittingEditor: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.esi) private var esi
+    @EnvironmentObject private var sharedState: SharedState
     var project: FittingProject
     @State private var isModified = false
-    let priceData = Lazy<PricesData>()
+    let priceData = Lazy<PricesData, Never>()
 
     var body: some View {
         let ship = project.structure ?? project.gang.pilots.first?.ship
@@ -44,7 +44,7 @@ struct FittingEditor: View {
             }
         }
         .environmentObject(project)
-        .environmentObject(priceData.get(initial: PricesData(esi: esi)))
+        .environmentObject(priceData.get(initial: PricesData(esi: sharedState.esi)))
         .onDisappear() {
             if self.isModified {
                 self.project.save(managedObjectContext: self.managedObjectContext)
@@ -59,6 +59,7 @@ fileprivate enum Page: CaseIterable {
     case implants
     case fleet
     case stats
+    case cargo
 }
 
 
@@ -71,6 +72,7 @@ struct FittingShipEditor: View {
     @Environment(\.self) private var environment
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var project: FittingProject
+    @EnvironmentObject private var sharedState: SharedState
     
     init(gang: DGMGang, ship: DGMShip) {
         _gang = ObservedObject(initialValue: gang)
@@ -94,7 +96,7 @@ struct FittingShipEditor: View {
         }
         .sheet(isPresented: $isActionsPresented) {
             NavigationView {
-                FittingEditorActions().modifier(ServicesViewModifier(environment: self.environment))
+                FittingEditorActions().modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
                     .navigationBarItems(leading: BarButtonItems.close {
                         self.isActionsPresented = false
                     })
@@ -113,6 +115,7 @@ struct FittingShipEditor: View {
                 Text("Drones").tag(Page.drones)
                 Text("Implants").tag(Page.implants)
                 Text("Fleet").tag(Page.fleet)
+                Text("Cargo").tag(Page.cargo)
                 Text("Stats").tag(Page.stats)
             }
             .pickerStyle(SegmentedPickerStyle())
@@ -134,6 +137,9 @@ struct FittingShipEditor: View {
             else if currentPage == .stats {
                 FittingEditorStats()
             }
+            else if currentPage == .cargo {
+                FittingCargo()
+            }
         }.navigationBarItems(trailing: actionsButton)
         .environmentObject(gang)
         .environmentObject(currentShip)
@@ -149,6 +155,7 @@ struct FittingStructureEditor: View {
     @Environment(\.self) private var environment
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var project: FittingProject
+    @EnvironmentObject private var sharedState: SharedState
     
     private var title: String {
         let typeName = structure.type(from: self.managedObjectContext)?.typeName ?? "Unknown"
@@ -167,7 +174,7 @@ struct FittingStructureEditor: View {
         }
         .sheet(isPresented: $isActionsPresented) {
             NavigationView {
-                FittingEditorActions().modifier(ServicesViewModifier(environment: self.environment))
+                FittingEditorActions().modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
                     .navigationBarItems(leading: BarButtonItems.close {
                         self.isActionsPresented = false
                     })
@@ -207,9 +214,6 @@ struct FittingStructureEditor: View {
 
 struct FittingEditor_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
         let gang = DGMGang.testGang()
         return NavigationView {
             FittingEditor(project: FittingProject(gang: gang))
@@ -217,7 +221,6 @@ struct FittingEditor_Previews: PreviewProvider {
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
     }
 }

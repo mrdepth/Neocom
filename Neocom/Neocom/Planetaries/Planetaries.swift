@@ -12,9 +12,8 @@ import Alamofire
 import Expressible
 
 struct Planetaries: View {
-    @ObservedObject private var planets = Lazy<DataLoader<[PlanetariesSection], AFError>>()
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @ObservedObject private var planets = Lazy<DataLoader<[PlanetariesSection], AFError>, Account>()
+    @EnvironmentObject private var sharedState: SharedState
     @Environment(\.managedObjectContext) private var managedObjectContext
     
     private struct PlanetariesSection: Identifiable {
@@ -29,7 +28,7 @@ struct Planetaries: View {
     }
 //\u{2063}Unknown Location
     private func planets(characterID: Int64) -> DataLoader<[PlanetariesSection], AFError> {
-        let planets = esi.characters.characterID(Int(characterID)).planets().get().map{$0.value}
+        let planets = sharedState.esi.characters.characterID(Int(characterID)).planets().get().map{$0.value}
             
             .receive(on: RunLoop.main)
             .map { planets -> [PlanetariesSection] in
@@ -48,8 +47,8 @@ struct Planetaries: View {
 
     
     var body: some View {
-        let result = account.map { account in
-            self.planets.get(initial: self.planets(characterID: account.characterID))
+        let result = sharedState.account.map { account in
+            self.planets.get(account, initial: self.planets(characterID: account.characterID))
         }
         let sections = result?.result?.value
         let error = result?.result?.error
@@ -76,16 +75,11 @@ struct Planetaries: View {
 
 struct Planetaries_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
-        
-        return NavigationView {
+        NavigationView {
             Planetaries()
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
 
     }
 }

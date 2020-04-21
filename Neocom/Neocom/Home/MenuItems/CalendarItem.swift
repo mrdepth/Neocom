@@ -10,14 +10,14 @@ import SwiftUI
 import EVEAPI
 
 struct CalendarItem: View {
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
     
     let require: [ESI.Scope] = [.esiCalendarReadCalendarEventsV1,
                                 .esiCalendarRespondCalendarEventsV1]
     
     var body: some View {
         Group {
-            if account?.verifyCredentials(require) == true {
+            if sharedState.account?.verifyCredentials(require) == true {
                 NavigationLink(destination: EVECalendar()) {
                     Icon(Image("calendar"))
                     Text("Calendar")
@@ -29,16 +29,12 @@ struct CalendarItem: View {
 
 struct CalendarItem_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-        
-        return NavigationView {
+        NavigationView {
             List {
                 CalendarItem()
             }.listStyle(GroupedListStyle())
         }
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

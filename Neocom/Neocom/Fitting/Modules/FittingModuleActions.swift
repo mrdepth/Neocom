@@ -14,6 +14,7 @@ struct FittingModuleTypeInfo: View {
     @ObservedObject var module: DGMModuleGroup
     var type: SDEInvType
     @Environment(\.self) private var environment
+    @EnvironmentObject private var sharedState: SharedState
     @State private var isTypeVariationsPresented = false
     
     private func replace(with type: SDEInvType) {
@@ -50,7 +51,7 @@ struct FittingModuleTypeInfo: View {
                     self.replace(with: newType)
                 }
                 .navigationBarItems(leading: BarButtonItems.close {self.isTypeVariationsPresented = false})
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
     }
 }
@@ -84,6 +85,7 @@ struct FittingModuleActions: View {
 
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
+    @EnvironmentObject private var sharedState: SharedState
     @State private var selectedType: SDEInvType?
     @State private var selectedChargeCategory: SDEDgmppItemCategory?
     
@@ -110,7 +112,7 @@ struct FittingModuleActions: View {
     private func typeInfo(_ type: SDEInvType) -> some View {
         NavigationView {
             TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
-        }.modifier(ServicesViewModifier(environment: self.environment))
+        }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
     }
     
     private var removeChargeButton: some View {
@@ -132,7 +134,7 @@ struct FittingModuleActions: View {
                 self.selectedChargeCategory = nil
             }
             .navigationBarItems(leading: BarButtonItems.close {self.selectedChargeCategory = nil}, trailing: self.module.charge != nil ? removeChargeButton : nil)
-        }.modifier(ServicesViewModifier(environment: self.environment))
+        }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
     }
 
     private func replace(with type: SDEInvType) {

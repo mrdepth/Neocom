@@ -19,7 +19,7 @@ struct Avatar: View {
     }
     
     private var source: Source
-    @Environment(\.esi) private var esi
+    @EnvironmentObject private var sharedState: SharedState
 
     init(image: Image?) {
         source = .image(image)
@@ -46,7 +46,7 @@ struct Avatar: View {
             isCharacter = false
         }
         
-        let image = AvatarImageView(esi: esi, source: source)
+        let image = AvatarImageView(esi: sharedState.esi, source: source)
         
         return Group {
             if isCharacter {
@@ -69,7 +69,7 @@ struct AvatarImageView: View {
     var esi: ESI
     var source: Avatar.Source
     
-    @ObservedObject private var imageLoader = Lazy<DataLoader<UIImage, AFError>>()
+    @ObservedObject private var imageLoader = Lazy<DataLoader<UIImage, AFError>, Never>()
 
     var body: some View {
         let image: Image?
@@ -107,5 +107,6 @@ struct Avatar_Previews: PreviewProvider {
             Avatar(characterID: 1554561480, size: .size128).frame(width: 64, height: 64)
             Avatar(corporationID: 653533005, size: .size128).frame(width: 64, height: 64)
         }
+        .environmentObject(SharedState.testState())
     }
 }

@@ -13,21 +13,20 @@ import Alamofire
 struct WalletJournal: View {
     
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
 
-    @ObservedObject var journal: Lazy<DataLoader<ESI.WalletJournal, AFError>> = Lazy()
+    @ObservedObject var journal: Lazy<DataLoader<ESI.WalletJournal, AFError>, Account> = Lazy()
     
     private func journal(characterID: Int64) -> DataLoader<ESI.WalletJournal, AFError> {
-        let publisher = esi.characters.characterID(Int(characterID)).wallet().journal().get()
+        let publisher = sharedState.esi.characters.characterID(Int(characterID)).wallet().journal().get()
             .map{$0.value}
             .receive(on: RunLoop.main)
         return DataLoader(publisher)
     }
     
     var body: some View {
-        let journal = account.map { account in
-            self.journal.get(initial: self.journal(characterID: account.characterID))
+        let journal = sharedState.account.map { account in
+            self.journal.get(account, initial: self.journal(characterID: account.characterID))
         }
         return List {
             if journal?.result?.value != nil {
@@ -101,7 +100,6 @@ struct WalletJournal_Previews: PreviewProvider {
             
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
     }
 }

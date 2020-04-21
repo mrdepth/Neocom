@@ -28,8 +28,6 @@ struct DNALoadoutDecoder: LoadoutDecoder {
             modules[i.1, default: []].append(module)
         }
         
-        
-        
         return Ship(typeID: shipID, modules: modules)
     }
 }

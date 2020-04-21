@@ -10,7 +10,6 @@ import SwiftUI
 import Expressible
 
 struct BlueprintActivityRequiredSkills: View {
-    @Environment(\.account) var account
     @State private var isFinished = false
     
     var activity: SDEIndActivity
@@ -59,6 +58,7 @@ struct BlueprintActivityRequiredSkills_Previews: PreviewProvider {
                 .filter((/\SDEIndActivity.requiredSkills).count > 3)
                 .first()!)
         }
+        .environmentObject(SharedState.testState())
     }
 }
 

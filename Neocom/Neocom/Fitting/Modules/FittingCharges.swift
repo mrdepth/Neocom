@@ -17,6 +17,7 @@ struct FittingCharges: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
     @State private var selectedType: SDEInvType?
+    @EnvironmentObject private var sharedState: SharedState
     
     var predicate: PredicateProtocol {
         guard let parentGroup = try? managedObjectContext.from(SDEDgmppItemGroup.self).filter(/\SDEDgmppItemGroup.category == category && /\SDEDgmppItemGroup.parentGroup == nil).first() else {return Expressions.constant(false) == true}
@@ -38,7 +39,7 @@ struct FittingCharges: View {
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
     }
 }

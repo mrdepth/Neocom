@@ -11,12 +11,12 @@ import SwiftUI
 
 struct ServicesViewModifier: ViewModifier {
 	var environment: EnvironmentValues
+    var sharedState: SharedState
 
     func body(content: Content) -> some View {
 		content.environment(\.managedObjectContext, environment.managedObjectContext)
 			.environment(\.backgroundManagedObjectContext, environment.backgroundManagedObjectContext)
-			.environment(\.esi, environment.esi)
-			.environment(\.account, environment.account)
+            .environmentObject(sharedState)
 	}
 }
 

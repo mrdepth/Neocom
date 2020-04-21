@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 struct Fleets: View {
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @State private var selectedProject: FittingProject?
@@ -76,5 +76,6 @@ struct Fleets_Previews: PreviewProvider {
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environmentObject(SharedState.testState())
     }
 }

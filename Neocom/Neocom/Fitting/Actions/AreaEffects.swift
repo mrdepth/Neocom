@@ -41,7 +41,8 @@ struct AreaEffects: View {
 	@State private var select: Int?
 	@Environment(\.managedObjectContext) private var managedObjectContext
 	@Environment(\.self) private var environment
-	@State private var effects = Lazy<Effects>()
+    @EnvironmentObject private var sharedState: SharedState
+	@State private var effects = Lazy<Effects, Never>()
 	@State private var selectedType: SDEInvType?
 	
 	private func getEffects() -> Effects {
@@ -78,7 +79,7 @@ struct AreaEffects: View {
 			.sheet(item: $selectedType) { type in
 				NavigationView {
 					TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
-				}.modifier(ServicesViewModifier(environment: self.environment))
+				}.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
 		}
     }
 }

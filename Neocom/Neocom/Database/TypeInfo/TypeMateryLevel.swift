@@ -12,7 +12,7 @@ struct TypeMasteryLevel: View {
     var type: SDEInvType
     var level: SDECertMasteryLevel
     var pilot: Pilot?
-    var mastery: Lazy<MasteryData> = Lazy()
+    var mastery: Lazy<MasteryData, Never> = Lazy()
     
     var body: some View {
         let mastery = self.mastery.get(initial: MasteryData(for: type, with: level, pilot: pilot))

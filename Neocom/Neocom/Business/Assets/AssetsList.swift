@@ -20,7 +20,7 @@ struct AssetsList: View {
     @State private var selectedProject: FittingProject?
     @State private var projectLoading: AnyPublisher<Result<FittingProject, Error>, Never>?
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
     
     init(_ location: AssetsData.LocationGroup) {
         assets = location.assets
@@ -37,7 +37,7 @@ struct AssetsList: View {
 
     private var fittingButton: some View {
         Button("Fitting") {
-            self.projectLoading = DGMSkillLevels.load(self.account, managedObjectContext: self.managedObjectContext).tryMap { try FittingProject(asset: self.ship!, skillLevels: $0) }
+            self.projectLoading = DGMSkillLevels.load(self.sharedState.account, managedObjectContext: self.managedObjectContext).tryMap { try FittingProject(asset: self.ship!, skillLevels: $0) }
                 .asResult()
                 .receive(on: RunLoop.main)
                 .eraseToAnyPublisher()
@@ -106,5 +106,6 @@ struct AssetsList_Previews: PreviewProvider {
         let asset = try! JSONDecoder().decode(AssetsData.Asset.self, from: data)
         return AssetsList(asset)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environmentObject(SharedState.testState())
     }
 }

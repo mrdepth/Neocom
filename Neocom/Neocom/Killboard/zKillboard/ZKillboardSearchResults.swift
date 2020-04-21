@@ -12,13 +12,13 @@ import EVEAPI
 struct ZKillboardSearchResults: View {
     var filter: [ZKillboard.Filter]
     
-    @ObservedObject private var killmails = Lazy<ZKillboardLoader>()
-    @Environment(\.esi) private var esi
+    @ObservedObject private var killmails = Lazy<ZKillboardLoader, Never>()
+    @EnvironmentObject private var sharedState: SharedState
     @Environment(\.managedObjectContext) private var managedObjectContext
     private let cache = Cache<Int64, DataLoader<KillmailData, Never>>()
 
     var body: some View {
-        let result = self.killmails.get(initial: ZKillboardLoader(filter: filter, esi: esi, managedObjectContext: managedObjectContext))
+        let result = self.killmails.get(initial: ZKillboardLoader(filter: filter, esi: sharedState.esi, managedObjectContext: managedObjectContext))
         let contacts = result.contacts
         let killmails = result.killmails?.value
         
@@ -48,7 +48,8 @@ struct ZKillboardSearchResults_Previews: PreviewProvider {
         NavigationView {
             ZKillboardSearchResults(filter: [.kills, .solo])
         }
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environmentObject(SharedState.testState())
     }
 }

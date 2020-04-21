@@ -12,13 +12,16 @@ import Alamofire
 import Combine
 
 struct ServerStatus: View {
-    @Environment(\.esi) private var esi
-    @ObservedObject private var status = Lazy<DataLoader<ESI.ServerStatus, AFError>>()
+    @EnvironmentObject private var sharedState: SharedState
+    @ObservedObject private var status = Lazy<DataLoader<ESI.ServerStatus, AFError>, Never>()
     var body: some View {
-        let status = self.status.get(initial: DataLoader(esi.status.get().map{$0.value}.receive(on: RunLoop.main))).result?.value
+        let status = self.status.get(initial: DataLoader(sharedState.esi.status.get().map{$0.value}.receive(on: RunLoop.main))).result?.value
         return Group {
             if status != nil {
                 ServerStatusContent(status: status!)
+            }
+            else {
+                Text(" ").modifier(SecondaryLabelModifier())
             }
         }
     }
@@ -46,8 +49,7 @@ struct ServerStatusContent: View {
             else {
                 Text("Tranquility - ") + Text("Offline").fontWeight(.semibold)
             }
-        }
-        .modifier(SecondaryLabelModifier())
+        }.modifier(SecondaryLabelModifier())
         .onReceive(Timer.publish(every: 1, on: RunLoop.main, in: .default).autoconnect()) { _ in
             self.serverTime = Date()
         }
@@ -59,5 +61,6 @@ struct ServerStatus_Previews: PreviewProvider {
         List {
             ServerStatusContent(status: ESI.ServerStatus(players: 1000, serverVersion: "1.0", startTime: Date(timeIntervalSinceNow: -3600), vip: false))
         }.listStyle(GroupedListStyle())
+        .environmentObject(SharedState.testState())
     }
 }

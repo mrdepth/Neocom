@@ -14,14 +14,13 @@ import Alamofire
 struct EventBody: View {
     var eventID: Int
     
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
 
-    @ObservedObject private var event = Lazy<DataLoader<ESI.Event, AFError>>()
+    @ObservedObject private var event = Lazy<DataLoader<ESI.Event, AFError>, Account>()
     
     var body: some View {
-        let result = account.flatMap { account in
-            self.event.get(initial: DataLoader(esi.characters.characterID(Int(account.characterID)).calendar().eventID(eventID).get().map{$0.value}.receive(on: RunLoop.main)))
+        let result = sharedState.account.flatMap { account in
+            self.event.get(account, initial: DataLoader(sharedState.esi.characters.characterID(Int(account.characterID)).calendar().eventID(eventID).get().map{$0.value}.receive(on: RunLoop.main)))
         }
         let event = result?.result?.value
         let error = result?.result?.error
@@ -99,5 +98,6 @@ struct EventBody_Previews: PreviewProvider {
                               response: "Response",
                               text: "Text", title: "Title")
         return EventBodyContent(event: event)
+            .environmentObject(SharedState.testState())
     }
 }

@@ -13,13 +13,13 @@ import EVEAPI
 struct ContactPicker: View {
     var onSelect: (Contact) -> Void
     
-    @Environment(\.esi) private var esi
+    @EnvironmentObject private var sharedState: SharedState
     @Environment(\.managedObjectContext) private var managedObjectContext
     
     func search(_ string: String) -> AnyPublisher<[Contact]?, Never> {
         let s = string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines.union(.symbols))
         guard s.count > 3 else {return Just(nil).eraseToAnyPublisher()}
-        return Contact.searchContacts(containing: s, esi: esi, options: [.universe], managedObjectContext: managedObjectContext)
+        return Contact.searchContacts(containing: s, esi: sharedState.esi, options: [.universe], managedObjectContext: managedObjectContext)
             .map{$0 as Optional}
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
@@ -41,6 +41,6 @@ struct ContactPicker_Previews: PreviewProvider {
     static var previews: some View {
         ContactPicker() { _ in}
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.esi, ESI())
+            .environmentObject(SharedState.testState())
     }
 }

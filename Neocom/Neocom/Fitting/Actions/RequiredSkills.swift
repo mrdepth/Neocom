@@ -17,14 +17,13 @@ struct RequiredSkills: View {
     @EnvironmentObject private var ship: DGMShip
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
-    @ObservedObject private var skills = Lazy<FetchedResultsController<SDEInvType>>()
-    @ObservedObject private var pilot = Lazy<DataLoader<Pilot, AFError>>()
-    @ObservedObject private var levels = Lazy<DataLoader<[DGMTypeID: Int], Never>>()
+    @EnvironmentObject private var sharedState: SharedState
+    @ObservedObject private var skills = Lazy<FetchedResultsController<SDEInvType>, Never>()
+    @ObservedObject private var pilot = Lazy<DataLoader<Pilot, AFError>, Never>()
+    @ObservedObject private var levels = Lazy<DataLoader<[DGMTypeID: Int], Never>, Never>()
 
     private func loadPilot(account: Account) -> DataLoader<Pilot, AFError> {
-        DataLoader(Pilot.load(esi.characters.characterID(Int(account.characterID)), in: self.backgroundManagedObjectContext).receive(on: RunLoop.main))
+        DataLoader(Pilot.load(sharedState.esi.characters.characterID(Int(account.characterID)), in: self.backgroundManagedObjectContext).receive(on: RunLoop.main))
     }
     
     private func getSkills() -> FetchedResultsController<SDEInvType> {
@@ -56,7 +55,7 @@ struct RequiredSkills: View {
     
     var body: some View {
         let skills = self.skills.get(initial: self.getSkills())
-        let pilot = account.map{account in self.pilot.get(initial: self.loadPilot(account: account))}?.result?.value
+        let pilot = sharedState.account.map{account in self.pilot.get(initial: self.loadPilot(account: account))}?.result?.value
         let levels = self.levels.get(initial: getLevels(skills: skills.fetchedObjects)).result?.value ?? [:]
 
         let trainingQueue = TrainingQueue(pilot: pilot ?? .empty)
@@ -97,9 +96,6 @@ struct RequiredSkillsSection: View {
 
 struct RequiredSkills_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
         let gang = DGMGang.testGang()
         return NavigationView {
             RequiredSkills()
@@ -108,7 +104,6 @@ struct RequiredSkills_Previews: PreviewProvider {
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
     }
 }

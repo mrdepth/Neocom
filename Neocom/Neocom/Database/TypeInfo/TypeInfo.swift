@@ -14,9 +14,8 @@ import Alamofire
 struct TypeInfo: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) var backgroundManagedObjectContext
-    @Environment(\.esi) var esi
-    @Environment(\.account) var account
-    @ObservedObject var typeInfo: Lazy<TypeInfoData> = Lazy()
+    @EnvironmentObject private var sharedState: SharedState
+    @ObservedObject var typeInfo: Lazy<TypeInfoData, Never> = Lazy()
     
     @UserDefault(key: .marketRegionID)
     var marketRegionID: Int32 = SDERegionID.default.rawValue
@@ -39,8 +38,8 @@ struct TypeInfo: View {
     
     private func typeInfoData() -> TypeInfoData {
         let info = TypeInfoData(type: type,
-								esi: esi,
-								characterID: account?.characterID,
+                                esi: sharedState.esi,
+                                characterID: sharedState.account?.characterID,
                                 marketRegionID: Int(marketRegionID),
 								managedObjectContext: backgroundManagedObjectContext,
 								override: nil)
@@ -135,11 +134,12 @@ struct TypeInfo_Previews: PreviewProvider {
 //        let account = Account(token: oAuth2Token, context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
         return NavigationView {
             TypeInfo(type: .dominix)
-                .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-                .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
 //                .environment(\.account, account)
 //                .environment(\.esi, ESI(token: oAuth2Token))
         }
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
+        .environmentObject(SharedState.testState())
     }
 }
 

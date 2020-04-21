@@ -12,7 +12,7 @@ import CoreData
 
 class TypePickerManager {
     private let typePickerState = Cache<SDEDgmppItemGroup, TypePickerState>()
-    func get(_ parentGroup: SDEDgmppItemGroup, environment: EnvironmentValues, completion: @escaping (SDEInvType?) -> Void) -> some View {
+    func get(_ parentGroup: SDEDgmppItemGroup, environment: EnvironmentValues, sharedState: SharedState, completion: @escaping (SDEInvType?) -> Void) -> some View {
         NavigationView {
             TypePicker(parentGroup: parentGroup) {
                 completion($0)
@@ -21,7 +21,7 @@ class TypePickerManager {
                 completion(nil)
             })
         }
-        .modifier(ServicesViewModifier(environment: environment))
+        .modifier(ServicesViewModifier(environment: environment, sharedState: sharedState))
         .environmentObject(typePickerState[parentGroup, default: TypePickerState()])
     }
 }

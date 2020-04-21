@@ -26,7 +26,7 @@ struct CertificateInfo: View {
         return FetchedResultsController(controller)
     }
     
-    @State private var requirements = Lazy<FetchedResultsController<SDEInvType>>()
+    @State private var requirements = Lazy<FetchedResultsController<SDEInvType>, Never>()
 
     enum Mode {
         case info

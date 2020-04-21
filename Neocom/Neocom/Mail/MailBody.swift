@@ -16,15 +16,14 @@ struct MailBody: View {
     var mail: ESI.MailHeaders.Element
     var contacts: [Int64: Contact]
     
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
 
-    @ObservedObject private var mailBody = Lazy<DataLoader<ESI.MailBody, AFError>>()
+    @ObservedObject private var mailBody = Lazy<DataLoader<ESI.MailBody, AFError>, Never>()
     
     var body: some View {
-        let result = account.flatMap {account in
+        let result = sharedState.account.flatMap {account in
             mail.mailID.map { mailID in
-                mailBody.get(initial: DataLoader(esi.characters.characterID(Int(account.characterID)).mail().mailID(mailID).get()
+                mailBody.get(initial: DataLoader(sharedState.esi.characters.characterID(Int(account.characterID)).mail().mailID(mailID).get()
                     .map{$0.value}
                     .receive(on: RunLoop.main)))
             }
@@ -116,7 +115,6 @@ struct MailBody_Previews: PreviewProvider {
                      timestamp: Date())
         
         return MailBodyContent(mailBody: body, contacts: [contact.contactID: contact])
-            .environment(\.esi, esi)
-            .environment(\.account, account)
+            .environmentObject(SharedState.testState())
     }
 }

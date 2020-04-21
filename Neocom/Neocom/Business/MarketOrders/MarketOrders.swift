@@ -17,10 +17,9 @@ struct MarketOrders: View {
     @State private var filter = Filter.sell
     
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
 
-    @ObservedObject var orders: Lazy<MarketOrdersData> = Lazy()
+    @ObservedObject var orders: Lazy<MarketOrdersData, Account> = Lazy()
 
     private var picker: some View {
         Picker("Filter", selection: $filter) {
@@ -30,8 +29,8 @@ struct MarketOrders: View {
     }
     
     var body: some View {
-        let result = account.map { account in
-            self.orders.get(initial: MarketOrdersData(esi: esi, characterID: account.characterID, managedObjectContext: managedObjectContext))
+        let result = sharedState.account.map { account in
+            self.orders.get(account, initial: MarketOrdersData(esi: sharedState.esi, characterID: account.characterID, managedObjectContext: managedObjectContext))
         }
         
         let orders = filter == .buy ? result?.result?.value?.byu : result?.result?.value?.sell
@@ -65,9 +64,6 @@ struct MarketOrdersContent: View {
 
 struct MarketOrders_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-        
         let solarSystem = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
         let location = EVELocation(solarSystem: solarSystem, id: Int64(solarSystem.solarSystemID))
         
@@ -96,7 +92,6 @@ struct MarketOrders_Previews: PreviewProvider {
 //                .navigationBarTitle(Text("Market Orders"))
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
     }
 }

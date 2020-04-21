@@ -11,10 +11,11 @@ import Expressible
 import CoreData
 
 struct ShipPicker: View {
+    var completion: (NSManagedObject) -> Void
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
-    var completion: (NSManagedObject) -> Void
     @State private var selectedType: SDEInvType?
+    @EnvironmentObject private var sharedState: SharedState
     
     private func categories() -> FetchedResultsController<SDEInvCategory> {
         let controller = managedObjectContext.from(SDEInvCategory.self)
@@ -45,7 +46,7 @@ struct ShipPicker: View {
         }.sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
 
     }

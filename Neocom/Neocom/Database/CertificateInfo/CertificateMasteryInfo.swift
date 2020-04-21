@@ -13,7 +13,7 @@ struct CertificateMasteryInfo: View {
     var masteryLevel: Int?
     var pilot: Pilot?
     
-    @Environment(\.account) var account
+    @EnvironmentObject private var sharedState: SharedState
     
     private var masteries: [SDECertMastery] {
         (certificate.masteries?.array as? [SDECertMastery])?.sorted{$0.level!.level < $1.level!.level} ?? []
@@ -30,7 +30,7 @@ struct CertificateMasteryInfo: View {
         tq.add(mastery)
         let trainingTime = tq.trainingTime()
         return Group {
-            if trainingTime > 0 && account != nil {
+            if trainingTime > 0 && sharedState.account != nil {
                 HStack {
                     Text("LEVEL \(String(roman: Int(mastery.level!.level + 1))) (\(TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds)))")
                     Spacer()
@@ -68,7 +68,8 @@ struct CertificateMasteryInfo_Previews: PreviewProvider {
 
         return List {
             CertificateMasteryInfo(certificate: certificate)
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         }.listStyle(GroupedListStyle())
+        .environmentObject(SharedState.testState())
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

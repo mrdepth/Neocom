@@ -14,14 +14,13 @@ struct MailPage: View {
     var label: ESI.MailLabel
     
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @ObservedObject private var mailHeaders = Lazy<MailHeadersData>()
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @ObservedObject private var mailHeaders = Lazy<MailHeadersData, Account>()
+    @EnvironmentObject private var sharedState: SharedState
     @State private var deleteSubscription: AnyPublisher<[Int], Never> = Empty().eraseToAnyPublisher()
 
     var body: some View {
-        let result = account.map { account in
-            self.mailHeaders.get(initial: MailHeadersData(esi: esi, characterID: account.characterID, labelID: label.labelID!, managedObjectContext: managedObjectContext))
+        let result = sharedState.account.map { account in
+            self.mailHeaders.get(account, initial: MailHeadersData(esi: sharedState.esi, characterID: account.characterID, labelID: label.labelID!, managedObjectContext: managedObjectContext))
         }
         let sections = result?.sections?.value
         
@@ -36,10 +35,10 @@ struct MailPage: View {
                                 }
                             }
                         }.onDelete { indices in
-                            guard let characerID = self.account?.characterID else {return}
+                            guard let characerID = self.sharedState.account?.characterID else {return}
                             let mailIDs = indices.compactMap{section.mails[$0].mailID}
                             self.deleteSubscription = Publishers.Sequence(sequence: mailIDs).flatMap { mailID in
-                                self.esi.characters.characterID(Int(characerID)).mail().mailID(mailID).delete()
+                                self.sharedState.esi.characters.characterID(Int(characerID)).mail().mailID(mailID).delete()
                                     .map { _ in mailID }
                                     .catch {_ in Empty<Int, Never>()}
                             }
@@ -66,16 +65,13 @@ struct MailPage: View {
 
 struct MailPage_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
         let label = ESI.MailLabel(color: .h0000fe, labelID: 1, name: "Inbox", unreadCount: 12)
 
         return NavigationView {
             MailPage(label: label)
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
 
     }
 }

@@ -11,11 +11,11 @@ import EVEAPI
 import Alamofire
 
 struct Incursions: View {
-    @Environment(\.esi) private var esi
-    @ObservedObject private var incursions = Lazy<DataLoader<[ESI.Incursion], AFError>>()
+    @EnvironmentObject private var sharedState: SharedState
+    @ObservedObject private var incursions = Lazy<DataLoader<[ESI.Incursion], AFError>, Never>()
 
     var body: some View {
-        let result = self.incursions.get(initial: DataLoader(esi.incursions.get().map{$0.value}.receive(on: RunLoop.main)))
+        let result = self.incursions.get(initial: DataLoader(sharedState.esi.incursions.get().map{$0.value}.receive(on: RunLoop.main)))
         
         let incursions = result.result?.value
 
@@ -43,7 +43,6 @@ struct Incursions_Previews: PreviewProvider {
             Incursions()
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
     }
 }

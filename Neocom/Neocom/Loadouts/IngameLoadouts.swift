@@ -12,25 +12,24 @@ import EVEAPI
 
 struct IngameLoadouts: View {
     
-    @Environment(\.account) private var account
-    @Environment(\.esi) private var esi
+    @EnvironmentObject private var sharedState: SharedState
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @State private var selectedProject: FittingProject?
     @State private var projectLoading: AnyPublisher<Result<FittingProject, Error>, Never>?
-    @ObservedObject private var fittings = Lazy<FittingsLoader>()
+    @ObservedObject private var fittings = Lazy<FittingsLoader, Account>()
     @State private var deleteSubscription: AnyPublisher<[Int], Never> = Empty().eraseToAnyPublisher()
     
     private func onSelect(_ fitting: ESI.Fittings.Element) {
-        projectLoading = DGMSkillLevels.load(account, managedObjectContext: managedObjectContext).tryMap {
+        projectLoading = DGMSkillLevels.load(sharedState.account, managedObjectContext: managedObjectContext).tryMap {
             try FittingProject(fitting: fitting, skillLevels: $0)
         }.asResult().receive(on: RunLoop.main).eraseToAnyPublisher()
 
     }
 
     var body: some View {
-        let result = account.map {
-            self.fittings.get(initial: FittingsLoader(esi: esi, characterID: $0.characterID, managedObjectContext: backgroundManagedObjectContext))
+        let result = sharedState.account.map {
+            self.fittings.get($0, initial: FittingsLoader(esi: sharedState.esi, characterID: $0.characterID, managedObjectContext: backgroundManagedObjectContext))
         }
         let sections = result?.fittings?.value
         let error = result?.fittings?.error
@@ -47,10 +46,10 @@ struct IngameLoadouts: View {
                             }.buttonStyle(PlainButtonStyle()).id(loadout.id)
                         }.onDelete { (indices) in
                             //ToDo: Delete request
-                            guard let characerID = self.account?.characterID else {return}
+                            guard let characerID = self.sharedState.account?.characterID else {return}
                             let ids = indices.map{section.loadouts[$0].id}
                             self.deleteSubscription = Publishers.Sequence(sequence: ids).flatMap { id in
-                                self.esi.characters.characterID(Int(characerID)).fittings().fittingID(id).delete()
+                                self.sharedState.esi.characters.characterID(Int(characerID)).fittings().fittingID(id).delete()
                                     .map { _ in id }
                                     .catch {_ in Empty<Int, Never>()}
                             }
@@ -83,15 +82,11 @@ struct IngameLoadouts: View {
 
 struct IngameLoadouts_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
-        return NavigationView {
+        NavigationView {
             IngameLoadouts()
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
     }
 }

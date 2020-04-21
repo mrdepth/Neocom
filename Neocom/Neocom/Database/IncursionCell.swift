@@ -12,7 +12,6 @@ import Expressible
 
 struct IncursionCell: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.esi) private var esi
     var incursion: ESI.Incursion
     
     var body: some View {
@@ -66,5 +65,6 @@ struct IncursionCell_Previews: PreviewProvider {
         }
         .listStyle(GroupedListStyle())
         .environment(\.managedObjectContext, context)
+        .environmentObject(SharedState.testState())
     }
 }

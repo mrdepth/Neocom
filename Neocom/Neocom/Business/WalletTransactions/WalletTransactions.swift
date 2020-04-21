@@ -13,15 +13,14 @@ import Expressible
 
 struct WalletTransactions: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
 
-    @ObservedObject var transactions: Lazy<WalletTransactionsData> = Lazy()
+    @ObservedObject var transactions: Lazy<WalletTransactionsData, Account> = Lazy()
 
     
     var body: some View {
-        let transactions = account.map { account in
-            self.transactions.get(initial: WalletTransactionsData(esi: esi, characterID: account.characterID, managedObjectContext: managedObjectContext))
+        let transactions = sharedState.account.map { account in
+            self.transactions.get(account, initial: WalletTransactionsData(esi: sharedState.esi, characterID: account.characterID, managedObjectContext: managedObjectContext))
         }
         return List {
             if transactions?.result?.value != nil {
@@ -72,8 +71,6 @@ struct WalletTransactionsContent: View {
 
 struct WalletTransactions_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
         let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: AppDelegate.sharedDelegate.persistentContainer.viewContext)!, insertInto: nil)
         contact.name = "Artem Valiant"
         contact.contactID = 1554561480
@@ -104,7 +101,6 @@ struct WalletTransactions_Previews: PreviewProvider {
             
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
     }
 }

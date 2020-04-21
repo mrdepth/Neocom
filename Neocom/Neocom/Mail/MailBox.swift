@@ -11,14 +11,13 @@ import EVEAPI
 import Alamofire
 
 struct MailBox: View {
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
     @Environment(\.self) private var environment
     @Environment(\.managedObjectContext) private var managedObjectContext
     
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \MailDraft.date, ascending: false)]) private var drafts: FetchedResults<MailDraft>
 //
-    @ObservedObject private var labels = Lazy<DataLoader<ESI.MailLabels, AFError>>()
+    @ObservedObject private var labels = Lazy<DataLoader<ESI.MailLabels, AFError>, Account>()
     @State private var isComposeMailPresented = false
     
     private var composeButton: some View {
@@ -30,8 +29,8 @@ struct MailBox: View {
     }
 
     var body: some View {
-       let result = account.map { account in
-            self.labels.get(initial: DataLoader(esi.characters.characterID(Int(account.characterID)).mail().labels().get().map{$0.value}.receive(on: RunLoop.main)))
+        let result = sharedState.account.map { account in
+            self.labels.get(account, initial: DataLoader(sharedState.esi.characters.characterID(Int(account.characterID)).mail().labels().get().map{$0.value}.receive(on: RunLoop.main)))
         }
         let labels = result?.result?.value
 //        let draftsCount =
@@ -62,20 +61,16 @@ struct MailBox: View {
             .sheet(isPresented: $isComposeMailPresented) {
                 ComposeMail {
                     self.isComposeMailPresented = false
-                }.modifier(ServicesViewModifier(environment: self.environment))
+                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
     }
 }
 
 struct MailBox_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
-        return NavigationView {
+        NavigationView {
             MailBox()
-                .environment(\.account, account)
-                .environment(\.esi, esi)
+                .environmentObject(SharedState.testState())
                 .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         }
     }

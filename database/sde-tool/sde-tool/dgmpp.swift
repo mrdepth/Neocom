@@ -199,6 +199,7 @@ func dgmpp() throws {
 //	}
 	
 	try importItems(category: SDEDgmppItemCategory(categoryID: .service, subcategory: 66), categoryName: "Service Slot", predicate: NSPredicate(format: "group.category.categoryID == 66 AND ANY effects.effectID == 6306"))
+    try importItems(category: SDEDgmppItemCategory(categoryID: .cargo), categoryName: "Cargo", predicate: NSPredicate(format: "marketGroup != nil"))
 	
 	do {
 		let request = NSFetchRequest<NSDictionary>(entityName: "DgmTypeAttribute")

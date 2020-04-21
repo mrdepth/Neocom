@@ -9,26 +9,26 @@
 import SwiftUI
 import EVEAPI
 import Alamofire
+import Combine
 
 struct JumpClones: View {
-    @ObservedObject private var info = Lazy<DataLoader<JumpClonesInfo, AFError>>()
+    @ObservedObject private var info = Lazy<DataLoader<JumpClonesInfo, AFError>, Account>()
     @Environment(\.managedObjectContext) var managedObjectContext
-    @Environment(\.esi) private var esi
-    @Environment(\.account) private var account
+    @EnvironmentObject private var sharedState: SharedState
 
     private struct JumpClonesInfo {
         var clones: ESI.Clones
         var locations: [Int64: EVELocation]
     }
     
-    private func info(characterID: Int64) -> DataLoader<JumpClonesInfo, AFError> {
-        let clones = esi.characters.characterID(Int(characterID)).clones().get()
+    private func getInfo(characterID: Int64, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) -> AnyPublisher<JumpClonesInfo, AFError> {
+        let clones = sharedState.esi.characters.characterID(Int(characterID)).clones().get(cachePolicy: cachePolicy)
             .flatMap { clones in
-                EVELocation.locations(with: Set(clones.value.jumpClones.map{$0.locationID}), esi: self.esi, managedObjectContext: self.managedObjectContext).setFailureType(to: AFError.self).map {
+                EVELocation.locations(with: Set(clones.value.jumpClones.map{$0.locationID}), esi: self.sharedState.esi, managedObjectContext: self.managedObjectContext).setFailureType(to: AFError.self).map {
                     JumpClonesInfo(clones: clones.value, locations: $0)
                 }
         }.receive(on: RunLoop.main)
-        return DataLoader(clones)
+        return clones.eraseToAnyPublisher()
     }
 
     private func nextCloneJump(_ clones: ESI.Clones) -> some View {
@@ -42,8 +42,8 @@ struct JumpClones: View {
     
     var body: some View {
         
-        let info = account.map { account in
-            self.info.get(initial: self.info(characterID: account.characterID))
+        let info = sharedState.account.map { account in
+            self.info.get(account, initial: DataLoader(self.getInfo(characterID: account.characterID)))
         }
         
         return Group {
@@ -62,6 +62,10 @@ struct JumpClones: View {
                         }
                     }
                 }
+                .onRefresh(isRefreshing: info!.isLoading, onRefresh: {
+                    guard let account = self.sharedState.account, let info = info else {return}
+                    info.update(self.getInfo(characterID: account.characterID, cachePolicy: .reloadIgnoringLocalCacheData))
+                })
                 .listStyle(GroupedListStyle())
                 .overlay((info?.result?.error).map{Text($0)})
             }
@@ -74,14 +78,10 @@ struct JumpClones: View {
 
 struct JumpClones_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
-        return NavigationView {
+        NavigationView {
             JumpClones()
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.account, account)
-        .environment(\.esi, esi)
+        .environmentObject(SharedState.testState())
     }
 }

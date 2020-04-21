@@ -12,6 +12,7 @@ struct TypeInfoButton: View {
     var type: SDEInvType
     @State private var isTypeInfoPresented = false
     @Environment(\.self) private var environment
+    @EnvironmentObject private var sharedState: SharedState
     
     var body: some View {
         InfoButton {
@@ -19,7 +20,7 @@ struct TypeInfoButton: View {
         }.sheet(isPresented: $isTypeInfoPresented) {
             NavigationView {
                 TypeInfo(type: self.type).navigationBarItems(leading: BarButtonItems.close {self.isTypeInfoPresented = false})
-            }.modifier(ServicesViewModifier(environment: self.environment))
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
     }
 }

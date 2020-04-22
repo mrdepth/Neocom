@@ -16,7 +16,7 @@ struct SkillQueueSection: View {
 
     var body: some View {
         let date = Date()
-        let skillQueue = pilot.skillQueue.filter{($0.queuedSkill.finishDate ?? .distantPast) < date}
+        let skillQueue = pilot.skillQueue.filter{($0.queuedSkill.finishDate ?? .distantPast) > date}
         let endDate = skillQueue.compactMap{$0.queuedSkill.finishDate}.max()
         let skillsCount = skillQueue.count
         let title: Text

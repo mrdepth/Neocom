@@ -24,7 +24,7 @@ struct Contracts: View {
         }
         let contracts = (result?.result?.value).map{$0.open + $0.closed}
 
-        return List {
+        let list = List {
             if contracts != nil {
                 ContractsContent(contracts: contracts!,
                                   contacts: result!.result!.value!.contacts,
@@ -34,7 +34,18 @@ struct Contracts: View {
             .overlay(result == nil ? Text(RuntimeError.noAccount).padding() : nil)
             .overlay((result?.result?.error).map{Text($0)})
             .overlay(contracts?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
-            .navigationBarTitle(Text("Contracts"))
+        
+        return Group {
+            if result != nil {
+                list.onRefresh(isRefreshing: Binding(result!, keyPath: \.isLoading)) {
+                    result?.update(cachePolicy: .reloadIgnoringLocalCacheData)
+                }
+            }
+            else {
+                list
+            }
+        }
+        .navigationBarTitle(Text("Contracts"))
     }
 }
 

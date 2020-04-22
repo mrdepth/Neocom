@@ -13,28 +13,48 @@ import Alamofire
 import CoreData
 
 class ContractInfoData: ObservableObject {
+    @Published var isLoading = false
     @Published var items: Result<ESI.ContractItems, AFError>?
     @Published var bids: Result<ESI.ContractBids, AFError>?
     @Published var contacts: [Int64: Contact]?
     @Published var locations: [Int64: EVELocation]?
     
+    private var esi: ESI
+    private var characterID: Int64
+    private var contract: ESI.PersonalContracts.Element
+    private var managedObjectContext: NSManagedObjectContext
+
+    
     init(esi: ESI, characterID: Int64, contract: ESI.PersonalContracts.Element, managedObjectContext: NSManagedObjectContext) {
-        esi.characters.characterID(Int(characterID)).contracts().contractID(contract.contractID).bids().get()
+        self.esi = esi
+        self.characterID = characterID
+        self.managedObjectContext = managedObjectContext
+        self.contract = contract
+        update(cachePolicy: .useProtocolCachePolicy)
+    }
+    
+    func update(cachePolicy: URLRequest.CachePolicy) {
+        isLoading = true
+        subscriptions.removeAll()
+        let contract = self.contract
+        let managedObjectContext = self.managedObjectContext
+        let esi = self.esi
+        let characterID = self.characterID
+        
+        let bids = esi.characters.characterID(Int(characterID)).contracts().contractID(contract.contractID).bids().get(cachePolicy: cachePolicy).share()
+        
+        Publishers.Zip(
+            bids,
+            esi.characters.characterID(Int(characterID)).contracts().contractID(contract.contractID).items().get(cachePolicy: cachePolicy))
             .asResult()
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
-                self?.bids = result.map{$0.value}
+                self?.bids = result.map{$0.0.value}
+                self?.items = result.map{$0.1.value}
+                self?.isLoading = false
         }.store(in: &subscriptions)
 
-        esi.characters.characterID(Int(characterID)).contracts().contractID(contract.contractID).items().get()
-            .asResult()
-            .receive(on: RunLoop.main)
-            .sink { [weak self] result in
-                self?.items = result.map{$0.value}
-        }.store(in: &subscriptions)
-        
-        $bids.compactMap{$0}
-            .tryGet()
+        bids.map{$0.value}
             .replaceError(with: [])
             .flatMap { bids in
                 Contact.contacts(with: Set(([contract.acceptorID, contract.assigneeID, contract.issuerID] + bids.map{$0.bidderID}).map{Int64($0)}),
@@ -42,7 +62,7 @@ class ContractInfoData: ObservableObject {
                                  characterID: characterID,
                                  options: [.universe],
                                  managedObjectContext: managedObjectContext)
-
+                
         }
         .receive(on: RunLoop.main)
         .sink { [weak self] result in

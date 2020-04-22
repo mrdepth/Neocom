@@ -33,7 +33,7 @@ struct IngameLoadouts: View {
         }
         let sections = result?.fittings?.value
         let error = result?.fittings?.error
-        return List {
+        let list = List {
             if sections != nil {
                 ForEach(sections!) { section in
                     Section(header: section.title.map{Text($0.uppercased())} ?? Text("UNKNOWN")) {
@@ -65,13 +65,24 @@ struct IngameLoadouts: View {
         .overlay(result == nil ? Text(RuntimeError.noAccount).padding() : nil)
         .overlay(error.map{Text($0)})
         .overlay(sections?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
+
+        return Group {
+            if result != nil {
+                list.onRefresh(isRefreshing: Binding(result!, keyPath: \.isLoading)) {
+                    result?.update(cachePolicy: .reloadIgnoringLocalCacheData)
+                }
+            }
+            else {
+                list
+            }
+        }
+        .navigationBarTitle("In-Game Loadouts")
         .onReceive(projectLoading ?? Empty().eraseToAnyPublisher()) { result in
             self.projectLoading = nil
             self.selectedProject = result.value
         }
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
         .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
-        .navigationBarTitle("In-Game Loadouts")
         .onReceive(deleteSubscription) { ids in
             result?.delete(fittingIDs: Set(ids))
             self.deleteSubscription = Empty().eraseToAnyPublisher()

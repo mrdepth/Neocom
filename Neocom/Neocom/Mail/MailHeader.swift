@@ -12,14 +12,14 @@ import CoreData
 
 struct MailHeader: View {
     
-    var mail: ESI.MailHeaders.Element
+    @State var mail: ESI.MailHeaders.Element
     var contacts: [Int64: Contact]
     
     var body: some View {
         let recipientIDs: [Int64] = mail.recipients?.map{Int64($0.recipientID)} ?? []
         let from = mail.from.map{Int64($0)}
 
-        return  NavigationLink(destination: MailBody(mail: mail, contacts: contacts)) {
+        return NavigationLink(destination: MailBody(mail: $mail, contacts: contacts)) {
             MailHeaderContent(from: from, recipientIDs: recipientIDs, subject: mail.subject, timestamp: mail.timestamp, isRead: mail.isRead == true, contacts: contacts)
         }
     }

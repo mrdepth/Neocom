@@ -24,7 +24,7 @@
 		12B1A3BE239D2F8F00BED705 /* MarketHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B1A3BD239D2F8F00BED705 /* MarketHistory.swift */; };
 		12B9E20423A7E8C2007DB0E0 /* SwiftUI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B9E20323A7E8C2007DB0E0 /* SwiftUI+Extensions.swift */; };
 		12CBA91D2399596B001C1C82 /* MasteryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CBA91C2399596B001C1C82 /* MasteryData.swift */; };
-		12DE901F241B780D0010C60D /* FittingEditorActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE901E241B780D0010C60D /* FittingEditorActions.swift */; };
+		12DE901F241B780D0010C60D /* FittingEditorShipActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE901E241B780D0010C60D /* FittingEditorShipActions.swift */; };
 		12DE9021241B7A000010C60D /* AreaEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE9020241B7A000010C60D /* AreaEffects.swift */; };
 		12F06F13238464920061313D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F12238464920061313D /* AppDelegate.swift */; };
 		12F06F15238464920061313D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F14238464920061313D /* SceneDelegate.swift */; };
@@ -175,6 +175,7 @@
 		168CC1462438C94300B0A1AC /* KillImailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168CC1452438C94300B0A1AC /* KillImailInfo.swift */; };
 		168E4048242F536E00C03F00 /* LoyaltyOffersLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E4047242F536E00C03F00 /* LoyaltyOffersLoader.swift */; };
 		168E404A242F659800C03F00 /* LoyaltyOfferRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E4049242F659800C03F00 /* LoyaltyOfferRequirement.swift */; };
+		168ED8842450430C00485125 /* FittingEditorStructureActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168ED8832450430C00485125 /* FittingEditorStructureActions.swift */; };
 		168F1CBB2434C1B700F8EF41 /* PlanetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168F1CBA2434C1B700F8EF41 /* PlanetLoader.swift */; };
 		168F1CBD2434FEC400F8EF41 /* Planetaries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168F1CBC2434FEC400F8EF41 /* Planetaries.swift */; };
 		168F1CBF2434FFCA00F8EF41 /* PlanetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168F1CBE2434FFCA00F8EF41 /* PlanetCell.swift */; };
@@ -381,7 +382,7 @@
 		12B1A3BD239D2F8F00BED705 /* MarketHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketHistory.swift; sourceTree = "<group>"; };
 		12B9E20323A7E8C2007DB0E0 /* SwiftUI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extensions.swift"; sourceTree = "<group>"; };
 		12CBA91C2399596B001C1C82 /* MasteryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasteryData.swift; sourceTree = "<group>"; };
-		12DE901E241B780D0010C60D /* FittingEditorActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorActions.swift; sourceTree = "<group>"; };
+		12DE901E241B780D0010C60D /* FittingEditorShipActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorShipActions.swift; sourceTree = "<group>"; };
 		12DE9020241B7A000010C60D /* AreaEffects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaEffects.swift; sourceTree = "<group>"; };
 		12F06F0F238464920061313D /* Neocom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neocom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12F06F12238464920061313D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -527,6 +528,7 @@
 		168CC1452438C94300B0A1AC /* KillImailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillImailInfo.swift; sourceTree = "<group>"; };
 		168E4047242F536E00C03F00 /* LoyaltyOffersLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyOffersLoader.swift; sourceTree = "<group>"; };
 		168E4049242F659800C03F00 /* LoyaltyOfferRequirement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyOfferRequirement.swift; sourceTree = "<group>"; };
+		168ED8832450430C00485125 /* FittingEditorStructureActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorStructureActions.swift; sourceTree = "<group>"; };
 		168F1CBA2434C1B700F8EF41 /* PlanetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetLoader.swift; sourceTree = "<group>"; };
 		168F1CBC2434FEC400F8EF41 /* Planetaries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Planetaries.swift; sourceTree = "<group>"; };
 		168F1CBE2434FFCA00F8EF41 /* PlanetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetCell.swift; sourceTree = "<group>"; };
@@ -727,31 +729,31 @@
 			children = (
 				16324730239159A200227480 /* AccountInfo.swift */,
 				164E418823EAED1A00EF16CE /* AssetsData.swift */,
-				120E28EF238B12A1006B30EA /* CharacterInfo.swift */,
 				16ACE3A323D5B5BD009A6AF1 /* CharacterAttributesInfo.swift */,
+				120E28EF238B12A1006B30EA /* CharacterInfo.swift */,
 				16CE2A0623F6755E0043764B /* ContractInfoData.swift */,
 				16B8F08723F670CB0093FEED /* ContractsData.swift */,
 				16D8DC81238813A40057A6F4 /* DataLoader.swift */,
-				16C66D0723F57939009AEB72 /* IndustryJobsData.swift */,
 				161C6EFE23A1303700777009 /* EVELocation.swift */,
+				168F2FFA243B6A5B006CE01A /* FittingsLoader.swift */,
+				16C66D0723F57939009AEB72 /* IndustryJobsData.swift */,
+				1686E2A724376FF000FAD3BA /* KillmailLoader.swift */,
+				16064AFF243A4602003B4BDA /* KillmailsLoader.swift */,
+				16CB5FAD242505A000A91370 /* LoadoutsLoader.swift */,
+				168E4047242F536E00C03F00 /* LoyaltyOffersLoader.swift */,
+				1685E710242E7FA400F85F14 /* LoyaltyPointsLoader.swift */,
 				16709B1C23F6C0B800BB6E90 /* MailHeadersData.swift */,
 				12A3EB9723A9704700CB9B0A /* MarketHistoryData.swift */,
 				16C66D0023F558AF009AEB72 /* MarketOrdersData.swift */,
 				12CBA91C2399596B001C1C82 /* MasteryData.swift */,
+				168F1CBA2434C1B700F8EF41 /* PlanetLoader.swift */,
 				167725EE241A722F0089BB94 /* PricesData.swift */,
+				169F57D22428C2E300FFDAE1 /* SkillLevelsLoader.swift */,
 				1655DE742396888200973258 /* TypeInfoData.swift */,
 				161C6EFC23A12FBC00777009 /* TypeMarketData.swift */,
 				16101BC623F5402B0028600F /* WalletTransactionsData.swift */,
 				169DA0FF23FEAF6600AC7B54 /* WealthData.swift */,
-				16CB5FAD242505A000A91370 /* LoadoutsLoader.swift */,
-				169F57D22428C2E300FFDAE1 /* SkillLevelsLoader.swift */,
-				1685E710242E7FA400F85F14 /* LoyaltyPointsLoader.swift */,
-				168E4047242F536E00C03F00 /* LoyaltyOffersLoader.swift */,
-				168F1CBA2434C1B700F8EF41 /* PlanetLoader.swift */,
 				1686E2A324375DAC00FAD3BA /* ZKillboardLoader.swift */,
-				1686E2A724376FF000FAD3BA /* KillmailLoader.swift */,
-				16064AFF243A4602003B4BDA /* KillmailsLoader.swift */,
-				168F2FFA243B6A5B006CE01A /* FittingsLoader.swift */,
 			);
 			path = DataLoaders;
 			sourceTree = "<group>";
@@ -775,7 +777,8 @@
 		12DE901D241B77F90010C60D /* Actions */ = {
 			isa = PBXGroup;
 			children = (
-				12DE901E241B780D0010C60D /* FittingEditorActions.swift */,
+				12DE901E241B780D0010C60D /* FittingEditorShipActions.swift */,
+				168ED8832450430C00485125 /* FittingEditorStructureActions.swift */,
 				12DE9020241B7A000010C60D /* AreaEffects.swift */,
 				1271C64C241E0CF000665B59 /* FittingCharacters.swift */,
 				1271C656241E166D00665B59 /* FittingCharacterCell.swift */,
@@ -1570,6 +1573,7 @@
 				169D2807241A0E6D002AB469 /* TurretsResource.swift in Sources */,
 				164E418223EAC90400EF16CE /* OptimalAttributes.swift in Sources */,
 				122B4AED239EAE2000461A1A /* Preferences.swift in Sources */,
+				168ED8842450430C00485125 /* FittingEditorStructureActions.swift in Sources */,
 				160FEDBF23F434D400F0B76E /* WalletTransactions.swift in Sources */,
 				16888419242CF3910099C769 /* FittingEditorLoadoutPicker.swift in Sources */,
 				1273F8D323A2C69B00DB755B /* TypeMarketOrders.swift in Sources */,
@@ -1682,7 +1686,7 @@
 				16B8E3B323FBDDA50096B066 /* ContactCell.swift in Sources */,
 				169A72C9238BD9AA00E4C181 /* Colors.swift in Sources */,
 				16B4C6E4240792420009ACD4 /* DGMModuleGroup.swift in Sources */,
-				12DE901F241B780D0010C60D /* FittingEditorActions.swift in Sources */,
+				12DE901F241B780D0010C60D /* FittingEditorShipActions.swift in Sources */,
 				16BBE17323E02C41001E251D /* SkillQueue.swift in Sources */,
 				169F57D12428C14E00FFDAE1 /* FittingProject.swift in Sources */,
 				16C39A5623BA0BF000208F04 /* BlurView.swift in Sources */,

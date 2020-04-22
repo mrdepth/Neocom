@@ -16,7 +16,7 @@ struct Colony: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var sharedState: SharedState
     @ObservedObject private var colony = Lazy<PlanetLoader, Account>()
-
+    
     var body: some View {
         let planetName = try? managedObjectContext.from(SDEMapPlanet.self).filter(/\SDEMapPlanet.planetID == Int32(self.planet.planetID)).first()?.planetName
         let result = sharedState.account.map { account in
@@ -26,14 +26,25 @@ struct Colony: View {
         let error = result?.result?.error
         let planet = result?.result?.value
         
-        return List {
+        let list = List {
             if planet != nil {
                 ColonyContent(planet: planet!)
             }
         }.listStyle(GroupedListStyle())
             .overlay(result == nil ? Text(RuntimeError.noAccount).padding() : nil)
             .overlay(error.map{Text($0)})
-            .navigationBarTitle(planetName.map{Text($0)} ?? Text("Planetaries"))
+            
+        
+        return Group {
+            if result != nil {
+                list.onRefresh(isRefreshing: Binding(result!, keyPath: \.isLoading)) {
+                    result?.update(cachePolicy: .reloadIgnoringLocalCacheData)
+                }
+            }
+            else {
+                list
+            }
+        }.navigationBarTitle(planetName.map{Text($0)} ?? Text("Planetaries"))
     }
 }
 

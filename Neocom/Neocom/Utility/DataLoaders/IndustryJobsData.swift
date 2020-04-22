@@ -13,10 +13,28 @@ import Alamofire
 import CoreData
 
 class IndustryJobsData: ObservableObject {
+    @Published var isLoading = false
     @Published var result: Result<(active: ESI.IndustryJobs, finished: ESI.IndustryJobs, locations: [Int64: EVELocation]), AFError>?
     
+    private var esi: ESI
+    private var characterID: Int64
+    private var managedObjectContext: NSManagedObjectContext
+    private var subscription: AnyCancellable?
+
     init(esi: ESI, characterID: Int64, managedObjectContext: NSManagedObjectContext) {
-        esi.characters.characterID(Int(characterID)).industry().jobs().get(includeCompleted: true).flatMap { jobs -> AnyPublisher<(ESI.IndustryJobs, ESI.IndustryJobs, [Int64: EVELocation]), AFError> in
+        self.esi = esi
+        self.characterID = characterID
+        self.managedObjectContext = managedObjectContext
+        update(cachePolicy: .useProtocolCachePolicy)
+    }
+    
+    func update(cachePolicy: URLRequest.CachePolicy) {
+        isLoading = true
+        let managedObjectContext = self.managedObjectContext
+        let esi = self.esi
+        let characterID = self.characterID
+        
+        subscription = esi.characters.characterID(Int(characterID)).industry().jobs().get(includeCompleted: true, cachePolicy: cachePolicy).flatMap { jobs -> AnyPublisher<(ESI.IndustryJobs, ESI.IndustryJobs, [Int64: EVELocation]), AFError> in
             let locationIDs = jobs.value.map{$0.outputLocationID} + jobs.value.map{$0.stationID}
             let locations = EVELocation.locations(with: Set(locationIDs), esi: esi, managedObjectContext: managedObjectContext).replaceError(with: [:])
             
@@ -32,8 +50,7 @@ class IndustryJobsData: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
                 self?.result = result.map{(active: $0.0, finished: $0.1, locations: $0.2)}
-        }.store(in: &subscriptions)
+                self?.isLoading = false
+        }
     }
-    
-    var subscriptions = Set<AnyCancellable>()
 }

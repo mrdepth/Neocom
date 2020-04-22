@@ -13,10 +13,27 @@ import Alamofire
 import CoreData
 
 class ContractsData: ObservableObject {
+    @Published var isLoading = false
     @Published var result: Result<(open: ESI.PersonalContracts, closed: ESI.PersonalContracts, contacts: [Int64: Contact], locations: [Int64: EVELocation]), AFError>?
     
+    private var esi: ESI
+    private var characterID: Int64
+    private var managedObjectContext: NSManagedObjectContext
+    private var subscription: AnyCancellable?
+    
     init(esi: ESI, characterID: Int64, managedObjectContext: NSManagedObjectContext) {
-        esi.characters.characterID(Int(characterID)).contracts().get().flatMap { contracts -> AnyPublisher<(ESI.PersonalContracts, ESI.PersonalContracts, [Int64: Contact], [Int64: EVELocation]), AFError> in
+        self.esi = esi
+        self.characterID = characterID
+        self.managedObjectContext = managedObjectContext
+        update(cachePolicy: .useProtocolCachePolicy)
+    }
+    func update(cachePolicy: URLRequest.CachePolicy) {
+        isLoading = true
+        let managedObjectContext = self.managedObjectContext
+        let esi = self.esi
+        let characterID = self.characterID
+
+        subscription = esi.characters.characterID(Int(characterID)).contracts().get(cachePolicy: cachePolicy).flatMap { contracts -> AnyPublisher<(ESI.PersonalContracts, ESI.PersonalContracts, [Int64: Contact], [Int64: EVELocation]), AFError> in
             let clientIDs = contracts.value.map{Int64($0.issuerID)}
             let locationIDs = contracts.value.compactMap{$0.startLocationID}
             let contacts = Contact.contacts(with: Set(clientIDs), esi: esi, characterID: characterID, options: [.universe], managedObjectContext: managedObjectContext).replaceError(with: [:])
@@ -32,8 +49,7 @@ class ContractsData: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
                 self?.result = result.map{(open: $0.0, closed: $0.1, contacts: $0.2, locations: $0.3)}
-        }.store(in: &subscriptions)
+                self?.isLoading = false
+        }
     }
-    
-    var subscriptions = Set<AnyCancellable>()
 }

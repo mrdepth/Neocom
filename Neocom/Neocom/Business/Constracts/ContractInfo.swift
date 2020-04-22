@@ -22,7 +22,7 @@ struct ContractInfo: View {
             self.contractInfo.get(account, initial: ContractInfoData(esi: sharedState.esi, characterID: account.characterID, contract: contract, managedObjectContext: managedObjectContext))
         }
 
-        return List {
+        let list = List {
             ContractInfoBasic(contract: contract, locations: result?.locations ?? [:])
             (result?.items?.value).map{ContractInfoItems(items: $0)}
             (result?.bids?.value).flatMap { bids in
@@ -31,7 +31,19 @@ struct ContractInfo: View {
                 }
             }
         }.listStyle(GroupedListStyle())
-            .navigationBarTitle(contract.type.title)
+        
+        return Group {
+            if result != nil {
+                list.onRefresh(isRefreshing: Binding(result!, keyPath: \.isLoading)) {
+                    result?.update(cachePolicy: .reloadIgnoringLocalCacheData)
+                }
+            }
+            else {
+                list
+            }
+        }
+        .navigationBarTitle(contract.type.title)
+
 
     }
 }

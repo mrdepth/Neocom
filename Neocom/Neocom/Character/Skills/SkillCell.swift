@@ -224,7 +224,10 @@ struct SkillCellBody: View {
                 }
                 else if trainingTime > 0 {
                     if isActive {
-                        Text("\(TimeIntervalFormatter.localizedString(from: trainingTime, precision: .minutes)) (\(Int((progress ?? 0) * 100))%)").background(progressView)
+                        Text("\(TimeIntervalFormatter.localizedString(from: trainingTime, precision: .minutes)) (\(Int((progress ?? 0) * 100))%)")
+                            .padding(.horizontal, 2)
+                            .background(progressView)
+                            .border(Color.primary.opacity(0.5), width: 0.5)
                     }
                     else {
                         Text("\(TimeIntervalFormatter.localizedString(from: trainingTime, precision: .minutes))")
@@ -235,10 +238,6 @@ struct SkillCellBody: View {
                 }
             }.modifier(SecondaryLabelModifier()).layoutPriority(1)
         }
-        .padding(.horizontal, 15)
-        .padding(.vertical, 4)
-        .listRowInsets(EdgeInsets())
-
     }
 }
 

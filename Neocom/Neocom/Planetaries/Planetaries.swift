@@ -10,6 +10,7 @@ import SwiftUI
 import EVEAPI
 import Alamofire
 import Expressible
+import Combine
 
 struct Planetaries: View {
     @ObservedObject private var planets = Lazy<DataLoader<[PlanetariesSection], AFError>, Account>()
@@ -26,10 +27,10 @@ struct Planetaries: View {
         var rows: [Row]
         var id: Int32?
     }
+    
 //\u{2063}Unknown Location
-    private func planets(characterID: Int64) -> DataLoader<[PlanetariesSection], AFError> {
-        let planets = sharedState.esi.characters.characterID(Int(characterID)).planets().get().map{$0.value}
-            
+    private func planets(characterID: Int64, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) -> AnyPublisher<[PlanetariesSection], AFError> {
+        sharedState.esi.characters.characterID(Int(characterID)).planets().get().map{$0.value}
             .receive(on: RunLoop.main)
             .map { planets -> [PlanetariesSection] in
                 var sections = [SDEMapRegion?: PlanetariesSection]()
@@ -41,19 +42,18 @@ struct Planetaries: View {
                 return sections.mapValues{PlanetariesSection(title: $0.title, rows: $0.rows.sorted{($0.title ?? "\u{2063}") < ($1.title ?? "\u{2063}")}, id: $0.id)}
                     .sorted{($0.key?.regionName ?? "\u{2063}") < ($1.key?.regionName ?? "\u{2063}")}
                     .map{$0.value}
-        }
-        return DataLoader(planets)
+        }.eraseToAnyPublisher()
     }
 
     
     var body: some View {
         let result = sharedState.account.map { account in
-            self.planets.get(account, initial: self.planets(characterID: account.characterID))
+            self.planets.get(account, initial: DataLoader(self.planets(characterID: account.characterID)))
         }
         let sections = result?.result?.value
         let error = result?.result?.error
         
-        return List {
+        let list = List {
             if sections != nil {
                 ForEach(sections!) { section in
                     Section(header: section.title.map{Text($0.uppercased())} ?? Text("Unknown Location")) {
@@ -69,8 +69,20 @@ struct Planetaries: View {
             .overlay(result == nil ? Text(RuntimeError.noAccount).padding() : nil)
             .overlay(error.map{Text($0)})
             .overlay(sections?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
-            .navigationBarTitle(Text("Planetaries"))
-    }
+        
+        return Group {
+            if result != nil {
+                list.onRefresh(isRefreshing: Binding(result!, keyPath: \.isLoading)) {
+                    guard let account = self.sharedState.account else {return}
+                    result?.update(self.planets(characterID: account.characterID, cachePolicy: .reloadIgnoringLocalCacheData))
+                }
+            }
+            else {
+                list
+            }
+        }
+        .navigationBarTitle(Text("Planetaries"))
+}
 }
 
 struct Planetaries_Previews: PreviewProvider {

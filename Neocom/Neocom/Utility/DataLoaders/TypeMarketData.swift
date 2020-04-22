@@ -25,12 +25,29 @@ class TypeMarketData: ObservableObject {
         var sellOrders: [Row]
     }
     
+    @Published var isLoading = false
     @Published var result: Result<Data, AFError>?
     
+    private var type: SDEInvType
+    private var esi: ESI
+    private var managedObjectContext: NSManagedObjectContext
+    private var regionID: Int
     private var subscription: AnyCancellable?
     
     init(type: SDEInvType, esi: ESI, regionID: Int, managedObjectContext: NSManagedObjectContext) {
-        subscription = esi.markets.regionID(regionID).orders().get(typeID: Int(type.typeID)).flatMap { orders in
+        self.type = type
+        self.esi = esi
+        self.managedObjectContext = managedObjectContext
+        self.regionID = regionID
+        update(cachePolicy: .useProtocolCachePolicy)
+    }
+    
+    func update(cachePolicy: URLRequest.CachePolicy) {
+        isLoading = true
+        let managedObjectContext = self.managedObjectContext
+        let esi = self.esi
+        
+        subscription = esi.markets.regionID(regionID).orders().get(typeID: Int(type.typeID), cachePolicy: cachePolicy).flatMap { orders in
             Publishers.Zip(Just(orders), EVELocation.locations(with: Set(orders.value.map{$0.locationID}), esi: esi, managedObjectContext: managedObjectContext))
                 .setFailureType(to: AFError.self)
         }.map { (orders, locations) -> Data in
@@ -41,6 +58,7 @@ class TypeMarketData: ObservableObject {
             return Data(buyOrders: buy, sellOrders: sell)
         }.asResult().receive(on: RunLoop.main).sink { [weak self] result in
             self?.result = result
+            self?.isLoading = false
         }
     }
 }

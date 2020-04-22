@@ -17,14 +17,14 @@ struct MailPage: View {
     @ObservedObject private var mailHeaders = Lazy<MailHeadersData, Account>()
     @EnvironmentObject private var sharedState: SharedState
     @State private var deleteSubscription: AnyPublisher<[Int], Never> = Empty().eraseToAnyPublisher()
-
+    
     var body: some View {
         let result = sharedState.account.map { account in
             self.mailHeaders.get(account, initial: MailHeadersData(esi: sharedState.esi, characterID: account.characterID, labelID: label.labelID!, managedObjectContext: managedObjectContext))
         }
         let sections = result?.sections?.value
         
-        return List {
+        let list = List {
             if sections != nil {
                 ForEach(sections!, id: \.date) { section in
                     Section(header: Text(DateFormatter.localizedString(from: section.date, dateStyle: .medium, timeStyle: .none).uppercased())) {
@@ -54,7 +54,17 @@ struct MailPage: View {
         .overlay(result == nil ? Text(RuntimeError.noAccount).padding() : nil)
         .overlay(result?.sections?.error.map{Text($0)})
         .overlay(sections?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
-        .navigationBarTitle(Text("Planetaries"))
+        
+        return Group {
+            if result != nil {
+                list.onRefresh(isRefreshing: Binding(result!, keyPath: \.isLoading)) {
+                    result?.update(cachePolicy: .reloadIgnoringLocalCacheData)
+                }
+            }
+            else {
+                list
+            }
+        }
         .navigationBarTitle(label.name ?? "")
         .onReceive(deleteSubscription) { mailIDs in
             result?.delete(mailIDs: Set(mailIDs))

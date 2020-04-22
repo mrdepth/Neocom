@@ -200,7 +200,7 @@ struct CharacterSheet: View {
                     attributesSection(from: attributesInfo?.attributes?.value)
                     implantsSection(from: attributesInfo?.implants?.value)
                 }
-                .onRefresh(isRefreshing: characterInfo!.isLoading, onRefresh: {
+                .onRefresh(isRefreshing: Binding(characterInfo!, keyPath: \.isLoading), onRefresh: {
                     characterInfo?.update(cachePolicy: .reloadIgnoringLocalCacheData)
                     accountInfo?.update(cachePolicy: .reloadIgnoringLocalCacheData)
                     attributesInfo?.update(cachePolicy: .reloadIgnoringLocalCacheData)

@@ -65,7 +65,7 @@ struct PredefinedDamagePatternCell: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(row.name)
                 DamageVectorView(damage: row.damage)
-            }
+            }.contentShape(Rectangle())
         }.buttonStyle(PlainButtonStyle())
         .sheet(item: $selectedDamagePattern) { pattern in
             NavigationView {

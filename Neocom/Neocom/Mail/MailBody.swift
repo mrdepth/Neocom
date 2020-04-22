@@ -13,12 +13,13 @@ import CoreData
 import Alamofire
 
 struct MailBody: View {
-    var mail: ESI.MailHeaders.Element
+    @Binding var mail: ESI.MailHeaders.Element
     var contacts: [Int64: Contact]
     
     @EnvironmentObject private var sharedState: SharedState
 
     @ObservedObject private var mailBody = Lazy<DataLoader<ESI.MailBody, AFError>, Never>()
+//    @State private var markReadPublisher: AnyPublisher<Void, Never>? = nil
     
     var body: some View {
         let result = sharedState.account.flatMap {account in
@@ -33,6 +34,17 @@ struct MailBody: View {
         return Group {
             if body != nil {
                 MailBodyContent(mailBody: body!, contacts: contacts)
+//                    .onAppear {
+//                        guard let account = self.sharedState.account, let mailID = self.mail.mailID, self.mail.isRead != true else {return}
+//                        self.markReadPublisher = self.sharedState.esi.characters.characterID(Int(account.characterID)).mail().mailID(mailID).put(contents: ESI.Characters.CharacterID.Mail.MailID.Contents(labels: self.mail.labels, read: true)).receive(on: RunLoop.main)
+//                            .map{_ in}
+//                            .catch{_ in Empty()}
+//                            .eraseToAnyPublisher()
+//                }
+//                .onReceive(markReadPublisher ?? Empty().eraseToAnyPublisher()) {
+////                    self.markReadPublisher = nil
+//                    self.mail.isRead = true
+//                }
             }
             else if error != nil {
                 Text(error!).padding()
@@ -99,7 +111,6 @@ struct MailBodyContent: View {
 struct MailBody_Previews: PreviewProvider {
     static var previews: some View {
         let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
 
         let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: AppDelegate.sharedDelegate.persistentContainer.viewContext)!, insertInto: nil)
         contact.name = "Artem Valiant"

@@ -21,7 +21,7 @@ struct IndustryJobs: View {
         }
         let jobs = (result?.result?.value).map{$0.active + $0.finished}
         
-        return List {
+        let list = List {
             if jobs != nil {
                 IndustryJobsContent(jobs: jobs!, locations: result?.result?.value?.locations ?? [:])
             }
@@ -29,7 +29,19 @@ struct IndustryJobs: View {
             .overlay(result == nil ? Text(RuntimeError.noAccount).padding() : nil)
             .overlay((result?.result?.error).map{Text($0)})
             .overlay(jobs?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
-            .navigationBarTitle(Text("Industry Jobs"))
+        
+        return Group {
+            if result != nil {
+                list.onRefresh(isRefreshing: Binding(result!, keyPath: \.isLoading)) {
+                    result?.update(cachePolicy: .reloadIgnoringLocalCacheData)
+                }
+            }
+            else {
+                list
+            }
+        }
+        .navigationBarTitle(Text("Industry Jobs"))
+
     }
 }
 

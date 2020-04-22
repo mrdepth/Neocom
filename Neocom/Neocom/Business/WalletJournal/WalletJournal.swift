@@ -9,6 +9,7 @@
 import SwiftUI
 import EVEAPI
 import Alamofire
+import Combine
 
 struct WalletJournal: View {
     
@@ -17,26 +18,39 @@ struct WalletJournal: View {
 
     @ObservedObject var journal: Lazy<DataLoader<ESI.WalletJournal, AFError>, Account> = Lazy()
     
-    private func journal(characterID: Int64) -> DataLoader<ESI.WalletJournal, AFError> {
-        let publisher = sharedState.esi.characters.characterID(Int(characterID)).wallet().journal().get()
+    private func getJournal(characterID: Int64, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) -> AnyPublisher<ESI.WalletJournal, AFError> {
+        sharedState.esi.characters.characterID(Int(characterID)).wallet().journal().get(cachePolicy: cachePolicy)
             .map{$0.value}
             .receive(on: RunLoop.main)
-        return DataLoader(publisher)
+            .eraseToAnyPublisher()
     }
     
     var body: some View {
-        let journal = sharedState.account.map { account in
-            self.journal.get(account, initial: self.journal(characterID: account.characterID))
+        let result = sharedState.account.map { account in
+            self.journal.get(account, initial: DataLoader(self.getJournal(characterID: account.characterID)))
         }
-        return List {
-            if journal?.result?.value != nil {
-                WalletJournalContent(journal: journal!.result!.value!)
+        let list = List {
+            if result?.result?.value != nil {
+                WalletJournalContent(journal: result!.result!.value!)
             }
-        }.listStyle(GroupedListStyle())
-            .overlay(journal == nil ? Text(RuntimeError.noAccount).padding() : nil)
-            .overlay((journal?.result?.error).map{Text($0)})
-            .overlay(journal?.result?.value?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
-            .navigationBarTitle(Text("Wallet Journal"))
+        }
+        .listStyle(GroupedListStyle())
+        .overlay(result == nil ? Text(RuntimeError.noAccount).padding() : nil)
+        .overlay((result?.result?.error).map{Text($0)})
+        .overlay(result?.result?.value?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
+        
+        return Group {
+            if result != nil {
+                list.onRefresh(isRefreshing: Binding(result!, keyPath: \.isLoading)) {
+                    guard let account = self.sharedState.account else {return}
+                    result?.update(self.getJournal(characterID: account.characterID, cachePolicy: .reloadIgnoringLocalCacheData))
+                }
+            }
+            else {
+                list
+            }
+        }
+        .navigationBarTitle(Text("Wallet Journal"))
 
     }
 }

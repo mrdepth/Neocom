@@ -1,8 +1,8 @@
 //
-//  FittingEditorActions.swift
+//  FittingEditorStructureActions.swift
 //  Neocom
 //
-//  Created by Artem Shimanski on 13.03.2020.
+//  Created by Artem Shimanski on 4/22/20.
 //  Copyright © 2020 Artem Shimanski. All rights reserved.
 //
 
@@ -11,52 +11,37 @@ import Dgmpp
 import CoreData
 import EVEAPI
 
-struct FittingEditorActions: View {
-	@EnvironmentObject private var ship: DGMShip
-	@EnvironmentObject private var gang: DGMGang
-	@Environment(\.managedObjectContext) private var managedObjectContext
+struct FittingEditorStructureActions: View {
+    @EnvironmentObject private var structure: DGMStructure
+    @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
-	@State private var isAreaEffectsPresented = false
+    @State private var isAreaEffectsPresented = false
     @State private var isCharactersPresented = false
     @State private var isDamagePatternsPresented = false
     @EnvironmentObject private var sharedState: SharedState
-	
-	private var areaEffects: some View {
-		AreaEffects { type in
-			self.gang.area = try? DGMArea(typeID: DGMTypeID(type.typeID))
-			self.isAreaEffectsPresented = false
-		}
-	}
-
-    private var characters: some View {
-        FittingCharacters { url, skills in
-            self.isCharactersPresented = false
-            guard let pilot = self.ship.parent as? DGMCharacter else {return}
-            pilot.url = url
-            pilot.setSkillLevels(skills)
+    
+    private var areaEffects: some View {
+        AreaEffects { type in
+            self.structure.area = try? DGMArea(typeID: DGMTypeID(type.typeID))
+            self.isAreaEffectsPresented = false
         }
     }
 
     var body: some View {
-		let type = ship.type(from: managedObjectContext)
-		let area = gang.area?.type(from: managedObjectContext)
-		return List {
-			type.map {type in
-				Section(header: Text("SHIP")) {
-                    TextField("Ship Name", text: $ship.name)
-					NavigationLink(destination: TypeInfo(type: type)) {
-						TypeCell(type: type)
-					}
-				}
-			}
-            Section(header: Text("CHARACTER")) {
-                NavigationLink(destination: characters, isActive: $isCharactersPresented) {
-                    FittingEditorActionsCharacterCell(url: (ship.parent as? DGMCharacter)?.url)
+        let type = structure.type(from: managedObjectContext)
+        let area = structure.area?.type(from: managedObjectContext)
+        return List {
+            type.map {type in
+                Section(header: Text("STRUCTURE")) {
+                    TextField("Structure Name", text: $structure.name)
+                    NavigationLink(destination: TypeInfo(type: type)) {
+                        TypeCell(type: type)
+                    }
                 }
             }
             Section(header: Text("DAMAGE PATTERN")) {
                 Button(action: {self.isDamagePatternsPresented = true}) {
-                    DamageVectorView(damage: ship.damagePattern).frame(height: 30)
+                    DamageVectorView(damage: structure.damagePattern).frame(height: 30)
                     .contentShape(Rectangle())
                 }
             }
@@ -70,20 +55,12 @@ struct FittingEditorActions: View {
                     }
                 }
             }
-            Section {
-                NavigationLink(destination: AffectingSkills()) {
-                    Text("Affecting Skill")
-                }
-                NavigationLink(destination: RequiredSkills()) {
-                    Text("Required Skill")
-                }
-            }
-		}
+        }
         .listStyle(GroupedListStyle())
         .sheet(isPresented: $isDamagePatternsPresented) {
             NavigationView {
                 DamagePatterns { vector in
-                    self.ship.damagePattern = vector
+                    self.structure.damagePattern = vector
                     self.isDamagePatternsPresented = false
                 }.navigationBarItems(leading: BarButtonItems.close {
                     self.isDamagePatternsPresented = false
@@ -116,14 +93,12 @@ private struct FittingEditorActionsCharacterCell: View {
     }
 }
 
-struct FittingEditorActions_Previews: PreviewProvider {
-    static var previews: some View {  
-        let gang = DGMGang.testGang()
+struct FittingEditorStructureActions_Previews: PreviewProvider {
+    static var previews: some View {
         return NavigationView {
-            FittingEditorActions()
+            FittingEditorStructureActions()
         }
-        .environmentObject(gang.pilots.first!.ship!)
-        .environmentObject(gang)
+        .environmentObject(DGMStructure.testKeepstar())
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())

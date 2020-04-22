@@ -18,6 +18,7 @@ class MailHeadersData: ObservableObject {
         var mails: ESI.MailHeaders
     }
     
+    @Published var isLoading = false
     @Published var sections: Result<[Section], AFError>?
     @Published var contacts: [Int64: Contact?] = [:]
     private var esi: ESI
@@ -48,9 +49,65 @@ class MailHeadersData: ObservableObject {
         self.sections = .success(sections.filter{!$0.mails.isEmpty})
     }
     
-    private func load() {
+    func update(cachePolicy: URLRequest.CachePolicy) {
+        load(cachePolicy: .reloadIgnoringLocalCacheData, reload: true)
+    }
+    
+    private func process(headers: ESI.MailHeaders, contacts: [Int64: Contact?]) -> AnyPublisher<([Int64: Contact?], [Section]), AFError> {
+        let calendar = Calendar(identifier: .gregorian)
+        let mails = headers.filter{$0.timestamp != nil}
+        let items = mails.sorted{$0.timestamp! > $1.timestamp!}
         
-        subscription = Publishers.Zip3($endReached, $sections, $contacts).filter{!$0.0}
+        let sections = Dictionary(grouping: items, by: { (i) -> Date in
+            let components = calendar.dateComponents([.year, .month, .day], from: i.timestamp!)
+            return calendar.date(from: components) ?? i.timestamp!
+        }).sorted {$0.key > $1.key}.map { (date, mails) in
+            Section(date: date, mails: mails)
+        }
+        
+
+        var contactIDs = Set((mails.compactMap{$0.from} + mails.flatMap{$0.recipients?.map{$0.recipientID} ?? []}).map{Int64($0)})
+        contactIDs.subtract(contacts.keys)
+        
+        return Contact.contacts(with: contactIDs, esi: esi, characterID: characterID, options: [.all], managedObjectContext: managedObjectContext)
+            .map { $0.mapValues{$0 as Optional}.merging(contactIDs.map{($0, nil)}, uniquingKeysWith: {a, b in a ?? b}) }
+            .zip(Just(sections))
+            .setFailureType(to: AFError.self)
+            .eraseToAnyPublisher()
+    }
+    
+    private func load(cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy, reload: Bool = false) {
+        guard !endReached || reload else {return}
+        let contacts = self.contacts
+        let sections = reload ? nil : self.sections
+        
+        isLoading = true
+        
+        subscription = esi.characters.characterID(Int(characterID)).mail().get(labels: [labelID], lastMailID: sections?.value?.last?.mails.last?.mailID, cachePolicy: cachePolicy)
+        .map{$0.value}
+        .receive(on: DispatchQueue.global(qos: .utility))
+        .flatMap { [weak self] result in
+            self?.process(headers: result, contacts: contacts) ?? Fail(error: AFError.explicitlyCancelled).eraseToAnyPublisher()
+        }
+        .map { (newContacts, newSections) -> ([Int64: Contact?], [Section], Bool) in
+            (newContacts.merging(contacts, uniquingKeysWith: {a, b in a ?? b}), merge((sections?.value ?? []), newSections), newSections.isEmpty)
+        }
+        .catch { error -> AnyPublisher<([Int64: Contact?], [Section], Bool), AFError> in
+            guard let value = sections?.value else {return Fail(error: error).eraseToAnyPublisher()}
+            return Just((contacts, value, true)).setFailureType(to: AFError.self).eraseToAnyPublisher()
+        }
+        .receive(on: RunLoop.main)
+        .asResult()
+        .sink(receiveCompletion: { [weak self] _ in
+            self?.isLoading = false
+            self?.subscription = nil
+        }, receiveValue: { [weak self] result in
+            self?.contacts = result.value?.0 ?? [:]
+            self?.sections = result.map{$0.1}
+            self?.endReached = result.value?.2 ?? true
+        })
+        
+        /*subscription = Publishers.Zip3($endReached, $sections, $contacts).filter{!$0.0}
             .setFailureType(to: AFError.self)
             .flatMap { [esi, labelID, characterID, managedObjectContext] (_, sections, contacts) in
                 esi.characters.characterID(Int(characterID)).mail().get(labels: [labelID],
@@ -90,7 +147,7 @@ class MailHeadersData: ObservableObject {
                 self?.contacts = result.value?.0 ?? [:]
                 self?.sections = result.map{$0.1}
                 self?.endReached = result.value?.2 ?? true
-        }
+        }*/
     }
     
     private var subscription: AnyCancellable?

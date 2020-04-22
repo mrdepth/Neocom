@@ -19,20 +19,32 @@ struct WalletTransactions: View {
 
     
     var body: some View {
-        let transactions = sharedState.account.map { account in
+        let result = sharedState.account.map { account in
             self.transactions.get(account, initial: WalletTransactionsData(esi: sharedState.esi, characterID: account.characterID, managedObjectContext: managedObjectContext))
         }
-        return List {
-            if transactions?.result?.value != nil {
-                WalletTransactionsContent(transactions: transactions!.result!.value!.transactions,
-                                          contacts: transactions!.result!.value!.contacts,
-                                          locations: transactions!.result!.value!.locations)
+        let list = List {
+            if result?.result?.value != nil {
+                WalletTransactionsContent(transactions: result!.result!.value!.transactions,
+                                          contacts: result!.result!.value!.contacts,
+                                          locations: result!.result!.value!.locations)
             }
         }.listStyle(GroupedListStyle())
-            .overlay(transactions == nil ? Text(RuntimeError.noAccount).padding() : nil)
-            .overlay((transactions?.result?.error).map{Text($0)})
-            .overlay(transactions?.result?.value?.transactions.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
-            .navigationBarTitle(Text("Wallet Transactions"))
+            .overlay(result == nil ? Text(RuntimeError.noAccount).padding() : nil)
+            .overlay((result?.result?.error).map{Text($0)})
+            .overlay(result?.result?.value?.transactions.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
+        
+        return Group {
+            if result != nil {
+                list.onRefresh(isRefreshing: Binding(result!, keyPath: \.isLoading)) {
+                    result?.update(cachePolicy: .reloadIgnoringLocalCacheData)
+                }
+            }
+            else {
+                list
+            }
+        }
+        .navigationBarTitle(Text("Wallet Transactions"))
+
     }
 }
 

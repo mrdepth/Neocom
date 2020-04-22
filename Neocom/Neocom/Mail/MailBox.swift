@@ -9,6 +9,7 @@
 import SwiftUI
 import EVEAPI
 import Alamofire
+import Combine
 
 struct MailBox: View {
     @EnvironmentObject private var sharedState: SharedState
@@ -21,20 +22,25 @@ struct MailBox: View {
     @State private var isComposeMailPresented = false
     
     private var composeButton: some View {
-        Button(action: {
+        BarButtonItems.compose {
             self.isComposeMailPresented = true
-        }) {
-            Image(systemName: "square.and.pencil").font(.title)
         }
+    }
+    
+    private func getLabels(account: Account, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) -> AnyPublisher<ESI.MailLabels, AFError> {
+        sharedState.esi.characters.characterID(Int(account.characterID)).mail().labels().get(cachePolicy: cachePolicy)
+            .map{$0.value}
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
     }
 
     var body: some View {
         let result = sharedState.account.map { account in
-            self.labels.get(account, initial: DataLoader(sharedState.esi.characters.characterID(Int(account.characterID)).mail().labels().get().map{$0.value}.receive(on: RunLoop.main)))
+            self.labels.get(account, initial: DataLoader(getLabels(account: account)))
         }
         let labels = result?.result?.value
 //        let draftsCount =
-        return List {
+        let list = List {
             if labels?.labels != nil {
                 Section(footer: Text("Total Unread: \(UnitFormatter.localizedString(from: labels!.totalUnreadCount ?? 0, unit: .none, style: .long))").frame(maxWidth: .infinity, alignment: .trailing)) {
                     ForEach(labels!.labels!, id: \.labelID) { label in
@@ -56,13 +62,27 @@ struct MailBox: View {
             .overlay(result == nil ? Text(RuntimeError.noAccount).padding() : nil)
             .overlay((result?.result?.error).map{Text($0)})
             .overlay(labels?.labels?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
-            .navigationBarTitle(Text("Mail"))
-            .navigationBarItems(trailing: composeButton)
-            .sheet(isPresented: $isComposeMailPresented) {
-                ComposeMail {
-                    self.isComposeMailPresented = false
-                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            
+        
+        return Group {
+            if result != nil {
+                list.onRefresh(isRefreshing: Binding(result!, keyPath: \.isLoading)) {
+                    guard let account = self.sharedState.account else {return}
+                    result?.update(self.getLabels(account: account, cachePolicy: .reloadIgnoringLocalCacheData))
+                }
+            }
+            else {
+                list
+            }
         }
+        .navigationBarTitle(Text("Mail"))
+        .navigationBarItems(trailing: composeButton)
+        .sheet(isPresented: $isComposeMailPresented) {
+            ComposeMail {
+                self.isComposeMailPresented = false
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+        }
+
     }
 }
 

@@ -11,6 +11,7 @@ import Alamofire
 import EVEAPI
 import Expressible
 import CoreData
+import Combine
 
 struct SkillQueue: View {
     @ObservedObject private var pilot = Lazy<DataLoader<Pilot, AFError>, Account>()
@@ -18,12 +19,14 @@ struct SkillQueue: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var sharedState: SharedState
 
-    private func loadPilot(account: Account) -> DataLoader<Pilot, AFError> {
-        DataLoader(Pilot.load(sharedState.esi.characters.characterID(Int(account.characterID)), in: self.backgroundManagedObjectContext).receive(on: RunLoop.main))
+    private func loadPilot(account: Account, cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy) -> AnyPublisher<Pilot, AFError> {
+        Pilot.load(sharedState.esi.characters.characterID(Int(account.characterID)), in: self.backgroundManagedObjectContext, cachePolicy: cachePolicy)
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
     }
 
     var body: some View {
-        let loader = sharedState.account.map{account in self.pilot.get(account, initial: self.loadPilot(account: account))}
+        let loader = sharedState.account.map{account in self.pilot.get(account, initial: DataLoader(self.loadPilot(account: account)))}
         let pilot = loader?.result?.value
 
         let list = List {
@@ -43,7 +46,9 @@ struct SkillQueue: View {
         .listStyle(GroupedListStyle())
         return Group {
             if loader != nil {
-                list.onRefresh(isRefreshing: loader!.isLoading) {
+                list.onRefresh(isRefreshing: Binding(loader!, keyPath: \.isLoading)) {
+                    guard let account = self.sharedState.account else {return}
+                    loader?.update(self.loadPilot(account: account, cachePolicy: .reloadIgnoringLocalCacheData))
                 }
             }
             else {

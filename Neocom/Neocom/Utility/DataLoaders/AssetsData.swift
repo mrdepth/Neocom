@@ -193,10 +193,28 @@ class AssetsData: ObservableObject {
         return PartialResult(locations: byLocations, categories: byCategories)
     }
     
+    @Published var isLoading = false
     var progress = Progress(totalUnitCount: 3)
-    
+    private var esi: ESI
+    private var characterID: Int64
+    private var managedObjectContext: NSManagedObjectContext
+
 
     init(esi: ESI, characterID: Int64, managedObjectContext: NSManagedObjectContext) {
+        self.esi = esi
+        self.characterID = characterID
+        self.managedObjectContext = managedObjectContext
+        update(cachePolicy: .useProtocolCachePolicy)
+    }
+    
+    func update(cachePolicy: URLRequest.CachePolicy) {
+        isLoading = true
+        subscriptions.removeAll()
+        let managedObjectContext = self.managedObjectContext
+        let esi = self.esi
+        let characterID = self.characterID
+        self.progress = Progress(totalUnitCount: 3)
+
         let character = esi.characters.characterID(Int(characterID))
         let progress = self.progress
         
@@ -233,7 +251,7 @@ class AssetsData: ObservableObject {
                 pages.publisher.setFailureType(to: AFError.self)
                     .flatMap { page in
                         p.performAsCurrent(withPendingUnitCount: 1, totalUnitCount: 100) { p in
-                            character.assets().get(page: page) { p.completedUnitCount = Int64($0.fractionCompleted * 100) }
+                            character.assets().get(page: page, cachePolicy: cachePolicy) { p.completedUnitCount = Int64($0.fractionCompleted * 100) }
                                 .map{$0.value}
                         }
                         
@@ -242,7 +260,7 @@ class AssetsData: ObservableObject {
             }
         }
         
-        character.assets().get { initialProgress.completedUnitCount = Int64($0.fractionCompleted * 100) }
+        character.assets().get(cachePolicy: cachePolicy) { initialProgress.completedUnitCount = Int64($0.fractionCompleted * 100) }
             .flatMap { result in
                 Just(result.value).setFailureType(to: AFError.self)
                     .merge(with: download(getXPages(from: result).dropFirst()))
@@ -253,6 +271,7 @@ class AssetsData: ObservableObject {
         .sink { [weak self] result in
             self?.locations = result.map{$0.locations}
             self?.categories = result.map{$0.categories}
+            self?.isLoading = false
         }.store(in: &subscriptions)
     }
     

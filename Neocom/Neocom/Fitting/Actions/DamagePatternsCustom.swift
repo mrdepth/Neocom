@@ -56,7 +56,7 @@ struct CustomDamagePatternCell: View {
                     Text("Unnamed").italic()
                 }
                 DamageVectorView(damage: damagePattern.damageVector)
-            }
+            }.contentShape(Rectangle())
         }.buttonStyle(PlainButtonStyle())
         .sheet(item: $selectedDamagePattern) { pattern in
             NavigationView {

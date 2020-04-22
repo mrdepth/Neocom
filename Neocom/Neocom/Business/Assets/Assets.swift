@@ -31,33 +31,30 @@ struct Assets: View {
     }
     
     var body: some View {
-        let assets = sharedState.account.map{self.assets.get($0, initial: AssetsData(esi: sharedState.esi, characterID: $0.characterID, managedObjectContext: backgroundManagedObjectContext))}
-        return ZStack {
-            AssetsSearch(assets: assets?.locations?.value ?? []) { results in
-                List {
-                    if results != nil {
-                        ForEach(results!, id: \.location.id) { i in
-                            Section(header: Text(i.location)) {
-                                AssetsListContent(assets: i.assets)
-                            }
+        func list(_ results: [AssetsData.LocationGroup]?) -> some View {
+            List {
+                if results != nil {
+                    ForEach(results!, id: \.location.id) { i in
+                        Section(header: Text(i.location)) {
+                            AssetsListContent(assets: i.assets)
                         }
                     }
-                    else {
-                        Section(header: self.filterControl) {
-                            if self.filter == .byLocation {
-                                AssetsLocationsContent(assets: assets?.locations?.value ?? [])
-                            }
-                            else {
-                                if assets?.categories?.value != nil {
-                                    ForEach(assets!.categories!.value!) { category in
-                                        (try? self.managedObjectContext.from(SDEInvCategory.self).filter(/\SDEInvCategory.categoryID == category.id).first()).map { invCategory in
-                                            NavigationLink(destination: AssetsCategory(category: category)) {
-                                                HStack {
-                                                    Icon(invCategory.image).cornerRadius(4)
-                                                    VStack(alignment: .leading) {
-                                                        Text(invCategory.categoryName ?? "")
-                                                        Text("Quantity: \(UnitFormatter.localizedString(from: category.count, unit: .none, style: .long))").modifier(SecondaryLabelModifier())
-                                                    }
+                }
+                else {
+                    Section(header: self.filterControl) {
+                        if self.filter == .byLocation {
+                            AssetsLocationsContent(assets: assets?.locations?.value ?? [])
+                        }
+                        else {
+                            if assets?.categories?.value != nil {
+                                ForEach(assets!.categories!.value!) { category in
+                                    (try? self.managedObjectContext.from(SDEInvCategory.self).filter(/\SDEInvCategory.categoryID == category.id).first()).map { invCategory in
+                                        NavigationLink(destination: AssetsCategory(category: category)) {
+                                            HStack {
+                                                Icon(invCategory.image).cornerRadius(4)
+                                                VStack(alignment: .leading) {
+                                                    Text(invCategory.categoryName ?? "")
+                                                    Text("Quantity: \(UnitFormatter.localizedString(from: category.count, unit: .none, style: .long))").modifier(SecondaryLabelModifier())
                                                 }
                                             }
                                         }
@@ -66,14 +63,37 @@ struct Assets: View {
                             }
                         }
                     }
-                }.listStyle(GroupedListStyle())
-                    .overlay(Group {
-                        if assets?.progress != nil && assets!.progress.fractionCompleted < 1 {
-                            LoadingProgressView(progress: assets!.progress)
+                }
+            }.listStyle(GroupedListStyle())
+        }
+        
+        let assets = sharedState.account.map{self.assets.get($0, initial: AssetsData(esi: sharedState.esi, characterID: $0.characterID, managedObjectContext: backgroundManagedObjectContext))}
+        
+
+        return ZStack {
+            AssetsSearch(assets: assets?.locations?.value ?? []) { results in
+                Group {
+                    if assets != nil {
+                        list(results).onRefresh(isRefreshing: Binding(assets!, keyPath: \.isLoading)) {
+                            assets?.update(cachePolicy: .reloadIgnoringLocalCacheData)
                         }
-                    }, alignment: .top)
+                    }
+                    else {
+                        list(results)
+                    }
+                }
             }
-        }.navigationBarTitle("Assets")
+        }
+        .navigationBarTitle("Assets")
+        .overlay(Group {
+            if assets?.progress != nil && assets!.progress.fractionCompleted < 1 {
+                LoadingProgressView(progress: assets!.progress)
+            }
+        }, alignment: .top)
+        .overlay(assets == nil ? Text(RuntimeError.noAccount).padding() : nil)
+        .overlay((assets?.locations?.error).map{Text($0)})
+        .overlay(assets?.locations?.value?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
+
     }
 }
 

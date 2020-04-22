@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct RefreshControl: UIViewRepresentable {
-    var isRefreshing: Bool
+    @Binding var isRefreshing: Bool
     var title: String?
     var onRefresh: () -> Void
     
@@ -21,7 +21,7 @@ struct RefreshControl: UIViewRepresentable {
     }
     
     class Coordinator: NSObject {
-        var isRefreshing: Bool
+        var isRefreshing: Binding<Bool>
         var onRefresh: () -> Void
         var refreshControl: UIRefreshControl? {
             didSet {
@@ -31,15 +31,18 @@ struct RefreshControl: UIViewRepresentable {
             }
         }
         
-        init(isRefreshing: Bool, onRefresh: @escaping () -> Void) {
+        init(isRefreshing: Binding<Bool>, onRefresh: @escaping () -> Void) {
             self.isRefreshing = isRefreshing
             self.onRefresh = onRefresh
             super.init()
         }
         
         @objc func onValueChanged(_ sender: UIRefreshControl) {
-            if sender.isRefreshing && !isRefreshing {
+            if sender.isRefreshing && !isRefreshing.wrappedValue {
                 onRefresh()
+                if !isRefreshing.wrappedValue {
+                    sender.endRefreshing()
+                }
             }
         }
         
@@ -50,11 +53,11 @@ struct RefreshControl: UIViewRepresentable {
 
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(isRefreshing: isRefreshing, onRefresh: onRefresh)
+        Coordinator(isRefreshing: $isRefreshing, onRefresh: onRefresh)
     }
     
     func updateUIView(_ uiView: UIView, context: Context) {
-        context.coordinator.isRefreshing = isRefreshing
+        context.coordinator.isRefreshing = $isRefreshing
         context.coordinator.onRefresh = onRefresh
         
         func findChild(in view: UIView) -> UITableView? {
@@ -93,7 +96,7 @@ struct RefreshControl: UIViewRepresentable {
 }
 
 extension View {
-    func onRefresh(isRefreshing: Bool, title: String? = nil, onRefresh: @escaping () -> Void) -> some View {
+    func onRefresh(isRefreshing: Binding<Bool>, title: String? = nil, onRefresh: @escaping () -> Void) -> some View {
         self.overlay(RefreshControl(isRefreshing: isRefreshing, title: title, onRefresh: onRefresh))
     }
 }
@@ -123,11 +126,11 @@ struct RefreshControlTest: View {
         List {
             Text("Hello, World")
         }
-        .onRefresh(isRefreshing: isRefreshing, title: nil) {
-//            self.isRefreshing = false
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//                self.isRefreshing = false
-//            }
+        .onRefresh(isRefreshing: $isRefreshing, title: nil) {
+            self.isRefreshing = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.isRefreshing = false
+            }
         }
     }
 }

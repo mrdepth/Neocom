@@ -23,7 +23,7 @@ struct LoyaltyPoints: View {
         let contacts = result?.result?.value?.contacts
         let error = result?.result?.error
 
-        return List {
+        let list = List {
             if loyaltyPoints != nil && contacts != nil {
                 ForEach(loyaltyPoints!, id: \.corporationID) { lp in
                     NavigationLink(destination: LoyaltyOffers(corporationID: lp.corporationID).navigationBarTitle((contacts![Int64(lp.corporationID)]?.name) ?? "")) {
@@ -38,19 +38,27 @@ struct LoyaltyPoints: View {
                 }
             }
         }.listStyle(GroupedListStyle())
-            .overlay(result == nil ? Text(RuntimeError.noAccount).padding() : nil)
-            .overlay(error.map{Text($0)})
-            .overlay(loyaltyPoints?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
-            .navigationBarTitle(Text("Loyalty Points"))
+            
+        return Group {
+            if result != nil {
+                list.onRefresh(isRefreshing: Binding(result!, keyPath: \.isLoading), onRefresh: {
+                    result?.update(cachePolicy: .reloadIgnoringLocalCacheData)
+                })
+            }
+            else {
+                list
+            }
+        }
+        .overlay(result == nil ? Text(RuntimeError.noAccount).padding() : nil)
+        .overlay(error.map{Text($0)})
+        .overlay(loyaltyPoints?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
+        .navigationBarTitle(Text("Loyalty Points"))
     }
 }
 
 struct LoyaltyPoints_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
-        return NavigationView {
+        NavigationView {
             LoyaltyPoints()
         }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
             .environmentObject(SharedState.testState())

@@ -37,7 +37,7 @@ struct MarketOrders: View {
         
         
         
-        return List {
+        let list = List {
             Section(header: picker) {
                 if orders != nil {
                     MarketOrdersContent(orders: orders!, locations: result?.result?.value?.locations ?? [:])
@@ -47,7 +47,19 @@ struct MarketOrders: View {
             .overlay(result == nil ? Text(RuntimeError.noAccount).padding() : nil)
             .overlay((result?.result?.error).map{Text($0)})
             .overlay(orders?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
-            .navigationBarTitle(Text("Market Orders"))
+        
+        return Group {
+            if result != nil {
+                list.onRefresh(isRefreshing: Binding(result!, keyPath: \.isLoading)) {
+                    result?.update(cachePolicy: .reloadIgnoringLocalCacheData)
+                }
+            }
+            else {
+                list
+            }
+        }
+        .navigationBarTitle(Text("Market Orders"))
+
     }
 }
 

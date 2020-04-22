@@ -35,9 +35,9 @@ struct TypeMarketOrders: View {
 	}
 
     var body: some View {
-        let orders = marketOrders.get(initial: TypeMarketData(type: type, esi: sharedState.esi, regionID: Int(marketRegionID.wrappedValue), managedObjectContext: backgroundManagedObjectContext))
-		let error = orders.result?.error
-		let data = orders.result?.value
+        let result = marketOrders.get(initial: TypeMarketData(type: type, esi: sharedState.esi, regionID: Int(marketRegionID.wrappedValue), managedObjectContext: backgroundManagedObjectContext))
+		let error = result.result?.error
+		let data = result.result?.value
 
 		return List {
 			Section(header:
@@ -51,20 +51,26 @@ struct TypeMarketOrders: View {
                         }
 					}
 			}
-		}.listStyle(GroupedListStyle()).overlay(error.map{Text($0).padding()})
-			.navigationBarTitle("Market Orders")
-			.navigationBarItems(trailing: Button(regionName) {self.isMarketRegionPickerPresented = true})
-            .overlay(orders.result == nil ? ActivityIndicatorView(style: .large) : nil)
-            .overlay((orders.result?.error).map{Text($0)})
-			.sheet(isPresented: $isMarketRegionPickerPresented) {
-				NavigationView {
-					MarketRegionPicker { region in
-                        self.marketRegionID.wrappedValue = region.regionID
-//						self.marketOrders.set(TypeMarketData(type: self.type, esi: self.esi, regionID: self.marketRegionID, managedObjectContext: self.backgroundManagedObjectContext))
-						self.isMarketRegionPickerPresented = false
-					}.navigationBarItems(trailing: Button("Cancel") {self.isMarketRegionPickerPresented = false})
-                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+		}
+        .listStyle(GroupedListStyle())
+        .onRefresh(isRefreshing: Binding(result, keyPath: \.isLoading)) {
+            result.update(cachePolicy: .reloadIgnoringLocalCacheData)
         }
+        .overlay(error.map{Text($0).padding()})
+        .overlay(result.result == nil ? ActivityIndicatorView(style: .large) : nil)
+        .overlay((result.result?.error).map{Text($0)})
+        .navigationBarTitle("Market Orders")
+        .navigationBarItems(trailing: Button(regionName) {self.isMarketRegionPickerPresented = true})
+        .sheet(isPresented: $isMarketRegionPickerPresented) {
+            NavigationView {
+                MarketRegionPicker { region in
+                    self.marketRegionID.wrappedValue = region.regionID
+                    //                        self.marketOrders.set(TypeMarketData(type: self.type, esi: self.esi, regionID: self.marketRegionID, managedObjectContext: self.backgroundManagedObjectContext))
+                    self.isMarketRegionPickerPresented = false
+                }.navigationBarItems(trailing: Button("Cancel") {self.isMarketRegionPickerPresented = false})
+            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+        }
+
     }
 }
 

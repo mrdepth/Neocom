@@ -13,10 +13,28 @@ import Alamofire
 import CoreData
 
 class MarketOrdersData: ObservableObject {
+    @Published var isLoading = false
     @Published var result: Result<(byu: ESI.MarketOrders, sell: ESI.MarketOrders, locations: [Int64: EVELocation]), AFError>?
     
+    private var esi: ESI
+    private var characterID: Int64
+    private var managedObjectContext: NSManagedObjectContext
+    private var subscription: AnyCancellable?
+
     init(esi: ESI, characterID: Int64, managedObjectContext: NSManagedObjectContext) {
-        esi.characters.characterID(Int(characterID)).orders().get().flatMap { orders -> AnyPublisher<(ESI.MarketOrders, ESI.MarketOrders, [Int64: EVELocation]), AFError> in
+        self.esi = esi
+        self.characterID = characterID
+        self.managedObjectContext = managedObjectContext
+        update(cachePolicy: .useProtocolCachePolicy)
+    }
+    
+    func update(cachePolicy: URLRequest.CachePolicy) {
+        isLoading = true
+        let managedObjectContext = self.managedObjectContext
+        let esi = self.esi
+        let characterID = self.characterID
+
+        subscription = esi.characters.characterID(Int(characterID)).orders().get(cachePolicy: cachePolicy).flatMap { orders -> AnyPublisher<(ESI.MarketOrders, ESI.MarketOrders, [Int64: EVELocation]), AFError> in
             let locationIDs = orders.value.map{$0.locationID} + orders.value.map{Int64($0.regionID)}
             let locations = EVELocation.locations(with: Set(locationIDs), esi: esi, managedObjectContext: managedObjectContext).replaceError(with: [:])
             
@@ -30,8 +48,7 @@ class MarketOrdersData: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] result in
                 self?.result = result.map{(byu: $0.0, sell: $0.1, locations: $0.2)}
-        }.store(in: &subscriptions)
+                self?.isLoading = false
+        }
     }
-    
-    var subscriptions = Set<AnyCancellable>()
 }

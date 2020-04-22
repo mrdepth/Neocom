@@ -21,6 +21,12 @@ enum BarButtonItems {
     static func actions(_ action: @escaping () -> Void) -> some View {
         BarButtonItem(action: action) { Image(systemName: "ellipsis") }
     }
+    
+    static func compose(_ action: @escaping () -> Void) -> some View {
+        BarButtonItem(action: action) {
+            Image(systemName: "square.and.pencil").offset(x: 1, y: -1)
+        }
+    }
 
 }
 
@@ -46,11 +52,14 @@ struct BarButtonItem<Label: View>: View {
 
 struct BarButtonItem_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            Color.clear
-                .navigationBarTitle(Text("Title"), displayMode: .inline)
-                .navigationBarItems(leading: BarButtonItems.close {}, trailing: BarButtonItems.trash {})
-                .overlay(BarButtonItems.actions {})
-        }
+        return NavigationView {
+            VStack {
+                Text("Text")
+                
+            }
+            .navigationBarTitle(Text("Title"), displayMode: .inline)
+            .navigationBarItems(leading: BarButtonItems.close {}, trailing: BarButtonItems.compose {})
+            
+        }//.environment(\.sizeCategory, .accessibilityExtraExtraExtraLarge)
     }
 }

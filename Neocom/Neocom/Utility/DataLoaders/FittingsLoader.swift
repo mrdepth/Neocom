@@ -28,12 +28,28 @@ class FittingsLoader: ObservableObject {
         var loadouts: [Loadout]
     }
     
+    @Published var isLoading = false
     @Published var fittings: Result<[Section], AFError>?
     
+    private var esi: ESI
+    private var characterID: Int64
+    private var managedObjectContext: NSManagedObjectContext
     private var subscription: AnyCancellable?
-    
+
     init(esi: ESI, characterID: Int64, managedObjectContext: NSManagedObjectContext) {
-        subscription = esi.characters.characterID(Int(characterID)).fittings().get()
+        self.esi = esi
+        self.characterID = characterID
+        self.managedObjectContext = managedObjectContext
+        update(cachePolicy: .useProtocolCachePolicy)
+    }
+    
+    func update(cachePolicy: URLRequest.CachePolicy) {
+        isLoading = true
+        let managedObjectContext = self.managedObjectContext
+        let esi = self.esi
+        let characterID = self.characterID
+
+        subscription = esi.characters.characterID(Int(characterID)).fittings().get(cachePolicy: cachePolicy)
             .map{$0.value}
             .receive(on: managedObjectContext)
             .map { fittings -> [Section] in
@@ -51,6 +67,7 @@ class FittingsLoader: ObservableObject {
         .receive(on: RunLoop.main)
         .sink { [weak self] fittings in
             self?.fittings = fittings
+            self?.isLoading = false
         }
     }
     

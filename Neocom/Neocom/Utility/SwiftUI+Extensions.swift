@@ -96,3 +96,12 @@ struct Opacity: ViewModifier {
         content.opacity(opacity)
     }
 }
+
+extension Binding {
+    init<T: AnyObject>(_ object: T, keyPath: WritableKeyPath<T, Value>) {
+        var object = object
+        self.init(get: {
+            object[keyPath: keyPath]
+        }) {object[keyPath: keyPath] = $0}
+    }
+}

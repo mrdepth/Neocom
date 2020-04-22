@@ -96,7 +96,7 @@ struct FittingShipEditor: View {
         }
         .sheet(isPresented: $isActionsPresented) {
             NavigationView {
-                FittingEditorActions().modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+                FittingEditorShipActions().modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
                     .navigationBarItems(leading: BarButtonItems.close {
                         self.isActionsPresented = false
                     })
@@ -174,7 +174,7 @@ struct FittingStructureEditor: View {
         }
         .sheet(isPresented: $isActionsPresented) {
             NavigationView {
-                FittingEditorActions().modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+                FittingEditorShipActions().modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
                     .navigationBarItems(leading: BarButtonItems.close {
                         self.isActionsPresented = false
                     })

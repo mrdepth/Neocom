@@ -62,7 +62,7 @@ struct JumpClones: View {
                         }
                     }
                 }
-                .onRefresh(isRefreshing: info!.isLoading, onRefresh: {
+                .onRefresh(isRefreshing: Binding(info!, keyPath: \.isLoading), onRefresh: {
                     guard let account = self.sharedState.account, let info = info else {return}
                     info.update(self.getInfo(characterID: account.characterID, cachePolicy: .reloadIgnoringLocalCacheData))
                 })
@@ -85,3 +85,4 @@ struct JumpClones_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+

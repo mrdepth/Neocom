@@ -95,7 +95,9 @@ struct FittingEditorShipActions: View {
                 }.navigationBarItems(leading: BarButtonItems.close {
                     self.isDamagePatternsPresented = false
                 })
-            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
         }
         .activityView(isPresented: $isActivityPresented, activityItems: [LoadoutActivityItem(ships: [ship.loadout], managedObjectContext: managedObjectContext)], applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)])
         .navigationBarTitle("Actions")

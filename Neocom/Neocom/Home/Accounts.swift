@@ -38,12 +38,6 @@ struct Accounts: View {
             Button("Log In with EVE Online") {
                 let url = OAuth2.authURL(clientID: Config.current.esi.clientID, callbackURL: Config.current.esi.callbackURL, scope: ESI.Scope.all, state: "esi")
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
-//                controller.present(SFSafariViewController(url: url), animated: true, completion: nil)
-
-//                _ = Account(token: oAuth2Token, context: self.managedObjectContext)
-//                if self.managedObjectContext.hasChanges {
-//                    try? self.managedObjectContext.save()
-//                }
             }.frame(maxWidth: .infinity)
             Section {
                 ForEach(accounts, id: \Account.objectID) { account in

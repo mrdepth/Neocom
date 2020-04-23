@@ -13,6 +13,10 @@
 			<string>Fitting</string>
 			<key>LSHandlerRank</key>
 			<string>Default</string>
+			<key>NSUbiquitousDocumentUserActivityType</key>
+			<array>
+				<string>$(PRODUCT_BUNDLE_IDENTIFIER).fitting.activity</string>
+			</array>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>$(PRODUCT_BUNDLE_IDENTIFIER).fitting</string>

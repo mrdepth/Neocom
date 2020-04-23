@@ -22,7 +22,7 @@ struct FittingEditorLoadoutPicker: View {
             switch result {
             case let .type(type):
                 pilot.ship = try DGMShip(typeID: DGMTypeID(type.typeID))
-                project.gang.add(pilot)
+                project.gang?.add(pilot)
             case let .loadout(objectID):
                 let loadout = managedObjectContext.object(with: objectID) as! Loadout
                 pilot.ship = try DGMShip(typeID: DGMTypeID(loadout.typeID))
@@ -35,7 +35,7 @@ struct FittingEditorLoadoutPicker: View {
                 if let ship = pilot.ship, !project.loadouts.values.contains(loadout) {
                     project.loadouts[ship] = loadout
                 }
-                project.gang.add(pilot)
+                project.gang?.add(pilot)
             }
             completion()
         }

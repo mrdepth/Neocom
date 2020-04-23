@@ -71,8 +71,10 @@ struct PredefinedDamagePatternCell: View {
             NavigationView {
                 DamagePatternEditor(damagePattern: pattern) {
                     self.selectedDamagePattern = nil
-                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+                }
             }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }

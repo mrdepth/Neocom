@@ -15,18 +15,12 @@ import Expressible
 import EVEAPI
 
 class FittingProject: ObservableObject, Identifiable, Hashable {
-    let gang: DGMGang
-    var loadouts: [DGMShip: Loadout]
+    var gang: DGMGang?
+    var loadouts: [DGMShip: Loadout] = [:]
     var fleet: Fleet?
     var structure: DGMStructure?
     
-    init() throws {
-        gang = try DGMGang()
-        loadouts = [:]
-    }
-    
-    convenience init(ship: DGMTypeID, skillLevels: DGMSkillLevels) throws {
-        try self.init()
+    init(ship: DGMTypeID, skillLevels: DGMSkillLevels) throws {
         try add(ship: ship, skillLevels: skillLevels)
     }
     
@@ -39,14 +33,16 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
         else {
             let pilot = try DGMCharacter()
             pilot.setSkillLevels(skillLevels)
-            gang.add(pilot)
+            if gang == nil {
+                gang = try DGMGang()
+            }
+            gang?.add(pilot)
             pilot.ship = try DGMShip(typeID: ship)
             return pilot.ship!
         }
     }
     
-    convenience init(loadout: Loadout, skillLevels: DGMSkillLevels) throws {
-        try self.init()
+    init(loadout: Loadout, skillLevels: DGMSkillLevels) throws {
         try add(loadout: loadout, skillLevels: skillLevels)
     }
     
@@ -67,8 +63,7 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
         return ship
     }
     
-    convenience init(killmail: ESI.Killmail, skillLevels: DGMSkillLevels) throws {
-        try self.init()
+    init(killmail: ESI.Killmail, skillLevels: DGMSkillLevels) throws {
         try add(killmail: killmail, skillLevels: skillLevels)
     }
     
@@ -126,8 +121,7 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
         return ship
     }
     
-    convenience init(asset: AssetsData.Asset, skillLevels: DGMSkillLevels) throws {
-        try self.init()
+    init(asset: AssetsData.Asset, skillLevels: DGMSkillLevels) throws {
         try add(asset: asset, skillLevels: skillLevels)
     }
     
@@ -140,8 +134,7 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
         return try add(ship: DGMTypeID(asset.underlyingAsset.typeID), items: items, skillLevels: skillLevels)
     }
     
-    convenience init(fitting: ESI.Fittings.Element, skillLevels: DGMSkillLevels) throws {
-        try self.init()
+    init(fitting: ESI.Fittings.Element, skillLevels: DGMSkillLevels) throws {
         try add(fitting: fitting, skillLevels: skillLevels)
     }
     
@@ -159,20 +152,19 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
         self.loadouts = [:]
     }
     
-    convenience init(fleet: Fleet, configuration: FleetConfiguration, skillLevels: [URL: DGMSkillLevels]) throws {
-        try self.init()
+    init(fleet: Fleet, configuration: FleetConfiguration, skillLevels: [URL: DGMSkillLevels]) throws {
         try (fleet.loadouts?.allObjects as? [Loadout])?.forEach {
             let pilot = try add(loadout: $0, skillLevels: .level(5)).parent as? DGMCharacter
             if let url = pilot?.url, let skills = skillLevels[url] {
                 pilot?.setSkillLevels(skills)
             }
         }
-        gang.fleetConfiguration = configuration
+        gang?.fleetConfiguration = configuration
         self.fleet = fleet
     }
     
     func save(managedObjectContext: NSManagedObjectContext) {
-        let pilots = gang.pilots
+        let pilots = gang?.pilots ?? []
         pilots.forEach { pilot in
             guard let ship = pilot.ship else {return}
             
@@ -205,7 +197,7 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
             if fleet == nil {
                 fleet = Fleet(context: managedObjectContext)
             }
-            fleet?.configuration = try? JSONEncoder().encode(gang.fleetConfiguration)
+            fleet?.configuration = gang.flatMap{try? JSONEncoder().encode($0.fleetConfiguration)}
             let fleetLoadouts = Set(fleet?.loadouts?.allObjects as? [Loadout] ?? [])
             fleetLoadouts.subtracting(loadouts.values).forEach {
                 fleet?.removeFromLoadouts($0)

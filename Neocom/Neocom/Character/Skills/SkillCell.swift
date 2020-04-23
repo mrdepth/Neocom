@@ -196,7 +196,7 @@ struct SkillCellBody: View {
         }
 
         
-        let progressView = progress.map{progress in ProgressView(progress: progress, progressTintColor: Color(.placeholderText).opacity(0.5), progressTrackColor: .clear, borderColor: .clear)}
+        let progressView = progress.map{progress in ProgressView(progress: progress, progressTintColor: Color(.placeholderText).opacity(0.5), progressTrackColor: .clear, borderColor: Color(.placeholderText))}
         
         return HStack {
             VStack(alignment: .leading, spacing: 0) {
@@ -227,7 +227,7 @@ struct SkillCellBody: View {
                         Text("\(TimeIntervalFormatter.localizedString(from: trainingTime, precision: .minutes)) (\(Int((progress ?? 0) * 100))%)")
                             .padding(.horizontal, 2)
                             .background(progressView)
-                            .border(Color.primary.opacity(0.5), width: 0.5)
+//                            .border(Color.primary.opacity(0.5), width: 0.5)
                     }
                     else {
                         Text("\(TimeIntervalFormatter.localizedString(from: trainingTime, precision: .minutes))")
@@ -285,12 +285,14 @@ struct SkillCell_Previews: PreviewProvider {
         let skillPlanSkill = SkillPlanSkill(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
         skillPlanSkill.typeID = type.typeID
         skillPlanSkill.level = 3
-        return List {
+        return NavigationView {
+            List {
             SkillCell(type: type, pilot: pilot)
             SkillCell(type: type, pilot: nil)
             SkillCell(type: type, pilot: pilot, skillQueueItem: pilot.skillQueue.first!)
             SkillCell(type: type, pilot: pilot, skillQueueItem: pilot.skillQueue.last!)
             SkillCell(type: type, pilot: pilot, skillPlanSkill: skillPlanSkill)
+        }
         }.listStyle(GroupedListStyle())
         .environmentObject(SharedState.testState())
     }

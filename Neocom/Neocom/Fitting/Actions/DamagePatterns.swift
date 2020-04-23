@@ -25,7 +25,9 @@ struct DamagePatterns: View {
             .navigationBarItems(leading: BarButtonItems.close {
                 self.isNpcPickerPresented = false
             })
-        }.modifier(ServicesViewModifier(environment: environment, sharedState: sharedState))
+        }
+        .modifier(ServicesViewModifier(environment: environment, sharedState: sharedState))
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     var body: some View {

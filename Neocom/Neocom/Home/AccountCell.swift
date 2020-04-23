@@ -17,16 +17,20 @@ struct AccountCell: View {
     
     @ObservedObject var characterInfo: CharacterInfo
     @ObservedObject var accountInfo: AccountInfo
+    @Environment(\.managedObjectContext) private var managedObjectContext
 
     var body: some View {
-        AccountCellContent(character: (characterInfo.character?.value).map{AccountCellContent.Subject(name: $0.name, image: (characterInfo.characterImage?.value).map{Image(uiImage: $0)})},
+        let date = Date()
+        let item = accountInfo.skillQueue?.value?.filter{($0.finishDate ?? .distantPast) > date}
+            .min{$0.finishDate! < $1.finishDate!}
+        return AccountCellContent(character: (characterInfo.character?.value).map{AccountCellContent.Subject(name: $0.name, image: (characterInfo.characterImage?.value).map{Image(uiImage: $0)})},
                            corporation: (characterInfo.corporation?.value).map{AccountCellContent.Subject(name: $0.name, image: (characterInfo.corporationImage?.value).map{Image(uiImage: $0)})},
                            alliance: (characterInfo.alliance?.value).map{AccountCellContent.Subject(name: $0.name, image: (characterInfo.allianceImage?.value).map{Image(uiImage: $0)})},
                            ship: accountInfo.ship?.value?.shipName,
                            location: (accountInfo.location?.value).map{"\($0.solarSystemName ?? "") / \($0.constellation?.region?.regionName ?? "")"},
                            sp: accountInfo.skills?.value?.totalSP,
                            isk: accountInfo.balance?.value,
-                           skill: nil,
+                           skill: item,
                            skillQueue: accountInfo.skillQueue?.value?.count)
             
     }
@@ -39,5 +43,7 @@ struct AccountCell_Previews: PreviewProvider {
         let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
         return AccountCell(characterInfo: CharacterInfo(esi: esi, characterID: account!.characterID),
                            accountInfo: AccountInfo(esi: esi, characterID: account!.characterID, managedObjectContext: context))
+            .environmentObject(SharedState.testState())
+            .environment(\.managedObjectContext, context)
     }
 }

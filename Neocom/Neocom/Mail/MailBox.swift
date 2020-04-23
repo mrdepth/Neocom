@@ -80,7 +80,9 @@ struct MailBox: View {
         .sheet(isPresented: $isComposeMailPresented) {
             ComposeMail {
                 self.isComposeMailPresented = false
-            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
         }
 
     }

@@ -66,7 +66,9 @@ struct ZKillboardSearchForm: View {
                 }.navigationBarItems(leading: BarButtonItems.close {
                     self.isContactsPresented = false
                 })
-            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
     
@@ -110,7 +112,9 @@ struct ZKillboardSearchForm: View {
                 }.navigationBarItems(leading: BarButtonItems.close {
                     self.isShipPickerPresented = false
                 })
-            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
     
@@ -154,7 +158,9 @@ struct ZKillboardSearchForm: View {
                 }.navigationBarItems(leading: BarButtonItems.close {
                     self.isLocationPickerPresented = false
                 })
-            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
     

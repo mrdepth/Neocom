@@ -30,10 +30,13 @@ struct FittingEditorFleet: View {
                         FleetPilotCell(pilot: pilot).contentShape(Rectangle())
                     }.buttonStyle(PlainButtonStyle())
                 }
+            }
+            Section {
                 Button("Add Pilot") {
                     self.isLoadoutPickerPresented = true
                 }.frame(maxWidth: .infinity)
             }
+
         }.listStyle(GroupedListStyle())
             .sheet(isPresented: $isLoadoutPickerPresented) {
                 NavigationView {
@@ -42,7 +45,9 @@ struct FittingEditorFleet: View {
                     }.navigationBarItems(leading: BarButtonItems.close {
                         self.isLoadoutPickerPresented = false
                     })
-                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+                }
+                .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+                .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }

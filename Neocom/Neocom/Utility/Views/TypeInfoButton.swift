@@ -20,7 +20,9 @@ struct TypeInfoButton: View {
         }.sheet(isPresented: $isTypeInfoPresented) {
             NavigationView {
                 TypeInfo(type: self.type).navigationBarItems(leading: BarButtonItems.close {self.isTypeInfoPresented = false})
-            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }

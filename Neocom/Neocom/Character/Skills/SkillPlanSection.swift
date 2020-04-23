@@ -105,7 +105,9 @@ struct SkillPlanSection: View {
                 SkillPlans() { newSkillPlan in
                     self.isSkillPlansPresented = false
                 }
-            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }

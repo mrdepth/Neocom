@@ -79,7 +79,9 @@ struct AreaEffects: View {
 			.sheet(item: $selectedType) { type in
 				NavigationView {
 					TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
-				}.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+				}
+                .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+                .navigationViewStyle(StackNavigationViewStyle())
 		}
     }
 }

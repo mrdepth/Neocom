@@ -51,7 +51,9 @@ struct FittingModuleTypeInfo: View {
                     self.replace(with: newType)
                 }
                 .navigationBarItems(leading: BarButtonItems.close {self.isTypeVariationsPresented = false})
-            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }
@@ -112,7 +114,9 @@ struct FittingModuleActions: View {
     private func typeInfo(_ type: SDEInvType) -> some View {
         NavigationView {
             TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
-        }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+        }
+        .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     private var removeChargeButton: some View {
@@ -134,7 +138,9 @@ struct FittingModuleActions: View {
                 self.selectedChargeCategory = nil
             }
             .navigationBarItems(leading: BarButtonItems.close {self.selectedChargeCategory = nil}, trailing: self.module.charge != nil ? removeChargeButton : nil)
-        }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+        }
+        .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 
     private func replace(with type: SDEInvType) {

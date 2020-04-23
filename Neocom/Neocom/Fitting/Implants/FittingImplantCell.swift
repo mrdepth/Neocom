@@ -36,7 +36,8 @@ struct FittingImplantCell: View {
                     TypeInfoButton(type: $0)
                 }
             }
-        }.actionSheet(isPresented: $isActionsPresented) {
+        }
+        .actionSheet(isPresented: $isActionsPresented) {
             ActionSheet(title: Text("Implant"), buttons: [.destructive(Text("Delete"), action: {
                 (self.implant.parent as? DGMCharacter)?.remove(self.implant)
             }), .cancel()])
@@ -50,12 +51,15 @@ struct FittingImplantCell_Previews: PreviewProvider {
         let pilot = gang.pilots[0]
         let implant = pilot.implants.first!
 
-        return List {
-            FittingImplantCell(implant: implant)
-        }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environmentObject(gang)
+        return NavigationView {
+            List {
+                FittingImplantCell(implant: implant)
+            }.listStyle(GroupedListStyle())
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environmentObject(gang)
 
         
     }

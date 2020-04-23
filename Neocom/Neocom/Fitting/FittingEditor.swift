@@ -20,7 +20,8 @@ struct FittingEditor: View {
     let priceData = Lazy<PricesData, Never>()
 
     var body: some View {
-        let ship = project.structure ?? project.gang.pilots.first?.ship
+        let gang = project.gang
+        let ship = project.structure ?? gang?.pilots.first?.ship
         
         return Group {
             if ship != nil {
@@ -31,10 +32,10 @@ struct FittingEditor: View {
                             self.isModified = true
                     }
                 }
-                else {
-                    FittingShipEditor(gang: project.gang, ship: ship!, isModified: $isModified)
+                else if gang != nil {
+                    FittingShipEditor(gang: gang!, ship: ship!, isModified: $isModified)
                         .environmentObject(project)
-                        .onReceive(project.gang.objectWillChange) {
+                        .onReceive(gang!.objectWillChange) {
                             self.isModified = true
                     }
                 }
@@ -73,6 +74,7 @@ struct FittingShipEditor: View {
     @EnvironmentObject private var project: FittingProject
     @EnvironmentObject private var sharedState: SharedState
     @Binding var isModified: Bool
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     init(gang: DGMGang, ship: DGMShip, isModified: Binding<Bool>) {
         _gang = ObservedObject(initialValue: gang)
@@ -97,49 +99,59 @@ struct FittingShipEditor: View {
         }
         .sheet(isPresented: $isActionsPresented) {
             NavigationView {
-                FittingEditorShipActions().modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+                FittingEditorShipActions()
                     .navigationBarItems(leading: BarButtonItems.close {
                         self.isActionsPresented = false
                     })
             }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .environmentObject(self.gang)
             .environmentObject(self.currentShip)
             .environmentObject(self.project)
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 
     
     var body: some View {
-        VStack(spacing: 0) {
-            Picker("Page", selection: $currentPage) {
-                Text("Modules").tag(Page.modules)
-                Text("Drones").tag(Page.drones)
-                Text("Implants").tag(Page.implants)
-                Text("Fleet").tag(Page.fleet)
-                Text("Cargo").tag(Page.cargo)
-                Text("Stats").tag(Page.stats)
+        HStack(spacing: 0) {
+            VStack(spacing: 0) {
+                Picker("Page", selection: $currentPage) {
+                    Text("Modules").tag(Page.modules)
+                    Text("Drones").tag(Page.drones)
+                    Text("Implants").tag(Page.implants)
+                    Text("Fleet").tag(Page.fleet)
+                    Text("Cargo").tag(Page.cargo)
+                    if horizontalSizeClass != .regular {
+                        Text("Stats").tag(Page.stats)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+                Divider()
+                if currentPage == .modules {
+                    FittingEditorShipModules()
+                }
+                else if currentPage == .drones {
+                    FittingEditorShipDrones()
+                }
+                else if currentPage == .implants {
+                    FittingEditorImplants()
+                }
+                else if currentPage == .fleet {
+                    FittingEditorFleet(ship: $currentShip)
+                }
+                else if currentPage == .stats {
+                    FittingEditorStats()
+                }
+                else if currentPage == .cargo {
+                    FittingCargo()
+                }
             }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding(.horizontal)
-            .padding(.vertical, 8)
-            Divider()
-            if currentPage == .modules {
-                FittingEditorShipModules()
-            }
-            else if currentPage == .drones {
-                FittingEditorShipDrones()
-            }
-            else if currentPage == .implants {
-                FittingEditorImplants()
-            }
-            else if currentPage == .fleet {
-                FittingEditorFleet(ship: $currentShip)
-            }
-            else if currentPage == .stats {
+            if horizontalSizeClass == .regular {
+                Divider().edgesIgnoringSafeArea(.bottom)
                 FittingEditorStats()
-            }
-            else if currentPage == .cargo {
-                FittingCargo()
             }
         }.navigationBarItems(trailing: actionsButton)
         .environmentObject(gang)
@@ -148,6 +160,7 @@ struct FittingShipEditor: View {
         .onReceive(gang.objectWillChange.merge(with: currentShip.objectWillChange)) { _ in
             self.isModified = true
         }
+        .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
 }
 
@@ -160,6 +173,7 @@ struct FittingStructureEditor: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var project: FittingProject
     @EnvironmentObject private var sharedState: SharedState
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     private var title: String {
         let typeName = structure.type(from: self.managedObjectContext)?.typeName ?? "Unknown"
@@ -178,39 +192,49 @@ struct FittingStructureEditor: View {
         }
         .sheet(isPresented: $isActionsPresented) {
             NavigationView {
-                FittingEditorStructureActions().modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+                FittingEditorStructureActions()
                     .navigationBarItems(leading: BarButtonItems.close {
                         self.isActionsPresented = false
                     })
             }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .environmentObject(self.structure)
             .environmentObject(self.project)
+            .navigationViewStyle(StackNavigationViewStyle())
 
         }
     }
 
     
     var body: some View {
-        VStack(spacing: 0) {
-            Picker("Page", selection: $currentPage) {
-                Text("Modules").tag(Page.modules)
-                Text("Fighters").tag(Page.drones)
-                Text("Stats").tag(Page.stats)
+        HStack(spacing: 1) {
+            VStack(spacing: 0) {
+                Picker("Page", selection: $currentPage) {
+                    Text("Modules").tag(Page.modules)
+                    Text("Fighters").tag(Page.drones)
+                    if horizontalSizeClass != .regular {
+                        Text("Stats").tag(Page.stats)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+                Divider()
+                if currentPage == .modules {
+                    FittingEditorShipModules()
+                }
+                else if currentPage == .drones {
+                    FittingEditorShipDrones()
+                }
+                else if currentPage == .stats {
+                    FittingEditorStats()
+                }
             }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding(.horizontal)
-            .padding(.vertical, 8)
-            Divider()
-            if currentPage == .modules {
-                FittingEditorShipModules()
-            }
-            else if currentPage == .drones {
-                FittingEditorShipDrones()
-            }
-            else if currentPage == .stats {
+            if horizontalSizeClass == .regular {
                 FittingEditorStats()
             }
-        }.navigationBarItems(trailing: actionsButton)
+        }
+        .navigationBarItems(trailing: actionsButton)
         .environmentObject(structure as DGMShip)
         .navigationBarTitle(Text(title), displayMode: .inline)
     }
@@ -222,6 +246,7 @@ struct FittingEditor_Previews: PreviewProvider {
         return NavigationView {
             FittingEditor(project: FittingProject(gang: gang))
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())

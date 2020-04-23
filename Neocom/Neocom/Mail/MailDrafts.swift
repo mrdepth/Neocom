@@ -23,7 +23,7 @@ struct MailDrafts: View {
                 Button(action: {
                     self.selectedDraft = draft
                 }) {
-                    MailDraftCell(draft: draft)
+                    MailDraftCell(draft: draft).contentShape(Rectangle())
                 }.buttonStyle(PlainButtonStyle())
             }.onDelete { indices in
                 indices.map{self.drafts[$0]}.forEach {
@@ -35,7 +35,9 @@ struct MailDrafts: View {
         .sheet(item: $selectedDraft) { draft in
             ComposeMail(draft: draft) {
                 self.selectedDraft = nil
-            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
         }.navigationBarTitle("Drafts")
         .navigationBarItems(trailing: EditButton())
     }

@@ -155,6 +155,7 @@
 		16875A84244073730081B7E6 /* FittingEditorFuelStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16875A83244073730081B7E6 /* FittingEditorFuelStats.swift */; };
 		16875A862440A0240081B7E6 /* StructureLoadouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16875A852440A0240081B7E6 /* StructureLoadouts.swift */; };
 		1687997924310E0300D78BBE /* IncursionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1687997824310E0300D78BBE /* IncursionCell.swift */; };
+		16882A8E24518EC10094C734 /* ComposeMailLoadoutsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16882A8D24518EC10094C734 /* ComposeMailLoadoutsPicker.swift */; };
 		16888413242CD4F70099C769 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16888412242CD4F70099C769 /* Debug.swift */; };
 		16888415242CD6D30099C769 /* LoadoutsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16888414242CD6D30099C769 /* LoadoutsList.swift */; };
 		16888417242CF0670099C769 /* LoadoutsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16888416242CF0670099C769 /* LoadoutsSection.swift */; };
@@ -509,6 +510,7 @@
 		16875A83244073730081B7E6 /* FittingEditorFuelStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorFuelStats.swift; sourceTree = "<group>"; };
 		16875A852440A0240081B7E6 /* StructureLoadouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureLoadouts.swift; sourceTree = "<group>"; };
 		1687997824310E0300D78BBE /* IncursionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncursionCell.swift; sourceTree = "<group>"; };
+		16882A8D24518EC10094C734 /* ComposeMailLoadoutsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMailLoadoutsPicker.swift; sourceTree = "<group>"; };
 		16888412242CD4F70099C769 /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		16888414242CD6D30099C769 /* LoadoutsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadoutsList.swift; sourceTree = "<group>"; };
 		16888416242CF0670099C769 /* LoadoutsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadoutsSection.swift; sourceTree = "<group>"; };
@@ -862,6 +864,7 @@
 				16B4C6E2240792300009ACD4 /* Dgmpp */,
 				16856687243CB95A00F74517 /* LoadoutCoding */,
 				16865CCA243E250900EDDF15 /* Activities */,
+				16D6741B2451D564002C277F /* UserActivities */,
 				1638690823EC217400681612 /* Atomic.swift */,
 				1632472C239145FA00227480 /* Cache.swift */,
 				169A72C8238BD9AA00E4C181 /* Colors.swift */,
@@ -981,6 +984,7 @@
 				1653796923F6A1BC000F082A /* MailLabel.swift */,
 				1693A85D23FD66E90033A793 /* MailDrafts.swift */,
 				16DBDE8723FA875E006B0BC3 /* ComposeMail.swift */,
+				16882A8D24518EC10094C734 /* ComposeMailLoadoutsPicker.swift */,
 				16B8E3B023FBDB440096B066 /* ContactsSearchResults.swift */,
 				16B8E3B223FBDDA50096B066 /* ContactCell.swift */,
 			);
@@ -1409,6 +1413,13 @@
 			path = Loadouts;
 			sourceTree = "<group>";
 		};
+		16D6741B2451D564002C277F /* UserActivities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UserActivities;
+			sourceTree = "<group>";
+		};
 		16DFF82D238D35F6004C1185 /* Database */ = {
 			isa = PBXGroup;
 			children = (
@@ -1682,6 +1693,7 @@
 				169D2803241A0E0F002AB469 /* CPUResource.swift in Sources */,
 				1630ED7D23CC9D69001DBAA7 /* CharacterSheetHeader.swift in Sources */,
 				16E2AD9F23B214EF00B90204 /* CertificateInfoHeader.swift in Sources */,
+				16882A8E24518EC10094C734 /* ComposeMailLoadoutsPicker.swift in Sources */,
 				16859F3E2431EC7B00824552 /* IncursionSolarSystems.swift in Sources */,
 				12B1A3BE239D2F8F00BED705 /* MarketHistory.swift in Sources */,
 				169D27FD241A0C63002AB469 /* FittingEditorStats.swift in Sources */,

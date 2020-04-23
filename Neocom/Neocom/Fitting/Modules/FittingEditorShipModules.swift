@@ -70,7 +70,9 @@ struct FittingEditorShipModules: View {
             FittingModuleActions(module: module) {
                 self.selection = nil
             }
-        }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+        }
+        .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     var body: some View {

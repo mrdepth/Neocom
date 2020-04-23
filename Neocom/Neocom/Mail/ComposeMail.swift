@@ -11,6 +11,7 @@ import EVEAPI
 import CoreData
 import Combine
 import Alamofire
+import Expressible
 
 struct ComposeMail: View {
     var draft: MailDraft? = nil
@@ -48,8 +49,12 @@ fileprivate struct ComposeMailContent: View {
     @State private var error: IdentifiableWrapper<Error>?
     @State private var needsSaveDraft = true
     @State private var isSaveDraftAlertPresented = false
+    @State private var isLoadoutPickerPresented = false
+    @State private var selectedRange: NSRange = NSRange(location: 0, length: 0)
     private var draft: MailDraft?
-    
+    @Environment(\.self) private var environment
+    @EnvironmentObject private var sharedState: SharedState
+
     @ObservedObject var contactsSearchController: SearchController<[Contact]?, NSAttributedString>
     @State private var contactsInitialLoading: AnyPublisher<[Int64:Contact], Never>
 
@@ -121,13 +126,13 @@ fileprivate struct ComposeMailContent: View {
         return Button(action: {
             self.sendMail()
         }) {
-            Image(systemName: "paperplane")
+            Image(systemName: "paperplane").frame(minWidth: 24).contentShape(Rectangle())
         }.disabled(recipients.isEmpty || text.length == 0 || sendSubscription != nil)
     }
     
     private var cancelButton: some View {
         BarButtonItems.close {
-            if self.text.length > 0 {
+            if self.draft == nil && (self.text.length > 0 || !self.subject.isEmpty) {
                 self.isSaveDraftAlertPresented = true
             }
             else {
@@ -157,9 +162,31 @@ fileprivate struct ComposeMailContent: View {
         draft.date = Date()
     }
     
+    private func attach(_ loadout: Loadout) {
+        guard let ship = loadout.ship, let dna = try? DNALoadoutEncoder().encode(ship), let url = URL(dna: dna) else {return}
+        guard let type = try? managedObjectContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == loadout.typeID).first() else {return}
+        guard let mutableString = text.mutableCopy() as? NSMutableAttributedString else {return}
+        let name = !ship.name.isEmpty ? ship.name : type.typeName ?? ""
+        let s = NSAttributedString(string: name, attributes: [.link: url, .font: UIFont.preferredFont(forTextStyle: .body)])
+        mutableString.replaceCharacters(in: selectedRange, with: s)
+        text = mutableString
+    }
+    
     private var attachmentButton: some View {
-        Button(action: {}) {
-            Image(systemName: "paperclip")
+        Button(action: {self.isLoadoutPickerPresented = true}) {
+            Image(systemName: "paperclip").frame(minWidth: 24).contentShape(Rectangle())
+        }
+        .sheet(isPresented: $isLoadoutPickerPresented) {
+                NavigationView {
+                    ComposeMailLoadoutsPicker { loadout in
+                        self.attach(loadout)
+                        self.isLoadoutPickerPresented = false
+                    }.navigationBarItems(leading: BarButtonItems.close {
+                        self.isLoadoutPickerPresented = false
+                    })
+                }
+                .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+                .navigationViewStyle(StackNavigationViewStyle())
         }
     }
     
@@ -211,7 +238,7 @@ fileprivate struct ComposeMailContent: View {
                     }
                 }.padding(.horizontal, 16)
                 Divider()
-                TextView(text: self.$text, typingAttributes: [.font: UIFont.preferredFont(forTextStyle: .body)]).padding(.horizontal, 16)
+                TextView(text: self.$text, selectedRange: self.$selectedRange, typingAttributes: [.font: UIFont.preferredFont(forTextStyle: .body)]).padding(.horizontal, 16)
             }.overlay(self.contactsSearchView, alignment: Alignment(horizontal: .center, vertical: VerticalAlignment(ContactsSearchAlignmentID.self)))
                 .overlay(self.sendSubscription != nil ? ActivityIndicator() : nil)
         }
@@ -223,7 +250,9 @@ fileprivate struct ComposeMailContent: View {
         .padding(.top)
             .navigationBarTitle("Compose Mail")//, displayMode: .inline)
             .navigationBarItems(leading: cancelButton,
-                                trailing: sendButton)
+                                trailing: HStack{
+                                    attachmentButton
+                                    sendButton})
             .alert(item: self.$error) { error in
                 Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: Alert.Button.default(Text("Close")))
         }

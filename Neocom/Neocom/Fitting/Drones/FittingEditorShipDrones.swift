@@ -81,7 +81,9 @@ struct FittingEditorShipDrones: View {
             FittingDroneActions(drone: drone) {
                 self.selection = nil
             }
-        }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+        }
+        .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     private func section(squadron: DGMDrone.Squadron, drones: [(key: GroupingKey, value: DGMDroneGroup)]) -> some View {

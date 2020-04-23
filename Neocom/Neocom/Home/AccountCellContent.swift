@@ -7,8 +7,12 @@
 //
 
 import SwiftUI
+import EVEAPI
+import Expressible
 
 struct AccountCellContent: View {
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    
     struct Subject {
         let name: String
         let image: Image?
@@ -27,7 +31,7 @@ struct AccountCellContent: View {
     var location: String?
     var sp: Int64?
     var isk: Double?
-    var skill: Skill?
+    var skill: ESI.SkillQueueItem?
     var skillQueue: Int?
     
     private var shipAndLocation: some View {
@@ -38,17 +42,30 @@ struct AccountCellContent: View {
     }
     
     private var skills: some View {
-        Group {
+        var skillName: String?
+        var t: TimeInterval?
+        var progress: Float?
+        if let skill = self.skill {
+            let type = try? managedObjectContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == Int32(skill.skillID)).first()
+            let item = type.flatMap{Pilot.Skill(type: $0)}.map{Pilot.SkillQueueItem(skill: $0, queuedSkill: skill)}
+            skillName = type?.typeName
+            t = skill.finishDate?.timeIntervalSinceNow
+            progress = item?.trainingProgress
+        }
+        
+        return Group {
             HStack{
                 if skill != nil {
-                    SkillName(name: skill!.name, level: skill!.level)
+                    SkillName(name: skillName ?? " ", level: skill!.finishedLevel)
                 }
                 else {
-                    Text("")
+                    Text(" ")
                 }
                 Spacer()
-                Text(skill.map{skill in TimeIntervalFormatter.localizedString(from: skill.trainingTime, precision: .minutes)} ?? " ")
-            }.padding(.horizontal).background(ProgressView(progress: 0.5).accentColor(.skyBlueBackground))
+                t.map { t in
+                    Text(TimeIntervalFormatter.localizedString(from: t, precision: .minutes))
+                }
+            }.padding(.horizontal).background(ProgressView(progress: progress ?? 0).accentColor(.skyBlueBackground))
             Text(skillQueue.map{$0 > 0 ? "\($0) skills in queue" : "Skill queue is empty"} ?? "")
         }
     }
@@ -114,7 +131,14 @@ struct AccountCellContent_Previews: PreviewProvider {
                                      location: "Rens VII, Moon 8",
                                      sp: 1000,
                                      isk: 1000,
-                                     skill: .init(name: "Battleship", level: 5, trainingTime: 3600 * 48 - 1),
+                                     skill: ESI.SkillQueueItem(finishDate: Date(timeIntervalSinceNow: 360000),
+                                                               finishedLevel: 5,
+                                                               levelEndSP: 1000000,
+                                                               levelStartSP: 0,
+                                                               queuePosition: 0,
+                                                               skillID: 24313,
+                                                               startDate: Date(timeIntervalSinceNow: -3600),
+                                                               trainingStartSP: 0),
                                      skillQueue: 5).padding()
         return VStack {
             row.background(Color(UIColor.systemGroupedBackground)).colorScheme(.light)
@@ -129,5 +153,8 @@ struct AccountCellContent_Previews: PreviewProvider {
             skill: nil,
             skillQueue: nil).padding().background(Color(UIColor.systemGroupedBackground))
         }
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environmentObject(SharedState.testState())
+
     }
 }

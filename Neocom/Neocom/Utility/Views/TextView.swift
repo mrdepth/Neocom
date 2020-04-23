@@ -21,6 +21,7 @@ struct TextView: View {
     }
     
     @Binding var text: NSAttributedString
+    var selectedRange: Binding<NSRange>? = nil
     var typingAttributes: [NSAttributedString.Key: Any] = [:]
     var placeholder: NSAttributedString = NSAttributedString()
     var style: Style = .default
@@ -28,13 +29,14 @@ struct TextView: View {
     var onEndEditing: ((UITextView) -> Void)? = nil
 
     var body: some View {
-        TextViewRepresentation(text: $text, typingAttributes: typingAttributes, placeholder: placeholder, style: style, onBeginEditing: onBeginEditing, onEndEditing: onEndEditing)
+        TextViewRepresentation(text: $text, selectedRange: selectedRange, typingAttributes: typingAttributes, placeholder: placeholder, style: style, onBeginEditing: onBeginEditing, onEndEditing: onEndEditing)
     }
     
 }
 
 private struct TextViewRepresentation: UIViewRepresentable {
     @Binding var text: NSAttributedString
+    var selectedRange: Binding<NSRange>?
     var typingAttributes: [NSAttributedString.Key: Any]
     var placeholder: NSAttributedString
     var style: TextView.Style
@@ -43,6 +45,7 @@ private struct TextViewRepresentation: UIViewRepresentable {
 
     class Coordinator: NSObject, UITextViewDelegate {
         var text: Binding<NSAttributedString>
+        var selectedRange: Binding<NSRange>?
         var placeholder: NSAttributedString
         var typingAttributes: [NSAttributedString.Key: Any]
         var onBeginEditing: ((UITextView) -> Void)?
@@ -50,8 +53,9 @@ private struct TextViewRepresentation: UIViewRepresentable {
         var textView: SelfSizedTextView?
         private var attachments = [TextAttachmentViewProtocol]()
 
-        init(text: Binding<NSAttributedString>, placeholder: NSAttributedString, typingAttributes: [NSAttributedString.Key: Any], onBeginEditing: ((UITextView) -> Void)?, onEndEditing: ((UITextView) -> Void)?) {
+        init(text: Binding<NSAttributedString>, selectedRange: Binding<NSRange>?, placeholder: NSAttributedString, typingAttributes: [NSAttributedString.Key: Any], onBeginEditing: ((UITextView) -> Void)?, onEndEditing: ((UITextView) -> Void)?) {
             self.text = text
+            self.selectedRange = selectedRange
             self.placeholder = placeholder
             self.typingAttributes = typingAttributes
             self.onBeginEditing = onBeginEditing
@@ -88,6 +92,12 @@ private struct TextViewRepresentation: UIViewRepresentable {
         func textViewDidChange(_ textView: UITextView) {
             text.wrappedValue = textView.attributedText//.copy() as! NSAttributedString
         }
+        
+        func textViewDidChangeSelection(_ textView: UITextView) {
+            DispatchQueue.main.async {
+                self.selectedRange?.wrappedValue = textView.selectedRange
+            }
+        }
     }
 
     func makeUIView(context: UIViewRepresentableContext<TextViewRepresentation>) -> SelfSizedTextView {
@@ -118,6 +128,7 @@ private struct TextViewRepresentation: UIViewRepresentable {
     
     func updateUIView(_ uiView: SelfSizedTextView, context: UIViewRepresentableContext<TextViewRepresentation>) {
         context.coordinator.text = $text
+        context.coordinator.selectedRange = selectedRange
         func attributes() -> [NSAttributedString.Key: Any] {
             var attributes = self.typingAttributes
             attributes[.foregroundColor] = UIColor.secondaryLabel
@@ -127,13 +138,16 @@ private struct TextViewRepresentation: UIViewRepresentable {
         if !uiView.isFirstResponder {
             uiView.attributedText = text.length > 0 ? text : placeholder
         }
+        else if !uiView.attributedText.isEqual(to: text) {
+            uiView.attributedText = text
+        }
         uiView.typingAttributes = typingAttributes
         uiView.style = style
     }
     
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(text: $text, placeholder: placeholder, typingAttributes: typingAttributes, onBeginEditing: onBeginEditing, onEndEditing: onEndEditing)
+        Coordinator(text: $text, selectedRange: selectedRange, placeholder: placeholder, typingAttributes: typingAttributes, onBeginEditing: onBeginEditing, onEndEditing: onEndEditing)
     }
     
 }

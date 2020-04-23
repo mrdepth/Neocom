@@ -92,7 +92,7 @@ struct FittingEditorShipModulesSection: View {
             slot.image.map{Icon($0, size: .small)}
             Text(slot.title?.uppercased() ?? "")
             Spacer()
-            Button(grouped ? "UNGROUP" : "GROUP" ) {
+            Button(grouped ? "SPLIT" : "MERGE" ) {
                 self.grouped.toggle()
             }
         }

@@ -68,8 +68,10 @@ struct FittingCargo: View {
             FittingCargoActions(cargo: cargo) {
                 self.selection = nil
             }
-        }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+        }
+        .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         .environmentObject(ship)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     struct Row {

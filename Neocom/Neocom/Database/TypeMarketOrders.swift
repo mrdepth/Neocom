@@ -68,7 +68,9 @@ struct TypeMarketOrders: View {
                     //                        self.marketOrders.set(TypeMarketData(type: self.type, esi: self.esi, regionID: self.marketRegionID, managedObjectContext: self.backgroundManagedObjectContext))
                     self.isMarketRegionPickerPresented = false
                 }.navigationBarItems(trailing: Button("Cancel") {self.isMarketRegionPickerPresented = false})
-            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
         }
 
     }

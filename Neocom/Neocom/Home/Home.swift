@@ -124,11 +124,13 @@ struct Home: View {
 //                    }
                     self.isAccountsPresented = false
                 }
-                .navigationBarItems(leading: Button("Close") {
+                .navigationBarItems(leading: BarButtonItems.close {
                     self.isAccountsPresented = false
                 }, trailing: EditButton())
                     
-            }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
         }
 //        .navigationBarTitle("Neocom")
 //        .navigationBarHidden(true)

@@ -74,3 +74,9 @@ struct DNALoadoutEncoder: LoadoutEncoder {
     }
 }
 
+extension URL {
+    init?(dna: Data) {
+        guard let s = String(data: dna, encoding: .utf8) else {return nil}
+        self.init(string: "fitting:\(s)")
+    }
+}

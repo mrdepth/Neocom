@@ -62,8 +62,10 @@ struct CustomDamagePatternCell: View {
             NavigationView {
                 DamagePatternEditor(damagePattern: pattern) {
                     self.selectedDamagePattern = nil
-                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+                }
             }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }
@@ -88,8 +90,10 @@ struct NewDamagePatternButton: View {
             NavigationView {
                 DamagePatternEditor(damagePattern: pattern) {
                     self.selectedDamagePattern = nil
-                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+                }
             }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }

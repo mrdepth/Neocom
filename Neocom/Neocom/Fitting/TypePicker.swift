@@ -23,6 +23,7 @@ class TypePickerManager {
         }
         .modifier(ServicesViewModifier(environment: environment, sharedState: sharedState))
         .environmentObject(typePickerState[parentGroup, default: TypePickerState()])
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

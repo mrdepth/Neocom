@@ -18,6 +18,7 @@ struct FittingEditorStructureActions: View {
     @State private var isAreaEffectsPresented = false
     @State private var isCharactersPresented = false
     @State private var isDamagePatternsPresented = false
+    @State private var isActivityPresented = false
     @EnvironmentObject private var sharedState: SharedState
     
     private var areaEffects: some View {
@@ -55,6 +56,12 @@ struct FittingEditorStructureActions: View {
                     }
                 }
             }
+            
+            Section {
+                Button("Share") {
+                    self.isActivityPresented = true
+                }.frame(maxWidth: .infinity)
+            }
         }
         .listStyle(GroupedListStyle())
         .sheet(isPresented: $isDamagePatternsPresented) {
@@ -67,7 +74,8 @@ struct FittingEditorStructureActions: View {
                 })
             }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
-    .navigationBarTitle("Actions")
+        .activityView(isPresented: $isActivityPresented, activityItems: [LoadoutActivityItem(ships: [structure.loadout], managedObjectContext: managedObjectContext)], applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)])
+        .navigationBarTitle("Actions")
     }
 }
 

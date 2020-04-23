@@ -25,6 +25,10 @@ extension SDEInvType {
     class var dominix: SDEInvType {
         return try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 645).first()!
     }
+    
+    class var gallenteCarrier: SDEInvType {
+        return try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 24313).first()!
+    }
 }
 
 extension DGMGang {

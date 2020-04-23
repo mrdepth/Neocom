@@ -19,6 +19,7 @@ struct FittingEditorShipActions: View {
 	@State private var isAreaEffectsPresented = false
     @State private var isCharactersPresented = false
     @State private var isDamagePatternsPresented = false
+    @State private var isActivityPresented = false
     @EnvironmentObject private var sharedState: SharedState
 	
 	private var areaEffects: some View {
@@ -78,6 +79,12 @@ struct FittingEditorShipActions: View {
                     Text("Required Skill")
                 }
             }
+            
+            Section {
+                Button("Share") {
+                    self.isActivityPresented = true
+                }.frame(maxWidth: .infinity)
+            }
 		}
         .listStyle(GroupedListStyle())
         .sheet(isPresented: $isDamagePatternsPresented) {
@@ -90,7 +97,8 @@ struct FittingEditorShipActions: View {
                 })
             }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
         }
-    .navigationBarTitle("Actions")
+        .activityView(isPresented: $isActivityPresented, activityItems: [LoadoutActivityItem(ships: [ship.loadout], managedObjectContext: managedObjectContext)], applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)])
+        .navigationBarTitle("Actions")
     }
 }
 

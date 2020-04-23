@@ -109,7 +109,10 @@ func dgmpp() throws {
 		let groups = Set(types.compactMap { type -> SDEDgmppItemGroup? in
 			guard let marketGroup = type.marketGroup else {return nil}
 			guard let group = SDEDgmppItemGroup.itemGroup(marketGroup: marketGroup, category: category) else {return nil}
-			type.dgmppItem = SDEDgmppItem(context: .current)
+//			type.dgmppItem = SDEDgmppItem(context: .current)
+            if type.dgmppItem == nil {
+                type.dgmppItem = SDEDgmppItem(context: .current)
+            }
 			group.addToItems(type.dgmppItem!)
 			return group
 		})
@@ -199,7 +202,6 @@ func dgmpp() throws {
 //	}
 	
 	try importItems(category: SDEDgmppItemCategory(categoryID: .service, subcategory: 66), categoryName: "Service Slot", predicate: NSPredicate(format: "group.category.categoryID == 66 AND ANY effects.effectID == 6306"))
-    try importItems(category: SDEDgmppItemCategory(categoryID: .cargo), categoryName: "Cargo", predicate: NSPredicate(format: "marketGroup != nil"))
 	
 	do {
 		let request = NSFetchRequest<NSDictionary>(entityName: "DgmTypeAttribute")
@@ -411,6 +413,8 @@ func dgmpp() throws {
 		
 	}
 	
+    try importItems(category: SDEDgmppItemCategory(categoryID: .cargo), categoryName: "Cargo", predicate: NSPredicate(format: "marketGroup != nil"))
+
 //	try database.exec("SELECT * FROM version") { row in
 //		let version = NCDBVersion(context: .current)
 //		version.expansion = expansion

@@ -26,6 +26,12 @@ struct ActivityView: UIViewControllerRepresentable {
     }
 }
 
+extension View {
+    func activityView(isPresented: Binding<Bool>, activityItems: [Any], applicationActivities: [UIActivity]? = nil) -> some View {
+        self.background(ActivityView(activityItems: activityItems, applicationActivities: applicationActivities, isPresented: isPresented))
+    }
+}
+
 class ActivityViewWrapper: UIViewController {
     var activityItems: [Any]
     var applicationActivities: [UIActivity]?
@@ -50,7 +56,7 @@ class ActivityViewWrapper: UIViewController {
     
     fileprivate func updateState() {
         guard parent != nil else {return}
-        let isActivityPresented = presentedViewController != nil
+        let isActivityPresented = presentedViewController is UIActivityViewController
         if isActivityPresented != isPresented.wrappedValue {
             if !isActivityPresented {
                 let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)

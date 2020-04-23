@@ -111,8 +111,24 @@ extension TypeInfo {
     
     private func basicInfo(for pilot: Pilot?) -> some View {
         let blueprints = Set((type.products?.allObjects as? [SDEIndProduct])?.compactMap{$0.activity?.blueprintType?.type} ?? []).sorted{$0.typeName! < $1.typeName!}
+        let skillLevels: Range<Int>
+        let skill = Pilot.Skill(type: type)
+        if skill != nil {
+            let level = pilot?.trainedSkills[Int(type.typeID)]?.trainedSkillLevel ?? 0
+            skillLevels = (level + 1)..<6
+        }
+        else {
+            skillLevels = 0..<0
+        }
         
         return Group {
+            if !skillLevels.isEmpty && skill != nil {
+                Section(header: Text("SKILL PLAN")) {
+                    ForEach(skillLevels) { level in
+                        SkillLevelCell(type: self.type, skill: skill!, level: level, pilot: pilot)
+                    }
+                }
+            }
             if !blueprints.isEmpty {
                 Section(header: Text("MANUFACTURING")) {
                     ForEach(blueprints, id: \.objectID) { type in
@@ -133,7 +149,7 @@ struct TypeInfo_Previews: PreviewProvider {
     static var previews: some View {
 //        let account = Account(token: oAuth2Token, context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
         return NavigationView {
-            TypeInfo(type: .dominix)
+            TypeInfo(type: .gallenteCarrier)
 //                .environment(\.account, account)
 //                .environment(\.esi, ESI(token: oAuth2Token))
         }

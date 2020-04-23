@@ -397,8 +397,11 @@ extension DGMCharacter {
         set {
             newValue.implants?.forEach {try? add(DGMImplant(typeID: $0))}
             newValue.boosters?.forEach {try? add(DGMBooster(typeID: $0))}
-//            ship = try? DGMShip(typeID: newValue.typeID)
-//            ship?.loadout = newValue
+            if ship == nil {
+                ship = try? DGMShip(typeID: newValue.typeID)
+                ship?.name = newValue.name
+            }
+            ship?.loadout = newValue
         }
     }
 }

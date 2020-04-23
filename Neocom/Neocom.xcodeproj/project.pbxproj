@@ -176,6 +176,7 @@
 		168E4048242F536E00C03F00 /* LoyaltyOffersLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E4047242F536E00C03F00 /* LoyaltyOffersLoader.swift */; };
 		168E404A242F659800C03F00 /* LoyaltyOfferRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E4049242F659800C03F00 /* LoyaltyOfferRequirement.swift */; };
 		168ED8842450430C00485125 /* FittingEditorStructureActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168ED8832450430C00485125 /* FittingEditorStructureActions.swift */; };
+		168ED88624507C9000485125 /* SkillLevelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168ED88524507C9000485125 /* SkillLevelCell.swift */; };
 		168F1CBB2434C1B700F8EF41 /* PlanetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168F1CBA2434C1B700F8EF41 /* PlanetLoader.swift */; };
 		168F1CBD2434FEC400F8EF41 /* Planetaries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168F1CBC2434FEC400F8EF41 /* Planetaries.swift */; };
 		168F1CBF2434FFCA00F8EF41 /* PlanetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168F1CBE2434FFCA00F8EF41 /* PlanetCell.swift */; };
@@ -529,6 +530,7 @@
 		168E4047242F536E00C03F00 /* LoyaltyOffersLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyOffersLoader.swift; sourceTree = "<group>"; };
 		168E4049242F659800C03F00 /* LoyaltyOfferRequirement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyOfferRequirement.swift; sourceTree = "<group>"; };
 		168ED8832450430C00485125 /* FittingEditorStructureActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorStructureActions.swift; sourceTree = "<group>"; };
+		168ED88524507C9000485125 /* SkillLevelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillLevelCell.swift; sourceTree = "<group>"; };
 		168F1CBA2434C1B700F8EF41 /* PlanetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetLoader.swift; sourceTree = "<group>"; };
 		168F1CBC2434FEC400F8EF41 /* Planetaries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Planetaries.swift; sourceTree = "<group>"; };
 		168F1CBE2434FFCA00F8EF41 /* PlanetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanetCell.swift; sourceTree = "<group>"; };
@@ -1322,6 +1324,7 @@
 				164156162397E68A0063A39C /* TypeInfoSkillCell.swift */,
 				167CB4AB23992828008980EE /* TypeInfoVariationsCell.swift */,
 				1602719723A2792900067AA1 /* TypeMarketOrderCell.swift */,
+				168ED88524507C9000485125 /* SkillLevelCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1573,6 +1576,7 @@
 				169D2807241A0E6D002AB469 /* TurretsResource.swift in Sources */,
 				164E418223EAC90400EF16CE /* OptimalAttributes.swift in Sources */,
 				122B4AED239EAE2000461A1A /* Preferences.swift in Sources */,
+				168ED88624507C9000485125 /* SkillLevelCell.swift in Sources */,
 				168ED8842450430C00485125 /* FittingEditorStructureActions.swift in Sources */,
 				160FEDBF23F434D400F0B76E /* WalletTransactions.swift in Sources */,
 				16888419242CF3910099C769 /* FittingEditorLoadoutPicker.swift in Sources */,

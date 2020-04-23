@@ -34,7 +34,7 @@ struct OptimalAttributes: View {
     var body: some View {
         let optimal = Pilot.Attributes(optimalFor: trainingQueue) + pilot.augmentations
         let trainingTime = trainingQueue.trainingTime()
-        let optimalTrainingTime = trainingQueue.trainingTime(with: optimal + pilot.augmentations)
+        let optimalTrainingTime = trainingQueue.trainingTime(with: optimal)
         let dt = trainingTime - optimalTrainingTime
         return List {
             Section(header:  Text("OPTIMAL: \(TimeIntervalFormatter.localizedString(from: optimalTrainingTime, precision: .seconds).uppercased())"),

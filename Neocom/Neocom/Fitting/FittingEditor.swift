@@ -32,7 +32,7 @@ struct FittingEditor: View {
                     }
                 }
                 else {
-                    FittingShipEditor(gang: project.gang, ship: ship!)
+                    FittingShipEditor(gang: project.gang, ship: ship!, isModified: $isModified)
                         .environmentObject(project)
                         .onReceive(project.gang.objectWillChange) {
                             self.isModified = true
@@ -64,7 +64,6 @@ fileprivate enum Page: CaseIterable {
 
 
 struct FittingShipEditor: View {
-    
     @State private var currentPage = Page.modules
     @State private var isActionsPresented = false
     @State private var currentShip: DGMShip
@@ -73,10 +72,12 @@ struct FittingShipEditor: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var project: FittingProject
     @EnvironmentObject private var sharedState: SharedState
+    @Binding var isModified: Bool
     
-    init(gang: DGMGang, ship: DGMShip) {
+    init(gang: DGMGang, ship: DGMShip, isModified: Binding<Bool>) {
         _gang = ObservedObject(initialValue: gang)
         _currentShip = State(initialValue: ship)
+        _isModified = isModified
     }
     
     private var title: String {
@@ -144,6 +145,9 @@ struct FittingShipEditor: View {
         .environmentObject(gang)
         .environmentObject(currentShip)
         .navigationBarTitle(Text(title), displayMode: .inline)
+        .onReceive(gang.objectWillChange.merge(with: currentShip.objectWillChange)) { _ in
+            self.isModified = true
+        }
     }
 }
 
@@ -174,12 +178,12 @@ struct FittingStructureEditor: View {
         }
         .sheet(isPresented: $isActionsPresented) {
             NavigationView {
-                FittingEditorShipActions().modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+                FittingEditorStructureActions().modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
                     .navigationBarItems(leading: BarButtonItems.close {
                         self.isActionsPresented = false
                     })
             }
-            .environmentObject(self.structure as DGMShip)
+            .environmentObject(self.structure)
             .environmentObject(self.project)
 
         }

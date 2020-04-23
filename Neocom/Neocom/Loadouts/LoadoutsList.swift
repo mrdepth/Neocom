@@ -24,6 +24,7 @@ struct LoadoutsList: View {
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @Environment(\.self) private var environment
     @Environment(\.typePicker) private var typePicker
+    @Environment(\.editMode) private var editMode
     @State private var selectedGroup: SDEDgmppItemGroup?
     @EnvironmentObject private var sharedState: SharedState
     
@@ -36,10 +37,7 @@ struct LoadoutsList: View {
     }
     
     @State private var selectedLoadouts: Set<NSManagedObjectID> = Set()
-    
-    private func onShare() {
-        
-    }
+    @State private var isActivityPresented = false
     
     private func onDelete() {
         for objectID in selectedLoadouts {
@@ -67,12 +65,12 @@ struct LoadoutsList: View {
                 }
                 LoadoutsSection(loadouts: loadouts) { self.onSelect(.loadout($0)) }
             }.listStyle(GroupedListStyle())
-            if !selectedLoadouts.isEmpty {
+            if !selectedLoadouts.isEmpty && editMode?.wrappedValue == .active {
                 Divider()
                 HStack {
-                    Button("Share") {}
-                    Spacer()
-                    Button("Delete", action: onDelete).accentColor(Color.red)
+                    Button("Deselect All") { withAnimation {self.selectedLoadouts.removeAll()}}.frame(maxWidth: .infinity, alignment: .leading)
+                    Button("Share") { self.isActivityPresented = true }.frame(maxWidth: .infinity)
+                    Button("Delete", action: onDelete).accentColor(Color.red).frame(maxWidth: .infinity, alignment: .trailing)
                 }.padding().transition(.offset(x: 0, y: 100))
                     .background(Color(.systemBackground).edgesIgnoringSafeArea(.all))
             }
@@ -81,6 +79,9 @@ struct LoadoutsList: View {
             self.typePicker(group)
         }
         .navigationBarItems(trailing: EditButton())
+        .activityView(isPresented: $isActivityPresented,
+                      activityItems: [LoadoutActivityItem(ships: selectedLoadouts.compactMap{managedObjectContext.object(with: $0) as? Loadout}.compactMap{$0.ship}, managedObjectContext: managedObjectContext)],
+                      applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)])
 
     }
 }

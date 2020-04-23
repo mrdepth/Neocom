@@ -27,7 +27,7 @@ struct AddToSkillPlanButton: View {
     var body: some View {
 //        (!trainingQueue.queue.isEmpty ? account?.activeSkillPlan : nil).map { _ in
             Button(action: {
-                self.sheetIsPresented.toggle()
+                self.sheetIsPresented = true
             }) {
                 Image(systemName: "ellipsis")
             }.actionSheet(isPresented: $sheetIsPresented) {self.actionSheet}

@@ -17,4 +17,6 @@ enum RuntimeError: Error {
     case invalidDNAFormat
     case invalidCharacterURL
     case invalidLoadoutFormat
+    case invalidActivityType
+    case missingCodingUserInfoKey(CodingUserInfoKey)
 }

@@ -18,7 +18,7 @@ struct LoadoutsList: View {
     }
     @ObservedObject var loadouts: LoadoutsLoader
     var category: SDEDgmppItemCategoryID
-    var onSelect: (Result) -> Void
+    var onSelect: (Result, OpenMode) -> Void
     
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
@@ -32,7 +32,7 @@ struct LoadoutsList: View {
         typePicker.get(group, environment: environment, sharedState: sharedState) {
             defer {self.selectedGroup = nil}
             guard let type = $0 else {return}
-            self.onSelect(.type(type))
+            self.onSelect(.type(type), .default)
         }
     }
     
@@ -63,7 +63,7 @@ struct LoadoutsList: View {
                         }.contentShape(Rectangle())
                     }.buttonStyle(PlainButtonStyle())
                 }
-                LoadoutsSection(loadouts: loadouts) { self.onSelect(.loadout($0)) }
+                LoadoutsSection(loadouts: loadouts) { self.onSelect(.loadout($0), $1) }
             }.listStyle(GroupedListStyle())
             if !selectedLoadouts.isEmpty && editMode?.wrappedValue == .active {
                 Divider()
@@ -90,7 +90,7 @@ struct LoadoutsList_Previews: PreviewProvider {
     static var previews: some View {
         _ = Loadout.testLoadouts()
         return NavigationView {
-            LoadoutsList(loadouts: LoadoutsLoader(.ship, managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext), category: .ship) { _ in}
+            LoadoutsList(loadouts: LoadoutsLoader(.ship, managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext), category: .ship) { _, _ in}
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())

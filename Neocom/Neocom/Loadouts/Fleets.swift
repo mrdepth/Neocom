@@ -15,14 +15,15 @@ struct Fleets: View {
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @State private var selectedProject: FittingProject?
     @State private var projectLoading: AnyPublisher<Result<FittingProject, Error>, Never>?
-    
+    @State private var openMode: OpenMode = .default
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Fleet.name, ascending: true)])
     private var fleets: FetchedResults<Fleet>
     
-    private func onSelect(_ fleet: Fleet) {
+    private func onSelect(_ fleet: Fleet, _ openMode: OpenMode) {
         let configuration = fleet.configuration.flatMap{ try? JSONDecoder().decode(FleetConfiguration.self, from: $0) } ?? FleetConfiguration(pilots: [:], links: [:])
         let urls = configuration.pilots.values.compactMap{URL(string: $0)}
         
+        self.openMode = openMode
         projectLoading = Publishers.Sequence(sequence: urls)
             .setFailureType(to: Error.self)
             .flatMap { url in
@@ -33,7 +34,7 @@ struct Fleets: View {
         .collect()
         .receive(on: RunLoop.main)
         .tryMap { skillLevels in
-            try FittingProject(fleet: fleet, configuration: configuration, skillLevels: Dictionary(skillLevels) {a, _ in a})
+            try FittingProject(fleet: fleet, configuration: configuration, skillLevels: Dictionary(skillLevels) {a, _ in a}, managedObjectContext: self.managedObjectContext)
         }.asResult().eraseToAnyPublisher()
     }
 
@@ -41,13 +42,24 @@ struct Fleets: View {
         return List {
             ForEach(fleets, id: \.objectID) { fleet in
                 Button(action: {
-                    self.onSelect(fleet)
+                    self.onSelect(fleet, .default)
                 }) {
                     HStack {
                         FleetCell(fleet: fleet)
                         Spacer()
                     }.contentShape(Rectangle())
                 }.buttonStyle(PlainButtonStyle())
+                    .contextMenu {
+                        if UIApplication.shared.supportsMultipleScenes {
+                            Button("Open in New Window") {
+                                self.onSelect(fleet, .newWindow)
+                            }
+                            Button("Open in Current Window") {
+                                self.onSelect(fleet, .currentWindow)
+                            }
+                        }
+                }
+
             }.onDelete { (indices) in
                 indices.map{self.fleets[$0]}.forEach {self.managedObjectContext.delete($0)}
                 if self.managedObjectContext.hasChanges {
@@ -58,10 +70,17 @@ struct Fleets: View {
         .listStyle(GroupedListStyle())
         .onReceive(projectLoading ?? Empty().eraseToAnyPublisher()) { result in
             self.projectLoading = nil
-            self.selectedProject = result.value
+            guard let project = result.value else {return}
+            if UIApplication.shared.supportsMultipleScenes && self.openMode.openInNewWindow {
+                let activity = try? NSUserActivity(fitting: project)
+                UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
+            }
+            else {
+                self.selectedProject = project
+            }
         }
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
-        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0).environmentObject(FittingAutosaver(project: $0)), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .navigationBarTitle("Fleets")
 
         

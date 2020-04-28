@@ -15,31 +15,36 @@ struct ShipLoadouts: View {
     @EnvironmentObject private var sharedState: SharedState
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
-    @State private var selectedProject: FittingProject?
+//    @State private var selectedProject: FittingProject?
     @State private var projectLoading: AnyPublisher<Result<FittingProject, Error>, Never>?
+    @State private var openMode: OpenMode = .default
     @ObservedObject private var loadouts = Lazy<LoadoutsLoader, Never>()
+    @EnvironmentObject private var restorableState: RestorableState
     
-    private func onSelect(_ type: SDEInvType) {
+    private func onSelect(_ type: SDEInvType, _ openMode: OpenMode) {
         let typeID = DGMTypeID(type.typeID)
-        projectLoading = DGMSkillLevels.load(sharedState.account, managedObjectContext: managedObjectContext).tryMap {
-            try FittingProject(ship: typeID, skillLevels: $0)
-        }.asResult().receive(on: RunLoop.main).eraseToAnyPublisher()
-    }
-
-    private func onSelect(_ loadout: Loadout) {
         projectLoading = DGMSkillLevels.load(sharedState.account, managedObjectContext: managedObjectContext)
             .receive(on: RunLoop.main)
-            .tryMap {
-                try FittingProject(loadout: loadout, skillLevels: $0)
-        }.asResult().eraseToAnyPublisher()
+            .tryMap { try FittingProject(ship: typeID, skillLevels: $0, managedObjectContext: self.managedObjectContext) }
+            .asResult()
+            .eraseToAnyPublisher()
+    }
+
+    private func onSelect(_ loadout: Loadout, _ openMode: OpenMode) {
+        self.openMode = openMode
+        projectLoading = DGMSkillLevels.load(sharedState.account, managedObjectContext: managedObjectContext)
+            .receive(on: RunLoop.main)
+            .tryMap { try FittingProject(loadout: loadout, skillLevels: $0, managedObjectContext: self.managedObjectContext) }
+            .asResult()
+            .eraseToAnyPublisher()
     }
     
-    private func onSelect(_ result: LoadoutsList.Result) {
+    private func onSelect(_ result: LoadoutsList.Result, _ openMode: OpenMode) {
         switch result {
         case let .type(type):
-            onSelect(type)
+            onSelect(type, openMode)
         case let .loadout(objectID):
-            onSelect(managedObjectContext.object(with: objectID) as! Loadout)
+            onSelect(managedObjectContext.object(with: objectID) as! Loadout, openMode)
         }
     }
     
@@ -48,10 +53,17 @@ struct ShipLoadouts: View {
         return LoadoutsList(loadouts: loadouts, category: .ship, onSelect: onSelect)
             .onReceive(projectLoading ?? Empty().eraseToAnyPublisher()) { result in
                 self.projectLoading = nil
-                self.selectedProject = result.value
+                guard let project = result.value else {return}
+                if UIApplication.shared.supportsMultipleScenes && self.openMode.openInNewWindow {
+                    let activity = try? NSUserActivity(fitting: project)
+                    UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
+                }
+                else {
+                    self.restorableState.selectedFitting = project
+                }
         }
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
-        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+        .overlay(restorableState.selectedFitting.map{NavigationLink(destination: FittingEditor(project: $0).environmentObject(FittingAutosaver(project: $0)), tag: $0, selection: $restorableState.selectedFitting, label: {EmptyView()})})
         .navigationBarTitle("Loadouts")
     }
 }
@@ -65,5 +77,6 @@ struct ShipLoadouts_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
+        .environmentObject(RestorableState())
     }
 }

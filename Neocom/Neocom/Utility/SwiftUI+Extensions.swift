@@ -7,15 +7,29 @@
 //
 
 import SwiftUI
-
+import CoreData
 
 struct ServicesViewModifier: ViewModifier {
-	var environment: EnvironmentValues
+    var managedObjectContext: NSManagedObjectContext
+    var backgroundManagedObjectContext: NSManagedObjectContext
     var sharedState: SharedState
+    
+    init(environment: EnvironmentValues, sharedState: SharedState) {
+        self.managedObjectContext = environment.managedObjectContext
+        self.backgroundManagedObjectContext = environment.backgroundManagedObjectContext
+        self.sharedState = sharedState
+    }
+    
+    init(managedObjectContext: NSManagedObjectContext, backgroundManagedObjectContext: NSManagedObjectContext, sharedState: SharedState) {
+        self.managedObjectContext = managedObjectContext
+        self.backgroundManagedObjectContext = backgroundManagedObjectContext
+        self.sharedState = sharedState
+    }
+    
 
     func body(content: Content) -> some View {
-		content.environment(\.managedObjectContext, environment.managedObjectContext)
-			.environment(\.backgroundManagedObjectContext, environment.backgroundManagedObjectContext)
+		content.environment(\.managedObjectContext, managedObjectContext)
+			.environment(\.backgroundManagedObjectContext, backgroundManagedObjectContext)
             .environmentObject(sharedState)
 	}
 }
@@ -103,5 +117,27 @@ extension Binding {
         self.init(get: {
             object[keyPath: keyPath]
         }) {object[keyPath: keyPath] = $0}
+    }
+}
+
+enum OpenMode {
+    case `default`
+    case currentWindow
+    case newWindow
+    
+    var openInNewWindow: Bool {
+        switch self {
+        case .default:
+            #if targetEnvironment(macCatalyst)
+            return true
+            #else
+            return false
+            #endif
+        case .newWindow:
+            return true
+        case .currentWindow:
+            return false
+        }
+
     }
 }

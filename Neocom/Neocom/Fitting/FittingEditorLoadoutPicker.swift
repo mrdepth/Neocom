@@ -16,7 +16,7 @@ struct FittingEditorLoadoutPicker: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     private let loadouts = Lazy<LoadoutsLoader, Never>()
     
-    private func onSelect(_ result: LoadoutsList.Result) {
+    private func onSelect(_ result: LoadoutsList.Result, _ openMode: OpenMode) {
         do {
             let pilot = try DGMCharacter()
             switch result {
@@ -54,7 +54,7 @@ struct FittingEditorLoadoutPicker_Previews: PreviewProvider {
         _ = Loadout.testLoadouts()
 
         return NavigationView {
-            FittingEditorLoadoutPicker(project: FittingProject(gang: DGMGang.testGang())) {}
+            FittingEditorLoadoutPicker(project: FittingProject(gang: DGMGang.testGang(), managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext)) {}
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())

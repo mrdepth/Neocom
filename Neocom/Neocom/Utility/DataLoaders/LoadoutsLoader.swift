@@ -16,7 +16,7 @@ class LoadoutsLoader: ObservableObject {
     
     struct Section: Identifiable  {
         var title: String?
-        var id: Int32?
+        var id: Int32
         struct Loadout: Identifiable {
             var typeID: Int32
             var name: String?
@@ -40,11 +40,11 @@ class LoadoutsLoader: ObservableObject {
         
         managedObjectContext.perform {
             self.subscription = self.results.publisher.compactMap{$0.first?.objects}.map { loadouts -> [Section] in
-                var sections = [Int32?: Section]()
+                var sections = [Int32: Section]()
                 for loadout in loadouts {
                     let type = try? managedObjectContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == loadout.typeID).first()
                     guard type?.group?.category?.categoryID == category.rawValue else {continue}
-                    let groupID = type?.group?.groupID
+                    let groupID = type?.group?.groupID ?? 0
                     sections[groupID, default: Section(title: type?.group?.groupName, id: groupID, loadouts: [])].loadouts.append(Section.Loadout(typeID: loadout.typeID, name: loadout.name, typeName: type?.typeName ?? "", objectID: loadout.objectID))
                 }
                 return sections.values

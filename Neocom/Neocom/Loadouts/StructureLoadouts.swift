@@ -15,36 +15,43 @@ struct StructureLoadouts: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @State private var selectedProject: FittingProject?
-    @State private var projectLoading: AnyPublisher<Result<FittingProject, Error>, Never>?
     @ObservedObject private var loadouts = Lazy<LoadoutsLoader, Never>()
-    
-    private func onSelect(_ type: SDEInvType) {
-        let typeID = DGMTypeID(type.typeID)
-        selectedProject = try? FittingProject(ship: typeID, skillLevels: .level(0))
+
+    private func onSelect(_ project: FittingProject, _ openMode: OpenMode) {
+        if UIApplication.shared.supportsMultipleScenes && openMode.openInNewWindow {
+            let activity = try? NSUserActivity(fitting: project)
+            UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
+        }
+        else {
+            selectedProject = project
+        }
     }
 
-    private func onSelect(_ loadout: Loadout) {
-        selectedProject = try? FittingProject(loadout: loadout, skillLevels: .level(0))
+    private func onSelect(_ type: SDEInvType, _ openMode: OpenMode) {
+        let typeID = DGMTypeID(type.typeID)
+        guard let project = try? FittingProject(ship: typeID, skillLevels: .level(0), managedObjectContext: self.managedObjectContext) else {return}
+        onSelect(project, openMode)
+        
+    }
+
+    private func onSelect(_ loadout: Loadout, _ openMode: OpenMode) {
+        guard let project = try? FittingProject(loadout: loadout, skillLevels: .level(0), managedObjectContext: self.managedObjectContext) else {return}
+        onSelect(project, openMode)
     }
     
-    private func onSelect(_ result: LoadoutsList.Result) {
+    private func onSelect(_ result: LoadoutsList.Result, _ openMode: OpenMode) {
         switch result {
         case let .type(type):
-            onSelect(type)
+            onSelect(type, openMode)
         case let .loadout(objectID):
-            onSelect(managedObjectContext.object(with: objectID) as! Loadout)
+            onSelect(managedObjectContext.object(with: objectID) as! Loadout, openMode)
         }
     }
     
     var body: some View {
         let loadouts = self.loadouts.get(initial: LoadoutsLoader(.structure, managedObjectContext: backgroundManagedObjectContext))
         return LoadoutsList(loadouts: loadouts, category: .structure, onSelect: onSelect)
-            .onReceive(projectLoading ?? Empty().eraseToAnyPublisher()) { result in
-                self.projectLoading = nil
-                self.selectedProject = result.value
-        }
-        .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
-        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0).environmentObject(FittingAutosaver(project: $0)), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .navigationBarTitle("Loadouts")
     }
 }

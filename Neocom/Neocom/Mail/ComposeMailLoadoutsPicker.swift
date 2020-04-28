@@ -14,7 +14,7 @@ struct ComposeMailLoadoutsPicker: View {
     private let loadouts = Lazy<LoadoutsLoader, Never>()
     var completion: (Loadout) -> Void
     
-    private func onSelect(_ result: LoadoutsList.Result) {
+    private func onSelect(_ result: LoadoutsList.Result, _ openMode: OpenMode) {
         switch result {
         case let .loadout(objectID):
             let loadout = managedObjectContext.object(with: objectID) as! Loadout

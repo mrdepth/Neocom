@@ -16,7 +16,6 @@ struct FittingEditor: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var sharedState: SharedState
     var project: FittingProject
-    @State private var isModified = false
     let priceData = Lazy<PricesData, Never>()
 
     var body: some View {
@@ -28,16 +27,10 @@ struct FittingEditor: View {
                 if ship is DGMStructure {
                     FittingStructureEditor(structure: ship as! DGMStructure)
                         .environmentObject(project)
-                        .onReceive(project.structure!.objectWillChange) {
-                            self.isModified = true
-                    }
                 }
                 else if gang != nil {
-                    FittingShipEditor(gang: gang!, ship: ship!, isModified: $isModified)
+                    FittingShipEditor(gang: gang!, ship: ship!)
                         .environmentObject(project)
-                        .onReceive(gang!.objectWillChange) {
-                            self.isModified = true
-                    }
                 }
             }
             else {
@@ -46,11 +39,7 @@ struct FittingEditor: View {
         }
         .environmentObject(project)
         .environmentObject(priceData.get(initial: PricesData(esi: sharedState.esi)))
-        .onDisappear() {
-            if self.isModified {
-                self.project.save(managedObjectContext: self.managedObjectContext)
-            }
-        }
+        .preference(key: AppendPreferenceKey<AnyUserActivityProvider, AnyUserActivityProvider>.self, value: [AnyUserActivityProvider(project)])
     }
 }
 
@@ -73,13 +62,11 @@ struct FittingShipEditor: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var project: FittingProject
     @EnvironmentObject private var sharedState: SharedState
-    @Binding var isModified: Bool
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
-    init(gang: DGMGang, ship: DGMShip, isModified: Binding<Bool>) {
+    init(gang: DGMGang, ship: DGMShip) {
         _gang = ObservedObject(initialValue: gang)
         _currentShip = State(initialValue: ship)
-        _isModified = isModified
     }
     
     private var title: String {
@@ -157,9 +144,6 @@ struct FittingShipEditor: View {
         .environmentObject(gang)
         .environmentObject(currentShip)
         .navigationBarTitle(Text(title), displayMode: .inline)
-        .onReceive(gang.objectWillChange.merge(with: currentShip.objectWillChange)) { _ in
-            self.isModified = true
-        }
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
 }
@@ -244,7 +228,7 @@ struct FittingEditor_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         return NavigationView {
-            FittingEditor(project: FittingProject(gang: gang))
+            FittingEditor(project: FittingProject(gang: gang, managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext))
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .environmentObject(gang)

@@ -14,14 +14,86 @@ import CoreData
 import Expressible
 import EVEAPI
 
-class FittingProject: ObservableObject, Identifiable, Hashable {
+class FittingAutosaver: ObservableObject {
+    let project: FittingProject
+    
+    init(project: FittingProject) {
+        self.project = project
+    }
+    
+    deinit {
+        let project = self.project
+        if project.hasChanges {
+            project.managedObjectContext.perform {
+                project.save()
+            }
+        }
+    }
+}
+
+class FittingProject: Codable, ObservableObject, Identifiable, Hashable {
+    static let managedObjectContextKey = CodingUserInfoKey(rawValue: "managedObjectContext")!
+    
     var gang: DGMGang?
+    var structure: DGMStructure?
+
+    private var gangSubscription: AnyCancellable?
+    private var structureSubscription: AnyCancellable?
+    
+    private(set) var hasChanges = false
+    
     var loadouts: [DGMShip: Loadout] = [:]
     var fleet: Fleet?
-    var structure: DGMStructure?
+    let managedObjectContext: NSManagedObjectContext
     
-    init(ship: DGMTypeID, skillLevels: DGMSkillLevels) throws {
+    enum CodingKeys: String, CodingKey {
+        case gang
+        case loadouts
+        case fleet
+        case structure
+    }
+    
+    required init(from decoder: Decoder) throws {
+        guard let context = decoder.userInfo[FittingProject.managedObjectContextKey] as? NSManagedObjectContext else {throw RuntimeError.missingCodingUserInfoKey(FittingProject.managedObjectContextKey)}
+        managedObjectContext = context
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        gang = try container.decodeIfPresent(DGMGang.self, forKey: .gang)
+        structure = try container.decodeIfPresent(DGMStructure.self, forKey: .structure)
+        if let fleetURL = try container.decodeIfPresent(URL.self, forKey: .fleet) {
+            fleet = managedObjectContext.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: fleetURL).flatMap{try? managedObjectContext.existingObject(with: $0) as? Fleet}
+        }
+        let loadoutURLs = try container.decode([Int: URL].self, forKey: .loadouts)
+        let ships = Dictionary(gang?.pilots.compactMap{$0.ship}.map{($0.identifier, $0)} ?? []) {a, _ in a}
+        loadouts = [:]
+        for (id, url) in loadoutURLs {
+            guard let ship = ships[id] else {continue}
+            guard let loadout = managedObjectContext.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url).flatMap({try? managedObjectContext.existingObject(with: $0) as? Loadout}) else {continue}
+            loadouts[ship] = loadout
+        }
+        
+        gangSubscription = gang?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
+        structureSubscription = structure?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(gang, forKey: .gang)
+        try container.encodeIfPresent(structure, forKey: .structure)
+
+        let loadouts = Dictionary(self.loadouts.map { ($0.key.identifier, $0.value.objectID.uriRepresentation()) }) {a, _ in a}
+        try container.encode(loadouts, forKey: .loadouts)
+
+        try container.encodeIfPresent(fleet?.objectID.uriRepresentation(), forKey: .fleet)
+
+    }
+    
+    init(ship: DGMTypeID, skillLevels: DGMSkillLevels, managedObjectContext: NSManagedObjectContext) throws {
+        self.managedObjectContext = managedObjectContext
         try add(ship: ship, skillLevels: skillLevels)
+        
+        gangSubscription = gang?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
+        structureSubscription = structure?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
     }
     
     @discardableResult
@@ -42,8 +114,11 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
         }
     }
     
-    init(loadout: Loadout, skillLevels: DGMSkillLevels) throws {
+    init(loadout: Loadout, skillLevels: DGMSkillLevels, managedObjectContext: NSManagedObjectContext) throws {
+        self.managedObjectContext = managedObjectContext
         try add(loadout: loadout, skillLevels: skillLevels)
+        gangSubscription = gang?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
+        structureSubscription = structure?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
     }
     
     @discardableResult
@@ -63,8 +138,11 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
         return ship
     }
     
-    init(killmail: ESI.Killmail, skillLevels: DGMSkillLevels) throws {
+    init(killmail: ESI.Killmail, skillLevels: DGMSkillLevels, managedObjectContext: NSManagedObjectContext) throws {
+        self.managedObjectContext = managedObjectContext
         try add(killmail: killmail, skillLevels: skillLevels)
+        gangSubscription = gang?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
+        structureSubscription = structure?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
     }
     
     @discardableResult
@@ -121,8 +199,11 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
         return ship
     }
     
-    init(asset: AssetsData.Asset, skillLevels: DGMSkillLevels) throws {
+    init(asset: AssetsData.Asset, skillLevels: DGMSkillLevels, managedObjectContext: NSManagedObjectContext) throws {
+        self.managedObjectContext = managedObjectContext
         try add(asset: asset, skillLevels: skillLevels)
+        gangSubscription = gang?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
+        structureSubscription = structure?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
     }
     
     @discardableResult
@@ -134,8 +215,11 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
         return try add(ship: DGMTypeID(asset.underlyingAsset.typeID), items: items, skillLevels: skillLevels)
     }
     
-    init(fitting: ESI.Fittings.Element, skillLevels: DGMSkillLevels) throws {
+    init(fitting: ESI.Fittings.Element, skillLevels: DGMSkillLevels, managedObjectContext: NSManagedObjectContext) throws {
+        self.managedObjectContext = managedObjectContext
         try add(fitting: fitting, skillLevels: skillLevels)
+        gangSubscription = gang?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
+        structureSubscription = structure?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
     }
     
     @discardableResult
@@ -147,12 +231,15 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
         return try add(ship: DGMTypeID(fitting.shipTypeID), items: items, skillLevels: skillLevels)
     }
     
-    init(gang: DGMGang) {
+    init(gang: DGMGang, managedObjectContext: NSManagedObjectContext) {
+        self.managedObjectContext = managedObjectContext
         self.gang = gang
         self.loadouts = [:]
+        gangSubscription = gang.objectWillChange.sink { [weak self] in self?.hasChanges = true }
     }
     
-    init(fleet: Fleet, configuration: FleetConfiguration, skillLevels: [URL: DGMSkillLevels]) throws {
+    init(fleet: Fleet, configuration: FleetConfiguration, skillLevels: [URL: DGMSkillLevels], managedObjectContext: NSManagedObjectContext) throws {
+        self.managedObjectContext = managedObjectContext
         try (fleet.loadouts?.allObjects as? [Loadout])?.forEach {
             let pilot = try add(loadout: $0, skillLevels: .level(5)).parent as? DGMCharacter
             if let url = pilot?.url, let skills = skillLevels[url] {
@@ -161,9 +248,10 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
         }
         gang?.fleetConfiguration = configuration
         self.fleet = fleet
+        gangSubscription = gang?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
     }
     
-    func save(managedObjectContext: NSManagedObjectContext) {
+    func save() {
         let pilots = gang?.pilots ?? []
         pilots.forEach { pilot in
             guard let ship = pilot.ship else {return}
@@ -252,4 +340,10 @@ class FittingProject: ObservableObject, Identifiable, Hashable {
         lhs === rhs
     }
 
+}
+
+extension FittingProject: UserActivityProvider {
+    func userActivity() -> NSUserActivity? {
+        try? NSUserActivity(fitting: self)
+    }
 }

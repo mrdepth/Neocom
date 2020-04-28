@@ -21,9 +21,11 @@ struct IngameLoadouts: View {
     @State private var deleteSubscription: AnyPublisher<[Int], Never> = Empty().eraseToAnyPublisher()
     
     private func onSelect(_ fitting: ESI.Fittings.Element) {
-        projectLoading = DGMSkillLevels.load(sharedState.account, managedObjectContext: managedObjectContext).tryMap {
-            try FittingProject(fitting: fitting, skillLevels: $0)
-        }.asResult().receive(on: RunLoop.main).eraseToAnyPublisher()
+        projectLoading = DGMSkillLevels.load(sharedState.account, managedObjectContext: managedObjectContext)
+            .receive(on: RunLoop.main)
+            .tryMap { try FittingProject(fitting: fitting, skillLevels: $0, managedObjectContext: self.managedObjectContext) }
+            .asResult()
+            .eraseToAnyPublisher()
 
     }
 
@@ -82,7 +84,7 @@ struct IngameLoadouts: View {
             self.selectedProject = result.value
         }
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
-        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0).environmentObject(FittingAutosaver(project: $0)), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .onReceive(deleteSubscription) { ids in
             result?.delete(fittingIDs: Set(ids))
             self.deleteSubscription = Empty().eraseToAnyPublisher()

@@ -197,6 +197,7 @@
 		168F69472430FEF000D80A24 /* WormholeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168F69462430FEF000D80A24 /* WormholeInfo.swift */; };
 		168FF310242D3A57009FCE58 /* JumpClonesItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168FF30F242D3A57009FCE58 /* JumpClonesItem.swift */; };
 		168FF312242D3C73009FCE58 /* SkillsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168FF311242D3C73009FCE58 /* SkillsItem.swift */; };
+		1690E44224532BC100B94C90 /* UserActivityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1690E44124532BC100B94C90 /* UserActivityProvider.swift */; };
 		16918548242371C200393116 /* DamagePatterns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16918547242371C200393116 /* DamagePatterns.swift */; };
 		1691854A2423730B00393116 /* DamageVectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169185492423730B00393116 /* DamageVectorView.swift */; };
 		1691854E2423795E00393116 /* DamagePatternsPredefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1691854D2423795E00393116 /* DamagePatternsPredefined.swift */; };
@@ -337,6 +338,7 @@
 		16D5DE7623B23898004CDA4A /* CertificateMasteryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D5DE7523B23898004CDA4A /* CertificateMasteryInfo.swift */; };
 		16D5DE7823B238D4004CDA4A /* CertificateRequirementsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D5DE7723B238D4004CDA4A /* CertificateRequirementsInfo.swift */; };
 		16D667CC238D66FB00A74C98 /* FetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */; };
+		16D6741E2451DDDF002C277F /* NSUserActivity+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D6741D2451DDDF002C277F /* NSUserActivity+Extensions.swift */; };
 		16D8DC80238808870057A6F4 /* Combine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D8DC7F238808870057A6F4 /* Combine+Extensions.swift */; };
 		16DBDE8823FA875E006B0BC3 /* ComposeMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DBDE8723FA875E006B0BC3 /* ComposeMail.swift */; };
 		16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DFF82E238D360B004C1185 /* TypeCategories.swift */; };
@@ -552,6 +554,7 @@
 		168F69462430FEF000D80A24 /* WormholeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WormholeInfo.swift; sourceTree = "<group>"; };
 		168FF30F242D3A57009FCE58 /* JumpClonesItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpClonesItem.swift; sourceTree = "<group>"; };
 		168FF311242D3C73009FCE58 /* SkillsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillsItem.swift; sourceTree = "<group>"; };
+		1690E44124532BC100B94C90 /* UserActivityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserActivityProvider.swift; sourceTree = "<group>"; };
 		16918547242371C200393116 /* DamagePatterns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamagePatterns.swift; sourceTree = "<group>"; };
 		169185492423730B00393116 /* DamageVectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamageVectorView.swift; sourceTree = "<group>"; };
 		1691854D2423795E00393116 /* DamagePatternsPredefined.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamagePatternsPredefined.swift; sourceTree = "<group>"; };
@@ -698,6 +701,7 @@
 		16D5DE7523B23898004CDA4A /* CertificateMasteryInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateMasteryInfo.swift; sourceTree = "<group>"; };
 		16D5DE7723B238D4004CDA4A /* CertificateRequirementsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateRequirementsInfo.swift; sourceTree = "<group>"; };
 		16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResultsController.swift; sourceTree = "<group>"; };
+		16D6741D2451DDDF002C277F /* NSUserActivity+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSUserActivity+Extensions.swift"; sourceTree = "<group>"; };
 		16D8DC7F238808870057A6F4 /* Combine+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Combine+Extensions.swift"; path = "Neocom/Home/Combine+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		16D8DC81238813A40057A6F4 /* DataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLoader.swift; sourceTree = "<group>"; };
 		16DBDE8723FA875E006B0BC3 /* ComposeMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMail.swift; sourceTree = "<group>"; };
@@ -1416,6 +1420,8 @@
 		16D6741B2451D564002C277F /* UserActivities */ = {
 			isa = PBXGroup;
 			children = (
+				16D6741D2451DDDF002C277F /* NSUserActivity+Extensions.swift */,
+				1690E44124532BC100B94C90 /* UserActivityProvider.swift */,
 			);
 			path = UserActivities;
 			sourceTree = "<group>";
@@ -1631,6 +1637,7 @@
 				1685E704242E39A800F85F14 /* EventCell.swift in Sources */,
 				1694B22F2406A9AD00E81E49 /* InfoButton.swift in Sources */,
 				16859F552432163F00824552 /* Colony.swift in Sources */,
+				1690E44224532BC100B94C90 /* UserActivityProvider.swift in Sources */,
 				16A6A4BA23B1E6F500CF0812 /* Certificates.swift in Sources */,
 				12CBA91D2399596B001C1C82 /* MasteryData.swift in Sources */,
 				162571ED242B9E140022C605 /* FittingModuleState.swift in Sources */,
@@ -1816,6 +1823,7 @@
 				16963AB72410E3CA00A26E4A /* FittingDroneActions.swift in Sources */,
 				16C39A5023B9CF7D00208F04 /* SkillsList.swift in Sources */,
 				12F06F17238464920061313D /* ContentView.swift in Sources */,
+				16D6741E2451DDDF002C277F /* NSUserActivity+Extensions.swift in Sources */,
 				16CB5FB0242527D100A91370 /* LoadoutCell.swift in Sources */,
 				168F1CBF2434FFCA00F8EF41 /* PlanetCell.swift in Sources */,
 				168960D8240FEF30004E4630 /* FittingDroneCell.swift in Sources */,

@@ -107,9 +107,10 @@ struct KillImailInfo: View {
 
     private var fittingButton: some View {
         Button("Fitting") {
-            self.projectLoading = DGMSkillLevels.load(self.sharedState.account, managedObjectContext: self.managedObjectContext).tryMap { try FittingProject(killmail: self.killmail, skillLevels: $0) }
-                .asResult()
+            self.projectLoading = DGMSkillLevels.load(self.sharedState.account, managedObjectContext: self.managedObjectContext)
                 .receive(on: RunLoop.main)
+                .tryMap { try FittingProject(killmail: self.killmail, skillLevels: $0, managedObjectContext: self.managedObjectContext) }
+                .asResult()
                 .eraseToAnyPublisher()
         }
     }
@@ -142,7 +143,7 @@ struct KillImailInfo: View {
         }
         .listStyle(GroupedListStyle())
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
-        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0).environmentObject(FittingAutosaver(project: $0)), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .onReceive(projectLoading ?? Empty().eraseToAnyPublisher()) { result in
             self.projectLoading = nil
             self.selectedProject = result.value

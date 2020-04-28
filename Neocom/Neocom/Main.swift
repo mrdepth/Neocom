@@ -28,26 +28,39 @@ struct FinishedViewWrapper: View {
     }
 }
 
-struct Main: View {
-    @Environment(\.managedObjectContext) private var managedObjectContext
-//    @ObservedObject private var accountID = UserDefault(wrappedValue: String?.none, key: .activeAccountID)
-    @EnvironmentObject private var sharedState: SharedState
+struct FittingRestore: View {
+    @State var restoredFitting: FittingProject? = nil
     
+    var body: some View {
+        restoredFitting.map{
+            NavigationLink(destination: FittingEditor(project: $0).environmentObject(FittingAutosaver(project: $0)),
+            tag: $0,
+            selection: $restoredFitting, label: {EmptyView()})}
+    }
+}
+
+struct Main: View {
+    @State var restoredFitting: FittingProject? = nil
+    @EnvironmentObject private var sharedState: SharedState
+    @Environment(\.self) private var environment
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     private let home = Home()
 
     var body: some View {
-//        let account = try? managedObjectContext.from(Account.self).filter(/\Account.uuid == accountID.wrappedValue).first()
-//        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
+        let navigationView = NavigationView {
+            home
+        }
         
         return ZStack {
-            NavigationView {
-                home
+            if horizontalSizeClass == .regular {
+                navigationView.navigationViewStyle(DoubleColumnNavigationViewStyle())
             }
-            .navigationViewStyle(DoubleColumnNavigationViewStyle())
+            else {
+                navigationView.navigationViewStyle(StackNavigationViewStyle())
+//            .navigationViewStyle(StackNavigationViewStyle())
+            }
             FinishedViewWrapper()
         }
-        .environmentObject(sharedState)
-
     }
 }
 

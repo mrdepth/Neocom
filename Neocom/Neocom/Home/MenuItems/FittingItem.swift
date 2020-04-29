@@ -9,11 +9,9 @@
 import SwiftUI
 
 struct FittingItem: View {
-    @EnvironmentObject private var restorableState: RestorableState
     
     var body: some View {
-        NavigationLink(destination: Loadouts(), tag: RestorableState.Navigation(rawValue: "fitting"), selection: $restorableState.main) {
-//        NavigationLink(destination: Loadouts()) {
+        NavigationLink(destination: Loadouts()) {
             Icon(Image("fitting"))
             Text("Fitting")
         }

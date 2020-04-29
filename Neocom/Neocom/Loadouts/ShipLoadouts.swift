@@ -15,11 +15,10 @@ struct ShipLoadouts: View {
     @EnvironmentObject private var sharedState: SharedState
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
-//    @State private var selectedProject: FittingProject?
+    @State private var selectedProject: FittingProject?
     @State private var projectLoading: AnyPublisher<Result<FittingProject, Error>, Never>?
     @State private var openMode: OpenMode = .default
     @ObservedObject private var loadouts = Lazy<LoadoutsLoader, Never>()
-    @EnvironmentObject private var restorableState: RestorableState
     
     private func onSelect(_ type: SDEInvType, _ openMode: OpenMode) {
         let typeID = DGMTypeID(type.typeID)
@@ -59,11 +58,11 @@ struct ShipLoadouts: View {
                     UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
                 }
                 else {
-                    self.restorableState.selectedFitting = project
+                    self.selectedProject = project
                 }
         }
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
-        .overlay(restorableState.selectedFitting.map{NavigationLink(destination: FittingEditor(project: $0).environmentObject(FittingAutosaver(project: $0)), tag: $0, selection: $restorableState.selectedFitting, label: {EmptyView()})})
+        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0).environmentObject(FittingAutosaver(project: $0)), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .navigationBarTitle("Loadouts")
     }
 }
@@ -77,6 +76,5 @@ struct ShipLoadouts_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
-        .environmentObject(RestorableState())
     }
 }

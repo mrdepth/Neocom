@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	var window: UIWindow?
 
     private var currentActivities: [AnyUserActivityProvider] = []
-    private var state: RestorableState?
+    private var isMainWindow: Bool = false
 
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 		// Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -32,53 +32,55 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let rootModifier = ServicesViewModifier(managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext,
                                                 backgroundManagedObjectContext: AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext(),
                                                 sharedState: SharedState(managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext))
+
+        func makeMainWindow(_ window: UIWindow, _ project: FittingProject?) {
+            isMainWindow = true
+            let contentView = Main(restoredFitting: project)
+                .modifier(rootModifier)
+                .onPreferenceChange(AppendPreferenceKey<AnyUserActivityProvider, AnyUserActivityProvider>.self) { [weak self] activities in
+                    self?.currentActivities = activities
+            }
+
+            window.rootViewController = UIHostingController(rootView: contentView)
+        }
+        
+        func makeChildWindow(_ window: UIWindow, _ project: FittingProject) {
+            isMainWindow = false
+            let contentView = NavigationView {
+                FittingEditor(project: project).environmentObject(FittingAutosaver(project: project))
+            }
+            .navigationViewStyle(StackNavigationViewStyle())
+            .modifier(rootModifier)
+//            .onPreferenceChange(AppendPreferenceKey<AnyUserActivityProvider, AnyUserActivityProvider>.self) { [weak self] activities in
+//                self?.currentActivities = activities
+//            }
+            currentActivities = [AnyUserActivityProvider(project)]
+            window.rootViewController = UIHostingController(rootView: contentView)
+        }
         
 		if let windowScene = scene as? UIWindowScene {
 		    let window = UIWindow(windowScene: windowScene)
             
-            if let activity = session.stateRestorationActivity, activity.activityType == NSUserActivityType.restorableState {
-                state = (try? activity.restorableState(from: context)) ?? RestorableState()
-            }
-            else {
-                state = RestorableState()
-            }
-            
-            if let activity = connectionOptions.userActivities.first(where: {$0.activityType == NSUserActivityType.fitting}),
-                let project = try? activity.fitting(from: AppDelegate.sharedDelegate.persistentContainer.viewContext) {
+            if let activity = connectionOptions.userActivities.first(where: {$0.activityType == NSUserActivityType.fitting}), let project = try? activity.fitting(from: context) {
                 
                 if UIApplication.shared.supportsMultipleScenes {
-                    let contentView = NavigationView {
-                        FittingEditor(project: project).environmentObject(FittingAutosaver(project: project))
-                    }
-                    .navigationViewStyle(StackNavigationViewStyle())
-                    .modifier(rootModifier)
-                    .environmentObject(self.state!)
-                    .onPreferenceChange(AppendPreferenceKey<AnyUserActivityProvider, AnyUserActivityProvider>.self) { [weak self] activities in
-                        self?.currentActivities = activities
-                    }
-                    window.rootViewController = UIHostingController(rootView: contentView)
+                    makeChildWindow(window, project)
                 }
                 else {
-                    let contentView = Main(restoredFitting: project)
-                        .modifier(rootModifier)
-                        .environmentObject(self.state!)
-                        .onPreferenceChange(AppendPreferenceKey<AnyUserActivityProvider, AnyUserActivityProvider>.self) { [weak self] activities in
-                            self?.currentActivities = activities
-                    }
-
-                    window.rootViewController = UIHostingController(rootView: contentView)
+                    makeMainWindow(window, project)
                 }
                 
             }
-            else {
-                let contentView = Main()
-                    .modifier(rootModifier)
-                    .environmentObject(self.state!)
-                    .onPreferenceChange(AppendPreferenceKey<AnyUserActivityProvider, AnyUserActivityProvider>.self) { [weak self] activities in
-                        self?.currentActivities = activities
+            else if let activity = session.stateRestorationActivity, activity.activityType == NSUserActivityType.fitting, let project = try? activity.fitting(from: context) {
+                if activity.userInfo?[NSUserActivity.isMainWindowKey] as? Bool == false {
+                    makeChildWindow(window, project)
                 }
-
-                window.rootViewController = UIHostingController(rootView: contentView)
+                else {
+                    makeMainWindow(window, project)
+                }
+            }
+            else {
+                makeMainWindow(window, nil)
             }
 
 		    self.window = window
@@ -103,7 +105,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
 	func sceneWillResignActive(_ scene: UIScene) {
-        scene.userActivity = state.flatMap{try? NSUserActivity(state: $0)}
+        scene.userActivity = currentActivities.last?.userActivity()
+        scene.userActivity?.addUserInfoEntries(from: [NSUserActivity.isMainWindowKey: isMainWindow])
+//        scene.userActivity = state.flatMap{try? NSUserActivity(state: $0)}
 	}
 
 	func sceneWillEnterForeground(_ scene: UIScene) {

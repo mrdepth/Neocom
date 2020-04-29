@@ -40,7 +40,7 @@ struct FittingRestore: View {
 }
 
 struct Main: View {
-    @State var restoredFitting: FittingProject? = nil
+    @State var restoredFitting: FittingProject?
     @EnvironmentObject private var sharedState: SharedState
     @Environment(\.self) private var environment
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -48,7 +48,15 @@ struct Main: View {
 
     var body: some View {
         let navigationView = NavigationView {
-            home
+            if horizontalSizeClass == .regular {
+                home
+                restoredFitting.map{FittingEditor(project: $0)}
+            }
+            else {
+                home.overlay(restoredFitting.map {
+                    NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $restoredFitting) {EmptyView()}
+                })
+            }
         }
         
         return ZStack {

@@ -51,7 +51,8 @@ struct Home: View {
                     else {
                         Avatar(image: nil)
                             .frame(width: 36, height: 36)
-                            .overlay(Image(systemName: "person").resizable().padding())
+                            .overlay(Image(systemName: "person").resizable().padding(10))
+                            .foregroundColor(.secondary)
                             .animation(.linear)
                     }
                 }.buttonStyle(PlainButtonStyle())
@@ -150,8 +151,5 @@ struct Home_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
-        .environmentObject(RestorableState())
-
-
     }
 }

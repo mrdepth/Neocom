@@ -32,4 +32,5 @@ class SharedState: ObservableObject {
         _esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
     }
     
+    var currentActivity: NSUserActivity?
 }

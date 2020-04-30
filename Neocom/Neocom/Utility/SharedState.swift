@@ -10,9 +10,13 @@ import SwiftUI
 import CoreData
 import Expressible
 import EVEAPI
+import Combine
 
 class SharedState: ObservableObject {
     @Published var account: Account? {
+        willSet {
+            objectWillChange.send()
+        }
         didSet {
             accountID = account?.uuid
             _esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
@@ -25,6 +29,8 @@ class SharedState: ObservableObject {
         return _esi!
     }
     
+    let objectWillChange = ObjectWillChangePublisher()
+    
     @UserDefault(key: .activeAccountID) private var accountID: String? = nil
     
     init(managedObjectContext: NSManagedObjectContext) {
@@ -32,5 +38,5 @@ class SharedState: ObservableObject {
         _esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
     }
     
-    var currentActivity: NSUserActivity?
+    @Published var userActivity: NSUserActivity?
 }

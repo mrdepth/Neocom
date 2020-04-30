@@ -20,15 +20,35 @@ struct FittingEditorFleet: View {
     @State private var isLoadoutPickerPresented = false
 
     var body: some View {
-        List {
+        let pilots = ForEach(gang.pilots, id:\.self) { pilot in
+            Button(action: {
+                guard let ship = pilot.ship else {return}
+                self.ship = ship
+            }) {
+                FleetPilotCell(pilot: pilot).contentShape(Rectangle())
+            }.buttonStyle(PlainButtonStyle())
+        }
+        
+        return List {
             Section(header: Text("FLEET")) {
-                ForEach(gang.pilots, id:\.self) { pilot in
-                    Button(action: {
-                        guard let ship = pilot.ship else {return}
-                        self.ship = ship
-                    }) {
-                        FleetPilotCell(pilot: pilot).contentShape(Rectangle())
-                    }.buttonStyle(PlainButtonStyle())
+                if gang.pilots.count > 1  {
+                    pilots.onDelete { indices in
+                        let pilots = self.gang.pilots
+                        let toDelete = indices.map{pilots[$0]}
+                        if let current = self.ship.parent as? DGMCharacter, let i = pilots.firstIndex(of: current), toDelete.contains(current) {
+                            let left = IndexSet(pilots.indices).subtracting(indices)
+                            if let j = left.min(by: {abs($0 - i) < abs($1 - i)}), let ship = pilots[j].ship {
+                                self.ship = ship
+                            }
+                        }
+                        
+                        toDelete.forEach {
+                            self.gang.remove($0)
+                        }
+                    }
+                }
+                else {
+                    pilots
                 }
             }
             Section {

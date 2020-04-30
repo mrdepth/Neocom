@@ -13,7 +13,7 @@ import Expressible
 struct FleetPilotCell: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
-    @EnvironmentObject var ship: DGMShip
+    @EnvironmentObject private var ship: DGMShip
     
     var pilot: DGMCharacter
     var body: some View {

@@ -53,8 +53,9 @@ struct ShipLoadouts: View {
             .onReceive(projectLoading ?? Empty().eraseToAnyPublisher()) { result in
                 self.projectLoading = nil
                 guard let project = result.value else {return}
+                project.updateUserActivityState(project.userActivity!)
                 if UIApplication.shared.supportsMultipleScenes && self.openMode.openInNewWindow {
-                    let activity = try? NSUserActivity(fitting: project)
+                    let activity = project.userActivity
                     UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
                 }
                 else {

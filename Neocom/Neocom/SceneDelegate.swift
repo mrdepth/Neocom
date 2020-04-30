@@ -11,6 +11,7 @@ import SwiftUI
 import CoreData
 import Expressible
 import EVEAPI
+import Combine
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -18,6 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private var currentActivities: [AnyUserActivityProvider] = []
     private var isMainWindow: Bool = false
+    private var sharedState = SharedState(managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+    private var subscriptions = Set<AnyCancellable>()
 
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 		// Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -31,7 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
         let rootModifier = ServicesViewModifier(managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext,
                                                 backgroundManagedObjectContext: AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext(),
-                                                sharedState: SharedState(managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext))
+                                                sharedState: self.sharedState)
 
         func makeMainWindow(_ window: UIWindow, _ project: FittingProject?) {
             isMainWindow = true
@@ -86,9 +89,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		    self.window = window
 		    window.makeKeyAndVisible()
 		}
+        
+        sharedState.$userActivity.assign(to: \.userActivity , on: scene).store(in: &subscriptions)
 	}
 
 	func sceneDidDisconnect(_ scene: UIScene) {
+        subscriptions.removeAll()
 		// Called as the scene is being released by the system.
 		// This occurs shortly after the scene enters the background, or when its session is discarded.
 		// Release any resources associated with this scene that can be re-created the next time the scene connects.
@@ -105,8 +111,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
 	func sceneWillResignActive(_ scene: UIScene) {
-        scene.userActivity = currentActivities.last?.userActivity()
-        scene.userActivity?.addUserInfoEntries(from: [NSUserActivity.isMainWindowKey: isMainWindow])
+//        scene.userActivity = sharedState.userActivity
+//        scene.userActivity = currentActivities.last?.userActivity()
+//        scene.userActivity?.addUserInfoEntries(from: [NSUserActivity.isMainWindowKey: isMainWindow])
 //        scene.userActivity = state.flatMap{try? NSUserActivity(state: $0)}
 	}
 
@@ -157,6 +164,36 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
         }
         print(URLContexts)
+    }
+    
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        if userActivity.activityType == NSUserActivityType.fitting {
+            if UIApplication.shared.supportsMultipleScenes {
+                UIApplication.shared.requestSceneSessionActivation(nil, userActivity: userActivity, options: nil, errorHandler: nil)
+            }
+            else {
+                let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
+                guard let fitting = try? userActivity.fitting(from: context) else {return}
+                guard let root = window?.rootViewController, let topController = sequence(first: root, next: {$0.presentedViewController}).reversed().first else {return}
+
+                let view = NavigationView {
+                    FittingEditor(project: fitting) { [weak topController] in
+                        topController?.dismiss(animated: true, completion: nil)
+                    }.environmentObject(FittingAutosaver(project: fitting))
+                }.modifier(ServicesViewModifier(managedObjectContext: context, backgroundManagedObjectContext: AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext(), sharedState: sharedState))
+                topController.present(UIHostingController(rootView: view), animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func scene(_ scene: UIScene, didUpdate userActivity: NSUserActivity) {
+        
+    }
+    
+    func scene(_ scene: UIScene, didFailToContinueUserActivityWithType userActivityType: String, error: Error) {
+    }
+    
+    func scene(_ scene: UIScene, willContinueUserActivityWithType userActivityType: String) {
     }
 }
 

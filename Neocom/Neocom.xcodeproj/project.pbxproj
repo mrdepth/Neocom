@@ -79,6 +79,8 @@
 		1632472D239145FA00227480 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1632472C239145FA00227480 /* Cache.swift */; };
 		1632472F2391496500227480 /* Lazy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1632472E2391496500227480 /* Lazy.swift */; };
 		16324731239159A200227480 /* AccountInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16324730239159A200227480 /* AccountInfo.swift */; };
+		16359213245ADF8000622C1C /* FittingEditorFleetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16359212245ADF8000622C1C /* FittingEditorFleetBar.swift */; };
+		16359215245ADFA200622C1C /* FleetBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16359214245ADFA200622C1C /* FleetBarCell.swift */; };
 		1638690923EC217400681612 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1638690823EC217400681612 /* Atomic.swift */; };
 		164156172397E68A0063A39C /* TypeInfoSkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164156162397E68A0063A39C /* TypeInfoSkillCell.swift */; };
 		164E418223EAC90400EF16CE /* OptimalAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164E418123EAC90400EF16CE /* OptimalAttributes.swift */; };
@@ -434,6 +436,8 @@
 		1632472C239145FA00227480 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		1632472E2391496500227480 /* Lazy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lazy.swift; sourceTree = "<group>"; };
 		16324730239159A200227480 /* AccountInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountInfo.swift; sourceTree = "<group>"; };
+		16359212245ADF8000622C1C /* FittingEditorFleetBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorFleetBar.swift; sourceTree = "<group>"; };
+		16359214245ADFA200622C1C /* FleetBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetBarCell.swift; sourceTree = "<group>"; };
 		1638690823EC217400681612 /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 		164156162397E68A0063A39C /* TypeInfoSkillCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoSkillCell.swift; sourceTree = "<group>"; };
 		164E418123EAC90400EF16CE /* OptimalAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimalAttributes.swift; sourceTree = "<group>"; };
@@ -1396,6 +1400,8 @@
 			isa = PBXGroup;
 			children = (
 				16CB5FA62424F04D00A91370 /* FittingEditorFleet.swift */,
+				16359212245ADF8000622C1C /* FittingEditorFleetBar.swift */,
+				16359214245ADFA200622C1C /* FleetBarCell.swift */,
 				16CB5FA82424F6FE00A91370 /* FleetPilotCell.swift */,
 			);
 			path = Fleet;
@@ -1814,8 +1820,10 @@
 				161C6EFD23A12FBC00777009 /* TypeMarketData.swift in Sources */,
 				1696E5DD2445AFDC00F2F721 /* SharedState.swift in Sources */,
 				16859F4824320FB000824552 /* AssetsItem.swift in Sources */,
+				16359213245ADF8000622C1C /* FittingEditorFleetBar.swift in Sources */,
 				16D5DE7823B238D4004CDA4A /* CertificateRequirementsInfo.swift in Sources */,
 				1688841C242D11490099C769 /* CharacterSheetItem.swift in Sources */,
+				16359215245ADFA200622C1C /* FleetBarCell.swift in Sources */,
 				16A1598523C712FB00778320 /* AddToSkillPlanButton.swift in Sources */,
 				16674BEC238BB97400E6E547 /* ProgressView.swift in Sources */,
 				16859F3C2431EA5A00824552 /* Incursions.swift in Sources */,
@@ -1991,7 +1999,6 @@
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 44;
-				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;
@@ -2016,7 +2023,6 @@
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 44;
-				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;

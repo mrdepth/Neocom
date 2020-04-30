@@ -24,6 +24,7 @@ struct Config {
     let terms = URL(string: "https://mrdepth.github.io/Neocom/terms.html")!
     let privacy = URL(string: "https://mrdepth.github.io/Neocom/privacy.html")!
 
+    let loadoutPathExtension = "loadout"
 }
 
 

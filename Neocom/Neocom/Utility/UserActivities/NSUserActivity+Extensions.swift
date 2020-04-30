@@ -15,21 +15,27 @@ enum NSUserActivityType {
 
 extension NSUserActivity {
     static let isMainWindowKey = "isMainWindow"
+    static let loadoutKey = "loadout"
 }
 //
 //
 //
 extension NSUserActivity {
     convenience init(fitting: FittingProject) throws {
-        let data = try JSONEncoder().encode(fitting)
         self.init(activityType: NSUserActivityType.fitting)
-        addUserInfoEntries(from: ["fitting": data])
+//        let data = try JSONEncoder().encode(fitting)
+//        addUserInfoEntries(from: ["fitting": data])
     }
     
     func fitting(from managedObjectContext: NSManagedObjectContext) throws -> FittingProject {
-        guard let data = userInfo?["fitting"] as? Data else {throw RuntimeError.invalidActivityType}
-        let decoder = JSONDecoder()
-        decoder.userInfo[FittingProject.managedObjectContextKey] = managedObjectContext
-        return try decoder.decode(FittingProject.self, from: data)
+        let project = FittingProject(fileURL: FittingProject.documentsDirectoryURL.appendingPathComponent(UUID().uuidString).appendingPathExtension(Config.current.loadoutPathExtension),
+                                     managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        project.restoreUserActivityState(self)
+        guard project.gang != nil || project.structure != nil else {throw RuntimeError.invalidLoadoutFormat}
+        return project
+//        guard let data = userInfo?["fitting"] as? Data else {throw RuntimeError.invalidActivityType}
+//        let decoder = JSONDecoder()
+//        decoder.userInfo[FittingProject.managedObjectContextKey] = managedObjectContext
+//        return try decoder.decode(FittingProject.self, from: data)
     }
 }

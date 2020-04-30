@@ -13,13 +13,13 @@
 			<string>Fitting</string>
 			<key>LSHandlerRank</key>
 			<string>Default</string>
-			<key>NSUbiquitousDocumentUserActivityType</key>
-			<array>
-				<string>$(PRODUCT_BUNDLE_IDENTIFIER).fitting.activity</string>
-			</array>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>$(PRODUCT_BUNDLE_IDENTIFIER).fitting</string>
+			</array>
+			<key>NSUbiquitousDocumentUserActivityType</key>
+			<array>
+				<string>$(PRODUCT_BUNDLE_IDENTIFIER).fitting.activity</string>
 			</array>
 		</dict>
 	</array>
@@ -29,6 +29,10 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER).fitting.activity</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>

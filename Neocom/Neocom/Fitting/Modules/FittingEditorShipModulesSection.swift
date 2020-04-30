@@ -57,8 +57,8 @@ struct FittingEditorShipModulesSection: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
     @State private var grouped = false
-    @EnvironmentObject var typePickerState: TypePickerState
-    @EnvironmentObject var ship: DGMShip
+    @EnvironmentObject private var typePickerState: TypePickerState
+    @EnvironmentObject private var ship: DGMShip
 
     var body: some View {
         let modules = ship.modules(slot: slot)

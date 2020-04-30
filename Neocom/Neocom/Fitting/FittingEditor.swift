@@ -16,7 +16,9 @@ struct FittingEditor: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var sharedState: SharedState
     var project: FittingProject
-    let priceData = Lazy<PricesData, Never>()
+    var completion: (() -> Void)? = nil
+    
+    private let priceData = Lazy<PricesData, Never>()
 
     var body: some View {
         let gang = project.gang
@@ -25,11 +27,11 @@ struct FittingEditor: View {
         return Group {
             if ship != nil {
                 if ship is DGMStructure {
-                    FittingStructureEditor(structure: ship as! DGMStructure)
+                    FittingStructureEditor(structure: ship as! DGMStructure, completion: completion)
                         .environmentObject(project)
                 }
                 else if gang != nil {
-                    FittingShipEditor(gang: gang!, ship: ship!)
+                    FittingShipEditor(gang: gang!, ship: ship!, completion: completion)
                         .environmentObject(project)
                 }
             }
@@ -40,6 +42,16 @@ struct FittingEditor: View {
         .environmentObject(project)
         .environmentObject(priceData.get(initial: PricesData(esi: sharedState.esi)))
         .preference(key: AppendPreferenceKey<AnyUserActivityProvider, AnyUserActivityProvider>.self, value: [AnyUserActivityProvider(project)])
+        .onAppear {
+            self.sharedState.userActivity = self.project.userActivity
+            UIApplication.shared.userActivity = self.project.userActivity
+            self.sharedState.userActivity?.becomeCurrent()
+        }
+        .onDisappear {
+            self.sharedState.userActivity?.resignCurrent()
+            UIApplication.shared.userActivity = nil
+            self.sharedState.userActivity = nil
+        }
     }
 }
 
@@ -63,10 +75,12 @@ struct FittingShipEditor: View {
     @EnvironmentObject private var project: FittingProject
     @EnvironmentObject private var sharedState: SharedState
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    private var completion: (() -> Void)?
     
-    init(gang: DGMGang, ship: DGMShip) {
+    init(gang: DGMGang, ship: DGMShip, completion: (() -> Void)?) {
         _gang = ObservedObject(initialValue: gang)
         _currentShip = State(initialValue: ship)
+        self.completion = completion
     }
     
     private var title: String {
@@ -101,58 +115,81 @@ struct FittingShipEditor: View {
 
     
     var body: some View {
-        HStack(spacing: 0) {
-            VStack(spacing: 0) {
-                Picker("Page", selection: $currentPage) {
-                    Text("Modules").tag(Page.modules)
-                    Text("Drones").tag(Page.drones)
-                    Text("Implants").tag(Page.implants)
-                    Text("Fleet").tag(Page.fleet)
-                    Text("Cargo").tag(Page.cargo)
-                    if horizontalSizeClass != .regular {
-                        Text("Stats").tag(Page.stats)
+        let body = VStack(spacing: 0) {
+            Divider().edgesIgnoringSafeArea(.horizontal)
+            HStack(spacing: 0) {
+                VStack(spacing: 0) {
+                    Picker("Page", selection: $currentPage) {
+                        Text("Modules").tag(Page.modules)
+                        Text("Drones").tag(Page.drones)
+                        Text("Implants").tag(Page.implants)
+                        if horizontalSizeClass != .regular {
+                            Text("Fleet").tag(Page.fleet)
+                        }
+                        Text("Cargo").tag(Page.cargo)
+                        if horizontalSizeClass != .regular {
+                            Text("Stats").tag(Page.stats)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
+                    Divider()
+                    if currentPage == .modules {
+                        FittingEditorShipModules()
+                    }
+                    else if currentPage == .drones {
+                        FittingEditorShipDrones()
+                    }
+                    else if currentPage == .implants {
+                        FittingEditorImplants()
+                    }
+                    else if currentPage == .fleet {
+                        FittingEditorFleet(ship: $currentShip)
+                    }
+                    else if currentPage == .stats {
+                        FittingEditorStats()
+                    }
+                    else if currentPage == .cargo {
+                        FittingCargo()
                     }
                 }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding(.horizontal)
-                .padding(.vertical, 8)
-                Divider()
-                if currentPage == .modules {
-                    FittingEditorShipModules()
-                }
-                else if currentPage == .drones {
-                    FittingEditorShipDrones()
-                }
-                else if currentPage == .implants {
-                    FittingEditorImplants()
-                }
-                else if currentPage == .fleet {
-                    FittingEditorFleet(ship: $currentShip)
-                }
-                else if currentPage == .stats {
-                    FittingEditorStats()
-                }
-                else if currentPage == .cargo {
-                    FittingCargo()
+                if horizontalSizeClass == .regular {
+                    Divider().edgesIgnoringSafeArea(.bottom)
+                    VStack(spacing: 0) {
+                        Color.clear.frame(height: 1)
+                        FittingEditorStats()
+                    }
                 }
             }
             if horizontalSizeClass == .regular {
-                Divider().edgesIgnoringSafeArea(.bottom)
-                FittingEditorStats()
+                Divider().edgesIgnoringSafeArea(.horizontal)
+                FittingEditorFleetBar(ship: $currentShip)
             }
-        }.navigationBarItems(trailing: actionsButton)
+        }
         .environmentObject(gang)
         .environmentObject(currentShip)
+        
+        return Group {
+            if completion != nil {
+                body.navigationBarItems(leading: BarButtonItems.close(completion!), trailing: actionsButton)
+            }
+            else {
+                body.navigationBarItems(trailing: actionsButton)
+            }
+        }
         .navigationBarTitle(Text(title), displayMode: .inline)
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
 }
 
 struct FittingStructureEditor: View {
-    
+    @ObservedObject var structure: DGMStructure
+    var completion: (() -> Void)?
+
     @State private var currentPage = Page.modules
     @State private var isActionsPresented = false
-    @ObservedObject var structure: DGMStructure
+    
     @Environment(\.self) private var environment
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var project: FittingProject
@@ -218,7 +255,7 @@ struct FittingStructureEditor: View {
                 FittingEditorStats()
             }
         }
-        .navigationBarItems(trailing: actionsButton)
+        .navigationBarItems(leading: completion.map{BarButtonItems.close($0)}, trailing: actionsButton)
         .environmentObject(structure as DGMShip)
         .navigationBarTitle(Text(title), displayMode: .inline)
     }

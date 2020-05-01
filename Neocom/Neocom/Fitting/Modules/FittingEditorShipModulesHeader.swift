@@ -10,19 +10,19 @@ import SwiftUI
 import Dgmpp
 
 struct FittingEditorShipModulesHeader: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     
     var body: some View {
         VStack(spacing: 2) {
             HStack {
-                PowerGridResource()
-                CPUResource()
+                PowerGridResource(ship: ship)
+                CPUResource(ship: ship)
             }
             HStack {
-                CalibrationResource()
+                CalibrationResource(ship: ship)
                 HStack {
-                    TurretsResource().frame(maxWidth: .infinity, alignment: .leading)
-                    LaunchersResource().frame(maxWidth: .infinity, alignment: .leading)
+                    TurretsResource(ship: ship).frame(maxWidth: .infinity, alignment: .leading)
+                    LaunchersResource(ship: ship).frame(maxWidth: .infinity, alignment: .leading)
                 }.frame(maxWidth: .infinity)
             }
         }
@@ -32,9 +32,7 @@ struct FittingEditorShipModulesHeader: View {
 struct FittingEditorShipModulesHeader_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
-        return FittingEditorShipModulesHeader()
-            .environmentObject(gang)
-            .environmentObject(gang.pilots[0].ship!)
+        return FittingEditorShipModulesHeader(ship: gang.pilots[0].ship!)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
             .background(Color(.systemBackground))
 //            .colorScheme(.dark)

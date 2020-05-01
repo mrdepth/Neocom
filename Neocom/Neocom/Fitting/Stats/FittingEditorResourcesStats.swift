@@ -10,25 +10,25 @@ import SwiftUI
 import Dgmpp
 
 struct FittingEditorResourcesStats: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     
     var body: some View {
         Section(header: Text("RESOURCES")) {
             VStack(spacing: 4) {
                 HStack {
-                    TurretsResource().frame(maxWidth: .infinity)
-                    LaunchersResource().frame(maxWidth: .infinity)
+                    TurretsResource(ship: ship).frame(maxWidth: .infinity)
+                    LaunchersResource(ship: ship).frame(maxWidth: .infinity)
                     ShipResource(used: ship.usedCalibration, total: ship.totalCalibration, unit: .none, image: Image("calibration"), style: .counter).frame(maxWidth: .infinity)
-                    DronesCountResource().frame(maxWidth: .infinity)
+                    DronesCountResource(ship: ship).frame(maxWidth: .infinity)
                 }
                 Divider()
                 HStack {
-                    CPUResource()
-                    DroneBayResource()
+                    CPUResource(ship: ship)
+                    DroneBayResource(ship: ship)
                 }
                 HStack {
-                    PowerGridResource()
-                    DroneBandwidthResource()
+                    PowerGridResource(ship: ship)
+                    DroneBandwidthResource(ship: ship)
                 }
             }.lineLimit(1)
         }
@@ -39,9 +39,8 @@ struct FittingEditorResourcesStats_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         return List {
-            FittingEditorResourcesStats()
+            FittingEditorResourcesStats(ship: gang.pilots.first!.ship!)
         }.listStyle(GroupedListStyle())
-        .environmentObject(gang.pilots.first!.ship!)
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }

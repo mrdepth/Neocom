@@ -13,7 +13,7 @@ import EVEAPI
 
 struct FittingEditorFuelStats: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     
     let formatter = UnitFormatter(unit: .none, style: .short)
     
@@ -51,9 +51,8 @@ struct FittingEditorFuelStats: View {
 struct FittingEditorFuelStats_Previews: PreviewProvider {
     static var previews: some View {
         return List {
-            FittingEditorFuelStats()
+            FittingEditorFuelStats(ship: DGMStructure.testKeepstar())
         }.listStyle(GroupedListStyle())
-            .environmentObject(DGMStructure.testKeepstar() as DGMShip)
             .environmentObject(PricesData(esi: ESI()))
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }

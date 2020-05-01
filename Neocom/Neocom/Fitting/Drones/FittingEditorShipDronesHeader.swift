@@ -10,15 +10,15 @@ import SwiftUI
 import Dgmpp
 
 struct FittingEditorShipDronesHeader: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     
     var body: some View {
         HStack {
             if ship.totalFighterLaunchTubes == 0 {
-                DroneBandwidthResource()
+                DroneBandwidthResource(ship: ship)
             }
-            DroneBayResource()
-            DronesCountResource()
+            DroneBayResource(ship: ship)
+            DronesCountResource(ship: ship)
         }.font(.caption)
     }
 }
@@ -27,9 +27,8 @@ struct FittingEditorShipDronesHeader_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         
-        return FittingEditorShipDronesHeader()
+        return FittingEditorShipDronesHeader(ship: gang.pilots[0].ship!)
             .environmentObject(gang)
-            .environmentObject(gang.pilots[0].ship!)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
             .background(Color(.systemBackground))
 

@@ -10,7 +10,7 @@ import SwiftUI
 import Dgmpp
 
 struct FittingCargoHeader: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     
     var body: some View {
         ShipResource(used: ship.usedCargoCapacity, total: ship.cargoCapacity, unit: .cubicMeter, image: Image("cargoBay"), style: .progress)
@@ -22,9 +22,8 @@ struct FittingCargoHeader_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         
-        return FittingCargoHeader()
+        return FittingCargoHeader(ship: gang.pilots[0].ship!)
             .environmentObject(gang)
-            .environmentObject(gang.pilots[0].ship!)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
             .background(Color(.systemBackground))
 

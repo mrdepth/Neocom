@@ -10,7 +10,7 @@ import SwiftUI
 import Dgmpp
 
 struct ResistanceView: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     var resistance: DGMPercent
     var damageType: DamageType
     
@@ -27,13 +27,14 @@ struct ResistanceView: View {
 }
 
 struct ResistancesLayerView: View {
+    @ObservedObject var ship: DGMShip
     var damage: DGMDamageVector
     var body: some View {
         Group {
-            ResistanceView(resistance: damage.em, damageType: .em)
-            ResistanceView(resistance: damage.thermal, damageType: .thermal)
-            ResistanceView(resistance: damage.kinetic, damageType: .kinetic)
-            ResistanceView(resistance: damage.explosive, damageType: .explosive)
+            ResistanceView(ship: ship, resistance: damage.em, damageType: .em)
+            ResistanceView(ship: ship, resistance: damage.thermal, damageType: .thermal)
+            ResistanceView(ship: ship, resistance: damage.kinetic, damageType: .kinetic)
+            ResistanceView(ship: ship, resistance: damage.explosive, damageType: .explosive)
         }
     }
 }
@@ -41,7 +42,7 @@ struct ResistancesLayerView: View {
 struct FittingEditorResistancesStats: View {
     private enum HPColumn {}
     
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     @State private var hpColumnWidth: CGFloat?
     
     var body: some View {
@@ -63,23 +64,23 @@ struct FittingEditorResistancesStats: View {
                 }
                 HStack {
                     Icon(Image("shield"), size: .small)
-                    ResistancesLayerView(damage: DGMDamageVector(resistances.shield))
+                    ResistancesLayerView(ship: ship, damage: DGMDamageVector(resistances.shield))
                     Text("\(formatter.string(from: hp.shield))").sizePreference(HPColumn.self).frame(width: hpColumnWidth)
                 }
                 HStack {
                     Icon(Image("armor"), size: .small)
-                    ResistancesLayerView(damage: DGMDamageVector(resistances.armor))
+                    ResistancesLayerView(ship: ship, damage: DGMDamageVector(resistances.armor))
                     Text("\(formatter.string(from: hp.armor))").sizePreference(HPColumn.self).frame(width: hpColumnWidth)
                 }
                 HStack {
                     Icon(Image("hull"), size: .small)
-                    ResistancesLayerView(damage: DGMDamageVector(resistances.hull))
+                    ResistancesLayerView(ship: ship, damage: DGMDamageVector(resistances.hull))
                     Text("\(formatter.string(from: hp.hull))").sizePreference(HPColumn.self).frame(width: hpColumnWidth)
                 }
                 Divider()
                 HStack {
                     Icon(Image("damagePattern"), size: .small)
-                    ResistancesLayerView(damage: damagePattern)
+                    ResistancesLayerView(ship: ship, damage: damagePattern)
                     Color.clear.frame(width: hpColumnWidth)
                 }
                 Divider()
@@ -95,9 +96,8 @@ struct FittingEditorResistancesStats_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         return List {
-            FittingEditorResistancesStats()
+            FittingEditorResistancesStats(ship: gang.pilots.first!.ship!)
         }.listStyle(GroupedListStyle())
-        .environmentObject(gang.pilots.first!.ship!)
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }

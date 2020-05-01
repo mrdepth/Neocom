@@ -11,8 +11,8 @@ import Dgmpp
 import CoreData
 
 struct FittingEditorModulesPrice: View {
+    @ObservedObject var ship: DGMShip
     var prices: [Int: Double]
-    @EnvironmentObject private var ship: DGMShip
     @Environment(\.managedObjectContext) private var managedObjectContext
     
     let formatter = UnitFormatter(unit: .isk, style: .long)
@@ -53,9 +53,8 @@ struct FittingEditorModulesPrice_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         return NavigationView {
-            FittingEditorModulesPrice(prices: [:])
+            FittingEditorModulesPrice(ship: gang.pilots.first!.ship!, prices: [:])
         }
-        .environmentObject(gang.pilots.first!.ship!)
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }

@@ -12,9 +12,9 @@ import Dgmpp
 
 
 struct FittingCargoActions: View {
+    @ObservedObject var ship: DGMShip
     @ObservedObject var cargo: DGMCargo
     var completion: () -> Void
-    @EnvironmentObject private var ship: DGMShip
     @Environment(\.managedObjectContext) private var managedObjectContext
     @State private var selectedType: SDEInvType?
     @Environment(\.self) private var environment
@@ -34,7 +34,7 @@ struct FittingCargoActions: View {
             HStack {
                 Text("Volume")
                 Spacer()
-                CargoVolume(cargo: cargo).foregroundColor(.secondary)
+                CargoVolume(ship: ship, cargo: cargo).foregroundColor(.secondary)
             }
             HStack {
                 Text("Per Item")
@@ -78,10 +78,9 @@ struct FittingCargoActions_Previews: PreviewProvider {
             let ship = DGMShip.testDominix()
             let cargo = ship.cargo[0]
             cargo.quantity = 10
-            return FittingCargoActions(cargo: cargo) {}
+            return FittingCargoActions(ship: ship, cargo: cargo) {}
                 .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
                 .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-                .environmentObject(ship)
                 .environmentObject(SharedState.testState())
             
 

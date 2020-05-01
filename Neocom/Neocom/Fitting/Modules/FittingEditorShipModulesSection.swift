@@ -51,6 +51,7 @@ struct FittingEditorShipModulesSection: View {
 
     }
     
+    @ObservedObject var ship: DGMShip
     var slot: DGMModule.Slot
     @Binding var selection: FittingEditorShipModules.Selection?
     
@@ -58,7 +59,7 @@ struct FittingEditorShipModulesSection: View {
     @Environment(\.self) private var environment
     @State private var grouped = false
     @EnvironmentObject private var typePickerState: TypePickerState
-    @EnvironmentObject private var ship: DGMShip
+    
 
     var body: some View {
         let modules = ship.modules(slot: slot)
@@ -100,10 +101,10 @@ struct FittingEditorShipModulesSection: View {
         return Section(header: header) {
             ForEach(rows) { i in
                 if i.modules?.isEmpty == false {
-                    Button(action: {self.selection = .module(DGMModuleGroup(i.modules!))}) {
+//                    Button(action: {self.selection = .module(DGMModuleGroup(i.modules!))}) {
                         FittingModuleCell(module: DGMModuleGroup(i.modules!))
                             .foregroundColor(i.modules![0].socket >= n ? .red : nil)
-                    }.buttonStyle(PlainButtonStyle())
+//                    }.buttonStyle(PlainButtonStyle())
                 }
                 else {
                     Button(action: {
@@ -146,10 +147,9 @@ struct FittingEditorShipModulesSection_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             List {
-                FittingEditorShipModulesSection(slot: .hi, selection: .constant(nil))
+                FittingEditorShipModulesSection(ship: DGMShip.testDominix(), slot: .hi, selection: .constant(nil))
             }.listStyle(GroupedListStyle())
         }
-        .environmentObject(DGMShip.testDominix())
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environmentObject(TypePickerState())
 //        .colorScheme(.dark)

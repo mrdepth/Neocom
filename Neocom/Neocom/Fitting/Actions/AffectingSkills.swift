@@ -13,7 +13,7 @@ import Alamofire
 import EVEAPI
 
 struct AffectingSkills: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @EnvironmentObject private var sharedState: SharedState
@@ -69,9 +69,8 @@ struct AffectingSkills_Previews: PreviewProvider {
 
         let gang = DGMGang.testGang()
         return NavigationView {
-            AffectingSkills()
+            AffectingSkills(ship: gang.pilots.first!.ship!)
         }
-        .environmentObject(gang.pilots.first!.ship!)
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())

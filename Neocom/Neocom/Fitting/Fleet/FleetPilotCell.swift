@@ -13,9 +13,9 @@ import Expressible
 struct FleetPilotCell: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
-    @EnvironmentObject private var ship: DGMShip
+    @Binding var ship: DGMShip
+    @ObservedObject var pilot: DGMCharacter
     
-    var pilot: DGMCharacter
     var body: some View {
         let type = pilot.ship?.type(from: managedObjectContext)
         let url = pilot.url
@@ -57,10 +57,9 @@ struct FleetPilotCell_Previews: PreviewProvider {
         let gang = DGMGang.testGang()
         
         return List {
-            FleetPilotCell(pilot: gang.pilots[0])
+            FleetPilotCell(ship: .constant(gang.pilots[0].ship!), pilot: gang.pilots[0])
             }.listStyle(GroupedListStyle())
             .environmentObject(gang)
-            .environmentObject(gang.pilots[0].ship!)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
             .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
 

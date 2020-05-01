@@ -81,11 +81,15 @@ struct FittingModuleCell: View {
         }
     }
 
+    @State private var isActionsPresented = false
+    @Environment(\.self) private var environment
+    @EnvironmentObject private var sharedState: SharedState
+
     var body: some View {
         let type = module.type(from: managedObjectContext)
         let slotsWithState: Set<DGMModule.Slot> = [.hi, .low, .med, .starbaseStructure]
         
-        return HStack {
+        return Button(action:{self.isActionsPresented = true}){HStack {
             (type?.image).map{Icon($0).cornerRadius(4)}
             VStack(alignment: .leading, spacing: 0) {
                 (type?.typeName).map{Text($0)} ?? Text("Unknown")
@@ -107,7 +111,15 @@ struct FittingModuleCell: View {
             if module.modules.count > 1 {
                 Text("x\(module.modules.count)").fontWeight(.semibold).modifier(SecondaryLabelModifier())
             }
-        }.contentShape(Rectangle())
+        }.contentShape(Rectangle())}
+        .buttonStyle(PlainButtonStyle())
+            .sheet(isPresented: $isActionsPresented) {
+                NavigationView {
+                    FittingModuleActions(module: self.module) {
+                        self.isActionsPresented = false
+                    }
+                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+        }
     }
 }
 

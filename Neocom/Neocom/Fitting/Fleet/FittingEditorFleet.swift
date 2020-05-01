@@ -25,7 +25,7 @@ struct FittingEditorFleet: View {
                 guard let ship = pilot.ship else {return}
                 self.ship = ship
             }) {
-                FleetPilotCell(pilot: pilot).contentShape(Rectangle())
+                FleetPilotCell(ship: self.$ship, pilot: pilot).contentShape(Rectangle())
             }.buttonStyle(PlainButtonStyle())
         }
         
@@ -79,7 +79,6 @@ struct FittingEditorFleet_Previews: PreviewProvider {
         
         return FittingEditorFleet(ship: .constant(gang.pilots[0].ship!))
             .environmentObject(gang)
-            .environmentObject(gang.pilots[0].ship!)
             .environmentObject(project)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
             .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)

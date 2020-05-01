@@ -43,7 +43,40 @@ class TypePickerState: ObservableObject {
     var current: Node?
 }
 
-struct TypePicker: View {
+class TypePickerViewController: UINavigationController {
+    var completion: (SDEInvType) -> Void
+    init(parentGroup: SDEDgmppItemGroup, services: ServicesViewModifier, completion: @escaping (SDEInvType) -> Void) {
+        self.completion = completion
+        super.init(nibName: nil, bundle: nil)
+        let view = TypePicker(parentGroup: parentGroup) { [weak self] type in
+            self?.completion(type)
+        }.modifier(services)
+        viewControllers = [UIHostingController(rootView: view)]
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError()
+    }
+}
+
+struct TypePicker: UIViewControllerRepresentable {
+    @Environment(\.self) private var environment
+    @EnvironmentObject private var sharedState: SharedState
+    var parentGroup: SDEDgmppItemGroup
+    var completion: (SDEInvType) -> Void
+
+    var content = Lazy<TypePickerViewController, Never>()
+    
+    func makeUIViewController(context: Context) -> TypePickerViewController {
+        return content.get(initial: TypePickerViewController(parentGroup: parentGroup, services: ServicesViewModifier(environment: environment, sharedState: sharedState), completion: completion))
+    }
+    
+    func updateUIViewController(_ uiViewController: TypePickerViewController, context: Context) {
+        uiViewController.completion = completion
+    }
+}
+
+struct TypePickerWrapper: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var state: TypePickerState
     

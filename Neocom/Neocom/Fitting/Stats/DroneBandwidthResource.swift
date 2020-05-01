@@ -10,7 +10,7 @@ import SwiftUI
 import Dgmpp
 
 struct DroneBandwidthResource: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     
     var body: some View {
         ShipResource(used: ship.usedDroneBandwidth, total: ship.totalDroneBandwidth, unit: .megaBitsPerSecond, image: Image("droneBandwidth"), style: .progress)
@@ -19,6 +19,6 @@ struct DroneBandwidthResource: View {
 
 struct DroneBandwidthResource_Previews: PreviewProvider {
     static var previews: some View {
-        DroneBandwidthResource().environmentObject(DGMGang.testGang().pilots[0].ship!)
+        DroneBandwidthResource(ship: DGMGang.testGang().pilots[0].ship!)
     }
 }

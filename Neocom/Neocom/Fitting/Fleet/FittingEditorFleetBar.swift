@@ -39,7 +39,7 @@ struct FittingEditorFleetBar: View {
                     guard let ship = pilot.ship else {return}
                     self.ship = ship
                 }) {
-                    FleetBarCell(pilot: pilot) {
+                    FleetBarCell(currentShip: self.ship, pilot: pilot) {
                         self.onClose(pilot)
                     }.contentShape(Rectangle())
                 }.buttonStyle(PlainButtonStyle())
@@ -49,7 +49,7 @@ struct FittingEditorFleetBar: View {
             }
             .layoutPriority(10)
         }
-//        .background(Color(.systemGroupedBackground))
+        .background(Color(.systemFill).edgesIgnoringSafeArea(.all))
         .sheet(isPresented: $isLoadoutPickerPresented) {
             NavigationView {
                 FittingEditorLoadoutPicker(project: self.project) {
@@ -72,7 +72,6 @@ struct FittingEditorFleetBar_Previews: PreviewProvider {
         
         return FittingEditorFleetBar(ship: .constant(gang.pilots[0].ship!))
             .environmentObject(gang)
-            .environmentObject(gang.pilots[0].ship!)
             .environmentObject(project)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
             .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)

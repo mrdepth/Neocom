@@ -10,7 +10,7 @@ import SwiftUI
 import Dgmpp
 
 struct FittingEditorMiningStats: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     let formatter = UnitFormatter(unit: .none, style: .short)
     
     private func header(text: Text, image: Image) -> some View {
@@ -58,9 +58,8 @@ struct FittingEditorMiningStats_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         return List {
-            FittingEditorMiningStats()
+            FittingEditorMiningStats(ship: gang.pilots.first!.ship!)
         }.listStyle(GroupedListStyle())
-            .environmentObject(gang.pilots.first!.ship!)
             .environmentObject(gang)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }

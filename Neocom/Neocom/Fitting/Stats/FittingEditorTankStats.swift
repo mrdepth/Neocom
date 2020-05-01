@@ -10,7 +10,7 @@ import SwiftUI
 import Dgmpp
 
 struct FittingEditorTankStats: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     let formatter = UnitFormatter(unit: .none, style: .short)
     
     private func cell(_ keyPath: KeyPath<DGMTank, DGMHPPerSecond>, tank: DGMTank, effectiveTank: DGMTank) -> some View {
@@ -59,9 +59,8 @@ struct FittingEditorTankStats_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         return List {
-            FittingEditorTankStats()
+            FittingEditorTankStats(ship: gang.pilots.first!.ship!)
         }.listStyle(GroupedListStyle())
-            .environmentObject(gang.pilots.first!.ship!)
             .environmentObject(gang)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }

@@ -14,7 +14,7 @@ fileprivate protocol Column {}
 struct FittingEditorMiscStats: View {
     private enum LeftColumn: Column {}
     private enum RightColumn: Column {}
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     @State private var leftColumnWidth: CGFloat?
     @State private var rightColumnWidth: CGFloat?
     
@@ -80,10 +80,9 @@ struct FittingEditorMiscStats_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         return List {
-            FittingEditorMiscStats()
+            FittingEditorMiscStats(ship: gang.pilots.first!.ship!)
         }.listStyle(GroupedListStyle())
 //            .environmentObject(DGMStructure.testKeepstar() as DGMShip)
-            .environmentObject(gang.pilots.first!.ship!)
             .environmentObject(gang)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }

@@ -14,7 +14,7 @@ import EVEAPI
 import Combine
 
 struct RequiredSkills: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @EnvironmentObject private var sharedState: SharedState
@@ -98,9 +98,8 @@ struct RequiredSkills_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         return NavigationView {
-            RequiredSkills()
+            RequiredSkills(ship: gang.pilots.first!.ship!)
         }
-        .environmentObject(gang.pilots.first!.ship!)
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())

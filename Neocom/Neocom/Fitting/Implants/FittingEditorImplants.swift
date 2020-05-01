@@ -11,7 +11,7 @@ import Dgmpp
 import Expressible
 
 struct FittingEditorImplants: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     @Environment(\.managedObjectContext) var managedObjectContext
     @State private var selectedGroup: SDEDgmppItemGroup?
     @Environment(\.self) private var environment
@@ -129,9 +129,8 @@ struct FittingEditorImplants_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         
-        return FittingEditorImplants()
+        return FittingEditorImplants(ship: gang.pilots[0].ship!)
             .environmentObject(gang)
-            .environmentObject(gang.pilots[0].ship!)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
             .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }

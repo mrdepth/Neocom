@@ -10,7 +10,7 @@ import SwiftUI
 import Dgmpp
 
 struct FittingEditorFirepowerStats: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     let formatter = UnitFormatter(unit: .none, style: .short)
     
     private func header(text: Text, image: Image) -> some View {
@@ -58,10 +58,10 @@ struct FittingEditorFirepowerStats: View {
                 Divider()
                 HStack {
                     Icon(Image("damagePattern"), size: .small)
-                    ResistanceView(resistance: dps.em / total, damageType: .em)
-                    ResistanceView(resistance: dps.thermal / total, damageType: .thermal)
-                    ResistanceView(resistance: dps.kinetic / total, damageType: .kinetic)
-                    ResistanceView(resistance: dps.explosive / total, damageType: .explosive)
+                    ResistanceView(ship: ship, resistance: dps.em / total, damageType: .em)
+                    ResistanceView(ship: ship, resistance: dps.thermal / total, damageType: .thermal)
+                    ResistanceView(ship: ship, resistance: dps.kinetic / total, damageType: .kinetic)
+                    ResistanceView(ship: ship, resistance: dps.explosive / total, damageType: .explosive)
                 }
             }.font(.caption)
             .lineLimit(1)
@@ -73,9 +73,8 @@ struct FittingEditorFirepowerStats_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         return List {
-            FittingEditorFirepowerStats()
+            FittingEditorFirepowerStats(ship: gang.pilots.first!.ship!)
         }.listStyle(GroupedListStyle())
-            .environmentObject(gang.pilots.first!.ship!)
             .environmentObject(gang)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }

@@ -46,7 +46,7 @@ struct FittingEditorShipModules: View {
     
     @State private var selection: Selection?
     @Environment(\.self) private var environment
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     @Environment(\.typePicker) private var typePicker
     @EnvironmentObject private var sharedState: SharedState
     
@@ -77,9 +77,9 @@ struct FittingEditorShipModules: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            FittingEditorShipModulesHeader().padding(8)
+            FittingEditorShipModulesHeader(ship: ship).padding(8)
             Divider()
-            FittingEditorShipModulesList(selection: $selection)
+            FittingEditorShipModulesList(ship: ship, selection: $selection)
         }
         .sheet(item: $selection) { selection in
             if selection.slot != nil {
@@ -96,10 +96,9 @@ struct FittingEditorShipModules_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         return NavigationView {
-            FittingEditorShipModules()
+            FittingEditorShipModules(ship: gang.pilots.first!.ship!)
         }
 //        .environmentObject(DGMStructure.testKeepstar() as DGMShip)
-        .environmentObject(gang.pilots.first!.ship!)
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }

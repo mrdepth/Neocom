@@ -10,7 +10,7 @@ import SwiftUI
 import Dgmpp
 
 struct DronesCountResource: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     
     var body: some View {
         Group {
@@ -26,6 +26,6 @@ struct DronesCountResource: View {
 
 struct DronesCountResource_Previews: PreviewProvider {
     static var previews: some View {
-        DronesCountResource().environmentObject(DGMGang.testGang().pilots[0].ship!)
+        DronesCountResource(ship: DGMGang.testGang().pilots[0].ship!)
     }
 }

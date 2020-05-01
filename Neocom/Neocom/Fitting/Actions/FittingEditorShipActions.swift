@@ -12,7 +12,7 @@ import CoreData
 import EVEAPI
 
 struct FittingEditorShipActions: View {
-	@EnvironmentObject private var ship: DGMShip
+	@ObservedObject var ship: DGMShip
 	@EnvironmentObject private var gang: DGMGang
 	@Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
@@ -72,10 +72,10 @@ struct FittingEditorShipActions: View {
                 }
             }
             Section {
-                NavigationLink(destination: AffectingSkills()) {
+                NavigationLink(destination: AffectingSkills(ship: ship)) {
                     Text("Affecting Skill")
                 }
-                NavigationLink(destination: RequiredSkills()) {
+                NavigationLink(destination: RequiredSkills(ship: ship)) {
                     Text("Required Skill")
                 }
             }
@@ -130,9 +130,8 @@ struct FittingEditorShipActions_Previews: PreviewProvider {
     static var previews: some View {  
         let gang = DGMGang.testGang()
         return NavigationView {
-            FittingEditorShipActions()
+            FittingEditorShipActions(ship: gang.pilots.first!.ship!)
         }
-        .environmentObject(gang.pilots.first!.ship!)
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())

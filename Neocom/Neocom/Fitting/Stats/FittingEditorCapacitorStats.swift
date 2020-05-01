@@ -10,7 +10,7 @@ import SwiftUI
 import Dgmpp
 
 struct FittingEditorCapacitorStats: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     
     var body: some View {
         let capCapacity = ship.capacitor.capacity
@@ -64,9 +64,8 @@ struct FittingEditorCapacitorStats_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         return List {
-            FittingEditorCapacitorStats()
+            FittingEditorCapacitorStats(ship: gang.pilots.first!.ship!)
         }.listStyle(GroupedListStyle())
-            .environmentObject(gang.pilots.first!.ship!)
             .environmentObject(gang)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }

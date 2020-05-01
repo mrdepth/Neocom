@@ -10,7 +10,7 @@ import SwiftUI
 import Dgmpp
 
 struct CalibrationResource: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     
     var body: some View {
         ShipResource(used: ship.usedCalibration, total: ship.totalCalibration, unit: .none, image: Image("calibration"), style: .progress)
@@ -20,6 +20,6 @@ struct CalibrationResource: View {
 
 struct CalibrationResource_Previews: PreviewProvider {
     static var previews: some View {
-        CalibrationResource().environmentObject(DGMGang.testGang().pilots[0].ship!)
+        CalibrationResource(ship: DGMGang.testGang().pilots[0].ship!)
     }
 }

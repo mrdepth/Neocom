@@ -11,6 +11,7 @@ import Dgmpp
 import EVEAPI
 
 struct FittingCargoCell: View {
+    @ObservedObject var ship: DGMShip
     @ObservedObject var cargo: DGMCargo
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var prices: PricesData
@@ -24,7 +25,7 @@ struct FittingCargoCell: View {
             VStack(alignment: .leading) {
                 type?.typeName.map{Text($0)} ?? Text("Unknown")
                 HStack {
-                    CargoVolume(cargo: cargo)
+                    CargoVolume(ship: ship, cargo: cargo)
                     if price > 0 {
                         Text("| \(UnitFormatter.localizedString(from: price * Double(cargo.quantity), unit: .isk, style: .short))")
                     }
@@ -37,8 +38,8 @@ struct FittingCargoCell: View {
 }
 
 struct CargoVolume: View {
+    @ObservedObject var ship: DGMShip
     @ObservedObject var cargo: DGMCargo
-    @EnvironmentObject private var ship: DGMShip
     
     var body: some View {
         let p = cargo.volume / max(ship.cargoCapacity, 1)
@@ -52,11 +53,10 @@ struct FittingCargoCell_Previews: PreviewProvider {
         let cargo = try! DGMCargo(typeID: 3154)
         cargo.quantity = 10
         return List {
-            FittingCargoCell(cargo: cargo)
+            FittingCargoCell(ship: DGMShip.testDominix(), cargo: cargo)
         }.listStyle(GroupedListStyle())
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
             .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environmentObject(DGMShip.testDominix())
             .environmentObject(PricesData(esi: ESI()))
         
     }

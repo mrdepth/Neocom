@@ -10,7 +10,7 @@ import SwiftUI
 import Dgmpp
 
 struct LaunchersResource: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     
     var body: some View {
         ShipResource(used: ship.usedHardpoints(.launcher), total: ship.totalHardpoints(.launcher), unit: .none, image: Image("launchers"), style: .counter)
@@ -20,6 +20,6 @@ struct LaunchersResource: View {
 
 struct LaunchersResource_Previews: PreviewProvider {
     static var previews: some View {
-        LaunchersResource().environmentObject(DGMGang.testGang().pilots[0].ship!)
+        LaunchersResource(ship: DGMGang.testGang().pilots[0].ship!)
     }
 }

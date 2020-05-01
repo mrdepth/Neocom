@@ -13,7 +13,7 @@ import EVEAPI
 struct FittingEditorPriceStats: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var prices: PricesData
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     
     private func ship(_ prices: [Int: Double]) -> Double {
         prices[ship.typeID] ?? 0
@@ -76,7 +76,7 @@ struct FittingEditorPriceStats: View {
                                 cell(title: Text(type?.typeName ?? ""), image: type?.image ?? Image("priceShip"), price: ship)
                             }
                             if modules > 0 {
-                                NavigationLink(destination: FittingEditorModulesPrice(prices: prices ?? [:])) {
+                                NavigationLink(destination: FittingEditorModulesPrice(ship: self.ship, prices: prices ?? [:])) {
                                     cell(title: Text("Modules"), image: Image("priceFitting"), price: modules)
                                 }
                             }
@@ -110,10 +110,9 @@ struct FittingEditorPriceStats_Previews: PreviewProvider {
         let gang = DGMGang.testGang()
         return NavigationView {
             List {
-                FittingEditorPriceStats()
+                FittingEditorPriceStats(ship: gang.pilots.first!.ship!)
             }.listStyle(GroupedListStyle())
         }
-        .environmentObject(gang.pilots.first!.ship!)
         .environmentObject(gang)
         .environmentObject(PricesData(esi: ESI()))
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)

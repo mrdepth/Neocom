@@ -51,6 +51,9 @@ struct FittingEditor: View {
             self.sharedState.userActivity?.resignCurrent()
             UIApplication.shared.userActivity = nil
             self.sharedState.userActivity = nil
+            if self.project.hasUnsavedChanges {
+                self.project.save()
+            }
         }
     }
 }
@@ -100,14 +103,13 @@ struct FittingShipEditor: View {
         }
         .sheet(isPresented: $isActionsPresented) {
             NavigationView {
-                FittingEditorShipActions()
+                FittingEditorShipActions(ship: self.currentShip)
                     .navigationBarItems(leading: BarButtonItems.close {
                         self.isActionsPresented = false
                     })
             }
             .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .environmentObject(self.gang)
-            .environmentObject(self.currentShip)
             .environmentObject(self.project)
             .navigationViewStyle(StackNavigationViewStyle())
         }
@@ -136,29 +138,29 @@ struct FittingShipEditor: View {
                     .padding(.vertical, 8)
                     Divider()
                     if currentPage == .modules {
-                        FittingEditorShipModules()
+                        FittingEditorShipModules(ship: currentShip)
                     }
                     else if currentPage == .drones {
-                        FittingEditorShipDrones()
+                        FittingEditorShipDrones(ship: currentShip)
                     }
                     else if currentPage == .implants {
-                        FittingEditorImplants()
+                        FittingEditorImplants(ship: currentShip)
                     }
                     else if currentPage == .fleet {
                         FittingEditorFleet(ship: $currentShip)
                     }
                     else if currentPage == .stats {
-                        FittingEditorStats()
+                        FittingEditorStats(ship: currentShip)
                     }
                     else if currentPage == .cargo {
-                        FittingCargo()
+                        FittingCargo(ship: currentShip)
                     }
                 }
                 if horizontalSizeClass == .regular {
                     Divider().edgesIgnoringSafeArea(.bottom)
                     VStack(spacing: 0) {
                         Color.clear.frame(height: 1)
-                        FittingEditorStats()
+                        FittingEditorStats(ship: currentShip)
                     }
                 }
             }
@@ -168,7 +170,6 @@ struct FittingShipEditor: View {
             }
         }
         .environmentObject(gang)
-        .environmentObject(currentShip)
         
         return Group {
             if completion != nil {
@@ -219,7 +220,6 @@ struct FittingStructureEditor: View {
                     })
             }
             .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
-            .environmentObject(self.structure)
             .environmentObject(self.project)
             .navigationViewStyle(StackNavigationViewStyle())
 
@@ -242,21 +242,20 @@ struct FittingStructureEditor: View {
                 .padding(.vertical, 8)
                 Divider()
                 if currentPage == .modules {
-                    FittingEditorShipModules()
+                    FittingEditorShipModules(ship: structure)
                 }
                 else if currentPage == .drones {
-                    FittingEditorShipDrones()
+                    FittingEditorShipDrones(ship: structure)
                 }
                 else if currentPage == .stats {
-                    FittingEditorStats()
+                    FittingEditorStats(ship: structure)
                 }
             }
             if horizontalSizeClass == .regular {
-                FittingEditorStats()
+                FittingEditorStats(ship: structure)
             }
         }
         .navigationBarItems(leading: completion.map{BarButtonItems.close($0)}, trailing: actionsButton)
-        .environmentObject(structure as DGMShip)
         .navigationBarTitle(Text(title), displayMode: .inline)
     }
 }

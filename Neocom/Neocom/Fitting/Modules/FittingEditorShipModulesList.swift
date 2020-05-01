@@ -20,7 +20,7 @@ struct FittingEditorShipModulesList: View {
     }
 
     
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
@@ -34,7 +34,7 @@ struct FittingEditorShipModulesList: View {
         
         return List {
             ForEach(availableSlots, id: \.self) { slot in
-                FittingEditorShipModulesSection(slot: slot, selection: self.$selection)
+                FittingEditorShipModulesSection(ship: self.ship, slot: slot, selection: self.$selection)
             }
         }.listStyle(GroupedListStyle())
     }
@@ -42,8 +42,7 @@ struct FittingEditorShipModulesList: View {
 
 struct FittingEditorShipModulesList_Previews: PreviewProvider {
     static var previews: some View {
-        FittingEditorShipModulesList(selection: .constant(nil))
-            .environmentObject(DGMShip.testDominix())
+        FittingEditorShipModulesList(ship: DGMShip.testDominix(), selection: .constant(nil))
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

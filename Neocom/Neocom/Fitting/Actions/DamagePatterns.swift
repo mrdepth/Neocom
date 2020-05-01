@@ -50,7 +50,6 @@ struct DamagePatterns_Previews: PreviewProvider {
         return NavigationView {
             DamagePatterns { _ in }
         }
-        .environmentObject(gang.pilots.first!.ship!)
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())

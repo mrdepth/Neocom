@@ -43,7 +43,7 @@ struct FittingEditorShipDrones: View {
         }
     }
     
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     @Environment(\.self) private var environment
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.typePicker) private var typePicker
@@ -128,7 +128,7 @@ struct FittingEditorShipDrones: View {
         }
         
         return VStack(spacing: 0) {
-            FittingEditorShipDronesHeader().padding(8)
+            FittingEditorShipDronesHeader(ship: ship).padding(8)
             Divider()
             List {
                 ForEach(sections.sorted {$0.key.rawValue < $1.key.rawValue}, id: \.key) { section in
@@ -162,8 +162,7 @@ struct FittingEditorShipDrones: View {
 
 struct FittingEditorShipDrones_Previews: PreviewProvider {
     static var previews: some View {
-        FittingEditorShipDrones()
-            .environmentObject(DGMShip.testNyx())
+        FittingEditorShipDrones(ship: DGMShip.testNyx())
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
 
     }

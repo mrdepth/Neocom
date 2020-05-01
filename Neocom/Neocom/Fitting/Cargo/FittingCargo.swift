@@ -11,7 +11,7 @@ import Dgmpp
 import Expressible
 
 struct FittingCargo: View {
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var ship: DGMShip
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.self) private var environment
     @Environment(\.typePicker) private var typePicker
@@ -65,7 +65,7 @@ struct FittingCargo: View {
     
     private func cargoActions(_ cargo: DGMCargo) -> some View {
         NavigationView {
-            FittingCargoActions(cargo: cargo) {
+            FittingCargoActions(ship: ship, cargo: cargo) {
                 self.selection = nil
             }
         }
@@ -96,14 +96,14 @@ struct FittingCargo: View {
             .map{(category, rows) in CargoSection(category: category, rows: rows.sorted{($0.type?.typeName ?? "", $0.cargo.hashValue) < ($1.type?.typeName ?? "", $1.cargo.hashValue)})}
         
         return VStack(spacing: 0) {
-                FittingCargoHeader().padding(8)
+                FittingCargoHeader(ship: ship).padding(8)
                 Divider()
                 List {
                     ForEach(sections, id: \.category) { section in
                         Section(header: section.category?.categoryName.map{Text($0.uppercased())}) {
                             ForEach(section.rows, id: \.cargo) { row in
                                 Button(action: {self.selection = .cargo(row.cargo)}) {
-                                    FittingCargoCell(cargo: row.cargo)
+                                    FittingCargoCell(ship: self.ship, cargo: row.cargo)
                                 }.buttonStyle(PlainButtonStyle())
                             }
                         }
@@ -131,9 +131,8 @@ struct FittingCargo_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         
-        return FittingCargo()
+        return FittingCargo(ship: gang.pilots[0].ship!)
             .environmentObject(gang)
-            .environmentObject(gang.pilots[0].ship!)
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
             .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
             .environmentObject(SharedState.testState())

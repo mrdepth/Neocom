@@ -13,7 +13,7 @@ import Expressible
 struct FleetBarCell: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
-    @EnvironmentObject private var ship: DGMShip
+    @ObservedObject var currentShip: DGMShip
     @EnvironmentObject private var gang: DGMGang
     var pilot: DGMCharacter
     var onClose: () -> Void
@@ -33,7 +33,7 @@ struct FleetBarCell: View {
     var body: some View {
         let type = pilot.ship?.type(from: managedObjectContext)
         let name = pilot.ship?.name
-        let isSelected = ship == pilot.ship
+        let isSelected = currentShip == pilot.ship
         
         return HStack {
             Spacer()
@@ -52,7 +52,7 @@ struct FleetBarCell: View {
         .frame(maxWidth: .infinity, alignment: .center)
         .frame(minHeight: 50)
         .padding(8)
-        .background(isSelected ? RoundedRectangle(cornerRadius: 8).foregroundColor(Color(.quaternarySystemFill)).edgesIgnoringSafeArea(.all) : nil)
+        .background(isSelected ? RoundedRectangle(cornerRadius: 8).foregroundColor(Color(.systemBackground)).edgesIgnoringSafeArea(.all) : nil)
         .opacity(isSelected ? 1.0 : 0.5)
     }
 }
@@ -62,11 +62,10 @@ struct FleetBarCell_Previews: PreviewProvider {
         let gang = DGMGang.testGang()
         
         return HStack {
-            FleetBarCell(pilot: gang.pilots[0]) {}
-            FleetBarCell(pilot: gang.pilots[1]) {}
+            FleetBarCell(currentShip: gang.pilots[0].ship!, pilot: gang.pilots[0]) {}
+            FleetBarCell(currentShip: gang.pilots[0].ship!, pilot: gang.pilots[1]) {}
         }.padding()
         .environmentObject(gang)
-        .environmentObject(gang.pilots[0].ship!)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
 

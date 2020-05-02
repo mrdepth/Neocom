@@ -82,12 +82,13 @@ struct FittingEditorShipModules: View {
             FittingEditorShipModulesList(ship: ship, selection: $selection)
         }
         .sheet(item: $selection) { selection in
-            if selection.slot != nil {
+            self.typePicker(selection.slot!.group, sockets: selection.slot!.sockets)
+            /*if selection.slot != nil {
                 self.typePicker(selection.slot!.group, sockets: selection.slot!.sockets)
             }
             else if selection.module != nil {
                 self.moduleActions(selection.module!)
-            }
+            }*/
         }
     }
 }

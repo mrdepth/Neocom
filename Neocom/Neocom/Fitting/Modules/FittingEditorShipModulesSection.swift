@@ -58,8 +58,6 @@ struct FittingEditorShipModulesSection: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
     @State private var grouped = false
-    @EnvironmentObject private var typePickerState: TypePickerState
-    
 
     var body: some View {
         let modules = ship.modules(slot: slot)
@@ -151,7 +149,6 @@ struct FittingEditorShipModulesSection_Previews: PreviewProvider {
             }.listStyle(GroupedListStyle())
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environmentObject(TypePickerState())
 //        .colorScheme(.dark)
     }
 }

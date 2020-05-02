@@ -37,7 +37,6 @@ struct SearchField: View {
                         self.isEditing = isEditing
                     }
                 }, onCommit: {
-                    print("onCommit")
                 }).foregroundColor(.primary)
 
                 Button(action: {

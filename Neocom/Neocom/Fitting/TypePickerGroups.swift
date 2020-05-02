@@ -11,7 +11,7 @@ import CoreData
 import Expressible
 
 struct TypePickerGroups: View {
-    var currentState: TypePickerState.Node
+    var parentGroup: SDEDgmppItemGroup
     var completion: (SDEInvType) -> Void
     @Binding var selectedGroup: SDEDgmppItemGroup?
     @State private var selectedType: SDEInvType?
@@ -21,7 +21,7 @@ struct TypePickerGroups: View {
     
     private func groups() -> FetchedResultsController<SDEDgmppItemGroup> {
         let controller = managedObjectContext.from(SDEDgmppItemGroup.self)
-            .filter(/\SDEDgmppItemGroup.parentGroup == currentState.parentGroup)
+            .filter(/\SDEDgmppItemGroup.parentGroup == parentGroup)
             .sort(by: \SDEDgmppItemGroup.groupName, ascending: true)
             .fetchedResultsController()
         
@@ -29,17 +29,16 @@ struct TypePickerGroups: View {
     }
     
     private var predicate: PredicateProtocol {
-        (/\SDEInvType.dgmppItem?.groups).any(\SDEDgmppItemGroup.category) == self.currentState.parentGroup.category && /\SDEInvType.published == true
+        (/\SDEInvType.dgmppItem?.groups).any(\SDEDgmppItemGroup.category) == parentGroup.category && /\SDEInvType.published == true
     }
     
     var body: some View {
         ObservedObjectView(self.groups()) { groups in
-            TypesSearch(searchString: self.currentState.searchString ?? "", predicate: self.predicate, onUpdated: { self.currentState.searchString = $0 }) { searchResults in
+            TypesSearch(searchString: "", predicate: self.predicate, onUpdated: nil) { searchResults in
                 List {
                     if searchResults == nil {
                         ForEach(groups.fetchedObjects, id: \.objectID) { group in
-                            NavigationLink(destination: TypePickerPage(currentState: (self.currentState.next?.parentGroup == group ? self.currentState.next : nil) ?? TypePickerState.Node(group, previous: self.currentState),
-                                                                       completion: self.completion),
+                            NavigationLink(destination: TypePickerPage(parentGroup: group, completion: self.completion),
                                            tag: group,
                                            selection: self.$selectedGroup) {
                                             HStack {
@@ -55,7 +54,8 @@ struct TypePickerGroups: View {
                 }.listStyle(GroupedListStyle())
                 .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
             }
-        }.navigationBarTitle(currentState.parentGroup.groupName ?? "")
+        }
+        .navigationBarTitle(parentGroup.groupName ?? "")
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
@@ -70,13 +70,11 @@ struct TypePickerGroups_Previews: PreviewProvider {
     static var previews: some View {
         let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
         let group = try! context.fetch(SDEDgmppItemGroup.rootGroup(categoryID: .hi)).first!
-        let state = TypePickerState()
         return NavigationView {
-            TypePickerGroups(currentState: TypePickerState.Node(group),
+            TypePickerGroups(parentGroup: group,
                              completion: {_ in },
                              selectedGroup: .constant(nil))
         }
-            .environment(\.managedObjectContext, context)
-        .environmentObject(state)
+        .environment(\.managedObjectContext, context)
     }
 }

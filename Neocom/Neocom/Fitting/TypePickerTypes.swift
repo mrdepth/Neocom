@@ -11,7 +11,7 @@ import Expressible
 import CoreData
 
 struct TypePickerTypes: View {
-    var currentState: TypePickerState.Node
+    var parentGroup: SDEDgmppItemGroup
     var completion: (SDEInvType) -> Void
     @State private var selectedType: SDEInvType?
     
@@ -20,7 +20,7 @@ struct TypePickerTypes: View {
     @EnvironmentObject private var sharedState: SharedState
     
     var predicate: PredicateProtocol {
-        (/\SDEInvType.dgmppItem?.groups).contains(currentState.parentGroup)
+        (/\SDEInvType.dgmppItem?.groups).contains(parentGroup)
     }
     
     private func types() -> FetchedResultsController<SDEInvType> {
@@ -29,13 +29,13 @@ struct TypePickerTypes: View {
 
     var body: some View {
         ObservedObjectView(self.types()) { types in
-            TypesSearch(searchString: self.currentState.searchString ?? "", predicate: self.predicate, onUpdated: {self.currentState.searchString = $0}) { searchResults in
+            TypesSearch(searchString: "", predicate: self.predicate, onUpdated: nil) { searchResults in
                 List {
                     TypePickerTypesContent(types: searchResults ?? types.sections, selectedType: self.$selectedType, completion: self.completion)
                 }.listStyle(GroupedListStyle())
                     .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
             }
-        }.navigationBarTitle(currentState.parentGroup.groupName ?? "")
+        }.navigationBarTitle(parentGroup.groupName ?? "")
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
@@ -77,7 +77,7 @@ struct TypePickerTypes_Previews: PreviewProvider {
             .filter((/\SDEDgmppItemGroup.items).count > 0)
             .first()
         
-        return TypePickerTypes(currentState: TypePickerState.Node(group!)) { _ in }
+        return TypePickerTypes(parentGroup: group!) { _ in }
             .environment(\.managedObjectContext, context)
     }
 }

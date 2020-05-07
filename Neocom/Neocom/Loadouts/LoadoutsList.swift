@@ -25,12 +25,12 @@ struct LoadoutsList: View {
     @Environment(\.self) private var environment
     @Environment(\.typePicker) private var typePicker
     @Environment(\.editMode) private var editMode
-    @State private var selectedGroup: SDEDgmppItemGroup?
+    @State private var isTypePickerPresented = false
     @EnvironmentObject private var sharedState: SharedState
     
     private func typePicker(_ group: SDEDgmppItemGroup) -> some View {
         typePicker.get(group, environment: environment, sharedState: sharedState) {
-            defer {self.selectedGroup = nil}
+            defer {self.isTypePickerPresented = false}
             guard let type = $0 else {return}
             self.onSelect(.type(type), .default)
         }
@@ -51,17 +51,26 @@ struct LoadoutsList: View {
         }
     }
 
+    var group: SDEDgmppItemGroup? {
+        try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(categoryID: self.category, subcategory: nil, race: nil)).first
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             List(selection: $selectedLoadouts.animation()) {
                 Section {
-                    Button(action: {self.selectedGroup = try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(categoryID: self.category, subcategory: nil, race: nil)).first}) {
+                    Button(action: {self.isTypePickerPresented = true}) {
                         HStack {
                             Icon(Image("fitting"))
                             Text("New Loadout")
                             Spacer()
                         }.contentShape(Rectangle())
-                    }.buttonStyle(PlainButtonStyle())
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .adaptivePopover(isPresented: $isTypePickerPresented, arrowEdge: .leading) {
+                        self.group.map{self.typePicker($0)}
+                    }
+
                 }
                 LoadoutsSection(loadouts: loadouts) { self.onSelect(.loadout($0), $1) }
             }.listStyle(GroupedListStyle())
@@ -70,18 +79,16 @@ struct LoadoutsList: View {
                 HStack {
                     Button("Deselect All") { withAnimation {self.selectedLoadouts.removeAll()}}.frame(maxWidth: .infinity, alignment: .leading)
                     Button("Share") { self.isActivityPresented = true }.frame(maxWidth: .infinity)
+                    .activityView(isPresented: $isActivityPresented,
+                                  activityItems: [LoadoutActivityItem(ships: selectedLoadouts.compactMap{managedObjectContext.object(with: $0) as? Loadout}.compactMap{$0.ship}, managedObjectContext: managedObjectContext)],
+                                  applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)])
+
                     Button("Delete", action: onDelete).accentColor(Color.red).frame(maxWidth: .infinity, alignment: .trailing)
                 }.padding().transition(.offset(x: 0, y: 100))
                     .background(Color(.systemBackground).edgesIgnoringSafeArea(.all))
             }
         }
-        .sheet(item: $selectedGroup) { group in
-            self.typePicker(group)
-        }
         .navigationBarItems(trailing: EditButton())
-        .activityView(isPresented: $isActivityPresented,
-                      activityItems: [LoadoutActivityItem(ships: selectedLoadouts.compactMap{managedObjectContext.object(with: $0) as? Loadout}.compactMap{$0.ship}, managedObjectContext: managedObjectContext)],
-                      applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)])
 
     }
 }

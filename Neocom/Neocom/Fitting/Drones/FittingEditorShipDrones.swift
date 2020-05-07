@@ -10,45 +10,12 @@ import SwiftUI
 import Dgmpp
 
 struct FittingEditorShipDrones: View {
-    enum Selection: Identifiable {
-        
-        var id: AnyHashable {
-            switch self {
-            case let .group(group):
-                return group.id
-            case let .drone(drone):
-                return drone.id
-            }
-        }
-        
-        case group(SDEDgmppItemGroup)
-        case drone(DGMDroneGroup)
-        
-        var drone: DGMDroneGroup? {
-            switch self {
-            case let .drone(drone):
-                return drone
-            default:
-                return nil
-            }
-        }
-        
-        var group: SDEDgmppItemGroup? {
-            switch self {
-            case let .group(group):
-                return group
-            default:
-                return nil
-            }
-        }
-    }
-    
     @ObservedObject var ship: DGMShip
     @Environment(\.self) private var environment
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.typePicker) private var typePicker
     @EnvironmentObject private var sharedState: SharedState
-    @State private var selection: Selection?
+    @State private var isTypePickerPresented = false
     
     private struct GroupingKey: Hashable {
         var squadron: DGMDrone.Squadron
@@ -60,30 +27,22 @@ struct FittingEditorShipDrones: View {
 
     private func typePicker(_ group: SDEDgmppItemGroup) -> some View {
         typePicker.get(group, environment: environment, sharedState: sharedState) {
-            self.selection = nil
+            self.isTypePickerPresented = false
             guard let type = $0 else {return}
-            do {
-                let tag = (self.ship.drones.compactMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -2) + 1
-                let drone = try DGMDrone(typeID: DGMTypeID(type.typeID))
-                try self.ship.add(drone)
-                for _ in 1..<drone.squadronSize {
-                    try self.ship.add(DGMDrone(typeID: DGMTypeID(type.typeID)), squadronTag: tag)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                do {
+                    let tag = (self.ship.drones.compactMap({$0.squadron == .none ? $0.squadronTag : nil}).max() ?? -2) + 1
+                    let drone = try DGMDrone(typeID: DGMTypeID(type.typeID))
+                    try self.ship.add(drone)
+                    for _ in 1..<drone.squadronSize {
+                        try self.ship.add(DGMDrone(typeID: DGMTypeID(type.typeID)), squadronTag: tag)
+                    }
+                }
+                catch {
+                    
                 }
             }
-            catch {
-                
-            }
         }
-    }
-    
-    private func droneActions(_ drone: DGMDroneGroup) -> some View {
-        NavigationView {
-            FittingDroneActions(drone: drone) {
-                self.selection = nil
-            }
-        }
-        .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
-        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     private func section(squadron: DGMDrone.Squadron, drones: [(key: GroupingKey, value: DGMDroneGroup)]) -> some View {
@@ -91,9 +50,9 @@ struct FittingEditorShipDrones: View {
         let total = ship.totalDroneSquadron(squadron)
         
         let drones = ForEach(drones, id: \.key) { i in
-            Button(action: {self.selection = .drone(i.value)}) {
-                FittingDroneCell(drone: i.value)
-            }.buttonStyle(PlainButtonStyle())
+//            Button(action: {self.selection = .drone(i.value)}) {
+            FittingDroneCell(drone: i.value)
+//            }.buttonStyle(PlainButtonStyle())
         }
         
         let title = squadron != .none ? Text("\(squadron.title.uppercased()) \(used)/\(total)") : nil
@@ -103,6 +62,16 @@ struct FittingEditorShipDrones: View {
         }
     }
 
+    private var group: SDEDgmppItemGroup? {
+        let isStructure = ship is DGMStructure
+        
+        if ship.totalFighterLaunchTubes > 0 {
+            return try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(categoryID: isStructure ? .structureFighter : .fighter)).first
+        }
+        else {
+            return try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(categoryID: .drone)).first
+        }
+    }
     
     var body: some View {
         let seq = ship.drones
@@ -135,28 +104,16 @@ struct FittingEditorShipDrones: View {
                     self.section(squadron: section.key, drones: section.value)
                 }
                 Section {
-                    if ship.totalFighterLaunchTubes > 0 {
-                        Button("Add Fighter") {
-                            self.selection = (try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(categoryID: isStructure ? .structureFighter : .fighter)).first).map{.group($0)}
-                        }.frame(maxWidth: .infinity)
+                    Button(ship.totalFighterLaunchTubes > 0 ? "Add Fighter" : "Add Drone") {
+                        self.isTypePickerPresented = true
                     }
-                    else {
-                        Button("Add Drone") {
-                            self.selection = (try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(categoryID: .drone)).first).map{.group($0)}
-                        }.frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .adaptivePopover(isPresented: $isTypePickerPresented, arrowEdge: .leading) {
+                        self.group.map{self.typePicker($0)}
                     }
                 }
             }.listStyle(GroupedListStyle())
         }
-        .sheet(item: $selection) { selection in
-            if selection.group != nil {
-                self.typePicker(selection.group!)
-            }
-            else if selection.drone != nil {
-                self.droneActions(selection.drone!)
-            }
-        }
-
     }
 }
 

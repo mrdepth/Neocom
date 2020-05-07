@@ -47,7 +47,7 @@ struct SearchField: View {
             }
             .padding(EdgeInsets(top: 8, leading: 6, bottom: 8, trailing: 6))
             .foregroundColor(.secondary)
-            .background(Color(.secondarySystemBackground))
+            .background(Color(.systemGray4))
             .cornerRadius(10.0)
 
             if isEditing  {
@@ -74,10 +74,11 @@ struct SearchField_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             ZStack {
-                Color.gray
+                Color(.systemGroupedBackground)
+//                Color(.systemBackground)
             SearchField(text: .constant(""), isEditing: .constant(false))
                 .navigationBarTitle("Title")
             }
-        }
+        }//.colorScheme(.dark)
     }
 }

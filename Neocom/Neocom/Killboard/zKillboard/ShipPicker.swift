@@ -17,40 +17,37 @@ struct ShipPicker: View {
     @State private var selectedType: SDEInvType?
     @EnvironmentObject private var sharedState: SharedState
     
-    private func categories() -> FetchedResultsController<SDEInvCategory> {
+    private func getCategories() -> FetchedResultsController<SDEInvCategory> {
         let controller = managedObjectContext.from(SDEInvCategory.self)
             .filter((/\SDEInvCategory.categoryID).in([SDECategoryID.ship.rawValue, SDECategoryID.structure.rawValue]))
             .sort(by: \SDEInvCategory.categoryName, ascending: true)
             .fetchedResultsController(sectionName: /\SDEInvCategory.published)
         return FetchedResultsController(controller)
     }
+    private let categories = Lazy<FetchedResultsController<SDEInvCategory>, Never>()
+    @State private var searchString: String = ""
+    @State private var searchResults: [FetchedResultsController<SDEInvType>.Section]? = nil
+
     
     var body: some View {
-        ObservedObjectView(self.categories()) { categories in
-            TypesSearch { searchResults in
-                List {
-                    if searchResults == nil {
-                        ShipPickerCategoriesContent(categories: categories, completion: self.completion)
-                    }
-                    else {
-                        TypePickerTypesContent(types: searchResults!, selectedType: self.$selectedType, completion: self.completion)
-                        TypesContent(types: searchResults!) { type in
-                            NavigationLink(destination: TypeInfo(type: type)) {
-                                TypeCell(type: type)
-                            }
-                        }
-                    }
-                }.listStyle(GroupedListStyle())
-                    .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
-            }.navigationBarTitle("Categories")
-        }.sheet(item: $selectedType) { type in
+        let categories = self.categories.get(initial: getCategories())
+        
+        return TypesSearch(searchString: $searchString, searchResults: $searchResults) {
+            if self.searchResults != nil {
+                TypePickerTypesContent(types: self.searchResults!, selectedType: self.$selectedType, completion: self.completion)
+            }
+            else {
+                ShipPickerCategoriesContent(categories: categories, completion: self.completion)
+            }
+        }
+        .navigationBarTitle("Categories")
+        .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
             }
             .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .navigationViewStyle(StackNavigationViewStyle())
         }
-
     }
 }
 

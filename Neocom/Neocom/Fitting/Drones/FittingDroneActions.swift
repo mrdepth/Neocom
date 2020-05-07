@@ -61,9 +61,11 @@ struct FittingDroneActions: View {
         }.listStyle(GroupedListStyle())
             .navigationBarTitle("Actions")
             .navigationBarItems(leading: BarButtonItems.close(completion), trailing: BarButtonItems.trash {
-                let ship = self.drone.parent as? DGMShip
-                self.drone.drones.forEach { ship?.remove($0) }
                 self.completion()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    let ship = self.drone.parent as? DGMShip
+                    self.drone.drones.forEach { ship?.remove($0) }
+                }
             })
 
     }

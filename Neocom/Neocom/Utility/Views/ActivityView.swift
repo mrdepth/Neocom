@@ -55,8 +55,9 @@ class ActivityViewWrapper: UIViewController {
     }
     
     fileprivate func updateState() {
+        let parent = sequence(first: self, next: {$0.next}).dropFirst().first{$0 is UIViewController} as? UIViewController
         guard parent != nil else {return}
-        let isActivityPresented = presentedViewController is UIActivityViewController
+        let isActivityPresented = parent?.presentedViewController is UIActivityViewController
         if isActivityPresented != isPresented.wrappedValue {
             if !isActivityPresented {
                 let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
@@ -67,11 +68,11 @@ class ActivityViewWrapper: UIViewController {
                 controller.popoverPresentationController?.sourceView = self.view
                 controller.popoverPresentationController?.sourceRect = self.view.bounds
                 DispatchQueue.main.async {
-                    self.present(controller, animated: true, completion: nil)
+                    parent?.present(controller, animated: true, completion: nil)
                 }
             }
             else {
-                self.presentedViewController?.dismiss(animated: true, completion: nil)
+                parent?.presentedViewController?.dismiss(animated: true, completion: nil)
             }
         }
     }

@@ -9,7 +9,7 @@
 import SwiftUI
 import Combine
 
-class SearchController<Results, Predicate>: ObservableObject {
+class SearchResultsController<Results, Predicate>: ObservableObject {
     @Published var results: Results
     @Published var predicate: Predicate
     var onUpdated: ((Predicate) -> Void)?
@@ -33,15 +33,21 @@ class SearchController<Results, Predicate>: ObservableObject {
 }
 
 struct SearchView<Results: Publisher, Content: View, Output>: View where Results.Failure == Never, Results.Output == Output? {
-    @ObservedObject private var searchResults: SearchController<Results.Output, String>
+    @ObservedObject private var searchResults: SearchResultsController<Results.Output, String>
     @State var isEditing: Bool = false
     
     var content: (Results.Output) -> Content
     
+    init(searchResults: SearchResultsController<Results.Output, String>, @ViewBuilder content: @escaping (Results.Output) -> Content) {
+        self.content = content
+        _results = State(initialValue: searchResults.results)
+        self.searchResults = searchResults
+    }
+    
     init(initialValue: Results.Output, predicate: String = "", search: @escaping (String) -> Results, onUpdated: ((String) -> Void)? = nil, @ViewBuilder content: @escaping (Results.Output) -> Content) {
         self.content = content
         _results = State(initialValue: initialValue)
-        searchResults = SearchController(initialValue: initialValue, predicate: predicate, search, onUpdated: onUpdated)
+        searchResults = SearchResultsController(initialValue: initialValue, predicate: predicate, search, onUpdated: onUpdated)
     }
     
     @State private var results: Results.Output

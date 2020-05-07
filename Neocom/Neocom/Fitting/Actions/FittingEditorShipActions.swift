@@ -13,6 +13,8 @@ import EVEAPI
 
 struct FittingEditorShipActions: View {
 	@ObservedObject var ship: DGMShip
+    var completion: () -> Void
+    
 	@EnvironmentObject private var gang: DGMGang
 	@Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
@@ -21,6 +23,7 @@ struct FittingEditorShipActions: View {
     @State private var isDamagePatternsPresented = false
     @State private var isActivityPresented = false
     @EnvironmentObject private var sharedState: SharedState
+    @EnvironmentObject private var project: FittingProject
 	
 	private var areaEffects: some View {
 		AreaEffects { type in
@@ -35,6 +38,19 @@ struct FittingEditorShipActions: View {
             guard let pilot = self.ship.parent as? DGMCharacter else {return}
             pilot.url = url
             pilot.setSkillLevels(skills)
+        }
+    }
+    
+    private var saveButton: some View {
+        Group {
+            if project.loadouts[ship] == nil {
+                Button(action: {
+                    self.project.save()
+                    self.completion()
+                }) {
+                    Text("Save").padding(.horizontal, 8).contentShape(Rectangle())
+                }
+            }
         }
     }
 
@@ -84,6 +100,8 @@ struct FittingEditorShipActions: View {
                 Button("Share") {
                     self.isActivityPresented = true
                 }.frame(maxWidth: .infinity)
+                .activityView(isPresented: $isActivityPresented, activityItems: [LoadoutActivityItem(ships: [ship.loadout], managedObjectContext: managedObjectContext)], applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)])
+
             }
 		}
         .listStyle(GroupedListStyle())
@@ -99,8 +117,9 @@ struct FittingEditorShipActions: View {
             .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .navigationViewStyle(StackNavigationViewStyle())
         }
-        .activityView(isPresented: $isActivityPresented, activityItems: [LoadoutActivityItem(ships: [ship.loadout], managedObjectContext: managedObjectContext)], applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)])
         .navigationBarTitle("Actions")
+        .navigationBarItems(leading: BarButtonItems.close(completion), trailing: saveButton)
+
     }
 }
 
@@ -130,12 +149,13 @@ struct FittingEditorShipActions_Previews: PreviewProvider {
     static var previews: some View {  
         let gang = DGMGang.testGang()
         return NavigationView {
-            FittingEditorShipActions(ship: gang.pilots.first!.ship!)
+            FittingEditorShipActions(ship: gang.pilots.first!.ship!) {}
         }
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
+        .environmentObject(FittingProject(gang: gang, managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext))
 
     }
 }

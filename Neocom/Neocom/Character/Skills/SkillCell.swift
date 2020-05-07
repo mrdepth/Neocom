@@ -196,7 +196,8 @@ struct SkillCellBody: View {
         }
 
         
-        let progressView = progress.map{progress in ProgressView(progress: progress, progressTintColor: Color(.placeholderText).opacity(0.5), progressTrackColor: .clear, borderColor: Color(.placeholderText))}
+//        let progressView = progress.map{progress in ProgressView(progress: progress, progressTintColor: Color(.placeholderText).opacity(0.5), progressTrackColor: .clear, borderColor: Color(.placeholderText))}
+        let progressView = progress.map{progress in ProgressView(progress: progress).accentColor(.skyBlueBackground)}
         
         return HStack {
             VStack(alignment: .leading, spacing: 0) {
@@ -225,9 +226,9 @@ struct SkillCellBody: View {
                 else if trainingTime > 0 {
                     if isActive {
                         Text("\(TimeIntervalFormatter.localizedString(from: trainingTime, precision: .minutes)) (\(Int((progress ?? 0) * 100))%)")
-                            .padding(.horizontal, 2)
+                            .foregroundColor(.primary)
+                            .padding(.horizontal, 4)
                             .background(progressView)
-//                            .border(Color.primary.opacity(0.5), width: 0.5)
                     }
                     else {
                         Text("\(TimeIntervalFormatter.localizedString(from: trainingTime, precision: .minutes))")

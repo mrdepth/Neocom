@@ -20,32 +20,27 @@ struct FittingEditorShipModulesSection: View {
     
     private enum Row: Identifiable {
         case modules([DGMModule])
-        case socket(Int)
+        case sockets(IndexSet)
         
         var id: AnyHashable {
-            switch self {
-            case let .modules(modules):
-                return modules
-            case let .socket(socket):
-                return socket
-            }
+            sockets
         }
         
         var modules: [DGMModule]? {
             switch self {
             case let .modules(modules):
                 return modules
-            case .socket:
+            case .sockets:
                 return nil
             }
         }
         
-        var socket: Int? {
+        var sockets: IndexSet {
             switch self {
-            case .modules:
-                return nil
-            case let .socket(socket):
-                return socket
+            case let .modules(modules):
+                return IndexSet(modules.map{$0.socket})
+            case let .sockets(sockets):
+                return sockets
             }
         }
 
@@ -53,7 +48,6 @@ struct FittingEditorShipModulesSection: View {
     
     @ObservedObject var ship: DGMShip
     var slot: DGMModule.Slot
-    @Binding var selection: FittingEditorShipModules.Selection?
     
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
@@ -66,21 +60,22 @@ struct FittingEditorShipModulesSection: View {
         var rows: [Row]
         
         if grouped {
+
             let groups = Dictionary(grouping: modules, by: {GroupKey(typeID: $0.typeID, state: $0.state, charge: $0.charge?.typeID, target: $0.target)}).values
                 .map{($0.map{$0.socket}.min() ?? 0, $0)}
                 .sorted{$0.0 < $1.0}
                 .map{$1}
             rows = groups.map{Row.modules($0)}
             if ship.freeSlots(slot) > 0 {
-                rows.append(.socket(-1))
+                rows.append(.sockets(IndexSet(0..<n).subtracting(IndexSet(modules.map{$0.socket}))))
             }
         }
         else {
-            rows = (0..<n).map{Row.socket($0)}
+            rows = (0..<n).map{Row.sockets(IndexSet(integer: $0))}
             for module in modules {
                 guard module.socket >= 0 else {continue}
                 if module.socket >= rows.count {
-                    rows += (rows.count...module.socket).map{Row.socket($0)}
+                    rows += (rows.count...module.socket).map{Row.sockets(IndexSet(integer: $0))}
                 }
                 rows[module.socket] = .modules([module])
             }
@@ -98,43 +93,7 @@ struct FittingEditorShipModulesSection: View {
         
         return Section(header: header) {
             ForEach(rows) { i in
-                if i.modules?.isEmpty == false {
-//                    Button(action: {self.selection = .module(DGMModuleGroup(i.modules!))}) {
-                        FittingModuleCell(module: DGMModuleGroup(i.modules!))
-                            .foregroundColor(i.modules![0].socket >= n ? .red : nil)
-//                    }.buttonStyle(PlainButtonStyle())
-                }
-                else {
-                    Button(action: {
-                        let subcategory: Int?
-                        let race: SDEChrRace?
-                        switch self.slot {
-                        case .rig:
-                            subcategory = self.ship.rigSize.rawValue
-                            race = nil
-                        case .subsystem:
-                            subcategory = nil
-                            race = try? self.managedObjectContext.from(SDEChrRace.self).filter(/\SDEChrRace.raceID == Int32(self.ship.raceID.rawValue)).first()
-                        case .mode:
-                            subcategory = self.ship.typeID
-                            race = nil
-                        default:
-                            subcategory = Int(self.ship is DGMStructure ? SDECategoryID.structureModule.rawValue : SDECategoryID.module.rawValue)
-                            race = nil
-                        }
-                        guard let group = try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(slot: self.slot, subcategory: subcategory, race: race)).first else {return}
-
-                        if self.grouped {
-                            let sockets = IndexSet(0..<n).subtracting(IndexSet(modules.map{$0.socket}))
-                            self.selection = .slot(group, sockets)
-                        }
-                        else {
-                            self.selection = .slot(group, IndexSet(integer: i.socket!))
-                        }
-                    }) {
-                        FittingModuleSlot(slot: self.slot)
-                    }.buttonStyle(PlainButtonStyle())
-                }
+                FittingModuleBaseCell(ship: self.ship, slot: self.slot, module: i.modules?.isEmpty == false ? DGMModuleGroup(i.modules!) : nil, sockets: i.sockets)
             }
         }
     }
@@ -145,7 +104,7 @@ struct FittingEditorShipModulesSection_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             List {
-                FittingEditorShipModulesSection(ship: DGMShip.testDominix(), slot: .hi, selection: .constant(nil))
+                FittingEditorShipModulesSection(ship: DGMShip.testDominix(), slot: .hi)
             }.listStyle(GroupedListStyle())
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)

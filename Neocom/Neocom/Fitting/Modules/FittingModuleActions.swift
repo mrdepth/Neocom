@@ -19,6 +19,7 @@ struct FittingModuleTypeInfo: View {
     
     private func replace(with type: SDEInvType) {
         guard let ship = module.parent as? DGMShip else {return}
+        let state = module.state
         do {
             let newModules = try module.modules.map { i -> DGMModule in
                 let charge = i.charge?.typeID
@@ -29,6 +30,7 @@ struct FittingModuleTypeInfo: View {
                     try? newModule.setCharge(DGMCharge(typeID: DGMTypeID(chargeID)))
                 }
                 try ship.add(newModule, socket: socket)
+                newModule.state = state
                 return newModule
             }
             self.module.modules = newModules
@@ -37,24 +39,21 @@ struct FittingModuleTypeInfo: View {
         }
     }
     
+    private var variations: some View {
+        FittingTypeVariations(type: self.type) { newType in
+            self.isTypeVariationsPresented = false
+            self.replace(with: newType)
+        }
+    }
+    
     var body: some View {
-        Button(action: {self.isTypeVariationsPresented = true}) {
+        NavigationLink(destination: variations, isActive: $isTypeVariationsPresented) {
             HStack(spacing: 0) {
                 TypeCell(type: type)
                 Spacer()
+                TypeInfoButton(type: type)
             }.contentShape(Rectangle())
-        }.buttonStyle(PlainButtonStyle())
-        .sheet(isPresented: $isTypeVariationsPresented) {
-            NavigationView {
-                FittingTypeVariations(type: self.type) { newType in
-                    self.isTypeVariationsPresented = false
-                    self.replace(with: newType)
-                }
-                .navigationBarItems(leading: BarButtonItems.close {self.isTypeVariationsPresented = false})
-            }
-            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
-            .navigationViewStyle(StackNavigationViewStyle())
-        }
+        }.buttonStyle(BorderlessButtonStyle())
     }
 }
 
@@ -91,24 +90,12 @@ struct FittingModuleActions: View {
     @State private var selectedType: SDEInvType?
     @State private var selectedChargeCategory: SDEDgmppItemCategory?
     
-    private func moduleCell(_ type: SDEInvType) -> some View {
-        HStack(spacing: 0) {
-            FittingModuleTypeInfo(module: module, type: type)
-            TypeInfoButton(type: type)
-        }
-        .buttonStyle(BorderlessButtonStyle())
-    }
-    
     private func chargeCell(_ type: SDEInvType, chargeCategory: SDEDgmppItemCategory) -> some View {
         HStack(spacing: 0) {
-            Button(action: {self.selectedChargeCategory = chargeCategory}) {
-                HStack(spacing: 0) {
-                    FittingChargeCell(module: module, charge: type.dgmppItem?.damage)
-                    Spacer()
-                }.contentShape(Rectangle())
-            }.buttonStyle(PlainButtonStyle())
+            FittingChargeCell(module: module, charge: type.dgmppItem?.damage)
+            Spacer()
             TypeInfoButton(type: type)
-        }
+        }.contentShape(Rectangle())
     }
     
     private func typeInfo(_ type: SDEInvType) -> some View {
@@ -127,7 +114,7 @@ struct FittingModuleActions: View {
     }
 
     private func charges(_ category: SDEDgmppItemCategory) -> some View {
-        NavigationView {
+//        NavigationView {
             FittingCharges(category: category) { type in
                 do {
                     let charge = try DGMCharge(typeID: DGMTypeID(type.typeID))
@@ -137,10 +124,12 @@ struct FittingModuleActions: View {
                 }
                 self.selectedChargeCategory = nil
             }
-            .navigationBarItems(leading: BarButtonItems.close {self.selectedChargeCategory = nil}, trailing: self.module.charge != nil ? removeChargeButton : nil)
-        }
-        .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
-        .navigationViewStyle(StackNavigationViewStyle())
+            .navigationBarItems(//leading: BarButtonItems.close {self.selectedChargeCategory = nil},
+                                trailing: self.module.charge != nil ? removeChargeButton : nil)
+//        }
+//        .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+//        .navigationViewStyle(StackNavigationViewStyle())
+//        .frame(idealWidth: 375, idealHeight: 375 * 2)
     }
 
     private func replace(with type: SDEInvType) {
@@ -175,36 +164,41 @@ struct FittingModuleActions: View {
         let charge = module.charge?.type(from: managedObjectContext)
         return List {
             Section(header: Text("MODULE")) {
-                type.map{ moduleCell($0) }
+                type.map{
+                    FittingModuleTypeInfo(module: module, type: $0)
+                }
                 if module.availableStates.count > 1 {
                     FittingModuleState(module: module)
                 }
             }
             type?.dgmppItem?.charge.map { chargeCategory in
                 Section(header: Text("CHARGE")) {
-                    if charge != nil {
-                        self.chargeCell(charge!, chargeCategory: chargeCategory)
-                    }
-                    else {
-                        Button(action: {self.selectedChargeCategory = chargeCategory}) {
+                    NavigationLink(destination: self.charges(chargeCategory), tag: chargeCategory, selection: $selectedChargeCategory) {
+                        if charge != nil {
+                            self.chargeCell(charge!, chargeCategory: chargeCategory)
+                        }
+                        else {
+//                            Button(action: {self.selectedChargeCategory = chargeCategory}) {
                                 Text("Select Ammo")
-                                    .frame(maxWidth: .infinity)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                                     .frame(minHeight: 30)
                                     .contentShape(Rectangle())
+//                            }
                         }
-                    }
+                    }.buttonStyle(BorderlessButtonStyle())
                 }
             }
         }.listStyle(GroupedListStyle())
             .navigationBarTitle("Actions")
             .navigationBarItems(leading: BarButtonItems.close(completion), trailing: BarButtonItems.trash {
-                let ship = self.module.parent as? DGMShip
-                self.module.modules.forEach { ship?.remove($0) }
                 self.completion()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    let ship = self.module.parent as? DGMShip
+                    self.module.modules.forEach { ship?.remove($0) }
+                }
             })
             .sheet(item: $selectedType) { self.typeInfo($0)}
-            .sheet(item: $selectedChargeCategory) { self.charges($0) }
-            
+//        .popover(item: $selectedChargeCategory) { self.charges($0) }
     }
 }
 
@@ -218,5 +212,6 @@ struct FittingModuleActions_Previews: PreviewProvider {
         .environmentObject(gang)
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environmentObject(SharedState.testState())
     }
 }

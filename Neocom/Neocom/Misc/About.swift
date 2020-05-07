@@ -53,6 +53,8 @@ struct About: View {
         }
     }
     
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
     var specialThanks: some View {
         let s = ["Ilya Gepp aka Kane Gepp",
                  "Dick Starmans aka Enrique d'Ancourt",
@@ -64,8 +66,22 @@ struct About: View {
                  "Fela Sowande",
                  "Denis Chernov",
                  "Andrei Kokarev",
-                 "Kurt Otto"].joined(separator: "\n")
-        return Text(s)
+                 "Kurt Otto"]
+        return Group {
+            if horizontalSizeClass == .regular {
+                HStack(alignment: .top) {
+                    Text(s[..<(s.count / 3)].joined(separator: "\n"))
+                    Spacer()
+                    Text(s[(s.count / 3)..<(s.count * 2 / 3)].joined(separator: "\n"))
+                    Spacer()
+                    Text(s[(s.count * 2 / 3)...].joined(separator: "\n"))
+                    Spacer()
+                }
+            }
+            else {
+               Text(s.joined(separator: "\n"))
+            }
+        }
     }
     
     var body: some View {
@@ -94,6 +110,8 @@ struct About_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             About()
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        }
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }

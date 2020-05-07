@@ -12,6 +12,7 @@ import CoreData
 
 struct TypePickerTypes: View {
     var parentGroup: SDEDgmppItemGroup
+    @ObservedObject var searchHelper: TypePickerSearchHelper
     var completion: (SDEInvType) -> Void
     @State private var selectedType: SDEInvType?
     
@@ -23,19 +24,20 @@ struct TypePickerTypes: View {
         (/\SDEInvType.dgmppItem?.groups).contains(parentGroup)
     }
     
-    private func types() -> FetchedResultsController<SDEInvType> {
+    private func getTypes() -> FetchedResultsController<SDEInvType> {
         Types.fetchResults(with: predicate, managedObjectContext: managedObjectContext)
     }
 
+    private let types = Lazy<FetchedResultsController<SDEInvType>, Never>()
+    
+    
     var body: some View {
-        ObservedObjectView(self.types()) { types in
-            TypesSearch(searchString: "", predicate: self.predicate, onUpdated: nil) { searchResults in
-                List {
-                    TypePickerTypesContent(types: searchResults ?? types.sections, selectedType: self.$selectedType, completion: self.completion)
-                }.listStyle(GroupedListStyle())
-                    .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
-            }
-        }.navigationBarTitle(parentGroup.groupName ?? "")
+        let types = self.types.get(initial: getTypes())
+        
+        return TypesSearch(predicate: self.predicate, searchString:$searchHelper.searchString, searchResults: $searchHelper.searchResults) {
+            TypePickerTypesContent(types: self.searchHelper.searchResults ?? types.sections, selectedType: self.$selectedType, completion: self.completion)
+        }
+        .navigationBarTitle(parentGroup.groupName ?? "")
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
@@ -77,7 +79,7 @@ struct TypePickerTypes_Previews: PreviewProvider {
             .filter((/\SDEDgmppItemGroup.items).count > 0)
             .first()
         
-        return TypePickerTypes(parentGroup: group!) { _ in }
+        return TypePickerTypes(parentGroup: group!, searchHelper: TypePickerSearchHelper()) { _ in }
             .environment(\.managedObjectContext, context)
     }
 }

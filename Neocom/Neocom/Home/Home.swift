@@ -61,12 +61,12 @@ struct Home: View {
     }
     
     var body: some View {
-        GeometryReader { geometry in
+//        GeometryReader { geometry in
             List {
-                self.header//.framePreference(in: .global, HeaderFrame.self)
-                    .anchorPreference(key: AppendPreferenceKey<CGRect, HeaderFrame>.self, value: Anchor<CGRect>.Source.bounds) {
-                        [geometry[$0]]
-                }
+                self.header.framePreference(in: .global, HeaderFrame.self)
+//                    .anchorPreference(key: AppendPreferenceKey<CGRect, HeaderFrame>.self, value: Anchor<CGRect>.Source.bounds) {
+//                        [geometry[$0]]
+//                }
 //                    .background(GeometryReader { geometry in
 //                        Color.clear.preference(key: AppendPreferenceKey<CGRect, HeaderFrame>.self, value: [geometry.frame(in: .global).offsetBy(dx: 0, dy: -geometry.safeAreaInsets.top)])
 //                    })
@@ -114,7 +114,8 @@ struct Home: View {
                 
             }.listStyle(GroupedListStyle())
                 
-        }.sheet(isPresented: $isAccountsPresented) {
+//        }
+    .sheet(isPresented: $isAccountsPresented) {
             NavigationView {
                 Accounts { account in
                     if self.sharedState.account != account {

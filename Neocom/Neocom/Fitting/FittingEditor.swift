@@ -101,21 +101,20 @@ struct FittingShipEditor: View {
         BarButtonItems.actions {
             self.isActionsPresented = true
         }
-        .sheet(isPresented: $isActionsPresented) {
+        .adaptivePopover(isPresented: $isActionsPresented) {
             NavigationView {
-                FittingEditorShipActions(ship: self.currentShip)
-                    .navigationBarItems(leading: BarButtonItems.close {
-                        self.isActionsPresented = false
-                    })
+                FittingEditorShipActions(ship: self.currentShip) {
+                    self.isActionsPresented = false
+                }
             }
             .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .environmentObject(self.gang)
             .environmentObject(self.project)
             .navigationViewStyle(StackNavigationViewStyle())
+            .frame(idealWidth: 375, idealHeight: 375 * 2)
         }
     }
 
-    
     var body: some View {
         let body = VStack(spacing: 0) {
             Divider().edgesIgnoringSafeArea(.horizontal)
@@ -207,12 +206,12 @@ struct FittingStructureEditor: View {
             return "\(typeName) / \(name)"
         }
     }
-    
+        
     private var actionsButton: some View {
         BarButtonItems.actions {
             self.isActionsPresented = true
         }
-        .sheet(isPresented: $isActionsPresented) {
+        .adaptivePopover(isPresented: $isActionsPresented) {
             NavigationView {
                 FittingEditorStructureActions()
                     .navigationBarItems(leading: BarButtonItems.close {
@@ -222,7 +221,7 @@ struct FittingStructureEditor: View {
             .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .environmentObject(self.project)
             .navigationViewStyle(StackNavigationViewStyle())
-
+            .frame(idealWidth: 375, idealHeight: 375 * 2)
         }
     }
 

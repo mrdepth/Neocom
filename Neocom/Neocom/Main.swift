@@ -47,6 +47,7 @@ struct Main: View {
     private let home = Home()
 
     var body: some View {
+//        SearchController_Previews.previews
         let navigationView = NavigationView {
             if horizontalSizeClass == .regular {
                 home

@@ -34,18 +34,6 @@ struct ServicesViewModifier: ViewModifier {
 	}
 }
 
-//struct BlockModifier<Result: View>: ViewModifier {
-//    var block: (Content) -> Result
-//    init(@ViewBuilder _ block: @escaping (Content) -> Result) {
-//        self.block = block
-//    }
-//    
-//    func body(content: Content) -> Result {
-//        block(content)
-//    }
-//
-//}
-
 struct SecondaryLabelModifier: ViewModifier {
     func body(content: Content) -> some View {
         content.font(.caption).foregroundColor(.secondary)
@@ -141,3 +129,53 @@ enum OpenMode {
 
     }
 }
+
+extension View {
+    func adaptivePopover<Content>(isPresented: Binding<Bool>, attachmentAnchor: PopoverAttachmentAnchor = .rect(.bounds), arrowEdge: Edge = .top, @ViewBuilder content: @escaping () -> Content) -> some View where Content : View {
+        modifier(AdaptivePopoverModifier(isPresented: isPresented, attachmentAnchor: attachmentAnchor, arrowEdge: arrowEdge, content: content))
+    }
+    
+    func adaptivePopover<Item, Content>(item: Binding<Item?>, attachmentAnchor: PopoverAttachmentAnchor = .rect(.bounds), arrowEdge: Edge = .top, @ViewBuilder content: @escaping (Item) -> Content) -> some View where Item : Identifiable, Content : View {
+        modifier(AdaptivePopoverModifier2(item: item, attachmentAnchor: attachmentAnchor, arrowEdge: arrowEdge, content: content))
+    }
+
+}
+
+struct AdaptivePopoverModifier<PopoverContent: View>: ViewModifier {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Binding var isPresented: Bool
+    var attachmentAnchor: PopoverAttachmentAnchor = .rect(.bounds)
+    var arrowEdge: Edge = .top
+    var content: () -> PopoverContent
+    
+    func body(content: Content) -> some View {
+        Group {
+            if horizontalSizeClass == .regular {
+                content.popover(isPresented: $isPresented, attachmentAnchor: attachmentAnchor, arrowEdge: arrowEdge, content: {self.content().environment(\.horizontalSizeClass, .regular)})
+            }
+            else {
+                content.sheet(isPresented: $isPresented, content: self.content)
+            }
+        }
+    }
+}
+
+struct AdaptivePopoverModifier2<Item: Identifiable, PopoverContent: View>: ViewModifier {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Binding var item: Item?
+    var attachmentAnchor: PopoverAttachmentAnchor = .rect(.bounds)
+    var arrowEdge: Edge = .top
+    var content: (Item) -> PopoverContent
+    
+    func body(content: Content) -> some View {
+        Group {
+            if horizontalSizeClass == .regular {
+                content.popover(item: $item, attachmentAnchor: attachmentAnchor, arrowEdge: arrowEdge, content: self.content)
+            }
+            else {
+                content.sheet(item: $item, content: self.content)
+            }
+        }
+    }
+}
+

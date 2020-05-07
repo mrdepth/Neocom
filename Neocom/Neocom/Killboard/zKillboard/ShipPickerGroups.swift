@@ -18,7 +18,7 @@ struct ShipPickerGroups: View {
     var category: SDEInvCategory
     var completion: (NSManagedObject) -> Void
     
-    private func groups() -> FetchedResultsController<SDEInvGroup> {
+    private func getGroups() -> FetchedResultsController<SDEInvGroup> {
         let controller = managedObjectContext.from(SDEInvGroup.self)
             .filter(/\SDEInvGroup.category == category && /\SDEInvGroup.published == true)
             .sort(by: \SDEInvGroup.groupName, ascending: true)
@@ -26,20 +26,24 @@ struct ShipPickerGroups: View {
         return FetchedResultsController(controller)
     }
     
+    private let groups = Lazy<FetchedResultsController<SDEInvGroup>, Never>()
+    
+    @State private var searchString: String = ""
+    @State private var searchResults: [FetchedResultsController<SDEInvType>.Section]? = nil
+
     var body: some View {
-        ObservedObjectView(self.groups()) { groups in
-            TypesSearch(predicate: /\SDEInvType.group?.category == self.category && /\SDEInvType.published == true) { searchResults in
-                List {
-                    if searchResults == nil {
-                        ShipPickerGroupsContent(groups: groups, completion: self.completion)
-                    }
-                    else {
-                        TypePickerTypesContent(types: searchResults!, selectedType: self.$selectedType, completion: self.completion)
-                    }
-                }.listStyle(GroupedListStyle())
-                    .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
+        let groups = self.groups.get(initial: getGroups())
+        let predicate = /\SDEInvType.group?.category == self.category && /\SDEInvType.published == true
+        
+        return TypesSearch(predicate: predicate, searchString: $searchString, searchResults: $searchResults) {
+            if self.searchResults != nil {
+                TypePickerTypesContent(types: self.searchResults!, selectedType: self.$selectedType, completion: self.completion)
             }
-        }.navigationBarTitle(category.categoryName ?? NSLocalizedString("Categories", comment: ""))
+            else {
+                ShipPickerGroupsContent(groups: groups, completion: self.completion)
+            }
+        }
+        .navigationBarTitle(category.categoryName ?? NSLocalizedString("Categories", comment: ""))
             .sheet(item: $selectedType) { type in
                 NavigationView {
                     TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
@@ -87,19 +91,20 @@ struct ShipPickerTypes: View {
         /\SDEInvType.group == parentGroup && /\SDEInvType.published == true
     }
     
-    private func types() -> FetchedResultsController<SDEInvType> {
+    private func getTypes() -> FetchedResultsController<SDEInvType> {
         Types.fetchResults(with: predicate, managedObjectContext: managedObjectContext)
     }
+    private let types = Lazy<FetchedResultsController<SDEInvType>, Never>()
+    @State private var searchString: String = ""
+    @State private var searchResults: [FetchedResultsController<SDEInvType>.Section]? = nil
 
     var body: some View {
-        ObservedObjectView(self.types()) { types in
-            TypesSearch(searchString: "", predicate: self.predicate) { searchResults in
-                List {
-                    TypePickerTypesContent(types: searchResults ?? types.sections, selectedType: self.$selectedType, completion: self.completion)
-                }.listStyle(GroupedListStyle())
-                    .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
-            }
-        }.navigationBarTitle(parentGroup.groupName ?? "")
+        let types = self.types.get(initial: getTypes())
+        
+        return TypesSearch(predicate: self.predicate, searchString: $searchString, searchResults: $searchResults) {
+            TypePickerTypesContent(types: self.searchResults ?? types.sections, selectedType: self.$selectedType, completion: self.completion)
+        }
+        .navigationBarTitle(parentGroup.groupName ?? "")
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
@@ -107,7 +112,6 @@ struct ShipPickerTypes: View {
             .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .navigationViewStyle(StackNavigationViewStyle())
         }
-
     }
 }
 

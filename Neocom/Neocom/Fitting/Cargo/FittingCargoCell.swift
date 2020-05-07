@@ -15,25 +15,42 @@ struct FittingCargoCell: View {
     @ObservedObject var cargo: DGMCargo
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var prices: PricesData
+    @State private var isActionsPresented = false
+    @Environment(\.self) private var environment
+    @EnvironmentObject private var sharedState: SharedState
     
     var body: some View {
         let type = cargo.type(from: managedObjectContext)
         let price = prices.prices?.value?[cargo.typeID] ?? 0
 
-        return HStack {
-            type.map{Icon($0.image).cornerRadius(4)}
-            VStack(alignment: .leading) {
-                type?.typeName.map{Text($0)} ?? Text("Unknown")
-                HStack {
-                    CargoVolume(ship: ship, cargo: cargo)
-                    if price > 0 {
-                        Text("| \(UnitFormatter.localizedString(from: price * Double(cargo.quantity), unit: .isk, style: .short))")
-                    }
-                }.modifier(SecondaryLabelModifier())
+        return Button(action: {self.isActionsPresented = true}) {
+            HStack {
+                type.map{Icon($0.image).cornerRadius(4)}
+                VStack(alignment: .leading) {
+                    type?.typeName.map{Text($0)} ?? Text("Unknown")
+                    HStack {
+                        CargoVolume(ship: ship, cargo: cargo)
+                        if price > 0 {
+                            Text("| \(UnitFormatter.localizedString(from: price * Double(cargo.quantity), unit: .isk, style: .short))")
+                        }
+                    }.modifier(SecondaryLabelModifier())
+                }
+                Spacer()
+                Text("x\(UnitFormatter.localizedString(from: cargo.quantity, unit: .none, style: .long))").fontWeight(.semibold).modifier(SecondaryLabelModifier())
+            }.contentShape(Rectangle())
+        }
+        .buttonStyle(PlainButtonStyle())
+        .adaptivePopover(isPresented: $isActionsPresented, arrowEdge: .leading) {
+            NavigationView {
+                FittingCargoActions(ship: self.ship, cargo: self.cargo) {
+                    self.isActionsPresented = false
+                }
             }
-            Spacer()
-            Text("x\(UnitFormatter.localizedString(from: cargo.quantity, unit: .none, style: .long))").fontWeight(.semibold).modifier(SecondaryLabelModifier())
-        }.contentShape(Rectangle())
+            .navigationViewStyle(StackNavigationViewStyle())
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .frame(idealWidth: 375, idealHeight: 375 * 2)
+        }
+
     }
 }
 

@@ -14,7 +14,7 @@ struct TypeGroups: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     var category: SDEInvCategory
     
-    private func groups() -> FetchedResultsController<SDEInvGroup> {
+    private func getGroups() -> FetchedResultsController<SDEInvGroup> {
         let controller = managedObjectContext.from(SDEInvGroup.self)
             .filter(/\SDEInvGroup.category == category)
             .sort(by: \SDEInvGroup.published, ascending: false)
@@ -23,24 +23,28 @@ struct TypeGroups: View {
         return FetchedResultsController(controller)
     }
     
+    private let groups = Lazy<FetchedResultsController<SDEInvGroup>, Never>()
+    
+    @State private var searchString: String = ""
+    @State private var searchResults: [FetchedResultsController<SDEInvType>.Section]? = nil
+
     var body: some View {
-        ObservedObjectView(self.groups()) { groups in
-            TypesSearch(predicate: /\SDEInvType.group?.category == self.category && /\SDEInvType.published == true) { searchResults in
-                List {
-                    if searchResults == nil {
-                        TypeGroupsContent(groups: groups)
+        let groups = self.groups.get(initial: getGroups())
+        let predicate = /\SDEInvType.group?.category == self.category && /\SDEInvType.published == true
+        
+        return TypesSearch(predicate: predicate, searchString: $searchString, searchResults: $searchResults) {
+            if self.searchResults != nil {
+                TypesContent(types: self.searchResults!) { type in
+                    NavigationLink(destination: TypeInfo(type: type)) {
+                        TypeCell(type: type)
                     }
-                    else {
-                        TypesContent(types: searchResults!) { type in
-                            NavigationLink(destination: TypeInfo(type: type)) {
-                                TypeCell(type: type)
-                            }
-                        }
-                    }
-                }.listStyle(GroupedListStyle())
-                    .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
+                }
             }
-        }.navigationBarTitle(category.categoryName ?? NSLocalizedString("Categories", comment: ""))
+            else {
+                TypeGroupsContent(groups: groups)
+            }
+        }
+        .navigationBarTitle(category.categoryName ?? NSLocalizedString("Categories", comment: ""))
     }
 }
 

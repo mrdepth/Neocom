@@ -14,11 +14,11 @@ struct FittingModuleSlot: View {
     var slot: DGMModule.Slot
     
     var body: some View {
-            HStack {
-                slot.image.map{Icon($0)}
-                Text("Add Module")
-                Spacer()
-            }.contentShape(Rectangle())
+        HStack {
+            slot.image.map{Icon($0)}
+            Text("Add Module")
+            Spacer()
+        }.contentShape(Rectangle())
     }
 }
 

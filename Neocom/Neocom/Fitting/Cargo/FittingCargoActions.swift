@@ -49,18 +49,21 @@ struct FittingCargoActions: View {
                     .keyboardType(.numberPad)
                     .frame(width: 100)
                     .multilineTextAlignment(.center)
+                Stepper("Quantity", value: $cargo.quantity).labelsHidden()
                 Button("Max") {
                     let free = self.ship.cargoCapacity - self.ship.usedCargoCapacity + self.cargo.volume
                     let qty = (free / perItem).rounded(.down)
                     self.cargo.quantity = Int(max(qty, 1))
-                }
+                }.buttonStyle(BorderlessButtonStyle())
             }
         }
         .listStyle(GroupedListStyle())
         .navigationBarTitle("Actions")
         .navigationBarItems(leading: BarButtonItems.close(completion), trailing: BarButtonItems.trash {
-            self.ship.remove(self.cargo)
             self.completion()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                self.ship.remove(self.cargo)
+            }
         })
 
         .sheet(item: $selectedType) { type in

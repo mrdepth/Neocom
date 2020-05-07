@@ -16,62 +16,16 @@ struct FittingCargo: View {
     @Environment(\.self) private var environment
     @Environment(\.typePicker) private var typePicker
     @EnvironmentObject private var sharedState: SharedState
-    @State private var selection: Selection?
-    
-    enum Selection: Identifiable {
-        
-        var id: AnyHashable {
-            switch self {
-            case let .group(group):
-                return group.id
-            case let .cargo(cargo):
-                return cargo
-            }
-        }
-        
-        case group(SDEDgmppItemGroup)
-        case cargo(DGMCargo)
-        
-        var cargo: DGMCargo? {
-            switch self {
-            case let .cargo(cargo):
-                return cargo
-            default:
-                return nil
-            }
-        }
-        
-        var group: SDEDgmppItemGroup? {
-            switch self {
-            case let .group(group):
-                return group
-            default:
-                return nil
-            }
-        }
-    }
+    @State private var isTypePickerPresented = false
     
     private func typePicker(_ group: SDEDgmppItemGroup) -> some View {
         typePicker.get(group, environment: environment, sharedState: sharedState) {
-            self.selection = nil
+            self.isTypePickerPresented = false
             guard let type = $0 else {return}
-            do {
-                try self.ship.add(DGMCargo(typeID: DGMTypeID(type.typeID)))
-            }
-            catch {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                try? self.ship.add(DGMCargo(typeID: DGMTypeID(type.typeID)))
             }
         }
-    }
-    
-    private func cargoActions(_ cargo: DGMCargo) -> some View {
-        NavigationView {
-            FittingCargoActions(ship: ship, cargo: cargo) {
-                self.selection = nil
-            }
-        }
-        .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
-        .environmentObject(ship)
-        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     struct Row {
@@ -84,6 +38,10 @@ struct FittingCargo: View {
         var rows: [Row]
     }
     
+    private var group: SDEDgmppItemGroup? {
+        try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(categoryID: .cargo)).first
+    }
+
     var body: some View {
         let cargo = ship.cargo
         let invTypes = cargo.map{$0.typeID}.compactMap{try? managedObjectContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == Int32($0)).first()}
@@ -95,35 +53,31 @@ struct FittingCargo: View {
             .sorted{($0.key?.categoryName ?? "") < ($1.key?.categoryName ?? "")}
             .map{(category, rows) in CargoSection(category: category, rows: rows.sorted{($0.type?.typeName ?? "", $0.cargo.hashValue) < ($1.type?.typeName ?? "", $1.cargo.hashValue)})}
         
+        
         return VStack(spacing: 0) {
-                FittingCargoHeader(ship: ship).padding(8)
-                Divider()
-                List {
-                    ForEach(sections, id: \.category) { section in
-                        Section(header: section.category?.categoryName.map{Text($0.uppercased())}) {
-                            ForEach(section.rows, id: \.cargo) { row in
-                                Button(action: {self.selection = .cargo(row.cargo)}) {
-                                    FittingCargoCell(ship: self.ship, cargo: row.cargo)
-                                }.buttonStyle(PlainButtonStyle())
-                            }
+            FittingCargoHeader(ship: ship).padding(8)
+            Divider()
+            List {
+                ForEach(sections, id: \.category) { section in
+                    Section(header: section.category?.categoryName.map{Text($0.uppercased())}) {
+                        ForEach(section.rows, id: \.cargo) { row in
+                            FittingCargoCell(ship: self.ship, cargo: row.cargo)
                         }
                     }
-                    Section {
-                        Button("Add Cargo") {
-                            self.selection = (try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(categoryID: .cargo)).first).map{.group($0)}
-                        }.frame(maxWidth: .infinity)
+                }
+                Section {
+                    Button("Add Cargo") {
+                        self.isTypePickerPresented = true
                     }
-                }.listStyle(GroupedListStyle())
-                    .sheet(item: $selection) { selection in
-                        if selection.group != nil {
-                            self.typePicker(selection.group!)
-                        }
-                        else if selection.cargo != nil {
-                            self.cargoActions(selection.cargo!)
-                        }
+                    .frame(maxWidth: .infinity)
+                    .adaptivePopover(isPresented: $isTypePickerPresented, arrowEdge: .leading) {
+                        self.group.map{self.typePicker($0)}
+                    }
+                }
             }
+            .listStyle(GroupedListStyle())
         }
-
+        
     }
 }
 

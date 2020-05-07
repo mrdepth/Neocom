@@ -163,6 +163,8 @@
 		16888417242CF0670099C769 /* LoadoutsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16888416242CF0670099C769 /* LoadoutsSection.swift */; };
 		16888419242CF3910099C769 /* FittingEditorLoadoutPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16888418242CF3910099C769 /* FittingEditorLoadoutPicker.swift */; };
 		1688841C242D11490099C769 /* CharacterSheetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688841B242D11490099C769 /* CharacterSheetItem.swift */; };
+		1688C7A024603C54009AFFC3 /* SearchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688C79F24603C54009AFFC3 /* SearchControl.swift */; };
+		1688C7A22460640F009AFFC3 /* SearchControlCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688C7A12460640F009AFFC3 /* SearchControlCoordinator.swift */; };
 		1688D00F23D6F0790012983C /* JumpClones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688D00E23D6F0790012983C /* JumpClones.swift */; };
 		1688D7EA24472F560043DF53 /* AboutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7E924472F560043DF53 /* AboutItem.swift */; };
 		1688DB2C242FCF3300C59DCD /* LoyaltyPointsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688DB2B242FCF3300C59DCD /* LoyaltyPointsItem.swift */; };
@@ -215,6 +217,8 @@
 		1693A86023FD67740033A793 /* MailDraftCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1693A85F23FD67740033A793 /* MailDraftCell.swift */; };
 		1694B22B2406797D00E81E49 /* ShipResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694B22A2406797D00E81E49 /* ShipResource.swift */; };
 		1694B22F2406A9AD00E81E49 /* InfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694B22E2406A9AD00E81E49 /* InfoButton.swift */; };
+		1694FC61245D61390002903E /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694FC60245D61390002903E /* SearchController.swift */; };
+		1694FC63245D70430002903E /* SearchControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694FC62245D70430002903E /* SearchControllerWrapper.swift */; };
 		1695805423FFB63C006752B9 /* Wealth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1695805323FFB63C006752B9 /* Wealth.swift */; };
 		16963AB32410D4B000A26E4A /* OptimalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16963AB22410D4B000A26E4A /* OptimalInfo.swift */; };
 		16963AB72410E3CA00A26E4A /* FittingDroneActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16963AB62410E3CA00A26E4A /* FittingDroneActions.swift */; };
@@ -306,7 +310,6 @@
 		16BBE17323E02C41001E251D /* SkillQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BBE17223E02C41001E251D /* SkillQueue.swift */; };
 		16BC888A24167AC300C6149A /* FittingImplantSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BC888924167AC300C6149A /* FittingImplantSlot.swift */; };
 		16BC888E24167D5F00C6149A /* FittingBoosterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BC888D24167D5F00C6149A /* FittingBoosterCell.swift */; };
-		16BC889024167DFC00C6149A /* FittingBoosterSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BC888F24167DFC00C6149A /* FittingBoosterSlot.swift */; };
 		16BCB1B623D88437004712DB /* SkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BCB1B523D88437004712DB /* SkillCell.swift */; };
 		16C39A4C23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C39A4B23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift */; };
 		16C39A5023B9CF7D00208F04 /* SkillsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C39A4F23B9CF7D00208F04 /* SkillsList.swift */; };
@@ -522,6 +525,8 @@
 		16888416242CF0670099C769 /* LoadoutsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadoutsSection.swift; sourceTree = "<group>"; };
 		16888418242CF3910099C769 /* FittingEditorLoadoutPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorLoadoutPicker.swift; sourceTree = "<group>"; };
 		1688841B242D11490099C769 /* CharacterSheetItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSheetItem.swift; sourceTree = "<group>"; };
+		1688C79F24603C54009AFFC3 /* SearchControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchControl.swift; sourceTree = "<group>"; };
+		1688C7A12460640F009AFFC3 /* SearchControlCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchControlCoordinator.swift; sourceTree = "<group>"; };
 		1688D00E23D6F0790012983C /* JumpClones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpClones.swift; sourceTree = "<group>"; };
 		1688D7E924472F560043DF53 /* AboutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutItem.swift; sourceTree = "<group>"; };
 		1688DB2B242FCF3300C59DCD /* LoyaltyPointsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyPointsItem.swift; sourceTree = "<group>"; };
@@ -579,6 +584,8 @@
 		1694B22C240697E600E81E49 /* FittingModuleActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingModuleActions.swift; sourceTree = "<group>"; };
 		1694B22E2406A9AD00E81E49 /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
 		1694B2302406AECC00E81E49 /* FittingModuleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingModuleState.swift; sourceTree = "<group>"; };
+		1694FC60245D61390002903E /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		1694FC62245D70430002903E /* SearchControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchControllerWrapper.swift; sourceTree = "<group>"; };
 		1695805323FFB63C006752B9 /* Wealth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wealth.swift; sourceTree = "<group>"; };
 		16963AB22410D4B000A26E4A /* OptimalInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimalInfo.swift; sourceTree = "<group>"; };
 		16963AB62410E3CA00A26E4A /* FittingDroneActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingDroneActions.swift; sourceTree = "<group>"; };
@@ -671,7 +678,6 @@
 		16BBE17223E02C41001E251D /* SkillQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillQueue.swift; sourceTree = "<group>"; };
 		16BC888924167AC300C6149A /* FittingImplantSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingImplantSlot.swift; sourceTree = "<group>"; };
 		16BC888D24167D5F00C6149A /* FittingBoosterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingBoosterCell.swift; sourceTree = "<group>"; };
-		16BC888F24167DFC00C6149A /* FittingBoosterSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingBoosterSlot.swift; sourceTree = "<group>"; };
 		16BCB1B523D88437004712DB /* SkillCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillCell.swift; sourceTree = "<group>"; };
 		16C39A4B23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueprintActivityRequiredSkills.swift; sourceTree = "<group>"; };
 		16C39A4F23B9CF7D00208F04 /* SkillsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillsList.swift; sourceTree = "<group>"; };
@@ -1023,6 +1029,8 @@
 				1698919E238E4BA500FBA0B3 /* ObservedObjectView.swift */,
 				16674BEB238BB97400E6E547 /* ProgressView.swift */,
 				16DFF830238D3A4F004C1185 /* SearchField.swift */,
+				1688C79F24603C54009AFFC3 /* SearchControl.swift */,
+				1688C7A12460640F009AFFC3 /* SearchControlCoordinator.swift */,
 				169891B4238EAF4000FBA0B3 /* SearchView.swift */,
 				169DA0FD23FE8EAE00AC7B54 /* Sector.swift */,
 				1694B22A2406797D00E81E49 /* ShipResource.swift */,
@@ -1035,6 +1043,8 @@
 				16859F5824321EC000824552 /* BarChart.swift */,
 				16865CC8243E080200EDDF15 /* ActivityView.swift */,
 				168A74F5244C719C005491CF /* RefreshControl.swift */,
+				1694FC60245D61390002903E /* SearchController.swift */,
+				1694FC62245D70430002903E /* SearchControllerWrapper.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1347,7 +1357,6 @@
 				16B3C7F424113C7A00F21DE5 /* FittingImplantCell.swift */,
 				16BC888924167AC300C6149A /* FittingImplantSlot.swift */,
 				16BC888D24167D5F00C6149A /* FittingBoosterCell.swift */,
-				16BC888F24167DFC00C6149A /* FittingBoosterSlot.swift */,
 				16B3C7EE2411336300F21DE5 /* FittingEditorImplants.swift */,
 			);
 			path = Implants;
@@ -1593,6 +1602,7 @@
 				168FF312242D3C73009FCE58 /* SkillsItem.swift in Sources */,
 				1271C655241E0F8500665B59 /* FittingCharactersPredefined.swift in Sources */,
 				16859F502432110200824552 /* WalletJournalItem.swift in Sources */,
+				1688C7A024603C54009AFFC3 /* SearchControl.swift in Sources */,
 				16AE40F5238FEFD500C6E25B /* DamageView.swift in Sources */,
 				12B9E20423A7E8C2007DB0E0 /* SwiftUI+Extensions.swift in Sources */,
 				16B45EFF23A3663400A36A96 /* MarketRegionPicker.swift in Sources */,
@@ -1623,7 +1633,6 @@
 				169A91A5238D1D81004E3DAA /* ESI+Extensions.swift in Sources */,
 				1602719823A2792900067AA1 /* TypeMarketOrderCell.swift in Sources */,
 				1698919F238E4BA500FBA0B3 /* ObservedObjectView.swift in Sources */,
-				16BC889024167DFC00C6149A /* FittingBoosterSlot.swift in Sources */,
 				1685E702242E37C900F85F14 /* EVECalendar.swift in Sources */,
 				168F69372430B57D00D80A24 /* ServerStatus.swift in Sources */,
 				169A72D1238BE0EF00E4C181 /* TimeIntervalFormatter.swift in Sources */,
@@ -1655,6 +1664,7 @@
 				1631291B23F68BD500E22CF3 /* ContractBidCell.swift in Sources */,
 				16C435FD23D85221000A5446 /* Skills.swift in Sources */,
 				169F57D32428C2E300FFDAE1 /* SkillLevelsLoader.swift in Sources */,
+				1694FC61245D61390002903E /* SearchController.swift in Sources */,
 				1655DE752396888200973258 /* TypeInfoData.swift in Sources */,
 				168F693F2430BD6200D80A24 /* NPCItem.swift in Sources */,
 				16B8F08823F670CB0093FEED /* ContractsData.swift in Sources */,
@@ -1819,6 +1829,7 @@
 				16CB5FAE242505A000A91370 /* LoadoutsLoader.swift in Sources */,
 				161C6EFD23A12FBC00777009 /* TypeMarketData.swift in Sources */,
 				1696E5DD2445AFDC00F2F721 /* SharedState.swift in Sources */,
+				1688C7A22460640F009AFFC3 /* SearchControlCoordinator.swift in Sources */,
 				16859F4824320FB000824552 /* AssetsItem.swift in Sources */,
 				16359213245ADF8000622C1C /* FittingEditorFleetBar.swift in Sources */,
 				16D5DE7823B238D4004CDA4A /* CertificateRequirementsInfo.swift in Sources */,
@@ -1833,6 +1844,7 @@
 				12F06F17238464920061313D /* ContentView.swift in Sources */,
 				16D6741E2451DDDF002C277F /* NSUserActivity+Extensions.swift in Sources */,
 				16CB5FB0242527D100A91370 /* LoadoutCell.swift in Sources */,
+				1694FC63245D70430002903E /* SearchControllerWrapper.swift in Sources */,
 				168F1CBF2434FFCA00F8EF41 /* PlanetCell.swift in Sources */,
 				168960D8240FEF30004E4630 /* FittingDroneCell.swift in Sources */,
 				168F2FF7243B2F35006CE01A /* RecentKillsItem.swift in Sources */,

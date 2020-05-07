@@ -155,6 +155,7 @@ struct InGameActivityView: View {
                 self.completion(false)
             })
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

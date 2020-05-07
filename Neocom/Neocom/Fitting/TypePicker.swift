@@ -18,7 +18,7 @@ class TypePickerManager {
         picker.content.completion = {
             completion($0)
         }
-        return picker.edgesIgnoringSafeArea(.all)
+        return picker.edgesIgnoringSafeArea(.all).frame(idealWidth: 375, idealHeight: 375 * 2)
 //
 //        NavigationView {
 //            TypePicker(parentGroup: parentGroup) {
@@ -39,9 +39,19 @@ class TypePickerViewController: UINavigationController {
     init(parentGroup: SDEDgmppItemGroup, services: ServicesViewModifier, completion: @escaping (SDEInvType?) -> Void) {
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
-        let view = TypePickerWrapper(parentGroup: parentGroup) { [weak self] type in
+        
+//        TypePickerGroups(parentGroup: parentGroup, completion: completion)
+
+        let view = TypePickerPage(parentGroup: parentGroup) { [weak self] type in
             self?.completion(type)
-        }.modifier(services)
+        }
+        .navigationBarItems(leading: BarButtonItems.close { [weak self] in
+            self?.completion(nil)
+        }).modifier(services)
+        
+//        let view = TypePickerWrapper(parentGroup: parentGroup) { [weak self] type in
+//            self?.completion(type)
+//        }.modifier(services)
         viewControllers = [UIHostingController(rootView: view)]
     }
     
@@ -66,30 +76,43 @@ struct TypePickerWrapper: View {
     
     var parentGroup: SDEDgmppItemGroup
     var completion: (SDEInvType?) -> Void
+    
+    var page: TypePickerPage
+    init(parentGroup: SDEDgmppItemGroup, completion: @escaping (SDEInvType?) -> Void) {
+        self.parentGroup = parentGroup
+        self.completion = completion
+        
+        page = TypePickerPage(parentGroup: parentGroup) {
+            completion($0)
+        }
+    }
 
     var body: some View {
-        TypePickerPage(parentGroup: parentGroup) {
-            self.completion($0)
-        }.navigationBarItems(leading: BarButtonItems.close {
+        page.navigationBarItems(leading: BarButtonItems.close {
             self.completion(nil)
         })
     }
 }
 
-struct TypePickerPage: View {
+struct TypePickerPage: View, Equatable {
+    static func == (lhs: TypePickerPage, rhs: TypePickerPage) -> Bool {
+        true
+    }
+    
     var parentGroup: SDEDgmppItemGroup
     var completion: (SDEInvType) -> Void
 
     @Environment(\.managedObjectContext) private var managedObjectContext
     @State private var selectedGroup: SDEDgmppItemGroup?
-    
+    @ObservedObject var searchHelper = TypePickerSearchHelper()
+
     var body: some View {
         Group {
             if (parentGroup.subGroups?.count ?? 0) > 0 {
-                TypePickerGroups(parentGroup: parentGroup, completion: completion, selectedGroup: $selectedGroup)
+                TypePickerGroups(parentGroup: parentGroup, searchHelper: searchHelper, completion: completion)
             }
             else {
-                TypePickerTypes(parentGroup: parentGroup, completion: completion)
+                TypePickerTypes(parentGroup: parentGroup, searchHelper: searchHelper, completion: completion)
             }
         }
     }

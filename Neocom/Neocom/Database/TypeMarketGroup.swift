@@ -14,7 +14,7 @@ struct TypeMarketGroup: View {
     var parent: SDEInvMarketGroup?
     @Environment(\.managedObjectContext) var managedObjectContext
 
-    private func marketGroups() -> FetchedResultsController<SDEInvMarketGroup> {
+    private func getMarketGroups() -> FetchedResultsController<SDEInvMarketGroup> {
         let controller = managedObjectContext.from(SDEInvMarketGroup.self)
             .filter(/\SDEInvMarketGroup.parentGroup == parent)
             .sort(by: \SDEInvMarketGroup.marketGroupName, ascending: true)
@@ -22,24 +22,28 @@ struct TypeMarketGroup: View {
         return FetchedResultsController(controller)
     }
 
+    private let marketGroups = Lazy<FetchedResultsController<SDEInvMarketGroup>, Never>()
+    
+    @State private var searchString: String = ""
+    @State private var searchResults: [FetchedResultsController<SDEInvType>.Section]? = nil
+
     var body: some View {
-        ObservedObjectView(marketGroups()) { marketGroups in
-            TypesSearch(predicate: /\SDEInvType.marketGroup != nil) { searchResults in
-                List {
-                    if searchResults == nil {
-                        TypeMarketGroupContent(marketGroups: marketGroups)
+        let marketGroups = self.marketGroups.get(initial: getMarketGroups())
+        let predicate = /\SDEInvType.marketGroup != nil
+        
+        return TypesSearch(predicate: predicate, searchString: $searchString, searchResults: $searchResults) {
+            if self.searchResults != nil {
+                TypesContent(types: self.searchResults!) { type in
+                    NavigationLink(destination: TypeInfo(type: type)) {
+                        TypeCell(type: type)
                     }
-                    else {
-                        TypesContent(types: searchResults!) { type in
-                            NavigationLink(destination: TypeInfo(type: type)) {
-                                TypeCell(type: type)
-                            }
-                        }
-                    }
-                }.listStyle(GroupedListStyle())
-                    .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
+                }
             }
-        }.navigationBarTitle(parent?.marketGroupName ?? NSLocalizedString("Market", comment: ""))
+            else {
+                TypeMarketGroupContent(marketGroups: marketGroups)
+            }
+        }
+        .navigationBarTitle(parent?.marketGroupName ?? NSLocalizedString("Market", comment: ""))
     }
 }
 

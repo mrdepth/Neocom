@@ -55,7 +55,7 @@ fileprivate struct ComposeMailContent: View {
     @Environment(\.self) private var environment
     @EnvironmentObject private var sharedState: SharedState
 
-    @ObservedObject var contactsSearchController: SearchController<[Contact]?, NSAttributedString>
+    @ObservedObject var contactsSearchController: SearchResultsController<[Contact]?, NSAttributedString>
     @State private var contactsInitialLoading: AnyPublisher<[Int64:Contact], Never>
 
     init(esi: ESI, account: Account, managedObjectContext: NSManagedObjectContext, draft: MailDraft?, onComplete: @escaping () -> Void) {
@@ -75,7 +75,7 @@ fileprivate struct ComposeMailContent: View {
         _subject = State(initialValue: draft?.subject ?? "")
         _text = State(initialValue: draft?.body ?? NSAttributedString())
         
-        contactsSearchController = SearchController(initialValue: nil, predicate: NSAttributedString(), search)
+        contactsSearchController = SearchResultsController(initialValue: nil, predicate: NSAttributedString(), search)
         
         let contactsInitialLoading: AnyPublisher<[Int64:Contact], Never>
         if let ids = draft?.to, !ids.isEmpty {

@@ -50,23 +50,25 @@ struct Types: View {
         return FetchedResultsController(controller)
     }
     
-    private func types() -> FetchedResultsController<SDEInvType> {
+    private func getTypes() -> FetchedResultsController<SDEInvType> {
         Types.fetchResults(with: predicate, managedObjectContext: managedObjectContext)
     }
     
+    private let types = Lazy<FetchedResultsController<SDEInvType>, Never>()
+    @State private var searchString: String = ""
+    @State private var searchResults: [FetchedResultsController<SDEInvType>.Section]? = nil
+
     var body: some View {
-        ObservedObjectView(self.types()) { types in
-            TypesSearch(predicate: self.predicate) { searchResults in
-                List {
-                    TypesContent(types: searchResults ?? types.sections) { type in
-                        NavigationLink(destination: TypeInfo(type: type)) {
-                            TypeCell(type: type)
-                        }
-                    }
-                }.listStyle(GroupedListStyle())
-                    .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
+        let types = self.types.get(initial: getTypes())
+        
+        return TypesSearch(predicate: self.predicate, searchString: $searchString, searchResults: $searchResults) {
+            TypesContent(types: self.searchResults ?? types.sections) { type in
+                NavigationLink(destination: TypeInfo(type: type)) {
+                    TypeCell(type: type)
+                }
             }
-        }.navigationBarTitle(title)
+        }
+        .navigationBarTitle(title)
     }
 }
 

@@ -13,7 +13,7 @@ struct NPCGroup: View {
     var parent: SDENpcGroup?
     @Environment(\.managedObjectContext) var managedObjectContext
 
-    private func groups() -> FetchedResultsController<SDENpcGroup> {
+    private func getGroups() -> FetchedResultsController<SDENpcGroup> {
         let controller = managedObjectContext.from(SDENpcGroup.self)
             .filter(/\SDENpcGroup.parentNpcGroup == parent)
             .sort(by: \SDENpcGroup.npcGroupName, ascending: true)
@@ -21,24 +21,28 @@ struct NPCGroup: View {
         return FetchedResultsController(controller)
     }
 
+    private let groups = Lazy<FetchedResultsController<SDENpcGroup>, Never>()
+    
+    @State private var searchString: String = ""
+    @State private var searchResults: [FetchedResultsController<SDEInvType>.Section]? = nil
+
     var body: some View {
-        ObservedObjectView(groups()) { groups in
-			TypesSearch(predicate: (/\SDEInvType.group?.npcGroups).count > 0) { searchResults in
-                List {
-                    if searchResults == nil {
-                        NPCGroupContent(groups: groups)
+        let groups = self.groups.get(initial: getGroups())
+        let predicate = (/\SDEInvType.group?.npcGroups).count > 0
+        
+        return TypesSearch(predicate: predicate, searchString: $searchString, searchResults: $searchResults) {
+            if self.searchResults != nil {
+                TypesContent(types: self.searchResults!) { type in
+                    NavigationLink(destination: TypeInfo(type: type)) {
+                        TypeCell(type: type)
                     }
-                    else {
-                        TypesContent(types: searchResults!) { type in
-                            NavigationLink(destination: TypeInfo(type: type)) {
-                                TypeCell(type: type)
-                            }
-                        }
-                    }
-                }.listStyle(GroupedListStyle())
-                    .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
+                }
             }
-        }.navigationBarTitle(parent?.npcGroupName ?? NSLocalizedString("NPC", comment: ""))
+            else {
+                NPCGroupContent(groups: groups)
+            }
+        }
+        .navigationBarTitle(parent?.npcGroupName ?? NSLocalizedString("NPC", comment: ""))
     }
 }
 

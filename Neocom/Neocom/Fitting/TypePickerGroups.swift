@@ -10,16 +10,22 @@ import SwiftUI
 import CoreData
 import Expressible
 
+class TypePickerSearchHelper: ObservableObject {
+    @Published var searchString: String = ""
+    @Published var searchResults: [FetchedResultsController<SDEInvType>.Section]? = nil
+}
+
 struct TypePickerGroups: View {
     var parentGroup: SDEDgmppItemGroup
+    @ObservedObject var searchHelper: TypePickerSearchHelper
     var completion: (SDEInvType) -> Void
-    @Binding var selectedGroup: SDEDgmppItemGroup?
+    @State private var selectedGroup: SDEDgmppItemGroup?
     @State private var selectedType: SDEInvType?
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
     @EnvironmentObject private var sharedState: SharedState
     
-    private func groups() -> FetchedResultsController<SDEDgmppItemGroup> {
+    private func getGroups() -> FetchedResultsController<SDEDgmppItemGroup> {
         let controller = managedObjectContext.from(SDEDgmppItemGroup.self)
             .filter(/\SDEDgmppItemGroup.parentGroup == parentGroup)
             .sort(by: \SDEDgmppItemGroup.groupName, ascending: true)
@@ -32,27 +38,40 @@ struct TypePickerGroups: View {
         (/\SDEInvType.dgmppItem?.groups).any(\SDEDgmppItemGroup.category) == parentGroup.category && /\SDEInvType.published == true
     }
     
+    private func cell(_ type: SDEInvType) -> some View {
+        HStack(spacing: 0) {
+            Button(action: {self.completion(type)}) {
+                HStack(spacing: 0) {
+                    TypeCell(type: type)
+                    Spacer()
+                }.contentShape(Rectangle())
+            }.buttonStyle(PlainButtonStyle())
+            InfoButton {
+                self.selectedType = type
+            }
+        }
+    }
+    
+    private let groups = Lazy<FetchedResultsController<SDEDgmppItemGroup>, Never>()
+
     var body: some View {
-        ObservedObjectView(self.groups()) { groups in
-            TypesSearch(searchString: "", predicate: self.predicate, onUpdated: nil) { searchResults in
-                List {
-                    if searchResults == nil {
-                        ForEach(groups.fetchedObjects, id: \.objectID) { group in
-                            NavigationLink(destination: TypePickerPage(parentGroup: group, completion: self.completion),
-                                           tag: group,
-                                           selection: self.$selectedGroup) {
-                                            HStack {
-                                                Icon(group.image)
-                                                Text(group.groupName ?? "")
-                                            }
-                            }
-                        }
+        let groups = self.groups.get(initial: getGroups())
+        
+        return TypesSearch(predicate: self.predicate, searchString:$searchHelper.searchString, searchResults: $searchHelper.searchResults) {
+            if self.searchHelper.searchResults != nil {
+                TypePickerTypesContent(types: self.searchHelper.searchResults!, selectedType: self.$selectedType, completion: self.completion)
+            }
+            else {
+                ForEach(groups.fetchedObjects, id: \.objectID) { group in
+                    NavigationLink(destination: TypePickerPage(parentGroup: group, completion: self.completion),
+                                   tag: group,
+                                   selection: self.$selectedGroup) {
+                                    HStack {
+                                        Icon(group.image)
+                                        Text(group.groupName ?? "")
+                                    }
                     }
-                    else {
-                        TypePickerTypesContent(types: searchResults!, selectedType: self.$selectedType, completion: self.completion)
-                    }
-                }.listStyle(GroupedListStyle())
-                .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
+                }
             }
         }
         .navigationBarTitle(parentGroup.groupName ?? "")
@@ -72,8 +91,8 @@ struct TypePickerGroups_Previews: PreviewProvider {
         let group = try! context.fetch(SDEDgmppItemGroup.rootGroup(categoryID: .hi)).first!
         return NavigationView {
             TypePickerGroups(parentGroup: group,
-                             completion: {_ in },
-                             selectedGroup: .constant(nil))
+                             searchHelper: TypePickerSearchHelper(),
+                             completion: {_ in })
         }
         .environment(\.managedObjectContext, context)
     }

@@ -11,22 +11,11 @@ import Dgmpp
 import CoreData
 
 struct FittingEditorShipModulesList: View {
-    struct SelectedSlot: Hashable, Identifiable {
-        var slot: DGMModule.Slot
-        var sockets: IndexSet
-        var id: SelectedSlot {
-            return self
-        }
-    }
-
-    
     @ObservedObject var ship: DGMShip
     
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
-    
-    @Binding var selection: FittingEditorShipModules.Selection?
-    
+
     var body: some View {
         let slots: [DGMModule.Slot] = [.hi, .med, .low, .rig, .subsystem, .service, .mode]
         
@@ -34,7 +23,7 @@ struct FittingEditorShipModulesList: View {
         
         return List {
             ForEach(availableSlots, id: \.self) { slot in
-                FittingEditorShipModulesSection(ship: self.ship, slot: slot, selection: self.$selection)
+                FittingEditorShipModulesSection(ship: self.ship, slot: slot)
             }
         }.listStyle(GroupedListStyle())
     }
@@ -42,7 +31,7 @@ struct FittingEditorShipModulesList: View {
 
 struct FittingEditorShipModulesList_Previews: PreviewProvider {
     static var previews: some View {
-        FittingEditorShipModulesList(ship: DGMShip.testDominix(), selection: .constant(nil))
+        FittingEditorShipModulesList(ship: DGMShip.testDominix())
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }

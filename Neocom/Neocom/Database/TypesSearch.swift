@@ -15,17 +15,19 @@ struct TypesSearch<Content: View>: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.backgroundManagedObjectContext) var backgroundManagedObjectContext
     var predicate: PredicateProtocol? = nil
-    var content: ([FetchedResultsController<SDEInvType>.Section]?) -> Content
-    var onUpdated: ((String) -> Void)?
-    var searchString: String
+    @Binding var searchString: String
+    @Binding var searchResults: [FetchedResultsController<SDEInvType>.Section]?
+    var content: () -> Content
     
-    init(searchString: String = "", predicate: PredicateProtocol? = nil, onUpdated: ((String) -> Void)? = nil, @ViewBuilder content: @escaping ([FetchedResultsController<SDEInvType>.Section]?) -> Content) {
-        self.searchString = searchString
+    @State private var isEditing = false
+
+    init(predicate: PredicateProtocol? = nil, searchString: Binding<String>, searchResults: Binding<[FetchedResultsController<SDEInvType>.Section]?>, @ViewBuilder content: @escaping () -> Content) {
         self.predicate = predicate
+        _searchString = searchString
+        _searchResults = searchResults
         self.content = content
-        self.onUpdated = onUpdated
     }
-    
+
     func search(_ string: String) -> AnyPublisher<[FetchedResultsController<SDEInvType>.Section]?, Never> {
         Future<FetchedResultsController<NSDictionary>?, Never> { promise in
             self.backgroundManagedObjectContext.perform {
@@ -60,20 +62,21 @@ struct TypesSearch<Content: View>: View {
             }
         }.eraseToAnyPublisher()
     }
-        
+    
     var body: some View {
-        SearchView(initialValue: nil, predicate: searchString, search: search, onUpdated: onUpdated) { results in
-            self.content(results)
-        }
+        SearchList(text: $searchString, results: $searchResults, isEditing: $isEditing, search: search, content: content)
+        .listStyle(GroupedListStyle())
+        .overlay(searchResults?.isEmpty == true ? Text(RuntimeError.noResult) : nil)
     }
 }
 
 struct TypesSearch_Previews: PreviewProvider {
     static var previews: some View {
-        TypesSearch { results in
-            EmptyView()
+        NavigationView {
+            TypeCategories()
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, (UIApplication.shared.delegate as! AppDelegate).persistentContainer.newBackgroundContext())
+        .environmentObject(SharedState.testState())
     }
 }

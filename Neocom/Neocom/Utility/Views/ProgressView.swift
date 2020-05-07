@@ -17,7 +17,7 @@ struct ProgressView: View {
         GeometryReader { geometry in
             Rectangle()
                 .foregroundColor(self.progressTintColor)
-                .frame(width: geometry.size.width * CGFloat(self.progress))
+                .frame(width: geometry.size.width * CGFloat(self.progress.clamped(to: 0...1)))
                 .frame(maxWidth: .infinity, alignment: .leading)
         }.overlay(Rectangle().strokeBorder(borderColor, lineWidth: 1, antialiased: false))
             .background(self.progressTrackColor)

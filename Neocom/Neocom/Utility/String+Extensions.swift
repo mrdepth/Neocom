@@ -52,3 +52,4 @@ extension NSAttributedString {
         return result
     }
 }
+

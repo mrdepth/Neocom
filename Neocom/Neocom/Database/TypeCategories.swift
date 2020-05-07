@@ -14,7 +14,7 @@ import Combine
 struct TypeCategories: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
 	
-    private func categories() -> FetchedResultsController<SDEInvCategory> {
+    private func getCategories() -> FetchedResultsController<SDEInvCategory> {
         let controller = managedObjectContext.from(SDEInvCategory.self)
             .sort(by: \SDEInvCategory.published, ascending: false)
             .sort(by: \SDEInvCategory.categoryName, ascending: true)
@@ -22,24 +22,27 @@ struct TypeCategories: View {
         return FetchedResultsController(controller)
     }
     
+    private let categories = Lazy<FetchedResultsController<SDEInvCategory>, Never>()
+    
+    @State private var searchString: String = ""
+    @State private var searchResults: [FetchedResultsController<SDEInvType>.Section]? = nil
+    
     var body: some View {
-        ObservedObjectView(self.categories()) { categories in
-            TypesSearch { searchResults in
-                List {
-                    if searchResults == nil {
-                        TypeCategoriesContent(categories: categories)
+        let categories = self.categories.get(initial: getCategories())
+        
+        return TypesSearch(searchString: $searchString, searchResults: $searchResults) {
+            if self.searchResults != nil {
+                TypesContent(types: self.searchResults!) { type in
+                    NavigationLink(destination: TypeInfo(type: type)) {
+                        TypeCell(type: type)
                     }
-                    else {
-                        TypesContent(types: searchResults!) { type in
-                            NavigationLink(destination: TypeInfo(type: type)) {
-                                TypeCell(type: type)
-                            }
-                        }
-                    }
-                }.listStyle(GroupedListStyle())
-                    .overlay(searchResults?.isEmpty == true ? Text("No Results") : nil)
-            }.navigationBarTitle("Categories")
+                }
+            }
+            else {
+                TypeCategoriesContent(categories: categories)
+            }
         }
+        .navigationBarTitle("Categories")
     }
 }
 
@@ -63,8 +66,10 @@ struct TypeCategories_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             TypeCategories()
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, (UIApplication.shared.delegate as! AppDelegate).persistentContainer.newBackgroundContext())
+        }
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, (UIApplication.shared.delegate as! AppDelegate).persistentContainer.newBackgroundContext())
+        .environmentObject(SharedState.testState())
     }
 }
 

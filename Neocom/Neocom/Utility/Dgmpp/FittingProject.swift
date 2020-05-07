@@ -40,7 +40,7 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
     private var gangSubscription: AnyCancellable?
     private var structureSubscription: AnyCancellable?
     
-    var loadouts: [DGMShip: Loadout] = [:]
+    @Published var loadouts: [DGMShip: Loadout] = [:]
     var fleet: Fleet?
     let managedObjectContext: NSManagedObjectContext
     
@@ -363,82 +363,78 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
     
     func save() {
         let pilots = gang?.pilots ?? []
-        pilots.forEach { pilot in
-            guard let ship = pilot.ship else {return}
-            
-            
-            let loadout: Loadout? = loadouts[ship] ?? {
-                let isEmpty = ship.modules.isEmpty && ship.drones.isEmpty && pilots.count == 1
+        
+        managedObjectContext.perform {
+            pilots.forEach { pilot in
+                guard let ship = pilot.ship else {return}
                 
-                if !isEmpty {
-                    let loadout = Loadout(context: managedObjectContext)
-                    loadout.data = LoadoutData(context: managedObjectContext)
+                
+                let loadout: Loadout? = self.loadouts[ship] ?? {
+                    let loadout = Loadout(context: self.managedObjectContext)
+                    loadout.data = LoadoutData(context: self.managedObjectContext)
                     loadout.typeID = Int32(ship.typeID)
                     loadout.uuid = UUID().uuidString
-                    loadouts[ship] = loadout
+                    self.loadouts[ship] = loadout
                     return loadout
+                    }()
+                if let loadout = loadout {
+                    loadout.name = ship.name
+                    if loadout.data == nil {
+                        loadout.data = LoadoutData(context: self.managedObjectContext)
+                    }
+                    loadout.ship = pilot.loadout
                 }
-                else {
-                    return nil
-                }
-            }()
-            if let loadout = loadout {
-                loadout.name = ship.name
-                if loadout.data == nil {
-                    loadout.data = LoadoutData(context: managedObjectContext)
-                }
-                loadout.ship = pilot.loadout
             }
-        }
-        
-        if pilots.count > 1 {
-            if fleet == nil {
-                fleet = Fleet(context: managedObjectContext)
-            }
-            fleet?.configuration = gang.flatMap{try? JSONEncoder().encode($0.fleetConfiguration)}
-            let fleetLoadouts = Set(fleet?.loadouts?.allObjects as? [Loadout] ?? [])
-            fleetLoadouts.subtracting(loadouts.values).forEach {
-                fleet?.removeFromLoadouts($0)
-            }
-            Set(loadouts.values).subtracting(fleetLoadouts).forEach {
-                fleet?.addToLoadouts($0)
-            }
-            fleet?.name = pilots.compactMap{$0.ship}.compactMap{$0.type(from: managedObjectContext)?.typeName}.joined(separator: ", ")
             
-        }
-        else {
-            if let fleet = self.fleet {
-                managedObjectContext.delete(fleet)
-            }
-        }
-        
-        if let structure = self.structure {
-            let loadout: Loadout? = loadouts[structure] ?? {
-                let isEmpty = structure.modules.isEmpty && structure.drones.isEmpty
+            if pilots.count > 1 {
+                if self.fleet == nil {
+                    self.fleet = Fleet(context: self.managedObjectContext)
+                }
+                self.fleet?.configuration = self.gang.flatMap{try? JSONEncoder().encode($0.fleetConfiguration)}
+                let fleetLoadouts = Set(self.fleet?.loadouts?.allObjects as? [Loadout] ?? [])
+                fleetLoadouts.subtracting(self.loadouts.values).forEach {
+                    self.fleet?.removeFromLoadouts($0)
+                }
+                Set(self.loadouts.values).subtracting(fleetLoadouts).forEach {
+                    self.fleet?.addToLoadouts($0)
+                }
+                self.fleet?.name = pilots.compactMap{$0.ship}.compactMap{$0.type(from: self.managedObjectContext)?.typeName}.joined(separator: ", ")
                 
-                if !isEmpty {
-                    let loadout = Loadout(context: managedObjectContext)
-                    loadout.data = LoadoutData(context: managedObjectContext)
-                    loadout.typeID = Int32(structure.typeID)
-                    loadout.uuid = UUID().uuidString
-                    loadouts[structure] = loadout
-                    return loadout
-                }
-                else {
-                    return nil
-                }
-            }()
-            if let loadout = loadout {
-                loadout.name = structure.name
-                if loadout.data == nil {
-                    loadout.data = LoadoutData(context: managedObjectContext)
-                }
-                loadout.ship = structure.loadout
             }
-        }
-        
-        if managedObjectContext.hasChanges {
-            try? managedObjectContext.save()
+            else {
+                if let fleet = self.fleet {
+                    self.managedObjectContext.delete(fleet)
+                }
+            }
+            
+            if let structure = self.structure {
+                let loadout: Loadout? = self.loadouts[structure] ?? {
+                    let isEmpty = structure.modules.isEmpty && structure.drones.isEmpty
+                    
+                    if !isEmpty {
+                        let loadout = Loadout(context: self.managedObjectContext)
+                        loadout.data = LoadoutData(context: self.managedObjectContext)
+                        loadout.typeID = Int32(structure.typeID)
+                        loadout.uuid = UUID().uuidString
+                        self.loadouts[structure] = loadout
+                        return loadout
+                    }
+                    else {
+                        return nil
+                    }
+                    }()
+                if let loadout = loadout {
+                    loadout.name = structure.name
+                    if loadout.data == nil {
+                        loadout.data = LoadoutData(context: self.managedObjectContext)
+                    }
+                    loadout.ship = structure.loadout
+                }
+            }
+            
+            if self.managedObjectContext.hasChanges {
+                try? self.managedObjectContext.save()
+            }
         }
     }
 }

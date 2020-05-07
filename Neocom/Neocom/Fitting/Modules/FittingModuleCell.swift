@@ -8,6 +8,88 @@
 
 import SwiftUI
 import Dgmpp
+import Expressible
+
+struct FittingModuleBaseCell: View {
+    
+    @ObservedObject var ship: DGMShip
+    var slot: DGMModule.Slot
+    var module: DGMModuleGroup?
+    var sockets: IndexSet
+
+    @State private var isActionsPresented = false
+    @Environment(\.self) private var environment
+    @EnvironmentObject private var sharedState: SharedState
+    @Environment(\.typePicker) private var typePicker
+    @Environment(\.managedObjectContext) private var managedObjectContext
+
+    private var group: SDEDgmppItemGroup? {
+        let subcategory: Int?
+        let race: SDEChrRace?
+        switch self.slot {
+        case .rig:
+            subcategory = self.ship.rigSize.rawValue
+            race = nil
+        case .subsystem:
+            subcategory = nil
+            race = try? self.managedObjectContext.from(SDEChrRace.self).filter(/\SDEChrRace.raceID == Int32(self.ship.raceID.rawValue)).first()
+        case .mode:
+            subcategory = self.ship.typeID
+            race = nil
+        default:
+            subcategory = Int(self.ship is DGMStructure ? SDECategoryID.structureModule.rawValue : SDECategoryID.module.rawValue)
+            race = nil
+        }
+        return try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(slot: self.slot, subcategory: subcategory, race: race)).first
+    }
+    
+    private func typePicker(_ group: SDEDgmppItemGroup, sockets: IndexSet) -> some View {
+        typePicker.get(group, environment: environment, sharedState: sharedState) {
+            self.isActionsPresented = false
+            guard let type = $0 else {return}
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                do {
+                    for i in sockets {
+                        let module = try DGMModule(typeID: DGMTypeID(type.typeID))
+                        try self.ship.add(module, socket: i)
+                    }
+                }
+                catch {
+                }
+            }
+        }
+    }
+    
+    var body: some View {
+        Button(action: {self.isActionsPresented = true}) {
+            if module != nil {
+                FittingModuleCell(module: module!)
+            }
+            else {
+                FittingModuleSlot(slot: slot)
+            }
+        }
+        .buttonStyle(PlainButtonStyle())
+        .adaptivePopover(isPresented: $isActionsPresented, arrowEdge: .leading) {
+            if self.module != nil {
+                NavigationView {
+                    FittingModuleActions(module: self.module!) {
+                        self.isActionsPresented = false
+                    }
+                }
+                .navigationViewStyle(StackNavigationViewStyle())
+                .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+                .frame(idealWidth: 375, idealHeight: 375 * 2)
+            }
+            else {
+                self.group.map {
+                    self.typePicker($0, sockets: IndexSet(integer: -1))
+                }
+            }
+        }
+
+    }
+}
 
 struct FittingModuleCell: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
@@ -81,15 +163,11 @@ struct FittingModuleCell: View {
         }
     }
 
-    @State private var isActionsPresented = false
-    @Environment(\.self) private var environment
-    @EnvironmentObject private var sharedState: SharedState
-
     var body: some View {
         let type = module.type(from: managedObjectContext)
         let slotsWithState: Set<DGMModule.Slot> = [.hi, .low, .med, .starbaseStructure]
         
-        return Button(action:{self.isActionsPresented = true}){HStack {
+        return  HStack {
             (type?.image).map{Icon($0).cornerRadius(4)}
             VStack(alignment: .leading, spacing: 0) {
                 (type?.typeName).map{Text($0)} ?? Text("Unknown")
@@ -111,15 +189,7 @@ struct FittingModuleCell: View {
             if module.modules.count > 1 {
                 Text("x\(module.modules.count)").fontWeight(.semibold).modifier(SecondaryLabelModifier())
             }
-        }.contentShape(Rectangle())}
-        .buttonStyle(PlainButtonStyle())
-            .sheet(isPresented: $isActionsPresented) {
-                NavigationView {
-                    FittingModuleActions(module: self.module) {
-                        self.isActionsPresented = false
-                    }
-                }.modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
-        }
+        }.contentShape(Rectangle())
     }
 }
 

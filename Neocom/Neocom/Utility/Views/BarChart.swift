@@ -132,7 +132,7 @@ struct BarChart_Previews: PreviewProvider {
                            yield: Double(abs($0)),
                            waste: Double(abs($0)).squareRoot())
         }
-        var max = points.map{$0.yield + $0.waste}.max() ?? 1
+        let max = points.map{$0.yield + $0.waste}.max() ?? 1
 
         return BarChart(startDate: points.first!.timestamp, endDate: points.last!.timestamp.addingTimeInterval(3600 * 2), points: points, capacity: max)
     }

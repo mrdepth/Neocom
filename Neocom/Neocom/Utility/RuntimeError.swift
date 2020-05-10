@@ -9,6 +9,7 @@
 import Foundation
 
 enum RuntimeError: Error {
+    case unknown
     case noAccount
     case noResult
     case invalidOAuth2TOken

@@ -20,9 +20,9 @@ struct HomeHeader: View {
         let error = characterInfo?.character?.error
         return VStack(spacing: 0) {
             if characterInfo != nil {
-                HomeAccountHeader(characterName: characterInfo?.character?.value?.name ?? "",
+                HomeAccountHeader(characterName: characterInfo?.character?.value?.name ?? sharedState.account?.characterName ?? " ",
                                   corporationName: characterInfo?.corporation?.value?.name ?? characterInfo?.corporation?.error?.localizedDescription,
-                                  allianceName: characterInfo?.alliance?.value?.name ?? characterInfo?.alliance?.error?.localizedDescription,
+                                  allianceName: characterInfo?.alliance?.value?.name,// ?? characterInfo?.alliance?.error?.localizedDescription,
                                   characterImage: (characterInfo?.characterImage?.value).map{Image(uiImage: $0)},
                                   corporationImage: (characterInfo?.corporationImage?.value).map{Image(uiImage: $0)},
                                   allianceImage: (characterInfo?.allianceImage?.value).map{Image(uiImage: $0)})

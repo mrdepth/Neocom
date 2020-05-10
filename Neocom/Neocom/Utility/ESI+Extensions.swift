@@ -836,7 +836,7 @@ extension ESI.MutableFitting {
         
         self.init(localizedDescription: NSLocalizedString("Created with Neocom on iOS", comment: ""),
                   items: items,
-                  name: ship.name.isEmpty ? shipType?.typeName ?? NSLocalizedString("Unnamed", comment: "") : ship.name,
+                  name: (ship.name?.isEmpty == false ? ship.name : shipType?.typeName) ?? NSLocalizedString("Unnamed", comment: ""),
                   shipTypeID: ship.typeID)
     }
     

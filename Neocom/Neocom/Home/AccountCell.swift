@@ -12,7 +12,7 @@ import Expressible
 import Alamofire
 
 struct AccountCell: View {
-//    var account: Account
+    var account: Account
 //    var esi: ESI
     
     @ObservedObject var characterInfo: CharacterInfo
@@ -23,7 +23,16 @@ struct AccountCell: View {
         let date = Date()
         let item = accountInfo.skillQueue?.value?.filter{($0.finishDate ?? .distantPast) > date}
             .min{$0.finishDate! < $1.finishDate!}
-        return AccountCellContent(character: (characterInfo.character?.value).map{AccountCellContent.Subject(name: $0.name, image: (characterInfo.characterImage?.value).map{Image(uiImage: $0)})},
+        
+        let character: AccountCellContent.Subject
+        if let info = characterInfo.character?.value {
+            character = AccountCellContent.Subject(name: info.name, image: characterInfo.characterImage?.value.map{Image(uiImage: $0)})
+        }
+        else {
+            character = AccountCellContent.Subject(name: account.characterName ?? "", image: characterInfo.characterImage?.value.map{Image(uiImage: $0)})
+        }
+//        
+        return AccountCellContent(character: character,
                            corporation: (characterInfo.corporation?.value).map{AccountCellContent.Subject(name: $0.name, image: (characterInfo.corporationImage?.value).map{Image(uiImage: $0)})},
                            alliance: (characterInfo.alliance?.value).map{AccountCellContent.Subject(name: $0.name, image: (characterInfo.allianceImage?.value).map{Image(uiImage: $0)})},
                            ship: accountInfo.ship?.value?.shipName,
@@ -31,7 +40,8 @@ struct AccountCell: View {
                            sp: accountInfo.skills?.value?.totalSP,
                            isk: accountInfo.balance?.value,
                            skill: item,
-                           skillQueue: accountInfo.skillQueue?.value?.count)
+                           skillQueue: accountInfo.skillQueue?.value?.count,
+                           error: characterInfo.character?.error)
             
     }
 }
@@ -41,7 +51,8 @@ struct AccountCell_Previews: PreviewProvider {
         let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
         let account = AppDelegate.sharedDelegate.testingAccount
         let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-        return AccountCell(characterInfo: CharacterInfo(esi: esi, characterID: account!.characterID),
+        return AccountCell(account: account!,
+                           characterInfo: CharacterInfo(esi: esi, characterID: account!.characterID),
                            accountInfo: AccountInfo(esi: esi, characterID: account!.characterID, managedObjectContext: context))
             .environmentObject(SharedState.testState())
             .environment(\.managedObjectContext, context)

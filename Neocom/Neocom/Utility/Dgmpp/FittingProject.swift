@@ -377,7 +377,7 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
                     self.loadouts[ship] = loadout
                     return loadout
                     }()
-                if let loadout = loadout {
+                if let loadout = loadout, !loadout.isDeleted && loadout.managedObjectContext != nil {
                     loadout.name = ship.name
                     if loadout.data == nil {
                         loadout.data = LoadoutData(context: self.managedObjectContext)

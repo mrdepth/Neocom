@@ -109,6 +109,7 @@
 		167725EF241A722F0089BB94 /* PricesData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167725EE241A722F0089BB94 /* PricesData.swift */; };
 		167CB4AC23992828008980EE /* TypeInfoVariationsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167CB4AB23992828008980EE /* TypeInfoVariationsCell.swift */; };
 		167CB4B123994B24008980EE /* TypeInfoMasteryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167CB4B023994B24008980EE /* TypeInfoMasteryCell.swift */; };
+		167F7EEA24672A5B00FF63F2 /* Data+CloudData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167F7EE924672A5B00FF63F2 /* Data+CloudData.swift */; };
 		1681D9D124275DF300912AE6 /* ImplantSetDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1681D9D024275DF300912AE6 /* ImplantSetDescription.swift */; };
 		168353A524221BE1007A3B90 /* AffectingSkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168353A424221BE1007A3B90 /* AffectingSkills.swift */; };
 		1683B75224279E870005B241 /* MainMenu.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1683B75124279E870005B241 /* MainMenu.xcassets */; };
@@ -154,9 +155,17 @@
 		1686E2A824376FF000FAD3BA /* KillmailLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686E2A724376FF000FAD3BA /* KillmailLoader.swift */; };
 		1686E2AD243898E000FAD3BA /* ZKillboardSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686E2AA2438755D00FAD3BA /* ZKillboardSearchResults.swift */; };
 		1686E2AE243899D000FAD3BA /* ZKillboardSearchForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16859E5A2435E2570037C01B /* ZKillboardSearchForm.swift */; };
+		168744D424656D0600F356EB /* LoadoutDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1681D9CC24275D8A00912AE6 /* LoadoutDescription.swift */; };
+		168744D82465754D00F356EB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 168744D72465753C00F356EB /* libz.tbd */; };
+		168744DA2465AFE700F356EB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168744D92465AFE700F356EB /* Settings.swift */; };
+		168744DC2465B06B00F356EB /* SettingsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168744DB2465B06B00F356EB /* SettingsItem.swift */; };
 		16875A84244073730081B7E6 /* FittingEditorFuelStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16875A83244073730081B7E6 /* FittingEditorFuelStats.swift */; };
 		16875A862440A0240081B7E6 /* StructureLoadouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16875A852440A0240081B7E6 /* StructureLoadouts.swift */; };
 		1687997924310E0300D78BBE /* IncursionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1687997824310E0300D78BBE /* IncursionCell.swift */; };
+		1687FC762464445800882EA2 /* Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1687FC752464445800882EA2 /* Migration.swift */; };
+		1687FC782464454600882EA2 /* CloudKitLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1687FC772464454600882EA2 /* CloudKitLoader.swift */; };
+		1687FC7C24644DD600882EA2 /* MigrationAccountsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1687FC7B24644DD600882EA2 /* MigrationAccountsSection.swift */; };
+		1687FC7E24644F3100882EA2 /* MigrationLoadoutsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1687FC7D24644F3100882EA2 /* MigrationLoadoutsSection.swift */; };
 		16882A8E24518EC10094C734 /* ComposeMailLoadoutsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16882A8D24518EC10094C734 /* ComposeMailLoadoutsPicker.swift */; };
 		16888413242CD4F70099C769 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16888412242CD4F70099C769 /* Debug.swift */; };
 		16888415242CD6D30099C769 /* LoadoutsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16888414242CD6D30099C769 /* LoadoutsList.swift */; };
@@ -279,6 +288,7 @@
 		169F57D32428C2E300FFDAE1 /* SkillLevelsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169F57D22428C2E300FFDAE1 /* SkillLevelsLoader.swift */; };
 		16A1598523C712FB00778320 /* AddToSkillPlanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A1598423C712FB00778320 /* AddToSkillPlanButton.swift */; };
 		16A250DA23E1BD83003F7904 /* SkillPlans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A250D923E1BD83003F7904 /* SkillPlans.swift */; };
+		16A642C924648A1B0048A270 /* MigrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A642C824648A1B0048A270 /* MigrationHelper.swift */; };
 		16A6A4B823B1E54F00CF0812 /* CertificateGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A6A4B723B1E54F00CF0812 /* CertificateGroups.swift */; };
 		16A6A4BA23B1E6F500CF0812 /* Certificates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A6A4B923B1E6F500CF0812 /* Certificates.swift */; };
 		16A6A4BB23B1EA3F00CF0812 /* DataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D8DC81238813A40057A6F4 /* DataLoader.swift */; };
@@ -469,8 +479,8 @@
 		167725EE241A722F0089BB94 /* PricesData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricesData.swift; sourceTree = "<group>"; };
 		167CB4AB23992828008980EE /* TypeInfoVariationsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoVariationsCell.swift; sourceTree = "<group>"; };
 		167CB4B023994B24008980EE /* TypeInfoMasteryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoMasteryCell.swift; sourceTree = "<group>"; };
+		167F7EE924672A5B00FF63F2 /* Data+CloudData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+CloudData.swift"; sourceTree = "<group>"; };
 		1681D9CC24275D8A00912AE6 /* LoadoutDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadoutDescription.swift; sourceTree = "<group>"; };
-		1681D9CE24275DE000912AE6 /* FleetDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetDescription.swift; sourceTree = "<group>"; };
 		1681D9D024275DF300912AE6 /* ImplantSetDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImplantSetDescription.swift; sourceTree = "<group>"; };
 		168353A424221BE1007A3B90 /* AffectingSkills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffectingSkills.swift; sourceTree = "<group>"; };
 		1683B75124279E870005B241 /* MainMenu.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MainMenu.xcassets; sourceTree = "<group>"; };
@@ -516,9 +526,16 @@
 		1686E2A524376F6600FAD3BA /* KillmailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillmailCell.swift; sourceTree = "<group>"; };
 		1686E2A724376FF000FAD3BA /* KillmailLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillmailLoader.swift; sourceTree = "<group>"; };
 		1686E2AA2438755D00FAD3BA /* ZKillboardSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZKillboardSearchResults.swift; sourceTree = "<group>"; };
+		168744D72465753C00F356EB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
+		168744D92465AFE700F356EB /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		168744DB2465B06B00F356EB /* SettingsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItem.swift; sourceTree = "<group>"; };
 		16875A83244073730081B7E6 /* FittingEditorFuelStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorFuelStats.swift; sourceTree = "<group>"; };
 		16875A852440A0240081B7E6 /* StructureLoadouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureLoadouts.swift; sourceTree = "<group>"; };
 		1687997824310E0300D78BBE /* IncursionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncursionCell.swift; sourceTree = "<group>"; };
+		1687FC752464445800882EA2 /* Migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migration.swift; sourceTree = "<group>"; };
+		1687FC772464454600882EA2 /* CloudKitLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitLoader.swift; sourceTree = "<group>"; };
+		1687FC7B24644DD600882EA2 /* MigrationAccountsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationAccountsSection.swift; sourceTree = "<group>"; };
+		1687FC7D24644F3100882EA2 /* MigrationLoadoutsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationLoadoutsSection.swift; sourceTree = "<group>"; };
 		16882A8D24518EC10094C734 /* ComposeMailLoadoutsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMailLoadoutsPicker.swift; sourceTree = "<group>"; };
 		16888412242CD4F70099C769 /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		16888414242CD6D30099C769 /* LoadoutsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadoutsList.swift; sourceTree = "<group>"; };
@@ -647,6 +664,7 @@
 		169F57D22428C2E300FFDAE1 /* SkillLevelsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillLevelsLoader.swift; sourceTree = "<group>"; };
 		16A1598423C712FB00778320 /* AddToSkillPlanButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToSkillPlanButton.swift; sourceTree = "<group>"; };
 		16A250D923E1BD83003F7904 /* SkillPlans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillPlans.swift; sourceTree = "<group>"; };
+		16A642C824648A1B0048A270 /* MigrationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationHelper.swift; sourceTree = "<group>"; };
 		16A6A4B723B1E54F00CF0812 /* CertificateGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateGroups.swift; sourceTree = "<group>"; };
 		16A6A4B923B1E6F500CF0812 /* Certificates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Certificates.swift; sourceTree = "<group>"; };
 		16A6A4BC23B1ECC300CF0812 /* CertificateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateCell.swift; sourceTree = "<group>"; };
@@ -731,6 +749,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				168744D82465754D00F356EB /* libz.tbd in Frameworks */,
 				169672DB2387ECCD00EB860B /* EVEAPI.framework in Frameworks */,
 				16B6A84523F2D24E00E0EB8B /* Dgmpp.framework in Frameworks */,
 				169A9199238CFBEC004E3DAA /* CloudKit.framework in Frameworks */,
@@ -772,6 +791,7 @@
 				16101BC623F5402B0028600F /* WalletTransactionsData.swift */,
 				169DA0FF23FEAF6600AC7B54 /* WealthData.swift */,
 				1686E2A324375DAC00FAD3BA /* ZKillboardLoader.swift */,
+				1687FC772464454600882EA2 /* CloudKitLoader.swift */,
 			);
 			path = DataLoaders;
 			sourceTree = "<group>";
@@ -833,6 +853,7 @@
 			isa = PBXGroup;
 			children = (
 				169A9197238CFBE8004E3DAA /* Neocom.entitlements */,
+				168744D324656CEE00F356EB /* Legacy */,
 				12F06F2B238466F50061313D /* Model */,
 				12F06F2A238466EB0061313D /* Utility */,
 				12AE040D23847EB400DEFFC5 /* Home */,
@@ -924,6 +945,7 @@
 		12F06F35238467A10061313D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				168744D72465753C00F356EB /* libz.tbd */,
 				16B6A84423F2D24E00E0EB8B /* Dgmpp.framework */,
 				169A9198238CFBEC004E3DAA /* CloudKit.framework */,
 				169A9194238CF9D5004E3DAA /* Expressible.framework */,
@@ -946,6 +968,11 @@
 			isa = PBXGroup;
 			children = (
 				160767B72443037E00D1BB82 /* About.swift */,
+				168744D92465AFE700F356EB /* Settings.swift */,
+				1687FC752464445800882EA2 /* Migration.swift */,
+				1687FC7B24644DD600882EA2 /* MigrationAccountsSection.swift */,
+				1687FC7D24644F3100882EA2 /* MigrationLoadoutsSection.swift */,
+				16A642C824648A1B0048A270 /* MigrationHelper.swift */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -1171,6 +1198,15 @@
 			path = Pilot;
 			sourceTree = "<group>";
 		};
+		168744D324656CEE00F356EB /* Legacy */ = {
+			isa = PBXGroup;
+			children = (
+				1681D9CC24275D8A00912AE6 /* LoadoutDescription.swift */,
+				167F7EE924672A5B00FF63F2 /* Data+CloudData.swift */,
+			);
+			path = Legacy;
+			sourceTree = "<group>";
+		};
 		1688841A242D113D0099C769 /* MenuItems */ = {
 			isa = PBXGroup;
 			children = (
@@ -1198,6 +1234,7 @@
 				168F2FF8243B2F91006CE01A /* ZKillboardItem.swift */,
 				1610ACEE2441D5E000D9B089 /* FittingItem.swift */,
 				1688D7E924472F560043DF53 /* AboutItem.swift */,
+				168744DB2465B06B00F356EB /* SettingsItem.swift */,
 			);
 			path = MenuItems;
 			sourceTree = "<group>";
@@ -1368,8 +1405,6 @@
 				169F0AD32403D48D00B934E6 /* Dgmpp+Extension.swift */,
 				16B4C6E3240792420009ACD4 /* DGMModuleGroup.swift */,
 				168960D5240FE6F8004E4630 /* DGMDroneGroup.swift */,
-				1681D9CC24275D8A00912AE6 /* LoadoutDescription.swift */,
-				1681D9CE24275DE000912AE6 /* FleetDescription.swift */,
 				1681D9D024275DF300912AE6 /* ImplantSetDescription.swift */,
 				169F57D02428C14E00FFDAE1 /* FittingProject.swift */,
 			);
@@ -1619,7 +1654,9 @@
 				1685E70F242E7E3000F85F14 /* LoyaltyPoints.swift in Sources */,
 				1630ED7523CC65E0001DBAA7 /* TypeMasterySkills.swift in Sources */,
 				16875A862440A0240081B7E6 /* StructureLoadouts.swift in Sources */,
+				167F7EEA24672A5B00FF63F2 /* Data+CloudData.swift in Sources */,
 				16888415242CD6D30099C769 /* LoadoutsList.swift in Sources */,
+				1687FC7C24644DD600882EA2 /* MigrationAccountsSection.swift in Sources */,
 				16DBDE8823FA875E006B0BC3 /* ComposeMail.swift in Sources */,
 				12AE040F23847EC600DEFFC5 /* Home.swift in Sources */,
 				169F0AD824040DC300B934E6 /* TypePicker.swift in Sources */,
@@ -1698,6 +1735,7 @@
 				1685E700242E2FD100F85F14 /* MailItem.swift in Sources */,
 				169DA0FC23FE877E00AC7B54 /* WealthChart.swift in Sources */,
 				169724742404F3BE00B5152A /* TypePickerGroups.swift in Sources */,
+				1687FC7E24644F3100882EA2 /* MigrationLoadoutsSection.swift in Sources */,
 				1685E711242E7FA400F85F14 /* LoyaltyPointsLoader.swift in Sources */,
 				1693A85423FD0FDC0033A793 /* ContactView.swift in Sources */,
 				169D2809241A0EB6002AB469 /* LaunchersResource.swift in Sources */,
@@ -1708,6 +1746,7 @@
 				120E28F0238B12A1006B30EA /* CharacterInfo.swift in Sources */,
 				1686E2AE243899D000FAD3BA /* ZKillboardSearchForm.swift in Sources */,
 				16D16EB6241A685200EF9F76 /* FittingEditorMiningStats.swift in Sources */,
+				168744DC2465B06B00F356EB /* SettingsItem.swift in Sources */,
 				168E404A242F659800C03F00 /* LoyaltyOfferRequirement.swift in Sources */,
 				1691854A2423730B00393116 /* DamageVectorView.swift in Sources */,
 				12F06F13238464920061313D /* AppDelegate.swift in Sources */,
@@ -1725,11 +1764,13 @@
 				16B8E3B323FBDDA50096B066 /* ContactCell.swift in Sources */,
 				169A72C9238BD9AA00E4C181 /* Colors.swift in Sources */,
 				16B4C6E4240792420009ACD4 /* DGMModuleGroup.swift in Sources */,
+				168744DA2465AFE700F356EB /* Settings.swift in Sources */,
 				12DE901F241B780D0010C60D /* FittingEditorShipActions.swift in Sources */,
 				16BBE17323E02C41001E251D /* SkillQueue.swift in Sources */,
 				169F57D12428C14E00FFDAE1 /* FittingProject.swift in Sources */,
 				16C39A5623BA0BF000208F04 /* BlurView.swift in Sources */,
 				1693A85623FD15D10033A793 /* TextAttachmentView.swift in Sources */,
+				1687FC762464445800882EA2 /* Migration.swift in Sources */,
 				162571F0242B9E140022C605 /* FittingEditorShipModulesList.swift in Sources */,
 				16B3C7EF2411336300F21DE5 /* FittingEditorImplants.swift in Sources */,
 				12AE041123847EDE00DEFFC5 /* HomeAccountHeader.swift in Sources */,
@@ -1741,6 +1782,7 @@
 				16EEBDF52397E4DE00F2E216 /* SkillName.swift in Sources */,
 				164156172397E68A0063A39C /* TypeInfoSkillCell.swift in Sources */,
 				166EE98F2396311200388D65 /* TypeInfoHeader.swift in Sources */,
+				16A642C924648A1B0048A270 /* MigrationHelper.swift in Sources */,
 				124F06E7238D8EB400395D54 /* Icon.swift in Sources */,
 				1691855224237DAC00393116 /* DamagePatternsCustom.swift in Sources */,
 				164E418923EAED1A00EF16CE /* AssetsData.swift in Sources */,
@@ -1788,6 +1830,7 @@
 				16101BC723F5402B0028600F /* WalletTransactionsData.swift in Sources */,
 				16859F5924321EC000824552 /* BarChart.swift in Sources */,
 				1693A85823FD27A90033A793 /* TextAttachmentContact.swift in Sources */,
+				168744D424656D0600F356EB /* LoadoutDescription.swift in Sources */,
 				169780BC241B5914001679AD /* FittingEditorModulesPrice.swift in Sources */,
 				12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */,
 				1638690923EC217400681612 /* Atomic.swift in Sources */,
@@ -1821,6 +1864,7 @@
 				16859F572432186400824552 /* ExtractorSection.swift in Sources */,
 				16C66CFF23F5530D009AEB72 /* MarketOrderCell.swift in Sources */,
 				12F06F15238464920061313D /* SceneDelegate.swift in Sources */,
+				1687FC782464454600882EA2 /* CloudKitLoader.swift in Sources */,
 				16859F4C2432105600824552 /* ContractsItem.swift in Sources */,
 				1686D74F23953C9A00E88D3D /* Pilot.swift in Sources */,
 				1694B22B2406797D00E81E49 /* ShipResource.swift in Sources */,

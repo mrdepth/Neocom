@@ -56,8 +56,8 @@ class LoadoutActivityItem: NSObject, UIActivityItemSource {
             metadata.title = "\(typeName) and \(ships.count - 1) more"
         }
         else {
-            let shipName = ship.name.isEmpty ? typeName : ship.name
-            metadata.title = "\(typeName), \(shipName)"
+            let shipName = ship.name?.isEmpty == false ? ship.name: typeName
+            metadata.title = "\(typeName), \(shipName ?? "")"
         }
         return metadata
     }

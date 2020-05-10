@@ -273,3 +273,37 @@ extension LoadoutDescription.Item {
         }
     }
 }
+
+extension Ship {
+    init(typeID: Int, name: String?, loadout: LoadoutDescription) {
+        self.typeID = typeID
+        self.name = name
+        
+        modules = loadout.modules?.mapValues{modules in modules.map{Ship.Module(legacy: $0)}}
+        drones = loadout.drones?.map{Ship.Drone(legacy: $0)}
+        implants = loadout.implants?.map{$0.typeID}
+        boosters = loadout.boosters?.map{$0.typeID}
+    }
+}
+
+extension Ship.Module {
+    init(legacy module: LoadoutDescription.Item.Module) {
+        typeID = module.typeID
+        count = max(module.count, 1)
+        id = module.identifier
+        state = module.state
+        charge = module.charge.map{Ship.Item(typeID: $0.typeID, count: max($0.count, 1))}
+        socket = module.socket
+    }
+}
+
+extension Ship.Drone {
+    init(legacy drone: LoadoutDescription.Item.Drone) {
+        typeID = drone.typeID
+        count = max(drone.count, 1)
+        id = drone.identifier
+        isActive = drone.isActive
+        isKamikaze = drone.isKamikaze
+        squadronTag = drone.squadronTag
+    }
+}

@@ -66,17 +66,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let storage = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("store.sqlite"))
         storage.configuration = "Storage"
+        storage.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.shimanski.neocom")
         
         let cache = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("cache.sqlite"))
         cache.configuration = "Cache"
 
         container.persistentStoreDescriptions = [sde, storage, cache]
+        
         container.loadPersistentStores { (_, error) in
             if let error = error {
                 print(error)
             }
         }
-        
+
+//        do {
+//            try container.initializeCloudKitSchema(options: .printSchema)
+//        }
+//        catch {
+//            print(error)
+//        }
+
         return container
     }()
     
@@ -142,7 +151,13 @@ extension AppDelegate {
         guard let token = note.userInfo?[ESI.tokenUserInfoKey] as? OAuth2Token else {return}
         DispatchQueue.main.async {
             guard let accounts = try? self.persistentContainer.viewContext.from(Account.self).filter(/\Account.refreshToken == token.refreshToken).fetch() else {return}
-            accounts.forEach{$0.oAuth2Token = token}
+            if accounts.isEmpty {
+                let account = try? self.persistentContainer.viewContext.from(Account.self).filter(/\Account.characterID == token.characterID).first()
+                account?.oAuth2Token = token
+            }
+            else {
+                accounts.forEach{$0.oAuth2Token = token}
+            }
         }
     }
 

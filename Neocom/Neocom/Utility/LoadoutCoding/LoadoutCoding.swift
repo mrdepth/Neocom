@@ -34,7 +34,7 @@ struct Ship: Codable, Hashable {
     }
     
     var typeID: Int
-    var name: String = ""
+    var name: String?// = ""
     
     var modules: [DGMModule.Slot: [Module]]? = nil
     var drones: [Drone]? = nil

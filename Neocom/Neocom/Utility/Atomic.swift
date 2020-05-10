@@ -12,8 +12,8 @@ import Foundation
     private var store: Value
     private var lock = NSLock()
     
-    init(_ initialValue: Value) {
-        self.store = initialValue
+    init(wrappedValue: Value) {
+        self.store = wrappedValue
     }
     var wrappedValue: Value {
         get {

@@ -48,7 +48,7 @@ struct ShipLoadouts: View {
     }
     
     var body: some View {
-        let loadouts = self.loadouts.get(initial: LoadoutsLoader(.ship, managedObjectContext: backgroundManagedObjectContext))
+        let loadouts = self.loadouts.get(initial: LoadoutsLoader(.ship, managedObjectContext: managedObjectContext))
         return LoadoutsList(loadouts: loadouts, category: .ship, onSelect: onSelect)
             .onReceive(projectLoading ?? Empty().eraseToAnyPublisher()) { result in
                 self.projectLoading = nil

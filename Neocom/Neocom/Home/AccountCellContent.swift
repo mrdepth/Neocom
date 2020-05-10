@@ -33,6 +33,7 @@ struct AccountCellContent: View {
     var isk: Double?
     var skill: ESI.SkillQueueItem?
     var skillQueue: Int?
+    var error: Error?
     
     private var shipAndLocation: some View {
         HStack {
@@ -93,7 +94,6 @@ struct AccountCellContent: View {
             (alliance?.name).map{ name in
                 Group{
                     Text("/")
-//                                allianceImage?.resizable().frame(width: 24, height: 24)
                     Text(name)
                 }
             }
@@ -104,21 +104,32 @@ struct AccountCellContent: View {
         HStack(alignment: .top, spacing: 15) {
             VStack(spacing: 8) {
                 Avatar(image: character?.image).frame(width: 64, height: 64)
-                iskAndSP
+                if error == nil {
+                    iskAndSP
+                }
             }
-            VStack(alignment: .leading, spacing: 8) {
+            if error != nil {
                 VStack(alignment: .leading) {
                     characterName
-                    corporationAndAlliance
-                }.frame(height: 64)
-                VStack(alignment: .leading, spacing: 0) {
-                    shipAndLocation
-                    skills
+                    Text(error!).foregroundColor(.secondary)
+                        .lineLimit(4)
+                }
+            }
+            else {
+                VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading) {
+                        characterName
+                        corporationAndAlliance
+                    }.frame(height: 64)
+                    VStack(alignment: .leading, spacing: 0) {
+                        shipAndLocation
+                        skills
+                    }
                 }
             }
         }
-            .font(.subheadline)
-            .lineLimit(1)
+        .font(.subheadline)
+        .lineLimit(1)
     }
 }
 
@@ -151,7 +162,8 @@ struct AccountCellContent_Previews: PreviewProvider {
             sp: nil,
             isk: nil,
             skill: nil,
-            skillQueue: nil).padding().background(Color(UIColor.systemGroupedBackground))
+            skillQueue: nil,
+            error: nil).padding().background(Color(UIColor.systemGroupedBackground))
         }
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())

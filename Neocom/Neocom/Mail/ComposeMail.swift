@@ -166,8 +166,8 @@ fileprivate struct ComposeMailContent: View {
         guard let ship = loadout.ship, let dna = try? DNALoadoutEncoder().encode(ship), let url = URL(dna: dna) else {return}
         guard let type = try? managedObjectContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == loadout.typeID).first() else {return}
         guard let mutableString = text.mutableCopy() as? NSMutableAttributedString else {return}
-        let name = !ship.name.isEmpty ? ship.name : type.typeName ?? ""
-        let s = NSAttributedString(string: name, attributes: [.link: url, .font: UIFont.preferredFont(forTextStyle: .body)])
+        let name = ship.name?.isEmpty == false ? ship.name : type.typeName
+        let s = NSAttributedString(string: name ?? "", attributes: [.link: url, .font: UIFont.preferredFont(forTextStyle: .body)])
         mutableString.replaceCharacters(in: selectedRange, with: s)
         text = mutableString
     }
@@ -254,7 +254,7 @@ fileprivate struct ComposeMailContent: View {
                                     attachmentButton
                                     sendButton})
             .alert(item: self.$error) { error in
-                Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: Alert.Button.default(Text("Close")))
+                Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: Alert.Button.cancel(Text("Close")))
         }
         .alert(isPresented: $isSaveDraftAlertPresented) {
             self.saveDraftAlert

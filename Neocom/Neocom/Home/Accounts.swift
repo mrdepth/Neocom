@@ -15,7 +15,7 @@ struct Accounts: View {
     
     @Environment(\.managedObjectContext) private var managedObjectContext
     
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.characterName, ascending: true)])
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.characterName, ascending: true), NSSortDescriptor(keyPath: \Account.uuid, ascending: true)])
     private var accounts: FetchedResults<Account>
     
     @State private var accountInfoCache = Cache<Account, AccountInfo>()
@@ -42,7 +42,7 @@ struct Accounts: View {
             Section {
                 ForEach(accounts, id: \Account.objectID) { account in
                     Button(action: {self.completion(account)}) {
-                        AccountCell(characterInfo: self.characterInfo(for: account), accountInfo: self.accountInfo(for: account)).contentShape(Rectangle())
+                        AccountCell(account: account, characterInfo: self.characterInfo(for: account), accountInfo: self.accountInfo(for: account)).contentShape(Rectangle())
                     }.buttonStyle(PlainButtonStyle())
                 }.onDelete { (indices) in
                     withAnimation {

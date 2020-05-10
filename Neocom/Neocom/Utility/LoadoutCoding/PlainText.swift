@@ -41,8 +41,8 @@ struct LoadoutPlainTextEncoder: LoadoutEncoder {
         }
         
         let typeName = shipType.typeName ?? ""
-        let shipName = ship.name.isEmpty ? typeName : ship.name
-        var s = "[\(typeName), \(shipName)]\n"
+        let shipName = ship.name?.isEmpty == false ? ship.name : typeName
+        var s = "[\(typeName), \(shipName ?? "")]\n"
         if !modules.isEmpty {
             s += dump(modules) + "\n"
         }

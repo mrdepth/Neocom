@@ -67,3 +67,6 @@ if [ ! -f "${out}/${version}/SDE.sqlite" ]; then
 	yes | cp "${out}/${version}/SDE.sqlite" "${PROJECT_DIR}/../../Neocom/SDE.sqlite"
 	echo "let SDEVersion = \"$version\"" > "${PROJECT_DIR}/../../Neocom/SDEVersion.swift"
 fi
+
+cd "${PROJECT_DIR}/../../ThirdParty/dgmpp/dbinit"
+python3 ./build.py "${out}/${version}/sde" "${PROJECT_DIR}/../../ThirdParty/dgmpp/src/SDE"

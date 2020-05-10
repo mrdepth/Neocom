@@ -326,15 +326,15 @@ extension DGMShip {
             }
             
             return Ship(typeID: typeID,
-                 name: name,
-                 modules: modules,
-                 drones: drones,
-                 cargo: cargo,
-                 implants: nil,
-                 boosters: nil)
+                        name: name.isEmpty ? nil : name,
+                        modules: modules,
+                        drones: drones,
+                        cargo: cargo,
+                        implants: nil,
+                        boosters: nil)
         }
         set {
-            name = newValue.name
+            name = newValue.name ?? ""
             var ids = IndexSet(integersIn: 1..<Int.max)
 
             for drone in newValue.drones ?? [] {
@@ -399,7 +399,7 @@ extension DGMCharacter {
             newValue.boosters?.forEach {try? add(DGMBooster(typeID: $0))}
             if ship == nil {
                 ship = try? DGMShip(typeID: newValue.typeID)
-                ship?.name = newValue.name
+                ship?.name = newValue.name ?? ""
             }
             ship?.loadout = newValue
         }

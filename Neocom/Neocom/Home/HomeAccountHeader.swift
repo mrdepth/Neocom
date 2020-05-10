@@ -31,7 +31,7 @@ struct HomeAccountHeader: View {
 				}
 			}
 			Spacer()
-        }
+        }.lineLimit(2)
 //        .padding()
     }
 }

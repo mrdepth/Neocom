@@ -133,7 +133,7 @@ struct InGameActivityView: View {
                 }
             }
             .alert(item: self.$error) { error in
-                Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: Alert.Button.default(Text("Close")))
+                Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: Alert.Button.cancel(Text("Close")))
             }
             .onReceive(savingPublisher ?? Empty().eraseToAnyPublisher()) { result in
                 self.savingPublisher = nil

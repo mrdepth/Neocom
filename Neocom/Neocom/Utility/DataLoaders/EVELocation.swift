@@ -88,7 +88,7 @@ struct EVELocation: Hashable {
         self.id = id
     }
     
-    static var cache = Atomic<[Int64: EVELocation]>([:])
+    static var cache = Atomic<[Int64: EVELocation]>(wrappedValue: [:])
     
     static func locations(with ids: Set<Int64>, esi: ESI, managedObjectContext: NSManagedObjectContext, progress: Alamofire.Request.ProgressHandler? = nil) -> AnyPublisher<[Int64: EVELocation], Never> {
         return Just(ids).receive(on: managedObjectContext).flatMap { ids -> AnyPublisher<[Int64: EVELocation], Never> in

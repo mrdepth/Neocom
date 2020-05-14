@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import EVEAPI
+import Futures
 
 class NCDatabaseTypePickerRow: NCDatabaseTypeRow<NSDictionary> {
 	required init(object: NSDictionary) {

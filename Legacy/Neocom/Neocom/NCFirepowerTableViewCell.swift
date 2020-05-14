@@ -68,7 +68,7 @@ class NCFirepowerRow: TreeRow {
 		fill(label: cell.damagePatternView.explosiveLabel, value: dps.explosive, total: total)
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return ship.hashValue
 	}
 	

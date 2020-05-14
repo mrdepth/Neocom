@@ -112,7 +112,9 @@ class NCMarketOrderRow: TreeRow {
 
 	}
 	
-	override lazy var hashValue: Int = order.hashValue
+    override var hash: Int {
+        return order.hashValue
+    }
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCMarketOrderRow)?.hashValue == hashValue

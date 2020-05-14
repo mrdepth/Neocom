@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CoreData
+import Futures
 
 class NCDatabaseMarketInfoRow: TreeRow {
 	let price: String
@@ -31,7 +32,7 @@ class NCDatabaseMarketInfoRow: TreeRow {
 		cell.quantityLabel.text = quantity
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return order.hashValue
 	}
 	

@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 import EVEAPI
+import Futures
 
 class NCTransferRow: TreeRow {
 	let loadout: (typeID: Int, data: NCFittingLoadout, name: String)

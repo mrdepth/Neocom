@@ -46,7 +46,7 @@ class NCPredefinedDamagePatternsSection: DefaultTreeSection {
 		super.init(nodeIdentifier: "Predefined", title: NSLocalizedString("Predefined", comment: "").uppercased(), children: predefined!)
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return 0
 	}
 	
@@ -81,7 +81,7 @@ class NCCustomDamagePatternsSection: FetchedResultsNode<NCDamagePattern> {
 		children.append(NCAddDamagePatternRow())
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return #line
 	}
 	

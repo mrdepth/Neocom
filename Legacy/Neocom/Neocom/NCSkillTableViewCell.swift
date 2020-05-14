@@ -99,7 +99,7 @@ class NCSkillRow: TreeRow {
         cell.iconView?.image = image
     }
     
-    override var hashValue: Int {
+    override var hash: Int {
         return skill.hashValue
     }
     

@@ -10,6 +10,7 @@ import Foundation
 import EVEAPI
 import AdSupport
 import Alamofire
+import Futures
 
 //fileprivate let GDPRCountryCodes = [
 //	"BE",	"EL",	"LT",	"PT",
@@ -53,7 +54,7 @@ class GDPR {
 	class func requireConsent() -> Future<Bool> {
 //		guard Date() >= GDPRStartDate else {return .init(false)}
 		let promise = Promise<Bool>()
-		Alamofire.request("https://adservice.google.com/getconfig/pubvendors?es=2&pubs=ca-app-pub-0434787749004673~8578320061").validate().responseJSONDecodable { (response: DataResponse<IsEEA>) in
+		Session.default.request("https://adservice.google.com/getconfig/pubvendors?es=2&pubs=ca-app-pub-0434787749004673~8578320061").validate().responseDecodable { (response: DataResponse<IsEEA>) in
 			switch response.result {
 			case let .success(value):
 				#if DEBUG
@@ -123,8 +124,7 @@ class GDPR {
 	
 	private class func consentRequestMessage() -> Future<NSAttributedString> {
 		let promise = Promise<NSAttributedString>()
-		
-		Alamofire.request("https://s3-us-west-1.amazonaws.com/appodeal-ios/docs/GDPRPrivacy.html").validate().responseString { response in
+        Session.default.request("https://s3-us-west-1.amazonaws.com/appodeal-ios/docs/GDPRPrivacy.html").validate().responseString { response in
 			do {
 				switch response.result {
 				case let .success(string):

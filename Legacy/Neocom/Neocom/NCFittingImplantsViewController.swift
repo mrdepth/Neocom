@@ -10,6 +10,7 @@ import UIKit
 import CloudData
 import Dgmpp
 import EVEAPI
+import Futures
 
 class NCImplantRow: TreeRow {
 	lazy var type: NCDBInvType? = {
@@ -45,7 +46,7 @@ class NCImplantRow: TreeRow {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return implant?.hashValue ?? slot ?? 0
 	}
 	
@@ -89,7 +90,7 @@ class NCBoosterRow: TreeRow {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return booster?.hashValue ?? slot ?? 0
 	}
 	

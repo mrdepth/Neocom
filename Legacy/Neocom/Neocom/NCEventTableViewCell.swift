@@ -44,7 +44,9 @@ class NCEventRow: TreeRow {
 		
 	}
 	
-	override lazy var hashValue: Int = event.hashValue
+    override var hash: Int {
+        return event.hashValue
+    }
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCEventRow)?.hashValue == hashValue

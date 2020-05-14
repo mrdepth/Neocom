@@ -1,5 +1,5 @@
 //
-//  NCZKillboardInvCategoriesViewController.swift
+//  NCZKillboardCategoriesViewController.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 27.06.17.
@@ -9,8 +9,9 @@
 import UIKit
 import CoreData
 import EVEAPI
+import Futures
 
-class NCZKillboardInvCategoriesViewController: NCTreeViewController, NCSearchableViewController {
+class NCZKillboardCategoriesViewController: NCTreeViewController, NCSearchableViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()

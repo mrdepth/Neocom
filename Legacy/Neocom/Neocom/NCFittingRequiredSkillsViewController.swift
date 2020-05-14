@@ -11,6 +11,7 @@ import CloudData
 import Dgmpp
 import EVEAPI
 import CoreData
+import Futures
 
 class NCTrainingSkillRow: TreeRow {
 	let skill: NCTrainingSkill

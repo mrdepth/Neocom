@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import EVEAPI
+import Futures
 
 fileprivate class NCDatabaseCertificateRow: NCFetchedResultsObjectNode<NCDBCertCertificate> {
 	var character: NCCharacter?

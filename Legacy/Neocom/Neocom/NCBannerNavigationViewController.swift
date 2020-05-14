@@ -34,19 +34,24 @@ class NCBannerNavigationViewController: NCNavigationController {
 		return bannerContainerView
 	}()
 	
+	private var isInitialized = false
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		#if targetEnvironment(simulator)
-		let strongSelf = self
-		GDPR.requestConsent().then(on: .main) { hasConsent in
+		GDPR.requestConsent().then(on: .main) { [weak self] hasConsent in
+			guard let strongSelf = self else {return}
 			Appodeal.setTestingEnabled(true)
 			Appodeal.setLocationTracking(false)
 			Appodeal.initialize(withApiKey: NCApoodealKey, types: [.banner], hasConsent: hasConsent)
+			
+			strongSelf.isInitialized = true
+			strongSelf.view.setNeedsLayout()
+			strongSelf.view.layoutIfNeeded()
 			strongSelf.bannerView?.loadAd()
 			SKPaymentQueue.default().add(strongSelf)
 		}
 		#else
-		Receipt.fetchValidReceipt { [weak self] (result) in
+        Receipt.fetchValidReceipt(refreshIfNeeded: false) { [weak self] (result) in
 			guard let strongSelf = self else {return}
 			if case let .success(receipt) = result, receipt.inAppPurchases?.contains(where: {$0.inAppType == .autoRenewableSubscription && !$0.isExpired}) == true {
 				return
@@ -66,7 +71,12 @@ class NCBannerNavigationViewController: NCNavigationController {
 #endif
 						Appodeal.setLocationTracking(false)
 						Appodeal.initialize(withApiKey: NCApoodealKey, types: [.banner], hasConsent: false)
-					}.finally(on: .main) {
+					}.finally(on: .main) { [weak self] in
+						guard let strongSelf = self else {return}
+						strongSelf.isInitialized = true
+						strongSelf.view.setNeedsLayout()
+						strongSelf.view.layoutIfNeeded()
+
 						strongSelf.bannerView?.loadAd()
 						SKPaymentQueue.default().add(strongSelf)
 					}
@@ -78,6 +88,7 @@ class NCBannerNavigationViewController: NCNavigationController {
 	
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
+		guard isInitialized else {return}
 		if let bannerContainerView = self.bannerContainerView, bannerContainerView.superview != nil {
 			view.subviews.first?.frame = view.bounds.insetBy(UIEdgeInsets(top: 0, left: 0, bottom: bannerContainerView.bounds.height, right: 0))
 		}
@@ -120,8 +131,7 @@ class NCBannerNavigationViewController: NCNavigationController {
 }
 
 extension NCBannerNavigationViewController: AppodealBannerViewDelegate {
-	
-	func bannerViewDidLoadAd(_ bannerView: APDBannerView) {
+	func bannerViewDidLoadAd(_ bannerView: APDBannerView, isPrecache precache: Bool) {
 		showBanner()
 	}
 	
@@ -137,7 +147,7 @@ extension NCBannerNavigationViewController: SKPaymentTransactionObserver {
 		guard bannerContainerView != nil else {return}
 		
 		if transactions.contains(where: {$0.transactionState == .purchased || $0.transactionState == .restored}) {
-			Receipt.fetchValidReceipt { [weak self] (result) in
+			Receipt.fetchValidReceipt(refreshIfNeeded: false) { [weak self] (result) in
 				if case let .success(receipt) = result, receipt.inAppPurchases?.contains(where: {$0.inAppType == .autoRenewableSubscription && !$0.isExpired}) == true {
 					self?.removeBanner()
 				}

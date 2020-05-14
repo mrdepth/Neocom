@@ -140,7 +140,7 @@ class NCFittingModuleRow: TreeRow {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return modules.first?.hashValue ?? socket?.hashValue ?? -1
 	}
 	
@@ -170,7 +170,7 @@ class NCFittingModuleSection: TreeSection {
 		cell.groupButton?.setTitle(title, for: .normal)
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return slot.rawValue
 	}
 	

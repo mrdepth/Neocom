@@ -74,7 +74,7 @@ class NCPredefinedCharacterRow: TreeRow {
 		cell.object = level
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return level.hashValue
 	}
 	
@@ -111,7 +111,7 @@ class NCCustomCharactersSection: FetchedResultsNode<NCFitCharacter> {
 		children.append(NCActionRow(title: NSLocalizedString("Add Character", comment: "").uppercased()))
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return #line
 	}
 	
@@ -177,7 +177,7 @@ class NCAccountCharactersSection: FetchedResultsNode<NCAccount> {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return #line
 	}
 	

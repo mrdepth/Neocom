@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CloudData
+import Futures
 
 class NCDateSection: TreeSection {
 	let date: Date
@@ -72,12 +73,12 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 	
 	func fetchIfNeeded() {
 		guard let tableView = (currentPage as? NCKillmailsViewController)?.tableView else {return}
-		if let lastID = lastID, tableView.contentOffset.y > tableView.contentSize.height - tableView.bounds.size.height * 2 {
+		if let page = page, tableView.contentOffset.y > tableView.contentSize.height - tableView.bounds.size.height * 2 {
 			guard !isEndReached, !isFetching else {return}
 
 			let progress = NCProgressHandler(viewController: self, totalUnitCount: 1)
 			progress.progress.perform {
-				fetch(from: lastID).then { _ in
+				fetch(page: page).then { _ in
 					progress.finish()
 				}
 			}
@@ -126,12 +127,12 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 	}
 	
 	func load(cachePolicy: URLRequest.CachePolicy) -> Future<[NCCacheRecord]> {
-		lastID = nil
+		page = nil
 		isEndReached = false
 		kills = TreeNode()
 		losses = TreeNode()
 		self.dataManager = NCDataManager(account: NCAccount.current, cachePolicy: cachePolicy)
-		return fetch(from: nil).then(on: .main) { result in
+		return fetch(page: nil).then(on: .main) { result in
 			return [result.cacheRecord(in: NCCache.sharedCache!.viewContext)]
 		}
 	}
@@ -168,7 +169,7 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 	}
 	
 	private var isEndReached = false
-	private var lastID: Int64?
+	private var page: Int?
 	
 	private var kills = TreeNode()
 	private var losses = TreeNode()
@@ -220,10 +221,10 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 					}.wait()
 				}
 			}
-			
-			if let lastID = killmails.map({$0.killmailID}).min() {
-				self.lastID = Int64(lastID)
-			}
+			self.page = (self.page ?? 1) + 1
+//			if let lastID = killmails.map({$0.killmailID}).min() {
+//				self.lastID = Int64(lastID)
+//			}
 
 			return false
 		}.then(on: .main) { isEndReached in
@@ -240,7 +241,7 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 		return promise.future
 	}
 	
-	private func fetch(from: Int64?) -> Future<CachedValue<[ESI.Killmails.Recent]>> {
+	private func fetch(page: Int?) -> Future<CachedValue<[ESI.Killmails.Recent]>> {
 		let promise = Promise<CachedValue<[ESI.Killmails.Recent]>>()
 		guard !isEndReached, !isFetching else {
 			try! promise.fail(NCKillmailsError.isEndReached)
@@ -248,7 +249,7 @@ class NCKillmailsPageViewController: NCPageViewController, NCAPIController {
 		}
 		isFetching = true
 		
-		dataManager.killmails(maxKillID: from).then(on: .main) { result in
+		dataManager.killmails(page: page).then(on: .main) { result in
 			self.result = result
 			self.error = nil
 			self.update(result: result).finally {

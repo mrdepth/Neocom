@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import EVEAPI
+import Futures
 
 public class NCDatabase {
 	public private(set) lazy var managedObjectModel: NSManagedObjectModel = {

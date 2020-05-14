@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import EVEAPI
+import Futures
 
 class NCZKillboardKillmailsViewController: NCTreeViewController {
 	
@@ -48,32 +49,16 @@ class NCZKillboardKillmailsViewController: NCTreeViewController {
 	
 	private func process(result: CachedValue<[ZKillboard.Killmail]>) -> Future<Void> {
 		let killsNode = self.kills
-		var kills = killsNode.children.map { i -> NCDateSection in
-			let section = NCDateSection(date: (i as! NCDateSection).date)
-			section.children = i.children
-			return section
-		}
+		var kills = killsNode.children as? [NCKillmailRow] ?? []
 
 		let dataManager = self.dataManager
 		
 		return DispatchQueue.global(qos: .utility).async { () -> Void in
 			guard let killmails = result.value, !killmails.isEmpty else {throw NCTreeViewControllerError.noResult}
 			
-			let calendar = Calendar(identifier: .gregorian)
-			
 			for killmail in killmails {
-				let row = NCKillmailRow(killmail: killmail, characterID: nil, dataManager: dataManager)
-				
-				if let section = kills.last, section.date < killmail.killmailTime {
-					section.children.append(row)
-				}
-				else {
-					let components = calendar.dateComponents([.year, .month, .day], from: killmail.killmailTime)
-					let date = calendar.date(from: components) ?? killmail.killmailTime
-					let section = NCDateSection(date: date)
-					section.children = [row]
-					kills.append(section)
-				}
+				let row = NCKillmailRow(killmail: killmail, dataManager: dataManager)
+                kills.append(row)
 			}
 		}.then(on: .main) { () -> Void in
 			UIView.performWithoutAnimation {

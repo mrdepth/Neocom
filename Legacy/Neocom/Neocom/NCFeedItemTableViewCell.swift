@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import Futures
 
 class NCFeedItemTableViewCell: NCTableViewCell {
 	@IBOutlet weak var titleLabel: UILabel!
@@ -74,7 +75,9 @@ class NCFeedItemRow: TreeRow {
 		cell.titleLabel.textColor = isVisited ? .lightText : .white
 	}
 	
-	override lazy var hashValue: Int = item.hashValue
+    override var hash: Int {
+        return item.hashValue
+    }
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCFeedItemRow)?.hashValue == hashValue

@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Futures
 
 protocol TreeNodeRoutable {
 	var route: Route? {get}
@@ -167,13 +168,13 @@ class DefaultTreeSection: TreeSection {
 		}
 	}
 	
-	override var hashValue: Int {
-		return nodeIdentifier?.hashValue ?? super.hashValue
+	override var hash: Int {
+		return nodeIdentifier?.hash ?? super.hash
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		guard let nodeIdentifier = nodeIdentifier else {return super.isEqual(object)}
-		return nodeIdentifier.hashValue == (object as? DefaultTreeSection)?.nodeIdentifier?.hashValue
+		return nodeIdentifier.hash == (object as? DefaultTreeSection)?.nodeIdentifier?.hash
 	}
 }
 
@@ -242,12 +243,12 @@ class DefaultTreeRow: TreeRow {
 		cell.backgroundColor = .cellBackground
 	}
 	
-	override var hashValue: Int {
-		return nodeIdentifier?.hash ?? super.hashValue
+	override var hash: Int {
+		return nodeIdentifier?.hash ?? super.hash
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? DefaultTreeRow)?.hashValue == hashValue
+		return (object as? DefaultTreeRow)?.hash == hash
 	}
 	
 }
@@ -274,13 +275,13 @@ class NCActionRow: TreeRow {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		let h = route != nil ? Unmanaged.passUnretained(route!).toOpaque().hashValue : 0
 		return [h, title?.hashValue ?? attributedTitle?.hashValue ?? 0].hashValue
 	}
 	
 	override func isEqual(_ object: Any?) -> Bool {
-		return (object as? NCActionRow)?.hashValue == hashValue
+		return (object as? NCActionRow)?.hash == hash
 	}	
 }
 
@@ -375,7 +376,7 @@ class NCTypeInfoRow: TreeRow {
 		}
 	}
 
-	override var hashValue: Int {
+	override var hash: Int {
 		return type?.hash ?? 0
 	}
 	

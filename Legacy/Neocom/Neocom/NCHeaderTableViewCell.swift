@@ -138,7 +138,7 @@ class NCFooterRow: TreeRow {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return nodeIdentifier?.hashValue ?? super.hashValue
 	}
 	

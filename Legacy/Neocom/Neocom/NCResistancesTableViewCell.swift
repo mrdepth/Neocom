@@ -85,7 +85,7 @@ class NCResistancesRow: TreeRow {
 		cell.ehpLabel.text = NSLocalizedString("EHP", comment: "") + ": \(s)"
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return ship.hashValue
 	}
 	

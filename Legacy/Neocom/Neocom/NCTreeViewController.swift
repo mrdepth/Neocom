@@ -9,6 +9,7 @@
 import UIKit
 import CloudData
 import EVEAPI
+import Futures
 
 enum NCTreeViewControllerError: LocalizedError {
 	case noResult

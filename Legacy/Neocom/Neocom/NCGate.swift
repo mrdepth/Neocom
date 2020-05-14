@@ -9,6 +9,24 @@
 import Foundation
 import EVEAPI
 
+public func synchronized<ReturnType>(_ lockToken: AnyObject, action: () -> ReturnType) -> ReturnType {
+    return synchronized(lockToken: lockToken, action: action())
+}
+
+public func synchronized<ReturnType>(lockToken: AnyObject, action: @autoclosure () -> ReturnType) -> ReturnType {
+    defer { objc_sync_exit(lockToken) }
+    objc_sync_enter(lockToken)
+    return action()
+}
+
+extension NSLocking {
+    @discardableResult
+    public func perform<Value>(_ execute: () throws -> Value) rethrows -> Value {
+        lock(); defer { unlock() }
+        return try execute()
+    }
+}
+
 class NCGate {
 	private lazy var dispatchQueue: DispatchQueue = DispatchQueue(label: "NCGate")
 	

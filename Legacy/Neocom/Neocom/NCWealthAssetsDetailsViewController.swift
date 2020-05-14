@@ -8,6 +8,7 @@
 
 import Foundation
 import EVEAPI
+import Futures
 
 class NCWealthAssetsDetailsViewController: NCTreeViewController {
 	var assets: [ESI.Assets.Asset]?

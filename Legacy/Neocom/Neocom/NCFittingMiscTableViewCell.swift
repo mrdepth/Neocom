@@ -81,7 +81,7 @@ class NCFittingMiscRow: TreeRow {
 		cell.warpSpeedLabel?.text = NCUnitFormatter.localizedString(from: warpSpeed, unit: .auPerSecond, style: .short)
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return ship.hashValue
 	}
 	

@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CoreData
+import Futures
 
 typealias NCContactTableViewCell = NCDefaultTableViewCell
 
@@ -72,7 +73,7 @@ class NCContactRow: TreeRow {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return contactID?.hashValue ?? super.hashValue
 	}
 	

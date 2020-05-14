@@ -43,7 +43,7 @@ class NCMiningYieldRow: TreeRow {
 		cell.totalLabel.text = formatter.string(for: total)
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return ship.hashValue
 	}
 	

@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import EVEAPI
 import CloudData
+import Futures
 
 /*
 fileprivate class NCSkillRow: NCTreeRow {

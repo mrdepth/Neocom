@@ -9,6 +9,7 @@
 import Foundation
 import MessageUI
 import EVEAPI
+import Futures
 
 class NCBugreportFinishViewController: NCTreeViewController {
 	var subject: String?

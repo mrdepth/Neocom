@@ -11,6 +11,7 @@ import CloudData
 import EVEAPI
 import Dgmpp
 import CoreData
+import Futures
 
 class NCFittingDamagePatternRow: TreeRow {
 	let damagePattern: DGMDamageVector
@@ -35,7 +36,7 @@ class NCFittingDamagePatternRow: TreeRow {
 		fill(label: cell.explosiveLabel, value: damagePattern.explosive)
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return damagePattern.hashValue
 	}
 	
@@ -51,7 +52,7 @@ class NCFittingAreaEffectRow: NCTypeInfoRow {
 
 class NCLoadoutNameRow: NCTextFieldRow {
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return 0
 	}
 	

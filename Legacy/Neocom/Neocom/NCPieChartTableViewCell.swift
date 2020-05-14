@@ -55,7 +55,7 @@ class NCPieChartRow: TreeRow {
 		return (object as? NCPieChartRow)?.hashValue == hashValue
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return Unmanaged.passUnretained(self).toOpaque().hashValue
 	}
 	

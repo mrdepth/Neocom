@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import EVEAPI
+import Futures
 
 enum NCMailViewControllerError: Error {
 	case isEndReached

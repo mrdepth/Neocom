@@ -61,7 +61,7 @@ class NCFittingLoadoutItem: NSObject, NSSecureCoding {
 		return lhs.hashValue == rhs.hashValue
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return [typeID, count].hashValue
 	}
 }
@@ -104,7 +104,7 @@ class NCFittingLoadoutModule: NCFittingLoadoutItem {
 		aCoder.encode(socket, forKey: "socket")
 	}
 
-	override var hashValue: Int {
+	override var hash: Int {
 		return [typeID, count, state.rawValue, charge?.typeID ?? 0].hashValue
 	}
 }
@@ -147,7 +147,7 @@ class NCFittingLoadoutDrone: NCFittingLoadoutItem {
 		aCoder.encode(squadronTag, forKey: "squadronTag")
 	}
 
-	override var hashValue: Int {
+	override var hash: Int {
 		return [typeID, count, isActive ? 1 : 0].hashValue
 	}
 }
@@ -174,6 +174,7 @@ public class NCFittingLoadout: NSObject, NSSecureCoding {
 			guard let key = DGMModule.Slot(rawValue: key) else {continue}
 			modules?[key] = value
 		}
+		
 		drones = aDecoder.decodeObject(forKey: "drones") as? [NCFittingLoadoutDrone]
 		cargo = aDecoder.decodeObject(forKey: "cargo") as? [NCFittingLoadoutItem]
 		implants = aDecoder.decodeObject(forKey: "implants") as? [NCFittingLoadoutItem]

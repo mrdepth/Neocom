@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CoreData
+import Futures
 
 class NCKillmailItemRow: TreeRow {
 	let typeID: Int
@@ -69,7 +70,7 @@ class NCKillmailItemSection: TreeSection {
 		cell.iconView?.image = image
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return title.hash
 	}
 	
@@ -167,8 +168,8 @@ class NCKillmailInfoViewController: NCTreeViewController {
 										   nodeIdentifier: "Location",
 										   attributedTitle: location ?? NSAttributedString(string: NSLocalizedString("Unknown Location", comment: "")),
 										   subtitle: DateFormatter.localizedString(from: killmail.killmailTime, dateStyle: .medium, timeStyle: .medium),
-										   accessoryType: .disclosureIndicator,
-										   route: Router.KillReports.RelatedKills(killmail: killmail)))
+										   accessoryType: .none))
+//                                           route: Router.KillReports.RelatedKills(killmail: killmail)))
 				
 				let ship = invTypes[victim.shipTypeID]
 				let shipRow = DefaultTreeRow(prototype: Prototype.NCDefaultTableViewCell.default,

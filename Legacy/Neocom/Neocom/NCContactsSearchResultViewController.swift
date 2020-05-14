@@ -20,7 +20,7 @@ class NCContactsSearchResultViewController: NCTreeViewController {
 	
 	var contacts: [NCContact] = [] {
 		didSet {
-			var names: [ESI.Mail.Recipient.RecipientType: [NCContact]] = [:]
+			var names: [ESI.Mail.RecipientType: [NCContact]] = [:]
 			
 			for contact in contacts {
 				guard let recipientType = contact.recipientType else {continue}
@@ -31,12 +31,12 @@ class NCContactsSearchResultViewController: NCTreeViewController {
 
 			
 			let dataManager = NCDataManager(account: NCAccount.current)
-			let titles = [ESI.Mail.Recipient.RecipientType.alliance: NSLocalizedString("Alliances", comment: "").uppercased(),
-			              ESI.Mail.Recipient.RecipientType.corporation: NSLocalizedString("Corporations", comment: "").uppercased(),
-			              ESI.Mail.Recipient.RecipientType.character: NSLocalizedString("Characters", comment: "").uppercased()]
-			let identifiers = [ESI.Mail.Recipient.RecipientType.character: "0",
-			                   ESI.Mail.Recipient.RecipientType.corporation: "1",
-			                   ESI.Mail.Recipient.RecipientType.alliance: "2"]
+			let titles = [ESI.Mail.RecipientType.alliance: NSLocalizedString("Alliances", comment: "").uppercased(),
+			              ESI.Mail.RecipientType.corporation: NSLocalizedString("Corporations", comment: "").uppercased(),
+			              ESI.Mail.RecipientType.character: NSLocalizedString("Characters", comment: "").uppercased()]
+			let identifiers = [ESI.Mail.RecipientType.character: "0",
+			                   ESI.Mail.RecipientType.corporation: "1",
+			                   ESI.Mail.RecipientType.alliance: "2"]
 			var sections = [DefaultTreeSection]()
 			for (key, value) in names {
 				let rows = value.map { NCContactRow(contact: $0.objectID, dataManager: dataManager) }/*.sorted { ($0.contact?.name ?? "") < ($1.contact?.name ?? "") }*/

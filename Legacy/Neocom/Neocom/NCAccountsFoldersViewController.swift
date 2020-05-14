@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import CloudData
 import EVEAPI
+import Futures
 
 class NCAccountsFolderRow: NCFetchedResultsObjectNode<NCAccountsFolder> {
 	
@@ -34,7 +35,7 @@ class NCAccountsNoFolder: TreeRow {
 		cell.titleLabel?.text = NSLocalizedString("Default", comment: "")
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return 0
 	}
 	

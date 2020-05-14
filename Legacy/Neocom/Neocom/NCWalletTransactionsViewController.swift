@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CoreData
+import Futures
 
 class NCWalletTransactionsViewController: NCTreeViewController {
 	var wallet: Wallet = .character

@@ -10,6 +10,7 @@ import Foundation
 import UserNotifications
 import EVEAPI
 import CoreData
+import Futures
 
 private protocol NotificationRequest {
 	var identifier: String {get}
@@ -258,7 +259,10 @@ class NCNotificationManager: NSObject {
 				
 				if let lastSkill = value.last {
 					let a: [(SkillQueueNotificationOptions, Date)] = [(.inactive, lastSkill.finishDate!),
-s					a.filter{options.contains($0.0) && $0.1 > date}.compactMap { (option, date) -> NotificationRequest? in
+																	  (.oneHour, lastSkill.finishDate!.addingTimeInterval(-3600)),
+																	  (.fourHours, lastSkill.finishDate!.addingTimeInterval(-3600 * 4)),
+																	  (.oneDay, lastSkill.finishDate!.addingTimeInterval(-3600 * 24))]
+					a.filter{options.contains($0.0) && $0.1 > date}.compactMap { (option, date) -> NotificationRequest? in
 						let body: String
 						switch option.rawValue {
 						case SkillQueueNotificationOptions.inactive.rawValue:

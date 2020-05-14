@@ -72,7 +72,7 @@ class NCChargeRow: TreeRow {
 		}
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return type.hashValue
 	}
 	

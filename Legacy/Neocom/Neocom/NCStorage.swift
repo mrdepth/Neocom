@@ -11,6 +11,7 @@ import CoreData
 import EVEAPI
 import CloudData
 import Dgmpp
+import Futures
 
 class NCStorage: NSObject {
 	private(set) lazy var managedObjectModel: NSManagedObjectModel = {
@@ -31,13 +32,15 @@ class NCStorage: NSObject {
 		var url = directory.appendingPathComponent("store.sqlite")
 		
 		for i in 0...1 {
+			
 			do {
 				try persistentStoreCoordinator.addPersistentStore(ofType: CloudStoreType,
 				                                                  configurationName: nil,
 				                                                  at: url,
 				                                                  options: [CloudStoreOptions.recordZoneKey: "Neocom",
-				                                                            CloudStoreOptions.binaryDataCompressionLevel: BinaryDataCompressionLevel.default,
-				                                                            CloudStoreOptions.mergePolicyType: NSMergePolicyType.overwriteMergePolicyType])
+				                                                            CloudStoreOptions.binaryDataCompressionMethod:
+																				CompressionMethod.zlibDefault,
+				                                                            CloudStoreOptions.mergePolicy: NSMergePolicy.overwrite])
 				break
 			} catch {
 				try? FileManager.default.removeItem(at: url)

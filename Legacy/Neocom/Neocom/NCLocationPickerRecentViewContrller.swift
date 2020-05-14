@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import EVEAPI
+import Futures
 
 class NCRecentLocationRow: NCFetchedResultsObjectNode<NCCacheLocationPickerRecent> {
 	required init(object: NCCacheLocationPickerRecent) {

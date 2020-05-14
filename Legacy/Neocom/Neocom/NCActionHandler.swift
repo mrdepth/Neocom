@@ -9,9 +9,10 @@
 import Foundation
 
 extension UIControlEvents: Hashable {
-	public var hashValue: Int {
-		return rawValue.hashValue
-	}
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(rawValue)
+    }
 	
 	static func == (lhs: UIControlEvents, rhs: UIControlEvents) -> Bool {
 		return lhs.rawValue == rhs.rawValue

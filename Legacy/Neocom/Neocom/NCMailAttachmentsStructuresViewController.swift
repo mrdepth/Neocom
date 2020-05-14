@@ -8,6 +8,7 @@
 
 import UIKit
 import EVEAPI
+import Futures
 
 class NCMailAttachmentsStructuresViewController: NCTreeViewController {
 	

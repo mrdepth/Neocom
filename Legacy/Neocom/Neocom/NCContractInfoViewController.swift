@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CoreData
+import Futures
 
 class NCContractContactRow: NCContactRow {
 	let title: String
@@ -47,7 +48,7 @@ class NCContractItem: TreeRow {
 		cell.accessoryType = .disclosureIndicator
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return item.hashValue
 	}
 	

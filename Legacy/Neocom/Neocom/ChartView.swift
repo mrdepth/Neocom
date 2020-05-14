@@ -43,10 +43,12 @@ class AnimationDelegate: NSObject, CAAnimationDelegate {
 }
 
 class Chart: Hashable {
+    
+    private let uuid = UUID()
 	
-	var hashValue: Int {
-		return Unmanaged.passUnretained(self).toOpaque().hashValue
-	}
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(uuid)
+    }
 	
 	public static func ==(lhs: Chart, rhs: Chart) -> Bool {
 		return lhs.hashValue == rhs.hashValue

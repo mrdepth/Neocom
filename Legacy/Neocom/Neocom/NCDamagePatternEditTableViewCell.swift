@@ -45,7 +45,7 @@ class NCDamagePatternEditRow: TreeRow, UIPickerViewDataSource, UIPickerViewDeleg
 		
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return damagePattern.hashValue
 	}
 	

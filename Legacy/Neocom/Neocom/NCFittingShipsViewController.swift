@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import CloudData
 import EVEAPI
+import Futures
 
 class NCFittingShipsViewController: NCFittingLoadoutsViewController {
 	

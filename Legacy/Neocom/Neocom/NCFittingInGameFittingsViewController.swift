@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import Alamofire
+import Futures
 
 class NCInGameFittingRow: TreeRow {
 	
@@ -33,7 +34,7 @@ class NCInGameFittingRow: TreeRow {
 		cell.accessoryType = .disclosureIndicator
 	}
 	
-	override var hashValue: Int {
+	override var hash: Int {
 		return fitting.hashValue
 	}
 	

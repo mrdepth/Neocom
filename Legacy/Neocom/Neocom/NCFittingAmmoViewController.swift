@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import Dgmpp
 import EVEAPI
+import Futures
 
 class NCAmmoNode: NCFetchedResultsObjectNode<NCDBInvType> {
 	

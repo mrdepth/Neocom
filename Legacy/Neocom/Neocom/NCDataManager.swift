@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import EVEAPI
 import Alamofire
+import Futures
 
 enum NCCachedResult<T> {
 	case success(value: T, cacheRecord: NCCacheRecord?)
@@ -77,7 +78,7 @@ extension OAuth2Token {
 }
 
 
-typealias NCLoaderCompletion<T> = (_ result: Result<T>, _ cacheTime: TimeInterval) -> Void
+typealias NCLoaderCompletion<T> = (_ result: Alamofire.Result<T>, _ cacheTime: TimeInterval) -> Void
 
 enum NCDataManagerError: Error, LocalizedError {
 	case internalError
@@ -104,10 +105,10 @@ class NCDataManager {
 	
 	private lazy var _esi: ESI = {
 		if let token = self.token {
-			return ESI(token: token, clientID: ESClientID, secretKey: ESSecretKey, server: .tranquility, cachePolicy: self.cachePolicy)
+			return ESI(token: token, clientID: ESClientID, secretKey: ESSecretKey, server: .tranquility)
 		}
 		else {
-			return ESI(cachePolicy: self.cachePolicy)
+			return ESI()
 		}
 	}()
 	
@@ -118,7 +119,7 @@ class NCDataManager {
 	}
 
 	private lazy var _zKillboard: ZKillboard = {
-		return ZKillboard(cachePolicy: self.cachePolicy)
+		return ZKillboard()
 	}()
 	
 	var zKillboard: ZKillboard {
@@ -172,55 +173,55 @@ class NCDataManager {
 
 	func character(characterID: Int64? = nil) -> Future<CachedValue<ESI.Character.Information>> {
 		let id = Int(characterID ?? self.characterID)
-		return loadFromCache(forKey: "ESI.Character.Information.\(id)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.character.getCharactersPublicInformation(characterID: id))
+        return loadFromCache(forKey: "ESI.Character.Information.\(id)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.character.getCharactersPublicInformation(characterID: id, cachePolicy: self.cachePolicy))
 	}
 
 	
 	func corporation(corporationID: Int64) -> Future<CachedValue<ESI.Corporation.Information>> {
-		return loadFromCache(forKey: "ESI.Corporation.Information.\(corporationID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.corporation.getCorporationInformation(corporationID: Int(corporationID)))
+		return loadFromCache(forKey: "ESI.Corporation.Information.\(corporationID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.corporation.getCorporationInformation(corporationID: Int(corporationID), cachePolicy: self.cachePolicy))
 	}
 
 	func alliance(allianceID: Int64) -> Future<CachedValue<ESI.Alliance.Information>> {
-		return loadFromCache(forKey: "ESI.Alliance.Information.\(allianceID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.alliance.getAllianceInformation(allianceID: Int(allianceID)))
+		return loadFromCache(forKey: "ESI.Alliance.Information.\(allianceID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.alliance.getAllianceInformation(allianceID: Int(allianceID), cachePolicy: self.cachePolicy))
 	}
 
 	func skillQueue() -> Future<CachedValue<[ESI.Skills.SkillQueueItem]>> {
-		return loadFromCache(forKey: "ESI.Skills.SkillQueueItem", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.skills.getCharactersSkillQueue(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Skills.SkillQueueItem", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.skills.getCharactersSkillQueue(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 	
 	func skills() -> Future<CachedValue<ESI.Skills.CharacterSkills>> {
-		return loadFromCache(forKey: "ESI.Skills.CharacterSkills", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.skills.getCharacterSkills(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Skills.CharacterSkills", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.skills.getCharacterSkills(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 	
 	
 	func walletBalance() -> Future<CachedValue<Double>> {
-		return loadFromCache(forKey: "ESI.WalletBalance", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.wallet.getCharactersWalletBalance(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.WalletBalance", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.wallet.getCharactersWalletBalance(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 
 	func corpWalletBalance() -> Future<CachedValue<[ESI.Wallet.Balance]>> {
 		return corporationID.then { corporationID in
-			return self.loadFromCache(forKey: "ESI.CorpWalletBalance", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.wallet.returnsCorporationsWalletBalance(corporationID: Int(corporationID)))
+			return self.loadFromCache(forKey: "ESI.CorpWalletBalance", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.wallet.returnsCorporationsWalletBalance(corporationID: Int(corporationID), cachePolicy: self.cachePolicy))
 		}
 	}
 
 	func characterLocation() -> Future<CachedValue<ESI.Location.CharacterLocation>> {
-		return loadFromCache(forKey: "ESI.Location.CharacterLocation", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.location.getCharacterLocation(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Location.CharacterLocation", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.location.getCharacterLocation(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 
 	func characterShip() -> Future<CachedValue<ESI.Location.CharacterShip>> {
-		return loadFromCache(forKey: "ESI.Location.CharacterShip", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.location.getCurrentShip(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Location.CharacterShip", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.location.getCurrentShip(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 	
 	func clones() -> Future<CachedValue<ESI.Clones.JumpClones>> {
-		return loadFromCache(forKey: "ESI.Clones.JumpClones", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.clones.getClones(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Clones.JumpClones", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.clones.getClones(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 
 	func implants() -> Future<CachedValue<[Int]>> {
-		return loadFromCache(forKey: "ESI.Clones.ActiveImplants", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.clones.getActiveImplants(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Clones.ActiveImplants", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.clones.getActiveImplants(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 
 	func attributes() -> Future<CachedValue<ESI.Skills.CharacterAttributes>> {
-		return loadFromCache(forKey: "ESI.Skills.CharacterAttributes", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.skills.getCharacterAttributes(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Skills.CharacterAttributes", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.skills.getCharacterAttributes(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 
 	
@@ -325,11 +326,11 @@ class NCDataManager {
 	
 	func universeNames(ids: Set<Int64>) -> Future<CachedValue<[ESI.Universe.Name]>> {
 		let ids = ids.map{Int($0)}.sorted()
-		return loadFromCache(forKey: "ESI.Universe.Name.\(ids.hashValue)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.universe.getNamesAndCategoriesForSetOfIDs(ids: ids))
+		return loadFromCache(forKey: "ESI.Universe.Name.\(ids.hashValue)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.universe.getNamesAndCategoriesForSetOfIDs(ids: ids, cachePolicy: self.cachePolicy))
 	}
 
 	func universeStructure(structureID: Int64) -> Future<CachedValue<ESI.Universe.StructureInformation>> {
-		return loadFromCache(forKey: "ESI.Universe.StructureInformation.\(structureID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.universe.getStructureInformation(structureID: structureID))
+		return loadFromCache(forKey: "ESI.Universe.StructureInformation.\(structureID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.universe.getStructureInformation(structureID: structureID, cachePolicy: self.cachePolicy))
 	}
 
 	func updateMarketPrices() -> Future<Bool> {
@@ -389,11 +390,11 @@ class NCDataManager {
 	}
 
 	func marketHistory(typeID: Int, regionID: Int) -> Future<CachedValue<[ESI.Market.History]>> {
-		return loadFromCache(forKey: "ESI.Market.History.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.market.listHistoricalMarketStatisticsInRegion(regionID: regionID, typeID: typeID))
+		return loadFromCache(forKey: "ESI.Market.History.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.market.listHistoricalMarketStatisticsInRegion(regionID: regionID, typeID: typeID, cachePolicy: self.cachePolicy))
 	}
 
 	func marketOrders(typeID: Int, regionID: Int) -> Future<CachedValue<[ESI.Market.Order]>> {
-		return loadFromCache(forKey: "ESI.Market.Order.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.market.listOrdersInRegion(orderType: .all, regionID: regionID, typeID: typeID))
+		return loadFromCache(forKey: "ESI.Market.Order.\(regionID).\(typeID)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.market.listOrdersInRegion(orderType: .all, regionID: regionID, typeID: typeID, cachePolicy: self.cachePolicy))
 	}
 	
 	func search(_ string: String, categories: [ESI.Search.Categories], strict: Bool = false) -> Future<CachedValue<ESI.Search.SearchResult>> {
@@ -499,28 +500,28 @@ class NCDataManager {
 	
 	func returnMailHeaders(lastMailID: Int64? = nil, labels: [Int64]) -> Future<CachedValue<[ESI.Mail.Header]>> {
 		let labels = labels.sorted()
-		return loadFromCache(forKey: "ESI.Mail.Header.\(labels.hashValue).\(lastMailID ?? 0)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.mail.returnMailHeaders(characterID: Int(self.characterID), labels: labels.map{Int($0)}, lastMailID: lastMailID != nil ? Int(lastMailID!) : nil))
+		return loadFromCache(forKey: "ESI.Mail.Header.\(labels.hashValue).\(lastMailID ?? 0)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.mail.returnMailHeaders(characterID: Int(self.characterID), labels: labels.map{Int($0)}, lastMailID: lastMailID != nil ? Int(lastMailID!) : nil, cachePolicy: self.cachePolicy))
 	}
 
 	func returnMailBody(mailID: Int64) -> Future<CachedValue<ESI.Mail.MailBody>> {
-		return loadFromCache(forKey: "ESI.Mail.MailBody.\(mailID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.mail.returnMail(characterID: Int(self.characterID), mailID: Int(mailID)))
+		return loadFromCache(forKey: "ESI.Mail.MailBody.\(mailID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.mail.returnMail(characterID: Int(self.characterID), mailID: Int(mailID), cachePolicy: self.cachePolicy))
 	}
 
 	func returnMailingLists() -> Future<CachedValue<[ESI.Mail.Subscription]>> {
-		return loadFromCache(forKey: "ESI.Mail.Subscription", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.mail.returnMailingListSubscriptions(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Mail.Subscription", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.mail.returnMailingListSubscriptions(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 
 	
 	func mailLabels() -> Future<CachedValue<ESI.Mail.MailLabelsAndUnreadCounts>> {
-		return loadFromCache(forKey: "ESI.Mail.MailLabelsAndUnreadCounts", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.mail.getMailLabelsAndUnreadCounts(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Mail.MailLabelsAndUnreadCounts", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.mail.getMailLabelsAndUnreadCounts(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 	
 	func calendarEvents() -> Future<CachedValue<[ESI.Calendar.Summary]>> {
-		return loadFromCache(forKey: "ESI.Calendar.Summary", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.calendar.listCalendarEventSummaries(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Calendar.Summary", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.calendar.listCalendarEventSummaries(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 
 	func calendarEventDetails(eventID: Int64) -> Future<CachedValue<ESI.Calendar.Event>> {
-		return loadFromCache(forKey: "ESI.Calendar.Event.\(eventID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.calendar.getAnEvent(characterID: Int(self.characterID), eventID: Int(eventID)))
+		return loadFromCache(forKey: "ESI.Calendar.Event.\(eventID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.calendar.getAnEvent(characterID: Int(self.characterID), eventID: Int(eventID), cachePolicy: self.cachePolicy))
 	}
 
 	
@@ -588,7 +589,7 @@ class NCDataManager {
 				
 				
 				var result = names?.map{($0.id, $0.name, $0.category.rawValue)} ?? []
-				result.append(contentsOf: mailingLists?.map {($0.mailingListID, $0.name, ESI.Mail.Recipient.RecipientType.mailingList.rawValue)} ?? [])
+				result.append(contentsOf: mailingLists?.map {($0.mailingListID, $0.name, ESI.Mail.RecipientType.mailingList.rawValue)} ?? [])
 				
 				for name in result {
 					let contact = NCContact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: managedObjectContext)!, insertInto: managedObjectContext)
@@ -607,32 +608,32 @@ class NCDataManager {
 	}
 	
 	func marketPrices() -> Future<CachedValue<[ESI.Market.Price]>> {
-		return loadFromCache(forKey: "ESI.Market.Price", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.market.listMarketPrices())
+		return loadFromCache(forKey: "ESI.Market.Price", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.market.listMarketPrices(cachePolicy: self.cachePolicy))
 	}
 
 	func assets(page: Int? = nil) -> Future<CachedValue<[ESI.Assets.Asset]>> {
-		return loadFromCache(forKey: "ESI.Assets.Asset.\(page ?? 0)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.assets.getCharacterAssets(characterID: Int(self.characterID), page: page))
+		return loadFromCache(forKey: "ESI.Assets.Asset.\(page ?? 0)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.assets.getCharacterAssets(characterID: Int(self.characterID), page: page, cachePolicy: self.cachePolicy))
 	}
 
 	func corpAssets(page: Int? = nil) -> Future<CachedValue<[ESI.Assets.CorpAsset]>> {
 		return corporationID.then { corporationID in
-			return self.loadFromCache(forKey: "ESI.Assets.ESI.Assets.CorpAsset.\(page ?? 0)", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.assets.getCorporationAssets(corporationID: Int(corporationID), page: page))
+			return self.loadFromCache(forKey: "ESI.Assets.ESI.Assets.CorpAsset.\(page ?? 0)", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.assets.getCorporationAssets(corporationID: Int(corporationID), page: page, cachePolicy: self.cachePolicy))
 		}
 	}
 
 	func divisions() -> Future<CachedValue<ESI.Corporation.Divisions>> {
 		return corporationID.then { corporationID in
-			return self.loadFromCache(forKey: "ESI.Corporation.Division", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.corporation.getCorporationDivisions(corporationID: Int(corporationID)))
+			return self.loadFromCache(forKey: "ESI.Corporation.Division", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.corporation.getCorporationDivisions(corporationID: Int(corporationID), cachePolicy: self.cachePolicy))
 		}
 	}
 
 	func blueprints() -> Future<CachedValue<[ESI.Character.Blueprint]>> {
-		return loadFromCache(forKey: "ESI.Character.Blueprint", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.character.getBlueprints(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Character.Blueprint", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.character.getBlueprints(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 	
 	func corpIndustryJobs() -> Future<CachedValue<[ESI.Industry.CorpJob]>> {
 		return corporationID.then { corporationID in
-			return self.loadFromCache(forKey: "ESI.Industry.Job", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.industry.listCorporationIndustryJobs(corporationID: Int(corporationID), includeCompleted: true))
+			return self.loadFromCache(forKey: "ESI.Industry.Job", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.industry.listCorporationIndustryJobs(corporationID: Int(corporationID), includeCompleted: true, cachePolicy: self.cachePolicy))
 		}
 	}
 
@@ -643,31 +644,31 @@ class NCDataManager {
 
 	func corpMarketOrders() -> Future<CachedValue<[ESI.Market.CorpOrder]>> {
 		return corporationID.then { corporationID in
-			return self.loadFromCache(forKey: "ESI.Market.CorpOrder", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.market.listOpenOrdersFromCorporation(corporationID: Int(corporationID)))
+			return self.loadFromCache(forKey: "ESI.Market.CorpOrder", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.market.listOpenOrdersFromCorporation(corporationID: Int(corporationID), cachePolicy: self.cachePolicy))
 		}
 	}
 
 	func marketOrders() -> Future<CachedValue<[ESI.Market.CharacterOrder]>> {
-		return loadFromCache(forKey: "ESI.Market.CharacterOrder", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.market.listOpenOrdersFromCharacter(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Market.CharacterOrder", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.market.listOpenOrdersFromCharacter(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 
 	func walletJournal() -> Future<CachedValue<[ESI.Wallet.WalletJournalItem]>> {
-		return loadFromCache(forKey: "ESI.Wallet.WalletJournalItem", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.wallet.getCharacterWalletJournal(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Wallet.WalletJournalItem", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.wallet.getCharacterWalletJournal(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 
 	func corpWalletJournal(division: Int) -> Future<CachedValue<[ESI.Wallet.CorpWalletsJournalItem]>> {
 		return corporationID.then { corporationID in
-			return self.loadFromCache(forKey: "ESI.Wallet.CorpWalletsJournalItem.\(division)", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.wallet.getCorporationWalletJournal(corporationID: Int(corporationID), division: division))
+			return self.loadFromCache(forKey: "ESI.Wallet.CorpWalletsJournalItem.\(division)", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.wallet.getCorporationWalletJournal(corporationID: Int(corporationID), division: division, cachePolicy: self.cachePolicy))
 		}
 	}
 
 	func walletTransactions() -> Future<CachedValue<[ESI.Wallet.Transaction]>> {
-		return loadFromCache(forKey: "ESI.Wallet.Transaction", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.wallet.getWalletTransactions(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Wallet.Transaction", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.wallet.getWalletTransactions(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 
 	func corpWalletTransactions(division: Int) -> Future<CachedValue<[ESI.Wallet.CorpTransaction]>> {
 		return corporationID.then { corporationID in
-			return self.loadFromCache(forKey: "ESI.Wallet.CorpTransaction.\(division)", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.wallet.getCorporationWalletTransactions(corporationID: Int(corporationID), division: division))
+			return self.loadFromCache(forKey: "ESI.Wallet.CorpTransaction.\(division)", account: self.account, cachePolicy: self.cachePolicy, elseLoad: self.esi.wallet.getCorporationWalletTransactions(corporationID: Int(corporationID), division: division, cachePolicy: self.cachePolicy))
 		}
 	}
 
@@ -681,51 +682,51 @@ class NCDataManager {
 //	}
 
 	func contracts() -> Future<CachedValue<[ESI.Contracts.Contract]>> {
-		return loadFromCache(forKey: "ESI.Contracts.Contract", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.contracts.getContracts(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Contracts.Contract", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.contracts.getContracts(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 
 	func contractItems(contractID: Int64) -> Future<CachedValue<[ESI.Contracts.Item]>> {
-		return loadFromCache(forKey: "ESI.Contracts.Item.\(contractID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.contracts.getContractItems(characterID: Int(self.characterID), contractID: Int(contractID)))
+		return loadFromCache(forKey: "ESI.Contracts.Item.\(contractID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.contracts.getContractItems(characterID: Int(self.characterID), contractID: Int(contractID), cachePolicy: self.cachePolicy))
 	}
 
 	func contractBids(contractID: Int64) -> Future<CachedValue<[ESI.Contracts.Bid]>> {
-		return loadFromCache(forKey: "ESI.Contracts.Bid.\(contractID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.contracts.getContractBids(characterID: Int(self.characterID), contractID: Int(contractID)))
+		return loadFromCache(forKey: "ESI.Contracts.Bid.\(contractID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.contracts.getContractBids(characterID: Int(self.characterID), contractID: Int(contractID), cachePolicy: self.cachePolicy))
 	}
 
 
 	func incursions() -> Future<CachedValue<[ESI.Incursions.Incursion]>> {
-		return loadFromCache(forKey: "ESI.Incursions.Incursion", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.incursions.listIncursions())
+		return loadFromCache(forKey: "ESI.Incursions.Incursion", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.incursions.listIncursions(cachePolicy: self.cachePolicy))
 	}
 	
 	func colonies() -> Future<CachedValue<[ESI.PlanetaryInteraction.Colony]>> {
-		return loadFromCache(forKey: "ESI.PlanetaryInteraction.Colony", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.planetaryInteraction.getColonies(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.PlanetaryInteraction.Colony", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.planetaryInteraction.getColonies(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 	
 	func colonyLayout(planetID: Int) -> Future<CachedValue<ESI.PlanetaryInteraction.ColonyLayout>> {
-		return loadFromCache(forKey: "ESI.PlanetaryInteraction.ColonyLayout.\(planetID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.planetaryInteraction.getColonyLayout(characterID: Int(self.characterID), planetID: planetID))
+		return loadFromCache(forKey: "ESI.PlanetaryInteraction.ColonyLayout.\(planetID)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.planetaryInteraction.getColonyLayout(characterID: Int(self.characterID), planetID: planetID, cachePolicy: self.cachePolicy))
 	}
 
-	func killmails(maxKillID: Int64? = nil) -> Future<CachedValue<[ESI.Killmails.Recent]>> {
-		return loadFromCache(forKey: "ESI.Killmails.Recent.\(maxKillID ?? 0)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.killmails.getCharacterKillsAndLosses(characterID: Int(self.characterID), maxKillID: maxKillID != nil ? Int(maxKillID!) : nil))
+	func killmails(page: Int? = nil) -> Future<CachedValue<[ESI.Killmails.Recent]>> {
+		return loadFromCache(forKey: "ESI.Killmails.Recent.\(page ?? 0)", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.killmails.getCharactersRecentKillsAndLosses(characterID: Int(self.characterID), page: page, cachePolicy: self.cachePolicy))
 	}
 	
 	func killmailInfo(killmailHash: String, killmailID: Int64) -> Future<CachedValue<ESI.Killmails.Killmail>> {
-		return loadFromCache(forKey: "ESI.KillMails.Killmail.\(killmailID).\(killmailHash)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.killmails.getSingleKillmail(killmailHash: killmailHash, killmailID: Int(killmailID)))
+		return loadFromCache(forKey: "ESI.KillMails.Killmail.\(killmailID).\(killmailHash)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.killmails.getSingleKillmail(killmailHash: killmailHash, killmailID: Int(killmailID), cachePolicy: self.cachePolicy))
 	}
 	
 	func zKillmails(filter: [ZKillboard.Filter], page: Int) -> Future<CachedValue<[ZKillboard.Killmail]>> {
 		let key = filter.map{$0.value}.sorted().joined(separator: "/")
-		return loadFromCache(forKey: "ZKillboard.Killmail.\(key)/\(page)", account: nil, cachePolicy: cachePolicy, elseLoad: self.zKillboard.kills(filter: filter, page: page))
+		return loadFromCache(forKey: "ZKillboard.Killmail.\(key)/\(page)", account: nil, cachePolicy: cachePolicy, elseLoad: self.zKillboard.kills(filter: filter, page: page, cachePolicy: self.cachePolicy))
 	}
 	
 	func rss(url: URL) -> Future<CachedValue<RSS.Feed>> {
 		return loadFromCache(forKey: "RSS.Feed.\(url.absoluteString)", account: nil, cachePolicy: cachePolicy, elseLoad: { () -> Future<ESI.Result<RSS.Feed>> in
 			let promise = Promise<ESI.Result<RSS.Feed>>()
-			Alamofire.request(url, method: .get).validate().responseRSS { (response: DataResponse<RSS.Feed>) in
+			Session.default.request(url, method: .get).validate().responseRSS { (response: DataResponse<RSS.Feed>) in
 				do {
 					switch response.result {
 					case let .success(value):
-						try promise.fulfill(.init(value: value, cached: 60))
+                        try promise.fulfill(ESI.Result<RSS.Feed>.init(value: value, expires: Date(timeIntervalSinceNow: 60), metadata: response.response?.allHeaderFields as? [String: String]))
 					case let .failure(error):
 						throw error
 					}
@@ -740,7 +741,7 @@ class NCDataManager {
 
 	
 	func fittings() -> Future<CachedValue<[ESI.Fittings.Fitting]>> {
-		return loadFromCache(forKey: "ESI.Fittings.Fitting", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.fittings.getFittings(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Fittings.Fitting", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.fittings.getFittings(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 	
 	func deleteFitting(fittingID: Int) -> Future<String> {
@@ -749,7 +750,7 @@ class NCDataManager {
 		}
 	}
 	
-	func createFitting(fitting: ESI.Fittings.MutableFitting, completionHandler: @escaping (Result<ESI.Fittings.CreateFittingResult>) -> Void) {
+	func createFitting(fitting: ESI.Fittings.MutableFitting, completionHandler: @escaping (Alamofire.Result<ESI.Fittings.CreateFittingResult>) -> Void) {
 		self.esi.fittings.createFitting(characterID: Int(self.characterID), fitting: fitting).then { result in
 			completionHandler(.success(result.value))
 		}.catch { error in
@@ -758,15 +759,15 @@ class NCDataManager {
 	}
 	
 	func serverStatus() -> Future<CachedValue<ESI.Status.ServerStatus>> {
-		return loadFromCache(forKey: "ESI.Status.ServerStatus", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.status.retrieveTheUptimeAndPlayerCounts())
+		return loadFromCache(forKey: "ESI.Status.ServerStatus", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.status.retrieveTheUptimeAndPlayerCounts(cachePolicy: self.cachePolicy))
 	}
 	
 	func loyaltyPoints() -> Future<CachedValue<[ESI.Loyalty.Point]>> {
-		return loadFromCache(forKey: "ESI.Loyalty.Point", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.loyalty.getLoyaltyPoints(characterID: Int(self.characterID)))
+		return loadFromCache(forKey: "ESI.Loyalty.Point", account: account, cachePolicy: cachePolicy, elseLoad: self.esi.loyalty.getLoyaltyPoints(characterID: Int(self.characterID), cachePolicy: self.cachePolicy))
 	}
 	
 	func loyaltyStoreOffers(corporationID: Int64) -> Future<CachedValue<[ESI.Loyalty.Offer]>> {
-		return loadFromCache(forKey: "ESI.Loyalty.Offer.\(corporationID)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.loyalty.listLoyaltyStoreOffers(corporationID: Int(corporationID)))
+		return loadFromCache(forKey: "ESI.Loyalty.Offer.\(corporationID)", account: nil, cachePolicy: cachePolicy, elseLoad: self.esi.loyalty.listLoyaltyStoreOffers(corporationID: Int(corporationID), cachePolicy: self.cachePolicy))
 	}
 
 	//MARK: Private
@@ -793,7 +794,7 @@ class NCDataManager {
 		case .reloadIgnoringLocalCacheData:
 			progress.becomeCurrent(withPendingUnitCount: 1)
 			future = loader().then { result in
-				return cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: result.cached), error: nil)
+				return cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: result.expires, error: nil)
 			}
 			progress.resignCurrent()
 			
@@ -808,7 +809,7 @@ class NCDataManager {
 				else {
 					let result = try loader().get()
 					progress.completedUnitCount += 1
-					return try cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: result.cached), error: nil, into: managedObjectContext)
+					return try cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: result.expires, error: nil, into: managedObjectContext)
 				}
 			}
 
@@ -833,14 +834,14 @@ class NCDataManager {
 				if let record = record, object != nil {
 					if expired {
 						loader().then { result in
-							cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: result.cached), error: nil)
+							cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: result.expires, error: nil)
 						}
 					}
 					return record.objectID
 				}
 				else {
 					let result = try loader().get()
-					return try cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: Date(timeIntervalSinceNow: result.cached), error: nil, into: managedObjectContext)
+					return try cache.store(result.value, forKey: key, account: account, date: Date(), expireDate: result.expires, error: nil, into: managedObjectContext)
 				}
 			}
 		}
@@ -848,13 +849,13 @@ class NCDataManager {
 		let lifeTime = NCExtendedLifeTime(self)
 		future.then { result in
 			try promise.fulfill(.init(result))
-			}
-			.finally {
-				lifeTime.finalize()
-			}
-			.catch { error in
-				try! promise.fail(error)
-		}
+        }
+        .catch { error in
+            try! promise.fail(error)
+        }
+        .finally {
+            lifeTime.finalize()
+        }
 
 		
 		return promise.future

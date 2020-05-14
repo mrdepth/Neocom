@@ -9,6 +9,7 @@
 import UIKit
 import Dgmpp
 import EVEAPI
+import Futures
 
 class NCFittingTargetsViewController: NCTreeViewController {
 

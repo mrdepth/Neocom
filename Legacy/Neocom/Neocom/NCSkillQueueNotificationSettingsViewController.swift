@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 import EVEAPI
+import Futures
 
 class NCSettingsAccountSwitchTableViewCell: NCAccountTableViewCell {
 	@IBOutlet weak var switchControl: UISwitch!

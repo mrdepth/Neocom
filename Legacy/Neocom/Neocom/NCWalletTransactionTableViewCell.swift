@@ -86,7 +86,9 @@ class NCWalletTransactionRow: TreeRow {
 		cell.amountLabel.attributedText = s
 	}
 	
-	override lazy var hashValue: Int = transaction.hashValue
+    override var hash: Int {
+        return transaction.hashValue
+    }
 	
 	override func isEqual(_ object: Any?) -> Bool {
 		return (object as? NCWalletTransactionRow)?.hashValue == hashValue

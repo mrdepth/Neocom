@@ -9,6 +9,7 @@
 import UIKit
 import EVEAPI
 import CoreData
+import Futures
 
 class NCLoyaltyPointRow: NCContactRow {
 	let loyaltyPoints: ESI.Loyalty.Point

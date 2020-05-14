@@ -10,6 +10,7 @@ import Foundation
 import ASReceipt
 import StoreKit
 import EVEAPI
+import Futures
 
 class NCSubscriptionViewController: NCTreeViewController {
 	
@@ -43,7 +44,7 @@ class NCSubscriptionViewController: NCTreeViewController {
 	override func content() -> Future<TreeNode?> {
 		let promise = Promise<TreeNode?>()
 		
-		Receipt.fetchValidReceipt { result in
+		Receipt.fetchValidReceipt(refreshIfNeeded: false) { result in
 			guard let products = self.products ?? (UIApplication.shared.delegate as? NCAppDelegate)?.products, !products.isEmpty else {
 				try! promise.fulfill(nil)
 				return
@@ -121,7 +122,7 @@ class NCSubscriptionViewController: NCTreeViewController {
 			priceFormatter.locale = products[0].priceLocale
 //			let footer = String(format: NSLocalizedString("Payment will be charged to your credit card through your iTunes Account at confirmation purchase. 1 Month Subscription will be charged as %@ per month. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period. Auto-renew option can be turned off in iTunes Account Settings.", comment: ""), priceFormatter.string(from: products[0].price) ?? "")
 			
-			let footer = NSLocalizedString("Payment will be charged to your credit card through your iTunes Account at confirmation purchase. Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period. Auto-renew option can be turned off in iTunes Account Settings.", comment: "")
+			let footer = NSLocalizedString("Payment will be charged to iTunes Account at confirmation of purchase.\nSubscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period.\nAccount will be charged for renewal within 24-hours prior to the end of the current period.\nAuto-renew option can be turned off in iTunes Account Settings.", comment: "")
 
 			rows.append(DefaultTreeSection(prototype: Prototype.NCHeaderTableViewCell.empty, isExpandable: false, children: [
 				NCFooterRow(nodeIdentifier: "Footer", title: footer),
@@ -199,8 +200,7 @@ extension NCSubscriptionViewController: SKPaymentTransactionObserver {
 		progressHandler?.finish()
 		progressHandler = nil
 		tableView.isUserInteractionEnabled = true
-		
-		let (title, message) = Receipt.local?.inAppPurchases?.isEmpty == false
+		let (title, message) = (try? Receipt().inAppPurchases?.isEmpty) == false
 			? (NSLocalizedString("Purchases Restored", comment: ""), NSLocalizedString("Your previous purchases are being restored. Thank you!", comment: ""))
 			: (NSLocalizedString("No Purchases to Restore", comment: ""), NSLocalizedString("No purchases have been made under this Apple ID. Use the Apple ID that is linked to the purchase made.", comment: ""))
 		let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)

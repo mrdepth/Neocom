@@ -146,9 +146,9 @@ class NCCharacterAttributes {
 		let primary: NCDBAttributeID
 		let secondary: NCDBAttributeID
 		
-		public var hashValue: Int {
-			return (primary.rawValue << 16) + secondary.rawValue
-		}
+        func hash(into hasher: inout Hasher) {
+            hasher.combine((primary.rawValue << 16) + secondary.rawValue)
+        }
 		
 		public static func ==(lhs: SkillKey, rhs: SkillKey) -> Bool {
 			return lhs.primary == rhs.primary && lhs.secondary == rhs.secondary

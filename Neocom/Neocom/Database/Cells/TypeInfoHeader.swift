@@ -12,6 +12,7 @@ struct TypeInfoHeader: View {
     var type: SDEInvType
     var renderImage: Image?
     var preferredMaxLayoutWidth: CGFloat
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     private func title() -> some View {
         VStack(alignment: .leading) {
@@ -21,12 +22,24 @@ struct TypeInfoHeader: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            if renderImage != nil {
-                renderImage!.resizable().scaledToFit().overlay(title()
-                    .padding(8)
-                    .background(Color(.systemFill).cornerRadius(8))
-                    .padding().colorScheme(.dark), alignment: .bottomLeading)
+        let renderImageView = renderImage?.resizable().scaledToFit()
+            .overlay(title()
+                .padding(8)
+                .background(Color(.systemFill).cornerRadius(8))
+                .padding().colorScheme(.dark), alignment: .bottomLeading)
+
+        
+        return VStack(alignment: .leading) {
+            if renderImageView != nil {
+                if horizontalSizeClass == .regular {
+                    renderImageView!
+                        .frame(maxWidth: 512)
+                        .cornerRadius(8)
+                        .padding([.horizontal, .top], 15)
+                }
+                else {
+                    renderImageView!
+                }
             }
             else {
                 HStack {
@@ -39,6 +52,7 @@ struct TypeInfoHeader: View {
     }
 }
 
+#if DEBUG
 struct TypeInfoHeader_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -54,5 +68,8 @@ struct TypeInfoHeader_Previews: PreviewProvider {
             .colorScheme(.dark)
                 //.background(Color.gray)
         }
+        .environmentObject(SharedState.testState())
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
+#endif

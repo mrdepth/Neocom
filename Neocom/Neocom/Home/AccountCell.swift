@@ -46,6 +46,7 @@ struct AccountCell: View {
     }
 }
 
+#if DEBUG
 struct AccountCell_Previews: PreviewProvider {
     static var previews: some View {
         let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
@@ -58,3 +59,4 @@ struct AccountCell_Previews: PreviewProvider {
             .environment(\.managedObjectContext, context)
     }
 }
+#endif

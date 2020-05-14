@@ -76,6 +76,7 @@ struct TypeMarketOrders: View {
     }
 }
 
+#if DEBUG
 struct TypeMarketOrders_Previews: PreviewProvider {
     static var previews: some View {
 		NavigationView {
@@ -86,3 +87,4 @@ struct TypeMarketOrders_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

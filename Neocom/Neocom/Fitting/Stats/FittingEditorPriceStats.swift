@@ -105,6 +105,7 @@ struct FittingEditorPriceStats: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorPriceStats_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -119,3 +120,4 @@ struct FittingEditorPriceStats_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

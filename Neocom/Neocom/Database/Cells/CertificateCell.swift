@@ -21,7 +21,9 @@ struct CertificateCell: View {
         var trainingTime: TimeInterval
     }
     
-    private func trainingInfo() -> AnyPublisher<TargetLevel?, Never> {
+    @ObservedObject var trainingInfo = Lazy<DataLoader<TargetLevel?, Never>, Never>()
+    
+    private func getTrainingInfo() -> AnyPublisher<TargetLevel?, Never> {
         guard let pilot = pilot else {return Just(nil).eraseToAnyPublisher()}
         let context = backgroundManagedObjectContext
         return Future { promise in
@@ -50,14 +52,14 @@ struct CertificateCell: View {
     }
     
     var body: some View {
-        ObservedObjectView(DataLoader(trainingInfo())) { trainingInfo in
-            NavigationLink(destination: CertificateInfo(certificate: self.certificate, masteryLevel: trainingInfo.result?.value??.level, pilot: self.pilot)) {
-                HStack {
-                    Icon(Image(uiImage: (try? self.managedObjectContext.fetch(SDEEveIcon.named(.mastery((trainingInfo.result?.value??.level).map{$0 - 1}))).first?.image?.image) ?? UIImage()))
-                    VStack(alignment: .leading) {
-                        Text(self.certificate.certificateName ?? "")
-                        (trainingInfo.result?.value ?? nil).map{Text("\(TimeIntervalFormatter.localizedString(from: $0.trainingTime, precision: .seconds)) to level \($0.level + 1)")}.modifier(SecondaryLabelModifier())
-                    }
+        let trainingInfo = self.trainingInfo.get(initial: DataLoader(getTrainingInfo()))
+        let masteryLevel = pilot == nil ? nil : (trainingInfo.result?.value??.level ?? 5) - 1
+        return NavigationLink(destination: CertificateInfo(certificate: self.certificate, masteryLevel: masteryLevel, pilot: self.pilot)) {
+            HStack {
+                Icon(Image(uiImage: (try? self.managedObjectContext.fetch(SDEEveIcon.named(.mastery(masteryLevel))).first?.image?.image) ?? UIImage()))
+                VStack(alignment: .leading) {
+                    Text(self.certificate.certificateName ?? "")
+                    (trainingInfo.result?.value ?? nil).map{Text("\(TimeIntervalFormatter.localizedString(from: $0.trainingTime, precision: .seconds)) to level \($0.level + 1)")}.modifier(SecondaryLabelModifier())
                 }
             }
         }

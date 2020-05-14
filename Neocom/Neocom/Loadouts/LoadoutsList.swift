@@ -72,7 +72,7 @@ struct LoadoutsList: View {
                     }
 
                 }
-                LoadoutsSection(loadouts: loadouts) { self.onSelect(.loadout($0), $1) }
+                LoadoutsSection(loadouts: loadouts, selection: $selectedLoadouts) { self.onSelect(.loadout($0), $1) }
             }.listStyle(GroupedListStyle())
             if !selectedLoadouts.isEmpty && editMode?.wrappedValue == .active {
                 Divider()
@@ -93,6 +93,7 @@ struct LoadoutsList: View {
     }
 }
 
+#if DEBUG
 struct LoadoutsList_Previews: PreviewProvider {
     static var previews: some View {
         _ = Loadout.testLoadouts()
@@ -104,3 +105,4 @@ struct LoadoutsList_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

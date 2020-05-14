@@ -30,6 +30,7 @@ struct ContractBidCell: View {
     }
 }
 
+#if DEBUG
 struct ContractBidCell_Previews: PreviewProvider {
     static var previews: some View {
         let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: AppDelegate.sharedDelegate.persistentContainer.viewContext)!, insertInto: nil)
@@ -45,3 +46,4 @@ struct ContractBidCell_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

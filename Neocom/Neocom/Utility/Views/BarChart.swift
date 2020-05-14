@@ -81,16 +81,21 @@ struct BarChart: View {
             .frame(maxWidth: .infinity, alignment: .leading)
     }
     
+    @Environment(\.horizontalSizeClass) var horizontalSizeCLass
+    
     var body: some View {
         let max = capacity == 0 ? 1 : capacity
         
         let dt = endDate.timeIntervalSince(Date())
         let progress = CGFloat(1 - min(dt / endDate.timeIntervalSince(startDate), 1))
         
+        let rows = horizontalSizeCLass == .regular ? 24 : 12
+        let cols = 6
+        
         return HStack(alignment: .top) {
             Text(UnitFormatter.localizedString(from: max, unit: .none, style: .short)).font(.caption).frame(width: 50, alignment: .trailing)
             VStack {
-                grid(12, 6).aspectRatio(12.0 / 6.0, contentMode: .fit)
+                grid(rows, cols).aspectRatio(CGFloat(rows) / CGFloat(cols), contentMode: .fit)
                     .overlay(GeometryReader { self.chart($0, max).drawingGroup() })
                     .overlay(GeometryReader { self.progress($0, progress)})
                 

@@ -62,6 +62,7 @@ struct TypeCategoriesContent: View {
 	}
 }
 
+#if DEBUG
 struct TypeCategories_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -72,4 +73,4 @@ struct TypeCategories_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
-
+#endif

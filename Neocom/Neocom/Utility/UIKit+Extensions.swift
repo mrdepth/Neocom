@@ -38,3 +38,16 @@ extension UIBezierPath {
         points.dropFirst().forEach { addLine(to: $0) }
     }
 }
+
+extension UIViewController {
+    var topMostPresentedViewController: UIViewController {
+        return presentedViewController?.topMostPresentedViewController ?? self
+    }
+}
+
+extension UIAlertController {
+    convenience init(title: String? = NSLocalizedString("Error", comment: ""), error: Error, handler: ((UIAlertAction) -> Void)? = nil) {
+        self.init(title: title, message: error.localizedDescription, preferredStyle: .alert)
+        self.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .default, handler: handler))
+    }
+}

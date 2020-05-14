@@ -265,7 +265,7 @@ extension ZKillboardSearchForm.Filter {
     }
 }
 
-
+#if DEBUG
 struct ZKillboardSearchForm_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -276,3 +276,4 @@ struct ZKillboardSearchForm_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

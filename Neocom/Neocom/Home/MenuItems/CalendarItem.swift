@@ -27,6 +27,7 @@ struct CalendarItem: View {
     }
 }
 
+#if DEBUG
 struct CalendarItem_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -38,3 +39,4 @@ struct CalendarItem_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
+#endif

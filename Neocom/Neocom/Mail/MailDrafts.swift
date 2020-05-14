@@ -43,6 +43,13 @@ struct MailDrafts: View {
     }
 }
 
+extension MailDraft: Identifiable {
+    public var id: NSManagedObjectID {
+        return objectID
+    }
+}
+
+#if DEBUG
 struct MailDrafts_Previews: PreviewProvider {
     
     static var previews: some View {
@@ -62,9 +69,4 @@ struct MailDrafts_Previews: PreviewProvider {
 
     }
 }
-
-extension MailDraft: Identifiable {
-    public var id: NSManagedObjectID {
-        return objectID
-    }
-}
+#endif

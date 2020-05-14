@@ -68,6 +68,7 @@ struct ColonyContent: View {
     }
 }
 
+#if DEBUG
 struct Colony_Previews: PreviewProvider {
     static var previews: some View {
         let planet = DGMPlanet.testPlanet()
@@ -83,3 +84,4 @@ struct Colony_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

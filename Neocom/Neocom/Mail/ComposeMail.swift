@@ -270,6 +270,7 @@ fileprivate struct ComposeMailContent: View {
     }
 }
 
+#if DEBUG
 struct ComposeMail_Previews: PreviewProvider {
     static var previews: some View {
         ComposeMail {}
@@ -278,3 +279,4 @@ struct ComposeMail_Previews: PreviewProvider {
         
     }
 }
+#endif

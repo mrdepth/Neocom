@@ -145,6 +145,7 @@ struct Home: View {
     }
 }
 
+#if DEBUG
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -155,3 +156,4 @@ struct Home_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

@@ -53,9 +53,9 @@ struct ShipLoadouts: View {
             .onReceive(projectLoading ?? Empty().eraseToAnyPublisher()) { result in
                 self.projectLoading = nil
                 guard let project = result.value else {return}
-                project.updateUserActivityState(project.userActivity!)
                 if UIApplication.shared.supportsMultipleScenes && self.openMode.openInNewWindow {
-                    let activity = project.userActivity
+                    guard let activity = project.userActivity else {return}
+                    project.updateUserActivityState(activity)
                     UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
                 }
                 else {
@@ -63,11 +63,12 @@ struct ShipLoadouts: View {
                 }
         }
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
-        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0).environmentObject(FittingAutosaver(project: $0)), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .navigationBarTitle("Loadouts")
     }
 }
 
+#if DEBUG
 struct ShipLoadouts_Previews: PreviewProvider {
     static var previews: some View {
         _ = Loadout.testLoadouts()
@@ -79,3 +80,4 @@ struct ShipLoadouts_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

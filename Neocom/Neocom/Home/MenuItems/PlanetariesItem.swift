@@ -25,6 +25,7 @@ struct PlanetariesItem: View {
     }
 }
 
+#if DEBUG
 struct PlanetariesItem_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -36,3 +37,4 @@ struct PlanetariesItem_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
+#endif

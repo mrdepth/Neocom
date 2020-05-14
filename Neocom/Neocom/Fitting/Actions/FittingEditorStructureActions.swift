@@ -12,7 +12,7 @@ import CoreData
 import EVEAPI
 
 struct FittingEditorStructureActions: View {
-    @EnvironmentObject private var structure: DGMStructure
+    @ObservedObject var structure: DGMStructure
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
     @State private var isAreaEffectsPresented = false
@@ -103,15 +103,16 @@ private struct FittingEditorActionsCharacterCell: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorStructureActions_Previews: PreviewProvider {
     static var previews: some View {
         return NavigationView {
-            FittingEditorStructureActions()
+            FittingEditorStructureActions(structure: DGMStructure.testKeepstar())
         }
-        .environmentObject(DGMStructure.testKeepstar())
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
 
     }
 }
+#endif

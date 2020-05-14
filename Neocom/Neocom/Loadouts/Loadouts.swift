@@ -53,6 +53,7 @@ struct Loadouts: View {
     }
 }
 
+#if DEBUG
 struct Loadouts_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -63,3 +64,4 @@ struct Loadouts_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

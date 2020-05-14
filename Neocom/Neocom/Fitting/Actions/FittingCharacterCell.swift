@@ -107,6 +107,7 @@ struct FittingCharacterLevelCell: View {
 	}
 }
 
+#if DEBUG
 struct FittingCharacterCell_Previews: PreviewProvider {
     static var previews: some View {
 		List {
@@ -117,3 +118,4 @@ struct FittingCharacterCell_Previews: PreviewProvider {
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
     }
 }
+#endif

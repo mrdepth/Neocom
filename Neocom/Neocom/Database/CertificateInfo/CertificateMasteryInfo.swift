@@ -34,10 +34,7 @@ struct CertificateMasteryInfo: View {
                 HStack {
                     Text("LEVEL \(String(roman: Int(mastery.level!.level + 1))) (\(TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds)))")
                     Spacer()
-                    Button(action: {
-                    }) {
-                        Image(systemName: "ellipsis")
-                    }
+                    AddToSkillPlanButton(trainingQueue: tq)
                 }
             }
             else {
@@ -60,6 +57,7 @@ struct CertificateMasteryInfo: View {
     }
 }
 
+#if DEBUG
 struct CertificateMasteryInfo_Previews: PreviewProvider {
     static var previews: some View {
         let certificate = try! AppDelegate.sharedDelegate.persistentContainer.viewContext
@@ -73,3 +71,4 @@ struct CertificateMasteryInfo_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
+#endif

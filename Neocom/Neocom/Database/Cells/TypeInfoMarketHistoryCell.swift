@@ -25,6 +25,7 @@ struct TypeInfoMarketHistoryCell: View {
     }
 }
 
+#if DEBUG
 struct TypeInfoMarketCell_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -35,3 +36,4 @@ struct TypeInfoMarketCell_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

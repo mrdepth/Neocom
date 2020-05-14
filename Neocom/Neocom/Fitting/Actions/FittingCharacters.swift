@@ -20,6 +20,7 @@ struct FittingCharacters: View {
     }
 }
 
+#if DEBUG
 struct FittingCharacters_Previews: PreviewProvider {
     static var previews: some View {
 		_ = AppDelegate.sharedDelegate.testingAccount!
@@ -31,3 +32,4 @@ struct FittingCharacters_Previews: PreviewProvider {
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
     }
 }
+#endif

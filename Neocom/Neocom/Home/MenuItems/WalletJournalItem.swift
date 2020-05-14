@@ -25,6 +25,7 @@ struct WalletJournalItem: View {
     }
 }
 
+#if DEBUG
 struct WalletJournalItem_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -36,3 +37,4 @@ struct WalletJournalItem_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
+#endif

@@ -193,7 +193,7 @@ extension DGMCharacter {
 	class func url(account: Account) -> URL? {
 		guard let uuid = account.uuid else {return nil}
 		var components = URLComponents()
-		components.scheme = Config.current.urlScheme
+        components.scheme = URLScheme.neocom
 		components.host = "character"
 		
 		var queryItems = [URLQueryItem(name: "accountUUID", value: uuid)]
@@ -209,7 +209,7 @@ extension DGMCharacter {
 	
 	class func url(level: Int) -> URL {
 		var components = URLComponents()
-		components.scheme = Config.current.urlScheme
+		components.scheme = URLScheme.neocom
 		components.host = "character"
 		components.queryItems = [
 			URLQueryItem(name: "level", value: String(level)),
@@ -221,7 +221,7 @@ extension DGMCharacter {
 	class func url(character: FitCharacter) -> URL? {
 		guard let uuid = character.uuid else {return nil}
 		var components = URLComponents()
-		components.scheme = Config.current.urlScheme
+		components.scheme = URLScheme.neocom
 		components.host = "character"
 		components.queryItems = [
 			URLQueryItem(name: "characterUUID", value: uuid),

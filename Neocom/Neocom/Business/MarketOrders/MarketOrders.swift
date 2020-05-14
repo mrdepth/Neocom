@@ -74,6 +74,7 @@ struct MarketOrdersContent: View {
     }
 }
 
+#if DEBUG
 struct MarketOrders_Previews: PreviewProvider {
     static var previews: some View {
         let solarSystem = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
@@ -107,3 +108,4 @@ struct MarketOrders_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

@@ -47,6 +47,7 @@ struct JumpClonesItem: View {
     }
 }
 
+#if DEBUG
 struct JumpClonesItem_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -58,3 +59,4 @@ struct JumpClonesItem_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
+#endif

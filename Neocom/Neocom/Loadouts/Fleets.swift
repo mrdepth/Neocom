@@ -72,7 +72,8 @@ struct Fleets: View {
             self.projectLoading = nil
             guard let project = result.value else {return}
             if UIApplication.shared.supportsMultipleScenes && self.openMode.openInNewWindow {
-                let activity = try? NSUserActivity(fitting: project)
+                guard let activity = project.userActivity else {return}
+                project.updateUserActivityState(activity)
                 UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
             }
             else {
@@ -80,13 +81,14 @@ struct Fleets: View {
             }
         }
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
-        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0).environmentObject(FittingAutosaver(project: $0)), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .navigationBarTitle("Fleets")
 
         
     }
 }
 
+#if DEBUG
 struct Fleets_Previews: PreviewProvider {
     static var previews: some View {
         _ = Fleet.testFleet()
@@ -98,3 +100,4 @@ struct Fleets_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

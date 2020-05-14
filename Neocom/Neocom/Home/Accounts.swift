@@ -62,6 +62,7 @@ struct Accounts: View {
     }
 }
 
+#if DEBUG
 struct Accounts_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -71,3 +72,4 @@ struct Accounts_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

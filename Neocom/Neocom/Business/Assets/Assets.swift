@@ -150,7 +150,7 @@ fileprivate struct AssetsSearch<Content: View>: View {
 }
 
 
-
+#if DEBUG
 struct Assets_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -162,3 +162,4 @@ struct Assets_Previews: PreviewProvider {
 
     }
 }
+#endif

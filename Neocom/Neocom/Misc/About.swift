@@ -25,7 +25,7 @@ struct About: View {
     
     var sdeVersion: some View {
         return HStack {
-            Text("SDE")
+            Text("Database Version")
             Spacer()
             Text(SDEVersion).foregroundColor(.secondary)
         }

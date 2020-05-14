@@ -28,6 +28,7 @@ struct MailItem: View {
     }
 }
 
+#if DEBUG
 struct MailItem_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -39,3 +40,4 @@ struct MailItem_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
+#endif

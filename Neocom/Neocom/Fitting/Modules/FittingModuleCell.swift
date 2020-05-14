@@ -63,7 +63,7 @@ struct FittingModuleBaseCell: View {
     var body: some View {
         Button(action: {self.isActionsPresented = true}) {
             if module != nil {
-                FittingModuleCell(module: module!)
+                FittingModuleCell(ship: ship, module: module!)
             }
             else {
                 FittingModuleSlot(slot: slot)
@@ -93,6 +93,7 @@ struct FittingModuleBaseCell: View {
 
 struct FittingModuleCell: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
+    @ObservedObject var ship: DGMShip
     @ObservedObject var module: DGMModuleGroup
 
     private var accuracy: some View {
@@ -189,8 +190,27 @@ struct FittingModuleCell: View {
             if module.modules.count > 1 {
                 Text("x\(module.modules.count)").fontWeight(.semibold).modifier(SecondaryLabelModifier())
             }
-        }.contentShape(Rectangle())
+        }
+        .contentShape(Rectangle())
+        .contextMenu {
+            ForEach(module.availableStates, id: \.self) { i in
+                Button(action: {self.module.state = i}) {
+                    i.title.map{Text($0)}
+//                    i.image
+                }
+            }
+            Button(action: {
+                for module in self.module.modules {
+                    self.ship.remove(module)
+                }
+            }) {
+                Text("Delete")
+                Image(uiImage: UIImage(systemName: "trash")!)
+            }
+        }
     }
+    
+    @State private var pick = "Some"
 }
 
 struct FittingModuleCell_Previews: PreviewProvider {
@@ -203,7 +223,7 @@ struct FittingModuleCell_Previews: PreviewProvider {
         cannon.state = .overloaded
         
         return List {
-            FittingModuleCell(module: DGMModuleGroup([cannon]))
+            FittingModuleCell(ship: dominix, module: DGMModuleGroup([cannon]))
         }.listStyle(GroupedListStyle())
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environmentObject(gang)

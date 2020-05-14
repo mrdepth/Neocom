@@ -25,6 +25,7 @@ struct RecentKillsItem: View {
     }
 }
 
+#if DEBUG
 struct RecentKillsItem_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -36,3 +37,4 @@ struct RecentKillsItem_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
+#endif

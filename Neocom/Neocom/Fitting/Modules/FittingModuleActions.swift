@@ -202,6 +202,7 @@ struct FittingModuleActions: View {
     }
 }
 
+#if DEBUG
 struct FittingModuleActions_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -215,3 +216,4 @@ struct FittingModuleActions_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

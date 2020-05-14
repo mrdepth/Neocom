@@ -56,6 +56,7 @@ struct LoyaltyPoints: View {
     }
 }
 
+#if DEBUG
 struct LoyaltyPoints_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -64,3 +65,4 @@ struct LoyaltyPoints_Previews: PreviewProvider {
             .environmentObject(SharedState.testState())
     }
 }
+#endif

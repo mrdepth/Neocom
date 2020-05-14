@@ -62,6 +62,7 @@ struct TypeInfoPriceCell: View {
     }
 }
 
+#if DEBUG
 struct TypeInfoPriceCell_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -72,3 +73,4 @@ struct TypeInfoPriceCell_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

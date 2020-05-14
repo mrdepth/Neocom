@@ -25,6 +25,7 @@ struct MarketOrdersItem: View {
     }
 }
 
+#if DEBUG
 struct MarketOrdersItem_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -36,3 +37,4 @@ struct MarketOrdersItem_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
+#endif

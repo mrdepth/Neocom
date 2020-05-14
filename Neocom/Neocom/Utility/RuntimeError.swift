@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum RuntimeError: Error {
+enum RuntimeError: LocalizedError {
     case unknown
     case noAccount
     case noResult
@@ -20,4 +20,17 @@ enum RuntimeError: Error {
     case invalidLoadoutFormat
     case invalidActivityType
     case missingCodingUserInfoKey(CodingUserInfoKey)
+    
+    var errorDescription: String? {
+        switch self {
+        case .unknown:
+            return NSLocalizedString("Unknown error", comment: "")
+        case .noAccount:
+            return NSLocalizedString("No EVE Account. Please login first.", comment: "")
+        case .noResult:
+            return NSLocalizedString("No Results", comment: "")
+        default:
+            return nil
+        }
+    }
 }

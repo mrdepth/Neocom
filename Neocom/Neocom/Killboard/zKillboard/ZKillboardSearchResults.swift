@@ -43,6 +43,7 @@ struct ZKillboardSearchResults: View {
     }
 }
 
+#if DEBUG
 struct ZKillboardSearchResults_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -53,3 +54,4 @@ struct ZKillboardSearchResults_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

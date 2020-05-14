@@ -81,6 +81,7 @@ struct WalletTransactionsContent: View {
     }
 }
 
+#if DEBUG
 struct WalletTransactions_Previews: PreviewProvider {
     static var previews: some View {
         let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: AppDelegate.sharedDelegate.persistentContainer.viewContext)!, insertInto: nil)
@@ -116,3 +117,4 @@ struct WalletTransactions_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

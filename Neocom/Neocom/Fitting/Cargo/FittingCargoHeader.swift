@@ -13,7 +13,7 @@ struct FittingCargoHeader: View {
     @ObservedObject var ship: DGMShip
     
     var body: some View {
-        ShipResource(used: ship.usedCargoCapacity, total: ship.cargoCapacity, unit: .cubicMeter, image: Image("cargoBay"), style: .progress)
+        ShipResource(used: ship.usedCargoCapacity, total: ship.cargoCapacity, unit: .cubicMeter, image: Image("cargoBay"), style: .progress, format: .long)
             .font(.caption)
     }
 }

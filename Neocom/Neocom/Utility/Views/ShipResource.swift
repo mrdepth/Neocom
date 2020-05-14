@@ -19,21 +19,24 @@ struct ShipResource: View {
     var unit: UnitFormatter.Unit
     var image: Image
     var style: Style
+    var format: UnitFormatter.Style
     
-    init(used: Double, total: Double, unit: UnitFormatter.Unit, image: Image, style: Style) {
+    init(used: Double, total: Double, unit: UnitFormatter.Unit, image: Image, style: Style, format: UnitFormatter.Style = .short) {
         self.used = used
         self.total = total
         self.unit = unit
         self.image = image
         self.style = style
+        self.format = format
     }
 
-    init(used: Int, total: Int, unit: UnitFormatter.Unit, image: Image, style: Style) {
+    init(used: Int, total: Int, unit: UnitFormatter.Unit, image: Image, style: Style, format: UnitFormatter.Style = .short) {
         self.used = Double(used)
         self.total = Double(total)
         self.unit = unit
         self.image = image
         self.style = style
+        self.format = format
     }
 
     var body: some View {
@@ -41,7 +44,7 @@ struct ShipResource: View {
             if style == .progress {
                 HStack(spacing: 2) {
                     Icon(image, size: .small)
-                    Text("\(UnitFormatter.localizedString(from: used, unit: .none, style: .short))/\(UnitFormatter.localizedString(from: total, unit: unit, style: .short))")
+                    Text("\(UnitFormatter.localizedString(from: used, unit: .none, style: format))/\(UnitFormatter.localizedString(from: total, unit: unit, style: format))")
                         .foregroundColor(used <= total ? .primary : .red)
                         .frame(maxWidth: .infinity)
                         .padding(2)
@@ -52,7 +55,7 @@ struct ShipResource: View {
             else {
                 HStack() {
                     Icon(image, size: .small)
-                    Text("\(UnitFormatter.localizedString(from: used, unit: .none, style: .short))/\(UnitFormatter.localizedString(from: total, unit: unit, style: .short))")
+                    Text("\(UnitFormatter.localizedString(from: used, unit: .none, style: format))/\(UnitFormatter.localizedString(from: total, unit: unit, style: format))")
                     .foregroundColor(used <= total ? .primary : .red)
 //                        .frame(maxWidth: .infinity, alignment: .leading)
                 }

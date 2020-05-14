@@ -133,6 +133,7 @@ struct AccountCellContent: View {
     }
 }
 
+#if DEBUG
 struct AccountCellContent_Previews: PreviewProvider {
     static var previews: some View {
         let row = AccountCellContent(character: .init(name: "Artem Valiant", image: Image("character")),
@@ -170,3 +171,4 @@ struct AccountCellContent_Previews: PreviewProvider {
 
     }
 }
+#endif

@@ -81,6 +81,7 @@ struct FittingCargo: View {
     }
 }
 
+#if DEBUG
 struct FittingCargo_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -92,3 +93,4 @@ struct FittingCargo_Previews: PreviewProvider {
             .environmentObject(SharedState.testState())
     }
 }
+#endif

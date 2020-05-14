@@ -54,16 +54,18 @@ struct SkillsItem: View {
     }
 }
 
+#if DEBUG
 struct SkillsItem_Previews: PreviewProvider {
-        static var previews: some View {
-            NavigationView {
-                List {
-                    SkillsItem()
-                }.listStyle(GroupedListStyle())
-            }
-            .environmentObject(SharedState.testState())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
-
+    static var previews: some View {
+        NavigationView {
+            List {
+                SkillsItem()
+            }.listStyle(GroupedListStyle())
         }
+        .environmentObject(SharedState.testState())
+        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        
     }
+}
+#endif

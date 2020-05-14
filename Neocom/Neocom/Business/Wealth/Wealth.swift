@@ -56,6 +56,7 @@ struct Wealth: View {
     }
 }
 
+#if DEBUG
 struct Wealth_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -67,3 +68,4 @@ struct Wealth_Previews: PreviewProvider {
 
     }
 }
+#endif

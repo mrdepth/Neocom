@@ -25,6 +25,7 @@ struct LoyaltyPointsItem: View {
     }
 }
 
+#if DEBUG
 struct LoyaltyPointsItem_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -36,3 +37,4 @@ struct LoyaltyPointsItem_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
+#endif

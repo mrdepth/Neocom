@@ -61,11 +61,12 @@ fi
 
 
 if [ ! -f "${out}/${version}/SDE.sqlite" ]; then
+    V=`date +%F`
 	cd $version
 	${TARGET_BUILD_DIR}/sde-tool -o "${out}/${version}/SDE.sqlite" -i "${out}/${version}"
 	sqlite3 "${out}/${version}/SDE.sqlite" "vacuum"
 	yes | cp "${out}/${version}/SDE.sqlite" "${PROJECT_DIR}/../../Neocom/SDE.sqlite"
-	echo "let SDEVersion = \"$version\"" > "${PROJECT_DIR}/../../Neocom/SDEVersion.swift"
+	echo "let SDEVersion = \"$V\"" > "${PROJECT_DIR}/../../Neocom/SDEVersion.swift"
 fi
 
 cd "${PROJECT_DIR}/../../ThirdParty/dgmpp/dbinit"

@@ -86,6 +86,7 @@ struct EventBodyContent: View {
     }
 }
 
+#if DEBUG
 struct EventBody_Previews: PreviewProvider {
     static var previews: some View {
         let event = ESI.Event(date: Date.init(timeIntervalSinceNow: 3600 * 10),
@@ -101,3 +102,4 @@ struct EventBody_Previews: PreviewProvider {
             .environmentObject(SharedState.testState())
     }
 }
+#endif

@@ -90,6 +90,7 @@ struct KillmailCellContent: View {
     }
 }
 
+#if DEBUG
 struct KillmailCell_Previews: PreviewProvider {
     static var previews: some View {
         let killmail = try! ESI.jsonDecoder.decode(ESI.Killmail.self, from: NSDataAsset(name: "killmail")!.data)
@@ -109,3 +110,4 @@ struct KillmailCell_Previews: PreviewProvider {
 //        KillmailCell(killmailID: 82925944, hash: "3a20a8149ea41a80554d2469383caef1a8e4cdad")
     }
 }
+#endif

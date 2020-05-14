@@ -76,17 +76,19 @@ struct FittingCargoActions: View {
     }
 }
 
+#if DEBUG
 struct FittingCargoActions_Previews: PreviewProvider {
-        static var previews: some View {
-            let ship = DGMShip.testDominix()
-            let cargo = ship.cargo[0]
-            cargo.quantity = 10
-            return FittingCargoActions(ship: ship, cargo: cargo) {}
-                .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-                .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-                .environmentObject(SharedState.testState())
-            
-
-            
-        }
+    static var previews: some View {
+        let ship = DGMShip.testDominix()
+        let cargo = ship.cargo[0]
+        cargo.quantity = 10
+        return FittingCargoActions(ship: ship, cargo: cargo) {}
+            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environmentObject(SharedState.testState())
+        
+        
+        
     }
+}
+#endif

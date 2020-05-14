@@ -52,7 +52,7 @@ struct AssetsList: View {
                     AssetsShipContent(ship: ship!)
                 }.listStyle(GroupedListStyle())
                     .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
-                    .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0).environmentObject(FittingAutosaver(project: $0)), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+                    .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
                     .onReceive(projectLoading ?? Empty().eraseToAnyPublisher()) { result in
                         self.projectLoading = nil
                         self.selectedProject = result.value
@@ -100,6 +100,7 @@ struct AssetsShipContent: View {
     }
 }
 
+#if DEBUG
 struct AssetsList_Previews: PreviewProvider {
     
     static var previews: some View {
@@ -110,3 +111,4 @@ struct AssetsList_Previews: PreviewProvider {
             .environmentObject(SharedState.testState())
     }
 }
+#endif

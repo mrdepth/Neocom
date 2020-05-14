@@ -43,7 +43,7 @@ struct FittingEditorFleet: View {
                         }
                         
                         toDelete.forEach {
-                            self.gang.remove($0)
+                            self.project.remove($0)
                         }
                     }
                 }

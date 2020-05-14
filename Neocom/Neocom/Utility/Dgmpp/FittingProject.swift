@@ -14,23 +14,6 @@ import CoreData
 import Expressible
 import EVEAPI
 
-class FittingAutosaver: ObservableObject {
-    let project: FittingProject
-    
-    init(project: FittingProject) {
-        self.project = project
-    }
-    
-    deinit {
-        let project = self.project
-        if project.hasUnsavedChanges {
-            project.managedObjectContext.perform {
-                project.save()
-            }
-        }
-    }
-}
-
 class FittingProject: UIDocument, ObservableObject, Identifiable {
     static let managedObjectContextKey = CodingUserInfoKey(rawValue: "managedObjectContext")!
     
@@ -253,6 +236,13 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
         gangSubscription = gang?.objectWillChange.sink { [weak self] in self?.updateChangeCount(.done) }
     }
     
+    convenience init(dna: String, skillLevels: DGMSkillLevels, managedObjectContext: NSManagedObjectContext) throws {
+        guard let data = dna.data(using: .utf8) else {throw RuntimeError.invalidDNAFormat}
+        let ship = try DNALoadoutDecoder().decode(from: data)
+        self.init(fileURL: Self.temporaryURL, managedObjectContext: managedObjectContext)
+        try add(ship: DGMTypeID(ship.typeID), skillLevels: skillLevels).loadout = ship
+    }
+    
     @discardableResult
     func add(ship: DGMTypeID, skillLevels: DGMSkillLevels) throws -> DGMShip {
         if let structure = try? DGMStructure(typeID: ship) {
@@ -361,29 +351,39 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
         return try add(ship: DGMTypeID(fitting.shipTypeID), items: items, skillLevels: skillLevels)
     }
     
+    func remove(_ pilot: DGMCharacter) {
+        guard let ship = pilot.ship else {return}
+        save(pilot)
+        loadouts[ship] = nil
+        gang?.remove(pilot)
+    }
+    
+    private func save(_ pilot: DGMCharacter) {
+        guard let ship = pilot.ship else {return}
+
+        let loadout: Loadout? = self.loadouts[ship] ?? {
+            let loadout = Loadout(context: self.managedObjectContext)
+            loadout.data = LoadoutData(context: self.managedObjectContext)
+            loadout.typeID = Int32(ship.typeID)
+            loadout.uuid = UUID().uuidString
+            self.loadouts[ship] = loadout
+            return loadout
+            }()
+        if let loadout = loadout, !loadout.isDeleted && loadout.managedObjectContext != nil {
+            loadout.name = ship.name
+            if loadout.data == nil {
+                loadout.data = LoadoutData(context: self.managedObjectContext)
+            }
+            loadout.ship = pilot.loadout
+        }
+    }
+    
     func save() {
         let pilots = gang?.pilots ?? []
         
         managedObjectContext.perform {
             pilots.forEach { pilot in
-                guard let ship = pilot.ship else {return}
-                
-                
-                let loadout: Loadout? = self.loadouts[ship] ?? {
-                    let loadout = Loadout(context: self.managedObjectContext)
-                    loadout.data = LoadoutData(context: self.managedObjectContext)
-                    loadout.typeID = Int32(ship.typeID)
-                    loadout.uuid = UUID().uuidString
-                    self.loadouts[ship] = loadout
-                    return loadout
-                    }()
-                if let loadout = loadout, !loadout.isDeleted && loadout.managedObjectContext != nil {
-                    loadout.name = ship.name
-                    if loadout.data == nil {
-                        loadout.data = LoadoutData(context: self.managedObjectContext)
-                    }
-                    loadout.ship = pilot.loadout
-                }
+                self.save(pilot)
             }
             
             if pilots.count > 1 {

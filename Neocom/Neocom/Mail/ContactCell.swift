@@ -32,6 +32,7 @@ struct ContactCell: View {
     }
 }
 
+#if DEBUG
 struct ContactCell_Previews: PreviewProvider {
     static var previews: some View {
         let contact1 = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: AppDelegate.sharedDelegate.persistentContainer.viewContext)!, insertInto: nil)
@@ -52,3 +53,4 @@ struct ContactCell_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

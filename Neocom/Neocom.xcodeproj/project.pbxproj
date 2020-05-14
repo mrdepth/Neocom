@@ -186,6 +186,7 @@
 		16898DF62449DED900E7CD7B /* FittingCargoActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16898DF52449DED900E7CD7B /* FittingCargoActions.swift */; };
 		16898DF82449EF5200E7CD7B /* FittingCargoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16898DF72449EF5200E7CD7B /* FittingCargoHeader.swift */; };
 		168A74F6244C719C005491CF /* RefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168A74F5244C719C005491CF /* RefreshControl.swift */; };
+		168B0859246B016F00F4A676 /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B0858246B016F00F4A676 /* NotificationsManager.swift */; };
 		168CC1462438C94300B0A1AC /* KillImailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168CC1452438C94300B0A1AC /* KillImailInfo.swift */; };
 		168E4048242F536E00C03F00 /* LoyaltyOffersLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E4047242F536E00C03F00 /* LoyaltyOffersLoader.swift */; };
 		168E404A242F659800C03F00 /* LoyaltyOfferRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E4049242F659800C03F00 /* LoyaltyOfferRequirement.swift */; };
@@ -262,7 +263,6 @@
 		169A72D3238BE10700E4C181 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A72D2238BE10700E4C181 /* Math.swift */; };
 		169A9195238CF9D5004E3DAA /* Expressible.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 169A9194238CF9D5004E3DAA /* Expressible.framework */; };
 		169A9196238CF9D5004E3DAA /* Expressible.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 169A9194238CF9D5004E3DAA /* Expressible.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		169A9199238CFBEC004E3DAA /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 169A9198238CFBEC004E3DAA /* CloudKit.framework */; };
 		169A91A3238D1D38004E3DAA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A91A2238D1D38004E3DAA /* Config.swift */; };
 		169A91A5238D1D81004E3DAA /* ESI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A91A4238D1D81004E3DAA /* ESI+Extensions.swift */; };
 		169BFF9423B64D2300FDF759 /* BlueprintActivityMaterials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169BFF9323B64D2300FDF759 /* BlueprintActivityMaterials.swift */; };
@@ -556,6 +556,7 @@
 		16898DF52449DED900E7CD7B /* FittingCargoActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingCargoActions.swift; sourceTree = "<group>"; };
 		16898DF72449EF5200E7CD7B /* FittingCargoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingCargoHeader.swift; sourceTree = "<group>"; };
 		168A74F5244C719C005491CF /* RefreshControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshControl.swift; sourceTree = "<group>"; };
+		168B0858246B016F00F4A676 /* NotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
 		168CC1452438C94300B0A1AC /* KillImailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillImailInfo.swift; sourceTree = "<group>"; };
 		168E4047242F536E00C03F00 /* LoyaltyOffersLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyOffersLoader.swift; sourceTree = "<group>"; };
 		168E4049242F659800C03F00 /* LoyaltyOfferRequirement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyOfferRequirement.swift; sourceTree = "<group>"; };
@@ -752,7 +753,6 @@
 				168744D82465754D00F356EB /* libz.tbd in Frameworks */,
 				169672DB2387ECCD00EB860B /* EVEAPI.framework in Frameworks */,
 				16B6A84523F2D24E00E0EB8B /* Dgmpp.framework in Frameworks */,
-				169A9199238CFBEC004E3DAA /* CloudKit.framework in Frameworks */,
 				169A9195238CF9D5004E3DAA /* Expressible.framework in Frameworks */,
 				169672DF2387ECEF00EB860B /* Alamofire.framework in Frameworks */,
 			);
@@ -893,35 +893,32 @@
 		12F06F2A238466EB0061313D /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				16865CCA243E250900EDDF15 /* Activities */,
 				120E28EE238B1293006B30EA /* DataLoaders */,
-				1686D74D23953C9200E88D3D /* Pilot */,
-				16674BEA238BB96400E6E547 /* Views */,
 				16B4C6E2240792300009ACD4 /* Dgmpp */,
 				16856687243CB95A00F74517 /* LoadoutCoding */,
-				16865CCA243E250900EDDF15 /* Activities */,
+				1686D74D23953C9200E88D3D /* Pilot */,
 				16D6741B2451D564002C277F /* UserActivities */,
-				1638690823EC217400681612 /* Atomic.swift */,
-				1632472C239145FA00227480 /* Cache.swift */,
+				16674BEA238BB96400E6E547 /* Views */,
+				168B0856246B011500F4A676 /* Formatters */,
+				168B0857246B012800F4A676 /* PropertyWrappers */,
 				169A72C8238BD9AA00E4C181 /* Colors.swift */,
 				16D8DC7F238808870057A6F4 /* Combine+Extensions.swift */,
+				16888412242CD4F70099C769 /* Debug.swift */,
 				169672D82387EA3F00EB860B /* EnvironmentValues.swift */,
 				169A91A4238D1D81004E3DAA /* ESI+Extensions.swift */,
 				16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */,
-				1632472E2391496500227480 /* Lazy.swift */,
 				169A72D2238BE10700E4C181 /* Math.swift */,
 				122B4AEC239EAE2000461A1A /* Preferences.swift */,
 				1630ED7E23CCAC01001DBAA7 /* RuntimeError.swift */,
+				1696E5DC2445AFDC00F2F721 /* SharedState.swift */,
 				16C39A4F23B9CF7D00208F04 /* SkillsList.swift */,
 				169A72CE238BE05600E4C181 /* String+Extensions.swift */,
 				12B9E20323A7E8C2007DB0E0 /* SwiftUI+Extensions.swift */,
-				169A72D0238BE0EF00E4C181 /* TimeIntervalFormatter.swift */,
-				16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */,
-				16674BEF238BC6F300E6E547 /* UnitFormatter.swift */,
-				161C6EF623A11B8400777009 /* UserDefault.swift */,
-				1693A85523FD15D10033A793 /* TextAttachmentView.swift */,
 				1693A85723FD27A90033A793 /* TextAttachmentContact.swift */,
-				16888412242CD4F70099C769 /* Debug.swift */,
-				1696E5DC2445AFDC00F2F721 /* SharedState.swift */,
+				1693A85523FD15D10033A793 /* TextAttachmentView.swift */,
+				16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */,
+				168B0858246B016F00F4A676 /* NotificationsManager.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -1259,6 +1256,26 @@
 				16898DF72449EF5200E7CD7B /* FittingCargoHeader.swift */,
 			);
 			path = Cargo;
+			sourceTree = "<group>";
+		};
+		168B0856246B011500F4A676 /* Formatters */ = {
+			isa = PBXGroup;
+			children = (
+				169A72D0238BE0EF00E4C181 /* TimeIntervalFormatter.swift */,
+				16674BEF238BC6F300E6E547 /* UnitFormatter.swift */,
+			);
+			path = Formatters;
+			sourceTree = "<group>";
+		};
+		168B0857246B012800F4A676 /* PropertyWrappers */ = {
+			isa = PBXGroup;
+			children = (
+				1632472E2391496500227480 /* Lazy.swift */,
+				1638690823EC217400681612 /* Atomic.swift */,
+				1632472C239145FA00227480 /* Cache.swift */,
+				161C6EF623A11B8400777009 /* UserDefault.swift */,
+			);
+			path = PropertyWrappers;
 			sourceTree = "<group>";
 		};
 		1694B22724066DFC00E81E49 /* Modules */ = {
@@ -1680,6 +1697,7 @@
 				160882EE23E2E70400BB7176 /* TextFieldAlert.swift in Sources */,
 				16859E5D2435E3F50037C01B /* ContactPicker.swift in Sources */,
 				168F2FF9243B2F91006CE01A /* ZKillboardItem.swift in Sources */,
+				168B0859246B016F00F4A676 /* NotificationsManager.swift in Sources */,
 				16C9102424336EE300BCEBA7 /* StorageSection.swift in Sources */,
 				168F69452430DCCD00D80A24 /* WormholeCell.swift in Sources */,
 				16D16EB8241A6A2600EF9F76 /* FittingEditorMiscStats.swift in Sources */,
@@ -2054,7 +2072,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 56;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;
@@ -2063,7 +2081,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
@@ -2078,7 +2096,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 56;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;
@@ -2087,7 +2105,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;

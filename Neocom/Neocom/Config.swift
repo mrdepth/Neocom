@@ -17,7 +17,7 @@ struct Config {
         var callbackURL = URL(string: "eveauthnc://sso/")!
     }
     var esi = ESI()
-	var urlScheme = "nc"
+//	var urlScheme = "nc"
     var supportEmail = "support@eveuniverseiphone.com"
     let homepage = URL(string: "https://facebook.com/groups/Neocom")!
     let sources = URL(string: "https://github.com/mrdepth/Neocom")!
@@ -25,8 +25,14 @@ struct Config {
     let privacy = URL(string: "https://mrdepth.github.io/Neocom/privacy.html")!
 
     let loadoutPathExtension = "loadout"
+    
 }
 
+enum URLScheme {
+    static let neocom = "nc"
+    static let fitting = "fitting"
+    static let showinfo = "showinfo"
+}
 
 extension Config {
     static let current = Config()

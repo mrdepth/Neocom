@@ -69,6 +69,7 @@ struct ContractsContent: View {
     }
 }
 
+#if DEBUG
 struct Contracts_Previews: PreviewProvider {
     static var previews: some View {
         Contracts()
@@ -76,3 +77,4 @@ struct Contracts_Previews: PreviewProvider {
             .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
+#endif

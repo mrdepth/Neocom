@@ -25,6 +25,7 @@ struct AssetsItem: View {
     }
 }
 
+#if DEBUG
 struct AssetsItem_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -36,3 +37,4 @@ struct AssetsItem_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
+#endif

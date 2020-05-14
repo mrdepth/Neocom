@@ -50,6 +50,7 @@ struct BlueprintActivityRequiredSkills: View {
     
 }
 
+#if DEBUG
 struct BlueprintActivityRequiredSkills_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -61,4 +62,4 @@ struct BlueprintActivityRequiredSkills_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
-
+#endif

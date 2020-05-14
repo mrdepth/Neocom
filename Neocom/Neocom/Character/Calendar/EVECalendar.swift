@@ -76,6 +76,7 @@ struct EVECalendarContent: View {
     }
 }
 
+#if DEBUG
 struct EVECalendar_Previews: PreviewProvider {
     static var previews: some View {
         let account = AppDelegate.sharedDelegate.testingAccount
@@ -100,3 +101,4 @@ struct EVECalendar_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

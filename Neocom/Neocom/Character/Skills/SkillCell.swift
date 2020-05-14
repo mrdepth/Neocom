@@ -54,6 +54,7 @@ struct SkillCell: View {
     
     @State private var isActionsSheetPresented = false
     @State private var isTypeInfoActive = false
+    @Environment(\.self) private var environment
     
     private func actionSheet(_ levels: Range<Int>) -> ActionSheet {
         let buttons = levels.map { level in
@@ -80,9 +81,9 @@ struct SkillCell: View {
             canTrain = nil
         }
         
-        let body = NavigationLink(destination: TypeInfo(type: type), isActive: $isTypeInfoActive) {
+        let body = //NavigationLink(destination: TypeInfo(type: type), isActive: $isTypeInfoActive) {
             SkillCellBody(type: type, pilot: pilot, skillQueueItem: skillQueueItem, skillPlanSkill: skillPlanSkill, targetLevel: targetLevel)
-        }
+        //}
         
         return Group {
             if canTrain != nil {
@@ -91,7 +92,9 @@ struct SkillCell: View {
                 }.buttonStyle(PlainButtonStyle())
             }
             else {
-                body
+                NavigationLink(destination: TypeInfo(type: type).modifier(ServicesViewModifier(environment: environment, sharedState: sharedState)), isActive: $isTypeInfoActive) {
+                    body
+                }
             }
         }.actionSheet(isPresented: $isActionsSheetPresented) {
             self.actionSheet(canTrain ?? 0..<0)
@@ -256,6 +259,7 @@ private struct FlashigRectangle: View {
     }
 }
 
+#if DEBUG
 struct SkillCell_Previews: PreviewProvider {
     static var previews: some View {
         let type = try! AppDelegate.sharedDelegate.persistentContainer.viewContext
@@ -298,3 +302,4 @@ struct SkillCell_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

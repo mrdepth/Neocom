@@ -91,11 +91,17 @@ struct SkillPlanSection: View {
                         }
                     }
                     //                Text("Hello, World!")
-                }.onDelete { (indices) in
+                }
+                .onDelete { (indices) in
                     for i in indices {
                         let skill = self.skills[i]
                         skill.managedObjectContext?.delete(skill)
                     }
+                }
+                .onMove { (from, to) in
+                    var skills = Array(self.skills)
+                    skills.move(fromOffsets: from, toOffset: to)
+                    skills.enumerated().forEach{$0.element.position = Int32($0.offset)}
                 }
             }
         }
@@ -112,6 +118,7 @@ struct SkillPlanSection: View {
     }
 }
 
+#if DEBUG
 struct SkillPlanSection_Previews: PreviewProvider {
     static var previews: some View {
         let account = AppDelegate.sharedDelegate.testingAccount
@@ -147,3 +154,4 @@ struct SkillPlanSection_Previews: PreviewProvider {
 
     }
 }
+#endif

@@ -43,6 +43,7 @@ struct CharacterSheetItem: View {
     }
 }
 
+#if DEBUG
 struct CharacterSheetItem_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -55,3 +56,4 @@ struct CharacterSheetItem_Previews: PreviewProvider {
 
     }
 }
+#endif

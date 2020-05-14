@@ -46,6 +46,7 @@ struct IncursionCell: View {
     }
 }
 
+#if DEBUG
 struct IncursionCell_Previews: PreviewProvider {
     static var previews: some View {
         let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
@@ -68,3 +69,4 @@ struct IncursionCell_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

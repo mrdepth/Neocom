@@ -64,6 +64,7 @@ struct RecentKillsPage: View {
     }
 }
 
+#if DEBUG
 struct RecentKills_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -75,3 +76,4 @@ struct RecentKills_Previews: PreviewProvider {
 
     }
 }
+#endif

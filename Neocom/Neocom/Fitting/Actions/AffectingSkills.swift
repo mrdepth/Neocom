@@ -62,6 +62,7 @@ struct AffectingSkillsSection: View {
     }
 }
 
+#if DEBUG
 struct AffectingSkills_Previews: PreviewProvider {
     static var previews: some View {
         let account = AppDelegate.sharedDelegate.testingAccount
@@ -77,3 +78,4 @@ struct AffectingSkills_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

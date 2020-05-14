@@ -85,6 +85,7 @@ struct WalletJournalContent: View {
     }
 }
 
+#if DEBUG
 struct WalletJournal_Previews: PreviewProvider {
     static var previews: some View {
         let account = AppDelegate.sharedDelegate.testingAccount
@@ -117,3 +118,4 @@ struct WalletJournal_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

@@ -37,6 +37,7 @@ struct ContactPicker: View {
     }
 }
 
+#if DEBUG
 struct ContactPicker_Previews: PreviewProvider {
     static var previews: some View {
         ContactPicker() { _ in}
@@ -44,3 +45,4 @@ struct ContactPicker_Previews: PreviewProvider {
             .environmentObject(SharedState.testState())
     }
 }
+#endif

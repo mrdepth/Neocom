@@ -145,6 +145,7 @@ private struct FittingEditorActionsCharacterCell: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorShipActions_Previews: PreviewProvider {
     static var previews: some View {  
         let gang = DGMGang.testGang()
@@ -159,3 +160,4 @@ struct FittingEditorShipActions_Previews: PreviewProvider {
 
     }
 }
+#endif

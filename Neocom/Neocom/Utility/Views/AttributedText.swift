@@ -26,8 +26,19 @@ fileprivate struct AttributedTextView: UIViewRepresentable {
     var text: NSAttributedString
     var preferredMaxLayoutWidth: CGFloat
     
+    class Coordinator: NSObject, UITextViewDelegate {
+        func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+            return true
+        }
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+    
     func makeUIView(context: UIViewRepresentableContext<AttributedTextView>) -> SelfSizedTextView {
         let view = SelfSizedTextView()
+        view.delegate = context.coordinator
         view.attributedText = text
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isScrollEnabled = false

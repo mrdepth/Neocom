@@ -73,6 +73,7 @@ struct MailPage: View {
     }
 }
 
+#if DEBUG
 struct MailPage_Previews: PreviewProvider {
     static var previews: some View {
         let label = ESI.MailLabel(color: .h0000fe, labelID: 1, name: "Inbox", unreadCount: 12)
@@ -85,3 +86,4 @@ struct MailPage_Previews: PreviewProvider {
 
     }
 }
+#endif

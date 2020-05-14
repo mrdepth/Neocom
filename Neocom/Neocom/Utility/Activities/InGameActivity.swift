@@ -159,6 +159,7 @@ struct InGameActivityView: View {
     }
 }
 
+#if DEBUG
 struct InGameActivity_Previews: PreviewProvider {
     static var previews: some View {
         InGameActivityView(ships: [Ship(typeID: 645)]) {_ in}
@@ -166,3 +167,4 @@ struct InGameActivity_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

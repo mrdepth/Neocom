@@ -29,7 +29,7 @@ struct FittingEditorFleetBar: View {
                 self.ship = gang.pilots[i + 1].ship!
             }
         }
-        self.gang.remove(pilot)
+        self.project.remove(pilot)
     }
 
     var body: some View {
@@ -48,20 +48,21 @@ struct FittingEditorFleetBar: View {
                 Image(systemName: "plus").frame(width: 32, height: 32).padding(.horizontal)//.contentShape(Rectangle())
             }
             .layoutPriority(10)
+            .adaptivePopover(isPresented: $isLoadoutPickerPresented, arrowEdge: .bottom) {
+                NavigationView {
+                    FittingEditorLoadoutPicker(project: self.project) {
+                        self.isLoadoutPickerPresented = false
+                    }.navigationBarItems(leading: BarButtonItems.close {
+                        self.isLoadoutPickerPresented = false
+                    })
+                }
+                .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+                .navigationViewStyle(StackNavigationViewStyle())
+                .frame(idealWidth: 375, idealHeight: 375 * 2)
+            }
+
         }
         .background(Color(.systemFill).edgesIgnoringSafeArea(.all))
-        .sheet(isPresented: $isLoadoutPickerPresented) {
-            NavigationView {
-                FittingEditorLoadoutPicker(project: self.project) {
-                    self.isLoadoutPickerPresented = false
-                }.navigationBarItems(leading: BarButtonItems.close {
-                    self.isLoadoutPickerPresented = false
-                })
-            }
-            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
-            .navigationViewStyle(StackNavigationViewStyle())
-        }
-
     }
 }
 

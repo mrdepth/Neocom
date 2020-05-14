@@ -84,7 +84,7 @@ struct IngameLoadouts: View {
             self.selectedProject = result.value
         }
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
-        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0).environmentObject(FittingAutosaver(project: $0)), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .onReceive(deleteSubscription) { ids in
             result?.delete(fittingIDs: Set(ids))
             self.deleteSubscription = Empty().eraseToAnyPublisher()
@@ -93,6 +93,7 @@ struct IngameLoadouts: View {
     }
 }
 
+#if DEBUG
 struct IngameLoadouts_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -103,3 +104,4 @@ struct IngameLoadouts_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

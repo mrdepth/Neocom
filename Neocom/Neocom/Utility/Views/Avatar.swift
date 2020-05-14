@@ -97,6 +97,7 @@ struct AvatarImageView: View {
     }
 }
 
+#if DEBUG
 struct Avatar_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
@@ -110,3 +111,4 @@ struct Avatar_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

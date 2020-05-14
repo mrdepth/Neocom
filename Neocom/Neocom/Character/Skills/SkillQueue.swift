@@ -134,7 +134,7 @@ struct SkillPlanSectionWrapper: View {
     }
 }
 
-
+#if DEBUG
 struct SkillQueue_Previews: PreviewProvider {
     static var previews: some View {
         let account = AppDelegate.sharedDelegate.testingAccount
@@ -151,3 +151,4 @@ struct SkillQueue_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

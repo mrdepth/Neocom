@@ -5,7 +5,7 @@
 //  Created by Artem Shimanski on 19.11.2019.
 //  Copyright © 2019 Artem Shimanski. All rights reserved.
 //
-
+#if DEBUG
 import SwiftUI
 import Combine
 import EVEAPI
@@ -109,3 +109,4 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
+#endif

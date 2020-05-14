@@ -82,9 +82,10 @@ struct Planetaries: View {
             }
         }
         .navigationBarTitle(Text("Planetaries"))
-}
+    }
 }
 
+#if DEBUG
 struct Planetaries_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -95,3 +96,4 @@ struct Planetaries_Previews: PreviewProvider {
 
     }
 }
+#endif

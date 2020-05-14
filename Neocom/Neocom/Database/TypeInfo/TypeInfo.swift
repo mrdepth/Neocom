@@ -145,6 +145,7 @@ extension TypeInfo {
     }
 }
 
+#if DEBUG
 struct TypeInfo_Previews: PreviewProvider {
     static var previews: some View {
 //        let account = Account(token: oAuth2Token, context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
@@ -158,4 +159,4 @@ struct TypeInfo_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
-
+#endif

@@ -19,6 +19,9 @@ struct AddToSkillPlanButton: View {
             .default(Text("Add to Skill Plan")) {
                 let skillPlan = self.sharedState.account?.activeSkillPlan
                 skillPlan?.add(self.trainingQueue)
+                if skillPlan?.managedObjectContext?.hasChanges == true {
+                    try? skillPlan?.managedObjectContext?.save()
+                }
                 NotificationCenter.default.post(name: .didUpdateSkillPlan, object: skillPlan)
             },
             .cancel()])
@@ -35,9 +38,11 @@ struct AddToSkillPlanButton: View {
     }
 }
 
+#if DEBUG
 struct AddToSkillPlanButton_Previews: PreviewProvider {
     static var previews: some View {
         AddToSkillPlanButton(trainingQueue: TrainingQueue(pilot: .empty))
             .environmentObject(SharedState.testState())
     }
 }
+#endif

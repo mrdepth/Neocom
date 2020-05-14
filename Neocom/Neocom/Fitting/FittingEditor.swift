@@ -12,11 +12,36 @@ import EVEAPI
 import Combine
 import CoreData
 
+fileprivate class FittingAutosaver: ObservableObject {
+    let project: FittingProject
+    
+    init(project: FittingProject) {
+        self.project = project
+    }
+    
+    deinit {
+        let project = self.project
+        if project.hasUnsavedChanges {
+            project.managedObjectContext.perform {
+                project.save()
+            }
+        }
+    }
+}
+
 struct FittingEditor: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var sharedState: SharedState
     var project: FittingProject
     var completion: (() -> Void)? = nil
+    
+    private var autosaver: FittingAutosaver
+    
+    init(project: FittingProject, completion: (() -> Void)? = nil) {
+        self.project = project
+        self.completion = completion
+        self.autosaver = FittingAutosaver(project: project)
+    }
     
     private let priceData = Lazy<PricesData, Never>()
 
@@ -213,7 +238,7 @@ struct FittingStructureEditor: View {
         }
         .adaptivePopover(isPresented: $isActionsPresented) {
             NavigationView {
-                FittingEditorStructureActions()
+                FittingEditorStructureActions(structure: self.structure)
                     .navigationBarItems(leading: BarButtonItems.close {
                         self.isActionsPresented = false
                     })
@@ -259,6 +284,7 @@ struct FittingStructureEditor: View {
     }
 }
 
+#if DEBUG
 struct FittingEditor_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -272,3 +298,4 @@ struct FittingEditor_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

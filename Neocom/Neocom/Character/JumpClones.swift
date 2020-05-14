@@ -76,6 +76,7 @@ struct JumpClones: View {
     }
 }
 
+#if DEBUG
 struct JumpClones_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -85,4 +86,4 @@ struct JumpClones_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
-
+#endif

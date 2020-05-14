@@ -41,6 +41,7 @@ struct WealthMenuItem: View {
     }
 }
 
+#if DEBUG
 struct WealthMenuItem_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -52,3 +53,4 @@ struct WealthMenuItem_Previews: PreviewProvider {
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
     }
 }
+#endif

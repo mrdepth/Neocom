@@ -22,7 +22,7 @@ class LoadoutsLoader: ObservableObject {
             var name: String?
             var typeName: String
             var objectID: NSManagedObjectID
-            
+            var uuid: String
             var id: NSManagedObjectID {return objectID}
         }
         var loadouts: [Loadout]
@@ -45,10 +45,10 @@ class LoadoutsLoader: ObservableObject {
                     let type = try? managedObjectContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == loadout.typeID).first()
                     guard type?.group?.category?.categoryID == category.rawValue else {continue}
                     let groupID = type?.group?.groupID ?? 0
-                    sections[groupID, default: Section(title: type?.group?.groupName, id: groupID, loadouts: [])].loadouts.append(Section.Loadout(typeID: loadout.typeID, name: loadout.name, typeName: type?.typeName ?? "", objectID: loadout.objectID))
+                    sections[groupID, default: Section(title: type?.group?.groupName, id: groupID, loadouts: [])].loadouts.append(Section.Loadout(typeID: loadout.typeID, name: loadout.name, typeName: type?.typeName ?? "", objectID: loadout.objectID, uuid: loadout.uuid ?? ""))
                 }
                 return sections.values
-                    .map{Section(title: $0.title, id: $0.id, loadouts: $0.loadouts.sorted{($0.typeName, $0.name ?? "") < ($1.typeName, $1.name ?? "")})}
+                    .map{Section(title: $0.title, id: $0.id, loadouts: $0.loadouts.sorted{($0.typeName, $0.name ?? "", $0.uuid) < ($1.typeName, $1.name ?? "", $1.uuid)})}
                     .sorted{($0.title ?? "") < ($1.title ?? "")}
             }
             .receive(on: RunLoop.main)

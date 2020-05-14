@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private var currentActivities: [AnyUserActivityProvider] = []
     private var isMainWindow: Bool = false
-    private var sharedState = SharedState(managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+    var sharedState = SharedState(managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext)
     private var subscriptions = Set<AnyCancellable>()
 
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -50,7 +50,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         func makeChildWindow(_ window: UIWindow, _ project: FittingProject) {
             isMainWindow = false
             let contentView = NavigationView {
-                FittingEditor(project: project).environmentObject(FittingAutosaver(project: project))
+                FittingEditor(project: project)
             }
             .navigationViewStyle(StackNavigationViewStyle())
             .modifier(rootModifier)
@@ -131,14 +131,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         for context in URLContexts {
-            if OAuth2.handleOpenURL(context.url, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey, completionHandler: { (result) in
-                
+            let isOAuth2 = OAuth2.handleOpenURL(context.url, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey, completionHandler: { (result) in
                 let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
                 switch result {
                 case let .success(token):
-                    let data = try? JSONEncoder().encode(token)
-                    let s = String(data: data!, encoding: .utf8)
-                    print(s)
+                    //                    let data = try? JSONEncoder().encode(token)
+                    //                    let s = String(data: data!, encoding: .utf8)
+                    //                    print(s)
                     if let account = try? context.from(Account.self).filter(/\Account.characterID == token.characterID).first() {
                         account.oAuth2Token = token
                     }
@@ -152,14 +151,34 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     }
                     
                 case let .failure(error):
-                    //                let controller = self.window?.rootViewController?.topMostPresentedViewController
-                    //                controller?.present(UIAlertController(error: error), animated: true, completion: nil)
+                    let controller = self.window?.rootViewController?.topMostPresentedViewController
+                    controller?.present(UIAlertController(error: error), animated: true, completion: nil)
+                }
+            })
+            
+            if !isOAuth2 {
+                guard let components = URLComponents(url: context.url, resolvingAgainstBaseURL: false), let scheme = components.scheme?.lowercased() else {return}
+                
+                switch scheme {
+                case URLScheme.showinfo:
+                    guard let path = components.path.components(separatedBy: "/").first else {break}
+                    guard let typeID = Int(path) else {break}
+                    return showTypeInfo(typeID: typeID)
+                case URLScheme.fitting:
+                    let dna = components.path
+                    guard let project = try? FittingProject(dna: dna, skillLevels: .level(5), managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext) else {break}
+                    
+                    if let activity = project.userActivity, UIApplication.shared.supportsMultipleScenes && OpenMode.default.openInNewWindow {
+                        project.updateUserActivityState(activity)
+                        UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
+                    }
+                    else {
+                        openFitting(fitting: project)
+                    }
+
+                default:
                     break
                 }
-            }) {
-                //            if let controller = self.window?.rootViewController?.topMostPresentedViewController as? SFSafariViewController {
-                //                controller.dismiss(animated: true, completion: nil)
-                //            }
             }
             
         }
@@ -174,14 +193,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             else {
                 let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
                 guard let fitting = try? userActivity.fitting(from: context) else {return}
-                guard let root = window?.rootViewController, let topController = sequence(first: root, next: {$0.presentedViewController}).reversed().first else {return}
-
-                let view = NavigationView {
-                    FittingEditor(project: fitting) { [weak topController] in
-                        topController?.dismiss(animated: true, completion: nil)
-                    }.environmentObject(FittingAutosaver(project: fitting))
-                }.modifier(ServicesViewModifier(managedObjectContext: context, backgroundManagedObjectContext: AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext(), sharedState: sharedState))
-                topController.present(UIHostingController(rootView: view), animated: true, completion: nil)
+                openFitting(fitting: fitting)
             }
         }
     }
@@ -194,6 +206,37 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func scene(_ scene: UIScene, willContinueUserActivityWithType userActivityType: String) {
+    }
+    
+    private func showTypeInfo(typeID: Int) {
+        let container = AppDelegate.sharedDelegate.persistentContainer
+        guard let controller = window?.rootViewController?.topMostPresentedViewController else {return}
+        guard let type = try? container.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == Int32(typeID)).first() else {return}
+        
+        let view = NavigationView {
+            TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close { [weak controller] in
+                controller?.dismiss(animated: true, completion: nil)
+            })
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .modifier(ServicesViewModifier(managedObjectContext: container.viewContext, backgroundManagedObjectContext: container.newBackgroundContext(), sharedState: sharedState))
+        
+        controller.present(UIHostingController(rootView: view), animated: true, completion: nil)
+    }
+    
+    private func openFitting(fitting: FittingProject) {
+        let container = AppDelegate.sharedDelegate.persistentContainer
+        guard let controller = window?.rootViewController?.topMostPresentedViewController else {return}
+        
+        let view = NavigationView {
+            FittingEditor(project: fitting) { [weak controller] in
+                controller?.dismiss(animated: true, completion: nil)
+            }
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .modifier(ServicesViewModifier(managedObjectContext: container.viewContext, backgroundManagedObjectContext: container.newBackgroundContext(), sharedState: sharedState))
+        
+        controller.present(UIHostingController(rootView: view), animated: true, completion: nil)
     }
 }
 

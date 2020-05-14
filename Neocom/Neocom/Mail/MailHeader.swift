@@ -72,6 +72,7 @@ struct MailHeaderContent: View {
     }
 }
 
+#if DEBUG
 struct MailHeader_Previews: PreviewProvider {
     static var previews: some View {
         let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: AppDelegate.sharedDelegate.persistentContainer.viewContext)!, insertInto: nil)
@@ -101,3 +102,4 @@ struct MailHeader_Previews: PreviewProvider {
 
     }
 }
+#endif

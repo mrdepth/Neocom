@@ -116,7 +116,7 @@ struct SkillsFilter: View {
     }
 }
 
-
+#if DEBUG
 struct Skills_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -127,3 +127,4 @@ struct Skills_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

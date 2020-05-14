@@ -39,6 +39,7 @@ struct MailDraftCell: View {
     }
 }
 
+#if DEBUG
 struct MailDraftCell_Previews: PreviewProvider {
     static var previews: some View {
         let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
@@ -53,3 +54,4 @@ struct MailDraftCell_Previews: PreviewProvider {
             .environmentObject(SharedState.testState())
     }
 }
+#endif

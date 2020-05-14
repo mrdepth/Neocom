@@ -95,6 +95,7 @@ struct ActivityViewTest: View {
     }
 }
 
+#if DEBUG
 struct ActivityView_Previews: PreviewProvider {
     static var previews: some View {
         ActivityViewTest()
@@ -104,3 +105,4 @@ struct ActivityView_Previews: PreviewProvider {
 
     }
 }
+#endif

@@ -45,6 +45,7 @@ struct Certificates: View {
     }
 }
 
+#if DEBUG
 struct Certificates_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -58,3 +59,4 @@ struct Certificates_Previews: PreviewProvider {
         .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
     }
 }
+#endif

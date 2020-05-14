@@ -56,6 +56,7 @@ struct IndustryJobsContent: View {
     }
 }
 
+#if DEBUG
 struct IndustryJobs_Previews: PreviewProvider {
     static var previews: some View {
         let solarSystem = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
@@ -99,3 +100,4 @@ struct IndustryJobs_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

@@ -50,6 +50,7 @@ struct MailBody: View {
                 Text(error!).padding()
             }
         }
+//        .navigationBarTitle(mail.subject ?? "Mail")
     }
 }
 
@@ -92,6 +93,7 @@ struct MailBodyContent: View {
                                 self.from.font(.headline)
                                 Group {
                                     (Text("To: ") + self.to.foregroundColor(.secondary))
+//                                    self.mailBody.subject.map{Text("Subject: ") + Text($0).foregroundColor(.secondary)}
                                     self.mailBody.timestamp.map { date in
                                         Text(DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .medium)).foregroundColor(.secondary)
                                     }
@@ -105,9 +107,12 @@ struct MailBodyContent: View {
                 }
             }
         }
+        .navigationBarTitle(mailBody.subject ?? "Mail")
+
     }
 }
 
+#if DEBUG
 struct MailBody_Previews: PreviewProvider {
     static var previews: some View {
         let account = AppDelegate.sharedDelegate.testingAccount
@@ -125,7 +130,11 @@ struct MailBody_Previews: PreviewProvider {
                      subject: "Mail Subject",
                      timestamp: Date())
         
-        return MailBodyContent(mailBody: body, contacts: [contact.contactID: contact])
+        return
+            NavigationView {
+                MailBodyContent(mailBody: body, contacts: [contact.contactID: contact])
+            }
             .environmentObject(SharedState.testState())
     }
 }
+#endif

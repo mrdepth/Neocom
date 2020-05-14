@@ -174,7 +174,9 @@ struct CharacterSheet: View {
                                                  corporationName: characterInfo?.corporation?.value?.name,
                                                  corporationImage: characterInfo?.corporationImage?.value,
                                                  allianceName: characterInfo?.alliance?.value?.name,
-                                                 allianceImage: characterInfo?.allianceImage?.value).listRowInsets(EdgeInsets())
+                                                 allianceImage: characterInfo?.allianceImage?.value)
+                                .listRowInsets(EdgeInsets())
+                                .listRowBackground(Color(.systemGroupedBackground))
                         }
                     }
                     (characterInfo?.character?.value).map { info in
@@ -214,12 +216,15 @@ struct CharacterSheet: View {
     }
 }
 
+#if DEBUG
 struct CharacterSheet_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             CharacterSheet()
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }
+#endif

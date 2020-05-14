@@ -161,6 +161,7 @@ struct SkillPlansContent: View {
     }
 }
 
+#if DEBUG
 struct SkillPlans_Previews: PreviewProvider {
     static var previews: some View {
         let account = AppDelegate.sharedDelegate.testingAccount
@@ -179,3 +180,4 @@ struct SkillPlans_Previews: PreviewProvider {
         }
     }
 }
+#endif

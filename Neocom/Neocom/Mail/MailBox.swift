@@ -88,6 +88,7 @@ struct MailBox: View {
     }
 }
 
+#if DEBUG
 struct MailBox_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -97,4 +98,4 @@ struct MailBox_Previews: PreviewProvider {
         }
     }
 }
-
+#endif

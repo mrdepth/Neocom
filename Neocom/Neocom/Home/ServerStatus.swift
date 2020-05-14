@@ -13,12 +13,16 @@ import Combine
 
 struct ServerStatus: View {
     @EnvironmentObject private var sharedState: SharedState
-    @ObservedObject private var status = Lazy<DataLoader<ESI.ServerStatus, AFError>, Never>()
+    @ObservedObject private var status = Lazy<DataLoader<ESI.ServerStatus, AFError>, Account?>()
     var body: some View {
-        let status = self.status.get(initial: DataLoader(sharedState.esi.status.get().map{$0.value}.receive(on: RunLoop.main))).result?.value
+        let result = self.status.get(sharedState.account, initial: DataLoader(sharedState.esi.status.get().map{$0.value}.receive(on: RunLoop.main))).result
+        let status = result?.value
         return Group {
             if status != nil {
                 ServerStatusContent(status: status!)
+            }
+            else if result?.error != nil {
+                (Text("Tranquility - ") + Text("Offline").fontWeight(.semibold)).modifier(SecondaryLabelModifier())
             }
             else {
                 Text(" ").modifier(SecondaryLabelModifier())
@@ -56,6 +60,7 @@ struct ServerStatusContent: View {
     }
 }
 
+#if DEBUG
 struct ServerStatus_Previews: PreviewProvider {
     static var previews: some View {
         List {
@@ -64,3 +69,4 @@ struct ServerStatus_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

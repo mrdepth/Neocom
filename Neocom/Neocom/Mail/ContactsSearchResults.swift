@@ -54,9 +54,11 @@ struct ContactsSearchResults: View {
     }
 }
 
+#if DEBUG
 struct ContactsSearchResults_Previews: PreviewProvider {
     static var previews: some View {
         ContactsSearchResults(contacts: []) { _ in}
             .environmentObject(SharedState.testState())
     }
 }
+#endif

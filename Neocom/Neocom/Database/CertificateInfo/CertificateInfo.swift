@@ -41,12 +41,14 @@ struct CertificateInfo: View {
                     Text("Requirements").tag(Mode.requirements)
                 }.pickerStyle(SegmentedPickerStyle())) {EmptyView()}
             if mode == .info {
-                CertificateMasteryInfo(certificate: certificate, masteryLevel: masteryLevel, pilot: nil)
+                CertificateMasteryInfo(certificate: certificate, masteryLevel: masteryLevel, pilot: pilot)
             }
             else {
                 CertificateRequirementsInfo(types: requirements.get(initial: types()))
             }
-        }.listStyle(GroupedListStyle())
+        }
+        .listStyle(GroupedListStyle())
+        .navigationBarTitle("Info")
     }
 }
 

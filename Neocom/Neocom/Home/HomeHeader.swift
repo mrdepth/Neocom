@@ -43,6 +43,7 @@ struct HomeHeader: View {
     }
 }
 
+#if DEBUG
 struct HomeHeader_Previews: PreviewProvider {
     static var previews: some View {
         HomeHeader()
@@ -51,3 +52,4 @@ struct HomeHeader_Previews: PreviewProvider {
 
     }
 }
+#endif

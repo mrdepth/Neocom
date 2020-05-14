@@ -64,6 +64,7 @@ fileprivate struct SkillLevelQueueIndicator: View {
     }
 }
 
+#if DEBUG
 struct SkillLevelCell_Previews: PreviewProvider {
     static var previews: some View {
         let type = SDEInvType.gallenteCarrier
@@ -75,3 +76,4 @@ struct SkillLevelCell_Previews: PreviewProvider {
             .environmentObject(SharedState.testState())
     }
 }
+#endif

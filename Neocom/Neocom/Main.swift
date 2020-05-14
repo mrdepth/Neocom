@@ -33,7 +33,7 @@ struct FittingRestore: View {
     
     var body: some View {
         restoredFitting.map{
-            NavigationLink(destination: FittingEditor(project: $0).environmentObject(FittingAutosaver(project: $0)),
+            NavigationLink(destination: FittingEditor(project: $0),
             tag: $0,
             selection: $restoredFitting, label: {EmptyView()})}
     }
@@ -73,6 +73,7 @@ struct Main: View {
     }
 }
 
+#if DEBUG
 struct Main_Previews: PreviewProvider {
     static var previews: some View {
         return Main()
@@ -81,3 +82,4 @@ struct Main_Previews: PreviewProvider {
 
     }
 }
+#endif

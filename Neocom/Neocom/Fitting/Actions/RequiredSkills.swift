@@ -94,6 +94,7 @@ struct RequiredSkillsSection: View {
     }
 }
 
+#if DEBUG
 struct RequiredSkills_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -106,3 +107,4 @@ struct RequiredSkills_Previews: PreviewProvider {
         .environmentObject(SharedState.testState())
     }
 }
+#endif

@@ -16,6 +16,8 @@ struct CharacterSheetHeader: View {
     var allianceName: String?
     var allianceImage: UIImage?
     
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
     private var title: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(characterName ?? "").font(.title)
@@ -43,18 +45,33 @@ struct CharacterSheetHeader: View {
     }
     
     var body: some View {
-        Image(uiImage: characterImage ?? UIImage()).resizable().scaledToFit()
-            .overlay(title, alignment: .bottomLeading)
+        let image = Image(uiImage: characterImage ?? UIImage()).resizable().scaledToFit()
+        return Group {
+            if horizontalSizeClass == .regular {
+                image.frame(maxWidth: 512)
+                    .cornerRadius(8)
+//                    .padding(15)
+                    .overlay(title, alignment: .bottomLeading)
+//                    .frame(maxWidth: .infinity)
+            }
+            else {
+                image.overlay(title, alignment: .bottomLeading)
+            }
+        }
     }
 }
 
 struct CharacterSheetHeader_Previews: PreviewProvider {
     static var previews: some View {
-        CharacterSheetHeader(characterName: "Artem Valiant",
-                             characterImage: UIImage(named: "character"),
-                             corporationName: "Necrorise Squadron",
-                             corporationImage: UIImage(named: "corporation"),
-                             allianceName: "Red Alert",
-                             allianceImage: UIImage(named: "alliance"))
+        NavigationView {
+            List {
+            CharacterSheetHeader(characterName: "Artem Valiant",
+                                 characterImage: UIImage(named: "character"),
+                                 corporationName: "Necrorise Squadron",
+                                 corporationImage: UIImage(named: "corporation"),
+                                 allianceName: "Red Alert",
+                                 allianceImage: UIImage(named: "alliance"))
+            }.listStyle(GroupedListStyle())
+        }.navigationViewStyle(StackNavigationViewStyle())
     }
 }

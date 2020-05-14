@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:Neocom/Neocom.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/EVEOnlineAPI/EVEAPI/EVEAPI.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/EVEOnlineAPI/ThirdParty/Alamofire/Alamofire.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/dgmpp/XCode/dgmpp.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/CloudData/CloudData/CloudData.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Playground.playground">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/clrconvert/clrconvert.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/swifter/XCode/Swifter.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/Expressible/Expressible.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/ASReceipt/ASReceipt.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/TreeController/TreeController.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/EVEOnlineAPI/ThirdParty/Futures/Futures.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ThirdParty/SheetPresentation/SheetPresentation.xcodeproj">
+   </FileRef>
+</Workspace>

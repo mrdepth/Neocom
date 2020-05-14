@@ -13,7 +13,9 @@
 		1278552A20331AC900E7CD7E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1278552920331AC900E7CD7E /* main.swift */; };
 		127855312033269A00E7CD7E /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127855302033269A00E7CD7E /* Schema.swift */; };
 		12C26151203C8F2200A588A2 /* CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C26150203C8F2200A588A2 /* CoreData.swift */; };
-		12C26157203C927F00A588A2 /* NCDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12C26155203C927F00A588A2 /* NCDatabase.xcdatamodeld */; };
+		16B9E08B24190F910083E9C2 /* Cache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 16B9E08924190F910083E9C2 /* Cache.xcdatamodeld */; };
+		16E3DBFC238C0894005F5AAE /* SDE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBF8238C0894005F5AAE /* SDE.xcdatamodeld */; };
+		16E3DBFD238C0894005F5AAE /* Storage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBFA238C0894005F5AAE /* Storage.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,7 +39,9 @@
 		1278552920331AC900E7CD7E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		127855302033269A00E7CD7E /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
 		12C26150203C8F2200A588A2 /* CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreData.swift; sourceTree = "<group>"; };
-		12C26156203C927F00A588A2 /* NCDatabase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NCDatabase.xcdatamodel; sourceTree = "<group>"; };
+		16B9E08A24190F910083E9C2 /* Cache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Cache.xcdatamodel; sourceTree = "<group>"; };
+		16E3DBF9238C0894005F5AAE /* SDE.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SDE.xcdatamodel; sourceTree = "<group>"; };
+		16E3DBFB238C0894005F5AAE /* Storage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Storage.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +74,9 @@
 		1278552820331AC900E7CD7E /* sde-tool */ = {
 			isa = PBXGroup;
 			children = (
-				12C26155203C927F00A588A2 /* NCDatabase.xcdatamodeld */,
+				16E3DBF8238C0894005F5AAE /* SDE.xcdatamodeld */,
+				16E3DBFA238C0894005F5AAE /* Storage.xcdatamodeld */,
+				16B9E08924190F910083E9C2 /* Cache.xcdatamodeld */,
 				1278552920331AC900E7CD7E /* main.swift */,
 				12483A9A203C082F00AEE950 /* Utils.swift */,
 				12C26150203C8F2200A588A2 /* CoreData.swift */,
@@ -142,9 +148,11 @@
 			files = (
 				12C26151203C8F2200A588A2 /* CoreData.swift in Sources */,
 				127855312033269A00E7CD7E /* Schema.swift in Sources */,
-				12C26157203C927F00A588A2 /* NCDatabase.xcdatamodeld in Sources */,
 				12483A9B203C082F00AEE950 /* Utils.swift in Sources */,
 				124A85D3204554560079619D /* dgmpp.swift in Sources */,
+				16E3DBFD238C0894005F5AAE /* Storage.xcdatamodeld in Sources */,
+				16E3DBFC238C0894005F5AAE /* SDE.xcdatamodeld in Sources */,
+				16B9E08B24190F910083E9C2 /* Cache.xcdatamodeld in Sources */,
 				1278552A20331AC900E7CD7E /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -311,14 +319,36 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		12C26155203C927F00A588A2 /* NCDatabase.xcdatamodeld */ = {
+		16B9E08924190F910083E9C2 /* Cache.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				12C26156203C927F00A588A2 /* NCDatabase.xcdatamodel */,
+				16B9E08A24190F910083E9C2 /* Cache.xcdatamodel */,
 			);
-			currentVersion = 12C26156203C927F00A588A2 /* NCDatabase.xcdatamodel */;
-			name = NCDatabase.xcdatamodeld;
-			path = ../../../Neocom/Neocom/NCDatabase.xcdatamodeld;
+			currentVersion = 16B9E08A24190F910083E9C2 /* Cache.xcdatamodel */;
+			name = Cache.xcdatamodeld;
+			path = ../../../Neocom/Neocom/Model/Cache.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		16E3DBF8238C0894005F5AAE /* SDE.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				16E3DBF9238C0894005F5AAE /* SDE.xcdatamodel */,
+			);
+			currentVersion = 16E3DBF9238C0894005F5AAE /* SDE.xcdatamodel */;
+			name = SDE.xcdatamodeld;
+			path = ../../../Neocom/Neocom/Model/SDE.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		16E3DBFA238C0894005F5AAE /* Storage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				16E3DBFB238C0894005F5AAE /* Storage.xcdatamodel */,
+			);
+			currentVersion = 16E3DBFB238C0894005F5AAE /* Storage.xcdatamodel */;
+			name = Storage.xcdatamodeld;
+			path = ../../../Neocom/Neocom/Model/Storage.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

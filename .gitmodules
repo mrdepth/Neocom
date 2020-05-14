@@ -1,15 +1,9 @@
 [submodule "ThirdParty/EVEOnlineAPI"]
 	path = ThirdParty/EVEOnlineAPI
 	url = https://github.com/mrdepth/EVEOnlineAPI.git
-[submodule "ThirdParty/tools"]
-	path = ThirdParty/tools
-	url = https://github.com/mrdepth/tools.git
 [submodule "ThirdParty/dgmpp"]
 	path = ThirdParty/dgmpp
 	url = https://github.com/mrdepth/libdgmpp.git
-[submodule "ThirdParty/flurry-ios-sdk"]
-	path = ThirdParty/flurry-ios-sdk
-	url = https://github.com/flurry/flurry-ios-sdk.git
 [submodule "ThirdParty/TreeController"]
 	path = ThirdParty/TreeController
 	url = https://github.com/mrdepth/TreeController.git
@@ -25,3 +19,9 @@
 [submodule "ThirdParty/ASReceipt"]
 	path = ThirdParty/ASReceipt
 	url = ../ASReceipt.git
+[submodule "ThirdParty/Expressible"]
+	path = ThirdParty/Expressible
+	url = https://github.com/mrdepth/Expressible.git
+[submodule "ThirdParty/SheetPresentation"]
+	path = ThirdParty/SheetPresentation
+	url = ../SheetPresentation.git

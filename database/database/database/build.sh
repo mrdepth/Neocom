@@ -1,12 +1,14 @@
 out=${TEMP_DIR}
 
+mkdir -p ${out}
+
 if [[ $ACTION = "clean" ]]; then
 	find "$out" -name "*.sqlite" -type f -delete
 	exit
 fi
 
 html=`curl https://developers.eveonline.com/resource/resources`
-sde=`[[ "$html" =~ (http[^\"]*data\/sde\/tranquility\/[^\"]*zip) ]] && echo ${BASH_REMATCH[1]}`
+sde=`[[ "$html" =~ (http[^\"]*eve-static-data-export[^\"]*zip) ]] && echo ${BASH_REMATCH[1]}`
 icons=`[[ "$html" =~ (http[^\"]*data\/([^\"]*)_Icons.zip) ]] && echo ${BASH_REMATCH[1]}`
 version=`[[ "$html" =~ (http[^\"]*data\/([^\"]*)_Icons.zip) ]] && echo ${BASH_REMATCH[2]}`
 types=`[[ "$html" =~ (http[^\"]*data\/([^\"]*)_Types.zip) ]] && echo ${BASH_REMATCH[1]}`
@@ -49,7 +51,7 @@ if [ ! -d "${version}" ]; then
 	unzip -n "${typesname}" -d "${version}"
 
 	cd $version
-	python "${SRCROOT}/database/dump.py"
+#	python "${SRCROOT}/database/dump.py"
 
 	find ./sde -name "*.yaml" -exec bash -c 'echo $1; ${TARGET_BUILD_DIR}/yaml2json $1 > "${1%.yaml}".json' - {} \;
 	find ./sde -name "*.staticdata" -exec bash -c 'echo $1; ${TARGET_BUILD_DIR}/yaml2json $1 > "${1%.staticdata}".json' - {} \;
@@ -58,10 +60,14 @@ if [ ! -d "${version}" ]; then
 fi
 
 
-if [ ! -f "${out}/${version}/NCDatabase.sqlite" ]; then
+if [ ! -f "${out}/${version}/SDE.sqlite" ]; then
+    V=`date +%F`
 	cd $version
-	${TARGET_BUILD_DIR}/sde-tool -o "${out}/${version}/NCDatabase.sqlite" -i "${out}/${version}"
-	sqlite3 "${out}/${version}/NCDatabase.sqlite" "vacuum"
-	yes | cp "${out}/${version}/NCDatabase.sqlite" "${PROJECT_DIR}/../../Neocom/NCDatabase.sqlite"
-	echo "extension NCDatabase { static let version = \"$version\" }" > "${PROJECT_DIR}/../../Neocom/NCDatabaseVersion.swift"
+	${TARGET_BUILD_DIR}/sde-tool -o "${out}/${version}/SDE.sqlite" -i "${out}/${version}"
+	sqlite3 "${out}/${version}/SDE.sqlite" "vacuum"
+	yes | cp "${out}/${version}/SDE.sqlite" "${PROJECT_DIR}/../../Neocom/SDE.sqlite"
+	echo "let SDEVersion = \"$V\"" > "${PROJECT_DIR}/../../Neocom/SDEVersion.swift"
 fi
+
+cd "${PROJECT_DIR}/../../ThirdParty/dgmpp/dbinit"
+python3 ./build.py "${out}/${version}/sde" "${PROJECT_DIR}/../../ThirdParty/dgmpp/src/SDE"

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Kind</key>
+	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
+	<key>Description</key>
+	<string>Neocom II Module</string>
+	<key>Summary</key>
+	<string>Neocom II Module</string>
+	<key>SortOrder</key>
+	<string>30</string>
+	<key>AllowedTypes</key>
+	<array>
+		<string>public.swift-source</string>
+	</array>
+	<key>DefaultCompletionName</key>
+	<string>File</string>
+	<key>MainTemplateFile</key>
+	<string>___FILEBASENAME___.swift</string>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Description</key>
+			<string>Name of the module</string>
+			<key>Identifier</key>
+			<string>productName</string>
+			<key>Name</key>
+			<string>Module Name:</string>
+			<key>NotPersisted</key>
+			<string>Yes</string>
+			<key>Required</key>
+			<string>Yes</string>
+			<key>Type</key>
+			<string>text</string>
+		</dict>
+		<dict>
+			<key>Identifier</key>
+			<string>TreeView</string>
+			<key>Name</key>
+			<string>TreeView</string>
+			<key>Description</key>
+			<string>Make TreeView base</string>
+			<key>Type</key>
+			<string>checkbox</string>
+			<key>Default</key>
+			<string>true</string>
+			<key>NotPersisted</key>
+			<true/>
+		</dict>
+	</array>
+</dict>
+</plist>

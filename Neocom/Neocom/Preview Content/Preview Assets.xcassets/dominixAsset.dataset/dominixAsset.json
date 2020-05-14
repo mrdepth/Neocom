@@ -1,0 +1,338 @@
+{
+  "nested": [
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 12068,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "MedSlot4",
+        "is_singleton": true,
+        "item_id": 1002036297854
+      },
+      "typeName": "100MN Afterburner II",
+      "groupName": "Propulsion Module",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 11325,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "LoSlot1",
+        "is_singleton": true,
+        "item_id": 1002036303107
+      },
+      "typeName": "1600mm Rolled Tungsten Compact Plates",
+      "groupName": "Armor Reinforcer",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 11646,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "LoSlot6",
+        "is_singleton": true,
+        "item_id": 1002036303603
+      },
+      "typeName": "Armor Explosive Hardener II",
+      "groupName": "Armor Hardener",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 11644,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "LoSlot5",
+        "is_singleton": true,
+        "item_id": 1002036302539
+      },
+      "typeName": "Armor Kinetic Hardener II",
+      "groupName": "Armor Hardener",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 18,
+        "type_id": 11289,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "Cargo",
+        "is_singleton": false,
+        "item_id": 1002036554679
+      },
+      "typeName": "Cap Booster 800",
+      "groupName": "Capacitor Booster Charge",
+      "categoryID": 8,
+      "categoryName": "Charge",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 2048,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "LoSlot2",
+        "is_singleton": true,
+        "item_id": 1002036300872
+      },
+      "typeName": "Damage Control II",
+      "groupName": "Damage Control",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 11269,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "LoSlot0",
+        "is_singleton": true,
+        "item_id": 1002036313901
+      },
+      "typeName": "Energized Adaptive Nano Membrane II",
+      "groupName": "Armor Plating Energized",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 16475,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "HiSlot4",
+        "is_singleton": true,
+        "item_id": 1002036313940
+      },
+      "typeName": "Heavy Gremlin Compact Energy Neutralizer",
+      "groupName": "Energy Neutralizer",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 16475,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "HiSlot5",
+        "is_singleton": true,
+        "item_id": 1002036297119
+      },
+      "typeName": "Heavy Gremlin Compact Energy Neutralizer",
+      "groupName": "Energy Neutralizer",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 16475,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "HiSlot3",
+        "is_singleton": true,
+        "item_id": 1002036313938
+      },
+      "typeName": "Heavy Gremlin Compact Energy Neutralizer",
+      "groupName": "Energy Neutralizer",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 26914,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "HiSlot0",
+        "is_singleton": true,
+        "item_id": 1002036313935
+      },
+      "typeName": "Large Remote Armor Repairer II",
+      "groupName": "Remote Armor Repairer",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 25894,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "RigSlot2",
+        "is_singleton": true,
+        "item_id": 1002036314812
+      },
+      "typeName": "Large Trimark Armor Pump I",
+      "groupName": "Rig Armor",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 25894,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "RigSlot1",
+        "is_singleton": true,
+        "item_id": 1002036314997
+      },
+      "typeName": "Large Trimark Armor Pump I",
+      "groupName": "Rig Armor",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 10,
+        "type_id": 2446,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "DroneBay",
+        "is_singleton": false,
+        "item_id": 1002036313947
+      },
+      "typeName": "Ogre II",
+      "groupName": "Combat Drone",
+      "categoryID": 18,
+      "categoryName": "Drone",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 2446,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "DroneBay",
+        "is_singleton": true,
+        "item_id": 1002452858239
+      },
+      "typeName": "Ogre II",
+      "groupName": "Combat Drone",
+      "categoryID": 18,
+      "categoryName": "Drone",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 2446,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "DroneBay",
+        "is_singleton": true,
+        "item_id": 1002452858233
+      },
+      "typeName": "Ogre II",
+      "groupName": "Combat Drone",
+      "categoryID": 18,
+      "categoryName": "Drone",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 2446,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "DroneBay",
+        "is_singleton": true,
+        "item_id": 1002452858241
+      },
+      "typeName": "Ogre II",
+      "groupName": "Combat Drone",
+      "categoryID": 18,
+      "categoryName": "Drone",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 1952,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "MedSlot1",
+        "is_singleton": true,
+        "item_id": 1006102678270
+      },
+      "typeName": "Sensor Booster II",
+      "groupName": "Sensor Booster",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 527,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "MedSlot3",
+        "is_singleton": true,
+        "item_id": 1002036300330
+      },
+      "typeName": "Stasis Webifier II",
+      "groupName": "Stasis Web",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    },
+    {
+      "underlyingAsset": {
+        "quantity": 1,
+        "type_id": 3244,
+        "location_type": "other",
+        "location_id": 1002036289264,
+        "location_flag": "MedSlot2",
+        "is_singleton": true,
+        "item_id": 1002036299267
+      },
+      "typeName": "Warp Disruptor II",
+      "groupName": "Warp Scrambler",
+      "categoryID": 7,
+      "categoryName": "Module",
+      "nested": []
+    }
+  ],
+  "underlyingAsset": {
+    "quantity": 1,
+    "type_id": 645,
+    "location_type": "station",
+    "location_id": 60005686,
+    "location_flag": "Hangar",
+    "is_singleton": true,
+    "item_id": 1002036289264
+  },
+  "categoryID": 6,
+  "assetName": "Alarma",
+  "groupName": "Battleship",
+  "typeName": "Dominix",
+  "categoryName": "Ship"
+}

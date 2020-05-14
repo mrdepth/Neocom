@@ -1,0 +1,13 @@
+{
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  },
+  "data" : [
+    {
+      "idiom" : "universal",
+      "filename" : "dominixAsset.json",
+      "universal-type-identifier" : "public.json"
+    }
+  ]
+}

@@ -17,6 +17,7 @@ struct LocalizedString: Codable {
 	var ja: String?
 	var ru: String?
 	var zh: String?
+    var ko: String?
 }
 
 struct CategoryID: Codable {
@@ -69,6 +70,8 @@ struct TypeID: Codable {
 	var sofMaterialSetID: Int?
 	var iconID: Int?
 	var traits: Traits?
+    var metaGroupID: Int?
+    var variationParentTypeID: Int?
 }
 
 struct Blueprint: Codable {
@@ -156,7 +159,7 @@ struct Bloodline: Codable {
 	var shortDescription: String
 	var shortFemaleDescription: String
 	var shortMaleDescription: String
-	
+
 	var corporationID: Int
 	var iconID: Int?
 	var shipTypeID: Int
@@ -209,25 +212,27 @@ struct Item: Codable {
 }
 
 struct MarketGroup: Codable {
-	var description: String?
+    var descriptionID: LocalizedString?
 	var hasTypes: Bool
 	var iconID: Int?
-	var marketGroupID: Int
-	var marketGroupName: String
+//	var marketGroupID: Int
+    var nameID: LocalizedString
 	var parentGroupID: Int?
 }
 
 struct MetaGroup: Codable {
-	var metaGroupID: Int
-	var metaGroupName: String
-	var description: String?
+    var nameID: LocalizedString
+    var iconID: Int?
+    var iconSuffix: String?
+//    var metaGroupNameID: Int?
+    var descriptionID: LocalizedString?
 }
 
-struct MetaType: Codable {
-	var metaGroupID: Int
-	var parentTypeID: Int
-	var typeID: Int
-}
+//struct MetaType: Codable {
+//	var metaGroupID: Int
+//	var parentTypeID: Int
+//	var typeID: Int
+//}
 
 struct Name: Codable {
 	var itemID: Int
@@ -267,10 +272,12 @@ struct PlanetSchematicsTypeMap: Codable {
 
 struct Activity: Codable {
 	var activityID: Int
-	var activityName: String
-	var description: String
+	var activityName: String?
+	var description: String?
 	var iconNo: String?
 	var published: Bool
+    var descriptionID: Int
+    var activityNameID: Int
 }
 
 struct AssemblyLineStation: Codable {
@@ -303,13 +310,14 @@ struct AssemblyLineType: Codable {
 	var activityID: Int
 	var assemblyLineTypeID: Int
 	var assemblyLineTypeName: String
-	var baseCostMultiplier: Double
+	var baseCostMultiplier: Double?
 	var baseMaterialMultiplier: Double
 	var baseTimeMultiplier: Double
 	var description: String
 	var volume: Double
 	var minCostPerHour: Double?
 }
+
 
 struct InstallationTypeContent: Codable {
 	var assemblyLineTypeID: Int
@@ -433,7 +441,7 @@ struct SolarSystem: Codable {
 			var typeID: Int
 			var useOperationName: Bool
 		}
-		
+
 		var celestialIndex: Int
 		var planetAttributes: Attributes
 		var position: [Double]
@@ -444,7 +452,7 @@ struct SolarSystem: Codable {
 		var asteroidBelts: [Int: AsteroidBelt]?
 		var npcStations: [Int: Station]?
 		var planetNameID: Int?
-		
+
 	}
 	
 	struct Star: Codable {
@@ -512,35 +520,54 @@ struct AttributeCategory: Codable {
 }
 
 struct AttributeType: Codable {
-	var attributeID: Int
-	var attributeName: String
-	var categoryID: Int?
-	var defaultValue: Double
-	var description: String
-	var highIsGood: Bool
-	var published: Bool
-	var stackable: Bool
-	var iconID: Int?
-	var unitID: Int?
-	var displayName: String?
+    var attributeID: Int
+    var categoryID: Int?
+    var dataType: String?
+    var defaultValue: Double
+    var description: String?
+    var displayNameID: LocalizedString?
+    var highIsGood: Bool
+    var iconID: Int?
+    var name: String
+    var published: Bool
+    var stackable: Bool
+    var tooltipDescriptionID: LocalizedString?
+    var tooltipTitleID: LocalizedString?
+    var unitID: Int?
+    var maxAttributeID: Int?
+    var chargeRechargeTimeID: Int?
+//	var attributeID: Int
+//	var attributeName: String
+//	var categoryID: Int?
+//	var defaultValue: Double
+//	var description: String
+//	var highIsGood: Bool
+//	var published: Bool
+//	var stackable: Bool
+//	var iconID: Int?
+//	var unitID: Int?
+//	var displayName: String?
 }
 
 struct TypeAttribute: Codable {
 	var attributeID: Int
 	var typeID: Int
-	var value: Double?
-	//	var valueInt: Int?
-	//	var valueFloat: Double?
+//	var value: Double?
+	var valueInt: Int?
+	var valueFloat: Double?
+    var value: Double? {
+        valueFloat ?? valueInt.map{Double($0)}
+    }
 }
 
 struct Effect: Codable {
-	var description: String?
+	var descriptionID: LocalizedString?
 	var disallowAutoRepeat: Bool
 	var dischargeAttributeID: Int?
-	var displayName: String
-	var distribution: Int?
+	var displayNameID: LocalizedString?
+	var distribution: String?
 	var durationAttributeID: Int?
-	var effectCategory: Int
+	var effectCategory: String
 	var effectID: Int
 	var effectName: String
 	var electronicChance: Bool
@@ -548,8 +575,8 @@ struct Effect: Codable {
 	var isAssistance: Bool
 	var isOffensive: Bool
 	var isWarpSafe: Bool
-	var postExpression: Int
-	var preExpression: Int
+	var postExpression: Int?
+	var preExpression: Int?
 	var propulsionChance: Bool
 	var published: Bool
 	var rangeChance: Bool
@@ -558,15 +585,30 @@ struct Effect: Codable {
 	var iconID: Int?
 	var falloffAttributeID: Int?
 	var fittingUsageChanceAttributeID: Int?
-	var modifierInfo: String?
 	var npcActivationChanceAttributeID: Int?
+    var resistanceAttributeID: Int?
+    var npcUsageChanceAttributeID: Int?
+    var trackingSpeedAttributeID: Int?
+    var modifierInfo: [Modifier]?
+    
+    struct Modifier: Codable {
+        var domain: String
+        var `func`: String
+        var modifiedAttributeID: Int?
+        var modifyingAttributeID: Int?
+        var operation: String?
+        var skillTypeID: Int?
+        var groupID: Int?
+        var domainID: Int?
+        var effectID: Int?
+    }
 }
 
 struct TypeEffect: Codable {
 	var effectID: Int
 	var isDefault: Bool
 	var typeID: Int
-	
+
 }
 
 struct NPCGroup: Codable {
@@ -574,6 +616,20 @@ struct NPCGroup: Codable {
 	var iconName: String?
 	var groupID: Int?
 	var groups: [NPCGroup]?
+}
+
+struct TypeDogma: Codable {
+    struct Attribute: Codable {
+        var attributeID: Int
+        var value: Double
+    }
+    struct Effect: Codable {
+        var effectID: Int
+        var isDefault: Bool
+    }
+    
+    var dogmaAttributes: [Attribute]
+    var dogmaEffects: [Effect]
 }
 
 enum Schema {
@@ -590,9 +646,9 @@ enum Schema {
 	typealias Units = [Unit]
 	typealias Flags = [Flag]
 	typealias Items = [Item]
-	typealias MarketGroups = [MarketGroup]
-	typealias MetaGroups = [MetaGroup]
-	typealias MetaTypes = [MetaType]
+    typealias MarketGroups = [Int: MarketGroup]
+    typealias MetaGroups = [Int: MetaGroup]
+//	typealias MetaTypes = [MetaType]
 	typealias Names = [Name]
 	typealias TypeMaterials = [TypeMaterial]
 	typealias TypeReactions = [TypeReaction]
@@ -607,10 +663,11 @@ enum Schema {
 	typealias InstallationTypeContents = [InstallationTypeContent]
 	typealias Stations = [Station]
 	typealias AttributeCategories = [AttributeCategory]
-	typealias AttributeTypes = [AttributeType]
-	typealias TypeAttributes = [TypeAttribute]
-	typealias Effects = [Effect]
-	typealias TypeEffects = [TypeEffect]
+    typealias AttributeTypes = [Int: AttributeType]
+//	typealias TypeAttributes = [TypeAttribute]
+    typealias Effects = [Int: Effect]
+//	typealias TypeEffects = [TypeEffect]
 	typealias Universes = [Universe]
+    typealias TypesDogma = [Int: TypeDogma]
 }
 

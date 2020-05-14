@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TreeDefaultPortraitCell" rowHeight="233" id="3fa-6d-yEL" customClass="TreeDefaultCell" customModule="Neocom" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="233"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3fa-6d-yEL" id="DHO-S0-ueQ">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="232.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="QoB-NQ-hWd">
+                        <rect key="frame" x="71.5" y="0.0" width="232.5" height="232.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="QoB-NQ-hWd" secondAttribute="height" id="2Mk-4Q-GSc"/>
+                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="512" id="wnA-B5-eyE"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="QoB-NQ-hWd" secondAttribute="bottom" id="3Yv-70-KSU"/>
+                    <constraint firstAttribute="trailing" secondItem="QoB-NQ-hWd" secondAttribute="trailing" priority="750" id="8Cg-Vn-YUj"/>
+                    <constraint firstItem="QoB-NQ-hWd" firstAttribute="centerX" secondItem="DHO-S0-ueQ" secondAttribute="centerX" id="AE9-rf-QIM"/>
+                    <constraint firstItem="QoB-NQ-hWd" firstAttribute="leading" secondItem="DHO-S0-ueQ" secondAttribute="leading" priority="750" id="Agz-4Y-VSP"/>
+                    <constraint firstItem="QoB-NQ-hWd" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DHO-S0-ueQ" secondAttribute="leading" id="duy-fQ-c0t"/>
+                    <constraint firstItem="QoB-NQ-hWd" firstAttribute="top" secondItem="DHO-S0-ueQ" secondAttribute="top" id="r7p-Zf-SLB"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="QoB-NQ-hWd" secondAttribute="trailing" id="vxN-yj-UlS"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="iconView" destination="QoB-NQ-hWd" id="OI6-JU-DFE"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

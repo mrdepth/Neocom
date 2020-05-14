@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="InvTypeInfoDescriptionCell" rowHeight="388" id="uqA-nr-QhU" customClass="InvTypeInfoDescriptionCell" customModule="Neocom" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="388"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uqA-nr-QhU" id="Uen-HF-zE1">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="387.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="8Wv-kb-cW0">
+                        <rect key="frame" x="16" y="11" width="343" height="366"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qjs-YW-tmC">
+                                <rect key="frame" x="43.5" y="0.0" width="256" height="256"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="qjs-YW-tmC" secondAttribute="height" id="4pf-V0-7z7"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="256" id="KdT-EF-6pa"/>
+                                </constraints>
+                            </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="7Wd-cS-LpW">
+                                <rect key="frame" x="0.0" y="264" width="343" height="102"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                    </stackView>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="uzd-fA-ofK">
+                        <rect key="frame" x="238" y="26" width="62.5" height="53.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="kZo-ae-N8m">
+                                <rect key="frame" x="0.0" y="0.0" width="62.5" height="33.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="28"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" text="Label" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k1S-yX-28U">
+                                <rect key="frame" x="29.5" y="37.5" width="33" height="16"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="uzd-fA-ofK" firstAttribute="top" secondItem="qjs-YW-tmC" secondAttribute="top" constant="15" id="AMB-Yn-6hb"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="8Wv-kb-cW0" secondAttribute="bottom" id="W3f-sf-AEY"/>
+                    <constraint firstItem="uzd-fA-ofK" firstAttribute="trailing" secondItem="qjs-YW-tmC" secondAttribute="trailing" constant="-15" id="YTr-gA-tKF"/>
+                    <constraint firstItem="8Wv-kb-cW0" firstAttribute="leading" secondItem="Uen-HF-zE1" secondAttribute="leadingMargin" id="i6t-gB-ged"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="8Wv-kb-cW0" secondAttribute="trailing" id="jsB-4j-u3J"/>
+                    <constraint firstItem="8Wv-kb-cW0" firstAttribute="top" secondItem="Uen-HF-zE1" secondAttribute="topMargin" id="p45-AU-EIT"/>
+                    <constraint firstItem="uzd-fA-ofK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="qjs-YW-tmC" secondAttribute="leading" constant="15" id="y9V-tc-1uG"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="descriptionTextView" destination="7Wd-cS-LpW" id="MKb-cd-rTX"/>
+                <outlet property="iconView" destination="qjs-YW-tmC" id="951-F3-hXQ"/>
+                <outlet property="subtitleLabel" destination="k1S-yX-28U" id="wrq-ET-yvD"/>
+                <outlet property="titleLabel" destination="kZo-ae-N8m" id="Ish-yy-Vmo"/>
+            </connections>
+            <point key="canvasLocation" x="-308" y="232.08395802098951"/>
+        </tableViewCell>
+    </objects>
+</document>

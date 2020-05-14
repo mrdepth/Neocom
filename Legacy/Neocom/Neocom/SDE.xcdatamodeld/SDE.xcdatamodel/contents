@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17G65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CertCertificate" representedClassName="SDECertCertificate" syncable="YES" codeGenerationType="class">
+        <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="certificateName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="certificateDescription" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TxtDescription" inverseName="certificate" inverseEntity="TxtDescription" syncable="YES"/>
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="certificates" inverseEntity="InvGroup" syncable="YES"/>
+        <relationship name="masteries" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CertMastery" inverseName="certificate" inverseEntity="CertMastery" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="certificates" inverseEntity="InvType" syncable="YES"/>
+        <fetchIndex name="byCertificateIDIndex">
+            <fetchIndexElement property="certificateID" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="CertMastery" representedClassName="SDECertMastery" syncable="YES" codeGenerationType="class">
+        <relationship name="certificate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="masteries" inverseEntity="CertCertificate" syncable="YES"/>
+        <relationship name="level" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CertMasteryLevel" inverseName="masteries" inverseEntity="CertMasteryLevel" syncable="YES"/>
+        <relationship name="skills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertSkill" inverseName="mastery" inverseEntity="CertSkill" syncable="YES"/>
+    </entity>
+    <entity name="CertMasteryLevel" representedClassName="SDECertMasteryLevel" syncable="YES" codeGenerationType="class">
+        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="level" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
+        <relationship name="masteries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertMastery" inverseName="level" inverseEntity="CertMastery" syncable="YES"/>
+        <fetchIndex name="byLevelIndex">
+            <fetchIndexElement property="level" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="CertSkill" representedClassName="SDECertSkill" syncable="YES" codeGenerationType="class">
+        <attribute name="skillLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="mastery" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CertMastery" inverseName="skills" inverseEntity="CertMastery" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="masterySkills" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="ChrAncestry" representedClassName="SDEChrAncestry" syncable="YES" codeGenerationType="class">
+        <attribute name="ancestryID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="ancestryName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="bloodline" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrBloodline" inverseName="ancestries" inverseEntity="ChrBloodline" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
+    </entity>
+    <entity name="ChrBloodline" representedClassName="SDEChrBloodline" syncable="YES" codeGenerationType="class">
+        <attribute name="bloodlineID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="bloodlineName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="ancestries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrAncestry" inverseName="bloodline" inverseEntity="ChrAncestry" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
+        <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="bloodlines" inverseEntity="ChrRace" syncable="YES"/>
+    </entity>
+    <entity name="ChrFaction" representedClassName="SDEChrFaction" syncable="YES" codeGenerationType="class">
+        <attribute name="factionID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="factionName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="constellations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapConstellation" inverseName="faction" inverseEntity="MapConstellation" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
+        <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="factions" inverseEntity="ChrRace" syncable="YES"/>
+        <relationship name="regions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapRegion" inverseName="faction" inverseEntity="MapRegion" syncable="YES"/>
+        <relationship name="solarSystems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="faction" inverseEntity="MapSolarSystem" syncable="YES"/>
+    </entity>
+    <entity name="ChrRace" representedClassName="SDEChrRace" syncable="YES" codeGenerationType="class">
+        <attribute name="raceID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="raceName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="bloodlines" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrBloodline" inverseName="race" inverseEntity="ChrBloodline" syncable="YES"/>
+        <relationship name="dgmppCategories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemCategory" inverseName="race" inverseEntity="DgmppItemCategory" syncable="YES"/>
+        <relationship name="factions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="race" inverseEntity="ChrFaction" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="race" inverseEntity="InvType" syncable="YES"/>
+        <fetchIndex name="byRaceIDIndex">
+            <fetchIndexElement property="raceID" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="DgmAttributeCategory" representedClassName="SDEDgmAttributeCategory" syncable="YES" codeGenerationType="class">
+        <attribute name="categoryID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="categoryName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="attributeTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="attributeCategory" inverseEntity="DgmAttributeType" syncable="YES"/>
+        <fetchIndex name="byCategoryIDIndex">
+            <fetchIndexElement property="categoryID" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="DgmAttributeType" representedClassName="SDEDgmAttributeType" syncable="YES" codeGenerationType="class">
+        <attribute name="attributeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="attributeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="published" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="attributeCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmAttributeCategory" inverseName="attributeTypes" inverseEntity="DgmAttributeCategory" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
+        <relationship name="typeAttributes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmTypeAttribute" inverseName="attributeType" inverseEntity="DgmTypeAttribute" syncable="YES"/>
+        <relationship name="unit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveUnit" inverseName="attributeTypes" inverseEntity="EveUnit" syncable="YES"/>
+        <fetchIndex name="byAttributeIDIndex">
+            <fetchIndexElement property="attributeID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byPublishedIndex">
+            <fetchIndexElement property="published" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="DgmEffect" representedClassName="SDEDgmEffect" syncable="YES" codeGenerationType="class">
+        <attribute name="effectID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="effects" inverseEntity="InvType" syncable="YES"/>
+        <fetchIndex name="byEffectIDIndex">
+            <fetchIndexElement property="effectID" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="DgmppHullType" representedClassName="SDEDgmppHullType" parentEntity="InvType" syncable="YES" codeGenerationType="class">
+        <attribute name="hullTypeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="signature" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="InvType" inverseName="hullType" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="DgmppItem" representedClassName="SDEDgmppItem" syncable="YES" codeGenerationType="class">
+        <relationship name="charge" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItemCategory" inverseName="dgmppItems" inverseEntity="DgmppItemCategory" syncable="YES"/>
+        <relationship name="damage" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DgmppItemDamage" inverseName="item" inverseEntity="DgmppItemDamage" syncable="YES"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="items" inverseEntity="DgmppItemGroup" syncable="YES"/>
+        <relationship name="requirements" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DgmppItemRequirements" inverseName="item" inverseEntity="DgmppItemRequirements" syncable="YES"/>
+        <relationship name="shipResources" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DgmppItemShipResources" inverseName="item" inverseEntity="DgmppItemShipResources" syncable="YES"/>
+        <relationship name="structureResources" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DgmppItemStructureResources" inverseName="item" inverseEntity="DgmppItemStructureResources" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="dgmppItem" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="DgmppItemCategory" representedClassName="SDEDgmppItemCategory" syncable="YES" codeGenerationType="class">
+        <attribute name="category" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="subcategory" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="dgmppItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="charge" inverseEntity="DgmppItem" syncable="YES"/>
+        <relationship name="itemGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="category" inverseEntity="DgmppItemGroup" syncable="YES"/>
+        <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="dgmppCategories" inverseEntity="ChrRace" syncable="YES"/>
+        <fetchIndex name="byCategoryIndex">
+            <fetchIndexElement property="category" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="bySubcategoryIndex">
+            <fetchIndexElement property="subcategory" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="DgmppItemDamage" representedClassName="SDEDgmppItemDamage" syncable="YES" codeGenerationType="class">
+        <attribute name="emAmount" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="explosiveAmount" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="kineticAmount" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="thermalAmount" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="damage" inverseEntity="DgmppItem" syncable="YES"/>
+    </entity>
+    <entity name="DgmppItemGroup" representedClassName="SDEDgmppItemGroup" syncable="YES" codeGenerationType="class">
+        <attribute name="groupName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItemCategory" inverseName="itemGroups" inverseEntity="DgmppItemCategory" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="groups" inverseEntity="DgmppItem" syncable="YES"/>
+        <relationship name="parentGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="subGroups" inverseEntity="DgmppItemGroup" syncable="YES"/>
+        <relationship name="subGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmppItemGroup" inverseName="parentGroup" inverseEntity="DgmppItemGroup" syncable="YES"/>
+    </entity>
+    <entity name="DgmppItemRequirements" representedClassName="SDEDgmppItemRequirements" syncable="YES" codeGenerationType="class">
+        <attribute name="calibration" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="cpu" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="powerGrid" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="requirements" inverseEntity="DgmppItem" syncable="YES"/>
+    </entity>
+    <entity name="DgmppItemShipResources" representedClassName="SDEDgmppItemShipResources" syncable="YES" codeGenerationType="class">
+        <attribute name="hiSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="launchers" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="lowSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="medSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="rigSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="turrets" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="shipResources" inverseEntity="DgmppItem" syncable="YES"/>
+    </entity>
+    <entity name="DgmppItemStructureResources" representedClassName="SDEDgmppItemStructureResources" syncable="YES" codeGenerationType="class">
+        <attribute name="hiSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="launchers" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="lowSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="medSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="rigSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="serviceSlots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="turrets" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="structureResources" inverseEntity="DgmppItem" syncable="YES"/>
+    </entity>
+    <entity name="DgmTypeAttribute" representedClassName="SDEDgmTypeAttribute" syncable="YES" codeGenerationType="class">
+        <attribute name="value" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="attributeType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="typeAttributes" inverseEntity="DgmAttributeType" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="attributes" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="EveIcon" representedClassName="SDEEveIcon" syncable="YES" codeGenerationType="class">
+        <attribute name="iconFile" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIconImage" inverseName="icon" inverseEntity="EveIconImage" syncable="YES"/>
+        <fetchIndex name="byIconFileIndex">
+            <fetchIndexElement property="iconFile" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="EveIconImage" representedClassName="SDEEveIconImage" syncable="YES" codeGenerationType="class">
+        <attribute name="image" optional="YES" attributeType="Transformable" valueTransformerName="ImageValueTransformer" customClassName="UIImage" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" inverseName="image" inverseEntity="EveIcon" syncable="YES"/>
+    </entity>
+    <entity name="EveUnit" representedClassName="SDEEveUnit" syncable="YES" codeGenerationType="class">
+        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="unitID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="attributeTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmAttributeType" inverseName="unit" inverseEntity="DgmAttributeType" syncable="YES"/>
+        <fetchIndex name="byUnitIDIndex">
+            <fetchIndexElement property="unitID" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="IndActivity" representedClassName="SDEIndActivity" syncable="YES" codeGenerationType="class">
+        <attribute name="time" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RamActivity" inverseName="indActivities" inverseEntity="RamActivity" syncable="YES"/>
+        <relationship name="blueprintType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IndBlueprintType" inverseName="activities" inverseEntity="IndBlueprintType" syncable="YES"/>
+        <relationship name="products" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndProduct" inverseName="activity" inverseEntity="IndProduct" syncable="YES"/>
+        <relationship name="requiredMaterials" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndRequiredMaterial" inverseName="activity" inverseEntity="IndRequiredMaterial" syncable="YES"/>
+        <relationship name="requiredSkills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndRequiredSkill" inverseName="activity" inverseEntity="IndRequiredSkill" syncable="YES"/>
+    </entity>
+    <entity name="IndBlueprintType" representedClassName="SDEIndBlueprintType" syncable="YES" codeGenerationType="class">
+        <attribute name="maxProductionLimit" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="activities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="blueprintType" inverseEntity="IndActivity" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="blueprintType" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="IndProduct" representedClassName="SDEIndProduct" syncable="YES" codeGenerationType="class">
+        <attribute name="probability" optional="YES" attributeType="Float" defaultValueString="1" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="products" inverseEntity="IndActivity" syncable="YES"/>
+        <relationship name="productType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="products" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="IndRequiredMaterial" representedClassName="SDEIndRequiredMaterial" syncable="YES" codeGenerationType="class">
+        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="requiredMaterials" inverseEntity="IndActivity" syncable="YES"/>
+        <relationship name="materialType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="materials" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="IndRequiredSkill" representedClassName="SDEIndRequiredSkill" syncable="YES" codeGenerationType="class">
+        <attribute name="skillLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="requiredSkills" inverseEntity="IndActivity" syncable="YES"/>
+        <relationship name="skillType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="InvCategory" representedClassName="SDEInvCategory" syncable="YES" codeGenerationType="class">
+        <attribute name="categoryID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="categoryName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="published" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="category" inverseEntity="InvGroup" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
+        <fetchIndex name="byCategoryIDIndex">
+            <fetchIndexElement property="categoryID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byPublishedIndex">
+            <fetchIndexElement property="published" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="InvGroup" representedClassName="SDEInvGroup" syncable="YES" codeGenerationType="class">
+        <attribute name="groupID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="groupName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="published" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvCategory" inverseName="groups" inverseEntity="InvCategory" syncable="YES"/>
+        <relationship name="certificates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="group" inverseEntity="CertCertificate" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
+        <relationship name="npcGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NpcGroup" inverseName="group" inverseEntity="NpcGroup" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="group" inverseEntity="InvType" syncable="YES"/>
+        <fetchIndex name="byGroupIDIndex">
+            <fetchIndexElement property="groupID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byPublishedIndex">
+            <fetchIndexElement property="published" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="InvMarketGroup" representedClassName="SDEInvMarketGroup" syncable="YES" codeGenerationType="class">
+        <attribute name="marketGroupID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="marketGroupName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
+        <relationship name="parentGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="subGroups" inverseEntity="InvMarketGroup" syncable="YES"/>
+        <relationship name="subGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="parentGroup" inverseEntity="InvMarketGroup" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="marketGroup" inverseEntity="InvType" syncable="YES"/>
+        <fetchIndex name="byMarketGroupIDIndex">
+            <fetchIndexElement property="marketGroupID" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="InvMetaGroup" representedClassName="SDEInvMetaGroup" syncable="YES" codeGenerationType="class">
+        <attribute name="metaGroupID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="metaGroupName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="metaGroup" inverseEntity="InvType" syncable="YES"/>
+        <fetchIndex name="byMetaGroupIDIndex">
+            <fetchIndexElement property="metaGroupID" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="InvType" representedClassName="SDEInvType" syncable="YES" codeGenerationType="class">
+        <attribute name="basePrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="capacity" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mass" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="metaLevel" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="portionSize" optional="YES" attributeType="Integer 32" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="published" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="radius" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="typeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="typeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="volume" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="attributes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmTypeAttribute" inverseName="type" inverseEntity="DgmTypeAttribute" syncable="YES"/>
+        <relationship name="blueprintType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="IndBlueprintType" inverseName="type" inverseEntity="IndBlueprintType" syncable="YES"/>
+        <relationship name="certificates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="types" inverseEntity="CertCertificate" syncable="YES"/>
+        <relationship name="dgmppItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppItem" inverseName="type" inverseEntity="DgmppItem" syncable="YES"/>
+        <relationship name="effects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DgmEffect" inverseName="types" inverseEntity="DgmEffect" syncable="YES"/>
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="types" inverseEntity="InvGroup" syncable="YES"/>
+        <relationship name="hullType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DgmppHullType" inverseName="types" inverseEntity="DgmppHullType" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
+        <relationship name="marketGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvMarketGroup" inverseName="types" inverseEntity="InvMarketGroup" syncable="YES"/>
+        <relationship name="masterySkills" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CertSkill" inverseName="type" inverseEntity="CertSkill" syncable="YES"/>
+        <relationship name="materials" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndRequiredMaterial" inverseName="materialType" inverseEntity="IndRequiredMaterial" syncable="YES"/>
+        <relationship name="metaGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvMetaGroup" inverseName="types" inverseEntity="InvMetaGroup" syncable="YES"/>
+        <relationship name="parentType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="variations" inverseEntity="InvType" syncable="YES"/>
+        <relationship name="products" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndProduct" inverseName="productType" inverseEntity="IndProduct" syncable="YES"/>
+        <relationship name="race" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrRace" inverseName="types" inverseEntity="ChrRace" syncable="YES"/>
+        <relationship name="requiredForSkill" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvTypeRequiredSkill" inverseName="skillType" inverseEntity="InvTypeRequiredSkill" syncable="YES"/>
+        <relationship name="requiredSkills" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="InvTypeRequiredSkill" inverseName="type" inverseEntity="InvTypeRequiredSkill" syncable="YES"/>
+        <relationship name="typeDescription" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TxtDescription" inverseName="type" inverseEntity="TxtDescription" syncable="YES"/>
+        <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="InvType" inverseName="parentType" inverseEntity="InvType" syncable="YES"/>
+        <relationship name="wormhole" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="WhType" inverseName="type" inverseEntity="WhType" syncable="YES"/>
+        <fetchIndex name="byCapacityIndex">
+            <fetchIndexElement property="capacity" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byMetaLevelIndex">
+            <fetchIndexElement property="metaLevel" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byPublishedIndex">
+            <fetchIndexElement property="published" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byTypeIDIndex">
+            <fetchIndexElement property="typeID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byTypeNameIndex">
+            <fetchIndexElement property="typeName" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byVolumeIndex">
+            <fetchIndexElement property="volume" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="InvTypeRequiredSkill" representedClassName="SDEInvTypeRequiredSkill" syncable="YES" codeGenerationType="class">
+        <attribute name="skillLevel" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="skillType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="requiredForSkill" inverseEntity="InvType" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="requiredSkills" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="MapConstellation" representedClassName="SDEMapConstellation" syncable="YES" codeGenerationType="class">
+        <attribute name="constellationID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="constellationName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="faction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="constellations" inverseEntity="ChrFaction" syncable="YES"/>
+        <relationship name="region" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapRegion" inverseName="constellations" inverseEntity="MapRegion" syncable="YES"/>
+        <relationship name="solarSystems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="constellation" inverseEntity="MapSolarSystem" syncable="YES"/>
+        <fetchIndex name="byConstellationIDIndex">
+            <fetchIndexElement property="constellationID" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="MapPlanet" representedClassName="SDEMapPlanet" syncable="YES" codeGenerationType="class">
+        <attribute name="planetID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="planetName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="solarSystem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="planets" inverseEntity="MapSolarSystem" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="MapRegion" representedClassName="SDEMapRegion" syncable="YES" codeGenerationType="class">
+        <attribute name="regionID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="regionName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="securityClass" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="constellations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapConstellation" inverseName="region" inverseEntity="MapConstellation" syncable="YES"/>
+        <relationship name="faction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="regions" inverseEntity="ChrFaction" syncable="YES"/>
+        <relationship name="universe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapUniverse" inverseName="regions" inverseEntity="MapUniverse" syncable="YES"/>
+        <fetchIndex name="byRegionIDIndex">
+            <fetchIndexElement property="regionID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byRegionNameIndex">
+            <fetchIndexElement property="regionName" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="MapSolarSystem" representedClassName="SDEMapSolarSystem" syncable="YES" codeGenerationType="class">
+        <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="solarSystemID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="solarSystemName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="constellation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapConstellation" inverseName="solarSystems" inverseEntity="MapConstellation" syncable="YES"/>
+        <relationship name="faction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChrFaction" inverseName="solarSystems" inverseEntity="ChrFaction" syncable="YES"/>
+        <relationship name="planets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapPlanet" inverseName="solarSystem" inverseEntity="MapPlanet" syncable="YES"/>
+        <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StaStation" inverseName="solarSystem" inverseEntity="StaStation" syncable="YES"/>
+        <fetchIndex name="bySolarSystemIDIndex">
+            <fetchIndexElement property="solarSystemID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="bySolarSystemNameIndex">
+            <fetchIndexElement property="solarSystemName" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="MapUniverse" representedClassName="SDEMapUniverse" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="universeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="regions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MapRegion" inverseName="universe" inverseEntity="MapRegion" syncable="YES"/>
+    </entity>
+    <entity name="NpcGroup" representedClassName="SDENpcGroup" syncable="YES" codeGenerationType="class">
+        <attribute name="npcGroupName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvGroup" inverseName="npcGroups" inverseEntity="InvGroup" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
+        <relationship name="parentNpcGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NpcGroup" inverseName="supNpcGroups" inverseEntity="NpcGroup" syncable="YES"/>
+        <relationship name="supNpcGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NpcGroup" inverseName="parentNpcGroup" inverseEntity="NpcGroup" syncable="YES"/>
+    </entity>
+    <entity name="RamActivity" representedClassName="SDERamActivity" syncable="YES" codeGenerationType="class">
+        <attribute name="activityID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="activityName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="published" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="assemblyLineTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamAssemblyLineType" inverseName="activity" inverseEntity="RamAssemblyLineType" syncable="YES"/>
+        <relationship name="icon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EveIcon" syncable="YES"/>
+        <relationship name="indActivities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="IndActivity" inverseName="activity" inverseEntity="IndActivity" syncable="YES"/>
+        <fetchIndex name="byActivityIDIndex">
+            <fetchIndexElement property="activityID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byPublishedIndex">
+            <fetchIndexElement property="published" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="RamAssemblyLineType" representedClassName="SDERamAssemblyLineType" syncable="YES" codeGenerationType="class">
+        <attribute name="assemblyLineTypeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="assemblyLineTypeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="baseCostMultiplier" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="baseMaterialMultiplier" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="baseTimeMultiplier" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="minCostPerHour" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="volume" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RamActivity" inverseName="assemblyLineTypes" inverseEntity="RamActivity" syncable="YES"/>
+        <relationship name="installationTypeContents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RamInstallationTypeContent" inverseName="assemblyLineType" inverseEntity="RamInstallationTypeContent" syncable="YES"/>
+        <fetchIndex name="byAssemblyLineTypeIDIndex">
+            <fetchIndexElement property="assemblyLineTypeID" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="RamInstallationTypeContent" representedClassName="SDERamInstallationTypeContent" syncable="YES" codeGenerationType="class">
+        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="assemblyLineType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RamAssemblyLineType" inverseName="installationTypeContents" inverseEntity="RamAssemblyLineType" syncable="YES"/>
+        <relationship name="installationType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="StaStation" representedClassName="SDEStaStation" syncable="YES" codeGenerationType="class">
+        <attribute name="security" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="stationID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="stationName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="solarSystem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MapSolarSystem" inverseName="stations" inverseEntity="MapSolarSystem" syncable="YES"/>
+        <relationship name="stationType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" syncable="YES"/>
+        <fetchIndex name="byStationIDIndex">
+            <fetchIndexElement property="stationID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byStationNameIndex">
+            <fetchIndexElement property="stationName" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="TxtDescription" representedClassName="SDETxtDescription" syncable="YES" codeGenerationType="class">
+        <attribute name="text" optional="YES" attributeType="Transformable" customClassName="NSAttributedString" syncable="YES"/>
+        <relationship name="certificate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="certificateDescription" inverseEntity="CertCertificate" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="typeDescription" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <entity name="WhType" representedClassName="SDEWhType" syncable="YES" codeGenerationType="class">
+        <attribute name="maxJumpMass" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="maxRegeneration" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="maxStableMass" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="maxStableTime" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="targetSystemClass" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="wormhole" inverseEntity="InvType" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="CertCertificate" positionX="-180" positionY="162" width="128" height="135"/>
+        <element name="CertMastery" positionX="-189" positionY="180" width="128" height="90"/>
+        <element name="CertMasteryLevel" positionX="-162" positionY="180" width="128" height="105"/>
+        <element name="CertSkill" positionX="-171" positionY="189" width="128" height="90"/>
+        <element name="ChrAncestry" positionX="-180" positionY="189" width="128" height="105"/>
+        <element name="ChrBloodline" positionX="-171" positionY="198" width="128" height="120"/>
+        <element name="ChrFaction" positionX="-189" positionY="180" width="128" height="150"/>
+        <element name="ChrRace" positionX="9" positionY="54" width="128" height="150"/>
+        <element name="DgmAttributeCategory" positionX="18" positionY="63" width="128" height="90"/>
+        <element name="DgmAttributeType" positionX="0" positionY="54" width="128" height="165"/>
+        <element name="DgmEffect" positionX="36" positionY="81" width="128" height="75"/>
+        <element name="DgmppHullType" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="DgmppItem" positionX="160" positionY="192" width="128" height="150"/>
+        <element name="DgmppItemCategory" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="DgmppItemDamage" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="DgmppItemGroup" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="DgmppItemRequirements" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="DgmppItemShipResources" positionX="160" positionY="192" width="128" height="150"/>
+        <element name="DgmppItemStructureResources" positionX="-189" positionY="180" width="128" height="165"/>
+        <element name="DgmTypeAttribute" positionX="-36" positionY="27" width="128" height="90"/>
+        <element name="EveIcon" positionX="18" positionY="63" width="128" height="75"/>
+        <element name="EveIconImage" positionX="-189" positionY="180" width="128" height="75"/>
+        <element name="EveUnit" positionX="0" positionY="153" width="128" height="90"/>
+        <element name="IndActivity" positionX="-171" positionY="198" width="128" height="135"/>
+        <element name="IndBlueprintType" positionX="-180" positionY="189" width="128" height="90"/>
+        <element name="IndProduct" positionX="-162" positionY="207" width="128" height="105"/>
+        <element name="IndRequiredMaterial" positionX="-153" positionY="216" width="128" height="90"/>
+        <element name="IndRequiredSkill" positionX="-144" positionY="225" width="128" height="90"/>
+        <element name="InvCategory" positionX="9" positionY="54" width="128" height="120"/>
+        <element name="InvGroup" positionX="0" positionY="45" width="128" height="165"/>
+        <element name="InvMarketGroup" positionX="-18" positionY="36" width="128" height="135"/>
+        <element name="InvMetaGroup" positionX="18" positionY="63" width="128" height="105"/>
+        <element name="InvType" positionX="-396" positionY="85" width="128" height="495"/>
+        <element name="InvTypeRequiredSkill" positionX="-189" positionY="180" width="128" height="90"/>
+        <element name="MapConstellation" positionX="81" positionY="225" width="128" height="135"/>
+        <element name="MapPlanet" positionX="-189" positionY="180" width="128" height="105"/>
+        <element name="MapRegion" positionX="99" positionY="243" width="128" height="150"/>
+        <element name="MapSolarSystem" positionX="108" positionY="252" width="128" height="150"/>
+        <element name="MapUniverse" positionX="-189" positionY="180" width="128" height="90"/>
+        <element name="NpcGroup" positionX="117" positionY="261" width="128" height="120"/>
+        <element name="RamActivity" positionX="63" positionY="207" width="128" height="135"/>
+        <element name="RamAssemblyLineType" positionX="72" positionY="216" width="128" height="180"/>
+        <element name="RamInstallationTypeContent" positionX="81" positionY="225" width="128" height="90"/>
+        <element name="StaStation" positionX="99" positionY="243" width="128" height="120"/>
+        <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="90"/>
+        <element name="WhType" positionX="-189" positionY="180" width="128" height="135"/>
+    </elements>
+</model>

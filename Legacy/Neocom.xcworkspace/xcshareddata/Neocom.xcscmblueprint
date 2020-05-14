@@ -1,0 +1,121 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "CBD3C72D1EC244FEC895CDE83582355773BC1B4F+++3DE7941",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "CE59D664C95604646A8898B717A20F0AFC1A609F+++C9B12BA" : 9223372036854775807,
+    "DA631F8342550455B5A2680DD706737CD895F617+++D72D75E" : 9223372036854775807,
+    "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0+++7A13655" : 9223372036854775807,
+    "CBD3C72D1EC244FEC895CDE83582355773BC1B4F+++3DE7941" : 9223372036854775807,
+    "0CFE9E88F22EAA7CB8181BCF8804EC4A2A59AFE8+++DD082C7" : 9223372036854775807,
+    "CAF619736A3A2301C2960592037A61156FDAC9EF+++92DAFE1" : 9223372036854775807,
+    "6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195+++E85DA45" : 9223372036854775807,
+    "67620B5EFA902936DF04070AF595B76AB0333747+++AEACF36" : 9223372036854775807,
+    "BDDB80E32D86B8E2E7D04724D0619FC68FCBB3C1+++B67B998" : 9223372036854775807,
+    "75224C288D14A799245F99223249EF48FF5DC280+++87C16DD" : 9223372036854775807,
+    "DD20A1A48C66B5213E0FEBB87A95EF51D6C6F3E8+++6594EDE" : 9223372036854775807,
+    "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0+++403E559" : 9223372036854775807,
+    "6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195+++1D027FA" : 9223372036854775807,
+    "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0+++53FAF8C" : 9223372036854775807,
+    "6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195+++41EBCEE" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "0D2C24DF-B5D9-420F-8F43-3E98C3ED1725",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "CE59D664C95604646A8898B717A20F0AFC1A609F+++C9B12BA" : "EVEUniverse\/ThirdParty\/dgmpp\/",
+    "DA631F8342550455B5A2680DD706737CD895F617+++D72D75E" : "EVEUniverse\/ThirdParty\/CloudData\/",
+    "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0+++7A13655" : "OSXNeocom\/ThirdParty\/EVEOnlineAPI\/",
+    "CBD3C72D1EC244FEC895CDE83582355773BC1B4F+++3DE7941" : "EVEUniverse\/",
+    "0CFE9E88F22EAA7CB8181BCF8804EC4A2A59AFE8+++DD082C7" : "EVEUniverse\/ThirdParty\/TreeController\/",
+    "CAF619736A3A2301C2960592037A61156FDAC9EF+++92DAFE1" : "EVEUniverse\/ThirdParty\/clrconvert\/",
+    "6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195+++E85DA45" : "EVEUniverse\/ThirdParty\/tools\/",
+    "67620B5EFA902936DF04070AF595B76AB0333747+++AEACF36" : "EVEUniverse\/ThirdParty\/EVEOnlineAPI\/ThirdParty\/Alamofire\/",
+    "BDDB80E32D86B8E2E7D04724D0619FC68FCBB3C1+++B67B998" : "EVEUniverse\/ThirdParty\/flurry-ios-sdk\/",
+    "75224C288D14A799245F99223249EF48FF5DC280+++87C16DD" : "EVEUniverse\/ThirdParty\/swifter\/",
+    "DD20A1A48C66B5213E0FEBB87A95EF51D6C6F3E8+++6594EDE" : "EVEUniverse\/ThirdParty\/EVEOnlineAPI\/ThirdParty\/AFNetworking\/",
+    "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0+++403E559" : "OSXNeocom\/ThirdParty\/EVEOnlineAPI\/",
+    "6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195+++1D027FA" : "EVEUniverse\/ThirdParty\/EVEOnlineAPI\/ThirdParty\/tools\/",
+    "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0+++53FAF8C" : "EVEUniverse\/ThirdParty\/EVEOnlineAPI\/",
+    "6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195+++41EBCEE" : "EVEUniverse\/ThirdParty\/EVEOnlineAPI\/ThirdParty\/tools\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Neocom",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Neocom.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mrdepth\/TreeController.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0CFE9E88F22EAA7CB8181BCF8804EC4A2A59AFE8+++DD082C7"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:mrdepth\/EVEOnlineAPI.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0+++403E559"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:mrdepth\/EVEOnlineAPI.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0+++53FAF8C"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mrdepth\/EVEOnlineAPI.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0F0B6FB3121415B4BFE652B8CA72F270CA803FB0+++7A13655"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Alamofire\/Alamofire.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "67620B5EFA902936DF04070AF595B76AB0333747+++AEACF36"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:mrdepth\/tools.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195+++1D027FA"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mrdepth\/tools.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195+++41EBCEE"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mrdepth\/tools.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6D9709A6DF3DEDD6CB8E68BBA8342CBFDF252195+++E85DA45"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/httpswift\/swifter.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "75224C288D14A799245F99223249EF48FF5DC280+++87C16DD"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/flurry\/flurry-ios-sdk.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "BDDB80E32D86B8E2E7D04724D0619FC68FCBB3C1+++B67B998"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mrdepth\/clrconvert.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CAF619736A3A2301C2960592037A61156FDAC9EF+++92DAFE1"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mrdepth\/Neocom.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CBD3C72D1EC244FEC895CDE83582355773BC1B4F+++3DE7941"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mrdepth\/libdgmpp.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CE59D664C95604646A8898B717A20F0AFC1A609F+++C9B12BA"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mrdepth\/CloudData.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DA631F8342550455B5A2680DD706737CD895F617+++D72D75E"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/AFNetworking\/AFNetworking.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DD20A1A48C66B5213E0FEBB87A95EF51D6C6F3E8+++6594EDE"
+    }
+  ]
+}

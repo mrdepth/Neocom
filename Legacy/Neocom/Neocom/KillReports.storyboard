@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Kill Log-->
+        <scene sceneID="FC5-XY-ocy">
+            <objects>
+                <viewController storyboardIdentifier="KillmailsViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Iid-cs-F8D" customClass="KillmailsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="FsB-LK-oAj" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="Q4t-uE-9V3"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Kill Log" id="UfO-5U-SuJ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gpD-dC-ubA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3420" y="-342"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ndg-j5-51q">
+            <objects>
+                <navigationController storyboardIdentifier="NCKillmailsPageNavigationController" id="xr4-o3-Dw1" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="cub-ha-jKQ">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Iid-cs-F8D" kind="relationship" relationship="rootViewController" id="mXe-jz-01j"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="loB-e2-Pe2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4161" y="-343"/>
+        </scene>
+        <!--Killmails Page View Controller-->
+        <scene sceneID="7Ry-bP-ejW">
+            <objects>
+                <tableViewController storyboardIdentifier="KillmailsPageViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5S8-Jc-dra" customClass="KillmailsPageViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="59" sectionHeaderHeight="18" sectionFooterHeight="18" id="0M7-Xv-W4T" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="ao0-kG-Uit">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="u0i-Y2-wPH">
+                                    <rect key="frame" x="177.5" y="12" width="20" height="20"/>
+                                </activityIndicatorView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="u0i-Y2-wPH" firstAttribute="centerY" secondItem="ao0-kG-Uit" secondAttribute="centerY" id="006-3d-Pnp"/>
+                                <constraint firstItem="u0i-Y2-wPH" firstAttribute="centerX" secondItem="ao0-kG-Uit" secondAttribute="centerX" id="1KG-Kb-g5f"/>
+                            </constraints>
+                        </view>
+                    </tableView>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="oAr-VM-ZCP">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
+                    <connections>
+                        <outlet property="activityIndicator" destination="u0i-Y2-wPH" id="hNJ-Ev-dPZ"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lj3-SC-BAl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2651" y="-342"/>
+        </scene>
+        <!--Kill Report-->
+        <scene sceneID="mrQ-Pv-2YI">
+            <objects>
+                <tableViewController storyboardIdentifier="KillmailInfoViewController" title="Kill Report" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Tq3-yJ-LbF" customClass="KillmailInfoViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="t9C-PA-gJv" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Kill Report" id="wKx-LB-C4l">
+                        <barButtonItem key="rightBarButtonItem" title="Fitting" id="A0Q-gV-EhP">
+                            <connections>
+                                <action selector="onFitting:" destination="Tq3-yJ-LbF" id="0My-AQ-450"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oxN-fQ-3gt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1911" y="-343"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="9Vp-KR-xXF">
+            <objects>
+                <navigationController storyboardIdentifier="NCZKillboardNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="tGN-vN-K5N" customClass="NCNavigationController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="djp-JQ-zbM">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="8N8-8V-ajE" kind="relationship" relationship="rootViewController" id="24A-B1-c2J"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0hW-Nc-zqG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4047" y="1254"/>
+        </scene>
+        <!--zKillboard-->
+        <scene sceneID="5On-M3-oFz">
+            <objects>
+                <tableViewController storyboardIdentifier="ZKillboardViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8N8-8V-ajE" customClass="ZKillboardViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="sKO-Hn-Ckx" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="zKillboard" id="EVo-ee-y6T"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kJW-I2-u6W" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3263" y="1254"/>
+        </scene>
+        <!--Pilots-->
+        <scene sceneID="GbD-Rm-jN6">
+            <objects>
+                <tableViewController storyboardIdentifier="ContactsViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YtO-j7-ZRR" customClass="ContactsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="28" id="M3M-Gf-G00" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="AaE-jh-F3S">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Pilots" id="yKv-fP-k4t"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lN0-wM-Tm3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2502" y="1254"/>
+        </scene>
+        <!--Categories-->
+        <scene sceneID="f1m-tz-zax">
+            <objects>
+                <tableViewController storyboardIdentifier="ZKillboardInvCategoriesViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4md-Mo-vST" customClass="ZKillboardInvCategoriesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="PeF-dC-FOg" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Categories" id="lOS-lt-7od">
+                        <barButtonItem key="leftBarButtonItem" title="Close" id="LrS-Al-ZgT">
+                            <connections>
+                                <action selector="dismissAnimated:" destination="4md-Mo-vST" id="5Tx-OS-aQd"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sOO-4i-1tb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3361" y="505"/>
+        </scene>
+        <!--Groups-->
+        <scene sceneID="mOL-oa-RFT">
+            <objects>
+                <tableViewController storyboardIdentifier="ZKillboardInvGroupsViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="eAY-ht-rKb" customClass="ZKillboardInvGroupsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="1ra-zD-jzz" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Groups" id="4fe-F6-Nmw"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="P5f-of-WYF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2628" y="505"/>
+        </scene>
+        <!--Killboard Type Picker View Controller-->
+        <scene sceneID="ksb-pd-kVI">
+            <objects>
+                <navigationController storyboardIdentifier="ZKillboardTypePickerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="H1g-SK-mKc" customClass="ZKillboardTypePickerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="aJJ-qj-EZW">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="4md-Mo-vST" kind="relationship" relationship="rootViewController" id="LP3-Pm-0NB"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ero-vk-R20" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4047" y="505"/>
+        </scene>
+        <!--Types-->
+        <scene sceneID="AmS-Wp-Wwv">
+            <objects>
+                <tableViewController storyboardIdentifier="ZKillboardInvTypesViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vdt-pE-5zb" customClass="ZKillboardInvTypesViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="40" sectionHeaderHeight="18" sectionFooterHeight="18" id="bRD-qK-D4a" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Types" id="V4e-Jk-pLO"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5br-O1-iYm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1911" y="505"/>
+        </scene>
+        <!--Kill Reports-->
+        <scene sceneID="viT-Kc-fKf">
+            <objects>
+                <tableViewController storyboardIdentifier="ZKillmailsViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DRV-G2-lne" customClass="ZKillmailsViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="59" sectionHeaderHeight="28" sectionFooterHeight="28" id="61v-6M-1vJ" customClass="NCTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="SxG-1O-9eD">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Lxf-bw-1Rq">
+                                    <rect key="frame" x="177.5" y="12" width="20" height="20"/>
+                                </activityIndicatorView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="Lxf-bw-1Rq" firstAttribute="centerX" secondItem="SxG-1O-9eD" secondAttribute="centerX" id="Ird-Q6-igG"/>
+                                <constraint firstItem="Lxf-bw-1Rq" firstAttribute="centerY" secondItem="SxG-1O-9eD" secondAttribute="centerY" id="oss-du-xXK"/>
+                            </constraints>
+                        </view>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Kill Reports" id="1l4-h9-iKk"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="8wT-uf-sAR">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
+                    <connections>
+                        <outlet property="activityIndicator" destination="Lxf-bw-1Rq" id="mBP-xV-wmL"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Dd-UL-5Rq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4047" y="2087"/>
+        </scene>
+        <!--Kill Report-->
+        <scene sceneID="pv3-X8-kcp">
+            <objects>
+                <viewController storyboardIdentifier="NCZKillboardSummaryViewController" automaticallyAdjustsScrollViewInsets="NO" id="CWd-c5-Yot" customClass="NCZKillboardSummaryViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="i5K-5y-LO3" customClass="NCBackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="g3M-9w-B74"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Kill Report" id="nOk-Nt-Jlz">
+                        <barButtonItem key="rightBarButtonItem" image="actionsItem" id="beM-kc-GwH">
+                            <connections>
+                                <action selector="onActions:" destination="CWd-c5-Yot" id="lHV-vb-zKs"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KKF-7q-eLD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3246" y="2088"/>
+        </scene>
+        <!--Title-->
+        <scene sceneID="DLp-n4-aTc">
+            <objects>
+                <viewController storyboardIdentifier="DatePickerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5SC-MG-IrM" customClass="DatePickerViewController" customModule="Neocom" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xb2-W2-sDi" customClass="BackgroundView" customModule="Neocom" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="216"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="twj-3d-QC6">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="216"/>
+                                <date key="date" timeIntervalSinceReferenceDate="564393143.18829">
+                                    <!--2018-11-20 07:52:23 +0000-->
+                                </date>
+                                <connections>
+                                    <action selector="onChangeValue:" destination="5SC-MG-IrM" eventType="valueChanged" id="w7D-U2-etN"/>
+                                </connections>
+                            </datePicker>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="twj-3d-QC6" firstAttribute="trailing" secondItem="uhS-YO-yN5" secondAttribute="trailing" id="1vv-BZ-8Y3"/>
+                            <constraint firstItem="twj-3d-QC6" firstAttribute="top" secondItem="uhS-YO-yN5" secondAttribute="top" id="aXS-sC-Cku"/>
+                            <constraint firstItem="twj-3d-QC6" firstAttribute="leading" secondItem="uhS-YO-yN5" secondAttribute="leading" id="hM8-4d-dof"/>
+                            <constraint firstAttribute="bottom" secondItem="twj-3d-QC6" secondAttribute="bottom" id="yIq-uf-bCN"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="uhS-YO-yN5"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="uZg-8o-2LO">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="iKY-pv-8WC">
+                            <connections>
+                                <action selector="onCancel:" destination="5SC-MG-IrM" id="PuB-VN-v62"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="yar-zX-XtQ">
+                            <connections>
+                                <action selector="onDone:" destination="5SC-MG-IrM" id="gC0-lT-cQA"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <value key="contentSizeForViewInPopover" type="size" width="320" height="216"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="260"/>
+                    <connections>
+                        <outlet property="datePicker" destination="twj-3d-QC6" id="Si8-YP-46u"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3i9-lB-y6F" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4048" y="2809"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="actionsItem" width="24" height="24"/>
+    </resources>
+</document>

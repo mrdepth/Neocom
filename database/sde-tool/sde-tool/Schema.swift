@@ -18,6 +18,18 @@ struct LocalizedString: Codable {
 	var ru: String?
 	var zh: String?
     var ko: String?
+    
+    init(en: String?, de: String? = nil, es: String? = nil, fr: String? = nil, it: String? = nil, ja: String? = nil, ru: String? = nil, zh: String? = nil, ko: String? = nil) {
+        self.en = en
+        self.de = de ?? en
+        self.es = es ?? en
+        self.fr = fr ?? en
+        self.it = it ?? en
+        self.ja = ja ?? en
+        self.ru = ru ?? en
+        self.zh = zh ?? en
+        self.ko = ko ?? en
+    }
 }
 
 struct CategoryID: Codable {

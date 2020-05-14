@@ -204,6 +204,7 @@ enum NCDBRegionID: Int {
 //var allColors = Set<String>()
 let colorMap: [String: [NSAttributedString.Key: Any]] = [
     "#ff3399cc": [.colorName: "primary"],
+    "0xffF67828": [.colorName: "primary"],
     "0xFFFF0000": [.colorName: "security0.0"],
     "0xFFE53300": [.colorName: "security0.1"],
     "0xFFFF4D00": [.colorName: "security0.2"],
@@ -242,7 +243,7 @@ extension NSColor {
 		}
 		else {
 			let key = string.capitalized
-			guard let color = NSColorList.availableColorLists.compactMap ({$0.color(withKey: NSColor.Name(key))}).first else {return nil}
+			guard let color = NSColorList.availableColorLists.compactMap ({$0.color(withKey: key)}).first else {return nil}
 			self.init(cgColor: color.cgColor)
 		}
 	}
@@ -255,7 +256,7 @@ extension NSAttributedString.Key {
 
 extension NSAttributedString {
 	convenience init(html: String) {
-		var html = html
+        var html = html.replacingOccurrences(of: "“", with: "\"")
 		html = html.replacingOccurrences(of: "<br>", with: "\n", options: [.caseInsensitive], range: nil)
 		html = html.replacingOccurrences(of: "<p>", with: "\n", options: [.caseInsensitive], range: nil)
 		
@@ -263,12 +264,12 @@ extension NSAttributedString {
 		
 		let options: NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
 		
-		var expression = try! NSRegularExpression(pattern: "<(a[^>]*href|url)=[\"']?(.*?)[\"']?>(.*?)<\\/(a|url)>", options: options)
+		var expression = try! NSRegularExpression(pattern: "<(a[^>]*href|url)=[\"']+(.*?)[\"']+>(.*?)<\\/(a|url)>", options: options)
 		
 		for result in expression.matches(in: s.string, options: [], range: NSMakeRange(0, s.length)).reversed() {
 			let replace = s.attributedSubstring(from: result.range(at: 3)).mutableCopy() as! NSMutableAttributedString
 			let url = URL(string: s.attributedSubstring(from: result.range(at: 2)).string.replacingOccurrences(of: " ", with: ""))
-			replace.addAttribute(NSAttributedStringKey.link, value: url!, range: NSMakeRange(0, replace.length))
+			replace.addAttribute(NSAttributedString.Key.link, value: url!, range: NSMakeRange(0, replace.length))
 			s.replaceCharacters(in: result.range(at: 0), with: replace)
 		}
 		
@@ -292,7 +293,7 @@ extension NSAttributedString {
 		
 		for result in expression.matches(in: s.string, options: [], range: NSMakeRange(0, s.length)).reversed() {
 			let replace = s.attributedSubstring(from: result.range(at: 1)).mutableCopy() as! NSMutableAttributedString
-			replace.addAttribute(NSAttributedStringKey.underlineStyle, value: NSUnderlineStyle.styleSingle.rawValue, range: NSMakeRange(0, replace.length))
+			replace.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0, replace.length))
 			s.replaceCharacters(in: result.range(at: 0), with: replace)
 		}
 		

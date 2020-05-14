@@ -25,12 +25,64 @@ for arg in CommandLine.arguments[1...] {
 	}
 }
 
+var localization = \LocalizedString.en
+
 extension CommandLine {
-	static var output: String! = args["-o"]
-	static var input: String! = args["-i"]!
+    static var output: String! = args["-o"]
+    static var input: String! = args["-i"]!
+    static var locale: String? = args["-l"]
 }
 
+
+
+extension LocalizedString {
+    var localized: String? {
+        self[keyPath: localization] ?? self.en
+    }
+}
+
+switch CommandLine.locale {
+case "de":
+    localization = \.de
+case "en":
+    localization = \.en
+case "es":
+    localization = \.es
+case "fr":
+    localization = \.fr
+case "it":
+    localization = \.it
+case "ja":
+    localization = \.ja
+case "ru":
+    localization = \.ru
+case "zh":
+    localization = \.zh
+case "ko":
+    localization = \.ko
+default:
+    break
+}
+
+
+
+
 guard CommandLine.output != nil && CommandLine.input != nil else {exit(EXIT_FAILURE)}
+
+class ImageValueTransformer: ValueTransformer {
+    override func reverseTransformedValue(_ value: Any?) -> Any? {
+        return value
+    }
+}
+
+class NeocomSecureUnarchiveFromDataTransformer: NSSecureUnarchiveFromDataTransformer {
+    override class var allowedTopLevelClasses: [AnyClass]  {
+        super.allowedTopLevelClasses + [NSAttributedString.self]
+    }
+}
+
+ValueTransformer.setValueTransformer(ImageValueTransformer(), forName: NSValueTransformerName("ImageValueTransformer"))
+ValueTransformer.setValueTransformer(NeocomSecureUnarchiveFromDataTransformer(), forName: NSValueTransformerName("NeocomSecureUnarchiveFromDataTransformer"))
 
 let managedObjectModel = NSManagedObjectModel.mergedModel(from: nil)!
 let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
@@ -39,13 +91,6 @@ try? FileManager.default.removeItem(at: storeURL)
 try! persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: "SDE", at: storeURL, options: [NSSQLitePragmasOption:["journal_mode": "OFF"]])
 let mainContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
 mainContext.persistentStoreCoordinator = persistentStoreCoordinator
-
-class ImageValueTransformer: ValueTransformer {
-	override func reverseTransformedValue(_ value: Any?) -> Any? {
-		return value
-	}
-}
-ValueTransformer.setValueTransformer(ImageValueTransformer(), forName: NSValueTransformerName("ImageValueTransformer"))
 
 
 let root = URL(fileURLWithPath: CommandLine.input)
@@ -92,7 +137,7 @@ let unpublishedMetaGroup: ObjectID<SDEInvMetaGroup> = {
 	mainContext.performAndWait {
 		let metaGroup = SDEInvMetaGroup(context: mainContext)
 		metaGroup.metaGroupID = 1001
-		metaGroup.metaGroupName = "Unpublished"
+        metaGroup.metaGroupName = LocalizedConstant.unpublished.localized
 		objectID = .init(metaGroup)
 	}
 	return objectID!
@@ -100,6 +145,7 @@ let unpublishedMetaGroup: ObjectID<SDEInvMetaGroup> = {
 let defaultMetaGroupID: Int = 1
 
 let operationQueue = OperationQueue()
+var typeNames = [String: Int]()
 
 do {
 	iconIDs = operationQueue.detach {
@@ -165,6 +211,9 @@ do {
         for (id, type) in typeIDs where type.variationParentTypeID != nil {
             types[id]?.parentType = types[type.variationParentTypeID!]
         }
+        
+        typeNames = Dictionary(typeIDs.filter{$0.value.name.en != nil}.map{($0.value.name.en!, $0.key)}, uniquingKeysWith: {a, _ in a})
+        
         return types.mapValues{.init($0)}
 	}
 	
@@ -277,8 +326,12 @@ do {
 	
 	certMasteryLevels = operationQueue.detach {
 		let from = Date(); defer {print("certMasteryLevels\t\(Date().timeIntervalSince(from))s")}
-		return try zip(["basic", "standard", "improved", "advanced", "elite"],
-				["79_64_2", "79_64_3", "79_64_4", "79_64_5", "79_64_6"]).enumerated().map { (i, cert) in try .init(SDECertMasteryLevel(level: i, name: cert.0, iconName: cert.1))
+        return try zip([LocalizedConstant.basic.localized!,
+                        LocalizedConstant.standard.localized!,
+                        LocalizedConstant.improved.localized!,
+                        LocalizedConstant.advanced.localized!,
+                        LocalizedConstant.elite.localized!],
+                       ["79_64_2", "79_64_3", "79_64_4", "79_64_5", "79_64_6"]).enumerated().map { (i, cert) in try .init(SDECertMasteryLevel(level: i, name: cert.0, iconName: cert.1))
 		}
 	}
 	
@@ -297,7 +350,7 @@ do {
 	universe = operationQueue.detach {
 		let from = Date(); defer {print("universe\t\(Date().timeIntervalSince(from))s")}
 		let fileManager = FileManager.default
-		let universes = try load(root.appendingPathComponent("/sde/bsd/mapUniverse.json"), type: Schema.Universes.self)
+//		let universes = try load(root.appendingPathComponent("/sde/bsd/mapUniverse.json"), type: Schema.Universes.self)
 		
 		return try fileManager.contentsOfDirectory(at: root.appendingPathComponent("/sde/fsd/universe/"), includingPropertiesForKeys: [.isDirectoryKey], options: [.skipsSubdirectoryDescendants])
 			.filter {try $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory == true}
@@ -322,7 +375,7 @@ do {
 	
 	mapUniverses = operationQueue.detach {
 		let from = Date(); defer {print("mapUniverses\t\(Date().timeIntervalSince(from))s")}
-		let fileManager = FileManager.default
+//		let fileManager = FileManager.default
 		let universes = try load(root.appendingPathComponent("/sde/bsd/mapUniverse.json"), type: Schema.Universes.self)
 		
 		return try universe.get().map {
@@ -406,16 +459,16 @@ do {
 	
 	ramActivities = operationQueue.detach {
         let activities = try [
-            SDERamActivity(0, "None", true, nil),
-            SDERamActivity(1, "Manufacturing", true, "18_02"),
-            SDERamActivity(2, "Researching Technology", false, "33_02"),
-            SDERamActivity(3, "Researching Time Productivity", true, "33_02"),
-            SDERamActivity(4, "Researching Material productivity", true, "33_02"),
-            SDERamActivity(5, "Copying", true, "33_02"),
-            SDERamActivity(6, "Duplicating", false, nil),
-            SDERamActivity(7, "Reverse Engineering", true, "33_02"),
-            SDERamActivity(8, "Invention", true, "33_02"),
-            SDERamActivity(11, "Unnamed", true, "18_02"),
+            SDERamActivity(0, LocalizedConstant.none.localized!, true, nil),
+            SDERamActivity(1, LocalizedConstant.manufacturing.localized!, true, "18_02"),
+            SDERamActivity(2, LocalizedConstant.researchingTechnology.localized!, false, "33_02"),
+            SDERamActivity(3, LocalizedConstant.researchingTimeProductivity.localized!, true, "33_02"),
+            SDERamActivity(4, LocalizedConstant.researchingMaterialProductivity.localized!, true, "33_02"),
+            SDERamActivity(5, LocalizedConstant.copying.localized!, true, "33_02"),
+            SDERamActivity(6, LocalizedConstant.duplicating.localized!, false, nil),
+            SDERamActivity(7, LocalizedConstant.reverseEngineering.localized!, true, "33_02"),
+            SDERamActivity(8, LocalizedConstant.invention.localized!, true, "33_02"),
+            SDERamActivity(11,LocalizedConstant.unnamed.localized!, true, "18_02"),
         ]
         return Dictionary(uniqueKeysWithValues: activities.map{(Int($0.activityID), .init($0))})
 	}

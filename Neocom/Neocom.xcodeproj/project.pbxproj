@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		120E28F0238B12A1006B30EA /* CharacterInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120E28EF238B12A1006B30EA /* CharacterInfo.swift */; };
 		122B4AED239EAE2000461A1A /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122B4AEC239EAE2000461A1A /* Preferences.swift */; };
-		124F06E3238D897E00395D54 /* ImageValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F06E2238D897E00395D54 /* ImageValueTransformer.swift */; };
+		124F06E3238D897E00395D54 /* Transformers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F06E2238D897E00395D54 /* Transformers.swift */; };
 		124F06E7238D8EB400395D54 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F06E6238D8EB400395D54 /* Icon.swift */; };
 		124F06E9238D908A00395D54 /* TypeGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F06E8238D908A00395D54 /* TypeGroups.swift */; };
 		1271C64D241E0CF000665B59 /* FittingCharacters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1271C64C241E0CF000665B59 /* FittingCharacters.swift */; };
@@ -386,7 +386,7 @@
 /* Begin PBXFileReference section */
 		120E28EF238B12A1006B30EA /* CharacterInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterInfo.swift; sourceTree = "<group>"; };
 		122B4AEC239EAE2000461A1A /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
-		124F06E2238D897E00395D54 /* ImageValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageValueTransformer.swift; sourceTree = "<group>"; };
+		124F06E2238D897E00395D54 /* Transformers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformers.swift; sourceTree = "<group>"; };
 		124F06E6238D8EB400395D54 /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
 		124F06E8238D908A00395D54 /* TypeGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeGroups.swift; sourceTree = "<group>"; };
 		1271C64C241E0CF000665B59 /* FittingCharacters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingCharacters.swift; sourceTree = "<group>"; };
@@ -933,7 +933,7 @@
 				12F06F3E238469C10061313D /* SDEVersion.swift */,
 				12F06F6823846C890061313D /* Storage.swift */,
 				1686D74B23953C5600E88D3D /* SDE.swift */,
-				124F06E2238D897E00395D54 /* ImageValueTransformer.swift */,
+				124F06E2238D897E00395D54 /* Transformers.swift */,
 				16B8458123F529E700A0B1F6 /* Contact+Extensions.swift */,
 			);
 			path = Model;
@@ -1627,7 +1627,7 @@
 				16859E6324363FAA0037C01B /* LocationPicker.swift in Sources */,
 				169D280F241A0F67002AB469 /* DronesCountResource.swift in Sources */,
 				1271C651241E0D7D00665B59 /* FittingCharactersAccounts.swift in Sources */,
-				124F06E3238D897E00395D54 /* ImageValueTransformer.swift in Sources */,
+				124F06E3238D897E00395D54 /* Transformers.swift in Sources */,
 				16C66D0423F561AA009AEB72 /* IndustryJobs.swift in Sources */,
 				162571EC242B9E140022C605 /* FittingModuleSlot.swift in Sources */,
 				16859E6124361BD30037C01B /* ShipPickerGroups.swift in Sources */,

@@ -32,7 +32,7 @@ struct WalletTransactionCell: View {
         }
         
         if let client = contacts[Int64(item.clientID)]?.name {
-            amount = amount + (item.isBuy ? Text(" to ") : Text(" from ")) + Text(client)
+            amount = amount + (item.isBuy ? Text(" to ", comment: "E.g.: 100 ISK to [PlayerName]") : Text("E.g.: 100 ISK from [PlayerName]")) + Text(client)
         }
         
         return VStack(alignment: .leading) {

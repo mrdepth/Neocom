@@ -40,8 +40,8 @@ struct Settings: View {
                 Section(header: Text("DATABASE LANGUAGE")) {
                     NavigationLink(destination: LanguagePacks()) {
                         VStack(alignment: .leading) {
-                            pack.localizedName.foregroundColor(.primary)
-                            Text(pack.name).modifier(SecondaryLabelModifier())
+                            Text(pack.name).foregroundColor(.primary)
+                            pack.localizedName.modifier(SecondaryLabelModifier())
                         }
                     }
                 }

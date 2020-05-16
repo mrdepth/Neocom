@@ -15,14 +15,14 @@ struct LanguagePack {
     
     static let packs = [
         "SDE_en": LanguagePack(name: "English", localizedName: Text("English")),
-        "SDE_de": LanguagePack(name: "German", localizedName: Text("German")),
-        "SDE_es": LanguagePack(name: "Spanish", localizedName: Text("Spanish")),
-        "SDE_fr": LanguagePack(name: "French", localizedName: Text("French")),
-        "SDE_it": LanguagePack(name: "Italian", localizedName: Text("Italian")),
-        "SDE_ja": LanguagePack(name: "Japanese", localizedName: Text("Japanese")),
-        "SDE_ru": LanguagePack(name: "Russian", localizedName: Text("Russian")),
-        "SDE_zh": LanguagePack(name: "Chinese", localizedName: Text("Chinese")),
-        "SDE_ko": LanguagePack(name: "Korean", localizedName: Text("Korean")),
+        "SDE_de": LanguagePack(name: "Deutsch", localizedName: Text("German")),
+        "SDE_es": LanguagePack(name: "Español", localizedName: Text("Spanish")),
+        "SDE_fr": LanguagePack(name: "Français", localizedName: Text("French")),
+        "SDE_it": LanguagePack(name: "Italiano", localizedName: Text("Italian")),
+        "SDE_ja": LanguagePack(name: "日本語", localizedName: Text("Japanese")),
+        "SDE_ru": LanguagePack(name: "Русский", localizedName: Text("Russian")),
+        "SDE_zh": LanguagePack(name: "中文", localizedName: Text("Chinese")),
+        "SDE_ko": LanguagePack(name: "한국어", localizedName: Text("Korean")),
     ]
 }
 

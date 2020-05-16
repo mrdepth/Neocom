@@ -108,10 +108,10 @@ struct SkillsFilter: View {
 
     var body: some View {
         Picker("Filter", selection: $filter) {
-            Text("My").tag(Filter.my)
-            Text("Can Train").tag(Filter.canTrain)
-            Text("Not Known").tag(Filter.notKnown)
-            Text("All").tag(Filter.all)
+            Text("My", comment: "Skill Borwser. My skills.").tag(Filter.my)
+            Text("Can Train", comment: "Skill Borwser").tag(Filter.canTrain)
+            Text("Not Known", comment: "Skill Borwser").tag(Filter.notKnown)
+            Text("All", comment: "Skill Borwser. All skills.").tag(Filter.all)
         }.pickerStyle(SegmentedPickerStyle())
     }
 }

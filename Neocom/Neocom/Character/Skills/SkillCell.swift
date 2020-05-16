@@ -58,7 +58,7 @@ struct SkillCell: View {
     
     private func actionSheet(_ levels: Range<Int>) -> ActionSheet {
         let buttons = levels.map { level in
-            ActionSheet.Button.default(Text("Traint to level \(String(roman: level))")) {
+            ActionSheet.Button.default(Text("Train to level \(String(roman: level))")) {
                 guard let pilot = self.pilot else {return}
                 let trainingQueue = TrainingQueue(pilot: pilot)
                 trainingQueue.add(self.type, level: level)

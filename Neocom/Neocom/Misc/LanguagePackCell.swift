@@ -19,8 +19,8 @@ struct LanguagePackCell: View {
 
     private func title(_ pack: LanguagePack) -> some View {
         VStack(alignment: .leading) {
-            pack.localizedName.foregroundColor(.primary)
-            Text(pack.name).modifier(SecondaryLabelModifier())
+            Text(pack.name).foregroundColor(.primary)
+            pack.localizedName.modifier(SecondaryLabelModifier())
         }
     }
 

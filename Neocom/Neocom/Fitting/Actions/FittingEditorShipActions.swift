@@ -89,10 +89,10 @@ struct FittingEditorShipActions: View {
             }
             Section {
                 NavigationLink(destination: AffectingSkills(ship: ship)) {
-                    Text("Affecting Skill")
+                    Text("Affecting Skills")
                 }
                 NavigationLink(destination: RequiredSkills(ship: ship)) {
-                    Text("Required Skill")
+                    Text("Required Skills")
                 }
             }
             

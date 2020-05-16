@@ -121,7 +121,7 @@ struct MarketHistory: View {
         }.font(.caption).frame(width: 30, alignment: .trailing).minimumScaleFactor(0.5)
     }
     
-    private static let months: [String] = [NSLocalizedString("JAN", comment: ""), NSLocalizedString("FEB", comment: ""), NSLocalizedString("MAR", comment: ""), NSLocalizedString("APR", comment: ""), NSLocalizedString("MAY", comment: ""), NSLocalizedString("JUN", comment: ""), NSLocalizedString("JUL", comment: ""), NSLocalizedString("AUG", comment: ""), NSLocalizedString("SEP", comment: ""), NSLocalizedString("OCT", comment: ""), NSLocalizedString("NOV", comment: ""), NSLocalizedString("DEC", comment: "")]
+    private static let months: [String] = [NSLocalizedString("JAN", comment: "Month Abbreviation"), NSLocalizedString("FEB", comment: "Month Abbreviation"), NSLocalizedString("MAR", comment: "Month Abbreviation"), NSLocalizedString("APR", comment: "Month Abbreviation"), NSLocalizedString("MAY", comment: "Month Abbreviation"), NSLocalizedString("JUN", comment: "Month Abbreviation"), NSLocalizedString("JUL", comment: "Month Abbreviation"), NSLocalizedString("AUG", comment: "Month Abbreviation"), NSLocalizedString("SEP", comment: "Month Abbreviation"), NSLocalizedString("OCT", comment: "Month Abbreviation"), NSLocalizedString("NOV", comment: "Month Abbreviation"), NSLocalizedString("DEC", comment: "Month Abbreviation")]
     
 	
     var body: some View {

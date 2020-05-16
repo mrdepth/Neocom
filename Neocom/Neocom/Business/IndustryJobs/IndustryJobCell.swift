@@ -32,19 +32,19 @@ struct IndustryJobCell: View {
             progress = 1.0 - Float(t / TimeInterval(job.duration))
             status = Text("\(TimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes)) (\(Int(progress * 100))%)")
         case .cancelled:
-            status = Text("cancelled \(endDate())")
+            status = Text("cancelled \(endDate())", comment: "Industry Job Status: cancelled [date]")
             progress = 0
         case .delivered:
-            status = Text("delivered \(endDate())")
+            status = Text("delivered \(endDate())", comment: "Industry Job Status: delivered [date]")
             progress = 1
         case .paused:
-            status = Text("paused \(endDate()))")
+            status = Text("paused \(endDate()))", comment: "Industry Job Status: paused [date]")
             progress = 0
         case .ready:
-            status = Text("ready \(endDate()))")
+            status = Text("ready \(endDate()))", comment: "Industry Job Status: ready [date]")
             progress = 1
         case .reverted:
-            status = Text("reverted \(endDate()))")
+            status = Text("reverted \(endDate()))", comment: "Industry Job Status: reverted [date]")
             progress = 0
         }
         

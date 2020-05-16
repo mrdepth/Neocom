@@ -171,7 +171,6 @@ struct WealthChart_Previews: PreviewProvider {
                     WealthChart.Section(title: Text("Assets"), amount: 18000, color: .red),
                 ])
 //            }.listStyle(GroupedListStyle())
-//            WealthTitle(angle: Angle(degrees: 45), title: Text("Test"), isk: 1000)
         }
     }
 }

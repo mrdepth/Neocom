@@ -137,7 +137,7 @@ struct ContractInfoItems: View {
             type.map{Icon($0.image).cornerRadius(4)}
             VStack(alignment: .leading) {
                 (type?.typeName).map {Text($0)} ?? Text("Unknown Type")
-                Text("Quatity: \(UnitFormatter.localizedString(from: item.quantity, unit: .none, style: .long))").modifier(SecondaryLabelModifier())
+                Text("Quantity: \(UnitFormatter.localizedString(from: item.quantity, unit: .none, style: .long))").modifier(SecondaryLabelModifier())
             }
         }
         

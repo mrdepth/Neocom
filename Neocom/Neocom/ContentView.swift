@@ -67,30 +67,6 @@ struct ContentView: View {
 
         
         return ZStack {
-//            VStack {
-//                VStack(spacing: 0) {
-//                    Text("Aloha").alignmentGuide(VerticalAlignment(CustomAlignmentID.self)) {$0[.bottom]}
-//                }
-//                Text("Hello World")
-//                Spacer()
-//            }.overlay(Rectangle(), alignment: .init(horizontal: .center, vertical: VerticalAlignment(CustomAlignmentID.self)))
-            
-//            ComposeMail_Previews.previews
-//            TextView(text: .constant(string))
-
-//            TextFieldAlert_Previews.previews
-//            SkillPlans_Previews.previews
-//            MailBox_Previews.previews
-//            NavigationView {
-//                NavigationLink("Next", destination: ShipLoadouts())
-//            }
-//            Home_Previews.previews
-            Assets_Previews.previews
-//            TextView_Previews.previews
-//            LoadingProgressView_Previews.previews
-//            NavigationView {
-//                TypeCategories()
-//            }
             if isFinished {
                 FinishedView(isPresented: $isFinished)
             }

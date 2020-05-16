@@ -266,7 +266,7 @@ extension TypeInfoData {
                                 
                                 let baseWarpSpeed =  attributeValues?[Int(SDEAttributeID.baseWarpSpeed.rawValue)] ?? type[SDEAttributeID.baseWarpSpeed]?.value ?? 1.0
                                 var s = UnitFormatter.localizedString(from: Double(value * baseWarpSpeed), unit: .none, style: .long)
-                                s += " " + NSLocalizedString("AU/sec", comment: "")
+                                s += " " + NSLocalizedString("AU/s", comment: "")
                                 rows.append(.attribute(Row.Attribute(id: attribute.objectID,
                                                                      image: attributeType.icon?.image?.image,
                                                                      title: NSLocalizedString("Warp Speed", comment: ""),

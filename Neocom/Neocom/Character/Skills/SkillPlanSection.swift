@@ -55,7 +55,7 @@ struct SkillPlanSection: View {
     
     func header(_ trainingQueue: TrainingQueue) -> some View {
         let trainingTime = trainingQueue.trainingTime()
-        let prefix = Text("SKILLPLAN: ") + (skillPlan.name.map{Text($0.uppercased())} ?? Text("UNNAMED"))
+        let prefix = Text("SKILL PLAN: ") + (skillPlan.name.map{Text($0.uppercased())} ?? Text("UNNAMED"))
         return HStack {
             if trainingTime > 0 {
                 prefix + Text(" (\(TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds)))")

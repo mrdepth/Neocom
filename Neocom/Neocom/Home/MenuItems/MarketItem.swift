@@ -9,11 +9,13 @@
 import SwiftUI
 
 struct MarketItem: View {
+    @ObservedObject private var storage = Storage.sharedStorage
+    
     var body: some View {
         NavigationLink(destination: TypeMarketGroup()) {
             Icon(Image("market"))
             Text("Market")
-        }
+        }.id(storage.currentLanguagID)
     }
 }
 

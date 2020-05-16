@@ -77,7 +77,7 @@ struct MarketOrdersContent: View {
 #if DEBUG
 struct MarketOrders_Previews: PreviewProvider {
     static var previews: some View {
-        let solarSystem = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
+        let solarSystem = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
         let location = EVELocation(solarSystem: solarSystem, id: Int64(solarSystem.solarSystemID))
         
         let orders = (0..<100).map { i in
@@ -104,7 +104,7 @@ struct MarketOrders_Previews: PreviewProvider {
 //            }.listStyle(GroupedListStyle())
 //                .navigationBarTitle(Text("Market Orders"))
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

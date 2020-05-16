@@ -51,7 +51,7 @@ struct CharacterSheetItem_Previews: PreviewProvider {
                 CharacterSheetItem()
             }.listStyle(GroupedListStyle())
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
 
     }

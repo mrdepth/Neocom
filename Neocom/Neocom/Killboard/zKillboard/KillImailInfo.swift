@@ -220,7 +220,7 @@ struct KillImailInfo_Previews: PreviewProvider {
         return NavigationView {
             KillImailInfo(killmail: killmail, contacts: contacts)
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

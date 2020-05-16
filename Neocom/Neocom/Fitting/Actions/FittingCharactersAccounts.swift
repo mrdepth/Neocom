@@ -31,7 +31,7 @@ struct FittingCharactersAccounts_Previews: PreviewProvider {
 		return List {
 			FittingCharactersAccounts {_, _ in}
 		}.listStyle(GroupedListStyle())
-		.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+		.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }
 #endif

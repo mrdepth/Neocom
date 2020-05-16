@@ -48,7 +48,7 @@ struct HomeHeader_Previews: PreviewProvider {
     static var previews: some View {
         HomeHeader()
             .environmentObject(SharedState.testState())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
 
     }
 }

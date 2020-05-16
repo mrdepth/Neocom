@@ -54,7 +54,7 @@ struct ImplantTypeCell: View {
 
 struct ImplantTypeCell_Previews: PreviewProvider {
     static var previews: some View {
-        let implant = try? AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let implant = try? Storage.sharedStorage.persistentContainer.viewContext
             .from(SDEInvType.self)
             .filter((/\SDEInvType.attributes).subquery(/\SDEDgmTypeAttribute.attributeType?.attributeID == SDEAttributeID.intelligenceBonus.rawValue).count > 0)
             .first()

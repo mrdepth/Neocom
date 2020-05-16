@@ -120,7 +120,7 @@ struct TypePickerPage: View, Equatable {
 
 struct TypePicker_Previews: PreviewProvider {
     static var previews: some View {
-        let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let context = Storage.sharedStorage.persistentContainer.viewContext
         let group = try! context.fetch(SDEDgmppItemGroup.rootGroup(categoryID: .ship)).first!
         return TypePicker(content: TypePickerViewController(parentGroup: group, services: ServicesViewModifier(managedObjectContext: context, backgroundManagedObjectContext: context, sharedState: SharedState(managedObjectContext: context)), completion: {_ in})).edgesIgnoringSafeArea(.all)
     }

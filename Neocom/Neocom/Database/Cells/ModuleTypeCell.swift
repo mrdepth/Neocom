@@ -37,8 +37,8 @@ struct ModuleTypeCell: View {
 struct ModuleTypeCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            ModuleTypeCell(module: (try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.dgmppItem?.requirements?.powerGrid > 10000).first()?.dgmppItem?.requirements)!)
-            ModuleTypeCell(module: (try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.dgmppItem?.requirements?.calibration > 0).first()?.dgmppItem?.requirements)!)
+            ModuleTypeCell(module: (try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.dgmppItem?.requirements?.powerGrid > 10000).first()?.dgmppItem?.requirements)!)
+            ModuleTypeCell(module: (try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.dgmppItem?.requirements?.calibration > 0).first()?.dgmppItem?.requirements)!)
         }.listStyle(GroupedListStyle())
     }
 }

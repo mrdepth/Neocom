@@ -67,6 +67,6 @@ struct FittingEditorCapacitorStats_Previews: PreviewProvider {
             FittingEditorCapacitorStats(ship: gang.pilots.first!.ship!)
         }.listStyle(GroupedListStyle())
             .environmentObject(gang)
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

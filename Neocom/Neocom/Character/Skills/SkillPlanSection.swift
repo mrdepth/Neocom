@@ -123,15 +123,15 @@ struct SkillPlanSection_Previews: PreviewProvider {
     static var previews: some View {
         let account = AppDelegate.sharedDelegate.testingAccount
 
-        let type = try! AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let type = try! Storage.sharedStorage.persistentContainer.viewContext
             .from(SDEInvType.self)
             .filter(/\SDEInvType.group?.category?.categoryID == SDECategoryID.skill.rawValue)
             .first()!
 
-        let skillPlan = SkillPlan(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        let skillPlan = SkillPlan(context: Storage.sharedStorage.persistentContainer.viewContext)
         skillPlan.account = account
         let skills = (0..<4).map { i -> SkillPlanSkill in
-            let skill = SkillPlanSkill(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            let skill = SkillPlanSkill(context: Storage.sharedStorage.persistentContainer.viewContext)
             skill.typeID = type.typeID
             skill.level = Int16(i)
             skill.skillPlan = skillPlan
@@ -139,7 +139,7 @@ struct SkillPlanSection_Previews: PreviewProvider {
             return skill
         }
         
-        let skillPlan2 = SkillPlan(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        let skillPlan2 = SkillPlan(context: Storage.sharedStorage.persistentContainer.viewContext)
         skillPlan2.account = account
         return NavigationView {
             List {
@@ -147,8 +147,8 @@ struct SkillPlanSection_Previews: PreviewProvider {
                 SkillPlanSection(skillPlan: skillPlan2, pilot: .empty)
             }.listStyle(GroupedListStyle())
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
 
 

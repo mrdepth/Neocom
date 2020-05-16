@@ -36,8 +36,8 @@ struct TypeCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
             TypeCell(type: .dominix)
-            TypeCell(type: (try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.dgmppItem?.requirements?.powerGrid > 10000).first())!)
-            TypeCell(type: (try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.dgmppItem?.damage != nil).first())!)
+            TypeCell(type: (try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.dgmppItem?.requirements?.powerGrid > 10000).first())!)
+            TypeCell(type: (try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.dgmppItem?.damage != nil).first())!)
 
         }.listStyle(GroupedListStyle())
     }

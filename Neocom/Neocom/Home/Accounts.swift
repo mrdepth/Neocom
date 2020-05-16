@@ -68,7 +68,7 @@ struct Accounts_Previews: PreviewProvider {
         NavigationView {
             Accounts { _ in }
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

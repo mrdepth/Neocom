@@ -56,7 +56,7 @@ struct CertificateInfo: View {
 
 struct CertificateInfo_Previews: PreviewProvider {
     static var previews: some View {
-        let certificate = try! AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let certificate = try! Storage.sharedStorage.persistentContainer.viewContext
         .from(SDECertCertificate.self)
         .filter((/\SDECertCertificate.certificateName).contains("Armor"))
         .first()!
@@ -64,6 +64,6 @@ struct CertificateInfo_Previews: PreviewProvider {
         
         return NavigationView {
             CertificateInfo(certificate: certificate)
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

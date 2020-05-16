@@ -42,7 +42,7 @@ struct MailDraftCell: View {
 #if DEBUG
 struct MailDraftCell_Previews: PreviewProvider {
     static var previews: some View {
-        let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let context = Storage.sharedStorage.persistentContainer.viewContext
         let draft = MailDraft(entity: NSEntityDescription.entity(forEntityName: "MailDraft", in: context)!, insertInto: nil)
         draft.date = Date()
         draft.subject = "Subject"

@@ -19,21 +19,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private var currentActivities: [AnyUserActivityProvider] = []
     private var isMainWindow: Bool = false
-    var sharedState = SharedState(managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+    var sharedState = SharedState(managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext)
     private var subscriptions = Set<AnyCancellable>()
 
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-		// Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-		// If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
-		// Create the SwiftUI view that provides the window contents.
-//        let contentView = ContentView()
-		// Use a UIHostingController as window root view controller.
-        
-        let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
-        let rootModifier = ServicesViewModifier(managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext,
-                                                backgroundManagedObjectContext: AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext(),
+        let context = Storage.sharedStorage.persistentContainer.viewContext
+        let rootModifier = ServicesViewModifier(managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext,
+                                                backgroundManagedObjectContext: Storage.sharedStorage.persistentContainer.newBackgroundContext(),
                                                 sharedState: self.sharedState)
 
         func makeMainWindow(_ window: UIWindow, _ project: FittingProject?) {
@@ -54,9 +47,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
             .navigationViewStyle(StackNavigationViewStyle())
             .modifier(rootModifier)
-//            .onPreferenceChange(AppendPreferenceKey<AnyUserActivityProvider, AnyUserActivityProvider>.self) { [weak self] activities in
-//                self?.currentActivities = activities
-//            }
             currentActivities = [AnyUserActivityProvider(project)]
             window.rootViewController = UIHostingController(rootView: contentView)
         }
@@ -88,10 +78,46 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 		    self.window = window
 		    window.makeKeyAndVisible()
+            
+            downloadLanguagePackIfNeeded()
 		}
         
         sharedState.$userActivity.assign(to: \.userActivity , on: scene).store(in: &subscriptions)
 	}
+    
+    private func downloadLanguagePackIfNeeded() {
+        guard let window = self.window else {return}
+        
+        let sde = Storage.sharedStorage.sde
+        
+        if !sde.isAvailable() {
+            let controller = window.rootViewController?.topMostPresentedViewController
+            
+            var isCancelled = false
+
+            let view = NavigationView {
+                LanguagePacks { _ in
+                    isCancelled = true
+                }
+                    .navigationBarItems(leading: BarButtonItems.close { [weak controller] in
+                        isCancelled = true
+                        Storage.sharedStorage.sde = BundleResource(tag: LanguageID.default.rawValue)
+                        controller?.dismiss(animated: true, completion: nil)
+                    })
+            }.modifier(ServicesViewModifier(managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext, backgroundManagedObjectContext: Storage.sharedStorage.persistentContainer.newBackgroundContext(), sharedState: sharedState))
+            
+            sde.beginAccessingResource { [weak controller] (error) in
+                DispatchQueue.main.async {
+                    guard !isCancelled else {return}
+                    if error == nil {
+                        Storage.sharedStorage.sde = sde
+                    }
+                    controller?.dismiss(animated: true, completion: nil)
+                }
+            }
+            controller?.present(UIHostingController(rootView: view), animated: false, completion: nil)
+        }
+    }
 
 	func sceneDidDisconnect(_ scene: UIScene) {
         subscriptions.removeAll()
@@ -123,7 +149,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 
 	func sceneDidEnterBackground(_ scene: UIScene) {
-        AppDelegate.sharedDelegate.saveContext()
+        Storage.sharedStorage.saveContext()
 		// Called as the scene transitions from the foreground to the background.
 		// Use this method to save data, release shared resources, and store enough scene-specific state information
 		// to restore the scene back to its current state.
@@ -132,7 +158,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         for context in URLContexts {
             let isOAuth2 = OAuth2.handleOpenURL(context.url, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey, completionHandler: { (result) in
-                let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
+                let context = Storage.sharedStorage.persistentContainer.viewContext
                 switch result {
                 case let .success(token):
                     //                    let data = try? JSONEncoder().encode(token)
@@ -166,7 +192,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     return showTypeInfo(typeID: typeID)
                 case URLScheme.fitting:
                     let dna = components.path
-                    guard let project = try? FittingProject(dna: dna, skillLevels: .level(5), managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext) else {break}
+                    guard let project = try? FittingProject(dna: dna, skillLevels: .level(5), managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext) else {break}
                     
                     if let activity = project.userActivity, UIApplication.shared.supportsMultipleScenes && OpenMode.default.openInNewWindow {
                         project.updateUserActivityState(activity)
@@ -191,7 +217,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 UIApplication.shared.requestSceneSessionActivation(nil, userActivity: userActivity, options: nil, errorHandler: nil)
             }
             else {
-                let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
+                let context = Storage.sharedStorage.persistentContainer.viewContext
                 guard let fitting = try? userActivity.fitting(from: context) else {return}
                 openFitting(fitting: fitting)
             }
@@ -209,7 +235,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func showTypeInfo(typeID: Int) {
-        let container = AppDelegate.sharedDelegate.persistentContainer
+        let container = Storage.sharedStorage.persistentContainer
         guard let controller = window?.rootViewController?.topMostPresentedViewController else {return}
         guard let type = try? container.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == Int32(typeID)).first() else {return}
         
@@ -225,7 +251,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func openFitting(fitting: FittingProject) {
-        let container = AppDelegate.sharedDelegate.persistentContainer
+        let container = Storage.sharedStorage.persistentContainer
         guard let controller = window?.rootViewController?.topMostPresentedViewController else {return}
         
         let view = NavigationView {

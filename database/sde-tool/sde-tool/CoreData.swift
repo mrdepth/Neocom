@@ -189,6 +189,7 @@ extension SDEInvType {
 		self.init(context: .current)
 		typeID = Int32(type.key)
         typeName = (type.value.name.localized ?? "").replacingEscapes()
+        originalTypeName = (type.value.name.en ?? "").replacingEscapes()
 		try group = invGroups.get()[type.value.groupID]?.object()
 		basePrice = type.value.basePrice ?? 0
 		capacity = type.value.capacity ?? 0

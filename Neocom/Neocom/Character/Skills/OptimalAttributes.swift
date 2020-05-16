@@ -54,14 +54,14 @@ struct OptimalAttributes_Previews: PreviewProvider {
         pilot.augmentations = Pilot.Attributes(intelligence: 4, memory: 4, perception: 4, willpower: 4, charisma: 4)
         pilot.attributes += pilot.augmentations
         let trainingQueue = TrainingQueue(pilot: pilot)
-        let skill = try! AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let skill = try! Storage.sharedStorage.persistentContainer.viewContext
             .from(SDEInvType.self)
             .filter(/\SDEInvType.group?.category?.categoryID == SDECategoryID.skill.rawValue)
             .first()!
         trainingQueue.add(skill, level: 5)
         return NavigationView {
             OptimalAttributes(pilot: pilot, trainingQueue: trainingQueue)
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         }
     }
 }

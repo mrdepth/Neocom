@@ -92,7 +92,7 @@ struct AreaEffects_Previews: PreviewProvider {
 			AreaEffects() { _ in
 				
 			}
-				.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+				.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
 		}
     }
 }

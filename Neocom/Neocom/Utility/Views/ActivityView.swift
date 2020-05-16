@@ -100,8 +100,8 @@ struct ActivityView_Previews: PreviewProvider {
     static var previews: some View {
         ActivityViewTest()
             .environmentObject(SharedState.testState())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
 
     }
 }

@@ -47,7 +47,7 @@ struct Main: View {
     private let home = Home()
 
     var body: some View {
-//        Migration_Previews.previews
+//        LanguagePacks_Previews.previews
         let navigationView = NavigationView {
             if horizontalSizeClass == .regular {
                 home
@@ -77,7 +77,7 @@ struct Main: View {
 struct Main_Previews: PreviewProvider {
     static var previews: some View {
         return Main()
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
             .environmentObject(SharedState.testState())
 
     }

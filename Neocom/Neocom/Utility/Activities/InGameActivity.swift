@@ -163,7 +163,7 @@ struct InGameActivityView: View {
 struct InGameActivity_Previews: PreviewProvider {
     static var previews: some View {
         InGameActivityView(ships: [Ship(typeID: 645)]) {_ in}
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

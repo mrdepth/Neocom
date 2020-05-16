@@ -107,7 +107,7 @@ struct AssetsList_Previews: PreviewProvider {
         let data = NSDataAsset(name: "dominixAsset")!.data
         let asset = try! JSONDecoder().decode(AssetsData.Asset.self, from: data)
         return AssetsList(asset)
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
             .environmentObject(SharedState.testState())
     }
 }

@@ -82,7 +82,7 @@ struct TypeMarketGroupContent: View {
 struct TypeMarketGroup_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            TypeMarketGroup().environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            TypeMarketGroup().environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         }
     }
 }

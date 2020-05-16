@@ -36,6 +36,6 @@ struct FittingEditorStats_Previews: PreviewProvider {
         .environmentObject(PricesData(esi: ESI()))
         .environmentObject(DGMStructure.testKeepstar() as DGMShip)
         .environmentObject(gang)
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

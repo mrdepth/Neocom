@@ -9,11 +9,13 @@
 import SwiftUI
 
 struct NPCItem: View {
+    @ObservedObject private var storage = Storage.sharedStorage
+    
     var body: some View {
         NavigationLink(destination: NPCGroup()) {
             Icon(Image("criminal"))
             Text("NPC")
-        }
+        }.id(storage.currentLanguagID)
     }
 }
 

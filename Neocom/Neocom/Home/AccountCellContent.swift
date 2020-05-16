@@ -166,7 +166,7 @@ struct AccountCellContent_Previews: PreviewProvider {
             skillQueue: nil,
             error: nil).padding().background(Color(UIColor.systemGroupedBackground))
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
 
     }

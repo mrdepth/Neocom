@@ -91,7 +91,7 @@ struct IndustryJobCell: View {
 
 struct IndustryJobCell_Previews: PreviewProvider {
     static var previews: some View {
-        let solarSystem = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
+        let solarSystem = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
         let location = EVELocation(solarSystem: solarSystem, id: Int64(solarSystem.solarSystemID))
 
         let job = ESI.IndustryJobs.Element(activityID: 1,
@@ -122,6 +122,6 @@ struct IndustryJobCell_Previews: PreviewProvider {
                 IndustryJobCell(job: job, locations: [location.id: location])
             }.listStyle(GroupedListStyle())
 //                .colorScheme(.dark)
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

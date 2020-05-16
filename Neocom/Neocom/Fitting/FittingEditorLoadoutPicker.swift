@@ -54,10 +54,10 @@ struct FittingEditorLoadoutPicker_Previews: PreviewProvider {
         _ = Loadout.testLoadouts()
 
         return NavigationView {
-            FittingEditorLoadoutPicker(project: FittingProject(gang: DGMGang.testGang(), managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext)) {}
+            FittingEditorLoadoutPicker(project: FittingProject(gang: DGMGang.testGang(), managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext)) {}
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
 
     }
 }

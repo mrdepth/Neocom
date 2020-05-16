@@ -84,6 +84,6 @@ struct FittingEditorMiscStats_Previews: PreviewProvider {
         }.listStyle(GroupedListStyle())
 //            .environmentObject(DGMStructure.testKeepstar() as DGMShip)
             .environmentObject(gang)
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

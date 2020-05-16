@@ -114,7 +114,7 @@ struct WalletJournal_Previews: PreviewProvider {
             .navigationBarTitle(Text("Wallet Journal"))
             
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

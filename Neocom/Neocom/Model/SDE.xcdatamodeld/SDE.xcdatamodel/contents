@@ -269,6 +269,7 @@
         <attribute name="capacity" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="mass" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="metaLevel" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="originalTypeName" optional="YES" attributeType="String"/>
         <attribute name="portionSize" optional="YES" attributeType="Integer 32" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="published" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="radius" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -496,7 +497,7 @@
         <element name="InvGroup" positionX="0" positionY="45" width="128" height="165"/>
         <element name="InvMarketGroup" positionX="-18" positionY="36" width="128" height="135"/>
         <element name="InvMetaGroup" positionX="18" positionY="63" width="128" height="105"/>
-        <element name="InvType" positionX="-396" positionY="85" width="128" height="495"/>
+        <element name="InvType" positionX="-396" positionY="85" width="128" height="508"/>
         <element name="InvTypeRequiredSkill" positionX="-189" positionY="180" width="128" height="90"/>
         <element name="MapConstellation" positionX="81" positionY="225" width="128" height="135"/>
         <element name="MapPlanet" positionX="-189" positionY="180" width="128" height="105"/>

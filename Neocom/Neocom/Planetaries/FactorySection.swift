@@ -199,7 +199,7 @@ struct FactorySection_Previews: PreviewProvider {
             List {
                 FactorySection(factory: factory!)
             }.listStyle(GroupedListStyle())
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(planet)
     }
 }

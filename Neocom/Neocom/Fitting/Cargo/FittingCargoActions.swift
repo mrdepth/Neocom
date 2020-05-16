@@ -83,8 +83,8 @@ struct FittingCargoActions_Previews: PreviewProvider {
         let cargo = ship.cargo[0]
         cargo.quantity = 10
         return FittingCargoActions(ship: ship, cargo: cargo) {}
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
             .environmentObject(SharedState.testState())
         
         

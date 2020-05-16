@@ -165,17 +165,17 @@ struct SkillPlansContent: View {
 struct SkillPlans_Previews: PreviewProvider {
     static var previews: some View {
         let account = AppDelegate.sharedDelegate.testingAccount
-        _ = try? AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SkillPlan.self).delete()
+        _ = try? Storage.sharedStorage.persistentContainer.viewContext.from(SkillPlan.self).delete()
         
-        let skillPlan1 = SkillPlan(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        let skillPlan2 = SkillPlan(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        let skillPlan1 = SkillPlan(context: Storage.sharedStorage.persistentContainer.viewContext)
+        let skillPlan2 = SkillPlan(context: Storage.sharedStorage.persistentContainer.viewContext)
         skillPlan1.name = "SkillPlan 1"
         skillPlan1.account = account
         skillPlan2.account = account
         
         return NavigationView {
             SkillPlans() { _ in }
-                .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+                .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
                 .environmentObject(SharedState.testState())
         }
     }

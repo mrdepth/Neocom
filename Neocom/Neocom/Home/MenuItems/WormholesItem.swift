@@ -9,11 +9,13 @@
 import SwiftUI
 
 struct WormholesItem: View {
+    @ObservedObject private var storage = Storage.sharedStorage
+    
     var body: some View {
         NavigationLink(destination: Wormholes()) {
             Icon(Image("terminate"))
             Text("Wormholes")
-        }
+        }.id(storage.currentLanguagID)
     }
 }
 

@@ -48,11 +48,11 @@ struct SolarSystemCell: View {
 
 struct LocationPickerSolarSystems_Previews: PreviewProvider {
     static var previews: some View {
-        let region = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEMapRegion.self).first()!
+        let region = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEMapRegion.self).first()!
         return NavigationView {
             LocationPickerSolarSystems(region: region) { _ in }
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext.newBackgroundContext())
     }
 }

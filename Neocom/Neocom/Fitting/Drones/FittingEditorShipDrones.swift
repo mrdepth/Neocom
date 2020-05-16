@@ -120,7 +120,7 @@ struct FittingEditorShipDrones: View {
 struct FittingEditorShipDrones_Previews: PreviewProvider {
     static var previews: some View {
         FittingEditorShipDrones(ship: DGMShip.testNyx())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
 
     }
 }

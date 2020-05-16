@@ -94,7 +94,7 @@ struct MailBox_Previews: PreviewProvider {
         NavigationView {
             MailBox()
                 .environmentObject(SharedState.testState())
-                .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+                .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         }
     }
 }

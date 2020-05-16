@@ -112,6 +112,6 @@ struct Migration_Previews: PreviewProvider {
             Migration()
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

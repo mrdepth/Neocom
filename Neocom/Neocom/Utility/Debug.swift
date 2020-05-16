@@ -23,11 +23,11 @@ let oAuth2Token2 = try! JSONDecoder().decode(OAuth2Token.self, from: "{\"scopes\
 
 extension SDEInvType {
     class var dominix: SDEInvType {
-        return try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 645).first()!
+        return try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 645).first()!
     }
     
     class var gallenteCarrier: SDEInvType {
-        return try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 24313).first()!
+        return try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 24313).first()!
     }
 }
 
@@ -80,8 +80,8 @@ extension DGMShip {
 
 extension Fleet {
     static func testFleet() -> Fleet {
-        _ = try? AppDelegate.sharedDelegate.persistentContainer.viewContext.from(Fleet.self).delete()
-        let fleet = Fleet(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        _ = try? Storage.sharedStorage.persistentContainer.viewContext.from(Fleet.self).delete()
+        let fleet = Fleet(context: Storage.sharedStorage.persistentContainer.viewContext)
         fleet.name = "Fleet"
         Loadout.testLoadouts().forEach {
             $0.addToFleets(fleet)
@@ -92,17 +92,17 @@ extension Fleet {
 
 extension Loadout {
     static func testLoadouts() -> [Loadout] {
-        _ = try? AppDelegate.sharedDelegate.persistentContainer.viewContext.from(Loadout.self).delete()
+        _ = try? Storage.sharedStorage.persistentContainer.viewContext.from(Loadout.self).delete()
         
-        let loadout1 = Loadout(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        let loadout1 = Loadout(context: Storage.sharedStorage.persistentContainer.viewContext)
         loadout1.name = "Test Loadout"
         loadout1.typeID = 645
 
-        let loadout2 = Loadout(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        let loadout2 = Loadout(context: Storage.sharedStorage.persistentContainer.viewContext)
         loadout2.name = "Test Loadout2"
         loadout2.typeID = 645
         
-        try? AppDelegate.sharedDelegate.persistentContainer.viewContext.save()
+        try? Storage.sharedStorage.persistentContainer.viewContext.save()
         return [loadout1, loadout2]
     }
 }
@@ -121,7 +121,7 @@ extension Contact {
     }
     
     static func testContact(contactID: Int64, name: String) -> Contact {
-        let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: AppDelegate.sharedDelegate.persistentContainer.viewContext)!, insertInto: nil)
+        let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.sharedStorage.persistentContainer.viewContext)!, insertInto: nil)
         contact.name = name
         contact.contactID = contactID
         contact.category = ESI.RecipientType.character.rawValue
@@ -142,36 +142,36 @@ extension DGMStructure {
 
 #if DEBUG
 
-extension AppDelegate {
-    func migrate() {
-        let container = NSPersistentCloudKitContainer(name: "Neocom", managedObjectModel: managedObjectModel)
-        let sdeURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("SDE.sqlite")
-        try? FileManager.default.removeItem(at: sdeURL)
-        try? FileManager.default.copyItem(at: Bundle.main.url(forResource: "SDE", withExtension: "sqlite")!, to: sdeURL)
-        let sde = NSPersistentStoreDescription(url: sdeURL)
-        sde.configuration = "SDE"
-        sde.setValue("DELETE" as NSString, forPragmaNamed: "journal_mode")
-        sde.shouldMigrateStoreAutomatically = true
-        sde.shouldInferMappingModelAutomatically = true
-        
-        let storage = NSPersistentStoreDescription(url: URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!).appendingPathComponent("store.sqlite"))
-        storage.configuration = "Storage"
-        storage.shouldInferMappingModelAutomatically = true
-        storage.shouldInferMappingModelAutomatically = true
-        container.persistentStoreDescriptions = [sde, storage]
-        container.loadPersistentStores { (_, error) in
-            if let error = error {
-                print(error)
-            }
-        }
-    }
-}
+//extension AppDelegate {
+//    func migrate() {
+//        let container = NSPersistentCloudKitContainer(name: "Neocom", managedObjectModel: managedObjectModel)
+//        let sdeURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("SDE.sqlite")
+//        try? FileManager.default.removeItem(at: sdeURL)
+//        try? FileManager.default.copyItem(at: Bundle.main.url(forResource: "SDE", withExtension: "sqlite")!, to: sdeURL)
+//        let sde = NSPersistentStoreDescription(url: sdeURL)
+//        sde.configuration = "SDE"
+//        sde.setValue("DELETE" as NSString, forPragmaNamed: "journal_mode")
+//        sde.shouldMigrateStoreAutomatically = true
+//        sde.shouldInferMappingModelAutomatically = true
+//        
+//        let storage = NSPersistentStoreDescription(url: URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!).appendingPathComponent("store.sqlite"))
+//        storage.configuration = "Storage"
+//        storage.shouldInferMappingModelAutomatically = true
+//        storage.shouldInferMappingModelAutomatically = true
+//        container.persistentStoreDescriptions = [sde, storage]
+//        container.loadPersistentStores { (_, error) in
+//            if let error = error {
+//                print(error)
+//            }
+//        }
+//    }
+//}
 
 extension SharedState {
     class func testState() -> SharedState {
         let account = AppDelegate.sharedDelegate.testingAccount
         UserDefault(wrappedValue: String?.none, key: .activeAccountID).wrappedValue = account?.uuid
-        return SharedState(managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        return SharedState(managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext)
     }
 }
 

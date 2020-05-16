@@ -96,8 +96,8 @@ struct LoadoutsSection: View {
 struct LoadoutsSection_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            LoadoutsSection(loadouts: LoadoutsLoader(.ship, managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext), selection: .constant(Set())) { _, _ in}
+            LoadoutsSection(loadouts: LoadoutsLoader(.ship, managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext), selection: .constant(Set())) { _, _ in}
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

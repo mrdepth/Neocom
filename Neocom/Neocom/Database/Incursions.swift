@@ -43,7 +43,7 @@ struct Incursions_Previews: PreviewProvider {
         return NavigationView {
             Incursions()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

@@ -73,11 +73,11 @@ struct WalletTransactionCell: View {
 
 struct WalletTransactionCell_Previews: PreviewProvider {
     static var previews: some View {
-        let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: AppDelegate.sharedDelegate.persistentContainer.viewContext)!, insertInto: nil)
+        let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.sharedStorage.persistentContainer.viewContext)!, insertInto: nil)
         contact.name = "Artem Valiant"
         contact.contactID = 1554561480
         
-        let solarSystem = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
+        let solarSystem = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
         let location = EVELocation(solarSystem: solarSystem, id: Int64(solarSystem.solarSystemID))
 
         
@@ -96,7 +96,7 @@ struct WalletTransactionCell_Previews: PreviewProvider {
             List {
                 WalletTransactionCell(item: item, contacts: [1554561480: contact], locations: [location.id: location])
             }.listStyle(GroupedListStyle())
-                .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+                .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         }
     }
 }

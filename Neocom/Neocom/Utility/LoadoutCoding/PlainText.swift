@@ -32,15 +32,15 @@ struct LoadoutPlainTextEncoder: LoadoutEncoder {
             items.compactMap { (typeID, count) -> String? in
                 guard let type = try? managedObjectContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == Int32(typeID)).first() else {return nil}
                 if count > 1 {
-                    return "\(type.typeName ?? "") x\(count)"
+                    return "\(type.originalTypeName ?? "") x\(count)"
                 }
                 else {
-                    return type.typeName ?? ""
+                    return type.originalTypeName ?? ""
                 }
             }.joined(separator: "\n")
         }
         
-        let typeName = shipType.typeName ?? ""
+        let typeName = shipType.originalTypeName ?? ""
         let shipName = ship.name?.isEmpty == false ? ship.name : typeName
         var s = "[\(typeName), \(shipName ?? "")]\n"
         if !modules.isEmpty {

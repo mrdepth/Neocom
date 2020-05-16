@@ -81,8 +81,8 @@ struct TypeMarketOrders_Previews: PreviewProvider {
     static var previews: some View {
 		NavigationView {
 			TypeMarketOrders(type: .dominix)
-				.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-				.environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
+				.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+				.environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext.newBackgroundContext())
 		}
         .environmentObject(SharedState.testState())
     }

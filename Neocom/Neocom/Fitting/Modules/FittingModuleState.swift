@@ -32,8 +32,8 @@ struct FittingModuleState_Previews: PreviewProvider {
             }.listStyle(GroupedListStyle())
         }
             .environmentObject(gang)
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
 
     }
 }

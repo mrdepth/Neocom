@@ -200,11 +200,11 @@ struct ContractInfoBids: View {
 
 struct ContractInfo_Previews: PreviewProvider {
     static var previews: some View {
-        let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: AppDelegate.sharedDelegate.persistentContainer.viewContext)!, insertInto: nil)
+        let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.sharedStorage.persistentContainer.viewContext)!, insertInto: nil)
         contact.name = "Artem Valiant"
         contact.contactID = 1554561480
         
-        let solarSystem = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
+        let solarSystem = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
         let location = EVELocation(solarSystem: solarSystem, id: Int64(solarSystem.solarSystemID))
 
         
@@ -246,6 +246,6 @@ struct ContractInfo_Previews: PreviewProvider {
                 ContractInfoBids(bids: bids, contacts: [contact.contactID: contact])
             }.listStyle(GroupedListStyle())
                 .navigationBarTitle(contract.type.title)
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

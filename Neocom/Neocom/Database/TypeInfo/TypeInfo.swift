@@ -148,14 +148,14 @@ extension TypeInfo {
 #if DEBUG
 struct TypeInfo_Previews: PreviewProvider {
     static var previews: some View {
-//        let account = Account(token: oAuth2Token, context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+//        let account = Account(token: oAuth2Token, context: Storage.sharedStorage.persistentContainer.viewContext)
         return NavigationView {
             TypeInfo(type: .gallenteCarrier)
 //                .environment(\.account, account)
 //                .environment(\.esi, ESI(token: oAuth2Token))
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext.newBackgroundContext())
         .environmentObject(SharedState.testState())
     }
 }

@@ -18,7 +18,7 @@ import SwiftUI
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		ValueTransformer.setValueTransformer(ImageValueTransformer(), forName: NSValueTransformerName("ImageValueTransformer"))
         ValueTransformer.setValueTransformer(LoadoutTransformer(), forName: NSValueTransformerName(rawValue: "LoadoutTransformer"))
@@ -29,12 +29,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (granted, nil) in
             DispatchQueue.main.async {
-                self.notificationsManager = NotificationsManager(managedObjectContext: self.persistentContainer.viewContext)
+                self.notificationsManager = NotificationsManager(managedObjectContext: self.storage.persistentContainer.viewContext)
                 UNUserNotificationCenter.current().delegate = self
             }
         }
         
-//        self.notificationsManager = NotificationsManager(managedObjectContext: persistentContainer.viewContext)
 		return true
 	}
     
@@ -52,104 +51,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 	}
     
-    var managedObjectModel: NSManagedObjectModel {
-        let storageModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Storage", withExtension: "momd")!)!
-        let sdeModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "SDE", withExtension: "momd")!)!
-        let cacheModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Cache", withExtension: "momd")!)!
-        return NSManagedObjectModel(byMerging: [storageModel, sdeModel, cacheModel])!
-    }
-    
-    lazy var persistentContainer: NSPersistentCloudKitContainer = {
-//        migrate()
-        let container = NSPersistentCloudKitContainer(name: "Neocom", managedObjectModel: managedObjectModel)
-        let sde = NSPersistentStoreDescription(url: Bundle.main.url(forResource: "SDE", withExtension: "sqlite")!)
-        sde.configuration = "SDE"
-        sde.isReadOnly = true
-        sde.shouldMigrateStoreAutomatically = false
-        
-        let baseURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        
-//        #if DEBUG
-//        try? FileManager.default.removeItem(at: baseURL.appendingPathComponent("store.sqlite"))
-//        try? FileManager.default.removeItem(at: baseURL.appendingPathComponent("cache.sqlite"))
-//        #endif
-        
-        let storage = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("store.sqlite"))
-        storage.configuration = "Storage"
-        storage.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.shimanski.neocom")
-        
-        let cache = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("cache.sqlite"))
-        cache.configuration = "Cache"
-
-        container.persistentStoreDescriptions = [sde, storage, cache]
-        
-        container.loadPersistentStores { (_, error) in
-            if let error = error {
-                print(error)
-            }
-        }
-        container.viewContext.mergePolicy = NSMergePolicy(merge: .overwriteMergePolicyType)
-
-//        do {
-//            try container.initializeCloudKitSchema(options: .printSchema)
-//        }
-//        catch {
-//            print(error)
-//        }
-
-        return container
-    }()
-    
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                if let error = error as? CocoaError, let conflicts = error.userInfo[NSPersistentStoreSaveConflictsErrorKey] as? [NSMergeConflict] {
-                    do {
-                        try NSMergePolicy(merge: .overwriteMergePolicyType).resolve(mergeConflicts: conflicts)
-                        try context.save()
-                    }
-                    catch {
-                        #if DEBUG
-                        let nserror = error as NSError
-                        fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-                        #endif
-                    }
-                }
-                else {
-                    #if DEBUG
-                    let nserror = error as NSError
-                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-                    #endif
-                }
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            }
-        }
-    }
-    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return true
     }
     
     private var notificationsManager: NotificationsManager?
+    lazy var storage = Storage()
     
     #if DEBUG
 
     lazy var testingAccount: Account? = {
-        if let account = try? self.persistentContainer.viewContext.from(Account.self).first() {
+        if let account = try? self.storage.persistentContainer.viewContext.from(Account.self).first() {
             if account.uuid == nil {
                 account.uuid = "1"
-                try? self.persistentContainer.viewContext.save()
+                try? self.storage.persistentContainer.viewContext.save()
             }
             return account
         }
         else {
-            let account = Account(token: oAuth2Token, context: self.persistentContainer.viewContext)
+            let account = Account(token: oAuth2Token, context: self.storage.persistentContainer.viewContext)
             account.uuid = "1"
-            try? self.persistentContainer.viewContext.save()
+            try? self.storage.persistentContainer.viewContext.save()
             return account
         }
     }()
@@ -178,9 +100,10 @@ extension AppDelegate {
     @objc func didRefreshToken(_ note: Notification) {
         guard let token = note.userInfo?[ESI.tokenUserInfoKey] as? OAuth2Token else {return}
         DispatchQueue.main.async {
-            guard let accounts = try? self.persistentContainer.viewContext.from(Account.self).filter(/\Account.refreshToken == token.refreshToken).fetch() else {return}
+            let context = self.storage.persistentContainer.viewContext
+            guard let accounts = try? context.from(Account.self).filter(/\Account.refreshToken == token.refreshToken).fetch() else {return}
             if accounts.isEmpty {
-                let account = try? self.persistentContainer.viewContext.from(Account.self).filter(/\Account.characterID == token.characterID).first()
+                let account = try? context.from(Account.self).filter(/\Account.characterID == token.characterID).first()
                 account?.oAuth2Token = token
             }
             else {
@@ -200,7 +123,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         defer { completionHandler() }
         guard let uuid = response.notification.request.content.userInfo["account"] as? String else {return}
-        guard let account = try? persistentContainer.viewContext.from(Account.self).filter(/\Account.uuid == uuid).first() else {return}
+        guard let account = try? storage.persistentContainer.viewContext.from(Account.self).filter(/\Account.uuid == uuid).first() else {return}
         guard let delegate = response.targetScene?.delegate as? SceneDelegate else {return}
         delegate.sharedState.account = account
     }

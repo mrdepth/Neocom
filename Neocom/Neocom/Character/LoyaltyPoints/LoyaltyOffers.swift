@@ -104,7 +104,7 @@ struct LoyaltyOffers_Previews: PreviewProvider {
         NavigationView {
             LoyaltyOffers(corporationID: 1000049)
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

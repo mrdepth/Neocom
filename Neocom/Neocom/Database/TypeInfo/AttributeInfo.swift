@@ -95,7 +95,7 @@ struct AttributeInfo_Previews: PreviewProvider {
             ForEach((SDEInvType.dominix.attributes?.allObjects as? [SDEDgmTypeAttribute])!, id: \.objectID) {
                 AttributeInfo(attribute: $0)
             }
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         
     }
 }

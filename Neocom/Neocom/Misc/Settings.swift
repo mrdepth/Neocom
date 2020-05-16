@@ -28,10 +28,23 @@ struct Settings: View {
         }))
     }
     
+    @ObservedObject private var storage = Storage.sharedStorage
+    
     var body: some View {
         List {
             Section(footer: Text("Data will be restored from iCloud.")) {
                 MigrateLegacyDataButton()
+            }
+            
+            LanguagePack.packs[storage.sde.tag].map { pack in
+                Section(header: Text("DATABASE LANGUAGE")) {
+                    NavigationLink(destination: LanguagePacks()) {
+                        VStack(alignment: .leading) {
+                            pack.localizedName.foregroundColor(.primary)
+                            Text(pack.name).modifier(SecondaryLabelModifier())
+                        }
+                    }
+                }
             }
             
             Section {
@@ -63,6 +76,7 @@ struct Settings: View {
                     ])
                 }
             }
+            
         }.listStyle(GroupedListStyle())
         .navigationBarTitle("Settings")
     }

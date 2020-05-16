@@ -9,11 +9,13 @@
 import SwiftUI
 
 struct DatabaseItem: View {
+    @ObservedObject private var storage = Storage.sharedStorage
+
     var body: some View {
         NavigationLink(destination: TypeCategories()) {
             Icon(Image("items"))
             Text("Database")
-        }
+        }.id(storage.currentLanguagID)
     }
 }
 

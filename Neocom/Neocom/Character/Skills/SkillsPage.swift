@@ -48,7 +48,7 @@ struct SkillsPage: View {
 
 struct SkillsPage_Previews: PreviewProvider {
     static var previews: some View {
-        let controller = AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let controller = Storage.sharedStorage.persistentContainer.viewContext
             .from(SDEInvType.self)
             .filter(/\SDEInvType.published == true && /\SDEInvType.group?.category?.categoryID == SDECategoryID.skill.rawValue)
             .sort(by: \SDEInvType.group?.groupName, ascending: true)

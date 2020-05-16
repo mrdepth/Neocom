@@ -34,9 +34,7 @@
 		12F06F1F238464950061313D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12F06F1D238464950061313D /* LaunchScreen.storyboard */; };
 		12F06F31238467600061313D /* SDE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F2F238467600061313D /* SDE.xcdatamodeld */; };
 		12F06F40238469C10061313D /* SDEVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F3E238469C10061313D /* SDEVersion.swift */; };
-		12F06F41238469C10061313D /* SDE.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 12F06F3F238469C10061313D /* SDE.sqlite */; };
 		12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F322384676F0061313D /* Storage.xcdatamodeld */; };
-		12F06F6923846C890061313D /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F6823846C890061313D /* Storage.swift */; };
 		12F06F6B23846D670061313D /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F6A23846D670061313D /* Main.swift */; };
 		1602719823A2792900067AA1 /* TypeMarketOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1602719723A2792900067AA1 /* TypeMarketOrderCell.swift */; };
 		1602719A23A27A5800067AA1 /* Text+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1602719923A27A5800067AA1 /* Text+Extensions.swift */; };
@@ -70,6 +68,7 @@
 		162571F2242B9E140022C605 /* FittingModuleActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694B22C240697E600E81E49 /* FittingModuleActions.swift */; };
 		162571F3242B9E140022C605 /* FittingTypeVariations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B7FC3E2408E0470076BD7C /* FittingTypeVariations.swift */; };
 		162571F4242B9E140022C605 /* FittingCharges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B7FC432409073A0076BD7C /* FittingCharges.swift */; };
+		162C99AD246EDFEF000E78EF /* BundleResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162C99AC246EDFEF000E78EF /* BundleResource.swift */; };
 		1630ED7523CC65E0001DBAA7 /* TypeMasterySkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1630ED7423CC65E0001DBAA7 /* TypeMasterySkills.swift */; };
 		1630ED7923CC926E001DBAA7 /* CharacterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1630ED7823CC926E001DBAA7 /* CharacterSheet.swift */; };
 		1630ED7D23CC9D69001DBAA7 /* CharacterSheetHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1630ED7C23CC9D69001DBAA7 /* CharacterSheetHeader.swift */; };
@@ -177,6 +176,11 @@
 		1688D00F23D6F0790012983C /* JumpClones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688D00E23D6F0790012983C /* JumpClones.swift */; };
 		1688D7EA24472F560043DF53 /* AboutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688D7E924472F560043DF53 /* AboutItem.swift */; };
 		1688DB2C242FCF3300C59DCD /* LoyaltyPointsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688DB2B242FCF3300C59DCD /* LoyaltyPointsItem.swift */; };
+		1688F8C4246D9DED00D729A8 /* SDE_en.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1688F8BB246D9DED00D729A8 /* SDE_en.sqlite */; };
+		1688F8C5246D9DED00D729A8 /* SDE_ru.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1688F8BC246D9DED00D729A8 /* SDE_ru.sqlite */; settings = {ASSET_TAGS = (SDE_ru, ); }; };
+		1688F8C6246D9E2B00D729A8 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F6823846C890061313D /* Storage.swift */; };
+		1688F8CA246DA59600D729A8 /* LanguagePacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688F8C9246DA59600D729A8 /* LanguagePacks.swift */; };
+		1688F8CC246DA5A400D729A8 /* LanguagePackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688F8CB246DA5A300D729A8 /* LanguagePackCell.swift */; };
 		168960D1240FE217004E4630 /* TypeInfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168960D0240FE217004E4630 /* TypeInfoButton.swift */; };
 		168960D4240FE6BD004E4630 /* FittingEditorShipDrones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168960D3240FE6BD004E4630 /* FittingEditorShipDrones.swift */; };
 		168960D6240FE6F8004E4630 /* DGMDroneGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168960D5240FE6F8004E4630 /* DGMDroneGroup.swift */; };
@@ -186,6 +190,14 @@
 		16898DF62449DED900E7CD7B /* FittingCargoActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16898DF52449DED900E7CD7B /* FittingCargoActions.swift */; };
 		16898DF82449EF5200E7CD7B /* FittingCargoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16898DF72449EF5200E7CD7B /* FittingCargoHeader.swift */; };
 		168A74F6244C719C005491CF /* RefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168A74F5244C719C005491CF /* RefreshControl.swift */; };
+		168ADD4A246EC70000D6AAC4 /* SDE_de.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1688F8B4246D9DEC00D729A8 /* SDE_de.sqlite */; settings = {ASSET_TAGS = (SDE_de, ); }; };
+		168ADD4B246EC70000D6AAC4 /* SDE_es.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1688F8B5246D9DEC00D729A8 /* SDE_es.sqlite */; settings = {ASSET_TAGS = (SDE_es, ); }; };
+		168ADD4C246EC70000D6AAC4 /* SDE_fr.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1688F8B6246D9DED00D729A8 /* SDE_fr.sqlite */; settings = {ASSET_TAGS = (SDE_fr, ); }; };
+		168ADD4D246EC70000D6AAC4 /* SDE_it.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1688F8BA246D9DED00D729A8 /* SDE_it.sqlite */; settings = {ASSET_TAGS = (SDE_it, ); }; };
+		168ADD4E246EC70000D6AAC4 /* SDE_ja.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1688F8B7246D9DED00D729A8 /* SDE_ja.sqlite */; settings = {ASSET_TAGS = (SDE_ja, ); }; };
+		168ADD4F246EC70000D6AAC4 /* SDE_ko.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1688F8B8246D9DED00D729A8 /* SDE_ko.sqlite */; settings = {ASSET_TAGS = (SDE_ko, ); }; };
+		168ADD50246EC70000D6AAC4 /* SDE_zh.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1688F8B9246D9DED00D729A8 /* SDE_zh.sqlite */; settings = {ASSET_TAGS = (SDE_zh, ); }; };
+		168ADD52246ECE7C00D6AAC4 /* DownloadIndicatorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168ADD51246ECE7C00D6AAC4 /* DownloadIndicatorButton.swift */; };
 		168B0859246B016F00F4A676 /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168B0858246B016F00F4A676 /* NotificationsManager.swift */; };
 		168CC1462438C94300B0A1AC /* KillImailInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168CC1452438C94300B0A1AC /* KillImailInfo.swift */; };
 		168E4048242F536E00C03F00 /* LoyaltyOffersLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 168E4047242F536E00C03F00 /* LoyaltyOffersLoader.swift */; };
@@ -415,7 +427,6 @@
 		12F06F332384676F0061313D /* Storage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Storage.xcdatamodel; sourceTree = "<group>"; };
 		12F06F36238467A10061313D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		12F06F3E238469C10061313D /* SDEVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDEVersion.swift; sourceTree = SOURCE_ROOT; };
-		12F06F3F238469C10061313D /* SDE.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDE.sqlite; sourceTree = SOURCE_ROOT; };
 		12F06F6823846C890061313D /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		12F06F6A23846D670061313D /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		1602719723A2792900067AA1 /* TypeMarketOrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMarketOrderCell.swift; sourceTree = "<group>"; };
@@ -440,6 +451,7 @@
 		161C6EFE23A1303700777009 /* EVELocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EVELocation.swift; sourceTree = "<group>"; };
 		161CE78D23E16E1B007619B8 /* SkillQueueSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillQueueSection.swift; sourceTree = "<group>"; };
 		161CE78F23E16E57007619B8 /* SkillPlanSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillPlanSection.swift; sourceTree = "<group>"; };
+		162C99AC246EDFEF000E78EF /* BundleResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleResource.swift; sourceTree = "<group>"; };
 		1630ED7423CC65E0001DBAA7 /* TypeMasterySkills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMasterySkills.swift; sourceTree = "<group>"; };
 		1630ED7823CC926E001DBAA7 /* CharacterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSheet.swift; sourceTree = "<group>"; };
 		1630ED7C23CC9D69001DBAA7 /* CharacterSheetHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSheetHeader.swift; sourceTree = "<group>"; };
@@ -547,6 +559,17 @@
 		1688D00E23D6F0790012983C /* JumpClones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpClones.swift; sourceTree = "<group>"; };
 		1688D7E924472F560043DF53 /* AboutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutItem.swift; sourceTree = "<group>"; };
 		1688DB2B242FCF3300C59DCD /* LoyaltyPointsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyPointsItem.swift; sourceTree = "<group>"; };
+		1688F8B4246D9DEC00D729A8 /* SDE_de.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDE_de.sqlite; sourceTree = SOURCE_ROOT; };
+		1688F8B5246D9DEC00D729A8 /* SDE_es.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDE_es.sqlite; sourceTree = SOURCE_ROOT; };
+		1688F8B6246D9DED00D729A8 /* SDE_fr.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDE_fr.sqlite; sourceTree = SOURCE_ROOT; };
+		1688F8B7246D9DED00D729A8 /* SDE_ja.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDE_ja.sqlite; sourceTree = SOURCE_ROOT; };
+		1688F8B8246D9DED00D729A8 /* SDE_ko.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDE_ko.sqlite; sourceTree = SOURCE_ROOT; };
+		1688F8B9246D9DED00D729A8 /* SDE_zh.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDE_zh.sqlite; sourceTree = SOURCE_ROOT; };
+		1688F8BA246D9DED00D729A8 /* SDE_it.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDE_it.sqlite; sourceTree = SOURCE_ROOT; };
+		1688F8BB246D9DED00D729A8 /* SDE_en.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDE_en.sqlite; sourceTree = SOURCE_ROOT; };
+		1688F8BC246D9DED00D729A8 /* SDE_ru.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SDE_ru.sqlite; sourceTree = SOURCE_ROOT; };
+		1688F8C9246DA59600D729A8 /* LanguagePacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagePacks.swift; sourceTree = "<group>"; };
+		1688F8CB246DA5A300D729A8 /* LanguagePackCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagePackCell.swift; sourceTree = "<group>"; };
 		168960D0240FE217004E4630 /* TypeInfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoButton.swift; sourceTree = "<group>"; };
 		168960D3240FE6BD004E4630 /* FittingEditorShipDrones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorShipDrones.swift; sourceTree = "<group>"; };
 		168960D5240FE6F8004E4630 /* DGMDroneGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DGMDroneGroup.swift; sourceTree = "<group>"; };
@@ -556,6 +579,7 @@
 		16898DF52449DED900E7CD7B /* FittingCargoActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingCargoActions.swift; sourceTree = "<group>"; };
 		16898DF72449EF5200E7CD7B /* FittingCargoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingCargoHeader.swift; sourceTree = "<group>"; };
 		168A74F5244C719C005491CF /* RefreshControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshControl.swift; sourceTree = "<group>"; };
+		168ADD51246ECE7C00D6AAC4 /* DownloadIndicatorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadIndicatorButton.swift; sourceTree = "<group>"; };
 		168B0858246B016F00F4A676 /* NotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
 		168CC1452438C94300B0A1AC /* KillImailInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KillImailInfo.swift; sourceTree = "<group>"; };
 		168E4047242F536E00C03F00 /* LoyaltyOffersLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyaltyOffersLoader.swift; sourceTree = "<group>"; };
@@ -919,6 +943,7 @@
 				1693A85523FD15D10033A793 /* TextAttachmentView.swift */,
 				16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */,
 				168B0858246B016F00F4A676 /* NotificationsManager.swift */,
+				162C99AC246EDFEF000E78EF /* BundleResource.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -929,7 +954,15 @@
 				12F06F2F238467600061313D /* SDE.xcdatamodeld */,
 				12F06F322384676F0061313D /* Storage.xcdatamodeld */,
 				160FEDE823F4430C00F0B76E /* Cache.xcdatamodeld */,
-				12F06F3F238469C10061313D /* SDE.sqlite */,
+				1688F8B4246D9DEC00D729A8 /* SDE_de.sqlite */,
+				1688F8BB246D9DED00D729A8 /* SDE_en.sqlite */,
+				1688F8B5246D9DEC00D729A8 /* SDE_es.sqlite */,
+				1688F8B6246D9DED00D729A8 /* SDE_fr.sqlite */,
+				1688F8BA246D9DED00D729A8 /* SDE_it.sqlite */,
+				1688F8B7246D9DED00D729A8 /* SDE_ja.sqlite */,
+				1688F8B8246D9DED00D729A8 /* SDE_ko.sqlite */,
+				1688F8BC246D9DED00D729A8 /* SDE_ru.sqlite */,
+				1688F8B9246D9DED00D729A8 /* SDE_zh.sqlite */,
 				12F06F3E238469C10061313D /* SDEVersion.swift */,
 				12F06F6823846C890061313D /* Storage.swift */,
 				1686D74B23953C5600E88D3D /* SDE.swift */,
@@ -970,6 +1003,8 @@
 				1687FC7B24644DD600882EA2 /* MigrationAccountsSection.swift */,
 				1687FC7D24644F3100882EA2 /* MigrationLoadoutsSection.swift */,
 				16A642C824648A1B0048A270 /* MigrationHelper.swift */,
+				1688F8C9246DA59600D729A8 /* LanguagePacks.swift */,
+				1688F8CB246DA5A300D729A8 /* LanguagePackCell.swift */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -1032,18 +1067,21 @@
 		16674BEA238BB96400E6E547 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				16D0093623B09DF0000694C0 /* ActivityIndicatorView.swift */,
 				1693A85923FD40060033A793 /* ActivityIndicator.swift */,
+				16D0093623B09DF0000694C0 /* ActivityIndicatorView.swift */,
+				16865CC8243E080200EDDF15 /* ActivityView.swift */,
 				16A1598423C712FB00778320 /* AddToSkillPlanButton.swift */,
 				166EE98A23962F2500388D65 /* AttributedText.swift */,
 				16E3DBF2238BF944005F5AAE /* Avatar.swift */,
 				16B4C6E5240798280009ACD4 /* BarButtonItem.swift */,
+				16859F5824321EC000824552 /* BarChart.swift */,
 				16C39A5523BA0BF000208F04 /* BlurView.swift */,
 				16E8C42E23E431E0004BA2D3 /* CloseButton.swift */,
 				1693A85323FD0FDC0033A793 /* ContactView.swift */,
 				1619DBA82422693800796FC4 /* DamagePatternControl.swift */,
 				169185492423730B00393116 /* DamageVectorView.swift */,
 				16AE40F4238FEFD500C6E25B /* DamageView.swift */,
+				168ADD51246ECE7C00D6AAC4 /* DownloadIndicatorButton.swift */,
 				16C39A5323BA0B7200208F04 /* FinishedView.swift */,
 				1619DBAA24226A6800796FC4 /* HorizontalSlider.swift */,
 				124F06E6238D8EB400395D54 /* Icon.swift */,
@@ -1052,9 +1090,12 @@
 				160D0BA823F2E3C300690134 /* LoadingProgressView.swift */,
 				1698919E238E4BA500FBA0B3 /* ObservedObjectView.swift */,
 				16674BEB238BB97400E6E547 /* ProgressView.swift */,
-				16DFF830238D3A4F004C1185 /* SearchField.swift */,
+				168A74F5244C719C005491CF /* RefreshControl.swift */,
 				1688C79F24603C54009AFFC3 /* SearchControl.swift */,
 				1688C7A12460640F009AFFC3 /* SearchControlCoordinator.swift */,
+				1694FC60245D61390002903E /* SearchController.swift */,
+				1694FC62245D70430002903E /* SearchControllerWrapper.swift */,
+				16DFF830238D3A4F004C1185 /* SearchField.swift */,
 				169891B4238EAF4000FBA0B3 /* SearchView.swift */,
 				169DA0FD23FE8EAE00AC7B54 /* Sector.swift */,
 				1694B22A2406797D00E81E49 /* ShipResource.swift */,
@@ -1064,11 +1105,6 @@
 				16B8E3B623FBEDC10096B066 /* TextView.swift */,
 				168960D0240FE217004E4630 /* TypeInfoButton.swift */,
 				16C39A5723BA0EEB00208F04 /* VibrancyView.swift */,
-				16859F5824321EC000824552 /* BarChart.swift */,
-				16865CC8243E080200EDDF15 /* ActivityView.swift */,
-				168A74F5244C719C005491CF /* RefreshControl.swift */,
-				1694FC60245D61390002903E /* SearchController.swift */,
-				1694FC62245D70430002903E /* SearchControllerWrapper.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1545,6 +1581,16 @@
 		12F06F07238464920061313D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					SDE_de,
+					SDE_es,
+					SDE_fr,
+					SDE_it,
+					SDE_ja,
+					SDE_ko,
+					SDE_ru,
+					SDE_zh,
+				);
 				LastSwiftUpdateCheck = 1120;
 				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = "Artem Shimanski";
@@ -1578,12 +1624,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				12F06F1F238464950061313D /* LaunchScreen.storyboard in Resources */,
+				168ADD50246EC70000D6AAC4 /* SDE_zh.sqlite in Resources */,
 				1683B75224279E870005B241 /* MainMenu.xcassets in Resources */,
+				168ADD4F246EC70000D6AAC4 /* SDE_ko.sqlite in Resources */,
+				168ADD4B246EC70000D6AAC4 /* SDE_es.sqlite in Resources */,
+				1688F8C5246D9DED00D729A8 /* SDE_ru.sqlite in Resources */,
+				168ADD4E246EC70000D6AAC4 /* SDE_ja.sqlite in Resources */,
 				12F06F1C238464950061313D /* Preview Assets.xcassets in Resources */,
+				168ADD4D246EC70000D6AAC4 /* SDE_it.sqlite in Resources */,
+				1688F8C4246D9DED00D729A8 /* SDE_en.sqlite in Resources */,
 				169891AB238E555100FBA0B3 /* Fitting.xcassets in Resources */,
-				12F06F41238469C10061313D /* SDE.sqlite in Resources */,
+				168ADD4A246EC70000D6AAC4 /* SDE_de.sqlite in Resources */,
 				1691855024237A6D00393116 /* damagePatterns.plist in Resources */,
 				12F06F19238464950061313D /* Assets.xcassets in Resources */,
+				168ADD4C246EC70000D6AAC4 /* SDE_fr.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1620,6 +1674,7 @@
 				16C66D0B23F58920009AEB72 /* Contracts.swift in Sources */,
 				16918548242371C200393116 /* DamagePatterns.swift in Sources */,
 				168F69472430FEF000D80A24 /* WormholeInfo.swift in Sources */,
+				162C99AD246EDFEF000E78EF /* BundleResource.swift in Sources */,
 				16859F422431F3EB00824552 /* WormholesItem.swift in Sources */,
 				1688D7EA24472F560043DF53 /* AboutItem.swift in Sources */,
 				16D0093723B09DF0000694C0 /* ActivityIndicatorView.swift in Sources */,
@@ -1790,6 +1845,7 @@
 				1693A85623FD15D10033A793 /* TextAttachmentView.swift in Sources */,
 				1687FC762464445800882EA2 /* Migration.swift in Sources */,
 				162571F0242B9E140022C605 /* FittingEditorShipModulesList.swift in Sources */,
+				1688F8CA246DA59600D729A8 /* LanguagePacks.swift in Sources */,
 				16B3C7EF2411336300F21DE5 /* FittingEditorImplants.swift in Sources */,
 				12AE041123847EDE00DEFFC5 /* HomeAccountHeader.swift in Sources */,
 				164E6A28243F5C6400215A98 /* Fleets.swift in Sources */,
@@ -1803,6 +1859,7 @@
 				16A642C924648A1B0048A270 /* MigrationHelper.swift in Sources */,
 				124F06E7238D8EB400395D54 /* Icon.swift in Sources */,
 				1691855224237DAC00393116 /* DamagePatternsCustom.swift in Sources */,
+				1688F8CC246DA5A400D729A8 /* LanguagePackCell.swift in Sources */,
 				164E418923EAED1A00EF16CE /* AssetsData.swift in Sources */,
 				1685E713242E841000F85F14 /* LoyaltyOffers.swift in Sources */,
 				1630ED7923CC926E001DBAA7 /* CharacterSheet.swift in Sources */,
@@ -1872,7 +1929,6 @@
 				16BC888A24167AC300C6149A /* FittingImplantSlot.swift in Sources */,
 				16709B1B23F6A76800BB6E90 /* MailHeader.swift in Sources */,
 				1632472A2390FF5B00227480 /* HomeLoginHeader.swift in Sources */,
-				12F06F6923846C890061313D /* Storage.swift in Sources */,
 				169D2801241A0D25002AB469 /* PowerGridResource.swift in Sources */,
 				168F693D2430BCFB00D80A24 /* CertificatesItem.swift in Sources */,
 				167725ED241A71AB0089BB94 /* FittingEditorPriceStats.swift in Sources */,
@@ -1893,6 +1949,7 @@
 				1696E5DD2445AFDC00F2F721 /* SharedState.swift in Sources */,
 				1688C7A22460640F009AFFC3 /* SearchControlCoordinator.swift in Sources */,
 				16859F4824320FB000824552 /* AssetsItem.swift in Sources */,
+				1688F8C6246D9E2B00D729A8 /* Storage.swift in Sources */,
 				16359213245ADF8000622C1C /* FittingEditorFleetBar.swift in Sources */,
 				16D5DE7823B238D4004CDA4A /* CertificateRequirementsInfo.swift in Sources */,
 				1688841C242D11490099C769 /* CharacterSheetItem.swift in Sources */,
@@ -1913,6 +1970,7 @@
 				1610ACEF2441D5E000D9B089 /* FittingItem.swift in Sources */,
 				1686D75323955C2400E88D3D /* TypeInfo.swift in Sources */,
 				16674BF0238BC6F300E6E547 /* UnitFormatter.swift in Sources */,
+				168ADD52246ECE7C00D6AAC4 /* DownloadIndicatorButton.swift in Sources */,
 				16E3DBF5238BFACC005F5AAE /* AccountCell.swift in Sources */,
 				16B04DE323ED655300FBE380 /* AssetsList.swift in Sources */,
 				169BFF9423B64D2300FDF759 /* BlueprintActivityMaterials.swift in Sources */,
@@ -2070,6 +2128,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSET_PACK_MANIFEST_URL_PREFIX = "http://192.168.1.229/";
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 56;
@@ -2094,6 +2153,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSET_PACK_MANIFEST_URL_PREFIX = "http://127.0.0.1/";
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 56;

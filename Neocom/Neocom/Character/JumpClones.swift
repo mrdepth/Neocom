@@ -82,7 +82,7 @@ struct JumpClones_Previews: PreviewProvider {
         NavigationView {
             JumpClones()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

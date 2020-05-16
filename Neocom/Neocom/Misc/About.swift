@@ -111,7 +111,7 @@ struct About_Previews: PreviewProvider {
         NavigationView {
             About()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .navigationViewStyle(StackNavigationViewStyle())
     }
 }

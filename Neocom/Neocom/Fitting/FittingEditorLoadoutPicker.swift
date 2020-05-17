@@ -45,7 +45,7 @@ struct FittingEditorLoadoutPicker: View {
     
     var body: some View {
         let loadouts = self.loadouts.get(initial: LoadoutsLoader(.ship, managedObjectContext: backgroundManagedObjectContext))
-        return LoadoutsList(loadouts: loadouts, category: .ship, onSelect: onSelect).navigationBarTitle("Ships")
+        return LoadoutsList(loadouts: loadouts, category: .ship, onSelect: onSelect).navigationBarTitle(Text("Ships"))
     }
 }
 

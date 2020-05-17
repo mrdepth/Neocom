@@ -43,7 +43,7 @@ struct RecentKills: View {
             .overlay(result?.killmails == nil && result?.isLoading == true ? ActivityIndicatorView(style: .large) : nil)
         .overlay(result?.killmails?.error.map{Text($0)})
         .overlay(killmails?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
-        .navigationBarTitle("Kill Reports")
+        .navigationBarTitle(Text("Kill Reports"))
     }
 }
 

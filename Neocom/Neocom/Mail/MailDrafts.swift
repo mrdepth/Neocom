@@ -38,7 +38,8 @@ struct MailDrafts: View {
             }
             .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .navigationViewStyle(StackNavigationViewStyle())
-        }.navigationBarTitle("Drafts")
+        }
+        .navigationBarTitle(Text("Drafts"))
         .navigationBarItems(trailing: EditButton())
     }
 }

@@ -116,7 +116,7 @@
         <attribute name="typeID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="skillPlan" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SkillPlan" inverseName="skills" inverseEntity="SkillPlan"/>
     </entity>
-    <configuration name="Storage" usedWithCloudKit="YES">
+    <configuration name="Cloud" usedWithCloudKit="YES">
         <memberEntity name="Account"/>
         <memberEntity name="AccountsFolder"/>
         <memberEntity name="DamagePattern"/>

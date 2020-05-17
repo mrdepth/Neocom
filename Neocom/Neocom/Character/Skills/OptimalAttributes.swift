@@ -44,7 +44,7 @@ struct OptimalAttributes: View {
             Section(header: Text("CURRENT: \(TimeIntervalFormatter.localizedString(from: trainingTime, precision: .seconds).uppercased())")) {
                 section(for: pilot.attributes)
             }
-        }.listStyle(GroupedListStyle()).navigationBarTitle("Attributes")
+        }.listStyle(GroupedListStyle()).navigationBarTitle(Text("Attributes"))
     }
 }
 

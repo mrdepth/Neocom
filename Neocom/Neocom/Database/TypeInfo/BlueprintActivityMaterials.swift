@@ -19,7 +19,7 @@ struct BlueprintActivityMaterials: View {
             TypeInfoAttributeCell(title: Text(material.materialType?.typeName ?? ""),
                                   subtitle: Text("x\(material.quantity)"),
                                   image: material.materialType?.image, targetType: material.materialType)
-        }.listStyle(GroupedListStyle()).navigationBarTitle("Materials")
+        }.listStyle(GroupedListStyle()).navigationBarTitle(Text("Materials"))
     }
 }
 

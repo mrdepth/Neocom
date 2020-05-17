@@ -53,7 +53,7 @@ struct StructureLoadouts: View {
         let loadouts = self.loadouts.get(initial: LoadoutsLoader(.structure, managedObjectContext: backgroundManagedObjectContext))
         return LoadoutsList(loadouts: loadouts, category: .structure, onSelect: onSelect)
         .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
-        .navigationBarTitle("Loadouts")
+        .navigationBarTitle(Text("Loadouts"))
     }
 }
 

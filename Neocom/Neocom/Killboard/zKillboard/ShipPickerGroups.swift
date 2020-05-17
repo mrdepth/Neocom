@@ -67,7 +67,7 @@ struct ShipPickerGroupsContent: View {
                         HStack {
                             GroupCell(group: group)
                             Spacer()
-                            Button("Select") {
+                            Button(NSLocalizedString("Select", comment: "")) {
                                 self.completion(group)
                             }.foregroundColor(.blue)
                         }

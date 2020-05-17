@@ -45,7 +45,7 @@ struct AffectingSkills: View {
                 AffectingSkillsSection(skills: section, pilot: pilot)
             }
         }.listStyle(GroupedListStyle())
-        .navigationBarTitle("Affecting Skills")
+        .navigationBarTitle(Text("Affecting Skills"))
     }
 }
 

@@ -38,7 +38,7 @@ struct DamagePatterns: View {
             DamagePatternsCustom(onSelect: completion)
             DamagePatternsPredefined(onSelect: completion)
         }.listStyle(GroupedListStyle())
-        .navigationBarTitle("Damage Patterns")
+        .navigationBarTitle(Text("Damage Patterns"))
         .navigationBarItems(trailing: EditButton())
             .sheet(isPresented: $isNpcPickerPresented) {self.npcPicker}
     }

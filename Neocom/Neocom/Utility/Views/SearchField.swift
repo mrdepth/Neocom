@@ -31,8 +31,7 @@ struct SearchField: View {
         HStack {
             HStack {
                 Image(systemName: "magnifyingglass")
-
-                TextField("Search", text: $text, onEditingChanged: { isEditing in
+                TextField(NSLocalizedString("Search", comment: ""), text: $text, onEditingChanged: { isEditing in
                     withAnimation {
                         self.isEditing = isEditing
                     }
@@ -51,7 +50,8 @@ struct SearchField: View {
             .cornerRadius(10.0)
 
             if isEditing  {
-                Button("Cancel") {
+                
+                Button(NSLocalizedString("Cancel", comment: "")) {
                     withAnimation {
                         UIApplication.shared.endEditing(true)
                         self.text = ""
@@ -77,7 +77,7 @@ struct SearchField_Previews: PreviewProvider {
                 Color(.systemGroupedBackground)
 //                Color(.systemBackground)
             SearchField(text: .constant(""), isEditing: .constant(false))
-                .navigationBarTitle("Title")
+                .navigationBarTitle(Text("Title"))
             }
         }//.colorScheme(.dark)
     }

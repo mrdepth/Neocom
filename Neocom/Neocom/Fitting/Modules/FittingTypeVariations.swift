@@ -32,7 +32,7 @@ struct FittingTypeVariations: View {
                 TypePickerTypesContent(types: types.sections, selectedType: self.$selectedType, completion: self.completion)
             }.listStyle(GroupedListStyle())
         }
-        .navigationBarTitle("Variations")
+        .navigationBarTitle(Text("Variations"))
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})

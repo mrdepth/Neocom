@@ -72,7 +72,7 @@ struct JumpClones: View {
             else {
                 Text(RuntimeError.noAccount).padding()
             }
-        }.navigationBarTitle("Jump Clones")
+        }.navigationBarTitle(Text("Jump Clones"))
     }
 }
 

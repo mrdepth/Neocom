@@ -66,7 +66,7 @@ struct FittingCargo: View {
                     }
                 }
                 Section {
-                    Button("Add Cargo") {
+                    Button(NSLocalizedString("Add Cargo", comment: "")) {
                         self.isTypePickerPresented = true
                     }
                     .frame(maxWidth: .infinity)

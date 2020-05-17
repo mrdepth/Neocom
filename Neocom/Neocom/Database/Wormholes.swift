@@ -32,7 +32,7 @@ struct Wormholes: View {
                 WormholesContent(wormholes: searchResults ?? wormholes)
             }
         }.listStyle(GroupedListStyle())
-            .navigationBarTitle("Wormholes")
+            .navigationBarTitle(Text("Wormholes"))
     }
 }
 

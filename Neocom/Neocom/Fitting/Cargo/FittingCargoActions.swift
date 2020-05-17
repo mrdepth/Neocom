@@ -50,7 +50,7 @@ struct FittingCargoActions: View {
                     .frame(width: 100)
                     .multilineTextAlignment(.center)
                 Stepper("Quantity", value: $cargo.quantity).labelsHidden()
-                Button("Max") {
+                Button(NSLocalizedString("Max", comment: "")) {
                     let free = self.ship.cargoCapacity - self.ship.usedCargoCapacity + self.cargo.volume
                     let qty = (free / perItem).rounded(.down)
                     self.cargo.quantity = Int(max(qty, 1))
@@ -58,7 +58,7 @@ struct FittingCargoActions: View {
             }
         }
         .listStyle(GroupedListStyle())
-        .navigationBarTitle("Actions")
+        .navigationBarTitle(Text("Actions"))
         .navigationBarItems(leading: BarButtonItems.close(completion), trailing: BarButtonItems.trash {
             self.completion()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {

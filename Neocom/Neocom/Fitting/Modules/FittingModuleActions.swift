@@ -189,7 +189,7 @@ struct FittingModuleActions: View {
                 }
             }
         }.listStyle(GroupedListStyle())
-            .navigationBarTitle("Actions")
+            .navigationBarTitle(Text("Actions"))
             .navigationBarItems(leading: BarButtonItems.close(completion), trailing: BarButtonItems.trash {
                 self.completion()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {

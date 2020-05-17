@@ -88,7 +88,7 @@ struct CharacterSheet: View {
     private func skills(from skills: ESI.CharacterSkills?) -> some View {
         skills.map { skills in
             VStack(alignment: .leading) {
-                Text("\(skills.skills.count) ") + Text("Skills")
+                Text("\(skills.skills.count) Skills")
                 Text(UnitFormatter.localizedString(from: skills.totalSP, unit: .skillPoints, style: .long)).modifier(SecondaryLabelModifier())
             }
         }
@@ -212,7 +212,7 @@ struct CharacterSheet: View {
             else {
                 Text(RuntimeError.noAccount).padding()
             }
-        }.navigationBarTitle("Character Sheet")
+        }.navigationBarTitle(Text("Character Sheet"))
     }
 }
 

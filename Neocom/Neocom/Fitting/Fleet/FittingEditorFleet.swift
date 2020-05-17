@@ -52,7 +52,7 @@ struct FittingEditorFleet: View {
                 }
             }
             Section {
-                Button("Add Pilot") {
+                Button(NSLocalizedString("Add Pilot", comment: "")) {
                     self.isLoadoutPickerPresented = true
                 }.frame(maxWidth: .infinity)
             }

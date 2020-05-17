@@ -24,7 +24,7 @@ enum LanguageID: String, CaseIterable {
     case zh = "SDE_zh"
     case ko = "SDE_ko"
     
-    static let `default` = LanguageID.ru
+    static let `default` = LanguageID.en
 }
 
 class Storage: ObservableObject {
@@ -62,10 +62,11 @@ class Storage: ObservableObject {
     }
 
     var managedObjectModel: NSManagedObjectModel {
-        let storageModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Storage", withExtension: "momd")!)!
-        let sdeModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "SDE", withExtension: "momd")!)!
-        let cacheModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Cache", withExtension: "momd")!)!
-        return NSManagedObjectModel(byMerging: [storageModel, sdeModel, cacheModel])!
+        NSManagedObjectModel.mergedModel(from: nil)!
+//        let storageModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Storage", withExtension: "momd")!)!
+//        let sdeModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "SDE", withExtension: "momd")!)!
+//        let cacheModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Cache", withExtension: "momd")!)!
+//        return NSManagedObjectModel(byMerging: [storageModel, sdeModel, cacheModel])!
     }
 
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
@@ -81,12 +82,12 @@ class Storage: ObservableObject {
         
         let baseURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
 
-        let storage = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("store.sqlite"))
-        storage.configuration = "Storage"
+        let storage = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("cloud.sqlite"))
+        storage.configuration = "Cloud"
         storage.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.shimanski.neocom")
         
-        let cache = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("cache.sqlite"))
-        cache.configuration = "Cache"
+        let cache = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("local.sqlite"))
+        cache.configuration = "Local"
         
         container.persistentStoreDescriptions = [sde, storage, cache]
         
@@ -97,12 +98,12 @@ class Storage: ObservableObject {
         }
         container.viewContext.mergePolicy = NSMergePolicy(merge: .overwriteMergePolicyType)
         
-        //        do {
-        //            try container.initializeCloudKitSchema(options: .printSchema)
-        //        }
-        //        catch {
-        //            print(error)
-        //        }
+//        do {
+//            try container.initializeCloudKitSchema(options: [.printSchema])
+//        }
+//        catch {
+//            print(error)
+//        }
         
         return container
     }()

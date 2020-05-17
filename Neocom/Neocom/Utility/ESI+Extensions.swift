@@ -153,7 +153,6 @@ extension ESI.Characters.CharacterID.Contracts.Success {
     }
 }
 
-
 extension ESI.ContractStatus {
     var title: String {
         switch self {
@@ -178,7 +177,7 @@ extension ESI.ContractStatus {
     
 }
 
-extension ESI.Characters.ValueType {
+extension ESI.Corporations.ValueType {
     var title: String {
         switch self {
         case .auction:
@@ -195,7 +194,7 @@ extension ESI.Characters.ValueType {
     }
 }
 
-extension ESI.Characters.Availability {
+extension ESI.Corporations.Availability {
     var title: String {
         switch self {
         case .alliance:

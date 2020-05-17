@@ -55,7 +55,7 @@ struct SkillQueue: View {
                 list
             }
         }
-        .navigationBarTitle("Skill Queue")
+        .navigationBarTitle(Text("Skill Queue"))
         .navigationBarItems(trailing: EditButton())
     }
 }

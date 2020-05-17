@@ -77,8 +77,8 @@ struct LoadoutsList: View {
             if !selectedLoadouts.isEmpty && editMode?.wrappedValue == .active {
                 Divider()
                 HStack {
-                    Button("Deselect All") { withAnimation {self.selectedLoadouts.removeAll()}}.frame(maxWidth: .infinity, alignment: .leading)
-                    Button("Share") { self.isActivityPresented = true }.frame(maxWidth: .infinity)
+                    Button(NSLocalizedString("Deselect All", comment: "")) { withAnimation {self.selectedLoadouts.removeAll()}}.frame(maxWidth: .infinity, alignment: .leading)
+                    Button(NSLocalizedString("Share", comment: "")) { self.isActivityPresented = true }.frame(maxWidth: .infinity)
                     .activityView(isPresented: $isActivityPresented,
                                   activityItems: [LoadoutActivityItem(ships: selectedLoadouts.compactMap{managedObjectContext.object(with: $0) as? Loadout}.compactMap{$0.ship}, managedObjectContext: managedObjectContext)],
                                   applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)])

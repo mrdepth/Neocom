@@ -55,7 +55,7 @@ struct DamagePatternEditor: View {
             })
             .background(Color(.systemBackground))
             .frame(maxHeight: .infinity, alignment: Alignment(horizontal: .center, vertical: VerticalAlignment(CustomAlignmentID.self)))
-            .navigationBarTitle("Damage Pattern")
+            .navigationBarTitle(Text("Damage Pattern"))
             .navigationBarItems(leading: Button("Cancel", action: cancel),
                                 trailing: Button(action: save) { Text("Save").fontWeight(.semibold)})
             .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))

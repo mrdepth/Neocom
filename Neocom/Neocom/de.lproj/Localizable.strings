@@ -1,0 +1,1501 @@
+/* No comment provided by engineer. */
+" " = " ";
+
+/* No comment provided by engineer. */
+" (%@ players)" = " (%@ Spieler)";
+
+/* No comment provided by engineer. */
+" accuracy: " = "Präzision: ";
+
+/* E.g.: 100 ISK from [PlayerName] */
+" from " = " von ";
+
+/* No comment provided by engineer. */
+" lifetime: " = " Lebensdauer: ";
+
+/* No comment provided by engineer. */
+" optimal + falloff: " = " Optimal + Abfall: ";
+
+/* No comment provided by engineer. */
+" optimal: %@" = " Optimal: %@";
+
+/* No comment provided by engineer. */
+" rate of fire: " = " Feuergeschwindigkeit: ";
+
+/* E.g.: 100 ISK to [PlayerName] */
+" to " = " an ";
+
+/* No comment provided by engineer. */
+" velocity: " = " Geschwindigkeit: ";
+
+/* No comment provided by engineer. */
+"%@ / %@ (%@ SP/h)" = "%1$@ / %2$@ (%3$@ SP/Std)";
+
+/* No comment provided by engineer. */
+"%@ assets" = "%@ Besitztümer";
+
+/* No comment provided by engineer. */
+"%@ better" = "%@ besser";
+
+/* No comment provided by engineer. */
+"%@ better.\n" = "%@ besser.\n";
+
+/* No comment provided by engineer. */
+"%@ damage done" = "%@ verursachter Schaden";
+
+/* No comment provided by engineer. */
+"%@ damage done (final blow)" = "%@ verursachter Schaden (finaler Schlag)";
+
+/* No comment provided by engineer. */
+"%@ damage taken" = "%@ erlitterner Schaden";
+
+/* No comment provided by engineer. */
+"%@ Skills" = "%@ Skills";
+
+/* No comment provided by engineer. */
+"%@ skills in queue (%@)" = "%1$@ Skills in der Warteschlange (%2$@)";
+
+/* No comment provided by engineer. */
+"%@ Skills, %@" = "%1$@ Skills, %2$@";
+
+/* No comment provided by engineer. */
+"%@ SP/h" = "%@ SP/Std";
+
+/* No comment provided by engineer. */
+"%@ to level %@" = "%1$@ bis Level %2$@";
+
+/* No comment provided by engineer. */
+"%@ units/day" = "%@ Einheiten/Tag";
+
+/* No comment provided by engineer. */
+"+%@ more" = "+%@ mehr";
+
+/* No comment provided by engineer. */
+"0.0 System" = "0.0 System";
+
+/* No comment provided by engineer. */
+"About" = "Über";
+
+/* No comment provided by engineer. */
+"Account" = "Konto";
+
+/* No comment provided by engineer. */
+"ACCOUNT" = "KONTO";
+
+/* No comment provided by engineer. */
+"Accounts" = "Konten";
+
+/* No comment provided by engineer. */
+"ACCOUNTS" = "KONTEN";
+
+/* No comment provided by engineer. */
+"Actions" = "Aktionen";
+
+/* No comment provided by engineer. */
+"Active" = "Aktiv";
+
+/* No comment provided by engineer. */
+"Add Cargo" = "Fracht hinzufügen";
+
+/* No comment provided by engineer. */
+"Add Module" = "Modul hinzufügen";
+
+/* No comment provided by engineer. */
+"Add New Pattern" = "Neues Muster hinzufügen";
+
+/* No comment provided by engineer. */
+"Add Pilot" = "Pilot hinzufügen";
+
+/* No comment provided by engineer. */
+"Add Skills" = "Skills hinzufügen";
+
+/* No comment provided by engineer. */
+"Add to Skill Plan" = "Skillplan hinzufügen";
+
+/* No comment provided by engineer. */
+"Affecting Skills" = "beeinflussende Skills";
+
+/* No comment provided by engineer. */
+"Align time:" = "Ausrichtungszeit:";
+
+/* Skill Borwser. All skills. */
+"All" = "Alle";
+
+/* No comment provided by engineer. */
+"All Skills" = "Alle Skills";
+
+/* No comment provided by engineer. */
+"All Skills " = "Alle Skills ";
+
+/* No comment provided by engineer. */
+"Alliance" = "Allianz";
+
+/* No comment provided by engineer. */
+"ALLIANCES" = "ALLIANZEN";
+
+/* No comment provided by engineer. */
+"Any" = "Jede/r";
+
+/* No comment provided by engineer. */
+"Application Version" = "Anwendungsversion";
+
+/* Month Abbreviation */
+"APR" = "APR";
+
+/* No comment provided by engineer. */
+"Are you sure?" = "Sind Sie sicher?";
+
+/* No comment provided by engineer. */
+"Area Effects" = "Bereichseffekte";
+
+/* No comment provided by engineer. */
+"AREA EFFECTS" = "BEREICHSEFFEKTE";
+
+/* No comment provided by engineer. */
+"Assets" = "Besitztümer";
+
+/* No comment provided by engineer. */
+"Attributes" = "Attribute";
+
+/* No comment provided by engineer. */
+"ATTRIBUTES" = "ATTRIBUTE";
+
+/* auPerSecond */
+"AU/s" = "AE/s";
+
+/* ESI.ContractType */
+"Auction" = "Auktion";
+
+/* Month Abbreviation */
+"AUG" = "AUG";
+
+/* No comment provided by engineer. */
+"Availability" = "Erreichbarkeit";
+
+/* No comment provided by engineer. */
+"Averaged Facility Performance:" = "Durchschnittliche Leistung der Einrichtung:";
+
+/* billions prefix */
+"B" = "Mrd";
+
+/* No comment provided by engineer. */
+"Balance" = "Bilanz";
+
+/* No comment provided by engineer. */
+"Balance: " = "Bilanz: ";
+
+/* No comment provided by engineer. */
+"Barbican" = "Barbican";
+
+/* No comment provided by engineer. */
+"Based on current training queue and skill plan." = "Basierend auf aktueller Trainingswarteschlange und Skillplan.";
+
+/* No comment provided by engineer. */
+"BIDS" = "GEBOTE";
+
+/* No comment provided by engineer. */
+"BIO" = "BIOGRAPHIE";
+
+/* No comment provided by engineer. */
+"Bloodline" = "Blutlinie";
+
+/* No comment provided by engineer. */
+"Blueprints" = "Blaupause";
+
+/* No comment provided by engineer. */
+"Bonus Remaps Available" = "Verfügbare Bonus-Umprogrammierungen";
+
+/* No comment provided by engineer. */
+"Booster Slot %@" = "Booster Slot %@";
+
+/* No comment provided by engineer. */
+"Boosters" = "Boosters";
+
+/* No comment provided by engineer. */
+"BOOSTERS" = "BOOSTERS";
+
+/* No comment provided by engineer. */
+"Browse %@ Variations" = "Durchsuche %@ Variationen";
+
+/* No comment provided by engineer. */
+"Browse All Skills" = "Durchsuche alle Skills";
+
+/* No comment provided by engineer. */
+"BUSINESS" = "GESCHÄFT";
+
+/* No comment provided by engineer. */
+"Button" = "Knopf";
+
+/* No comment provided by engineer. */
+"Buy" = "Kaufen";
+
+/* No comment provided by engineer. */
+"BUYER WILL GET" = "KÄUFER ERHÄLT";
+
+/* No comment provided by engineer. */
+"BUYER WILL PAY" = "KÄUFER BEZAHLT";
+
+/* No comment provided by engineer. */
+"Buyers" = "Käufer";
+
+/* No comment provided by engineer. */
+"By Category" = "Nach Kategorie";
+
+/* No comment provided by engineer. */
+"By Location" = "Nach Ort";
+
+/* No comment provided by engineer. */
+"CACHE" = "CACHE";
+
+/* No comment provided by engineer. */
+"Calendar" = "Kalender";
+
+/* Skill Borwser */
+"Can Train" = "Kann trainiert werden";
+
+/* No comment provided by engineer. */
+"Cancel" = "Abbrechen";
+
+/* ESI.ContractStatus */
+"Cancelled" = "Abgebrochen";
+
+/* Industry Job Status: cancelled [date] */
+"cancelled %@" = "Abgebrochen am %@";
+
+/* No comment provided by engineer. */
+"CAPACITOR" = "ENERGIESPEICHER";
+
+/* No comment provided by engineer. */
+"Cargo" = "Fracht";
+
+/* No comment provided by engineer. */
+"Cargo:" = "Fracht:";
+
+/* No comment provided by engineer. */
+"Categories" = "Kategorien";
+
+/* No comment provided by engineer. */
+"Certificates" = "Zertifikate";
+
+/* No comment provided by engineer. */
+"CHARACTER" = "CHARAKTER";
+
+/* No comment provided by engineer. */
+"Character %d" = "Charakter %d";
+
+/* No comment provided by engineer. */
+"Character Sheet" = "Charakterübersicht";
+
+/* No comment provided by engineer. */
+"Characters" = "Charaktere";
+
+/* No comment provided by engineer. */
+"CHARACTERS" = "CHARAKTERE";
+
+/* No comment provided by engineer. */
+"CHARGE" = "AUFLADUNG";
+
+/* No comment provided by engineer. */
+"Charges" = "Aufladungen";
+
+/* No comment provided by engineer. */
+"Charisma" = "Ausstrahlung";
+
+/* No comment provided by engineer. */
+"Chinese" = "Chinesisch";
+
+/* No comment provided by engineer. */
+"Clear" = "Löschen";
+
+/* No comment provided by engineer. */
+"Clear Cache" = "Cache leeren";
+
+/* No comment provided by engineer. */
+"Clone jump availability: " = "Verfügbarkeit des nächsten Klonsprungs: ";
+
+/* No comment provided by engineer. */
+"Close" = "Schließen";
+
+/* No comment provided by engineer. */
+"Conflux" = "Conflux";
+
+/* No comment provided by engineer. */
+"Contracts" = "Verträge";
+
+/* No comment provided by engineer. */
+"Copy" = "Kopieren";
+
+/* No comment provided by engineer. */
+"Corporation" = "Corporation";
+
+/* No comment provided by engineer. */
+"CORPORATIONS" = "CORPORATIONS";
+
+/* No comment provided by engineer. */
+"Cost:" = "Kosten:";
+
+/* ESI.ContractType */
+"Courier" = "Kurier";
+
+/* No comment provided by engineer. */
+"Created with Neocom on iOS" = "Erstellt mit Neocom auf iOS";
+
+/* No comment provided by engineer. */
+"CURRENT" = "AKTUELL";
+
+/* No comment provided by engineer. */
+"Current Cycle:" = "Aktueller Zyklus:";
+
+/* No comment provided by engineer. */
+"CURRENT: %@" = "AKTUELL: %@";
+
+/* No comment provided by engineer. */
+"CUSTOM" = "BENUTZERDEFINIERT";
+
+/* No comment provided by engineer. */
+"Cycle Time:" = "Zykluszeit:";
+
+/* days */
+"d" = "T";
+
+/* No comment provided by engineer. */
+"DAMAGE PATTERN" = "SCHADENSMUSTER";
+
+/* No comment provided by engineer. */
+"Damage Patterns" = "Schadensmuster";
+
+/* No comment provided by engineer. */
+"Damage per Second" = "Schaden pro Sekunde";
+
+/* No comment provided by engineer. */
+"Data will be restored from iCloud." = "Daten werden aus der iCloud wiederhergestellt.";
+
+/* No comment provided by engineer. */
+"Database" = "Datenbank";
+
+/* No comment provided by engineer. */
+"DATABASE" = "DATENBANK";
+
+/* No comment provided by engineer. */
+"DATABASE LANGUAGE" = "DATENBANKSPRACHE";
+
+/* No comment provided by engineer. */
+"Database Version" = "Datenbank Version";
+
+/* No comment provided by engineer. */
+"Date Accepted" = "Abschlussdatum";
+
+/* No comment provided by engineer. */
+"Date Completed" = "Abschlussdatum";
+
+/* No comment provided by engineer. */
+"Date Expired" = "Ablaufdatum";
+
+/* No comment provided by engineer. */
+"Date Issued" = "Ausgabedatum";
+
+/* No comment provided by engineer. */
+"Date of Birth" = "Gebursdatum";
+
+/* Month Abbreviation */
+"DEC" = "DEZ";
+
+/* No comment provided by engineer. */
+"Default" = "Standard";
+
+/* No comment provided by engineer. */
+"Delete" = "Löschen";
+
+/* ESI.ContractStatus */
+"Deleted" = "Gelöscht";
+
+/* Industry Job Status: delivered [date] */
+"delivered %@" = "Abgeliefert am %@";
+
+/* No comment provided by engineer. */
+"Delta:" = "Delta:";
+
+/* No comment provided by engineer. */
+"Depleted" = "Erschöpft";
+
+/* No comment provided by engineer. */
+"Description" = "Beschreibung";
+
+/* No comment provided by engineer. */
+"Deselect All" = "Alle abwählen";
+
+/* No comment provided by engineer. */
+"DESELECT ALL" = "ALLE ABWÄHLEN";
+
+/* No comment provided by engineer. */
+"DESTROYED" = "ZERSTÖRT";
+
+/* No comment provided by engineer. */
+"DPS" = "DPS";
+
+/* No comment provided by engineer. */
+"Drafts" = "Entwürfe";
+
+/* No comment provided by engineer. */
+"Drone" = "Drohne";
+
+/* No comment provided by engineer. */
+"DRONE" = "DROHNE";
+
+/* No comment provided by engineer. */
+"Drone range:" = "Drohnenreichweite:";
+
+/* No comment provided by engineer. */
+"Drones" = "Drohnen";
+
+/* No comment provided by engineer. */
+"DROPPED" = "FALLENGELASSEN";
+
+/* No comment provided by engineer. */
+"Efficiency:" = "Effektivität:";
+
+/* No comment provided by engineer. */
+"EHP: %@" = "EHP: %@";
+
+/* No comment provided by engineer. */
+"EM" = "EM";
+
+/* No comment provided by engineer. */
+"End Location" = "Ziel-Ort";
+
+/* No comment provided by engineer. */
+"English" = "Englisch";
+
+/* No comment provided by engineer. */
+"Error" = "Fehler";
+
+/* No comment provided by engineer. */
+"Established" = "Etabliert";
+
+/* No comment provided by engineer. */
+"EVE Mail" = "EVE Mail";
+
+/* No comment provided by engineer. */
+"Exit WH" = "Ausgangswurmloch";
+
+/* No comment provided by engineer. */
+"Expires in %@" = "Läuft ab in %@";
+
+/* No comment provided by engineer. */
+"Explosive" = "Explosiv";
+
+/* No comment provided by engineer. */
+"Extrapolated Efficiency:" = "Hochgerechnete Effizienz:";
+
+/* ESI.ContractStatus */
+"Failed" = "Fehlgeschlagen";
+
+/* No comment provided by engineer. */
+"Falloff" = "Präzisionsabfall";
+
+/* Month Abbreviation */
+"FEB" = "FEB";
+
+/* No comment provided by engineer. */
+"Fighters" = "Jäger";
+
+/* ESI.ContractStatus */
+"Finished" = "Abgeschlossen";
+
+/* No comment provided by engineer. */
+"Finished: %@ ago" = "Abgeschlossen: vor %@";
+
+/* No comment provided by engineer. */
+"FIREPOWER" = "FEUERKRAFT";
+
+/* No comment provided by engineer. */
+"Fitting" = "Ausrüstung";
+
+/* No comment provided by engineer. */
+"FITTING" = "AUSRÜSTUNG";
+
+/* No comment provided by engineer. */
+"Fitting Editor" = "Ausrüstungseditor";
+
+/* No comment provided by engineer. */
+"Fleet" = "Flotte";
+
+/* No comment provided by engineer. */
+"FLEET" = "FLOTTE";
+
+/* No comment provided by engineer. */
+"Fleets" = "Flotten";
+
+/* No comment provided by engineer. */
+"French" = "Französisch";
+
+/* No comment provided by engineer. */
+"From Date" = "Von Datum";
+
+/* No comment provided by engineer. */
+"FUEL" = "TREIBSTOFF";
+
+/* giga SI prefix */
+"G" = "G";
+
+/* No comment provided by engineer. */
+"German" = "Deutsch";
+
+/* gigaJoule */
+"GJ" = "GJ";
+
+/* gigaJoulePerSecond */
+"GJ/s" = "GJ/s";
+
+/* hours */
+"h" = "S";
+
+/* No comment provided by engineer. */
+"Hangar" = "Hangar";
+
+/* No comment provided by engineer. */
+"Heavy" = "Schwer";
+
+/* No comment provided by engineer. */
+"Hi Slot" = "Hochenergieslot";
+
+/* No comment provided by engineer. */
+"High-Sec" = "Hochsicherheitsraum";
+
+/* No comment provided by engineer. */
+"Homepage" = "Homepage";
+
+/* No comment provided by engineer. */
+"HP" = "HP";
+
+/* hpPerSecond */
+"HP/s" = "HP/s";
+
+/* No comment provided by engineer. */
+"Implant" = "Implantat";
+
+/* No comment provided by engineer. */
+"Implant Slot %@" = "Implantat Slot %@";
+
+/* No comment provided by engineer. */
+"Implants" = "Implantate";
+
+/* No comment provided by engineer. */
+"IMPLANTS" = "IMPLANTATE";
+
+/* ESI.ContractStatus */
+"In Progress" = "In Arbeit";
+
+/* No comment provided by engineer. */
+"In-Game" = "In-Game";
+
+/* No comment provided by engineer. */
+"In-Game Loadouts" = "In-Game Ausrüstungen";
+
+/* No comment provided by engineer. */
+"Inactive" = "Inaktiv";
+
+/* No comment provided by engineer. */
+"Incursions" = "Übergriffe";
+
+/* No comment provided by engineer. */
+"Industry" = "Industrie";
+
+/* No comment provided by engineer. */
+"Industry Jobs" = "Industrieaufträge";
+
+/* No comment provided by engineer. */
+"Infested Solar Systems" = "Befallene Sonnensysteme";
+
+/* No comment provided by engineer. */
+"Info" = "Info";
+
+/* No comment provided by engineer. */
+"Input Ratio:" = "Eingabeverhältnis:";
+
+/* No comment provided by engineer. */
+"Input: %@" = "Eingabe: %@";
+
+/* No comment provided by engineer. */
+"Intelligence" = "Intelligenz";
+
+/* isk */
+"ISK" = "ISK";
+
+/* No comment provided by engineer. */
+"ISK:" = "ISK:";
+
+/* No comment provided by engineer. */
+"Issued: " = "Ausgestellt:";
+
+/* No comment provided by engineer. */
+"Italian" = "Italienisch";
+
+/* No comment provided by engineer. */
+"Item" = "Gegenstand";
+
+/* ESI.ContractType */
+"Item Exchange" = "Gegenstandsaustausch";
+
+/* Month Abbreviation */
+"JAN" = "JAN";
+
+/* No comment provided by engineer. */
+"Japanese" = "Japanisch";
+
+/* No comment provided by engineer. */
+"Jub Runs: " = "Durchläufe: ";
+
+/* Month Abbreviation */
+"JUL" = "JUL";
+
+/* No comment provided by engineer. */
+"Jump Clones" = "Sprungklone";
+
+/* Month Abbreviation */
+"JUN" = "JUN";
+
+/* kilo SI prefix */
+"k" = "k";
+
+/* kilogram */
+"kg" = "kg";
+
+/* No comment provided by engineer. */
+"Kill Reports" = "Abschussberichte";
+
+/* No comment provided by engineer. */
+"KILLBOARD" = "KILLBOARD";
+
+/* No comment provided by engineer. */
+"Killmail" = "Abschlussbericht";
+
+/* No comment provided by engineer. */
+"Kills" = "Kills";
+
+/* No comment provided by engineer. */
+"Kinetic" = "Kinetisch";
+
+/* No comment provided by engineer. */
+"Korean" = "Koreanisch";
+
+/* No comment provided by engineer. */
+"Language Pack" = "Sprachpaket";
+
+/* No comment provided by engineer. */
+"Large" = "Groß";
+
+/* No comment provided by engineer. */
+"Lasts:" = "Hält:";
+
+/* No comment provided by engineer. */
+"Leads Into" = "Führt nach";
+
+/* No comment provided by engineer. */
+"Level" = "Level";
+
+/* No comment provided by engineer. */
+"LEVEL %@" = "LEVEL %@";
+
+/* No comment provided by engineer. */
+"LEVEL %@ (%@)" = "LEVEL %1$@ (%2$@)";
+
+/* No comment provided by engineer. */
+"Light" = "Leicht";
+
+/* No comment provided by engineer. */
+"Loadouts" = "Ausrüstungen";
+
+/* No comment provided by engineer. */
+"LOADOUTS" = "AUSRÜSTUNGEN";
+
+/* ESI.ContractType */
+"Loan" = "Kredit";
+
+/* No comment provided by engineer. */
+"Location" = "Ort";
+
+/* No comment provided by engineer. */
+"Log In with EVE Online" = "Einloggen mit EVE Online";
+
+/* No comment provided by engineer. */
+"Logout" = "Ausloggen";
+
+/* No comment provided by engineer. */
+"Losses" = "Verluste";
+
+/* No comment provided by engineer. */
+"Low Slot" = "Niedrigenergieslot";
+
+/* No comment provided by engineer. */
+"Low-Sec" = "Niedersicherheitsraum";
+
+/* No comment provided by engineer. */
+"Loyalty Points" = "Loyalitätspunkte";
+
+/* loyaltyPoints */
+"LP" = "LP";
+
+/* meter
+   minutes */
+"m" = "m";
+
+/* mega SI prefix */
+"M" = "M";
+
+/* meterPerSecond */
+"m/s" = "m/s";
+
+/* cubicMeter */
+"m³" = "m³";
+
+/* No comment provided by engineer. */
+"m³/s" = "m³/s";
+
+/* No comment provided by engineer. */
+"Mail" = "Mail";
+
+/* No comment provided by engineer. */
+"MANUFACTURING" = "HERSTELLUNG";
+
+/* Month Abbreviation */
+"MAR" = "MÄRZ";
+
+/* No comment provided by engineer. */
+"Market" = "Markt";
+
+/* No comment provided by engineer. */
+"MARKET" = "MARKT";
+
+/* No comment provided by engineer. */
+"Market Orders" = "Marktaufträge";
+
+/* No comment provided by engineer. */
+"Mass:" = "Masse:";
+
+/* No comment provided by engineer. */
+"Mastery" = "Meisterschaft";
+
+/* No comment provided by engineer. */
+"Materials" = "Materialien";
+
+/* No comment provided by engineer. */
+"MATERIALS" = "MATERIALIEN";
+
+/* No comment provided by engineer. */
+"Max" = "Max";
+
+/* No comment provided by engineer. */
+"Maximum Jump Mass" = "Maximale Sprungmasse";
+
+/* No comment provided by engineer. */
+"Maximum Mass Regeneration" = "Maximale Massenregeneration";
+
+/* No comment provided by engineer. */
+"Maximum Stable Mass" = "Maximale stabile Masse";
+
+/* No comment provided by engineer. */
+"Maximum Stable Time" = "Maximale stabile Zeit";
+
+/* Month Abbreviation */
+"MAY" = "MAI";
+
+/* megaBitsPerSecond */
+"Mbit/s" = "Mbit/s";
+
+/* No comment provided by engineer. */
+"Med Slot" = "Mittelenergieslot";
+
+/* No comment provided by engineer. */
+"MEDIAN" = "MEDIAN";
+
+/* No comment provided by engineer. */
+"Medium" = "Mittel";
+
+/* No comment provided by engineer. */
+"Memory" = "Gedächtnis";
+
+/* No comment provided by engineer. */
+"Migrate legacy data" = "Alte Daten migrieren";
+
+/* No comment provided by engineer. */
+"Migration" = "Migration";
+
+/* No comment provided by engineer. */
+"Miners" = "Miners";
+
+/* No comment provided by engineer. */
+"MISC" = "SONSTIGES";
+
+/* No comment provided by engineer. */
+"Missile" = "Lenkwaffen";
+
+/* millimeter */
+"mm" = "mm";
+
+/* No comment provided by engineer. */
+"Mobilizing" = "Mobilisiert";
+
+/* No comment provided by engineer. */
+"MODULE" = "MODULE";
+
+/* No comment provided by engineer. */
+"Modules" = "Module";
+
+/* megaWatts */
+"MW" = "MW";
+
+/* Skill Borwser. My skills. */
+"My" = "Meine";
+
+/* No comment provided by engineer. */
+"N/A" = "K.A.";
+
+/* No comment provided by engineer. */
+"Name" = "Name";
+
+/* No comment provided by engineer. */
+"Neocom" = "Neocom";
+
+/* No comment provided by engineer. */
+"Neural Remap Available" = "Verfügbare neutale Umprogrammierung";
+
+/* No comment provided by engineer. */
+"New Loadout" = "Neue Ausrüstung";
+
+/* No comment provided by engineer. */
+"No" = "Nein";
+
+/* No comment provided by engineer. */
+"No Accounts" = "Keine Konten";
+
+/* No comment provided by engineer. */
+"No EVE Account. Please login first." = "Kein EVE Konto. Bitte zuerst einloggen.";
+
+/* No comment provided by engineer. */
+"No Implants" = "Keine Implantate";
+
+/* No comment provided by engineer. */
+"No Loadouts" = "Keine Ausrüstungen";
+
+/* No comment provided by engineer. */
+"No Price" = "Kein Preis";
+
+/* No comment provided by engineer. */
+"No Results" = "Keine Ergebnisse";
+
+/* No comment provided by engineer. */
+"No skills in training" = "Es werden keine Skills trainiert";
+
+/* No comment provided by engineer. */
+"NO SKILLS IN TRAINING" = "ES WERDEN KEINE SKILLS TRAINIERT";
+
+/* No comment provided by engineer. */
+"None" = "Keine/r";
+
+/* Skill Borwser */
+"Not Known" = "Nicht erlernt";
+
+/* No comment provided by engineer. */
+"Notifications Enabled" = "Benachrichtigungen aktiviert";
+
+/* Month Abbreviation */
+"NOV" = "NOV";
+
+/* No comment provided by engineer. */
+"Now" = "Jetzt";
+
+/* No comment provided by engineer. */
+"NPC" = "NPC";
+
+/* No comment provided by engineer. */
+"Null-Sec" = "Nullsicherheitsraum";
+
+/* Month Abbreviation */
+"OCT" = "OKT";
+
+/* No comment provided by engineer. */
+"Offline" = "Offline";
+
+/* No comment provided by engineer. */
+"Ok" = "Ok";
+
+/* No comment provided by engineer. */
+"Online" = "Online";
+
+/* No comment provided by engineer. */
+"Open in Current Window" = "Im aktuellen Fenster öffnen";
+
+/* No comment provided by engineer. */
+"Open in New Window" = "In neuem Fenster öffnen";
+
+/* No comment provided by engineer. */
+"Open:" = "Offen:";
+
+/* No comment provided by engineer. */
+"Optimal Range" = "Optimale Reichweite";
+
+/* No comment provided by engineer. */
+"Optimal Remap" = "Optimale Umprogrammierung";
+
+/* No comment provided by engineer. */
+"OPTIMAL: %@" = "OPTIMAL: %@";
+
+/* No comment provided by engineer. */
+"Other" = "Anders";
+
+/* No comment provided by engineer. */
+"Output: %@" = "Ausgabe: %@";
+
+/* ESI.ContractStatus */
+"Outstanding" = "Ausstehend";
+
+/* No comment provided by engineer. */
+"Overheated" = "Überhitzend";
+
+/* No comment provided by engineer. */
+"Passive Recharge Rate" = "Passive Wiederaufladungsrate";
+
+/* Industry Job Status: paused [date] */
+"paused %@)" = "Pausiert am %@)";
+
+/* No comment provided by engineer. */
+"Per Item" = "pro Item";
+
+/* No comment provided by engineer. */
+"Perception" = "Auffassungsgabe";
+
+/* No comment provided by engineer. */
+"Personal" = "Persönlich";
+
+/* No comment provided by engineer. */
+"Pilot/Corporation/Alliance" = "Pilot/Corporation/Allianz";
+
+/* No comment provided by engineer. */
+"Pilots" = "Piloten";
+
+/* No comment provided by engineer. */
+"Planetaries" = "Planetarien";
+
+/* No comment provided by engineer. */
+"Please, log in to iCloud Account" = "Bitte melden Sie sich bei Ihrem iCloud-Konto an";
+
+/* No comment provided by engineer. */
+"PREDEFINED" = "VORDEFINIERT";
+
+/* No comment provided by engineer. */
+"Present" = "Jetzt";
+
+/* No comment provided by engineer. */
+"Price" = "Preis";
+
+/* No comment provided by engineer. */
+"PRICE" = "PREIS";
+
+/* No comment provided by engineer. */
+"Price:" = "Preis:";
+
+/* No comment provided by engineer. */
+"Price: " = "Preis: ";
+
+/* No comment provided by engineer. */
+"Privacy Policy" = "Datenschutzerklärung";
+
+/* No comment provided by engineer. */
+"PRODUCT" = "PRODUKT";
+
+/* No comment provided by engineer. */
+"Public" = "Öffentlich";
+
+/* No comment provided by engineer. */
+"PUBLISHED" = "VERÖFFENTLICHT";
+
+/* No comment provided by engineer. */
+"Qty:" = "Anzahl:";
+
+/* No comment provided by engineer. */
+"Qty: " = "Anzahl: ";
+
+/* No comment provided by engineer. */
+"Qty: %@" = "Anzahl: %@";
+
+/* No comment provided by engineer. */
+"Quantity" = "Anzahl";
+
+/* No comment provided by engineer. */
+"Quantity:" = "Anzahl:";
+
+/* No comment provided by engineer. */
+"Quantity: %@" = "Anzahl: %@";
+
+/* No comment provided by engineer. */
+"Range:" = "Reichweite:";
+
+/* No comment provided by engineer. */
+"Rate of Fire" = "Feuerrate";
+
+/* Industry Job Status: ready [date] */
+"ready %@)" = "Fertig am %@)";
+
+/* No comment provided by engineer. */
+"RECHARGE RATES (HP/S, EHP/S)" = "WIEDERAUFLADUNGSRATEN (HP/S, EHP/S)";
+
+/* No comment provided by engineer. */
+"Recharge:" = "Aufladen:";
+
+/* No comment provided by engineer. */
+"Red Alert" = "Alarmstufe Rot";
+
+/* No comment provided by engineer. */
+"Redoubt" = "Redoubt";
+
+/* No comment provided by engineer. */
+"Regions" = "Regionen";
+
+/* No comment provided by engineer. */
+"REGIONS" = "REGIONEN";
+
+/* No comment provided by engineer. */
+"Reinforced" = "Reinforced";
+
+/* ESI.ContractStatus */
+"Rejected" = "Abgelehnt";
+
+/* No comment provided by engineer. */
+"Repair Rate" = "Reparaturrate";
+
+/* No comment provided by engineer. */
+"Reply" = "Antworten Sie";
+
+/* No comment provided by engineer. */
+"Required Skills" = "Erforderliche Skills";
+
+/* No comment provided by engineer. */
+"Requirements" = "Vorraussetzungen";
+
+/* No comment provided by engineer. */
+"RESISTANCES" = "RESISTENZEN";
+
+/* No comment provided by engineer. */
+"RESOURCES" = "RESSOURCEN";
+
+/* ESI.ContractStatus */
+"Reversed" = "Aufgehoben";
+
+/* Industry Job Status: reverted [date] */
+"reverted %@)" = "Wiederrufen am %@)";
+
+/* No comment provided by engineer. */
+"Reward" = "Belohnung";
+
+/* No comment provided by engineer. */
+"Rig Slot" = "Modifikationsslot";
+
+/* No comment provided by engineer. */
+"Root" = "Ursprung";
+
+/* No comment provided by engineer. */
+"Runs per Copy: " = "Durchläufe je Kopie: ";
+
+/* No comment provided by engineer. */
+"Russian" = "Russisch";
+
+/* seconds */
+"s" = "s";
+
+/* No comment provided by engineer. */
+"Save" = "Speichern";
+
+/* No comment provided by engineer. */
+"Save In-Game" = "Im Spiel speichern";
+
+/* No comment provided by engineer. */
+"Scan res.:" = "Scanaufl.:";
+
+/* No comment provided by engineer. */
+"Search" = "Suche";
+
+/* No comment provided by engineer. */
+"Security Status" = "Sicherheitsstufe";
+
+/* No comment provided by engineer. */
+"Select" = "Auswählen";
+
+/* No comment provided by engineer. */
+"Select Account" = "Konto auswählen";
+
+/* No comment provided by engineer. */
+"Select All" = "Alle auswählen";
+
+/* No comment provided by engineer. */
+"SELECT ALL" = "ALLE AUSWÄHLEN";
+
+/* No comment provided by engineer. */
+"Select Ammo" = "Munition auswählen";
+
+/* No comment provided by engineer. */
+"Select at least one modifier" = "Wählen Sie mindestens einen Modifikator";
+
+/* No comment provided by engineer. */
+"Select NPC" = "NPC auswählen";
+
+/* No comment provided by engineer. */
+"Sell" = "Verkaufen";
+
+/* No comment provided by engineer. */
+"Sellers" = "Verkäufer";
+
+/* No comment provided by engineer. */
+"Sensor str.:" = "Sensorstärke:";
+
+/* No comment provided by engineer. */
+"Sentinel" = "Sentinel";
+
+/* Month Abbreviation */
+"SEP" = "SEP";
+
+/* No comment provided by engineer. */
+"Service Slot" = "Service-Slot";
+
+/* No comment provided by engineer. */
+"Settings" = "Einstellungen";
+
+/* No comment provided by engineer. */
+"Share" = "Teilen";
+
+/* No comment provided by engineer. */
+"Ship" = "Schiff";
+
+/* No comment provided by engineer. */
+"SHIP" = "SCHIFF";
+
+/* No comment provided by engineer. */
+"Ship Name" = "Schiffname";
+
+/* No comment provided by engineer. */
+"Ships" = "Schiffe";
+
+/* No comment provided by engineer. */
+"Shortage in %@" = "Mangel an %@";
+
+/* No comment provided by engineer. */
+"Signature:" = "Signatur:";
+
+/* No comment provided by engineer. */
+"Skill" = "Skill";
+
+/* No comment provided by engineer. */
+"Skill %d" = "Skill %d";
+
+/* No comment provided by engineer. */
+"Skill Info" = "Skill Info";
+
+/* No comment provided by engineer. */
+"SKILL PLAN" = "SKILL PLAN";
+
+/* No comment provided by engineer. */
+"SKILL PLAN IS EMPTY" = "SKILL PLAN IST LEER";
+
+/* No comment provided by engineer. */
+"SKILL PLAN: " = "SKILL PLAN: ";
+
+/* No comment provided by engineer. */
+"Skill Plans" = "Skill Pläne";
+
+/* No comment provided by engineer. */
+"Skill Queue" = "Tainingswarteschlange";
+
+/* No comment provided by engineer. */
+"Skill queue is empty" = "Trainingswarteschlange ist leer";
+
+/* No comment provided by engineer. */
+"SKILL QUEUE NOTIFICATIONS" = "BENACHRICHTIGUNGEN FÜR TRAININGSWARTESCHLANGE";
+
+/* No comment provided by engineer. */
+"SKILL QUEUE: %@ (%@ skills)" = "TRAININGSWARTESCHLANGE: %1$@ (%2$@ Skills)";
+
+/* No comment provided by engineer. */
+"Skill Training Complete" = "Trainingswarteschlange beendet";
+
+/* No comment provided by engineer. */
+"Skills" = "Skills";
+
+/* No comment provided by engineer. */
+"SKILLS" = "SKILLS";
+
+/* No comment provided by engineer. */
+"skills in queue" = "Skills in Warteschlange";
+
+/* No comment provided by engineer. */
+"Small" = "Klein";
+
+/* No comment provided by engineer. */
+"SOLAR SYSTEMS" = "SONNENSYSTEM";
+
+/* No comment provided by engineer. */
+"Solo" = "Alleine";
+
+/* No comment provided by engineer. */
+"Some application features may be temporarily unavailable" = "Einige Anwendungsfunktionen sind möglicherweise vorübergehend nicht verfügbar";
+
+/* No comment provided by engineer. */
+"Sources" = "Quellen";
+
+/* skillPoints */
+"SP" = "SP";
+
+/* No comment provided by engineer. */
+"SP:" = "SP:";
+
+/* spPerSecond */
+"SP/s" = "SP/s";
+
+/* No comment provided by engineer. */
+"Spanish" = "Spanisch";
+
+/* No comment provided by engineer. */
+"Special hold:" = "Besonderer Laderaum:";
+
+/* No comment provided by engineer. */
+"SPECIAL THANKS" = "BESONDERER DANK";
+
+/* No comment provided by engineer. */
+"Speed:" = "Geschwindigkeit:";
+
+/* No comment provided by engineer. */
+"Stable:" = "Stabil:";
+
+/* No comment provided by engineer. */
+"Start" = "Start";
+
+/* No comment provided by engineer. */
+"Start Location" = "Start-Ort";
+
+/* No comment provided by engineer. */
+"Stats" = "Werte";
+
+/* No comment provided by engineer. */
+"Status" = "Status";
+
+/* No comment provided by engineer. */
+"STRUCTURE" = "STRUKTUREN";
+
+/* No comment provided by engineer. */
+"Structure Name" = "Strukturname";
+
+/* No comment provided by engineer. */
+"Structures" = "Strukturen";
+
+/* No comment provided by engineer. */
+"Subsystem Slot" = "Subsystem-Slot";
+
+/* No comment provided by engineer. */
+"Sum (units):" = "Summe (Einheiten):";
+
+/* No comment provided by engineer. */
+"Support" = "Unterstützung";
+
+/* No comment provided by engineer. */
+"Sustained" = "Unterstützt";
+
+/* No comment provided by engineer. */
+"Switch" = "Wechseln";
+
+/* tera SI prefix */
+"T" = "T";
+
+/* No comment provided by engineer. */
+"Tactical Mode" = "Taktischer Modus";
+
+/* No comment provided by engineer. */
+"Tap to Login" = "Zur Anmeldung tippen";
+
+/* No comment provided by engineer. */
+"Targets:" = "Ziele:";
+
+/* No comment provided by engineer. */
+"Terms of Use" = "Nutzungsbedingungen";
+
+/* No comment provided by engineer. */
+"Text" = "Text";
+
+/* teraflops */
+"Tf" = "Tf";
+
+/* No comment provided by engineer. */
+"Thera" = "Thera";
+
+/* No comment provided by engineer. */
+"Thermal" = "Thermal";
+
+/* No comment provided by engineer. */
+"Time" = "Zeit";
+
+/* No comment provided by engineer. */
+"Time to Depletion:" = "Zeit bis zur Erschöpfung:";
+
+/* No comment provided by engineer. */
+"Title" = "Titel";
+
+/* No comment provided by engineer. */
+"To Date" = "Bis Datum";
+
+/* No comment provided by engineer. */
+"To:" = "An:";
+
+/* No comment provided by engineer. */
+"Toggle" = "Umschalten";
+
+/* No comment provided by engineer. */
+"Total" = "Gesamt";
+
+/* No comment provided by engineer. */
+"Total Unread: %@" = "Insgesamt ungelesen: %@";
+
+/* No comment provided by engineer. */
+"Total:" = "Gesamt:";
+
+/* No comment provided by engineer. */
+"Train to Level" = "Trainieren bis Level";
+
+/* No comment provided by engineer. */
+"Train to level %@" = "Trainieren bis Level %@";
+
+/* No comment provided by engineer. */
+"Training Queue is inactive" = "Trainingswarteschlange ist inaktiv";
+
+/* No comment provided by engineer. */
+"Training Queue will finish in 1 hour." = "Trainingswarteschlange wird in einer Stunde beendet.";
+
+/* No comment provided by engineer. */
+"Training Queue will finish in 4 hours." = "Trainingswarteschlange wird in 4 Stunden beendet.";
+
+/* No comment provided by engineer. */
+"Training Queue will finish in 24 hours." = "Trainingswarteschlange wird in 24 Stunden beendet.";
+
+/* No comment provided by engineer. */
+"Training time: %@" = "Trainingszeit: %@";
+
+/* No comment provided by engineer. */
+"Tranquility - " = "Tranquility - ";
+
+/* ESI.ContractType */
+"Unknown" = "Unbekannt";
+
+/* No comment provided by engineer. */
+"UNKNOWN" = "UBEKANNT";
+
+/* No comment provided by engineer. */
+"Unknown Class %d" = "Unbekannte Klasse %d";
+
+/* No comment provided by engineer. */
+"Unknown Error" = "Unbekannter Fehler";
+
+/* No comment provided by engineer. */
+"Unknown Location" = "Unbekannter Ort";
+
+/* No comment provided by engineer. */
+"UNKNOWN LOCATION" = "UNBEKANNTER ORT";
+
+/* No comment provided by engineer. */
+"Unknown ship" = "Unbekanntes Schiff";
+
+/* No comment provided by engineer. */
+"Unknown Type" = "Unbekannter Typ";
+
+/* No comment provided by engineer. */
+"Unnamed" = "Unbezeichnet";
+
+/* No comment provided by engineer. */
+"UNNAMED" = "UNBEZEICHNET";
+
+/* No comment provided by engineer. */
+"UNPUBLISHED" = "UNVERÖFFENTLICHT";
+
+/* No comment provided by engineer. */
+"Updated:" = "Aktualisiert:";
+
+/* No comment provided by engineer. */
+"Variations" = "Variationen";
+
+/* No comment provided by engineer. */
+"VARIATIONS" = "VARIATIONEN";
+
+/* No comment provided by engineer. */
+"VICTIM" = "OPFER";
+
+/* No comment provided by engineer. */
+"Vidette" = "Vidette";
+
+/* No comment provided by engineer. */
+"Volley" = "Salve";
+
+/* No comment provided by engineer. */
+"Volume" = "Volumen";
+
+/* No comment provided by engineer. */
+"VOLUME" = "VOLUMEN";
+
+/* No comment provided by engineer. */
+"W-Frig" = "Fregatten-Wurmloch";
+
+/* No comment provided by engineer. */
+"W-Space" = "Wurmloch-Raum";
+
+/* No comment provided by engineer. */
+"W-Space Class %d" = "Wurmloch-Raum Klasse %d";
+
+/* No comment provided by engineer. */
+"Wallet Journal" = "Konto Logbuch";
+
+/* No comment provided by engineer. */
+"Wallet Transactions" = "Konto Transaktionen";
+
+/* No comment provided by engineer. */
+"Warp Speed" = "Warpgeschwindigkeit";
+
+/* No comment provided by engineer. */
+"Warp speed:" = "Warpgeschwindigkeit:";
+
+/* No comment provided by engineer. */
+"Warzone Control:" = "Kontrolle über Kriegssysteme:";
+
+/* No comment provided by engineer. */
+"Waste %@%" = "Abfall %1$@%2$";
+
+/* No comment provided by engineer. */
+"Waste in %@ (%@%)" = "Abfall in %1$@ (%2$@%3$)";
+
+/* No comment provided by engineer. */
+"Wealth" = "Reichtum";
+
+/* No comment provided by engineer. */
+"Weapons" = "Waffen";
+
+/* No comment provided by engineer. */
+"WH-Space" = "Wurmloch-Raum";
+
+/* No comment provided by engineer. */
+"Willpower" = "Willenskraft";
+
+/* No comment provided by engineer. */
+"Withdrawing" = "Auf dem Rückzug";
+
+/* No comment provided by engineer. */
+"Wormholes" = "Wurmlöcher";
+
+/* No comment provided by engineer. */
+"X-Large" = "Extragroß";
+
+/* No comment provided by engineer. */
+"Yes" = "Ja";
+
+/* No comment provided by engineer. */
+"Yield (units/h):" = "Ertrag (Einheiten/Std):";
+
+/* No comment provided by engineer. */
+"zKillboard" = "zKillboard";
+
+/* No comment provided by engineer. */
+"zKillboard Reports" = "zKillboard Berichte";
+

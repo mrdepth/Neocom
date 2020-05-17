@@ -22,16 +22,6 @@ struct NPCInfo: View {
         return FetchedResultsController(controller)
     }
     
-//    private func cell(title: LocalizedStringKey, subtitle: String?, image: UIImage?) -> some View {
-//        HStack {
-//            image.map{Icon(Image(uiImage: $0)).cornerRadius(4)}
-//            VStack(alignment: .leading) {
-//                Text(title)
-//                subtitle.map{Text($0).modifier(SecondaryLabelModifier())}
-//            }
-//        }
-//    }
-//
     private func section(for section: FetchedResultsController<SDEDgmTypeAttribute>.Section) -> some View {
         let attributeCategory = section.objects.first?.attributeType?.attributeCategory
         let categoryID = attributeCategory.flatMap{SDEAttributeCategoryID(rawValue: $0.categoryID)}

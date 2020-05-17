@@ -78,7 +78,7 @@ struct IngameLoadouts: View {
                 list
             }
         }
-        .navigationBarTitle("In-Game Loadouts")
+        .navigationBarTitle(Text("In-Game Loadouts"))
         .onReceive(projectLoading ?? Empty().eraseToAnyPublisher()) { result in
             self.projectLoading = nil
             self.selectedProject = result.value

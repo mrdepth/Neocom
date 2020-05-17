@@ -30,7 +30,7 @@ struct Skills: View {
 
     var body: some View {
         let skills = self.skills.get(initial: getSkills())
-        return SkillsContent(skills: skills, editMode: editMode).navigationBarTitle("Skills")
+        return SkillsContent(skills: skills, editMode: editMode).navigationBarTitle(Text("Skills"))
     }
 }
 

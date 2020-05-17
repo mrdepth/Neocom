@@ -121,7 +121,7 @@ struct MarketRegionPicker: View {
 					}
                 }.listStyle(GroupedListStyle())
             }
-		}.navigationBarTitle("Regions")
+		}.navigationBarTitle(Text("Regions"))
     }
 }
 

@@ -16,7 +16,7 @@ struct FittingCharacters: View {
 			FittingCharactersAccounts(onSelect: onSelect)
 			FittingCharactersPredefined(onSelect: onSelect)
 		}.listStyle(GroupedListStyle())
-		.navigationBarTitle("Characters")
+		.navigationBarTitle(Text("Characters"))
     }
 }
 

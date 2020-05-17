@@ -83,7 +83,7 @@ struct TypeInfo: View {
                 else {
                     self.basicInfo(for: info.pilot)
                 }
-            }.listStyle(GroupedListStyle()).navigationBarTitle("Info")
+            }.listStyle(GroupedListStyle()).navigationBarTitle(Text("Info"))
         }
     }
 }

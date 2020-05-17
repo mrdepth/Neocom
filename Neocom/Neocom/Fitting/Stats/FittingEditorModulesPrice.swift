@@ -45,7 +45,7 @@ struct FittingEditorModulesPrice: View {
                     }
                 }
             }
-        }.listStyle(GroupedListStyle()).navigationBarTitle("Modules")
+        }.listStyle(GroupedListStyle()).navigationBarTitle(Text("Modules"))
     }
 }
 

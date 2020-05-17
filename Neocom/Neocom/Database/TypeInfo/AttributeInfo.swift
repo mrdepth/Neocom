@@ -21,11 +21,11 @@ struct AttributeInfo: View {
         Set((damageResonanceAttributes + damageAttributes).flatMap{$0.filter{$0.key == .em}}.map{$0.value})
     }()
 
-    private func cell(title: LocalizedStringKey, subtitle: String?, image: UIImage?) -> some View {
+    private func cell(title: Text, subtitle: String?, image: UIImage?) -> some View {
         HStack {
             image.map{Icon(Image(uiImage: $0)).cornerRadius(4)}
             VStack(alignment: .leading) {
-                Text(title)
+                title
                 subtitle.map{Text($0).modifier(SecondaryLabelModifier())}
             }
         }
@@ -38,8 +38,8 @@ struct AttributeInfo: View {
         
         let baseWarpSpeed = attributeValues?[Int(SDEAttributeID.baseWarpSpeed.rawValue)] ?? type?[SDEAttributeID.baseWarpSpeed]?.value ?? 1.0
         var s = UnitFormatter.localizedString(from: Double(value * baseWarpSpeed), unit: .none, style: .long)
-        s += " " + NSLocalizedString("AU/sec", comment: "")
-        return cell(title: "Warp Speed", subtitle: s, image: attributeType.icon?.image?.image)
+        s += " " + NSLocalizedString("AU/s", comment: "")
+        return cell(title: Text("Warp Speed"), subtitle: s, image: attributeType.icon?.image?.image)
     }
 
     private func damageInfo() -> DamageVectorView {

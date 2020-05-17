@@ -97,7 +97,7 @@ struct FittingEditorShipActions: View {
             }
             
             Section {
-                Button("Share") {
+                Button(NSLocalizedString("Share", comment: "")) {
                     self.isActivityPresented = true
                 }.frame(maxWidth: .infinity)
                 .activityView(isPresented: $isActivityPresented, activityItems: [LoadoutActivityItem(ships: [ship.loadout], managedObjectContext: managedObjectContext)], applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)])
@@ -117,7 +117,7 @@ struct FittingEditorShipActions: View {
             .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .navigationViewStyle(StackNavigationViewStyle())
         }
-        .navigationBarTitle("Actions")
+        .navigationBarTitle(Text("Actions"))
         .navigationBarItems(leading: BarButtonItems.close(completion), trailing: saveButton)
 
     }

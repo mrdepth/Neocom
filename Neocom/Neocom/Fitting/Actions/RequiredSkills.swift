@@ -68,7 +68,7 @@ struct RequiredSkills: View {
                 RequiredSkillsSection(skills: section, pilot: pilot, levels: levels)
             }
         }.listStyle(GroupedListStyle())
-        .navigationBarTitle("Required Skills")
+        .navigationBarTitle(Text("Required Skills"))
             .navigationBarItems(trailing: pilot != nil && trainingQueue.trainingTime() > 0 ? AddToSkillPlanButton(trainingQueue: trainingQueue) : nil)
     }
 }

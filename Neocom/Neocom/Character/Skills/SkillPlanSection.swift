@@ -90,7 +90,6 @@ struct SkillPlanSection: View {
                             }
                         }
                     }
-                    //                Text("Hello, World!")
                 }
                 .onDelete { (indices) in
                     for i in indices {

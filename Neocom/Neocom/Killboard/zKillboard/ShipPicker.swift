@@ -40,7 +40,7 @@ struct ShipPicker: View {
                 ShipPickerCategoriesContent(categories: categories, completion: self.completion)
             }
         }
-        .navigationBarTitle("Categories")
+        .navigationBarTitle(Text("Categories"))
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})

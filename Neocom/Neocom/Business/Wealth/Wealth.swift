@@ -51,7 +51,7 @@ struct Wealth: View {
                 self.cell(Text("Assets"), value: wealth?.assets?.value)
             }
         }.listStyle(GroupedListStyle())
-            .navigationBarTitle("Wealth")
+            .navigationBarTitle(Text("Wealth"))
         
     }
 }

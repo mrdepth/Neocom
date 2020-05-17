@@ -72,7 +72,7 @@ private struct FinishedViewTest: View {
             if isFinished {
                 FinishedView(isPresented: $isFinished)
             }
-            Button("Start") {
+            Button(NSLocalizedString("Start", comment: "")) {
                 withAnimation {
                     self.isFinished.toggle()
                 }

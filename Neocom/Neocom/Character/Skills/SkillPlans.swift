@@ -132,7 +132,7 @@ struct SkillPlansContent: View {
                 }
             }.listStyle(GroupedListStyle())
             if isTextAlertPresented {
-                TextFieldAlert(title: "New Skill Plan", placeholder: "Name", text: "") { (result) in
+                TextFieldAlert(title: Text("New Skill Plan"), placeholder: NSLocalizedString("Name", comment: ""), text: "") { (result) in
                     if case let .success(name) = result {
                         let skillPlan = SkillPlan(context: self.managedObjectContext)
                         skillPlan.name = name
@@ -144,7 +144,7 @@ struct SkillPlansContent: View {
                 }
             }
             if renamedSkillPlan != nil {
-                TextFieldAlert(title: "Rename", placeholder: "Name", text: renamedSkillPlan?.name ?? "") { (result) in
+                TextFieldAlert(title: Text("Rename"), placeholder: NSLocalizedString("Name", comment: ""), text: renamedSkillPlan?.name ?? "") { (result) in
                     if case let .success(name) = result {
                         self.renamedSkillPlan?.name = name
                     }
@@ -154,7 +154,7 @@ struct SkillPlansContent: View {
                 }
             }
         }
-        .navigationBarTitle("Skill Plans")
+        .navigationBarTitle(Text("Skill Plans"))
         .navigationBarItems(leading: BarButtonItems.close { },
                             trailing: Button(action: onAddSkillPlan) { Image(systemName: "plus") })
         .actionSheet(item: $selectedSkillPlan, content: actionSheet)

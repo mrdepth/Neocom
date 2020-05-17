@@ -84,7 +84,7 @@ struct Assets: View {
                 }
             }
         }
-        .navigationBarTitle("Assets")
+        .navigationBarTitle(Text("Assets"))
         .overlay(Group {
             if assets?.progress != nil && assets!.progress.fractionCompleted < 1 {
                 LoadingProgressView(progress: assets!.progress)

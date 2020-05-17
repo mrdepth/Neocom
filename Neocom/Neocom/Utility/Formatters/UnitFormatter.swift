@@ -162,7 +162,7 @@ extension UnitFormatter {
             case .megaWatts:
                 return NSLocalizedString("MW", comment: "megaWatts")
             case .teraflops:
-                return NSLocalizedString("tf", comment: "teraflops")
+                return NSLocalizedString("Tf", comment: "teraflops")
             case .kilogram:
                 return NSLocalizedString("kg", comment: "kilogram")
             case .meter:

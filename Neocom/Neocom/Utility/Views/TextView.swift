@@ -153,7 +153,6 @@ private struct TextViewRepresentation: UIViewRepresentable {
 }
 
 struct TextViewPreview: View {
-//    @State var text: NSAttributedString = NSAttributedString(string: repeatElement("Hello World ", count: 50).joined())
     @State var text: NSAttributedString = NSAttributedString(string: "")
     var body: some View {
         GeometryReader { geometry in

@@ -15,11 +15,13 @@ import SwiftUI
 @_exported import UIKit
 
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+//        URLCache.shared.removeAllCachedResponses()
+        
 		ValueTransformer.setValueTransformer(ImageValueTransformer(), forName: NSValueTransformerName("ImageValueTransformer"))
         ValueTransformer.setValueTransformer(LoadoutTransformer(), forName: NSValueTransformerName(rawValue: "LoadoutTransformer"))
         ValueTransformer.setValueTransformer(NeocomSecureUnarchiveFromDataTransformer(), forName: NSValueTransformerName("NeocomSecureUnarchiveFromDataTransformer"))

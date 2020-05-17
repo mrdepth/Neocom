@@ -11,42 +11,8 @@ import Combine
 import EVEAPI
 import CoreData
 
-class A: ObservableObject {
-    @Published var i = 10
-    
-    init() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.i = 20
-        }
-    }
-}
-
-struct Child: View {
-    var body: some View {
-        ObservedObjectView(A()) { a in
-            Text("a.i = \(a.i)")
-            ForEach((0..<a.i).map{$0}, id: \.self) { i in
-                Text("\(i)")
-            }
-        }
-    }
-}
-
-private struct CustomAlignmentID: AlignmentID {
-    static func defaultValue(in context: ViewDimensions) -> CGFloat {
-        context[.top]
-    }
-}
 
 struct ContentView: View {
-    @State var b = false
-    @State var l = (0..<10).map{"\($0)"}
-    
-    
-    func f(_ s: String) -> String {
-        print(s)
-        return s
-    }
     
     @State private var isFinished = false
     

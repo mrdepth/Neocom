@@ -48,7 +48,7 @@ struct Settings: View {
             }
             
             Section {
-                Toggle("Notifications Enabled", isOn: $notificationsEnabled.wrappedValue)
+                Toggle(NSLocalizedString("Notifications Enabled", comment: ""), isOn: $notificationsEnabled.wrappedValue)
             }
             
             if notificationsEnabled.wrappedValue {
@@ -62,7 +62,7 @@ struct Settings: View {
             }
             
             Section(header: Text("CACHE"), footer: Text("Some application features may be temporarily unavailable")) {
-                Button("Clear Cache") {
+                Button(NSLocalizedString("Clear Cache", comment: "")) {
                     self.isClearCacheActionSheetPresented = true
                 }
                 .frame(maxWidth: .infinity)
@@ -78,7 +78,7 @@ struct Settings: View {
             }
             
         }.listStyle(GroupedListStyle())
-        .navigationBarTitle("Settings")
+        .navigationBarTitle(Text("Settings"))
     }
 }
 
@@ -94,7 +94,7 @@ struct MigrateLegacyDataButton: View {
                 }
             }
             else {
-                NavigationLink("Migrate legacy data", destination: Migration())
+                NavigationLink(NSLocalizedString("Migrate legacy data", comment: ""), destination: Migration())
             }
         }.onReceive(NotificationCenter.default.publisher(for: Notification.Name.NSUbiquityIdentityDidChange)) { (_) in
             self.token = FileManager.default.ubiquityIdentityToken

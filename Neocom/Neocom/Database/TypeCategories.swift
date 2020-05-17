@@ -42,7 +42,7 @@ struct TypeCategories: View {
                 TypeCategoriesContent(categories: categories)
             }
         }
-        .navigationBarTitle("Categories")
+        .navigationBarTitle(Text("Categories"))
     }
 }
 

@@ -35,7 +35,7 @@ struct FittingCharges: View {
                 TypePickerTypesContent(types: types.sections, selectedType: self.$selectedType, completion: self.completion)
             }.listStyle(GroupedListStyle())
         }
-        .navigationBarTitle("Charges")
+        .navigationBarTitle(Text("Charges"))
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})

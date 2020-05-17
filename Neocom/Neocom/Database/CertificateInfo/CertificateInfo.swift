@@ -48,7 +48,7 @@ struct CertificateInfo: View {
             }
         }
         .listStyle(GroupedListStyle())
-        .navigationBarTitle("Info")
+        .navigationBarTitle(Text("Info"))
     }
 }
 

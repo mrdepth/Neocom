@@ -75,7 +75,7 @@ struct AreaEffects: View {
 				}
 			}
 		}.listStyle(GroupedListStyle())
-			.navigationBarTitle("Area Effects")
+			.navigationBarTitle(Text("Area Effects"))
 			.sheet(item: $selectedType) { type in
 				NavigationView {
 					TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})

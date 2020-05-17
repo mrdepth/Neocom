@@ -18,7 +18,7 @@ struct MailBody: View {
     
     @EnvironmentObject private var sharedState: SharedState
 
-    @ObservedObject private var mailBody = Lazy<DataLoader<ESI.MailBody, AFError>, Never>()
+    @ObservedObject private var mailBody = Lazy<DataLoader<(ESI.MailBody, NSAttributedString?), AFError>, Never>()
 //    @State private var markReadPublisher: AnyPublisher<Void, Never>? = nil
     
     var body: some View {
@@ -26,25 +26,30 @@ struct MailBody: View {
             mail.mailID.map { mailID in
                 mailBody.get(initial: DataLoader(sharedState.esi.characters.characterID(Int(account.characterID)).mail().mailID(mailID).get()
                     .map{$0.value}
-                    .receive(on: RunLoop.main)))
+                    .map { mailBody -> (ESI.MailBody, NSAttributedString?) in
+                        let text = mailBody.body?.data(using: .utf8).flatMap {
+                            try? NSMutableAttributedString(data: $0,
+                                                           options: [.documentType : NSAttributedString.DocumentType.html,
+                                                                     .characterEncoding: String.Encoding.utf8.rawValue,
+                                                                     .defaultAttributes: [:]],
+                                                           documentAttributes: nil)
+                            
+                        }
+                        text?.removeAttribute(.foregroundColor, range: NSRange(location: 0, length: text?.length ?? 0))
+                        text?.removeAttribute(.font, range: NSRange(location: 0, length: text?.length ?? 0))
+                        text?.removeAttribute(.paragraphStyle, range: NSRange(location: 0, length: text?.length ?? 0))
+                        text?.addAttributes([.font: UIFont.preferredFont(forTextStyle: .body), .foregroundColor: UIColor.label],
+                                            range: NSRange(location: 0, length: text?.length ?? 0))
+                        return (mailBody, text)
+                }
+                .receive(on: RunLoop.main)))
             }
         }
         let body = result?.result?.value
         let error = result?.result?.error
         return Group {
             if body != nil {
-                MailBodyContent(mailBody: body!, contacts: contacts)
-//                    .onAppear {
-//                        guard let account = self.sharedState.account, let mailID = self.mail.mailID, self.mail.isRead != true else {return}
-//                        self.markReadPublisher = self.sharedState.esi.characters.characterID(Int(account.characterID)).mail().mailID(mailID).put(contents: ESI.Characters.CharacterID.Mail.MailID.Contents(labels: self.mail.labels, read: true)).receive(on: RunLoop.main)
-//                            .map{_ in}
-//                            .catch{_ in Empty()}
-//                            .eraseToAnyPublisher()
-//                }
-//                .onReceive(markReadPublisher ?? Empty().eraseToAnyPublisher()) {
-////                    self.markReadPublisher = nil
-//                    self.mail.isRead = true
-//                }
+                MailBodyContent(mailBody: body!.0, text: body!.1, contacts: contacts)
             }
             else if error != nil {
                 Text(error!).padding()
@@ -56,7 +61,13 @@ struct MailBody: View {
 
 struct MailBodyContent: View {
     var mailBody: ESI.MailBody
+    var text: NSAttributedString?
     var contacts: [Int64: Contact]
+    
+    @Environment(\.self) private var environment
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    @EnvironmentObject private var sharedState: SharedState
+    @State private var selectedDraft: MailDraft?
     
     private var from: some View {
         mailBody.from.flatMap {
@@ -72,18 +83,21 @@ struct MailBodyContent: View {
         } ?? Text("Unknown")
     }
     
+    private func onReply() {
+        let draft = MailDraft(entity: NSEntityDescription.entity(forEntityName: "MailDraft", in: managedObjectContext)!, insertInto: nil)
+        let text = self.text?.mutableCopy() as? NSMutableAttributedString ?? NSMutableAttributedString()
+        text.insert(NSAttributedString(string: "--------------------------------\n"), at: 0)
+        text.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: 0, length: text.length))
+        text.insert(NSAttributedString(string: "\n\n", attributes: [.foregroundColor: UIColor.label]), at: 0)
+        draft.body = text
+        draft.to = mailBody.recipients?.map{Int64($0.recipientID)} ?? []
+        draft.subject = "RE: \(mailBody.subject ?? "")"
+        self.selectedDraft = draft
+    }
+    
     var body: some View {
-        let text = try? NSMutableAttributedString(data: mailBody.body?.data(using: .utf8) ?? Data(),
-                                      options: [.documentType : NSAttributedString.DocumentType.html,
-                                                .characterEncoding: String.Encoding.utf8.rawValue,
-                                                .defaultAttributes: [:]],
-                                      documentAttributes: nil)
-        text?.removeAttribute(.foregroundColor, range: NSRange(location: 0, length: text?.length ?? 0))
-        text?.removeAttribute(.font, range: NSRange(location: 0, length: text?.length ?? 0))
-        text?.removeAttribute(.paragraphStyle, range: NSRange(location: 0, length: text?.length ?? 0))
-        text?.addAttribute(.font, value: UIFont.preferredFont(forTextStyle: .body), range: NSRange(location: 0, length: text?.length ?? 0))
-        return GeometryReader { geometry in
-            text.map { body in
+        GeometryReader { geometry in
+            self.text.map { body in
                 ScrollView(.vertical) {
                     VStack(alignment: .leading) {
                         HStack(alignment: .top) {
@@ -107,7 +121,17 @@ struct MailBodyContent: View {
                 }
             }
         }
-        .navigationBarTitle(mailBody.subject ?? "Mail")
+        .navigationBarTitle(mailBody.subject ?? NSLocalizedString("Mail", comment: ""))
+        .navigationBarItems(trailing: Button(action: onReply) {
+            Text("Reply")
+        })
+        .sheet(item: $selectedDraft) { draft in
+            ComposeMail(draft: draft) {
+                self.selectedDraft = nil
+            }
+            .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
+            .navigationViewStyle(StackNavigationViewStyle())
+        }
 
     }
 }

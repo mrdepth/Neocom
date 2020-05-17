@@ -37,16 +37,6 @@ struct CertificateCell: View {
                 }.first {$0.trainingTime > 0}
                 
                 promise(.success(result))
-                
-//                if let result = result {
-//                    let subtitle: LocalizedStringKey = "\(TimeIntervalFormatter.localizedString(from: result.1, precision: .seconds)) to level \(result.0.level!.level + 1)"
-//                    let image = try? context.fetch(SDEEveIcon.named(.mastery(Int(result.0.level!.level - 1)))).first?.image?.image
-//                    promise(.success((subtitle: subtitle, image: image)))
-//                }
-//                else {
-//                    let image = try? context.fetch(SDEEveIcon.named(.mastery(4))).first?.image?.image
-//                    promise(.success((subtitle: nil, image: image)))
-//                }
             }
         }.receive(on: RunLoop.main).eraseToAnyPublisher()
     }

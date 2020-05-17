@@ -89,7 +89,7 @@ struct ActivityViewTest: View {
 //        let data = try? LoadoutPlainTextEncoder(managedObjectContext: managedObjectContext).encode(ship)
 //        let text = String(data: data!, encoding: .utf8)
         let loadout = LoadoutActivityItem(ships: [ship, ship], managedObjectContext: managedObjectContext)
-        return Button("Present") {
+        return Button(NSLocalizedString("Present", comment: "")) {
             self.isActivityPresented = true
         }.background(ActivityView(activityItems: [loadout], applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)], isPresented: $isActivityPresented))
     }

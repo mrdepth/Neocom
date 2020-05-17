@@ -27,7 +27,7 @@ struct IncursionSolarSystems: View {
         List(solarSystems, id: \.objectID) { solarSystem in
             Text(EVELocation(solarSystem: solarSystem, id: Int64(solarSystem.solarSystemID)))
         }.listStyle(GroupedListStyle())
-        .navigationBarTitle("Infested Solar Systems")
+        .navigationBarTitle(Text("Infested Solar Systems"))
     }
 }
 

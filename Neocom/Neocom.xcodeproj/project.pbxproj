@@ -34,7 +34,7 @@
 		12F06F1F238464950061313D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12F06F1D238464950061313D /* LaunchScreen.storyboard */; };
 		12F06F31238467600061313D /* SDE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F2F238467600061313D /* SDE.xcdatamodeld */; };
 		12F06F40238469C10061313D /* SDEVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F3E238469C10061313D /* SDEVersion.swift */; };
-		12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F322384676F0061313D /* Storage.xcdatamodeld */; };
+		12F06F6723846C750061313D /* Cloud.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F322384676F0061313D /* Cloud.xcdatamodeld */; };
 		12F06F6B23846D670061313D /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F6A23846D670061313D /* Main.swift */; };
 		1602719823A2792900067AA1 /* TypeMarketOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1602719723A2792900067AA1 /* TypeMarketOrderCell.swift */; };
 		1602719A23A27A5800067AA1 /* Text+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1602719923A27A5800067AA1 /* Text+Extensions.swift */; };
@@ -45,9 +45,10 @@
 		160D0BA923F2E3C300690134 /* LoadingProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160D0BA823F2E3C300690134 /* LoadingProgressView.swift */; };
 		160FEDBF23F434D400F0B76E /* WalletTransactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160FEDBE23F434D400F0B76E /* WalletTransactions.swift */; };
 		160FEDC123F434DD00F0B76E /* WalletTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160FEDC023F434DD00F0B76E /* WalletTransactionCell.swift */; };
-		160FEDEA23F4430C00F0B76E /* Cache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 160FEDE823F4430C00F0B76E /* Cache.xcdatamodeld */; };
+		160FEDEA23F4430C00F0B76E /* Local.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 160FEDE823F4430C00F0B76E /* Local.xcdatamodeld */; };
 		16101BC723F5402B0028600F /* WalletTransactionsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16101BC623F5402B0028600F /* WalletTransactionsData.swift */; };
 		1610ACEF2441D5E000D9B089 /* FittingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1610ACEE2441D5E000D9B089 /* FittingItem.swift */; };
+		161310402472B7320006F5DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1613103E2472B7320006F5DA /* InfoPlist.strings */; };
 		1619DBA7242220C200796FC4 /* RequiredSkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1619DBA6242220C200796FC4 /* RequiredSkills.swift */; };
 		1619DBA92422693800796FC4 /* DamagePatternControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1619DBA82422693800796FC4 /* DamagePatternControl.swift */; };
 		1619DBAB24226A6800796FC4 /* HorizontalSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1619DBAA24226A6800796FC4 /* HorizontalSlider.swift */; };
@@ -329,10 +330,12 @@
 		16B8E3B323FBDDA50096B066 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8E3B223FBDDA50096B066 /* ContactCell.swift */; };
 		16B8E3B723FBEDC10096B066 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8E3B623FBEDC10096B066 /* TextView.swift */; };
 		16B8F08823F670CB0093FEED /* ContractsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8F08723F670CB0093FEED /* ContractsData.swift */; };
+		16B968FF247153FE0039BC89 /* Alamofire+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B968FE247153FE0039BC89 /* Alamofire+Extensions.swift */; };
 		16BBE17323E02C41001E251D /* SkillQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BBE17223E02C41001E251D /* SkillQueue.swift */; };
 		16BC888A24167AC300C6149A /* FittingImplantSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BC888924167AC300C6149A /* FittingImplantSlot.swift */; };
 		16BC888E24167D5F00C6149A /* FittingBoosterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BC888D24167D5F00C6149A /* FittingBoosterCell.swift */; };
 		16BCB1B623D88437004712DB /* SkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BCB1B523D88437004712DB /* SkillCell.swift */; };
+		16BEB211247071C200684C2E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 16BEB20F247071C200684C2E /* Localizable.strings */; };
 		16C39A4C23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C39A4B23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift */; };
 		16C39A5023B9CF7D00208F04 /* SkillsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C39A4F23B9CF7D00208F04 /* SkillsList.swift */; };
 		16C39A5423BA0B7200208F04 /* FinishedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C39A5323BA0B7200208F04 /* FinishedView.swift */; };
@@ -441,6 +444,8 @@
 		160FEDE923F4430C00F0B76E /* Cache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Cache.xcdatamodel; sourceTree = "<group>"; };
 		16101BC623F5402B0028600F /* WalletTransactionsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionsData.swift; sourceTree = "<group>"; };
 		1610ACEE2441D5E000D9B089 /* FittingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingItem.swift; sourceTree = "<group>"; };
+		1613103F2472B7320006F5DA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		161310412472B7320006F5DA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1619DBA6242220C200796FC4 /* RequiredSkills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequiredSkills.swift; sourceTree = "<group>"; };
 		1619DBA82422693800796FC4 /* DamagePatternControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DamagePatternControl.swift; sourceTree = "<group>"; };
 		1619DBAA24226A6800796FC4 /* HorizontalSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalSlider.swift; sourceTree = "<group>"; };
@@ -718,6 +723,7 @@
 		16B8E3B223FBDDA50096B066 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		16B8E3B623FBEDC10096B066 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		16B8F08723F670CB0093FEED /* ContractsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractsData.swift; sourceTree = "<group>"; };
+		16B968FE247153FE0039BC89 /* Alamofire+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alamofire+Extensions.swift"; sourceTree = "<group>"; };
 		16BBE17223E02C41001E251D /* SkillQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillQueue.swift; sourceTree = "<group>"; };
 		16BC888924167AC300C6149A /* FittingImplantSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingImplantSlot.swift; sourceTree = "<group>"; };
 		16BC888D24167D5F00C6149A /* FittingBoosterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingBoosterCell.swift; sourceTree = "<group>"; };
@@ -730,6 +736,7 @@
 		16BEB1FC2470120E00684C2E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		16BEB1FD2470122600684C2E /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		16BEB1FE2470123000684C2E /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		16BEB210247071C200684C2E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		16C39A4B23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueprintActivityRequiredSkills.swift; sourceTree = "<group>"; };
 		16C39A4F23B9CF7D00208F04 /* SkillsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillsList.swift; sourceTree = "<group>"; };
 		16C39A5323BA0B7200208F04 /* FinishedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedView.swift; sourceTree = "<group>"; };
@@ -909,6 +916,8 @@
 				12F06F1D238464950061313D /* LaunchScreen.storyboard */,
 				1691854F24237A6D00393116 /* damagePatterns.plist */,
 				12F06F20238464950061313D /* Info.plist */,
+				1613103E2472B7320006F5DA /* InfoPlist.strings */,
+				16BEB20F247071C200684C2E /* Localizable.strings */,
 				12F06F1A238464950061313D /* Preview Content */,
 			);
 			path = Neocom;
@@ -952,6 +961,7 @@
 				16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */,
 				168B0858246B016F00F4A676 /* NotificationsManager.swift */,
 				162C99AC246EDFEF000E78EF /* BundleResource.swift */,
+				16B968FE247153FE0039BC89 /* Alamofire+Extensions.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -960,8 +970,8 @@
 			isa = PBXGroup;
 			children = (
 				12F06F2F238467600061313D /* SDE.xcdatamodeld */,
-				12F06F322384676F0061313D /* Storage.xcdatamodeld */,
-				160FEDE823F4430C00F0B76E /* Cache.xcdatamodeld */,
+				12F06F322384676F0061313D /* Cloud.xcdatamodeld */,
+				160FEDE823F4430C00F0B76E /* Local.xcdatamodeld */,
 				1688F8B4246D9DEC00D729A8 /* SDE_de.sqlite */,
 				1688F8BB246D9DED00D729A8 /* SDE_en.sqlite */,
 				1688F8B5246D9DEC00D729A8 /* SDE_es.sqlite */,
@@ -1644,6 +1654,7 @@
 				1683B75224279E870005B241 /* MainMenu.xcassets in Resources */,
 				168ADD4F246EC70000D6AAC4 /* SDE_ko.sqlite in Resources */,
 				168ADD4B246EC70000D6AAC4 /* SDE_es.sqlite in Resources */,
+				161310402472B7320006F5DA /* InfoPlist.strings in Resources */,
 				1688F8C5246D9DED00D729A8 /* SDE_ru.sqlite in Resources */,
 				168ADD4E246EC70000D6AAC4 /* SDE_ja.sqlite in Resources */,
 				12F06F1C238464950061313D /* Preview Assets.xcassets in Resources */,
@@ -1652,6 +1663,7 @@
 				169891AB238E555100FBA0B3 /* Fitting.xcassets in Resources */,
 				168ADD4A246EC70000D6AAC4 /* SDE_de.sqlite in Resources */,
 				1691855024237A6D00393116 /* damagePatterns.plist in Resources */,
+				16BEB211247071C200684C2E /* Localizable.strings in Resources */,
 				12F06F19238464950061313D /* Assets.xcassets in Resources */,
 				168ADD4C246EC70000D6AAC4 /* SDE_fr.sqlite in Resources */,
 			);
@@ -1846,6 +1858,7 @@
 				16E2AD9F23B214EF00B90204 /* CertificateInfoHeader.swift in Sources */,
 				16882A8E24518EC10094C734 /* ComposeMailLoadoutsPicker.swift in Sources */,
 				16859F3E2431EC7B00824552 /* IncursionSolarSystems.swift in Sources */,
+				16B968FF247153FE0039BC89 /* Alamofire+Extensions.swift in Sources */,
 				12B1A3BE239D2F8F00BED705 /* MarketHistory.swift in Sources */,
 				169D27FD241A0C63002AB469 /* FittingEditorStats.swift in Sources */,
 				1696F687238FCF88009F03F3 /* GroupCell.swift in Sources */,
@@ -1923,7 +1936,7 @@
 				1693A85823FD27A90033A793 /* TextAttachmentContact.swift in Sources */,
 				168744D424656D0600F356EB /* LoadoutDescription.swift in Sources */,
 				169780BC241B5914001679AD /* FittingEditorModulesPrice.swift in Sources */,
-				12F06F6723846C750061313D /* Storage.xcdatamodeld in Sources */,
+				12F06F6723846C750061313D /* Cloud.xcdatamodeld in Sources */,
 				1638690923EC217400681612 /* Atomic.swift in Sources */,
 				1271C64D241E0CF000665B59 /* FittingCharacters.swift in Sources */,
 				1686E2AD243898E000FAD3BA /* ZKillboardSearchResults.swift in Sources */,
@@ -2007,7 +2020,7 @@
 				16859F462431F45900824552 /* IncursionsItem.swift in Sources */,
 				1686D7512395460F00E88D3D /* TrainingQueue.swift in Sources */,
 				12DE9021241B7A000010C60D /* AreaEffects.swift in Sources */,
-				160FEDEA23F4430C00F0B76E /* Cache.xcdatamodeld in Sources */,
+				160FEDEA23F4430C00F0B76E /* Local.xcdatamodeld in Sources */,
 				16A6A4BD23B1ECC300CF0812 /* CertificateCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2029,6 +2042,23 @@
 				16BEB1FE2470123000684C2E /* ko */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		1613103E2472B7320006F5DA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1613103F2472B7320006F5DA /* de */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		16BEB20F247071C200684C2E /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				16BEB210247071C200684C2E /* ru */,
+				161310412472B7320006F5DA /* de */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -2157,7 +2187,7 @@
 				ASSET_PACK_MANIFEST_URL_PREFIX = "http://192.168.1.229/";
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;
@@ -2167,7 +2197,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -2179,10 +2209,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSET_PACK_MANIFEST_URL_PREFIX = "http://127.0.0.1/";
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;
@@ -2192,7 +2221,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -2234,23 +2263,23 @@
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
-		12F06F322384676F0061313D /* Storage.xcdatamodeld */ = {
+		12F06F322384676F0061313D /* Cloud.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				12F06F332384676F0061313D /* Storage.xcdatamodel */,
 			);
 			currentVersion = 12F06F332384676F0061313D /* Storage.xcdatamodel */;
-			path = Storage.xcdatamodeld;
+			path = Cloud.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
-		160FEDE823F4430C00F0B76E /* Cache.xcdatamodeld */ = {
+		160FEDE823F4430C00F0B76E /* Local.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				160FEDE923F4430C00F0B76E /* Cache.xcdatamodel */,
 			);
 			currentVersion = 160FEDE923F4430C00F0B76E /* Cache.xcdatamodel */;
-			path = Cache.xcdatamodeld;
+			path = Local.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

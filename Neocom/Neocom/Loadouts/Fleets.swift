@@ -51,10 +51,10 @@ struct Fleets: View {
                 }.buttonStyle(PlainButtonStyle())
                     .contextMenu {
                         if UIApplication.shared.supportsMultipleScenes {
-                            Button("Open in New Window") {
+                            Button(NSLocalizedString("Open in New Window", comment: "")) {
                                 self.onSelect(fleet, .newWindow)
                             }
-                            Button("Open in Current Window") {
+                            Button(NSLocalizedString("Open in Current Window", comment: "")) {
                                 self.onSelect(fleet, .currentWindow)
                             }
                         }
@@ -82,7 +82,7 @@ struct Fleets: View {
         }
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
         .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
-        .navigationBarTitle("Fleets")
+        .navigationBarTitle(Text("Fleets"))
 
         
     }

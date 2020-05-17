@@ -9,19 +9,33 @@
 import SwiftUI
 import EVEAPI
 import Alamofire
+import Combine
 
 struct SkillsItem: View {
     @EnvironmentObject private var sharedState: SharedState
     @ObservedObject private var skills = Lazy<DataLoader<[ESI.SkillQueueItem], AFError>, Account>()
+    @State private var lastUpdateDate = Date()
     
     let require: [ESI.Scope] = [.esiSkillsReadSkillqueueV1,
                                 .esiSkillsReadSkillsV1,
                                 .esiClonesReadImplantsV1]
     
+    private func getPublisher(_ account: Account) -> AnyPublisher<[ESI.SkillQueueItem], AFError> {
+        sharedState.esi.characters.characterID(Int(account.characterID)).skillqueue().get().map{$0.value}.receive(on: RunLoop.main).eraseToAnyPublisher()
+    }
+    
+    private func reload() {
+        guard let account = self.sharedState.account else {return}
+        guard lastUpdateDate.timeIntervalSinceNow < -30 else {return}
+        let result = sharedState.account.map{self.skills.get($0, initial: DataLoader(getPublisher($0)))}
+        result?.update(self.getPublisher(account))
+        self.lastUpdateDate = Date()
+    }
+    
     var body: some View {
-        let result = sharedState.account.map{self.skills.get($0, initial: DataLoader(sharedState.esi.characters.characterID(Int($0.characterID)).skillqueue().get().map{$0.value}.receive(on: RunLoop.main)))}?.result
-        let skillQueue = result?.value
-        let error = result?.error
+        let result = sharedState.account.map{self.skills.get($0, initial: DataLoader(getPublisher($0)))}
+        let skillQueue = result?.result?.value
+        let error = result?.result?.error
         
         
         let trainingTime = skillQueue.map { result -> Text in
@@ -50,6 +64,12 @@ struct SkillsItem: View {
                     }
                 }
             }
+        }
+        .onReceive(Timer.publish(every: 60 * 30, on: .main, in: .default).autoconnect()) { _ in
+            self.reload()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIScene.didActivateNotification)) { _ in
+            self.reload()
         }
     }
 }

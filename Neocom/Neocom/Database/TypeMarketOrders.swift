@@ -59,7 +59,7 @@ struct TypeMarketOrders: View {
         .overlay(error.map{Text($0).padding()})
         .overlay(result.result == nil ? ActivityIndicatorView(style: .large) : nil)
         .overlay((result.result?.error).map{Text($0)})
-        .navigationBarTitle("Market Orders")
+        .navigationBarTitle(Text("Market Orders"))
         .navigationBarItems(trailing: Button(regionName) {self.isMarketRegionPickerPresented = true})
         .sheet(isPresented: $isMarketRegionPickerPresented) {
             NavigationView {
@@ -67,7 +67,7 @@ struct TypeMarketOrders: View {
                     self.marketRegionID.wrappedValue = region.regionID
                     //                        self.marketOrders.set(TypeMarketData(type: self.type, esi: self.esi, regionID: self.marketRegionID, managedObjectContext: self.backgroundManagedObjectContext))
                     self.isMarketRegionPickerPresented = false
-                }.navigationBarItems(trailing: Button("Cancel") {self.isMarketRegionPickerPresented = false})
+                }.navigationBarItems(trailing: Button(NSLocalizedString("Cancel", comment: "")) {self.isMarketRegionPickerPresented = false})
             }
             .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .navigationViewStyle(StackNavigationViewStyle())

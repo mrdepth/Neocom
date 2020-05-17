@@ -49,7 +49,7 @@ struct DownloadIndicatorButtonTest: View {
                 }
             }
             else {
-//                Button("Toggle") {
+//                Button(NSLocalizedString("Toggle", comment: "")) {
 //                    self.flag = false
 //                }
             }

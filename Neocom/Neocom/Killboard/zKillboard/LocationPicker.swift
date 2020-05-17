@@ -32,7 +32,7 @@ struct LocationPicker: View {
             HStack {
                 Text(region.regionName ?? "")
                 Spacer()
-                Button("Select") {
+                Button(NSLocalizedString("Select", comment: "")) {
                     self.completion(region)
                 }.foregroundColor(.blue)
             }
@@ -112,7 +112,7 @@ struct LocationPicker: View {
                         }
                     }
                 }.listStyle(GroupedListStyle())
-        }.navigationBarTitle("Regions")
+        }.navigationBarTitle(Text("Regions"))
     }
 }
 

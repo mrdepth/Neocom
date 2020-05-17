@@ -20,14 +20,14 @@ struct MigrationAccountsSection: View {
             Spacer()
             if !accounts.records.isEmpty {
                 if selection.isSuperset(of: accounts.records) {
-                    Button("DESELECT ALL") {
+                    Button(NSLocalizedString("DESELECT ALL", comment: "")) {
                         withAnimation {
                             self.selection.subtract(self.accounts.records)
                         }
                     }
                 }
                 else {
-                    Button("SELECT ALL") {
+                    Button(NSLocalizedString("SELECT ALL", comment: "")) {
                         withAnimation {
                             self.selection.formUnion(self.accounts.records)
                         }

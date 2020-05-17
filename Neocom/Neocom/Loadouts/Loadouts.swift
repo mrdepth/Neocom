@@ -48,7 +48,7 @@ struct Loadouts: View {
                 IngameLoadouts()
             }
         }
-        .navigationBarTitle("Loadouts", displayMode: .inline)
+        .navigationBarTitle(Text("Loadouts"), displayMode: .inline)
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
 }

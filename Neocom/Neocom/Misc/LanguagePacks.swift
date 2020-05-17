@@ -27,7 +27,6 @@ struct LanguagePack {
 }
 
 struct LanguagePacks: View {
-//    private static let ids = ["SDE_en", "SDE_de", "SDE_es", "SDE_fr", "SDE_it", "SDE_ja", "SDE_ru", "SDE_zh", "SDE_ko"]
     var onSelect: ((BundleResource) -> Void)? = nil
 
     private let languagePacks = Storage.sharedStorage.supportedLanguages()
@@ -38,7 +37,7 @@ struct LanguagePacks: View {
                 LanguagePackCell(resource: pack, onSelect: self.onSelect)
             }
         }.listStyle(GroupedListStyle())
-        .navigationBarTitle("Language Pack")
+        .navigationBarTitle(Text("Language Pack"))
     }
 }
 

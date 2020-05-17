@@ -36,7 +36,7 @@ struct AssetsList: View {
     }
 
     private var fittingButton: some View {
-        Button("Fitting") {
+        Button(NSLocalizedString("Fitting", comment: "")) {
             self.projectLoading = DGMSkillLevels.load(self.sharedState.account, managedObjectContext: self.managedObjectContext)
                 .receive(on: RunLoop.main)
                 .tryMap { try FittingProject(asset: self.ship!, skillLevels: $0, managedObjectContext: self.managedObjectContext) }

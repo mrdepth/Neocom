@@ -33,7 +33,7 @@ struct ContactPicker: View {
                 self.onSelect(contact)
             }
             .overlay(searchResults?.isEmpty == true ? Text(RuntimeError.noResult).padding() : nil)
-        }.navigationBarTitle("Pilots")
+        }.navigationBarTitle(Text("Pilots"))
     }
 }
 

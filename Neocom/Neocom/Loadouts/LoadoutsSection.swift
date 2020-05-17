@@ -42,7 +42,7 @@ struct LoadoutsSection: View {
             title
             if editMode?.wrappedValue == .active {
                 Spacer()
-                Button("SELECT ALL") {
+                Button(NSLocalizedString("SELECT ALL", comment: "")) {
                     withAnimation {
                         self.selection.formUnion(section.loadouts.map{$0.objectID})
                     }
@@ -66,10 +66,10 @@ struct LoadoutsSection: View {
                     }.buttonStyle(PlainButtonStyle())//.id(loadout.objectID)
                         .contextMenu {
                             if UIApplication.shared.supportsMultipleScenes {
-                                Button("Open in New Window") {
+                                Button(NSLocalizedString("Open in New Window", comment: "")) {
                                     self.onSelect(loadout.objectID, .newWindow)
                                 }
-                                Button("Open in Current Window") {
+                                Button(NSLocalizedString("Open in Current Window", comment: "")) {
                                     self.onSelect(loadout.objectID, .currentWindow)
                                 }
                             }

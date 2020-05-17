@@ -35,7 +35,7 @@ struct Accounts: View {
 
     var body: some View {
         List {
-            Button("Log In with EVE Online") {
+            Button(NSLocalizedString("Log In with EVE Online", comment: "")) {
                 let url = OAuth2.authURL(clientID: Config.current.esi.clientID, callbackURL: Config.current.esi.callbackURL, scope: ESI.Scope.all, state: "esi")
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }.frame(maxWidth: .infinity)
@@ -57,7 +57,7 @@ struct Accounts: View {
             }
         }
         .listStyle(GroupedListStyle())
-        .navigationBarTitle("Accounts")
+        .navigationBarTitle(Text("Accounts"))
         .navigationBarItems(trailing: EditButton())
     }
 }

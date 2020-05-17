@@ -150,7 +150,7 @@ struct InGameActivityView: View {
                     self.error = IdentifiableWrapper(error)
                 }
             }
-            .navigationBarTitle("Select Account")
+            .navigationBarTitle(Text("Select Account"))
             .navigationBarItems(trailing: BarButtonItems.close {
                 self.completion(false)
             })

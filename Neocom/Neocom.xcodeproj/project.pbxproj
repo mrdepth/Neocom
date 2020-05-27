@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -93,6 +93,10 @@
 		1653796A23F6A1BC000F082A /* MailLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1653796923F6A1BC000F082A /* MailLabel.swift */; };
 		1655DE752396888200973258 /* TypeInfoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1655DE742396888200973258 /* TypeInfoData.swift */; };
 		1655DE7B23969BA900973258 /* TypeInfoAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1655DE7A23969BA900973258 /* TypeInfoAttributeCell.swift */; };
+		16662C492477DFC000AE38DC /* Tutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16662C482477DFC000AE38DC /* Tutorial.swift */; };
+		16662C4B2477E68400AE38DC /* TutorialLanguagesPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16662C4A2477E68400AE38DC /* TutorialLanguagesPage.swift */; };
+		16662C4F2477E78200AE38DC /* TutorialContinue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16662C4E2477E78200AE38DC /* TutorialContinue.swift */; };
+		16662C512477EE2800AE38DC /* TutorialAccountPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16662C502477EE2800AE38DC /* TutorialAccountPage.swift */; };
 		16674BE7238BB7FE00E6E547 /* Accounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16674BE6238BB7FE00E6E547 /* Accounts.swift */; };
 		16674BE9238BB80900E6E547 /* AccountCellContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16674BE8238BB80900E6E547 /* AccountCellContent.swift */; };
 		16674BEC238BB97400E6E547 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16674BEB238BB97400E6E547 /* ProgressView.swift */; };
@@ -321,6 +325,8 @@
 		16B45EFF23A3663400A36A96 /* MarketRegionPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B45EFE23A3663400A36A96 /* MarketRegionPicker.swift */; };
 		16B4C6E4240792420009ACD4 /* DGMModuleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B4C6E3240792420009ACD4 /* DGMModuleGroup.swift */; };
 		16B4C6E6240798280009ACD4 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B4C6E5240798280009ACD4 /* BarButtonItem.swift */; };
+		16B66A8D247BEB7E00F5AE84 /* RemoveAdsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B66A8C247BEB7E00F5AE84 /* RemoveAdsItem.swift */; };
+		16B66A8F247BF46300F5AE84 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B66A8E247BF46300F5AE84 /* StoreKit.framework */; };
 		16B6A84123F2AC5D00E0EB8B /* AssetsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B6A84023F2AC5D00E0EB8B /* AssetsCategory.swift */; };
 		16B6A84523F2D24E00E0EB8B /* Dgmpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B6A84423F2D24E00E0EB8B /* Dgmpp.framework */; };
 		16B6A84623F2D24E00E0EB8B /* Dgmpp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 16B6A84423F2D24E00E0EB8B /* Dgmpp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -331,10 +337,15 @@
 		16B8E3B723FBEDC10096B066 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8E3B623FBEDC10096B066 /* TextView.swift */; };
 		16B8F08823F670CB0093FEED /* ContractsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8F08723F670CB0093FEED /* ContractsData.swift */; };
 		16B968FF247153FE0039BC89 /* Alamofire+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B968FE247153FE0039BC89 /* Alamofire+Extensions.swift */; };
+		16BB504A247A71D8002CD90E /* ProSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BB5049247A71D8002CD90E /* ProSubscription.swift */; };
+		16BB504F247A7780002CD90E /* StoreKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BB504E247A7780002CD90E /* StoreKit+Extensions.swift */; };
+		16BB5051247A7D4E002CD90E /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BB5050247A7D4E002CD90E /* ProductCell.swift */; };
+		16BB5060247ABC06002CD90E /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 16BB5062247ABC06002CD90E /* Localizable.stringsdict */; };
 		16BBE17323E02C41001E251D /* SkillQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BBE17223E02C41001E251D /* SkillQueue.swift */; };
 		16BC888A24167AC300C6149A /* FittingImplantSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BC888924167AC300C6149A /* FittingImplantSlot.swift */; };
 		16BC888E24167D5F00C6149A /* FittingBoosterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BC888D24167D5F00C6149A /* FittingBoosterCell.swift */; };
 		16BCB1B623D88437004712DB /* SkillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BCB1B523D88437004712DB /* SkillCell.swift */; };
+		16BD2E7F247E629E008CA73B /* AdsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BD2E7E247E629E008CA73B /* AdsContainerView.swift */; };
 		16BEB211247071C200684C2E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 16BEB20F247071C200684C2E /* Localizable.strings */; };
 		16C39A4C23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C39A4B23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift */; };
 		16C39A5023B9CF7D00208F04 /* SkillsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C39A4F23B9CF7D00208F04 /* SkillsList.swift */; };
@@ -352,6 +363,8 @@
 		16C66D0823F57939009AEB72 /* IndustryJobsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C66D0723F57939009AEB72 /* IndustryJobsData.swift */; };
 		16C66D0B23F58920009AEB72 /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C66D0A23F58920009AEB72 /* Contracts.swift */; };
 		16C66D0D23F58947009AEB72 /* ContractCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C66D0C23F58947009AEB72 /* ContractCell.swift */; };
+		16C74E1F247593BC005003BC /* ASReceipt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16C74E1E247593BC005003BC /* ASReceipt.framework */; platformFilter = ios; };
+		16C74E22247593DF005003BC /* openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16C74E21247593DF005003BC /* openssl.framework */; platformFilter = ios; };
 		16C9102424336EE300BCEBA7 /* StorageSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C9102324336EE300BCEBA7 /* StorageSection.swift */; };
 		16C9102624337B9F00BCEBA7 /* FactorySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C9102524337B9F00BCEBA7 /* FactorySection.swift */; };
 		16CB5FA72424F04D00A91370 /* FittingEditorFleet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CB5FA62424F04D00A91370 /* FittingEditorFleet.swift */; };
@@ -378,6 +391,7 @@
 		16E2AD9F23B214EF00B90204 /* CertificateInfoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E2AD9E23B214EF00B90204 /* CertificateInfoHeader.swift */; };
 		16E3DBF3238BF944005F5AAE /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBF2238BF944005F5AAE /* Avatar.swift */; };
 		16E3DBF5238BFACC005F5AAE /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBF4238BFACC005F5AAE /* AccountCell.swift */; };
+		16E684C6247BF9AF00BE1225 /* SubscriptionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E684C5247BF9AF00BE1225 /* SubscriptionInfo.swift */; };
 		16EEBDF52397E4DE00F2E216 /* SkillName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16EEBDF42397E4DE00F2E216 /* SkillName.swift */; };
 /* End PBXBuildFile section */
 
@@ -480,6 +494,10 @@
 		1653796923F6A1BC000F082A /* MailLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailLabel.swift; sourceTree = "<group>"; };
 		1655DE742396888200973258 /* TypeInfoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoData.swift; sourceTree = "<group>"; };
 		1655DE7A23969BA900973258 /* TypeInfoAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeInfoAttributeCell.swift; sourceTree = "<group>"; };
+		16662C482477DFC000AE38DC /* Tutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tutorial.swift; sourceTree = "<group>"; };
+		16662C4A2477E68400AE38DC /* TutorialLanguagesPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialLanguagesPage.swift; sourceTree = "<group>"; };
+		16662C4E2477E78200AE38DC /* TutorialContinue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialContinue.swift; sourceTree = "<group>"; };
+		16662C502477EE2800AE38DC /* TutorialAccountPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialAccountPage.swift; sourceTree = "<group>"; };
 		16674BE6238BB7FE00E6E547 /* Accounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accounts.swift; sourceTree = "<group>"; };
 		16674BE8238BB80900E6E547 /* AccountCellContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCellContent.swift; sourceTree = "<group>"; };
 		16674BEB238BB97400E6E547 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
@@ -713,6 +731,8 @@
 		16B45EFE23A3663400A36A96 /* MarketRegionPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketRegionPicker.swift; sourceTree = "<group>"; };
 		16B4C6E3240792420009ACD4 /* DGMModuleGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DGMModuleGroup.swift; sourceTree = "<group>"; };
 		16B4C6E5240798280009ACD4 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
+		16B66A8C247BEB7E00F5AE84 /* RemoveAdsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAdsItem.swift; sourceTree = "<group>"; };
+		16B66A8E247BF46300F5AE84 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		16B6A84023F2AC5D00E0EB8B /* AssetsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsCategory.swift; sourceTree = "<group>"; };
 		16B6A84423F2D24E00E0EB8B /* Dgmpp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Dgmpp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16B7FC3E2408E0470076BD7C /* FittingTypeVariations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingTypeVariations.swift; sourceTree = "<group>"; };
@@ -724,10 +744,15 @@
 		16B8E3B623FBEDC10096B066 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		16B8F08723F670CB0093FEED /* ContractsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractsData.swift; sourceTree = "<group>"; };
 		16B968FE247153FE0039BC89 /* Alamofire+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alamofire+Extensions.swift"; sourceTree = "<group>"; };
+		16BB5049247A71D8002CD90E /* ProSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProSubscription.swift; sourceTree = "<group>"; };
+		16BB504E247A7780002CD90E /* StoreKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StoreKit+Extensions.swift"; sourceTree = "<group>"; };
+		16BB5050247A7D4E002CD90E /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
+		16BB5061247ABC06002CD90E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		16BBE17223E02C41001E251D /* SkillQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillQueue.swift; sourceTree = "<group>"; };
 		16BC888924167AC300C6149A /* FittingImplantSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingImplantSlot.swift; sourceTree = "<group>"; };
 		16BC888D24167D5F00C6149A /* FittingBoosterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingBoosterCell.swift; sourceTree = "<group>"; };
 		16BCB1B523D88437004712DB /* SkillCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillCell.swift; sourceTree = "<group>"; };
+		16BD2E7E247E629E008CA73B /* AdsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsContainerView.swift; sourceTree = "<group>"; };
 		16BEB1F7247011E400684C2E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		16BEB1F8247011F000684C2E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		16BEB1F9247011FA00684C2E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -753,6 +778,11 @@
 		16C66D0723F57939009AEB72 /* IndustryJobsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndustryJobsData.swift; sourceTree = "<group>"; };
 		16C66D0A23F58920009AEB72 /* Contracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contracts.swift; sourceTree = "<group>"; };
 		16C66D0C23F58947009AEB72 /* ContractCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractCell.swift; sourceTree = "<group>"; };
+		16C74E1324756D2C005003BC /* ASReceipt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ASReceipt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		16C74E1624756D36005003BC /* ASReceipt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ASReceipt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		16C74E1724756F7F005003BC /* ASReceipt.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ASReceipt.xcframework; path = ../ThirdParty/ASReceipt/ASReceipt.xcframework; sourceTree = "<group>"; };
+		16C74E1E247593BC005003BC /* ASReceipt.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ASReceipt.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		16C74E21247593DF005003BC /* openssl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = openssl.framework; path = ../../ThirdParty/ASReceipt/Source/ThirdParty/OpenSSL/iOS/openssl.framework; sourceTree = "<group>"; };
 		16C9102324336EE300BCEBA7 /* StorageSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageSection.swift; sourceTree = "<group>"; };
 		16C9102524337B9F00BCEBA7 /* FactorySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactorySection.swift; sourceTree = "<group>"; };
 		16CB5FA62424F04D00A91370 /* FittingEditorFleet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorFleet.swift; sourceTree = "<group>"; };
@@ -780,6 +810,7 @@
 		16E2AD9E23B214EF00B90204 /* CertificateInfoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateInfoHeader.swift; sourceTree = "<group>"; };
 		16E3DBF2238BF944005F5AAE /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
 		16E3DBF4238BFACC005F5AAE /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
+		16E684C5247BF9AF00BE1225 /* SubscriptionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionInfo.swift; sourceTree = "<group>"; };
 		16E8C42E23E431E0004BA2D3 /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
 		16EEBDF42397E4DE00F2E216 /* SkillName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillName.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -792,7 +823,10 @@
 				168744D82465754D00F356EB /* libz.tbd in Frameworks */,
 				169672DB2387ECCD00EB860B /* EVEAPI.framework in Frameworks */,
 				16B6A84523F2D24E00E0EB8B /* Dgmpp.framework in Frameworks */,
+				16B66A8F247BF46300F5AE84 /* StoreKit.framework in Frameworks */,
+				16C74E1F247593BC005003BC /* ASReceipt.framework in Frameworks */,
 				169A9195238CF9D5004E3DAA /* Expressible.framework in Frameworks */,
+				16C74E22247593DF005003BC /* openssl.framework in Frameworks */,
 				169672DF2387ECEF00EB860B /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -917,6 +951,8 @@
 				1691854F24237A6D00393116 /* damagePatterns.plist */,
 				12F06F20238464950061313D /* Info.plist */,
 				1613103E2472B7320006F5DA /* InfoPlist.strings */,
+				16BB5062247ABC06002CD90E /* Localizable.stringsdict */,
+				16C74E21247593DF005003BC /* openssl.framework */,
 				16BEB20F247071C200684C2E /* Localizable.strings */,
 				12F06F1A238464950061313D /* Preview Content */,
 			);
@@ -943,7 +979,9 @@
 				16674BEA238BB96400E6E547 /* Views */,
 				168B0856246B011500F4A676 /* Formatters */,
 				168B0857246B012800F4A676 /* PropertyWrappers */,
+				16BD2E7D247E628F008CA73B /* AddSupport */,
 				169A72C8238BD9AA00E4C181 /* Colors.swift */,
+				16BB504E247A7780002CD90E /* StoreKit+Extensions.swift */,
 				16D8DC7F238808870057A6F4 /* Combine+Extensions.swift */,
 				16888412242CD4F70099C769 /* Debug.swift */,
 				169672D82387EA3F00EB860B /* EnvironmentValues.swift */,
@@ -993,6 +1031,11 @@
 		12F06F35238467A10061313D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				16B66A8E247BF46300F5AE84 /* StoreKit.framework */,
+				16C74E1E247593BC005003BC /* ASReceipt.framework */,
+				16C74E1724756F7F005003BC /* ASReceipt.xcframework */,
+				16C74E1624756D36005003BC /* ASReceipt.framework */,
+				16C74E1324756D2C005003BC /* ASReceipt.framework */,
 				168744D72465753C00F356EB /* libz.tbd */,
 				16B6A84423F2D24E00E0EB8B /* Dgmpp.framework */,
 				169A9198238CFBEC004E3DAA /* CloudKit.framework */,
@@ -1023,6 +1066,13 @@
 				16A642C824648A1B0048A270 /* MigrationHelper.swift */,
 				1688F8C9246DA59600D729A8 /* LanguagePacks.swift */,
 				1688F8CB246DA5A300D729A8 /* LanguagePackCell.swift */,
+				16662C482477DFC000AE38DC /* Tutorial.swift */,
+				16662C4A2477E68400AE38DC /* TutorialLanguagesPage.swift */,
+				16662C502477EE2800AE38DC /* TutorialAccountPage.swift */,
+				16662C4E2477E78200AE38DC /* TutorialContinue.swift */,
+				16BB5049247A71D8002CD90E /* ProSubscription.swift */,
+				16E684C5247BF9AF00BE1225 /* SubscriptionInfo.swift */,
+				16BB5050247A7D4E002CD90E /* ProductCell.swift */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -1286,6 +1336,7 @@
 				1610ACEE2441D5E000D9B089 /* FittingItem.swift */,
 				1688D7E924472F560043DF53 /* AboutItem.swift */,
 				168744DB2465B06B00F356EB /* SettingsItem.swift */,
+				16B66A8C247BEB7E00F5AE84 /* RemoveAdsItem.swift */,
 			);
 			path = MenuItems;
 			sourceTree = "<group>";
@@ -1482,6 +1533,14 @@
 			path = Dgmpp;
 			sourceTree = "<group>";
 		};
+		16BD2E7D247E628F008CA73B /* AddSupport */ = {
+			isa = PBXGroup;
+			children = (
+				16BD2E7E247E629E008CA73B /* AdsContainerView.swift */,
+			);
+			path = AddSupport;
+			sourceTree = "<group>";
+		};
 		16C66CFB23F5529A009AEB72 /* MarketOrders */ = {
 			isa = PBXGroup;
 			children = (
@@ -1657,6 +1716,7 @@
 				161310402472B7320006F5DA /* InfoPlist.strings in Resources */,
 				1688F8C5246D9DED00D729A8 /* SDE_ru.sqlite in Resources */,
 				168ADD4E246EC70000D6AAC4 /* SDE_ja.sqlite in Resources */,
+				16BB5060247ABC06002CD90E /* Localizable.stringsdict in Resources */,
 				12F06F1C238464950061313D /* Preview Assets.xcassets in Resources */,
 				168ADD4D246EC70000D6AAC4 /* SDE_it.sqlite in Resources */,
 				1688F8C4246D9DED00D729A8 /* SDE_en.sqlite in Resources */,
@@ -1681,6 +1741,7 @@
 				12F06F6B23846D670061313D /* Main.swift in Sources */,
 				168F1CC12435050200F8EF41 /* PlanetariesItem.swift in Sources */,
 				16865CC7243E045F00EDDF15 /* LoadoutActivityItem.swift in Sources */,
+				16B66A8D247BEB7E00F5AE84 /* RemoveAdsItem.swift in Sources */,
 				168FF310242D3A57009FCE58 /* JumpClonesItem.swift in Sources */,
 				16918559242409BA00393116 /* NPCPickerTypes.swift in Sources */,
 				169DA10023FEAF6600AC7B54 /* WealthData.swift in Sources */,
@@ -1692,6 +1753,7 @@
 				1695805423FFB63C006752B9 /* Wealth.swift in Sources */,
 				1619DBA92422693800796FC4 /* DamagePatternControl.swift in Sources */,
 				169F0ACB2403A7DE00B934E6 /* FittingEditor.swift in Sources */,
+				16662C4F2477E78200AE38DC /* TutorialContinue.swift in Sources */,
 				168F1CBB2434C1B700F8EF41 /* PlanetLoader.swift in Sources */,
 				161C6EE723A0EEE000777009 /* TypeInfoMarketHistoryCell.swift in Sources */,
 				1653796823F69EA8000F082A /* MailBox.swift in Sources */,
@@ -1812,6 +1874,7 @@
 				16B04DE123ED55D500FBE380 /* AssetCell.swift in Sources */,
 				168F69392430BBFB00D80A24 /* DatabaseItem.swift in Sources */,
 				162571EF242B9E140022C605 /* FittingEditorShipModulesHeader.swift in Sources */,
+				16BB5051247A7D4E002CD90E /* ProductCell.swift in Sources */,
 				1686D74C23953C5600E88D3D /* SDE.swift in Sources */,
 				167725EF241A722F0089BB94 /* PricesData.swift in Sources */,
 				1686E2A624376F6600FAD3BA /* KillmailCell.swift in Sources */,
@@ -1823,6 +1886,7 @@
 				169D280D241A0F3E002AB469 /* DroneBayResource.swift in Sources */,
 				16963AB32410D4B000A26E4A /* OptimalInfo.swift in Sources */,
 				168F1CBD2434FEC400F8EF41 /* Planetaries.swift in Sources */,
+				16662C512477EE2800AE38DC /* TutorialAccountPage.swift in Sources */,
 				169F0AD42403D48D00B934E6 /* Dgmpp+Extension.swift in Sources */,
 				16E3DBF3238BF944005F5AAE /* Avatar.swift in Sources */,
 				16865CCC243E252A00EDDF15 /* InGameActivity.swift in Sources */,
@@ -1910,6 +1974,7 @@
 				162571F4242B9E140022C605 /* FittingCharges.swift in Sources */,
 				1653663B239E733C0096990F /* TypeInfoPriceCell.swift in Sources */,
 				16898DF42449BE8300E7CD7B /* FittingCargoCell.swift in Sources */,
+				16662C4B2477E68400AE38DC /* TutorialLanguagesPage.swift in Sources */,
 				16859E65243641BB0037C01B /* LocationPickerSolarSystems.swift in Sources */,
 				168960D1240FE217004E4630 /* TypeInfoButton.swift in Sources */,
 				1653796A23F6A1BC000F082A /* MailLabel.swift in Sources */,
@@ -1917,6 +1982,7 @@
 				12A3EB9823A9704700CB9B0A /* MarketHistoryData.swift in Sources */,
 				1655DE7B23969BA900973258 /* TypeInfoAttributeCell.swift in Sources */,
 				169891A3238E53D600FBA0B3 /* TypeCell.swift in Sources */,
+				16E684C6247BF9AF00BE1225 /* SubscriptionInfo.swift in Sources */,
 				16BCB1B623D88437004712DB /* SkillCell.swift in Sources */,
 				168CC1462438C94300B0A1AC /* KillImailInfo.swift in Sources */,
 				16CE2A0723F6755E0043764B /* ContractInfoData.swift in Sources */,
@@ -1933,6 +1999,7 @@
 				16C66D0823F57939009AEB72 /* IndustryJobsData.swift in Sources */,
 				16101BC723F5402B0028600F /* WalletTransactionsData.swift in Sources */,
 				16859F5924321EC000824552 /* BarChart.swift in Sources */,
+				16BB504F247A7780002CD90E /* StoreKit+Extensions.swift in Sources */,
 				1693A85823FD27A90033A793 /* TextAttachmentContact.swift in Sources */,
 				168744D424656D0600F356EB /* LoadoutDescription.swift in Sources */,
 				169780BC241B5914001679AD /* FittingEditorModulesPrice.swift in Sources */,
@@ -1940,6 +2007,7 @@
 				1638690923EC217400681612 /* Atomic.swift in Sources */,
 				1271C64D241E0CF000665B59 /* FittingCharacters.swift in Sources */,
 				1686E2AD243898E000FAD3BA /* ZKillboardSearchResults.swift in Sources */,
+				16BD2E7F247E629E008CA73B /* AdsContainerView.swift in Sources */,
 				1681D9D124275DF300912AE6 /* ImplantSetDescription.swift in Sources */,
 				16859E5F24361A630037C01B /* ShipPicker.swift in Sources */,
 				16AE40F1238FDAD000C6E25B /* ModuleTypeCell.swift in Sources */,
@@ -1961,6 +2029,7 @@
 				169D2801241A0D25002AB469 /* PowerGridResource.swift in Sources */,
 				168F693D2430BCFB00D80A24 /* CertificatesItem.swift in Sources */,
 				167725ED241A71AB0089BB94 /* FittingEditorPriceStats.swift in Sources */,
+				16BB504A247A71D8002CD90E /* ProSubscription.swift in Sources */,
 				16C39A4C23B9CDD400208F04 /* BlueprintActivityRequiredSkills.swift in Sources */,
 				16A6A4BB23B1EA3F00CF0812 /* DataLoader.swift in Sources */,
 				16898DF62449DED900E7CD7B /* FittingCargoActions.swift in Sources */,
@@ -1977,6 +2046,7 @@
 				161C6EFD23A12FBC00777009 /* TypeMarketData.swift in Sources */,
 				1696E5DD2445AFDC00F2F721 /* SharedState.swift in Sources */,
 				1688C7A22460640F009AFFC3 /* SearchControlCoordinator.swift in Sources */,
+				16662C492477DFC000AE38DC /* Tutorial.swift in Sources */,
 				16859F4824320FB000824552 /* AssetsItem.swift in Sources */,
 				1688F8C6246D9E2B00D729A8 /* Storage.swift in Sources */,
 				16359213245ADF8000622C1C /* FittingEditorFleetBar.swift in Sources */,
@@ -2050,6 +2120,14 @@
 				1613103F2472B7320006F5DA /* de */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		16BB5062247ABC06002CD90E /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				16BB5061247ABC06002CD90E /* en */,
+			);
+			name = Localizable.stringsdict;
 			sourceTree = "<group>";
 		};
 		16BEB20F247071C200684C2E /* Localizable.strings */ = {
@@ -2191,6 +2269,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = "${SRCROOT}/../ThirdParty/ASReceipt/Source/ThirdParty/OpenSSL/iOS";
 				INFOPLIST_FILE = Neocom/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2215,6 +2294,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = "${SRCROOT}/../ThirdParty/ASReceipt/Source/ThirdParty/OpenSSL/iOS";
 				INFOPLIST_FILE = Neocom/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

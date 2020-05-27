@@ -16,6 +16,7 @@ enum UserDefaultsKey: String {
     case notificationSettigs = "notificationSettigs"
     case notificationsEnabled = "notificationsEnabled"
     case languageID = "languageID"
+    case latestLaunchedVersion = "latestLaunchedVersion"
 }
 
 

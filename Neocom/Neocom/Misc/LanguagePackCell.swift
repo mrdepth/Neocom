@@ -73,7 +73,7 @@ struct LanguagePackCell: View {
                 }
             }
             .alert(item: $error) { error in
-                Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: .cancel())
+                Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: .cancel(Text("Close")))
             }
         }
     }

@@ -14,8 +14,9 @@ struct About: View {
     
     var appVersion: some View {
         let info = Bundle.main.infoDictionary
+        
         let version = info?["CFBundleShortVersionString"] as? String ?? ""
-        let build = info?["CFBundleVersion"] as? String ?? ""
+        let build = info?[kCFBundleVersionKey as String] as? String ?? ""
         return HStack {
             Text("Application Version")
             Spacer()

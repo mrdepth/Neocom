@@ -109,6 +109,7 @@ struct Home: View {
                 Section {
                     SettingsItem()
                     AboutItem()
+                    RemoveAdsItem()
                 }
             }.listStyle(GroupedListStyle())
                 

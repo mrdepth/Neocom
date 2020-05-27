@@ -33,10 +33,13 @@ struct LanguagePacks: View {
     
     var body: some View {
         List {
-            ForEach(languagePacks , id: \.tag) { pack in
-                LanguagePackCell(resource: pack, onSelect: self.onSelect)
+            Section(footer: Text("Tha language of the game database assets (ships, modules, their names and descriptions).")) {
+                ForEach(languagePacks , id: \.tag) { pack in
+                    LanguagePackCell(resource: pack, onSelect: self.onSelect)
+                }
             }
-        }.listStyle(GroupedListStyle())
+        }
+        .listStyle(GroupedListStyle())
         .navigationBarTitle(Text("Language Pack"))
     }
 }

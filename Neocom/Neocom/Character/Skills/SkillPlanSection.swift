@@ -129,13 +129,12 @@ struct SkillPlanSection_Previews: PreviewProvider {
 
         let skillPlan = SkillPlan(context: Storage.sharedStorage.persistentContainer.viewContext)
         skillPlan.account = account
-        let skills = (0..<4).map { i -> SkillPlanSkill in
+        (0..<4).forEach { i in
             let skill = SkillPlanSkill(context: Storage.sharedStorage.persistentContainer.viewContext)
             skill.typeID = type.typeID
             skill.level = Int16(i)
             skill.skillPlan = skillPlan
             skill.position = Int32(i)
-            return skill
         }
         
         let skillPlan2 = SkillPlan(context: Storage.sharedStorage.persistentContainer.viewContext)

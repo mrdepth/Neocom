@@ -257,7 +257,7 @@ fileprivate struct ComposeMailContent: View {
                                     attachmentButton
                                     sendButton})
             .alert(item: self.$error) { error in
-                Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: Alert.Button.cancel(Text("Close")))
+                Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: .cancel(Text("Close")))
         }
         .alert(isPresented: $isSaveDraftAlertPresented) {
             self.saveDraftAlert

@@ -118,7 +118,7 @@ struct Migration: View {
             }
         }
         .alert(item: $error) { error in
-            Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: Alert.Button.cancel(Text("Close")))
+            Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: .cancel(Text("Close")))
         }
     }
 }

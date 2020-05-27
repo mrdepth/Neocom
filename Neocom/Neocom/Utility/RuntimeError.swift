@@ -20,6 +20,7 @@ enum RuntimeError: LocalizedError {
     case invalidLoadoutFormat
     case invalidActivityType
     case missingCodingUserInfoKey(CodingUserInfoKey)
+    case fileNotFound(String)
     
     var errorDescription: String? {
         switch self {

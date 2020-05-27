@@ -14,6 +14,7 @@ struct Accounts: View {
     var completion: (Account) -> Void
     
     @Environment(\.managedObjectContext) private var managedObjectContext
+    @EnvironmentObject private var sharedState: SharedState
     
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.characterName, ascending: true), NSSortDescriptor(keyPath: \Account.uuid, ascending: true)])
     private var accounts: FetchedResults<Account>
@@ -47,6 +48,9 @@ struct Accounts: View {
                 }.onDelete { (indices) in
                     withAnimation {
                         indices.forEach { i in
+                            if self.sharedState.account == self.accounts[i] {
+                                self.sharedState.account = nil
+                            }
                             self.managedObjectContext.delete(self.accounts[i])
                         }
                         if self.managedObjectContext.hasChanges {

@@ -47,7 +47,6 @@ struct Main: View {
     private let home = Home()
 
     var body: some View {
-//        LanguagePacks_Previews.previews
         let navigationView = NavigationView {
             if horizontalSizeClass == .regular {
                 home
@@ -66,7 +65,6 @@ struct Main: View {
             }
             else {
                 navigationView.navigationViewStyle(StackNavigationViewStyle())
-//            .navigationViewStyle(StackNavigationViewStyle())
             }
             FinishedViewWrapper()
         }

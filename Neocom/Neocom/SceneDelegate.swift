@@ -21,6 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var isMainWindow: Bool = false
     var sharedState = SharedState(managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext)
     private var subscriptions = Set<AnyCancellable>()
+    
+    @UserDefault(key: .latestLaunchedVersion) var latestLaunchedVersion = ""
 
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
@@ -79,11 +81,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		    self.window = window
 		    window.makeKeyAndVisible()
             
-            downloadLanguagePackIfNeeded()
+            if !showTutorialIfNeeded() {
+                downloadLanguagePackIfNeeded()
+            }
 		}
-        
         sharedState.$userActivity.assign(to: \.userActivity , on: scene).store(in: &subscriptions)
+        latestLaunchedVersion = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String ?? ""
 	}
+    
+    private func showTutorialIfNeeded() -> Bool {
+        guard latestLaunchedVersion.isEmpty else {return false}
+        guard let window = self.window else {return false}
+        guard let controller = window.rootViewController?.topMostPresentedViewController else {return false}
+        
+        let view = Tutorial {
+            controller.dismiss(animated: true, completion: nil)
+        }.modifier(ServicesViewModifier(managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext, backgroundManagedObjectContext: Storage.sharedStorage.persistentContainer.newBackgroundContext(), sharedState: sharedState))
+        
+        let tutorial = UIHostingController(rootView: view)
+        tutorial.modalPresentationStyle = .formSheet
+        
+        controller.present(tutorial, animated: true, completion: nil)
+        
+        return true
+    }
     
     private func downloadLanguagePackIfNeeded() {
         guard let window = self.window else {return}
@@ -115,7 +136,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     controller?.dismiss(animated: true, completion: nil)
                 }
             }
-            controller?.present(UIHostingController(rootView: view), animated: false, completion: nil)
+            let vc = UIHostingController(rootView: view)
+            vc.modalPresentationStyle = .formSheet
+            controller?.present(vc, animated: false, completion: nil)
         }
     }
 
@@ -166,16 +189,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     //                    print(s)
                     if let account = try? context.from(Account.self).filter(/\Account.characterID == token.characterID).first() {
                         account.oAuth2Token = token
+                        self.sharedState.account = account
                     }
                     else {
                         let account = Account(context: context)
                         account.oAuth2Token = token
                         account.uuid = UUID().uuidString
+                        self.sharedState.account = account
                     }
                     if context.hasChanges {
                         try? context.save()
                     }
-                    
                 case let .failure(error):
                     let controller = self.window?.rootViewController?.topMostPresentedViewController
                     controller?.present(UIAlertController(error: error), animated: true, completion: nil)

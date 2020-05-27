@@ -12,6 +12,7 @@ import EVEAPI
 import Expressible
 import Combine
 import SwiftUI
+import StoreKit
 @_exported import UIKit
 
 
@@ -19,9 +20,6 @@ import SwiftUI
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-//        URLCache.shared.removeAllCachedResponses()
-        
 		ValueTransformer.setValueTransformer(ImageValueTransformer(), forName: NSValueTransformerName("ImageValueTransformer"))
         ValueTransformer.setValueTransformer(LoadoutTransformer(), forName: NSValueTransformerName(rawValue: "LoadoutTransformer"))
         ValueTransformer.setValueTransformer(NeocomSecureUnarchiveFromDataTransformer(), forName: NSValueTransformerName("NeocomSecureUnarchiveFromDataTransformer"))
@@ -35,6 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 UNUserNotificationCenter.current().delegate = self
             }
         }
+        
+        SKPaymentQueue.default().add(self)
         
 		return true
 	}
@@ -132,5 +132,19 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.sound, .badge, .alert])
+    }
+}
+
+extension AppDelegate: SKPaymentTransactionObserver {
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction in transactions {
+            switch transaction.transactionState {
+            case .purchased, .restored, .failed:
+                queue.finishTransaction(transaction)
+                NotificationCenter.default.post(name: .didFinishPaymentTransaction, object: transaction)
+            default:
+                break
+            }
+        }
     }
 }

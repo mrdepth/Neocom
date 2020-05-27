@@ -36,6 +36,7 @@ struct ContentView: View {
             if isFinished {
                 FinishedView(isPresented: $isFinished)
             }
+            Text(String.localizedStringWithFormat(NSLocalizedString("%d days", comment: ""), 1))
         }.onReceive(NotificationCenter.default.publisher(for: .didUpdateSkillPlan)) { _ in
             withAnimation {
                 self.isFinished = true

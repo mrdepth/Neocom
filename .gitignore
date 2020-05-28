@@ -1,3 +1,4 @@
 /*.sqlite
 *.DS_Store
 /Neocom/Neocom.xcodeproj/xcuserdata/
+/Pods/

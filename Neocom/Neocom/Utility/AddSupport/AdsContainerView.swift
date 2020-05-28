@@ -6,9 +6,23 @@
 //  Copyright © 2020 Artem Shimanski. All rights reserved.
 //
 
+#if !targetEnvironment(macCatalyst)
 import SwiftUI
+import Combine
+import ASReceipt
 
 struct AdsContainerView<Content: View>: View {
+    @ObservedObject private var advertisingProvider = AdvertisingProvider.shared
+    @State private var isAdFree = true
+    
+    @State private var receiptPublisher: AnyPublisher<Receipt, Error>? = Receipt.receiptPublisher()
+    private var receiptChangesPublisher: FileChangesPublisher? {
+        Bundle.main.appStoreReceiptURL.map {
+            FileChangesPublisher(path: $0.path)
+        }
+    }
+
+    
     private var content: Content
     init(@ViewBuilder content: () -> Content) {
         self.content = content()
@@ -17,7 +31,21 @@ struct AdsContainerView<Content: View>: View {
     var body: some View {
         VStack(spacing: 0) {
             content
-            Color.green.frame(height: 50)
+            if advertisingProvider.isAdInitialised && advertisingProvider.isBannerReady && !isAdFree {
+                AdvertisingProvider.Banner().frame(height: 50).background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .didFinishStartup)) { _ in
+            self.advertisingProvider.initialize()
+        }
+        .onReceive(receiptChangesPublisher?.asResult().receive(on: RunLoop.main).eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()) { _ in
+            self.receiptPublisher = Receipt.receiptPublisher()
+        }
+        .onReceive(receiptPublisher?.asResult().eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()) { result in
+            let transactions = result.value?.inAppPurchases
+            let isAdFree = transactions?.contains{($0.inAppType == .autoRenewableSubscription && !$0.isExpired && !$0.isCancelled) || Config.current.inApps.lifetimeSubscriptions.contains($0.productID ?? "")}
+            self.isAdFree = isAdFree ?? false
+            self.receiptPublisher = nil
         }
     }
 }
@@ -33,3 +61,4 @@ struct AdsContainerView_Previews: PreviewProvider {
         }
     }
 }
+#endif

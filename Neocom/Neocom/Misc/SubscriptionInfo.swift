@@ -6,6 +6,7 @@
 //  Copyright © 2020 Artem Shimanski. All rights reserved.
 //
 
+#if !targetEnvironment(macCatalyst)
 import SwiftUI
 import ASReceipt
 import StoreKit
@@ -58,3 +59,4 @@ struct SubscriptionInfo_Previews: PreviewProvider {
         }.listStyle(GroupedListStyle())
     }
 }
+#endif

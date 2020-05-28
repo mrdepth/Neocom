@@ -83,6 +83,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             if !showTutorialIfNeeded() {
                 downloadLanguagePackIfNeeded()
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .didFinishStartup, object: nil)
+                }
             }
 		}
         sharedState.$userActivity.assign(to: \.userActivity , on: scene).store(in: &subscriptions)
@@ -98,7 +101,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             controller.dismiss(animated: true, completion: nil)
         }.modifier(ServicesViewModifier(managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext, backgroundManagedObjectContext: Storage.sharedStorage.persistentContainer.newBackgroundContext(), sharedState: sharedState))
         
-        let tutorial = UIHostingController(rootView: view)
+        let tutorial = TutorialViewController(rootView: view)
         tutorial.modalPresentationStyle = .formSheet
         
         controller.present(tutorial, animated: true, completion: nil)

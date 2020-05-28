@@ -109,7 +109,9 @@ struct Home: View {
                 Section {
                     SettingsItem()
                     AboutItem()
+                    #if !targetEnvironment(macCatalyst)
                     RemoveAdsItem()
+                    #endif
                 }
             }.listStyle(GroupedListStyle())
                 

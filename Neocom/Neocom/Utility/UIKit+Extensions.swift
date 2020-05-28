@@ -18,6 +18,7 @@ extension UIApplication {
 extension Notification.Name {
     static let didUpdateSkillPlan = Notification.Name(rawValue: "com.shimanski.neocom.didUpdateSkillPlan")
     static let didFinishPaymentTransaction = Notification.Name(rawValue: "com.shimanski.neocom.didFinishPaymentTransaction")
+    static let didFinishStartup = Notification.Name(rawValue: "com.shimanski.neocom.didFinishStartup")
 }
 
 extension NSAttributedString {

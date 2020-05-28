@@ -6,6 +6,7 @@
 //  Copyright © 2020 Artem Shimanski. All rights reserved.
 //
 
+#if !targetEnvironment(macCatalyst)
 import Foundation
 import StoreKit
 import Combine
@@ -175,3 +176,4 @@ extension Receipt {
 //        }.eraseToAnyPublisher()*/
     }
 }
+#endif

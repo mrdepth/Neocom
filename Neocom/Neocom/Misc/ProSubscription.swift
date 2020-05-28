@@ -244,9 +244,6 @@ struct ProSubscription: View, Equatable {
         .onReceive(productsPublisher.asResult(), perform: didReceiveProducts)
         .onReceive(receiptChangesPublisher?.asResult().receive(on: RunLoop.main).eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()) { _ in
             self.receiptPublisher = Receipt.receiptPublisher()
-//            self.receipt = Bundle.main.appStoreReceiptURL.flatMap { url in
-//                try? Receipt(data: Data(contentsOf: url))
-//            }
         }
         .onReceive(receiptPublisher?.asResult().eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()) { result in
             self.receipt = result.value

@@ -49,7 +49,13 @@ struct Main: View {
     var body: some View {
         let navigationView = NavigationView {
             if horizontalSizeClass == .regular {
+                #if targetEnvironment(macCatalyst)
                 home
+                #else
+                AdsContainerView {
+                    home
+                }
+                #endif
                 restoredFitting.map{FittingEditor(project: $0)}
             }
             else {
@@ -64,7 +70,13 @@ struct Main: View {
                 navigationView.navigationViewStyle(DoubleColumnNavigationViewStyle())
             }
             else {
+                #if targetEnvironment(macCatalyst)
                 navigationView.navigationViewStyle(StackNavigationViewStyle())
+                #else
+                AdsContainerView {
+                    navigationView.navigationViewStyle(StackNavigationViewStyle())
+                }
+                #endif
             }
             FinishedViewWrapper()
         }

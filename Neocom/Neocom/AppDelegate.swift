@@ -13,31 +13,45 @@ import Expressible
 import Combine
 import SwiftUI
 import StoreKit
+import StackConsentManager
 @_exported import UIKit
-
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-		ValueTransformer.setValueTransformer(ImageValueTransformer(), forName: NSValueTransformerName("ImageValueTransformer"))
-        ValueTransformer.setValueTransformer(LoadoutTransformer(), forName: NSValueTransformerName(rawValue: "LoadoutTransformer"))
-        ValueTransformer.setValueTransformer(NeocomSecureUnarchiveFromDataTransformer(), forName: NSValueTransformerName("NeocomSecureUnarchiveFromDataTransformer"))
-		// Override point for customization after application launch.
+        initializeTransformers()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(didRefreshToken(_:)), name: ESI.didRefreshTokenNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didInvalidateToken(_:)), name: ESI.didInvalidateTokenNotification, object: nil)
         
+        SKPaymentQueue.default().add(self)
+        
+        var observer: NSObjectProtocol?
+        
+        observer = NotificationCenter.default.addObserver(forName: .didFinishStartup, object: nil, queue: .main) { (_) in
+            NotificationCenter.default.removeObserver(observer!)
+            self.initializeAPN()
+        }
+        
+		return true
+	}
+    
+    private func initializeTransformers() {
+        ValueTransformer.setValueTransformer(ImageValueTransformer(), forName: NSValueTransformerName("ImageValueTransformer"))
+        ValueTransformer.setValueTransformer(LoadoutTransformer(), forName: NSValueTransformerName(rawValue: "LoadoutTransformer"))
+        ValueTransformer.setValueTransformer(NeocomSecureUnarchiveFromDataTransformer(), forName: NSValueTransformerName("NeocomSecureUnarchiveFromDataTransformer"))
+    }
+    
+    private func initializeAPN() {
+        guard notificationsManager == nil else {return}
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (granted, nil) in
             DispatchQueue.main.async {
                 self.notificationsManager = NotificationsManager(managedObjectContext: self.storage.persistentContainer.viewContext)
                 UNUserNotificationCenter.current().delegate = self
             }
         }
-        
-        SKPaymentQueue.default().add(self)
-        
-		return true
-	}
+    }
     
 	// MARK: UISceneSession Lifecycle
 

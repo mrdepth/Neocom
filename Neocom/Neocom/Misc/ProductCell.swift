@@ -6,6 +6,7 @@
 //  Copyright © 2020 Artem Shimanski. All rights reserved.
 //
 
+#if !targetEnvironment(macCatalyst)
 import SwiftUI
 import StoreKit
 
@@ -35,3 +36,4 @@ struct ProductCell: View {
         }
     }
 }
+#endif

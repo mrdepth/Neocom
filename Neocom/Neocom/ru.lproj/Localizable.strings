@@ -23,6 +23,9 @@
 " velocity: " = " скорость: ";
 
 /* No comment provided by engineer. */
+"- Remove ads from every screen\n- Remove ads across all devices with the same Apple ID" = "- Удалить рекламу со всех экранов приложения\n- Удалить рекламу на всех устройствах с одним Apple ID";
+
+/* No comment provided by engineer. */
 "%@ / %@ (%@ SP/h)" = "%1$@ / %2$@ (%3$@ SP/ч)";
 
 /* No comment provided by engineer. */
@@ -102,6 +105,9 @@
 
 /* No comment provided by engineer. */
 "Add to Skill Plan" = "Добавить в план обучения";
+
+/* No comment provided by engineer. */
+"Add your first\nEVE Oline Account" = "Добавьте ваш первый\nEVE Oline аккаунт";
 
 /* No comment provided by engineer. */
 "Affecting Skills" = "Влияющие навыки";
@@ -299,6 +305,15 @@
 "Close" = "Закрыть";
 
 /* No comment provided by engineer. */
+"COMPLETED" = "ЗАВЕРШЕНО";
+
+/* No comment provided by engineer. */
+"Compose Mail" = "Написать письмо";
+
+/* No comment provided by engineer. */
+"Continue" = "Продолжить";
+
+/* No comment provided by engineer. */
 "Contracts" = "Контракты";
 
 /* No comment provided by engineer. */
@@ -333,6 +348,9 @@
 
 /* days */
 "d" = "д";
+
+/* No comment provided by engineer. */
+"Damage Pattern" = "Шаблон урона";
 
 /* No comment provided by engineer. */
 "DAMAGE PATTERN" = "ШАБЛОН УРОНА";
@@ -407,6 +425,15 @@
 "DESTROYED" = "УНИЧТОЖЕНО";
 
 /* No comment provided by engineer. */
+"Discard Changes" = "Отменить изменения";
+
+/* No comment provided by engineer. */
+"Donate %@" = "Пожертвовать %@";
+
+/* No comment provided by engineer. */
+"Donation" = "Пожертвование";
+
+/* No comment provided by engineer. */
 "DONCHIAN CHANNEL" = "КАНАЛ ДОНЧИАНА";
 
 /* No comment provided by engineer. */
@@ -450,6 +477,12 @@
 
 /* No comment provided by engineer. */
 "Exit WH" = "Выход";
+
+/* No comment provided by engineer. */
+"Expired" = "Истекло";
+
+/* No comment provided by engineer. */
+"Expires %@" = "Истекает %@";
 
 /* No comment provided by engineer. */
 "Expires in %@" = "Истекает через %@";
@@ -506,6 +539,9 @@
 "From Date" = "Начиная с даты";
 
 /* No comment provided by engineer. */
+"From:" = "От:";
+
+/* No comment provided by engineer. */
 "FUEL" = "ТОПЛИВО";
 
 /* No comment provided by engineer. */
@@ -531,6 +567,9 @@
 
 /* hpPerSecond */
 "HP/s" = "HP/с";
+
+/* No comment provided by engineer. */
+"If you used Neocom before, you can import your data from iCloud." = "Если вы пользовались Neocom ранее, вы можете импортировать ваши данные из iCloud";
 
 /* No comment provided by engineer. */
 "Implant" = "Имплант";
@@ -650,6 +689,12 @@
 "LEVEL %@ (%@)" = "УРОВЕНЬ %1$@ (%2$@)";
 
 /* No comment provided by engineer. */
+"Lifetime" = "Пожизненно";
+
+/* No comment provided by engineer. */
+"Lifetime Subscription" = "Пожизненная подписка";
+
+/* No comment provided by engineer. */
 "Light" = "Легкие";
 
 /* No comment provided by engineer. */
@@ -691,6 +736,15 @@
 
 /* No comment provided by engineer. */
 "Mail" = "Почта";
+
+/* No comment provided by engineer. */
+"Make Active" = "Сделать активным";
+
+/* No comment provided by engineer. */
+"Make Donation" = "Сделать пожертвование";
+
+/* No comment provided by engineer. */
+"Manage Subscriptions" = "Управление подписками";
 
 /* No comment provided by engineer. */
 "MANUFACTURING" = "ПРОИЗВОСТВО";
@@ -776,6 +830,12 @@
 /* No comment provided by engineer. */
 "Modules" = "Модули";
 
+/* No comment provided by engineer. */
+"More Devices" = "Больше устройств";
+
+/* No comment provided by engineer. */
+"Multilanguage" = "Мультиязычность";
+
 /* megaWatts */
 "MW" = "МВт";
 
@@ -786,10 +846,16 @@
 "Name" = "Имя";
 
 /* No comment provided by engineer. */
+"Neocom is ready to use." = "Neocom готов к использованию.";
+
+/* No comment provided by engineer. */
 "Neural Remap Available" = "Перераспределение доступно";
 
 /* No comment provided by engineer. */
 "New Loadout" = "Новое оснащение";
+
+/* No comment provided by engineer. */
+"New Skill Plan" = "Новый план обучения";
 
 /* No comment provided by engineer. */
 "No" = "Нет";
@@ -824,11 +890,20 @@
 /* Skill Borwser */
 "Not Known" = "Не известно";
 
+/* No comment provided by engineer. */
+"Notifications Enabled" = "Уведомления включены";
+
 /* Month Abbreviation */
 "NOV" = "НОЯ";
 
 /* No comment provided by engineer. */
 "Now" = "сейчас";
+
+/* No comment provided by engineer. */
+"Now available on iPhone, iPad and Mac." = "Теперь доступно на iPhone, iPad и Mac.";
+
+/* No comment provided by engineer. */
+"Now supports Light/Dark themes." = "Теперь поддерживаются светлая/темная темы.";
 
 /* Month Abbreviation */
 "OCT" = "ОКТ";
@@ -960,6 +1035,9 @@
 "Recharge:" = "Перезарядка:";
 
 /* No comment provided by engineer. */
+"Redesigned" = "Новый дизайн";
+
+/* No comment provided by engineer. */
 "Regions" = "Регионы";
 
 /* No comment provided by engineer. */
@@ -970,6 +1048,18 @@
 
 /* ESI.ContractStatus */
 "Rejected" = "Отклонен";
+
+/* No comment provided by engineer. */
+"Remember to cancel any auto-renewable subscriptions." = "Не забудьте отменить автовозобновляемые подписки.";
+
+/* No comment provided by engineer. */
+"Remove Ads" = "Убрать рекламу";
+
+/* No comment provided by engineer. */
+"Remove Ads Subscription" = "Подписка: убрать рекламу";
+
+/* No comment provided by engineer. */
+"Rename" = "Переименовать";
 
 /* No comment provided by engineer. */
 "Repair Rate" = "Темп ремонта";
@@ -989,6 +1079,12 @@
 /* No comment provided by engineer. */
 "RESOURCES" = "РЕСУРСЫ";
 
+/* No comment provided by engineer. */
+"Restore Completed" = "Восстановление завершено";
+
+/* No comment provided by engineer. */
+"Restore Purchases" = "Восстановить покупки";
+
 /* Industry Job Status: reverted [date] */
 "reverted %@)" = "возвращено %@)";
 
@@ -1006,6 +1102,9 @@
 
 /* No comment provided by engineer. */
 "Save" = "Сохранить";
+
+/* No comment provided by engineer. */
+"Save Draft" = "Сохранить черновик";
 
 /* No comment provided by engineer. */
 "Save In-Game" = "Сохранить в игре";
@@ -1039,6 +1138,18 @@
 
 /* No comment provided by engineer. */
 "Select NPC" = "Выбрать NPC";
+
+/* No comment provided by engineer. */
+"Select your preferred language for the EVE Online Database." = "Выберите язык базы данных EVE Online.";
+
+/* No comment provided by engineer. */
+"Selected %@ Accounts" = "Выбрано %@ аккаунтов";
+
+/* No comment provided by engineer. */
+"Selected %@ Accounts and %@ Loadouts" = "Выбрано %1$@ аккаунтов и %2$@ оснасток";
+
+/* No comment provided by engineer. */
+"Selected %@ Loadouts" = "Выбрано %@ оснасток";
 
 /* No comment provided by engineer. */
 "Sell" = "Продать";
@@ -1087,6 +1198,9 @@
 
 /* No comment provided by engineer. */
 "SKILL PLAN" = "ПЛАН ОБУЧЕНИЯ";
+
+/* No comment provided by engineer. */
+"Skill Plan is empty" = "План обучения пуст";
 
 /* No comment provided by engineer. */
 "SKILL PLAN IS EMPTY" = "ПЛАН ОБУЧЕНИЯ ПУСТ";
@@ -1155,7 +1269,13 @@
 "Stable:" = "Стабильно:";
 
 /* No comment provided by engineer. */
+"Start edit your loadout on iPhone and continue on Mac." = "Начните редактировать вашу оснастку на iPhone и продолжите на Mac";
+
+/* No comment provided by engineer. */
 "Start Location" = "Пункт отправления";
+
+/* No comment provided by engineer. */
+"Start Now" = "Начать";
 
 /* No comment provided by engineer. */
 "Stats" = "Характ.";
@@ -1171,6 +1291,18 @@
 
 /* No comment provided by engineer. */
 "Structures" = "Структуры";
+
+/* No comment provided by engineer. */
+"Subject" = "Тема";
+
+/* No comment provided by engineer. */
+"Subject: " = "Тема: ";
+
+/* No comment provided by engineer. */
+"SUBSCRIPTION PLANS" = "ПЛАНЫ ПОДПИСОК";
+
+/* No comment provided by engineer. */
+"Subscriptions" = "Подписки";
 
 /* No comment provided by engineer. */
 "Sum (units):" = "Всего (ед.):";
@@ -1200,6 +1332,9 @@
 "Tf" = "Тф";
 
 /* No comment provided by engineer. */
+"Tha language of the game database assets (ships, modules, their names and descriptions)." = "Язык базы данных (корабли, модули, их названия и описание).";
+
+/* No comment provided by engineer. */
 "Thermal" = "Термический";
 
 /* No comment provided by engineer. */
@@ -1207,6 +1342,9 @@
 
 /* No comment provided by engineer. */
 "Time to Depletion:" = "Время до истощения:";
+
+/* No comment provided by engineer. */
+"Tired of seeing those pesky ads? Why not upgrade to an Ad Free Subscription!" = "Надоело смотреть эти надоедливые рекламные объявления? Почему бы не приобрести платную подписку?";
 
 /* No comment provided by engineer. */
 "Title" = "Заголовок";
@@ -1329,6 +1467,12 @@
 "Weapons" = "Орудия";
 
 /* No comment provided by engineer. */
+"Welcome" = "Добро пожаловть";
+
+/* No comment provided by engineer. */
+"Welcome to" = "Добро пожаловать в";
+
+/* No comment provided by engineer. */
 "Willpower" = "Сила воли";
 
 /* No comment provided by engineer. */
@@ -1345,6 +1489,12 @@
 
 /* No comment provided by engineer. */
 "Yield (units/h):" = "Производство (ед./ч):";
+
+/* No comment provided by engineer. */
+"You can now use Neocom without any restrictions on all devices for unlimited time. But you can make a donation to support the development." = "Теперь вы можете использовать Neocom без ограничений на всех устройствах неограниченное время. Но вы все еще можете поддержать разработку сделав пожертвование";
+
+/* No comment provided by engineer. */
+"Your previous purchases are being restored. Thank you!" = "Ваши покупки восстановлены. Спасибо";
 
 /* No comment provided by engineer. */
 "zKillboard Reports" = "zKillboard";

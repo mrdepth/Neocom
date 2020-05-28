@@ -305,6 +305,7 @@
 		169F57D32428C2E300FFDAE1 /* SkillLevelsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169F57D22428C2E300FFDAE1 /* SkillLevelsLoader.swift */; };
 		16A1598523C712FB00778320 /* AddToSkillPlanButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A1598423C712FB00778320 /* AddToSkillPlanButton.swift */; };
 		16A250DA23E1BD83003F7904 /* SkillPlans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A250D923E1BD83003F7904 /* SkillPlans.swift */; };
+		16A63572247FC723008F7999 /* LifetimeSubscriptionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A63571247FC723008F7999 /* LifetimeSubscriptionInfo.swift */; };
 		16A642C924648A1B0048A270 /* MigrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A642C824648A1B0048A270 /* MigrationHelper.swift */; };
 		16A6A4B823B1E54F00CF0812 /* CertificateGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A6A4B723B1E54F00CF0812 /* CertificateGroups.swift */; };
 		16A6A4BA23B1E6F500CF0812 /* Certificates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A6A4B923B1E6F500CF0812 /* Certificates.swift */; };
@@ -730,6 +731,8 @@
 		169F57D22428C2E300FFDAE1 /* SkillLevelsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillLevelsLoader.swift; sourceTree = "<group>"; };
 		16A1598423C712FB00778320 /* AddToSkillPlanButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToSkillPlanButton.swift; sourceTree = "<group>"; };
 		16A250D923E1BD83003F7904 /* SkillPlans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillPlans.swift; sourceTree = "<group>"; };
+		16A63570247FC1DF008F7999 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		16A63571247FC723008F7999 /* LifetimeSubscriptionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifetimeSubscriptionInfo.swift; sourceTree = "<group>"; };
 		16A642C824648A1B0048A270 /* MigrationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationHelper.swift; sourceTree = "<group>"; };
 		16A6A4B723B1E54F00CF0812 /* CertificateGroups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateGroups.swift; sourceTree = "<group>"; };
 		16A6A4B923B1E6F500CF0812 /* Certificates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Certificates.swift; sourceTree = "<group>"; };
@@ -1125,6 +1128,7 @@
 				16662C4E2477E78200AE38DC /* TutorialContinue.swift */,
 				16BB5049247A71D8002CD90E /* ProSubscription.swift */,
 				16E684C5247BF9AF00BE1225 /* SubscriptionInfo.swift */,
+				16A63571247FC723008F7999 /* LifetimeSubscriptionInfo.swift */,
 				16BB5050247A7D4E002CD90E /* ProductCell.swift */,
 			);
 			path = Misc;
@@ -2054,6 +2058,7 @@
 				16D16EB8241A6A2600EF9F76 /* FittingEditorMiscStats.swift in Sources */,
 				16C435FA23D6FFC7000A5446 /* ImplantTypeCell.swift in Sources */,
 				16977BEB23FA66C0002725CD /* MailBody.swift in Sources */,
+				16A63572247FC723008F7999 /* LifetimeSubscriptionInfo.swift in Sources */,
 				1688D00F23D6F0790012983C /* JumpClones.swift in Sources */,
 				1685E704242E39A800F85F14 /* EventCell.swift in Sources */,
 				1694B22F2406A9AD00E81E49 /* InfoButton.swift in Sources */,
@@ -2349,6 +2354,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				16BB5061247ABC06002CD90E /* en */,
+				16A63570247FC1DF008F7999 /* ru */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";

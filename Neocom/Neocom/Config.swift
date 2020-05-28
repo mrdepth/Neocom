@@ -30,7 +30,7 @@ struct Config {
         var autoRenewableSubscriptions = ["com.shimanski.neocom.removeads.month",
                                           "com.shimanski.neocom.removeads.months6",
                                           "com.shimanski.neocom.removeads.year"]
-        var lifetimeSubscriptions = ["com.shimanski.neocom.removeads.lifetime1"]
+        var lifetimeSubscriptions = ["com.shimanski.neocom.removeads.lifetime"]
         var donate = ["com.shimanski.neocom.donate.tier1",
                       "com.shimanski.neocom.donate.tier5",
                       "com.shimanski.neocom.donate.tier10",

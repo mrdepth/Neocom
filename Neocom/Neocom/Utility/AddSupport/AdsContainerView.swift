@@ -14,6 +14,7 @@ import ASReceipt
 struct AdsContainerView<Content: View>: View {
     @ObservedObject private var advertisingProvider = AdvertisingProvider.shared
     @State private var isAdFree = true
+    @ObservedObject private var isLifetimeUpgrade = UserDefault(wrappedValue: false, key: .isLifetimeUpgrade)
     
     @State private var receiptPublisher: AnyPublisher<Receipt, Error>? = Receipt.receiptPublisher()
     private var receiptChangesPublisher: FileChangesPublisher? {
@@ -31,7 +32,7 @@ struct AdsContainerView<Content: View>: View {
     var body: some View {
         VStack(spacing: 0) {
             content
-            if advertisingProvider.isAdInitialised && advertisingProvider.isBannerReady && !isAdFree {
+            if advertisingProvider.isAdInitialised && advertisingProvider.isBannerReady && !isAdFree && !isLifetimeUpgrade.wrappedValue {
                 AdvertisingProvider.Banner().frame(height: advertisingProvider.bannerHeight).background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
             }
         }

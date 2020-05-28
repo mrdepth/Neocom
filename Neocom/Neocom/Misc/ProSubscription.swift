@@ -40,6 +40,7 @@ struct ProSubscription: View, Equatable {
     @State private var isRestoreCompleted = false
     @State private var selectedLifetimeProduct: IdentifiableWrapper<SKProduct>?
     @State private var isDonationAlertPresented = false
+    @ObservedObject private var isLifetimeUpgrade = UserDefault(wrappedValue: false, key: .isLifetimeUpgrade)
     
     private func purchase(_ product: SKProduct) {
         SKPaymentQueue.default().add(SKPayment(product: product))
@@ -150,12 +151,10 @@ struct ProSubscription: View, Equatable {
                 .max {$0.expiresDate! < $1.expiresDate!}
         }
         
-        let lifetimePurchase = receipt?.inAppPurchases?.filter{$0.productID != nil}.first{Config.current.inApps.lifetimeSubscriptions.contains($0.productID!)}
-        
         return List {
-            if lifetimePurchase != nil {
+            if isLifetimeUpgrade.wrappedValue {
                 Section {
-                    SubscriptionInfo(purchase: lifetimePurchase!, product: products?.first{$0.productIdentifier == lifetimePurchase?.productID})
+                    LifetimeSubscriptionInfo()
                 }
             }
             else if currentSubscription == nil {
@@ -172,7 +171,7 @@ struct ProSubscription: View, Equatable {
                 }
             }
             
-            if lifetimePurchase == nil {
+            if !isLifetimeUpgrade.wrappedValue {
                 Section(header: Text("SUBSCRIPTION PLANS")) {
                     if products == nil {
                         ActivityIndicatorView(style: .medium).frame(maxWidth: .infinity)

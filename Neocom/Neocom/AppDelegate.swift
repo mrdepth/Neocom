@@ -19,6 +19,8 @@ import StackConsentManager
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
+    @UserDefault(key: .isLifetimeUpgrade) var isLifetimeUpgrade = false
+    
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         initializeTransformers()
         
@@ -154,6 +156,9 @@ extension AppDelegate: SKPaymentTransactionObserver {
         for transaction in transactions {
             switch transaction.transactionState {
             case .purchased, .restored, .failed:
+                if (transaction.transactionState == .purchased || transaction.transactionState == .restored) && Config.current.inApps.lifetimeSubscriptions.contains(transaction.payment.productIdentifier) {
+                    isLifetimeUpgrade = true
+                }
                 queue.finishTransaction(transaction)
                 NotificationCenter.default.post(name: .didFinishPaymentTransaction, object: transaction)
             default:

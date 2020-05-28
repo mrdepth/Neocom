@@ -30,19 +30,13 @@ struct SubscriptionInfo: View {
             Image("logo").resizable().frame(width: 64, height: 64).cornerRadius(8)
             VStack(alignment: .leading) {
                 Text("Remove Ads Subscription")
-                if Config.current.inApps.lifetimeSubscriptions.contains(purchase.productID ?? "") {
-                    Text("Lifetime").font(.caption)
-                    Text("Remember to cancel any auto-renewable subscriptions.").modifier(SecondaryLabelModifier())
+                plan.font(.caption)
+                if purchase.isExpired {
+                    Text("Expired").modifier(SecondaryLabelModifier())
                 }
                 else {
-                    plan.font(.caption)
-                    if purchase.isExpired {
-                        Text("Expired").modifier(SecondaryLabelModifier())
-                    }
-                    else {
-                        purchase.expiresDate.map {
-                            Text("Expires \(DateFormatter.localizedString(from: $0, dateStyle: .medium, timeStyle: .none))").modifier(SecondaryLabelModifier())
-                        }
+                    purchase.expiresDate.map {
+                        Text("Expires \(DateFormatter.localizedString(from: $0, dateStyle: .medium, timeStyle: .none))").modifier(SecondaryLabelModifier())
                     }
                 }
             }

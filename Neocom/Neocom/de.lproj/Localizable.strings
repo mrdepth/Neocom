@@ -1056,7 +1056,7 @@
 "REGIONS" = "REGIONEN";
 
 /* No comment provided by engineer. */
-"Reinforced" = "Reinforced";
+"Reinforced" = "Verstärkt";
 
 /* ESI.ContractStatus */
 "Rejected" = "Abgelehnt";
@@ -1140,6 +1140,15 @@
 "Select NPC" = "NPC auswählen";
 
 /* No comment provided by engineer. */
+"Selected %@ Accounts" = "%@ Konten ausgewählt";
+
+/* No comment provided by engineer. */
+"Selected %@ Accounts and %@ Loadouts" = "%1$@ Konten und %2$@ Ausrüstungen ausgewählt";
+
+/* No comment provided by engineer. */
+"Selected %@ Loadouts" = "%@ Ausrüstungen ausgewählt";
+
+/* No comment provided by engineer. */
 "Sell" = "Verkaufen";
 
 /* No comment provided by engineer. */
@@ -1215,7 +1224,7 @@
 "SKILL QUEUE: %@ (%@ skills)" = "TRAININGSWARTESCHLANGE: %1$@ (%2$@ Skills)";
 
 /* No comment provided by engineer. */
-"Skill Training Complete" = "Trainingswarteschlange beendet";
+"Skill Training Complete" = "Skill Training beendet";
 
 /* No comment provided by engineer. */
 "Skills" = "Skills";
@@ -1440,10 +1449,10 @@
 "W-Frig" = "Fregatten-Wurmloch";
 
 /* No comment provided by engineer. */
-"W-Space" = "Wurmloch-Raum";
+"W-Space" = "Wurmloch";
 
 /* No comment provided by engineer. */
-"W-Space Class %d" = "Wurmloch-Raum Klasse %d";
+"W-Space Class %d" = "Wurmloch Klasse %d";
 
 /* No comment provided by engineer. */
 "Wallet Journal" = "Konto Logbuch";
@@ -1458,7 +1467,7 @@
 "Warp speed:" = "Warpgeschwindigkeit:";
 
 /* No comment provided by engineer. */
-"Warzone Control:" = "Kontrolle über Kriegssysteme:";
+"Warzone Control:" = "Kriegssystemekontrolle:";
 
 /* No comment provided by engineer. */
 "Waste %@%" = "Abfall %1$@%2$";
@@ -1473,7 +1482,7 @@
 "Weapons" = "Waffen";
 
 /* No comment provided by engineer. */
-"WH-Space" = "Wurmloch-Raum";
+"WH-Space" = "Wurmloch";
 
 /* No comment provided by engineer. */
 "Willpower" = "Willenskraft";

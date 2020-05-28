@@ -32,7 +32,7 @@ struct AdsContainerView<Content: View>: View {
         VStack(spacing: 0) {
             content
             if advertisingProvider.isAdInitialised && advertisingProvider.isBannerReady && !isAdFree {
-                AdvertisingProvider.Banner().frame(height: 50).background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+                AdvertisingProvider.Banner().frame(height: advertisingProvider.bannerHeight).background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .didFinishStartup)) { _ in

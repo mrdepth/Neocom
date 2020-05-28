@@ -41,7 +41,7 @@ final class AdvertisingProvider: NSObject, ObservableObject {
     private var synchroniseConsentCompletion: SynchroniseConsentCompletion?
     
     let bannerHeight: CGFloat = {
-        UIDevice.current.userInterfaceIdiom == .pad ? kAPDAdSize728x90.height : kAPDAdSize320x50.height
+        kAPDAdSize320x50.height
     }()
     
     fileprivate lazy var bannerView: APDBannerView = {
@@ -83,23 +83,12 @@ final class AdvertisingProvider: NSObject, ObservableObject {
     
     // MARK: Private methods
     private func initializeAppodeaSDK() {
-        /// Custom settings
-        // Appodeal.setFramework(.native, version: "1.0.0")
-        // Appodeal.setTriggerPrecacheCallbacks(true)
-        // Appodeal.setLocationTracking(true)
-        
         /// Test Mode
         #if DEBUG
         Appodeal.setTestingEnabled(true)
         Appodeal.setLogLevel(.error)
         #endif
         
-        /// User Data
-        // Appodeal.setUserId("userID")
-        // Appodeal.setUserAge(25)
-        // Appodeal.setUserGender(.male)
-        // Disable autocache for banner and native ad
-        // we will cache it manually
         Appodeal.setAutocache(false, types: [.banner])
         
         let consent = STKConsentManager.shared().consentStatus != .nonPersonalized

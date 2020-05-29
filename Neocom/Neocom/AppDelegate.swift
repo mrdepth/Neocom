@@ -13,7 +13,6 @@ import Expressible
 import Combine
 import SwiftUI
 import StoreKit
-import StackConsentManager
 @_exported import UIKit
 
 @UIApplicationMain

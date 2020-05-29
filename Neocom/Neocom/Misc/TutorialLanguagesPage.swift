@@ -10,11 +10,13 @@ import SwiftUI
 
 struct TutorialLanguagesPage: View {
     var completion: () -> Void
-    
+
+    @EnvironmentObject private var sharedState: SharedState
+
     var body: some View {
         VStack(spacing: 0) {
             LanguagePacks()
-            NavigationLink(destination: TutorialAccountPage(completion: completion)) {
+            NavigationLink(destination: TutorialAccountPage(completion: completion).environmentObject(sharedState)) {
                 Text("Continue")//.modifier(TutorialButtonModifier())
             }
             .padding(.horizontal, 25)

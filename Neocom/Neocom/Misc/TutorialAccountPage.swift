@@ -59,11 +59,12 @@ struct TutorialAccountPage: View {
                     }//.frame(maxWidth: .infinity, alignment: .leading)
                 }
                 Spacer()
-                Text("Neocom is ready to use.").font(.largeTitle)
+                Text("Neocom is ready to use.").font(.largeTitle).lineLimit(1).minimumScaleFactor(0.5)
                 Spacer()
                 Spacer()
                 Spacer()
             }
+            //.fixedSize(horizontal: true, vertical: false)
             Button(action: completion) {
                 Text("Start Now")//.modifier(TutorialButtonModifier())
             }
@@ -77,6 +78,7 @@ struct TutorialAccountPage: View {
     }
 }
 
+#if DEBUG
 struct TutorialAccountPage_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -86,3 +88,4 @@ struct TutorialAccountPage_Previews: PreviewProvider {
             .environmentObject(SharedState.testState())
     }
 }
+#endif

@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct Tutorial: View {
+    @EnvironmentObject private var sharedState: SharedState
     var completion: () -> Void
     
     var body: some View {
@@ -50,7 +51,7 @@ struct Tutorial: View {
                     }
                 }
                 Spacer()
-                NavigationLink(destination: TutorialLanguagesPage(completion: completion)) {
+                NavigationLink(destination: TutorialLanguagesPage(completion: completion).environmentObject(sharedState)) {
                     Text("Continue")//.modifier(TutorialButtonModifier())
                 }
             }

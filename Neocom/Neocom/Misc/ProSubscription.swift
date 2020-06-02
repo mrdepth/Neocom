@@ -228,15 +228,6 @@ struct ProSubscription: View, Equatable {
                     Text("Manage Subscriptions").frame(maxWidth: .infinity)
                 }
             }
-
-//            Section(footer: subscriptionRenewalInfo) {
-//                Button(action: {UIApplication.shared.open(Config.current.privacy, options: [:], completionHandler: nil)}) {
-//                    Text("Privacy Policy").frame(maxWidth: .infinity)
-//                }
-//                Button(action: {UIApplication.shared.open(Config.current.terms, options: [:], completionHandler: nil)}) {
-//                    Text("Terms of Use").frame(maxWidth: .infinity)
-//                }
-//            }
         }
         .listStyle(GroupedListStyle())
         .navigationBarTitle(Text("Subscriptions"))
@@ -248,10 +239,6 @@ struct ProSubscription: View, Equatable {
             self.receipt = result.value
             self.receiptPublisher = nil
         }
-//    .onReceive(FileChangesPublisher(path: <#T##String#>), perform: <#T##(Publisher.Output) -> Void#>)
-//        .onReceive(receiptPublisher) { result in
-//            self.receipt = result
-//        }
         .onReceive(NotificationCenter.default.publisher(for: .didFinishPaymentTransaction).receive(on: RunLoop.main)) { note in
             guard let transaction = note.object as? SKPaymentTransaction else {return}
             self.didFinish(transaction: transaction)

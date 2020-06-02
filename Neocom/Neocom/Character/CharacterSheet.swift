@@ -17,24 +17,6 @@ struct CharacterSheet: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var sharedState: SharedState
     
-    private var title: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("Artem Valiant").font(.title)
-            HStack {
-                Icon(Image("corporation"))
-                Text("Necrorise Squadron")
-            }
-            HStack {
-                Icon(Image("alliance"))
-                Text("Red Alert")
-            }
-        }
-        .background(Color(.systemFill))
-        .padding()
-        .colorScheme(.dark)
-
-    }
-    
     private func dateOfBirth(from info: ESI.CharacterInfo) -> some View {
         VStack(alignment: .leading) {
             Text("Date of Birth")

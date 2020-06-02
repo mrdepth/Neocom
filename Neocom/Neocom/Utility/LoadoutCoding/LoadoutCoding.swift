@@ -21,11 +21,11 @@ struct Ship: Codable, Hashable {
     
     struct Drone: Codable, Hashable {
         var typeID: Int
-        var count: Int
-        var id: Int?
-        var isActive: Bool
-        var isKamikaze: Bool
-        var squadronTag: Int
+        var count: Int = 1
+        var id: Int? = nil
+        var isActive: Bool = true
+        var isKamikaze: Bool = false
+        var squadronTag: Int = -1
     }
     
     struct Item: Codable, Hashable {

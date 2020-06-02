@@ -1,7 +1,4 @@
 /* No comment provided by engineer. */
-" " = " ";
-
-/* No comment provided by engineer. */
 " (%@ players)" = " (%@ Spieler)";
 
 /* No comment provided by engineer. */
@@ -984,9 +981,6 @@
 "PREDEFINED" = "VORDEFINIERT";
 
 /* No comment provided by engineer. */
-"Present" = "Jetzt";
-
-/* No comment provided by engineer. */
 "Price" = "Preis";
 
 /* No comment provided by engineer. */
@@ -1044,9 +1038,6 @@
 "Recharge:" = "Aufladen:";
 
 /* No comment provided by engineer. */
-"Red Alert" = "Alarmstufe Rot";
-
-/* No comment provided by engineer. */
 "Redoubt" = "Redoubt";
 
 /* No comment provided by engineer. */
@@ -1090,9 +1081,6 @@
 
 /* No comment provided by engineer. */
 "Rig Slot" = "Modifikationsslot";
-
-/* No comment provided by engineer. */
-"Root" = "Ursprung";
 
 /* No comment provided by engineer. */
 "Runs per Copy: " = "Durchläufe je Kopie: ";
@@ -1275,9 +1263,6 @@
 "Stable:" = "Stabil:";
 
 /* No comment provided by engineer. */
-"Start" = "Start";
-
-/* No comment provided by engineer. */
 "Start Location" = "Start-Ort";
 
 /* No comment provided by engineer. */
@@ -1351,9 +1336,6 @@
 
 /* No comment provided by engineer. */
 "To:" = "An:";
-
-/* No comment provided by engineer. */
-"Toggle" = "Umschalten";
 
 /* No comment provided by engineer. */
 "Total" = "Gesamt";

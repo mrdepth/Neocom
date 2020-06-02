@@ -88,7 +88,7 @@ struct SearchControlTest: View {
             }
         }
         .listStyle(GroupedListStyle())
-        .navigationBarTitle(Text("Root"))
+        .navigationBarTitle(Text(verbatim: "Root"))
         
     }
 }

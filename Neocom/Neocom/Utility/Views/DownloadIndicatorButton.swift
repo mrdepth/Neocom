@@ -37,23 +37,17 @@ struct DownloadIndicatorButton: View {
 
 struct DownloadIndicatorButtonTest: View {
     @State private var flag = false
-
+    
     var body: some View {
-            VStack {
-//                Text(flag ? "true" : "false")
+        VStack {
             if !flag {
                 DownloadIndicatorButton(progress: Progress(totalUnitCount: 5)) {
                     withAnimation {
-                    self.flag = true
+                        self.flag = true
                     }
                 }
             }
-            else {
-//                Button(NSLocalizedString("Toggle", comment: "")) {
-//                    self.flag = false
-//                }
-            }
-            }
+        }
     }
 }
 

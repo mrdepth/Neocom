@@ -23,10 +23,16 @@ struct ProductCell: View {
         let period = product.subscriptionPeriod
         return HStack {
             if period != nil {
-                Text(period!.localizedDescription.capitalized).accentColor(.primary)
+                VStack(alignment: .leading) {
+                    Text(period!.localizedDescription.capitalized).accentColor(.primary)
+                    Text("Auto-renewable subscription").modifier(SecondaryLabelModifier())
+                }
             }
             else {
-                Text("Lifetime").accentColor(.primary)
+                VStack(alignment: .leading) {
+                    Text("Lifetime").accentColor(.primary)
+                    Text("One-time purchase").modifier(SecondaryLabelModifier())
+                }
             }
             Spacer()
             localizedPrice().accentColor(.primary)

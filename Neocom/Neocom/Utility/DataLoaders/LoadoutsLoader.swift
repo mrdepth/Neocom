@@ -29,11 +29,13 @@ class LoadoutsLoader: ObservableObject {
     }
     
     @Published var loadouts: [Section]?
+    let category: SDECategoryID
     
     private let results: FetchedResultsController<Loadout>
     private var subscription: AnyCancellable?
     
     init(_ category: SDECategoryID, managedObjectContext: NSManagedObjectContext) {
+        self.category = category
         managedObjectContext.automaticallyMergesChangesFromParent = true
         let controller = managedObjectContext.from(Loadout.self).sort(by: \Loadout.typeID, ascending: true).fetchedResultsController()
         results = FetchedResultsController(controller)

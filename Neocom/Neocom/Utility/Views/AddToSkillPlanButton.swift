@@ -22,7 +22,7 @@ struct AddToSkillPlanButton: View {
                 if skillPlan?.managedObjectContext?.hasChanges == true {
                     try? skillPlan?.managedObjectContext?.save()
                 }
-                NotificationCenter.default.post(name: .didUpdateSkillPlan, object: skillPlan)
+                NotificationCenter.default.post(name: .didFinishJob, object: skillPlan)
             },
             .cancel()])
     }

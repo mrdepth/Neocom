@@ -8,7 +8,7 @@
 " accuracy: " = "меткость";
 
 /* E.g.: 100 ISK from [PlayerName] */
-" from " = " время жизни: ";
+" from " = " от ";
 
 /* No comment provided by engineer. */
 " lifetime: " = " время жизни: ";
@@ -41,13 +41,19 @@
 "%@ damage done" = "%@ нанесено урона";
 
 /* No comment provided by engineer. */
-"%@ damage done (final blow)" = "%@ нанесено урона (последний удар)";
+"%@ damage done (final blow)" = "%@ нанесено урона (последний выстрел)";
 
 /* No comment provided by engineer. */
 "%@ damage taken" = "%@ получено урона";
 
+/* price per period */
+"%@ per %@" = "%1$@ за %2$@";
+
 /* No comment provided by engineer. */
 "%@ Skills" = "%@ навыков";
+
+/* No comment provided by engineer. */
+"%@ skills (%@)" = "%1$@ навыков (%2$@)";
 
 /* No comment provided by engineer. */
 "%@ skills in queue (%@)" = "%1$@ навыков в очереди (%2$@)";
@@ -165,6 +171,9 @@
 
 /* Month Abbreviation */
 "AUG" = "АВГ";
+
+/* No comment provided by engineer. */
+"Auto-renewable subscription" = "Автовозобновляемая подписка";
 
 /* No comment provided by engineer. */
 "Availability" = "Доступность";
@@ -318,6 +327,9 @@
 
 /* No comment provided by engineer. */
 "Copy" = "Копировать";
+
+/* No comment provided by engineer. */
+"Copy to Clipboard" = "Скопировать в буфер обмена";
 
 /* No comment provided by engineer. */
 "Corporation" = "Корпорация";
@@ -569,7 +581,7 @@
 "HP/s" = "HP/с";
 
 /* No comment provided by engineer. */
-"If you used Neocom before, you can import your data from iCloud." = "Если вы пользовались Neocom ранее, вы можете импортировать ваши данные из iCloud";
+"If you used Neocom before, you can import your data from iCloud." = "Если вы пользовались Neocom ранее, вы можете импортировать ваши данные из iCloud.";
 
 /* No comment provided by engineer. */
 "Implant" = "Имплант";
@@ -582,6 +594,9 @@
 
 /* No comment provided by engineer. */
 "IMPLANTS" = "ИМПЛАНТЫ";
+
+/* No comment provided by engineer. */
+"Import from clipboard" = "Импортировать из буфера обмена";
 
 /* ESI.ContractStatus */
 "In Progress" = "В процессе";
@@ -913,6 +928,9 @@
 
 /* No comment provided by engineer. */
 "Ok" = "Ок";
+
+/* No comment provided by engineer. */
+"One-time purchase" = "Разовая покупка";
 
 /* No comment provided by engineer. */
 "Online" = "Онлайн";
@@ -1269,7 +1287,7 @@
 "Stable:" = "Стабильно:";
 
 /* No comment provided by engineer. */
-"Start edit your loadout on iPhone and continue on Mac." = "Начните редактировать вашу оснастку на iPhone и продолжите на Mac";
+"Start edit your loadout on iPhone and continue on Mac." = "Начните редактировать вашу оснастку на iPhone и продолжите на Mac.";
 
 /* No comment provided by engineer. */
 "Start Location" = "Пункт отправления";
@@ -1482,19 +1500,16 @@
 "X-Large" = "Сверх-большие";
 
 /* No comment provided by engineer. */
-"x%@" = "";
-
-/* No comment provided by engineer. */
 "Yes" = "Да";
 
 /* No comment provided by engineer. */
 "Yield (units/h):" = "Производство (ед./ч):";
 
 /* No comment provided by engineer. */
-"You can now use Neocom without any restrictions on all devices for unlimited time. But you can make a donation to support the development." = "Теперь вы можете использовать Neocom без ограничений на всех устройствах неограниченное время. Но вы все еще можете поддержать разработку сделав пожертвование";
+"You can now use Neocom without any restrictions on all devices for unlimited time. But you can make a donation to support the development." = "Теперь вы можете использовать Neocom без ограничений на всех устройствах неограниченное время. Но вы все еще можете поддержать разработку сделав пожертвование.";
 
 /* No comment provided by engineer. */
-"Your previous purchases are being restored. Thank you!" = "Ваши покупки восстановлены. Спасибо";
+"Your previous purchases are being restored. Thank you!" = "Ваши покупки восстановлены. Спасибо!";
 
 /* No comment provided by engineer. */
 "zKillboard Reports" = "zKillboard";

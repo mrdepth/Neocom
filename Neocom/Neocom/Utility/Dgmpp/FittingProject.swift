@@ -118,41 +118,6 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
         userActivity?.needsSave = true
     }
     
-    /*required init(from decoder: Decoder) throws {
-        guard let context = decoder.userInfo[FittingProject.managedObjectContextKey] as? NSManagedObjectContext else {throw RuntimeError.missingCodingUserInfoKey(FittingProject.managedObjectContextKey)}
-        managedObjectContext = context
-        
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        gang = try container.decodeIfPresent(DGMGang.self, forKey: .gang)
-        structure = try container.decodeIfPresent(DGMStructure.self, forKey: .structure)
-        if let fleetURL = try container.decodeIfPresent(URL.self, forKey: .fleet) {
-            fleet = managedObjectContext.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: fleetURL).flatMap{try? managedObjectContext.existingObject(with: $0) as? Fleet}
-        }
-        let loadoutURLs = try container.decode([Int: URL].self, forKey: .loadouts)
-        let ships = Dictionary(gang?.pilots.compactMap{$0.ship}.map{($0.identifier, $0)} ?? []) {a, _ in a}
-        loadouts = [:]
-        for (id, url) in loadoutURLs {
-            guard let ship = ships[id] else {continue}
-            guard let loadout = managedObjectContext.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url).flatMap({try? managedObjectContext.existingObject(with: $0) as? Loadout}) else {continue}
-            loadouts[ship] = loadout
-        }
-        
-        gangSubscription = gang?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
-        structureSubscription = structure?.objectWillChange.sink { [weak self] in self?.hasChanges = true }
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(gang, forKey: .gang)
-        try container.encodeIfPresent(structure, forKey: .structure)
-
-        let loadouts = Dictionary(self.loadouts.map { ($0.key.identifier, $0.value.objectID.uriRepresentation()) }) {a, _ in a}
-        try container.encode(loadouts, forKey: .loadouts)
-
-        try container.encodeIfPresent(fleet?.objectID.uriRepresentation(), forKey: .fleet)
-
-    }*/
-    
     class var documentsDirectoryURL: URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     }
@@ -190,6 +155,13 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
     
     convenience init(loadout: Loadout, skillLevels: DGMSkillLevels, managedObjectContext: NSManagedObjectContext) throws {
         self.init(fileURL: Self.url(uuid: loadout.uuid ?? UUID().uuidString), managedObjectContext: managedObjectContext)
+        try add(loadout: loadout, skillLevels: skillLevels)
+        gangSubscription = gang?.objectWillChange.sink { [weak self] in self?.updateChangeCount(.done) }
+        structureSubscription = structure?.objectWillChange.sink { [weak self] in self?.updateChangeCount(.done) }
+    }
+
+    convenience init(loadout: Ship, skillLevels: DGMSkillLevels, managedObjectContext: NSManagedObjectContext) throws {
+        self.init(fileURL: Self.temporaryURL, managedObjectContext: managedObjectContext)
         try add(loadout: loadout, skillLevels: skillLevels)
         gangSubscription = gang?.objectWillChange.sink { [weak self] in self?.updateChangeCount(.done) }
         structureSubscription = structure?.objectWillChange.sink { [weak self] in self?.updateChangeCount(.done) }
@@ -238,7 +210,7 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
     
     convenience init(dna: String, skillLevels: DGMSkillLevels, managedObjectContext: NSManagedObjectContext) throws {
         guard let data = dna.data(using: .utf8) else {throw RuntimeError.invalidDNAFormat}
-        let ship = try DNALoadoutDecoder().decode(from: data)
+        let ship = try DNALoadoutDecoder(managedObjectContext: managedObjectContext).decode(from: data)
         self.init(fileURL: Self.temporaryURL, managedObjectContext: managedObjectContext)
         try add(ship: DGMTypeID(ship.typeID), skillLevels: skillLevels).loadout = ship
     }
@@ -276,6 +248,20 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
             }
         }
         loadouts[ship] = loadout
+        return ship
+    }
+    
+    @discardableResult
+    func add(loadout: Ship, skillLevels: DGMSkillLevels) throws -> DGMShip {
+        let ship = try add(ship: DGMTypeID(loadout.typeID), skillLevels: skillLevels)
+        
+        ship.name = loadout.name ?? ""
+        if let pilot = ship.parent as? DGMCharacter {
+            pilot.loadout = loadout
+        }
+        else {
+            ship.loadout = loadout
+        }
         return ship
     }
     

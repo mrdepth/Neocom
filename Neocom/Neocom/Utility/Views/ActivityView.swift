@@ -67,8 +67,17 @@ class ActivityViewWrapper: UIViewController {
                 controller.modalPresentationStyle = .popover
                 controller.popoverPresentationController?.sourceView = self.view
                 controller.popoverPresentationController?.sourceRect = self.view.bounds
+                var observer: NSKeyValueObservation?
+                observer = controller.observe(\.presentingViewController) { (vc, change) in
+                    if vc.parent == nil {
+                        observer?.invalidate()
+                    }
+                }
                 DispatchQueue.main.async {
                     parent?.present(controller, animated: true, completion: nil)
+                    #if targetEnvironment(macCatalyst)
+                    self.isPresented.wrappedValue = false
+                    #endif
                 }
             }
             else {
@@ -89,7 +98,7 @@ struct ActivityViewTest: View {
 //        let data = try? LoadoutPlainTextEncoder(managedObjectContext: managedObjectContext).encode(ship)
 //        let text = String(data: data!, encoding: .utf8)
         let loadout = LoadoutActivityItem(ships: [ship, ship], managedObjectContext: managedObjectContext)
-        return Button(NSLocalizedString("Present", comment: "")) {
+        return Button(String("Present")) {
             self.isActivityPresented = true
         }.background(ActivityView(activityItems: [loadout], applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)], isPresented: $isActivityPresented))
     }

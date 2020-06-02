@@ -64,7 +64,7 @@ struct SkillCell: View {
                 trainingQueue.add(self.type, level: level)
                 let skillPlan = self.sharedState.account?.activeSkillPlan
                 skillPlan?.add(trainingQueue)
-                NotificationCenter.default.post(name: .didUpdateSkillPlan, object: skillPlan)
+                NotificationCenter.default.post(name: .didFinishJob, object: skillPlan)
             }
         }
         return ActionSheet(title: Text("Add to Skill Plan"), message: nil, buttons: buttons + [.default(Text("Skill Info")) { self.isTypeInfoActive = true } ,.cancel()])

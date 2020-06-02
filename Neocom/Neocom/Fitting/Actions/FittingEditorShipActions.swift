@@ -101,7 +101,13 @@ struct FittingEditorShipActions: View {
                     self.isActivityPresented = true
                 }.frame(maxWidth: .infinity)
                 .activityView(isPresented: $isActivityPresented, activityItems: [LoadoutActivityItem(ships: [ship.loadout], managedObjectContext: managedObjectContext)], applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)])
-
+                
+                Button(NSLocalizedString("Copy to Clipboard", comment: "")) {
+                    guard let data = try? LoadoutPlainTextEncoder(managedObjectContext: self.managedObjectContext).encode(self.ship.loadout) else {return}
+                    guard let string = String(data: data, encoding: .utf8) else {return}
+                    UIPasteboard.general.string = string
+                    NotificationCenter.default.post(name: .didFinishJob, object: nil)
+                }.frame(maxWidth: .infinity)
             }
 		}
         .listStyle(GroupedListStyle())

@@ -25,6 +25,7 @@ struct LoadoutsSection: View {
         let encoder = LoadoutPlainTextEncoder(managedObjectContext: managedObjectContext)
         guard let data = try? encoder.encode(ship), let string = String(data: data, encoding: .utf8) else {return}
         UIPasteboard.general.string = string
+        NotificationCenter.default.post(name: .didFinishJob, object: nil)
     }
 
     private func delete(_ loadoutIDs: [NSManagedObjectID]) {

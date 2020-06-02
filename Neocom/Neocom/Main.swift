@@ -19,7 +19,7 @@ struct FinishedViewWrapper: View {
                 FinishedView(isPresented: $isFinished)
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: .didUpdateSkillPlan)) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: .didFinishJob)) { _ in
             withAnimation {
                 self.isFinished = true
             }

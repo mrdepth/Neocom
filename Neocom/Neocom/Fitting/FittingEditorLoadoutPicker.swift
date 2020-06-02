@@ -36,6 +36,9 @@ struct FittingEditorLoadoutPicker: View {
                     project.loadouts[ship] = loadout
                 }
                 project.gang?.add(pilot)
+            case let .ship(loadout):
+                pilot.loadout = loadout
+                project.gang?.add(pilot)
             }
             completion()
         }

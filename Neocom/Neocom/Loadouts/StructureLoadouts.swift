@@ -39,13 +39,20 @@ struct StructureLoadouts: View {
         guard let project = try? FittingProject(loadout: loadout, skillLevels: .level(0), managedObjectContext: self.managedObjectContext) else {return}
         onSelect(project, openMode)
     }
-    
+
+    private func onSelect(_ loadout: Ship, _ openMode: OpenMode) {
+        guard let project = try? FittingProject(loadout: loadout, skillLevels: .level(0), managedObjectContext: self.managedObjectContext) else {return}
+        onSelect(project, openMode)
+    }
+
     private func onSelect(_ result: LoadoutsList.Result, _ openMode: OpenMode) {
         switch result {
         case let .type(type):
             onSelect(type, openMode)
         case let .loadout(objectID):
             onSelect(managedObjectContext.object(with: objectID) as! Loadout, openMode)
+        case let .ship(loadout):
+            onSelect(loadout, openMode)
         }
     }
     

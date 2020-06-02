@@ -24,7 +24,7 @@ struct SkillLevelCell: View {
             .default(Text("Add to Skill Plan")) {
                 let skillPlan = self.sharedState.account?.activeSkillPlan
                 skillPlan?.add(trainingQueue)
-                NotificationCenter.default.post(name: .didUpdateSkillPlan, object: skillPlan)
+                NotificationCenter.default.post(name: .didFinishJob, object: skillPlan)
             },
             .cancel()])
     }

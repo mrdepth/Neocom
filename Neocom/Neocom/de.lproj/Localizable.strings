@@ -2,7 +2,7 @@
 " (%@ players)" = " (%@ Spieler)";
 
 /* No comment provided by engineer. */
-" accuracy: " = "Präzision: ";
+" accuracy: " = " Präzision: ";
 
 /* E.g.: 100 ISK from [PlayerName] */
 " from " = " von ";

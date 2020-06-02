@@ -238,10 +238,9 @@ struct FittingStructureEditor: View {
         }
         .adaptivePopover(isPresented: $isActionsPresented) {
             NavigationView {
-                FittingEditorStructureActions(structure: self.structure)
-                    .navigationBarItems(leading: BarButtonItems.close {
-                        self.isActionsPresented = false
-                    })
+                FittingEditorStructureActions(structure: self.structure) {
+                    self.isActionsPresented = false
+                }
             }
             .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .environmentObject(self.project)
@@ -252,7 +251,7 @@ struct FittingStructureEditor: View {
 
     
     var body: some View {
-        HStack(spacing: 1) {
+        let body = HStack(spacing: 1) {
             VStack(spacing: 0) {
                 Picker("Page", selection: $currentPage) {
                     Text("Modules").tag(Page.modules)
@@ -279,8 +278,17 @@ struct FittingStructureEditor: View {
                 FittingEditorStats(ship: structure)
             }
         }
-        .navigationBarItems(leading: completion.map{BarButtonItems.close($0)}, trailing: actionsButton)
+        
+        return Group {
+            if completion != nil {
+                body.navigationBarItems(leading: BarButtonItems.close(completion!), trailing: actionsButton)
+            }
+            else {
+                body.navigationBarItems(trailing: actionsButton)
+            }
+        }
         .navigationBarTitle(Text(title), displayMode: .inline)
+        .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
 }
 

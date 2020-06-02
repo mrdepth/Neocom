@@ -395,20 +395,13 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
             
             if let structure = self.structure {
                 let loadout: Loadout? = self.loadouts[structure] ?? {
-                    let isEmpty = structure.modules.isEmpty && structure.drones.isEmpty
-                    
-                    if !isEmpty {
-                        let loadout = Loadout(context: self.managedObjectContext)
-                        loadout.data = LoadoutData(context: self.managedObjectContext)
-                        loadout.typeID = Int32(structure.typeID)
-                        loadout.uuid = UUID().uuidString
-                        self.loadouts[structure] = loadout
-                        return loadout
-                    }
-                    else {
-                        return nil
-                    }
-                    }()
+                    let loadout = Loadout(context: self.managedObjectContext)
+                    loadout.data = LoadoutData(context: self.managedObjectContext)
+                    loadout.typeID = Int32(structure.typeID)
+                    loadout.uuid = UUID().uuidString
+                    self.loadouts[structure] = loadout
+                    return loadout
+                }()
                 if let loadout = loadout {
                     loadout.name = structure.name
                     if loadout.data == nil {

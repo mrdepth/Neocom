@@ -69,7 +69,7 @@ struct ProSubscription: View, Equatable {
                 Spacer()
                 termsOfUseButton
                 Spacer()
-            }
+            }.multilineTextAlignment(.center)
         }
     }
     

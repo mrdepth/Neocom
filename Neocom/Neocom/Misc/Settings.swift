@@ -13,7 +13,7 @@ struct Settings: View {
     @ObservedObject private var notificationsEnabled = UserDefault(wrappedValue: true, key: .notificationsEnabled)
     @ObservedObject private var skillQueueNotificationOptions = UserDefault(wrappedValue: NotificationsManager.SkillQueueNotificationOptions.default.rawValue, key: .notificationSettigs)
     
-    private func skillQueueNotificationCell(option: NotificationsManager.SkillQueueNotificationOptions, title: LocalizedStringKey) -> some View {
+    private func skillQueueNotificationCell(option: NotificationsManager.SkillQueueNotificationOptions, title: String) -> some View {
         Toggle(title, isOn: Binding(get: {
             NotificationsManager.SkillQueueNotificationOptions(rawValue: self.skillQueueNotificationOptions.wrappedValue).contains(option)
         }, set: { newValue in
@@ -53,11 +53,12 @@ struct Settings: View {
             
             if notificationsEnabled.wrappedValue {
                 Section(header: Text("SKILL QUEUE NOTIFICATIONS")) {
-                    skillQueueNotificationCell(option: .inactive, title: "Inactive Skill Queue")
-                    skillQueueNotificationCell(option: .oneHour, title: "1 Hour Left")
-                    skillQueueNotificationCell(option: .fourHours, title: "4 Hours Left")
-                    skillQueueNotificationCell(option: .oneDay, title: "24 Hours Left")
-                    skillQueueNotificationCell(option: .skillTrainingComplete, title: "Skill Training Complete")
+                    
+                    skillQueueNotificationCell(option: .inactive, title: NSLocalizedString("Inactive Skill Queue", comment: "Skill queue notifications"))
+                    skillQueueNotificationCell(option: .oneHour, title: NSLocalizedString("1 Hour Left", comment: "Skill queue notifications"))
+                    skillQueueNotificationCell(option: .fourHours, title: NSLocalizedString("4 Hours Left", comment: "Skill queue notifications"))
+                    skillQueueNotificationCell(option: .oneDay, title: NSLocalizedString("24 Hours Left", comment: "Skill queue notifications"))
+                    skillQueueNotificationCell(option: .skillTrainingComplete, title: NSLocalizedString("Skill Training Complete", comment: "Skill queue notifications"))
                 }
             }
             

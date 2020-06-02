@@ -12,7 +12,7 @@ import SwiftUI
 struct RemoveAdsItem: View {
     var body: some View {
         NavigationLink(destination: ProSubscription()) {
-            Icon(Image("settings"))
+            Icon(Image("votes"))
             Text("Remove Ads")
         }
     }

@@ -5,7 +5,7 @@
 " %@+ m" = " %@+ м";
 
 /* No comment provided by engineer. */
-" accuracy: " = "меткость";
+" accuracy: " = " меткость: ";
 
 /* E.g.: 100 ISK from [PlayerName] */
 " from " = " от ";
@@ -72,6 +72,15 @@
 
 /* No comment provided by engineer. */
 "+%@ more" = "+%@ еще";
+
+/* Skill queue notifications */
+"1 Hour Left" = "Остался 1 час";
+
+/* Skill queue notifications */
+"4 Hours Left" = "Осталось 4 часа";
+
+/* Skill queue notifications */
+"24 Hours Left" = "Осталось 24 часа";
 
 /* No comment provided by engineer. */
 "About" = "О приложении";
@@ -610,6 +619,9 @@
 /* No comment provided by engineer. */
 "Inactive" = "Неактивный";
 
+/* Skill queue notifications */
+"Inactive Skill Queue" = "Очередь обучения неактивна";
+
 /* No comment provided by engineer. */
 "Incursions" = "Вторжения";
 
@@ -668,7 +680,7 @@
 "kg" = "кг";
 
 /* No comment provided by engineer. */
-"Kill Reports" = "Боевой журналы";
+"Kill Reports" = "Боевой журнал";
 
 /* No comment provided by engineer. */
 "Killmail" = "Отчет о бое";
@@ -1241,7 +1253,7 @@
 /* No comment provided by engineer. */
 "SKILL QUEUE: %@ (%@ skills)" = "ОЧЕРЕДЬ ОБУЧЕНИЯ: %1$@ (%2$@ навыков)";
 
-/* No comment provided by engineer. */
+/* Skill queue notifications */
 "Skill Training Complete" = "Изучение завершено";
 
 /* No comment provided by engineer. */

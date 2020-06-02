@@ -13,6 +13,7 @@ import Expressible
 import Combine
 import SwiftUI
 import StoreKit
+import FacebookCore
 @_exported import UIKit
 
 @UIApplicationMain
@@ -35,6 +36,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.initializeAPN()
         }
         
+        FacebookCore.Settings.isAutoLogAppEventsEnabled = true
+        FacebookCore.Settings.isAdvertiserIDCollectionEnabled = true
+        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
 		return true
 	}
     
@@ -69,6 +73,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        
+        ApplicationDelegate.shared.application(
+            app,
+            open: url,
+            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+            annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+        )
+        
         return true
     }
     

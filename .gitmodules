@@ -4,24 +4,12 @@
 [submodule "ThirdParty/dgmpp"]
 	path = ThirdParty/dgmpp
 	url = https://github.com/mrdepth/libdgmpp.git
-[submodule "ThirdParty/TreeController"]
-	path = ThirdParty/TreeController
-	url = https://github.com/mrdepth/TreeController.git
 [submodule "ThirdParty/CloudData"]
 	path = ThirdParty/CloudData
 	url = https://github.com/mrdepth/CloudData.git
-[submodule "ThirdParty/clrconvert"]
-	path = ThirdParty/clrconvert
-	url = https://github.com/mrdepth/clrconvert.git
-[submodule "ThirdParty/swifter"]
-	path = ThirdParty/swifter
-	url = https://github.com/httpswift/swifter.git
 [submodule "ThirdParty/ASReceipt"]
 	path = ThirdParty/ASReceipt
 	url = ../ASReceipt.git
 [submodule "ThirdParty/Expressible"]
 	path = ThirdParty/Expressible
 	url = https://github.com/mrdepth/Expressible.git
-[submodule "ThirdParty/SheetPresentation"]
-	path = ThirdParty/SheetPresentation
-	url = ../SheetPresentation.git

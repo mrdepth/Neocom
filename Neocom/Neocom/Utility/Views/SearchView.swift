@@ -83,7 +83,7 @@ struct SearchView_Previews: PreviewProvider {
                         Text(results!)
                     }
                 }
-            }.navigationBarTitle("Title")
+            }.navigationBarTitle(Text("Title"))
         }
     }
 }

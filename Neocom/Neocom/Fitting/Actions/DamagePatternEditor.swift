@@ -55,7 +55,7 @@ struct DamagePatternEditor: View {
             })
             .background(Color(.systemBackground))
             .frame(maxHeight: .infinity, alignment: Alignment(horizontal: .center, vertical: VerticalAlignment(CustomAlignmentID.self)))
-            .navigationBarTitle("Damage Pattern")
+            .navigationBarTitle(Text("Damage Pattern"))
             .navigationBarItems(leading: Button("Cancel", action: cancel),
                                 trailing: Button(action: save) { Text("Save").fontWeight(.semibold)})
             .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
@@ -64,7 +64,7 @@ struct DamagePatternEditor: View {
 
 struct DamagePatternEditor_Previews: PreviewProvider {
     static var previews: some View {
-        let damagePattern = DamagePattern(entity: NSEntityDescription.entity(forEntityName: "DamagePattern", in: AppDelegate.sharedDelegate.persistentContainer.viewContext)!, insertInto: nil)
+        let damagePattern = DamagePattern(entity: NSEntityDescription.entity(forEntityName: "DamagePattern", in: Storage.sharedStorage.persistentContainer.viewContext)!, insertInto: nil)
         damagePattern.em = 0.25
         damagePattern.thermal = 0.25
         damagePattern.kinetic = 0.25
@@ -73,6 +73,6 @@ struct DamagePatternEditor_Previews: PreviewProvider {
         
         return NavigationView {
             return DamagePatternEditor(damagePattern: damagePattern) {}
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

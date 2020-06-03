@@ -35,7 +35,7 @@ struct FittingCharges: View {
                 TypePickerTypesContent(types: types.sections, selectedType: self.$selectedType, completion: self.completion)
             }.listStyle(GroupedListStyle())
         }
-        .navigationBarTitle("Charges")
+        .navigationBarTitle(Text("Charges"))
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
@@ -48,11 +48,11 @@ struct FittingCharges: View {
 
 struct FittingCharges_Previews: PreviewProvider {
     static var previews: some View {
-        let type = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 3154).first()!
+        let type = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 3154).first()!
         let charge = type.dgmppItem?.charge
         return NavigationView {
             FittingCharges(category: charge!) {_ in}
         }
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

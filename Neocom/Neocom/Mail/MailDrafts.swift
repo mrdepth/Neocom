@@ -38,7 +38,8 @@ struct MailDrafts: View {
             }
             .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .navigationViewStyle(StackNavigationViewStyle())
-        }.navigationBarTitle("Drafts")
+        }
+        .navigationBarTitle(Text("Drafts"))
         .navigationBarItems(trailing: EditButton())
     }
 }
@@ -53,7 +54,7 @@ extension MailDraft: Identifiable {
 struct MailDrafts_Previews: PreviewProvider {
     
     static var previews: some View {
-        let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let context = Storage.sharedStorage.persistentContainer.viewContext
         let draft = MailDraft(entity: NSEntityDescription.entity(forEntityName: "MailDraft", in: context)!, insertInto: context)
         draft.date = Date()
         draft.subject = "Subject"
@@ -65,7 +66,7 @@ struct MailDrafts_Previews: PreviewProvider {
             MailDrafts()
         }
             .environmentObject(SharedState.testState())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
 
     }
 }

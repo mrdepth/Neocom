@@ -20,11 +20,12 @@ enum RuntimeError: LocalizedError {
     case invalidLoadoutFormat
     case invalidActivityType
     case missingCodingUserInfoKey(CodingUserInfoKey)
+    case fileNotFound(String)
     
     var errorDescription: String? {
         switch self {
         case .unknown:
-            return NSLocalizedString("Unknown error", comment: "")
+            return NSLocalizedString("Unknown Error", comment: "")
         case .noAccount:
             return NSLocalizedString("No EVE Account. Please login first.", comment: "")
         case .noResult:

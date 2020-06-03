@@ -84,7 +84,7 @@ struct Assets: View {
                 }
             }
         }
-        .navigationBarTitle("Assets")
+        .navigationBarTitle(Text("Assets"))
         .overlay(Group {
             if assets?.progress != nil && assets!.progress.fractionCompleted < 1 {
                 LoadingProgressView(progress: assets!.progress)
@@ -156,8 +156,8 @@ struct Assets_Previews: PreviewProvider {
         NavigationView {
             Assets()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
 
     }

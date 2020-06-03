@@ -66,7 +66,7 @@ func dgmpp() throws {
 			child?.category = nil
 			child?.parentGroup = nil
 			itemGroup.managedObjectContext?.delete(child!)
-			if let i = dgmppItemGroups.index(where: {$0.value == child}) {
+			if let i = dgmppItemGroups.firstIndex(where: {$0.value == child}) {
 				dgmppItemGroups.remove(at: i)
 			}
 		}
@@ -90,7 +90,7 @@ func dgmpp() throws {
 				leaf?.parentGroup = nil
 				leaf?.removeFromItems(leaf!.items!)
 				leaf?.managedObjectContext?.delete(leaf!)
-				if let i = dgmppItemGroups.index(where: {$0.value == leaf}) {
+				if let i = dgmppItemGroups.firstIndex(where: {$0.value == leaf}) {
 					dgmppItemGroups.remove(at: i)
 				}
 			}
@@ -256,7 +256,7 @@ func dgmpp() throws {
 			 ["Jackdaw Defense Mode", "Jackdaw Sharpshooter Mode", "Jackdaw Propulsion Mode"],
 			 ["Hecate Defense Mode", "Hecate Sharpshooter Mode", "Hecate Propulsion Mode"]]).forEach { i in
 				let request = NSFetchRequest<SDEInvType>(entityName: "InvType")
-				request.predicate = NSPredicate(format: "typeName == %@", i.0)
+                request.predicate = NSPredicate(format: "typeID == %d", typeNames[i.0]!)
 				let ship = try NSManagedObjectContext.current.fetch(request).first!
 				
 				let root = SDEDgmppItemGroup(context: .current)
@@ -264,7 +264,7 @@ func dgmpp() throws {
 				root.groupName = "Tactical Mode"
 
 				for mode in i.1 {
-					request.predicate = NSPredicate(format: "typeName == %@", mode)
+					request.predicate = NSPredicate(format: "typeID == %d", typeNames[mode]!)
 					let type = try NSManagedObjectContext.current.fetch(request).first!
 					type.dgmppItem = SDEDgmppItem(context: .current)
 					root.addToItems(type.dgmppItem!)

@@ -132,7 +132,7 @@ fileprivate struct ComposeMailContent: View {
     
     private var cancelButton: some View {
         BarButtonItems.close {
-            if self.draft == nil && (self.text.length > 0 || !self.subject.isEmpty) {
+            if self.draft?.managedObjectContext == nil && (self.text.length > 0 || !self.subject.isEmpty) {
                 self.isSaveDraftAlertPresented = true
             }
             else {
@@ -156,6 +156,9 @@ fileprivate struct ComposeMailContent: View {
             .compactMap{$0 as? TextAttachmentContact}
             .map{$0.contact.contactID}
         let draft = self.draft ?? MailDraft(context: managedObjectContext)
+        if draft.managedObjectContext == nil {
+            managedObjectContext.insert(draft)
+        }
         draft.body = text
         draft.subject = subject
         draft.to = recipients
@@ -248,13 +251,13 @@ fileprivate struct ComposeMailContent: View {
             }
         }
         .padding(.top)
-            .navigationBarTitle("Compose Mail")//, displayMode: .inline)
+            .navigationBarTitle(Text("Compose Mail"))
             .navigationBarItems(leading: cancelButton,
                                 trailing: HStack{
                                     attachmentButton
                                     sendButton})
             .alert(item: self.$error) { error in
-                Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: Alert.Button.cancel(Text("Close")))
+                Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: .cancel(Text("Close")))
         }
         .alert(isPresented: $isSaveDraftAlertPresented) {
             self.saveDraftAlert
@@ -275,7 +278,7 @@ struct ComposeMail_Previews: PreviewProvider {
     static var previews: some View {
         ComposeMail {}
             .environmentObject(SharedState.testState())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         
     }
 }

@@ -68,7 +68,7 @@ struct RequiredSkills: View {
                 RequiredSkillsSection(skills: section, pilot: pilot, levels: levels)
             }
         }.listStyle(GroupedListStyle())
-        .navigationBarTitle("Required Skills")
+        .navigationBarTitle(Text("Required Skills"))
             .navigationBarItems(trailing: pilot != nil && trainingQueue.trainingTime() > 0 ? AddToSkillPlanButton(trainingQueue: trainingQueue) : nil)
     }
 }
@@ -102,8 +102,8 @@ struct RequiredSkills_Previews: PreviewProvider {
             RequiredSkills(ship: gang.pilots.first!.ship!)
         }
         .environmentObject(gang)
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
     }
 }

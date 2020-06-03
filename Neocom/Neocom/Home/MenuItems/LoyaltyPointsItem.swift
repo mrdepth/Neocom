@@ -34,7 +34,7 @@ struct LoyaltyPointsItem_Previews: PreviewProvider {
             }.listStyle(GroupedListStyle())
         }
         .environmentObject(SharedState.testState())
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }
 #endif

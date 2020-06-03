@@ -14,13 +14,6 @@ import Expressible
 import EVEAPI
 
 class MigrationHelper {
-    private var database: CKDatabase
-    private var managedObjectContext: NSManagedObjectContext
-    
-    @Published var isInProgress = true
-    
-    private var subscription: AnyCancellable?
-    
     private static var initializeUnarchiver: Bool = {
         NSKeyedUnarchiver.setClass(LoadoutDescription.self, forClassName: "Neocom.NCFittingLoadout")
         NSKeyedUnarchiver.setClass(LoadoutDescription.Item.self, forClassName: "Neocom.NCFittingLoadoutItem")
@@ -154,64 +147,4 @@ class MigrationHelper {
         }.eraseToAnyPublisher()
     }
     
-    init(records: [CKRecord], from database: CKDatabase, to managedObjectContext: NSManagedObjectContext) {
-        self.database = database
-        self.managedObjectContext = managedObjectContext
-        
-        subscription = fetchReferences(from: records).flatMap { result1 in
-            self.fetchReferences(from: result1.values).map { result2 in
-                result1.merging(result2) {a, _ in a}
-            }
-        }
-        .receive(on: managedObjectContext)
-        .sink(receiveCompletion: { [weak self] _ in
-            self?.isInProgress = false
-        }) { references in
-            for record in records {
-                switch record.recordType {
-                case "Loadout":
-                    guard let reference = record["data"] as? CKRecord.Reference,
-                        let dataRecord = references[reference.recordID],
-                        let data = dataRecord["data"] as? Data,
-                        let description = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? LoadoutDescription
-                    else {break}
-                default:
-                    break
-                }
-            }
-        }
-    }
-    
-    private func fetchReferences<T: Collection>(from records: T) -> AnyPublisher<[CKRecord.ID: CKRecord], Error> where T.Element == CKRecord {
-        let ids = records.flatMap { record -> [CKRecord.ID] in
-            switch record.recordType {
-            case "Account":
-                return ((record["skillPlans"] as? [CKRecord.Reference])?.map{$0.recordID} ?? []) +
-                    ((record["scopes"] as? [CKRecord.Reference])?.map{$0.recordID} ?? [])
-            case "Loadout":
-                return (record["data"] as? [CKRecord.Reference])?.map{$0.recordID} ?? []
-            case "SkillPlan":
-                return (record["skills"] as? [CKRecord.Reference])?.map{$0.recordID} ?? []
-            default:
-                return []
-            }
-        }
-        
-        guard !ids.isEmpty else {return Just([:]).setFailureType(to: Error.self).eraseToAnyPublisher()}
-        
-        return Future { promise in
-            let operation = CKFetchRecordsOperation(recordIDs: ids)
-            operation.fetchRecordsCompletionBlock = { (result, error) in
-                if let result = result, error == nil {
-                    
-                    promise(.success(result))
-                }
-                else {
-                    promise(.failure(error ?? RuntimeError.unknown))
-                }
-            }
-            self.database.add(operation)
-        }.eraseToAnyPublisher()
-        
-    }
 }

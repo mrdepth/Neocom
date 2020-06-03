@@ -67,7 +67,7 @@ struct AccountCellContent: View {
                     Text(TimeIntervalFormatter.localizedString(from: t, precision: .minutes))
                 }
             }.padding(.horizontal).background(ProgressView(progress: progress ?? 0).accentColor(.skyBlueBackground))
-            Text(skillQueue.map{$0 > 0 ? "\($0) skills in queue" : "Skill queue is empty"} ?? "")
+            Text(skillQueue.map{$0 > 0 ? "\($0) \(NSLocalizedString("skills in queue", comment: ""))" : NSLocalizedString("Skill queue is empty", comment: "")} ?? "")
         }
     }
     
@@ -166,7 +166,7 @@ struct AccountCellContent_Previews: PreviewProvider {
             skillQueue: nil,
             error: nil).padding().background(Color(UIColor.systemGroupedBackground))
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
 
     }

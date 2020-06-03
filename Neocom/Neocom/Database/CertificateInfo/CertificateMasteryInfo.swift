@@ -60,7 +60,7 @@ struct CertificateMasteryInfo: View {
 #if DEBUG
 struct CertificateMasteryInfo_Previews: PreviewProvider {
     static var previews: some View {
-        let certificate = try! AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let certificate = try! Storage.sharedStorage.persistentContainer.viewContext
         .from(SDECertCertificate.self)
         .first()!
 
@@ -68,7 +68,7 @@ struct CertificateMasteryInfo_Previews: PreviewProvider {
             CertificateMasteryInfo(certificate: certificate)
         }.listStyle(GroupedListStyle())
         .environmentObject(SharedState.testState())
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }
 #endif

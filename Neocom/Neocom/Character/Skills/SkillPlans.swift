@@ -132,7 +132,7 @@ struct SkillPlansContent: View {
                 }
             }.listStyle(GroupedListStyle())
             if isTextAlertPresented {
-                TextFieldAlert(title: "New Skill Plan", placeholder: "Name", text: "") { (result) in
+                TextFieldAlert(title: Text("New Skill Plan"), placeholder: NSLocalizedString("Name", comment: ""), text: "") { (result) in
                     if case let .success(name) = result {
                         let skillPlan = SkillPlan(context: self.managedObjectContext)
                         skillPlan.name = name
@@ -144,7 +144,7 @@ struct SkillPlansContent: View {
                 }
             }
             if renamedSkillPlan != nil {
-                TextFieldAlert(title: "Rename", placeholder: "Name", text: renamedSkillPlan?.name ?? "") { (result) in
+                TextFieldAlert(title: Text("Rename"), placeholder: NSLocalizedString("Name", comment: ""), text: renamedSkillPlan?.name ?? "") { (result) in
                     if case let .success(name) = result {
                         self.renamedSkillPlan?.name = name
                     }
@@ -154,7 +154,7 @@ struct SkillPlansContent: View {
                 }
             }
         }
-        .navigationBarTitle("Skill Plans")
+        .navigationBarTitle(Text("Skill Plans"))
         .navigationBarItems(leading: BarButtonItems.close { },
                             trailing: Button(action: onAddSkillPlan) { Image(systemName: "plus") })
         .actionSheet(item: $selectedSkillPlan, content: actionSheet)
@@ -165,17 +165,17 @@ struct SkillPlansContent: View {
 struct SkillPlans_Previews: PreviewProvider {
     static var previews: some View {
         let account = AppDelegate.sharedDelegate.testingAccount
-        _ = try? AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SkillPlan.self).delete()
+        _ = try? Storage.sharedStorage.persistentContainer.viewContext.from(SkillPlan.self).delete()
         
-        let skillPlan1 = SkillPlan(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        let skillPlan2 = SkillPlan(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        let skillPlan1 = SkillPlan(context: Storage.sharedStorage.persistentContainer.viewContext)
+        let skillPlan2 = SkillPlan(context: Storage.sharedStorage.persistentContainer.viewContext)
         skillPlan1.name = "SkillPlan 1"
         skillPlan1.account = account
         skillPlan2.account = account
         
         return NavigationView {
             SkillPlans() { _ in }
-                .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+                .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
                 .environmentObject(SharedState.testState())
         }
     }

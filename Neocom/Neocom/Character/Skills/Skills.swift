@@ -30,7 +30,7 @@ struct Skills: View {
 
     var body: some View {
         let skills = self.skills.get(initial: getSkills())
-        return SkillsContent(skills: skills, editMode: editMode).navigationBarTitle("Skills")
+        return SkillsContent(skills: skills, editMode: editMode).navigationBarTitle(Text("Skills"))
     }
 }
 
@@ -108,10 +108,10 @@ struct SkillsFilter: View {
 
     var body: some View {
         Picker("Filter", selection: $filter) {
-            Text("My").tag(Filter.my)
-            Text("Can Train").tag(Filter.canTrain)
-            Text("Not Known").tag(Filter.notKnown)
-            Text("All").tag(Filter.all)
+            Text("My", comment: "Skill Borwser. My skills.").tag(Filter.my)
+            Text("Can Train", comment: "Skill Borwser").tag(Filter.canTrain)
+            Text("Not Known", comment: "Skill Borwser").tag(Filter.notKnown)
+            Text("All", comment: "Skill Borwser. All skills.").tag(Filter.all)
         }.pickerStyle(SegmentedPickerStyle())
     }
 }
@@ -122,8 +122,8 @@ struct Skills_Previews: PreviewProvider {
         NavigationView {
             Skills(editMode: false)
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
     }
 }

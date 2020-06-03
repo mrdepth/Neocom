@@ -50,7 +50,7 @@ struct FittingCargoActions: View {
                     .frame(width: 100)
                     .multilineTextAlignment(.center)
                 Stepper("Quantity", value: $cargo.quantity).labelsHidden()
-                Button("Max") {
+                Button(NSLocalizedString("Max", comment: "")) {
                     let free = self.ship.cargoCapacity - self.ship.usedCargoCapacity + self.cargo.volume
                     let qty = (free / perItem).rounded(.down)
                     self.cargo.quantity = Int(max(qty, 1))
@@ -58,7 +58,7 @@ struct FittingCargoActions: View {
             }
         }
         .listStyle(GroupedListStyle())
-        .navigationBarTitle("Actions")
+        .navigationBarTitle(Text("Actions"))
         .navigationBarItems(leading: BarButtonItems.close(completion), trailing: BarButtonItems.trash {
             self.completion()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
@@ -83,8 +83,8 @@ struct FittingCargoActions_Previews: PreviewProvider {
         let cargo = ship.cargo[0]
         cargo.quantity = 10
         return FittingCargoActions(ship: ship, cargo: cargo) {}
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
             .environmentObject(SharedState.testState())
         
         

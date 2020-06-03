@@ -59,6 +59,6 @@ struct AssetCell_Previews: PreviewProvider {
         return List {
             AssetCell(asset: asset)
         }.listStyle(GroupedListStyle())
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

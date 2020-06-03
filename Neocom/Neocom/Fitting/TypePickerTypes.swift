@@ -74,7 +74,7 @@ struct TypePickerTypesContent: View {
 
 struct TypePickerTypes_Previews: PreviewProvider {
     static var previews: some View {
-        let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let context = Storage.sharedStorage.persistentContainer.viewContext
         let group = try? context.from(SDEDgmppItemGroup.self)
             .filter((/\SDEDgmppItemGroup.items).count > 0)
             .first()

@@ -39,13 +39,20 @@ struct StructureLoadouts: View {
         guard let project = try? FittingProject(loadout: loadout, skillLevels: .level(0), managedObjectContext: self.managedObjectContext) else {return}
         onSelect(project, openMode)
     }
-    
+
+    private func onSelect(_ loadout: Ship, _ openMode: OpenMode) {
+        guard let project = try? FittingProject(loadout: loadout, skillLevels: .level(0), managedObjectContext: self.managedObjectContext) else {return}
+        onSelect(project, openMode)
+    }
+
     private func onSelect(_ result: LoadoutsList.Result, _ openMode: OpenMode) {
         switch result {
         case let .type(type):
             onSelect(type, openMode)
         case let .loadout(objectID):
             onSelect(managedObjectContext.object(with: objectID) as! Loadout, openMode)
+        case let .ship(loadout):
+            onSelect(loadout, openMode)
         }
     }
     
@@ -53,7 +60,7 @@ struct StructureLoadouts: View {
         let loadouts = self.loadouts.get(initial: LoadoutsLoader(.structure, managedObjectContext: backgroundManagedObjectContext))
         return LoadoutsList(loadouts: loadouts, category: .structure, onSelect: onSelect)
         .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
-        .navigationBarTitle("Loadouts")
+        .navigationBarTitle(Text("Loadouts"))
     }
 }
 
@@ -64,8 +71,8 @@ struct StructureLoadouts_Previews: PreviewProvider {
         return NavigationView {
             StructureLoadouts()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
     }
 }

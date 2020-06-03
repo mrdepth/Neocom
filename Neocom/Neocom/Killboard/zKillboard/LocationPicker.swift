@@ -32,7 +32,7 @@ struct LocationPicker: View {
             HStack {
                 Text(region.regionName ?? "")
                 Spacer()
-                Button("Select") {
+                Button(NSLocalizedString("Select", comment: "")) {
                     self.completion(region)
                 }.foregroundColor(.blue)
             }
@@ -112,7 +112,7 @@ struct LocationPicker: View {
                         }
                     }
                 }.listStyle(GroupedListStyle())
-        }.navigationBarTitle("Regions")
+        }.navigationBarTitle(Text("Regions"))
     }
 }
 
@@ -123,8 +123,8 @@ struct LocationPicker_Previews: PreviewProvider {
                 
             }
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext.newBackgroundContext())
 
     }
 }

@@ -107,7 +107,7 @@ struct FittingEditorShipModulesSection_Previews: PreviewProvider {
                 FittingEditorShipModulesSection(ship: DGMShip.testDominix(), slot: .hi)
             }.listStyle(GroupedListStyle())
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
 //        .colorScheme(.dark)
     }
 }

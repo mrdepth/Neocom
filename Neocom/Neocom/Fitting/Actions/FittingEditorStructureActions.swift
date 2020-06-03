@@ -13,6 +13,8 @@ import EVEAPI
 
 struct FittingEditorStructureActions: View {
     @ObservedObject var structure: DGMStructure
+    var completion: () -> Void
+    
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.self) private var environment
     @State private var isAreaEffectsPresented = false
@@ -20,11 +22,25 @@ struct FittingEditorStructureActions: View {
     @State private var isDamagePatternsPresented = false
     @State private var isActivityPresented = false
     @EnvironmentObject private var sharedState: SharedState
+    @EnvironmentObject private var project: FittingProject
     
     private var areaEffects: some View {
         AreaEffects { type in
             self.structure.area = try? DGMArea(typeID: DGMTypeID(type.typeID))
             self.isAreaEffectsPresented = false
+        }
+    }
+    
+    private var saveButton: some View {
+        Group {
+            if project.loadouts[structure] == nil {
+                Button(action: {
+                    self.project.save()
+                    self.completion()
+                }) {
+                    Text("Save").padding(.horizontal, 8).contentShape(Rectangle())
+                }
+            }
         }
     }
 
@@ -58,7 +74,7 @@ struct FittingEditorStructureActions: View {
             }
             
             Section {
-                Button("Share") {
+                Button(NSLocalizedString("Share", comment: "")) {
                     self.isActivityPresented = true
                 }.frame(maxWidth: .infinity)
             }
@@ -77,29 +93,8 @@ struct FittingEditorStructureActions: View {
             .navigationViewStyle(StackNavigationViewStyle())
         }
         .activityView(isPresented: $isActivityPresented, activityItems: [LoadoutActivityItem(ships: [structure.loadout], managedObjectContext: managedObjectContext)], applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)])
-        .navigationBarTitle("Actions")
-    }
-}
-
-private struct FittingEditorActionsCharacterCell: View {
-    var url: URL?
-    @Environment(\.managedObjectContext) private var managedObjectContext
-    
-    var body: some View {
-        let account = url.flatMap{DGMCharacter.account(from: $0)}.flatMap{try? managedObjectContext.fetch($0).first}
-        let level = url.flatMap{DGMCharacter.level(from: $0)}
-        
-        return Group {
-            if account != nil {
-                FittingCharacterAccountCell(account: account!)
-            }
-            else if level != nil {
-                FittingCharacterLevelCell(level: level!)
-            }
-            else {
-                FittingCharacterLevelCell(level: 0)
-            }
-        }
+        .navigationBarTitle(Text("Actions"))
+        .navigationBarItems(leading: BarButtonItems.close(completion), trailing: saveButton)
     }
 }
 
@@ -107,10 +102,10 @@ private struct FittingEditorActionsCharacterCell: View {
 struct FittingEditorStructureActions_Previews: PreviewProvider {
     static var previews: some View {
         return NavigationView {
-            FittingEditorStructureActions(structure: DGMStructure.testKeepstar())
+            FittingEditorStructureActions(structure: DGMStructure.testKeepstar()) {}
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
 
     }

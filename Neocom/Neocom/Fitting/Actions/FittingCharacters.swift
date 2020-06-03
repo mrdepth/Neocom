@@ -16,7 +16,7 @@ struct FittingCharacters: View {
 			FittingCharactersAccounts(onSelect: onSelect)
 			FittingCharactersPredefined(onSelect: onSelect)
 		}.listStyle(GroupedListStyle())
-		.navigationBarTitle("Characters")
+		.navigationBarTitle(Text("Characters"))
     }
 }
 
@@ -28,8 +28,8 @@ struct FittingCharacters_Previews: PreviewProvider {
             FittingCharacters { _, _ in
                 
             }
-		}.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+		}.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
     }
 }
 #endif

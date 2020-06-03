@@ -61,7 +61,7 @@ struct VibrancyView_Previews: PreviewProvider {
             VibrancyView {
                 VStack {
                 Image("turrets")
-                Text("sdf").font(.title).bold().foregroundColor(.secondary)
+                Text("ACCOUNTS").font(.title).bold().foregroundColor(.secondary)
                 }
             }.frame(width: 128, height: 128)
         }

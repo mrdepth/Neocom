@@ -54,6 +54,6 @@ fileprivate struct AssetsCategoryLocations: View {
 struct AssetsCategory_Previews: PreviewProvider {
     static var previews: some View {
         AssetsCategory(category: AssetsData.Category(categoryName: "Ships", id: 0, types: []))
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

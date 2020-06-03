@@ -42,7 +42,7 @@ struct TypeCategories: View {
                 TypeCategoriesContent(categories: categories)
             }
         }
-        .navigationBarTitle("Categories")
+        .navigationBarTitle(Text("Categories"))
     }
 }
 
@@ -68,8 +68,8 @@ struct TypeCategories_Previews: PreviewProvider {
         NavigationView {
             TypeCategories()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, (UIApplication.shared.delegate as! AppDelegate).persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
     }
 }

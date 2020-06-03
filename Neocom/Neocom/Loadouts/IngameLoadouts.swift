@@ -78,7 +78,7 @@ struct IngameLoadouts: View {
                 list
             }
         }
-        .navigationBarTitle("In-Game Loadouts")
+        .navigationBarTitle(Text("In-Game Loadouts"))
         .onReceive(projectLoading ?? Empty().eraseToAnyPublisher()) { result in
             self.projectLoading = nil
             self.selectedProject = result.value
@@ -99,8 +99,8 @@ struct IngameLoadouts_Previews: PreviewProvider {
         NavigationView {
             IngameLoadouts()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
     }
 }

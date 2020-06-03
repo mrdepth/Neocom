@@ -26,6 +26,22 @@ struct Config {
 
     let loadoutPathExtension = "loadout"
     
+    struct InApps {
+        var autoRenewableSubscriptions = ["com.shimanski.neocom.removeads.month",
+                                          "com.shimanski.neocom.removeads.months6",
+                                          "com.shimanski.neocom.removeads.year"]
+        var lifetimeSubscriptions = ["com.shimanski.neocom.removeads.lifetime"]
+        var donate = ["com.shimanski.neocom.donate.tier1",
+                      "com.shimanski.neocom.donate.tier5",
+                      "com.shimanski.neocom.donate.tier10",
+                      "com.shimanski.neocom.donate.tier50"]
+        var allProducts: [String] {
+            autoRenewableSubscriptions + lifetimeSubscriptions + donate
+        }
+    }
+    
+    let inApps = InApps()
+    let appodealKey = "94f0ed36388a0a458bdf528df128c4427c4d4fb50130f981"
 }
 
 enum URLScheme {

@@ -31,7 +31,17 @@ class DataLoader<Success, Failure: Error>: ObservableObject {
     
     func update<P: Publisher>(_ publisher: P) where P.Output == Success, P.Failure == Failure {
         isLoading = true
-        subscription = publisher.asResult().sink { [weak self] result in
+        
+        let p = publisher.catch { error -> AnyPublisher<Success, Failure> in
+            guard (error as? AFError)?.notConnectedToInternet == true else {return Fail(error: error).eraseToAnyPublisher()}
+            return NetworkReachabilityManager.publisher()
+                .filter{$0.isReachable}
+                .setFailureType(to: Failure.self)
+                .flatMap{_ in publisher}
+                .eraseToAnyPublisher()
+        }
+        
+        subscription = p.asResult().sink { [weak self] result in
             self?.result = result
             self?.isLoading = false
         }

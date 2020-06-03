@@ -114,8 +114,8 @@ struct FittingCharacterCell_Previews: PreviewProvider {
             FittingCharacterCell(AppDelegate.sharedDelegate.testingAccount!) { _, _ in }
 			FittingCharacterCell(1) { _, _ in }
 		}.listStyle(GroupedListStyle())
-		.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+		.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
     }
 }
 #endif

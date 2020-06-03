@@ -67,8 +67,17 @@ class ActivityViewWrapper: UIViewController {
                 controller.modalPresentationStyle = .popover
                 controller.popoverPresentationController?.sourceView = self.view
                 controller.popoverPresentationController?.sourceRect = self.view.bounds
+                var observer: NSKeyValueObservation?
+                observer = controller.observe(\.presentingViewController) { (vc, change) in
+                    if vc.parent == nil {
+                        observer?.invalidate()
+                    }
+                }
                 DispatchQueue.main.async {
                     parent?.present(controller, animated: true, completion: nil)
+                    #if targetEnvironment(macCatalyst)
+                    self.isPresented.wrappedValue = false
+                    #endif
                 }
             }
             else {
@@ -89,7 +98,7 @@ struct ActivityViewTest: View {
 //        let data = try? LoadoutPlainTextEncoder(managedObjectContext: managedObjectContext).encode(ship)
 //        let text = String(data: data!, encoding: .utf8)
         let loadout = LoadoutActivityItem(ships: [ship, ship], managedObjectContext: managedObjectContext)
-        return Button("Present") {
+        return Button(String("Present")) {
             self.isActivityPresented = true
         }.background(ActivityView(activityItems: [loadout], applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)], isPresented: $isActivityPresented))
     }
@@ -100,8 +109,8 @@ struct ActivityView_Previews: PreviewProvider {
     static var previews: some View {
         ActivityViewTest()
             .environmentObject(SharedState.testState())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
 
     }
 }

@@ -90,7 +90,7 @@ struct TypesContent<Cell: View>: View {
 struct Types_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            Types(.group((try? AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 645).first()?.group)!))
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            Types(.group((try? Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 645).first()?.group)!))
+        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

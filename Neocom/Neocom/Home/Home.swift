@@ -64,21 +64,17 @@ struct Home: View {
 //        GeometryReader { geometry in
             List {
                 self.header.framePreference(in: .global, HeaderFrame.self)
-//                    .anchorPreference(key: AppendPreferenceKey<CGRect, HeaderFrame>.self, value: Anchor<CGRect>.Source.bounds) {
-//                        [geometry[$0]]
-//                }
-//                    .background(GeometryReader { geometry in
-//                        Color.clear.preference(key: AppendPreferenceKey<CGRect, HeaderFrame>.self, value: [geometry.frame(in: .global).offsetBy(dx: 0, dy: -geometry.safeAreaInsets.top)])
-//                    })
 
-                Section(header: Text("CHARACTER")) {
-                    self.characterSheet
-                    self.jumpClones
-                    self.skills
-                    MailItem()
-                    CalendarItem()
-                    self.wealth
-                    LoyaltyPointsItem()
+                if sharedState.account != nil {
+                    Section(header: Text("CHARACTER")) {
+                        self.characterSheet
+                        self.jumpClones
+                        self.skills
+                        MailItem()
+                        CalendarItem()
+                        self.wealth
+                        LoyaltyPointsItem()
+                    }
                 }
                 Section(header: Text("DATABASE")) {
                     DatabaseItem()
@@ -89,14 +85,16 @@ struct Home: View {
                     IncursionsItem()
                 }
                 
-                Section(header: Text("BUSINESS")) {
-                    AssetsItem()
-                    MarketOrdersItem()
-                    ContractsItem()
-                    WalletTransactionsItem()
-                    WalletJournalItem()
-                    IndustryJobsItem()
-                    PlanetariesItem()
+                if sharedState.account != nil {
+                    Section(header: Text("BUSINESS")) {
+                        AssetsItem()
+                        MarketOrdersItem()
+                        ContractsItem()
+                        WalletTransactionsItem()
+                        WalletJournalItem()
+                        IndustryJobsItem()
+                        PlanetariesItem()
+                    }
                 }
                 
                 Section(header: Text("KILLBOARD")) {
@@ -111,8 +109,10 @@ struct Home: View {
                 Section {
                     SettingsItem()
                     AboutItem()
+                    #if !targetEnvironment(macCatalyst)
+                    RemoveAdsItem()
+                    #endif
                 }
-                
             }.listStyle(GroupedListStyle())
                 
 //        }
@@ -135,10 +135,10 @@ struct Home: View {
             .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .navigationViewStyle(StackNavigationViewStyle())
         }
-//        .navigationBarTitle("Neocom")
+//        .navigationBarTitle(Text("Neocom"))
 //        .navigationBarHidden(true)
             .navigationBarTitle(sharedState.account?.characterName ?? "Neocom")
-            .navigationBarItems(leading: navigationAvatarItem, trailing: sharedState.account != nil ? Button("Logout") {self.sharedState.account = nil} : nil)
+            .navigationBarItems(leading: navigationAvatarItem, trailing: sharedState.account != nil ? Button(NSLocalizedString("Logout", comment: "")) {self.sharedState.account = nil} : nil)
             .onFrameChange(HeaderFrame.self) { frame in
                 self.navigationAvatarItemVisible = (frame.first?.minY ?? -100) < -35
         }
@@ -151,9 +151,10 @@ struct Home_Previews: PreviewProvider {
         NavigationView {
             Home()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
+//        x§.environment(\.locale, Locale(identifier: "ru_RU"))
     }
 }
 #endif

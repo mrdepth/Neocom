@@ -83,6 +83,6 @@ struct NPCGroup_Previews: PreviewProvider {
 		NavigationView {
 			NPCGroup()
 		}
-			.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+			.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

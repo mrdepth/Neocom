@@ -63,7 +63,7 @@ struct ObjectID<T: NSManagedObject> {
 extension NSManagedObjectContext {
 	static var current: NSManagedObjectContext! {
 		get {
-			return Thread.current.threadDictionary["managedObjectContext"] as! NSManagedObjectContext
+			return Thread.current.threadDictionary["managedObjectContext"] as? NSManagedObjectContext
 		}
 		set {
 			Thread.current.threadDictionary["managedObjectContext"] = newValue
@@ -163,7 +163,7 @@ extension SDEInvCategory {
 	convenience init(_ category: (key: Int, value: CategoryID)) throws {
 		self.init(context: .current)
 		categoryID = Int32(category.key)
-		categoryName = category.value.name.en
+        categoryName = category.value.name.localized
 		published = category.value.published
 		if let iconID = category.value.iconID {
 			try icon = SDEEveIcon.icon(iconID: iconID)
@@ -175,7 +175,7 @@ extension SDEInvGroup {
 	convenience init(_ group: (key: Int, value: GroupID)) throws {
 		self.init(context: .current)
 		groupID = Int32(group.key)
-		groupName = group.value.name.en
+        groupName = group.value.name.localized
 		published = group.value.published
 		try category = invCategories.get()[group.value.categoryID]?.object()
 		if let iconID = group.value.iconID {
@@ -188,7 +188,8 @@ extension SDEInvType {
 	convenience init(_ type: (key: Int, value: TypeID), typeIDs: Schema.TypeIDs) throws {
 		self.init(context: .current)
 		typeID = Int32(type.key)
-		typeName = (type.value.name.en ?? "").replacingEscapes()
+        typeName = (type.value.name.localized ?? "").replacingEscapes()
+        originalTypeName = (type.value.name.en ?? "").replacingEscapes()
 		try group = invGroups.get()[type.value.groupID]?.object()
 		basePrice = type.value.basePrice ?? 0
 		capacity = type.value.capacity ?? 0
@@ -223,7 +224,7 @@ extension SDEInvType {
 
 		
 		func traitToString(_ trait: TypeID.Traits.Bonus) throws -> String? {
-			guard let bonusText = trait.bonusText?.en else {
+            guard let bonusText = trait.bonusText?.localized else {
 				return nil
 			}
 			if let bonus = trait.bonus {
@@ -252,21 +253,21 @@ extension SDEInvType {
 		let miscBonuses = try type.value.traits?.miscBonuses?.compactMap { try traitToString($0) }.joined(separator: "\n")
 		let skillBonuses = try type.value.traits?.types?.map { (typeID, traits) -> String in
 			let skill = typeIDs[typeID]!
-			let title = "<a href=showinfo:\(typeID)>\(skill.name.en!)</a> bonuses (per skill level):"
+            let title = "<a href=showinfo:\(typeID)>\(skill.name.localized ?? "")</a> \(LocalizedConstant.bonusesPerSkillLevel.localized!):"
 			return "\(title)\n \(try traits.compactMap{try traitToString($0)}.joined(separator: "\n"))"
 		}
 		var traitGroups = [String]()
 		if let s = roleBonuses, !s.isEmpty {
-			traitGroups.append("<b>Role Bonus</b>:\n\(s)")
+            traitGroups.append("<b>\(LocalizedConstant.roleBonus.localized!)</b>:\n\(s)")
 		}
 		if let skillBonuses = skillBonuses {
 			traitGroups.append(contentsOf: skillBonuses)
 		}
 		if let s = miscBonuses, !s.isEmpty {
-			traitGroups.append("<b>Misc Bonuses</b>:\n\(s)")
+			traitGroups.append("<b>\(LocalizedConstant.miscBonuses.localized!)</b>:\n\(s)")
 		}
 		
-		var description = type.value.description?.en?.replacingEscapes() ?? ""
+        var description = (type.value.description?.localized)?.replacingEscapes() ?? ""
 		if !traitGroups.isEmpty {
 			description += "\n\n" + traitGroups.joined(separator: "\n\n")
 		}
@@ -285,7 +286,7 @@ extension SDEInvMetaGroup {
     convenience init(_ id: Int, _ metaGroup: MetaGroup) {
 		self.init(context: .current)
 		metaGroupID = Int32(id)
-        metaGroupName = metaGroup.nameID.en
+        metaGroupName = metaGroup.nameID.localized
 	}
 }
 
@@ -293,7 +294,7 @@ extension SDEInvMarketGroup {
     convenience init(_ id: Int, _ marketGroup: MarketGroup) throws {
 		self.init(context: .current)
 		marketGroupID = Int32(id)
-        marketGroupName = marketGroup.nameID.en
+        marketGroupName = marketGroup.nameID.localized
 		if let iconID = marketGroup.iconID {
 			try icon = .icon(iconID: iconID)
 		}
@@ -321,7 +322,7 @@ extension SDEDgmAttributeType {
 		self.init(context: .current)
 		attributeID = Int32(attributeType.attributeID)
         attributeName = attributeType.name
-        displayName = attributeType.displayNameID?.en
+        displayName = attributeType.displayNameID?.localized
 		published = attributeType.published
 		if let categoryID = attributeType.categoryID {
 			try attributeCategory = dgmAttributeCategories.get()[categoryID]?.object()

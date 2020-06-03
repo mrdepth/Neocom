@@ -1,5 +1,5 @@
 //
-//  ImageValueTransformer.swift
+//  Transformers.swift
 //  Neocom
 //
 //  Created by Artem Shimanski on 26.11.2019.
@@ -34,4 +34,24 @@ class ImageValueTransformer: NSSecureUnarchiveFromDataTransformer {
 	override class func allowsReverseTransformation() -> Bool {
 		return true
 	}
+}
+
+class NeocomSecureUnarchiveFromDataTransformer: NSSecureUnarchiveFromDataTransformer {
+    override class var allowedTopLevelClasses: [AnyClass]  {
+        super.allowedTopLevelClasses + [NSAttributedString.self]
+    }
+    
+    override class func transformedValueClass() -> AnyClass {
+        return NSData.self
+    }
+    
+    override func transformedValue(_ value: Any?) -> Any? {
+        let result = super.transformedValue(value)
+        return result
+    }
+    
+    override func reverseTransformedValue(_ value: Any?) -> Any? {
+        let result = super.reverseTransformedValue(value)
+        return result
+    }
 }

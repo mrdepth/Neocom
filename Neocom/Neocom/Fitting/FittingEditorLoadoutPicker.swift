@@ -36,6 +36,9 @@ struct FittingEditorLoadoutPicker: View {
                     project.loadouts[ship] = loadout
                 }
                 project.gang?.add(pilot)
+            case let .ship(loadout):
+                pilot.loadout = loadout
+                project.gang?.add(pilot)
             }
             completion()
         }
@@ -45,7 +48,7 @@ struct FittingEditorLoadoutPicker: View {
     
     var body: some View {
         let loadouts = self.loadouts.get(initial: LoadoutsLoader(.ship, managedObjectContext: backgroundManagedObjectContext))
-        return LoadoutsList(loadouts: loadouts, category: .ship, onSelect: onSelect).navigationBarTitle("Ships")
+        return LoadoutsList(loadouts: loadouts, category: .ship, onSelect: onSelect).navigationBarTitle(Text("Ships"))
     }
 }
 
@@ -54,10 +57,10 @@ struct FittingEditorLoadoutPicker_Previews: PreviewProvider {
         _ = Loadout.testLoadouts()
 
         return NavigationView {
-            FittingEditorLoadoutPicker(project: FittingProject(gang: DGMGang.testGang(), managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext)) {}
+            FittingEditorLoadoutPicker(project: FittingProject(gang: DGMGang.testGang(), managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext)) {}
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
 
     }
 }

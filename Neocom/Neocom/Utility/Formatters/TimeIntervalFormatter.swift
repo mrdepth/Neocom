@@ -48,22 +48,22 @@ class TimeIntervalFormatter: Formatter {
             var empty = true
             
             if (precision.rawValue <= Precision.days.rawValue && d > 0) {
-                string += "\(d)d"
+                string += "\(d)\(NSLocalizedString("d", comment: "days"))"
                 empty = false
             }
             if (precision.rawValue <= Precision.hours.rawValue && h > 0) {
-                string += "\(empty ? "" : " ")\(h)h"
+                string += "\(empty ? "" : " ")\(h)\(NSLocalizedString("h", comment: "hours"))"
                 empty = false
             }
             if (precision.rawValue <= Precision.minutes.rawValue && m > 0) {
-                string += "\(empty ? "" : " ")\(m)m"
+                string += "\(empty ? "" : " ")\(m)\(NSLocalizedString("m", comment: "minutes"))"
                 empty = false
             }
             if (precision.rawValue <= Precision.seconds.rawValue && s > 0) {
-                string += "\(empty ? "" : " ")\(s)s"
+                string += "\(empty ? "" : " ")\(s)\(NSLocalizedString("s", comment: "seconds"))"
                 empty = false
             }
-            return empty ? "0s" : string;
+            return empty ? "0\(NSLocalizedString("s", comment: "seconds"))" : string;
         }
     }
     

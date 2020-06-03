@@ -32,7 +32,7 @@ struct FittingTypeVariations: View {
                 TypePickerTypesContent(types: types.sections, selectedType: self.$selectedType, completion: self.completion)
             }.listStyle(GroupedListStyle())
         }
-        .navigationBarTitle("Variations")
+        .navigationBarTitle(Text("Variations"))
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
@@ -45,12 +45,12 @@ struct FittingTypeVariations: View {
 
 struct FittingTypeVariations_Previews: PreviewProvider {
     static var previews: some View {
-        let type = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 3154).first()!
+        let type = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 3154).first()!
         return NavigationView {
             FittingTypeVariations(type: type) {_ in}
         }
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }
 

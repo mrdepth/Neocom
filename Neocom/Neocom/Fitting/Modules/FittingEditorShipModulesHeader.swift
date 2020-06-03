@@ -33,7 +33,7 @@ struct FittingEditorShipModulesHeader_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         return FittingEditorShipModulesHeader(ship: gang.pilots[0].ship!)
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
             .background(Color(.systemBackground))
 //            .colorScheme(.dark)
             

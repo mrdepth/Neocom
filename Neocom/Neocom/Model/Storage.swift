@@ -13,13 +13,138 @@ import Expressible
 import SwiftUI
 import Dgmpp
 
-class Storage: NSPersistentCloudKitContainer {
+enum LanguageID: String, CaseIterable {
+    case en = "SDE_en"
+    case de = "SDE_de"
+    case es = "SDE_es"
+    case fr = "SDE_fr"
+    case it = "SDE_it"
+    case ja = "SDE_ja"
+    case ru = "SDE_ru"
+    case zh = "SDE_zh"
+    case ko = "SDE_ko"
+    
+    static let `default` = LanguageID.en
+}
+
+class Storage: ObservableObject {
+    static var sharedStorage: Storage {
+        AppDelegate.sharedDelegate.storage
+    }
+    
+    @Published var sde: BundleResource {
+        didSet {
+            guard sde.isAvailable() else {return}
+            guard let url = Bundle.main.url(forResource: sde.tag, withExtension: "sqlite") else {return}
+            
+            guard let store = persistentContainer.persistentStoreCoordinator.persistentStores.first(where: {$0.configurationName == "SDE"}) else {return}
+            persistentContainer.persistentStoreCoordinator.setURL(url, for: store)
+            currentLanguagID = LanguageID(rawValue: sde.tag) ?? .default
+            languageSetting = currentLanguagID.rawValue
+        }
+    }
+    
+    @Published private(set) var currentLanguagID: LanguageID
+    @UserDefault(key: .languageID) private var languageSetting: String = LanguageID.default.rawValue
+    
+    func supportedLanguages() -> [BundleResource] {
+        LanguageID.allCases.map {
+            sde.tag == $0.rawValue ? sde : BundleResource(tag: $0.rawValue)
+        }
+    }
+    
+    init() {
+        let setting = UserDefault(wrappedValue: LanguageID.default.rawValue, key: .languageID)
+        _languageSetting = setting
+        let sde = BundleResource(tag: setting.wrappedValue)
+        self.sde = sde
+        currentLanguagID = sde.isAvailable() ? LanguageID(rawValue: sde.tag) ?? .default : .default
+    }
+
+    var managedObjectModel: NSManagedObjectModel {
+        NSManagedObjectModel.mergedModel(from: nil)!
+//        let storageModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Storage", withExtension: "momd")!)!
+//        let sdeModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "SDE", withExtension: "momd")!)!
+//        let cacheModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Cache", withExtension: "momd")!)!
+//        return NSManagedObjectModel(byMerging: [storageModel, sdeModel, cacheModel])!
+    }
+
+    lazy var persistentContainer: NSPersistentCloudKitContainer = {
+        let container = NSPersistentCloudKitContainer(name: "Neocom", managedObjectModel: managedObjectModel)
+        
+        let resource = sde.isAvailable() ? sde.tag : "SDE_en"
+        
+        let url = Bundle.main.url(forResource: resource, withExtension: "sqlite") ?? Bundle.main.url(forResource: "SDE_en", withExtension: "sqlite")
+        let sde = NSPersistentStoreDescription(url: url!)
+        sde.configuration = "SDE"
+        sde.isReadOnly = true
+        sde.shouldMigrateStoreAutomatically = false
+        
+        let baseURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+
+        let storage = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("cloud.sqlite"))
+        storage.configuration = "Cloud"
+        storage.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.shimanski.neocom")
+        
+        let cache = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("local.sqlite"))
+        cache.configuration = "Local"
+        
+        container.persistentStoreDescriptions = [sde, storage, cache]
+        
+        container.loadPersistentStores { (_, error) in
+            if let error = error {
+                print(error)
+            }
+        }
+        container.viewContext.mergePolicy = NSMergePolicy(merge: .overwriteMergePolicyType)
+        
+//        do {
+//            try container.initializeCloudKitSchema(options: [.printSchema])
+//        }
+//        catch {
+//            print(error)
+//        }
+        
+        return container
+    }()
+    
+    func saveContext () {
+        let context = persistentContainer.viewContext
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                if let error = error as? CocoaError, let conflicts = error.userInfo[NSPersistentStoreSaveConflictsErrorKey] as? [NSMergeConflict] {
+                    do {
+                        try NSMergePolicy(merge: .overwriteMergePolicyType).resolve(mergeConflicts: conflicts)
+                        try context.save()
+                    }
+                    catch {
+                        #if DEBUG
+                        let nserror = error as NSError
+                        fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                        #endif
+                    }
+                }
+                else {
+                    #if DEBUG
+                    let nserror = error as NSError
+                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                    #endif
+                }
+            }
+        }
+    }
+    
+}
+
+/*class Storage: NSPersistentCloudKitContainer {
     init() {
         let storageModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Storage", withExtension: "momd")!)!
         let sdeModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "SDE", withExtension: "momd")!)!
         let model = NSManagedObjectModel(byMerging: [storageModel, sdeModel])!
         super.init(name: "Neocom", managedObjectModel: model)
-        let sde = NSPersistentStoreDescription(url: Bundle.main.url(forResource: "SDE", withExtension: "sqlite")!)
+        let sde = NSPersistentStoreDescription(url: Bundle.main.url(forResource: "SDE_en", withExtension: "sqlite")!)
         sde.configuration = "SDE"
         sde.isReadOnly = true
         sde.shouldMigrateStoreAutomatically = false
@@ -29,7 +154,7 @@ class Storage: NSPersistentCloudKitContainer {
 //        storage.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.shimanski.neocom")
         persistentStoreDescriptions = [sde, storage]
     }
-}
+}*/
 
 extension NSManagedObjectContext {
 	func newBackgroundContext() -> NSManagedObjectContext {

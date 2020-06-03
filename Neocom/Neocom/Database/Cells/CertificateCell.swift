@@ -37,16 +37,6 @@ struct CertificateCell: View {
                 }.first {$0.trainingTime > 0}
                 
                 promise(.success(result))
-                
-//                if let result = result {
-//                    let subtitle: LocalizedStringKey = "\(TimeIntervalFormatter.localizedString(from: result.1, precision: .seconds)) to level \(result.0.level!.level + 1)"
-//                    let image = try? context.fetch(SDEEveIcon.named(.mastery(Int(result.0.level!.level - 1)))).first?.image?.image
-//                    promise(.success((subtitle: subtitle, image: image)))
-//                }
-//                else {
-//                    let image = try? context.fetch(SDEEveIcon.named(.mastery(4))).first?.image?.image
-//                    promise(.success((subtitle: nil, image: image)))
-//                }
             }
         }.receive(on: RunLoop.main).eraseToAnyPublisher()
     }
@@ -70,7 +60,7 @@ struct CertificateCell: View {
 
 struct CertificateCell_Previews: PreviewProvider {
     static var previews: some View {
-        let certificate = try! AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let certificate = try! Storage.sharedStorage.persistentContainer.viewContext
             .from(SDECertCertificate.self)
             .first()!
         
@@ -80,7 +70,7 @@ struct CertificateCell_Previews: PreviewProvider {
                 CertificateCell(certificate: certificate, pilot: nil)
             }.listStyle(GroupedListStyle())
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext.newBackgroundContext())
     }
 }

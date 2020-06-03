@@ -60,13 +60,20 @@ if [ ! -d "${version}" ]; then
 fi
 
 
-if [ ! -f "${out}/${version}/SDE.sqlite" ]; then
+if [ ! -f "${out}/${version}/SDE_en.sqlite" ]; then
     V=`date +%F`
 	cd $version
-	${TARGET_BUILD_DIR}/sde-tool -o "${out}/${version}/SDE.sqlite" -i "${out}/${version}"
-	sqlite3 "${out}/${version}/SDE.sqlite" "vacuum"
-	yes | cp "${out}/${version}/SDE.sqlite" "${PROJECT_DIR}/../../Neocom/SDE.sqlite"
-	echo "let SDEVersion = \"$V\"" > "${PROJECT_DIR}/../../Neocom/SDEVersion.swift"
+	#${TARGET_BUILD_DIR}/sde-tool -o "${out}/${version}/SDE.sqlite" -i "${out}/${version}"
+	#sqlite3 "${out}/${version}/SDE.sqlite" "vacuum"
+	#yes | cp "${out}/${version}/SDE.sqlite" "${PROJECT_DIR}/../../Neocom/SDE.sqlite"
+    LOCALES=("en" "de" "es" "fr" "it" "ja" "ru" "zh" "ko")
+    for loc in ${LOCALES[*]}
+    do
+        DB="${out}/${version}/SDE_${loc}.sqlite"
+        ${TARGET_BUILD_DIR}/sde-tool -o "${DB}" -i "${out}/${version}" -l $loc
+        yes | cp "${DB}" "${PROJECT_DIR}/../../Neocom/SDE_${loc}.sqlite"
+    done
+    echo "let SDEVersion = \"$V\"" > "${PROJECT_DIR}/../../Neocom/SDEVersion.swift"
 fi
 
 cd "${PROJECT_DIR}/../../ThirdParty/dgmpp/dbinit"

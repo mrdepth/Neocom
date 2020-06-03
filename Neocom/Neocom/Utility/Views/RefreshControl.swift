@@ -124,7 +124,7 @@ struct RefreshControlTest: View {
     @State private var isRefreshing = false
     var body: some View {
         List {
-            Text("Hello, World")
+            Text("Text")
         }
         .onRefresh(isRefreshing: $isRefreshing, title: nil) {
             self.isRefreshing = true

@@ -48,14 +48,14 @@ struct Migration: View {
         let trailingItem = Group {
             if !accounts.records.isEmpty || !loadouts.records.isEmpty {
                 if selection.count == accounts.records.count + loadouts.records.count {
-                    Button("Deselect All") {
+                    Button(NSLocalizedString("Deselect All", comment: "")) {
                         withAnimation {
                             self.selection.removeAll()
                         }
                     }
                 }
                 else {
-                    Button("Select All") {
+                    Button(NSLocalizedString("Select All", comment: "")) {
                         withAnimation {
                             self.selection = Set(accounts.records + loadouts.records)
                         }
@@ -63,6 +63,9 @@ struct Migration: View {
                 }
             }
         }
+        
+        let selectedAcounts = selection.filter{$0.recordType == "Account"}.count
+        let selectedLoadouts = selection.count - selectedAcounts
         
         return ZStack {
             VStack(spacing: 0) {
@@ -73,19 +76,33 @@ struct Migration: View {
                 .listStyle(GroupedListStyle())
                 
                 if !selection.isEmpty {
-                    Divider()
-                    HStack {
-                        Spacer()
-                        Button("Import", action: onImport)
-                    }.padding().transition(.offset(x: 0, y: 100))
-                        .background(Color(.systemBackground).edgesIgnoringSafeArea(.all))
+                    VStack(spacing: 0) {
+                        Divider()
+                        HStack {
+                            Group {
+                                if selectedAcounts > 0 && selectedLoadouts > 0 {
+                                    Text("Selected \(selectedAcounts) Accounts and \(selectedLoadouts) Loadouts")
+                                }
+                                else if selectedAcounts > 0 {
+                                    Text("Selected \(selectedAcounts) Accounts")
+                                }
+                                else if selectedLoadouts > 0 {
+                                    Text("Selected \(selectedLoadouts) Loadouts")
+                                }
+                            }.animation(nil)
+                            Spacer()
+                            Button("Import", action: onImport)
+                        }.padding()
+                    }
+                    .transition(.offset(x: 0, y: 100))
+                    .background(Color(.systemBackground).edgesIgnoringSafeArea(.all))
                 }
             }
             if isFinished {
                 FinishedView(isPresented: $isFinished)
             }
         }
-        .navigationBarTitle("Migration")
+        .navigationBarTitle(Text("Migration"))
         .navigationBarItems(trailing: trailingItem)
         .environment(\.editMode, $editMode)
         .overlay(self.migration != nil ? ActivityIndicator() : nil)
@@ -101,7 +118,7 @@ struct Migration: View {
             }
         }
         .alert(item: $error) { error in
-            Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: Alert.Button.cancel(Text("Close")))
+            Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: .cancel(Text("Close")))
         }
     }
 }
@@ -112,6 +129,6 @@ struct Migration_Previews: PreviewProvider {
             Migration()
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

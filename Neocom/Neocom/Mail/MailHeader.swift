@@ -75,11 +75,11 @@ struct MailHeaderContent: View {
 #if DEBUG
 struct MailHeader_Previews: PreviewProvider {
     static var previews: some View {
-        let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: AppDelegate.sharedDelegate.persistentContainer.viewContext)!, insertInto: nil)
+        let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.sharedStorage.persistentContainer.viewContext)!, insertInto: nil)
         contact.name = "Artem Valiant"
         contact.contactID = 1554561480
 
-        let contact2 = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: AppDelegate.sharedDelegate.persistentContainer.viewContext)!, insertInto: nil)
+        let contact2 = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.sharedStorage.persistentContainer.viewContext)!, insertInto: nil)
         contact2.name = "Artie Ziff"
         contact2.contactID = 1965939845
 

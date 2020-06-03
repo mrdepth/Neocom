@@ -89,19 +89,25 @@ struct FittingEditorShipActions: View {
             }
             Section {
                 NavigationLink(destination: AffectingSkills(ship: ship)) {
-                    Text("Affecting Skill")
+                    Text("Affecting Skills")
                 }
                 NavigationLink(destination: RequiredSkills(ship: ship)) {
-                    Text("Required Skill")
+                    Text("Required Skills")
                 }
             }
             
             Section {
-                Button("Share") {
+                Button(NSLocalizedString("Share", comment: "")) {
                     self.isActivityPresented = true
                 }.frame(maxWidth: .infinity)
                 .activityView(isPresented: $isActivityPresented, activityItems: [LoadoutActivityItem(ships: [ship.loadout], managedObjectContext: managedObjectContext)], applicationActivities: [InGameActivity(environment: environment, sharedState: sharedState)])
-
+                
+                Button(NSLocalizedString("Copy to Clipboard", comment: "")) {
+                    guard let data = try? LoadoutPlainTextEncoder(managedObjectContext: self.managedObjectContext).encode(self.ship.loadout) else {return}
+                    guard let string = String(data: data, encoding: .utf8) else {return}
+                    UIPasteboard.general.string = string
+                    NotificationCenter.default.post(name: .didFinishJob, object: nil)
+                }.frame(maxWidth: .infinity)
             }
 		}
         .listStyle(GroupedListStyle())
@@ -117,7 +123,7 @@ struct FittingEditorShipActions: View {
             .modifier(ServicesViewModifier(environment: self.environment, sharedState: self.sharedState))
             .navigationViewStyle(StackNavigationViewStyle())
         }
-        .navigationBarTitle("Actions")
+        .navigationBarTitle(Text("Actions"))
         .navigationBarItems(leading: BarButtonItems.close(completion), trailing: saveButton)
 
     }
@@ -153,10 +159,10 @@ struct FittingEditorShipActions_Previews: PreviewProvider {
             FittingEditorShipActions(ship: gang.pilots.first!.ship!) {}
         }
         .environmentObject(gang)
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
-        .environmentObject(FittingProject(gang: gang, managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext))
+        .environmentObject(FittingProject(gang: gang, managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext))
 
     }
 }

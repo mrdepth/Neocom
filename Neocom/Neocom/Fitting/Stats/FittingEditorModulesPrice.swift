@@ -45,7 +45,7 @@ struct FittingEditorModulesPrice: View {
                     }
                 }
             }
-        }.listStyle(GroupedListStyle()).navigationBarTitle("Modules")
+        }.listStyle(GroupedListStyle()).navigationBarTitle(Text("Modules"))
     }
 }
 
@@ -56,6 +56,6 @@ struct FittingEditorModulesPrice_Previews: PreviewProvider {
             FittingEditorModulesPrice(ship: gang.pilots.first!.ship!, prices: [:])
         }
         .environmentObject(gang)
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

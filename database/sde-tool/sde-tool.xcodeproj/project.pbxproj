@@ -13,9 +13,10 @@
 		1278552A20331AC900E7CD7E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1278552920331AC900E7CD7E /* main.swift */; };
 		127855312033269A00E7CD7E /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127855302033269A00E7CD7E /* Schema.swift */; };
 		12C26151203C8F2200A588A2 /* CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C26150203C8F2200A588A2 /* CoreData.swift */; };
-		16B9E08B24190F910083E9C2 /* Cache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 16B9E08924190F910083E9C2 /* Cache.xcdatamodeld */; };
+		1613104A2472BAAC0006F5DA /* Local.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 161310462472BAAC0006F5DA /* Local.xcdatamodeld */; };
+		1613104B2472BAAC0006F5DA /* Cloud.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 161310482472BAAC0006F5DA /* Cloud.xcdatamodeld */; };
+		1688F8B1246D64D500D729A8 /* LocalizedConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1688F8B0246D64D500D729A8 /* LocalizedConstant.swift */; };
 		16E3DBFC238C0894005F5AAE /* SDE.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBF8238C0894005F5AAE /* SDE.xcdatamodeld */; };
-		16E3DBFD238C0894005F5AAE /* Storage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBFA238C0894005F5AAE /* Storage.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,9 +40,10 @@
 		1278552920331AC900E7CD7E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		127855302033269A00E7CD7E /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
 		12C26150203C8F2200A588A2 /* CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreData.swift; sourceTree = "<group>"; };
-		16B9E08A24190F910083E9C2 /* Cache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Cache.xcdatamodel; sourceTree = "<group>"; };
+		161310472472BAAC0006F5DA /* Cache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Cache.xcdatamodel; sourceTree = "<group>"; };
+		161310492472BAAC0006F5DA /* Storage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Storage.xcdatamodel; sourceTree = "<group>"; };
+		1688F8B0246D64D500D729A8 /* LocalizedConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedConstant.swift; sourceTree = "<group>"; };
 		16E3DBF9238C0894005F5AAE /* SDE.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SDE.xcdatamodel; sourceTree = "<group>"; };
-		16E3DBFB238C0894005F5AAE /* Storage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Storage.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,9 +77,10 @@
 			isa = PBXGroup;
 			children = (
 				16E3DBF8238C0894005F5AAE /* SDE.xcdatamodeld */,
-				16E3DBFA238C0894005F5AAE /* Storage.xcdatamodeld */,
-				16B9E08924190F910083E9C2 /* Cache.xcdatamodeld */,
+				161310482472BAAC0006F5DA /* Cloud.xcdatamodeld */,
+				161310462472BAAC0006F5DA /* Local.xcdatamodeld */,
 				1278552920331AC900E7CD7E /* main.swift */,
+				1688F8B0246D64D500D729A8 /* LocalizedConstant.swift */,
 				12483A9A203C082F00AEE950 /* Utils.swift */,
 				12C26150203C8F2200A588A2 /* CoreData.swift */,
 				127855302033269A00E7CD7E /* Schema.swift */,
@@ -114,12 +117,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = "Artem Shimanski";
 				TargetAttributes = {
 					1278552520331AC900E7CD7E = {
 						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1140;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -130,6 +133,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 1278551D20331AC900E7CD7E;
 			productRefGroup = 1278552720331AC900E7CD7E /* Products */;
@@ -146,14 +150,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1613104B2472BAAC0006F5DA /* Cloud.xcdatamodeld in Sources */,
 				12C26151203C8F2200A588A2 /* CoreData.swift in Sources */,
 				127855312033269A00E7CD7E /* Schema.swift in Sources */,
 				12483A9B203C082F00AEE950 /* Utils.swift in Sources */,
 				124A85D3204554560079619D /* dgmpp.swift in Sources */,
-				16E3DBFD238C0894005F5AAE /* Storage.xcdatamodeld in Sources */,
 				16E3DBFC238C0894005F5AAE /* SDE.xcdatamodeld in Sources */,
-				16B9E08B24190F910083E9C2 /* Cache.xcdatamodeld in Sources */,
+				1613104A2472BAAC0006F5DA /* Local.xcdatamodeld in Sources */,
 				1278552A20331AC900E7CD7E /* main.swift in Sources */,
+				1688F8B1246D64D500D729A8 /* LocalizedConstant.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,6 +179,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -181,6 +187,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -208,7 +215,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -231,6 +238,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -238,6 +246,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -259,7 +268,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -270,6 +279,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				HEADER_SEARCH_PATHS = "/Users/shimanski/Downloads/libyaml-master/include/";
@@ -277,7 +287,7 @@
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -285,13 +295,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				HEADER_SEARCH_PATHS = "/Users/shimanski/Downloads/libyaml-master/include/";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -319,14 +330,25 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		16B9E08924190F910083E9C2 /* Cache.xcdatamodeld */ = {
+		161310462472BAAC0006F5DA /* Local.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				16B9E08A24190F910083E9C2 /* Cache.xcdatamodel */,
+				161310472472BAAC0006F5DA /* Cache.xcdatamodel */,
 			);
-			currentVersion = 16B9E08A24190F910083E9C2 /* Cache.xcdatamodel */;
-			name = Cache.xcdatamodeld;
-			path = ../../../Neocom/Neocom/Model/Cache.xcdatamodeld;
+			currentVersion = 161310472472BAAC0006F5DA /* Cache.xcdatamodel */;
+			name = Local.xcdatamodeld;
+			path = ../../../Neocom/Neocom/Model/Local.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		161310482472BAAC0006F5DA /* Cloud.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				161310492472BAAC0006F5DA /* Storage.xcdatamodel */,
+			);
+			currentVersion = 161310492472BAAC0006F5DA /* Storage.xcdatamodel */;
+			name = Cloud.xcdatamodeld;
+			path = ../../../Neocom/Neocom/Model/Cloud.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
@@ -338,17 +360,6 @@
 			currentVersion = 16E3DBF9238C0894005F5AAE /* SDE.xcdatamodel */;
 			name = SDE.xcdatamodeld;
 			path = ../../../Neocom/Neocom/Model/SDE.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		16E3DBFA238C0894005F5AAE /* Storage.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				16E3DBFB238C0894005F5AAE /* Storage.xcdatamodel */,
-			);
-			currentVersion = 16E3DBFB238C0894005F5AAE /* Storage.xcdatamodel */;
-			name = Storage.xcdatamodeld;
-			path = ../../../Neocom/Neocom/Model/Storage.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

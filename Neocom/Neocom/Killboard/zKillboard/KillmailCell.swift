@@ -104,8 +104,8 @@ struct KillmailCell_Previews: PreviewProvider {
             KillmailCell(killmail: .success(killmail), contacts: contacts, cache: Cache())
 //            KillmailCellContent(killmail: killmail, contacts: contacts, cache: Cache())
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
 //        KillmailCell(killmailID: 82925944, hash: "3a20a8149ea41a80554d2469383caef1a8e4cdad")
     }

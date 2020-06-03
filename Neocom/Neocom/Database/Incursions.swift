@@ -37,13 +37,10 @@ struct Incursions: View {
 #if DEBUG
 struct Incursions_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-        
-        return NavigationView {
+        NavigationView {
             Incursions()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

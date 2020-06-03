@@ -58,19 +58,6 @@ struct SearchController_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             SearchControllerTest()
-//            VStack {
-//                SearchBar()
-//                List {
-//                    Text("Hello, World")
-//                }
-//                .listStyle(GroupedListStyle())
-////                SearchController(search: {s in
-////                    Just(s)
-////                }) { results in
-////                    NavigationLink(results ?? "", destination: Text("wefwe"))
-////                }.disabled(true)
-//            }
-//            .navigationBarTitle("Root", displayMode: .inline)
         }
     .navigationViewStyle(StackNavigationViewStyle())
     }

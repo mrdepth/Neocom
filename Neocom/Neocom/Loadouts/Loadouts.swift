@@ -48,7 +48,7 @@ struct Loadouts: View {
                 IngameLoadouts()
             }
         }
-        .navigationBarTitle("Loadouts", displayMode: .inline)
+        .navigationBarTitle(Text("Loadouts"), displayMode: .inline)
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
 }
@@ -59,8 +59,8 @@ struct Loadouts_Previews: PreviewProvider {
         NavigationView {
             Loadouts()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
     }
 }

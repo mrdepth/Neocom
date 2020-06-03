@@ -162,7 +162,7 @@ extension UnitFormatter {
             case .megaWatts:
                 return NSLocalizedString("MW", comment: "megaWatts")
             case .teraflops:
-                return NSLocalizedString("tf", comment: "teraflops")
+                return NSLocalizedString("Tf", comment: "teraflops")
             case .kilogram:
                 return NSLocalizedString("kg", comment: "kilogram")
             case .meter:
@@ -194,52 +194,52 @@ extension UnitFormatter {
                 case .natural:
                     return ""
                 case .kilo:
-                    return "k"
+                    return NSLocalizedString("k", comment: "kilo SI prefix")
                 case .mega:
-                    return "M"
+                    return NSLocalizedString("M", comment: "mega SI prefix")
                 case .giga:
-                    return "B"
+                    return NSLocalizedString("B", comment: "billions prefix")
                 case .tera:
-                    return "T"
+                    return NSLocalizedString("T", comment: "tera SI prefix")
                 }
             case .seconds:
                 switch scale {
                 case .natural:
                     return "\(symbol)"
                 case .kilo:
-                    return "k \(symbol)"
+                    return "\(NSLocalizedString("k", comment: "kilo SI prefix")) \(symbol)"
                 case .mega:
-                    return "M \(symbol)"
+                    return "\(NSLocalizedString("M", comment: "mega SI prefix")) \(symbol)"
                 case .giga:
-                    return "B \(symbol)"
+                    return "\(NSLocalizedString("B", comment: "billions prefix")) \(symbol)"
                 case .tera:
-                    return "T \(symbol)"
+                    return "\(NSLocalizedString("T", comment: "tera SI prefix")) \(symbol)"
                 }
             case .skillPoints, .gigaJoule, .gigaJoulePerSecond, .megaWatts, .teraflops, .kilogram, .millimeter, .megaBitsPerSecond, .cubicMeter, .auPerSecond, .hpPerSecond, .skillPointsPerSecond, .isk, .loyaltyPoints:
                 switch scale {
                 case .natural:
                     return " \(symbol)"
                 case .kilo:
-                    return "k \(symbol)"
+                    return "\(NSLocalizedString("k", comment: "kilo SI prefix")) \(symbol)"
                 case .mega:
-                    return "M \(symbol)"
+                    return "\(NSLocalizedString("M", comment: "mega SI prefix")) \(symbol)"
                 case .giga:
-                    return "B \(symbol)"
+                    return "\(NSLocalizedString("B", comment: "billions prefix")) \(symbol)"
                 case .tera:
-                    return "T \(symbol)"
+                    return "\(NSLocalizedString("T", comment: "tera SI prefix")) \(symbol)"
                 }
             case .meter, .meterPerSecond:
                 switch scale {
                 case .natural:
                     return " \(symbol)"
                 case .kilo:
-                    return " k\(symbol)"
+                    return " \(NSLocalizedString("k", comment: "kilo SI prefix"))\(symbol)"
                 case .mega:
-                    return " M\(symbol)"
+                    return " \(NSLocalizedString("M", comment: "mega SI prefix"))\(symbol)"
                 case .giga:
-                    return " G\(symbol)"
+                    return " \(NSLocalizedString("G", comment: "giga SI prefix"))\(symbol)"
                 case .tera:
-                    return " T\(symbol)"
+                    return " \(NSLocalizedString("T", comment: "tera SI prefix"))\(symbol)"
                 }
             }
         }

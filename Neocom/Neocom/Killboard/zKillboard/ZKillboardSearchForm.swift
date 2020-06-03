@@ -50,7 +50,7 @@ struct ZKillboardSearchForm: View {
             }.buttonStyle(PlainButtonStyle())
             Spacer()
             if filter.pilot != nil {
-                Button("Clear") {
+                Button(NSLocalizedString("Clear", comment: "")) {
                     withAnimation {
                         self.filter.pilot = nil
                     }
@@ -96,7 +96,7 @@ struct ZKillboardSearchForm: View {
             }.buttonStyle(PlainButtonStyle())
             Spacer()
             if filter.ship != nil {
-                Button("Clear") {
+                Button(NSLocalizedString("Clear", comment: "")) {
                     withAnimation {
                         self.filter.ship = nil
                     }
@@ -142,7 +142,7 @@ struct ZKillboardSearchForm: View {
             }.buttonStyle(PlainButtonStyle())
             Spacer()
             if filter.location != nil {
-                Button("Clear") {
+                Button(NSLocalizedString("Clear", comment: "")) {
                     withAnimation {
                         self.filter.location = nil
                     }
@@ -199,12 +199,12 @@ struct ZKillboardSearchForm: View {
                 }
             }
             Section {
-                NavigationLink("Kills", destination: ZKillboardSearchResults(filter: values + [.kills]))
-                NavigationLink("Losses", destination: ZKillboardSearchResults(filter: values + [.losses]))
+                NavigationLink(NSLocalizedString("Kills", comment: ""), destination: ZKillboardSearchResults(filter: values + [.kills]))
+                NavigationLink(NSLocalizedString("Losses", comment: ""), destination: ZKillboardSearchResults(filter: values + [.losses]))
             }.disabled(values.isEmpty)
         }
         .listStyle(GroupedListStyle())
-        .navigationBarTitle("zKillboard")
+        .navigationBarTitle(Text("zKillboard"))
     }
 }
 
@@ -271,8 +271,8 @@ struct ZKillboardSearchForm_Previews: PreviewProvider {
         NavigationView {
             ZKillboardSearchForm()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
     }
 }

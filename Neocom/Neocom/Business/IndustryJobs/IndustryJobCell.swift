@@ -32,19 +32,19 @@ struct IndustryJobCell: View {
             progress = 1.0 - Float(t / TimeInterval(job.duration))
             status = Text("\(TimeIntervalFormatter.localizedString(from: max(t, 0), precision: .minutes)) (\(Int(progress * 100))%)")
         case .cancelled:
-            status = Text("cancelled \(endDate())")
+            status = Text("cancelled \(endDate())", comment: "Industry Job Status: cancelled [date]")
             progress = 0
         case .delivered:
-            status = Text("delivered \(endDate())")
+            status = Text("delivered \(endDate())", comment: "Industry Job Status: delivered [date]")
             progress = 1
         case .paused:
-            status = Text("paused \(endDate()))")
+            status = Text("paused \(endDate()))", comment: "Industry Job Status: paused [date]")
             progress = 0
         case .ready:
-            status = Text("ready \(endDate()))")
+            status = Text("ready \(endDate()))", comment: "Industry Job Status: ready [date]")
             progress = 1
         case .reverted:
-            status = Text("reverted \(endDate()))")
+            status = Text("reverted \(endDate()))", comment: "Industry Job Status: reverted [date]")
             progress = 0
         }
         
@@ -91,7 +91,7 @@ struct IndustryJobCell: View {
 
 struct IndustryJobCell_Previews: PreviewProvider {
     static var previews: some View {
-        let solarSystem = try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
+        let solarSystem = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
         let location = EVELocation(solarSystem: solarSystem, id: Int64(solarSystem.solarSystemID))
 
         let job = ESI.IndustryJobs.Element(activityID: 1,
@@ -122,6 +122,6 @@ struct IndustryJobCell_Previews: PreviewProvider {
                 IndustryJobCell(job: job, locations: [location.id: location])
             }.listStyle(GroupedListStyle())
 //                .colorScheme(.dark)
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

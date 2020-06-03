@@ -88,8 +88,6 @@ struct WalletJournalContent: View {
 #if DEBUG
 struct WalletJournal_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
         
         let journal = (0..<100).map { i in
             ESI.WalletJournal.Element(amount: 1000,
@@ -114,7 +112,7 @@ struct WalletJournal_Previews: PreviewProvider {
             .navigationBarTitle(Text("Wallet Journal"))
             
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

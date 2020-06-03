@@ -45,7 +45,7 @@ struct AffectingSkills: View {
                 AffectingSkillsSection(skills: section, pilot: pilot)
             }
         }.listStyle(GroupedListStyle())
-        .navigationBarTitle("Affecting Skills")
+        .navigationBarTitle(Text("Affecting Skills"))
     }
 }
 
@@ -65,16 +65,13 @@ struct AffectingSkillsSection: View {
 #if DEBUG
 struct AffectingSkills_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
-
         let gang = DGMGang.testGang()
         return NavigationView {
             AffectingSkills(ship: gang.pilots.first!.ship!)
         }
         .environmentObject(gang)
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
     }
 }

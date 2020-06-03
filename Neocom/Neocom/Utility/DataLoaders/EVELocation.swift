@@ -82,7 +82,7 @@ struct EVELocation: Hashable {
         }
         else {
             solarSystemName = ""
-            locationName = structureName ?? NSLocalizedString("\u{2063}Unknown Location", comment: "")
+            locationName = structureName ?? ("\u{2063}" + NSLocalizedString("Unknown Location", comment: ""))
         }
         name = solarSystemName + " " + locationName
         self.id = id

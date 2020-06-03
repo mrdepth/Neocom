@@ -27,13 +27,13 @@ struct IncursionSolarSystems: View {
         List(solarSystems, id: \.objectID) { solarSystem in
             Text(EVELocation(solarSystem: solarSystem, id: Int64(solarSystem.solarSystemID)))
         }.listStyle(GroupedListStyle())
-        .navigationBarTitle("Infested Solar Systems")
+        .navigationBarTitle(Text("Infested Solar Systems"))
     }
 }
 
 struct IncursionSolarSystems_Previews: PreviewProvider {
     static var previews: some View {
-        let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let context = Storage.sharedStorage.persistentContainer.viewContext
         let constellation = try! context.from(SDEMapConstellation.self).first()!
         let faction = try! context.from(SDEChrFaction.self).first()!
         let solarSystem = try! context.from(SDEMapSolarSystem.self).first()!

@@ -58,13 +58,13 @@ struct SkillCell: View {
     
     private func actionSheet(_ levels: Range<Int>) -> ActionSheet {
         let buttons = levels.map { level in
-            ActionSheet.Button.default(Text("Traint to level \(String(roman: level))")) {
+            ActionSheet.Button.default(Text("Train to level \(String(roman: level))")) {
                 guard let pilot = self.pilot else {return}
                 let trainingQueue = TrainingQueue(pilot: pilot)
                 trainingQueue.add(self.type, level: level)
                 let skillPlan = self.sharedState.account?.activeSkillPlan
                 skillPlan?.add(trainingQueue)
-                NotificationCenter.default.post(name: .didUpdateSkillPlan, object: skillPlan)
+                NotificationCenter.default.post(name: .didFinishJob, object: skillPlan)
             }
         }
         return ActionSheet(title: Text("Add to Skill Plan"), message: nil, buttons: buttons + [.default(Text("Skill Info")) { self.isTypeInfoActive = true } ,.cancel()])
@@ -262,7 +262,7 @@ private struct FlashigRectangle: View {
 #if DEBUG
 struct SkillCell_Previews: PreviewProvider {
     static var previews: some View {
-        let type = try! AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let type = try! Storage.sharedStorage.persistentContainer.viewContext
             .from(SDEInvType.self)
             .filter(/\SDEInvType.group?.category?.categoryID == SDECategoryID.skill.rawValue)
             .first()!
@@ -287,7 +287,7 @@ struct SkillCell_Previews: PreviewProvider {
                                                                                                    startDate: Date(timeIntervalSinceNow: 3600),
                                                                                                    trainingStartSP: skill.skillPoints(at: 2))))
 
-        let skillPlanSkill = SkillPlanSkill(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        let skillPlanSkill = SkillPlanSkill(context: Storage.sharedStorage.persistentContainer.viewContext)
         skillPlanSkill.typeID = type.typeID
         skillPlanSkill.level = 3
         return NavigationView {

@@ -52,7 +52,7 @@ struct FittingEditorFleet: View {
                 }
             }
             Section {
-                Button("Add Pilot") {
+                Button(NSLocalizedString("Add Pilot", comment: "")) {
                     self.isLoadoutPickerPresented = true
                 }.frame(maxWidth: .infinity)
             }
@@ -75,12 +75,12 @@ struct FittingEditorFleet: View {
 struct FittingEditorFleet_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
-        let project = FittingProject(gang: gang, managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        let project = FittingProject(gang: gang, managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext)
         
         return FittingEditorFleet(ship: .constant(gang.pilots[0].ship!))
             .environmentObject(gang)
             .environmentObject(project)
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

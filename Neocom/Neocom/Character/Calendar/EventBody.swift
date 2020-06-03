@@ -16,17 +16,36 @@ struct EventBody: View {
     
     @EnvironmentObject private var sharedState: SharedState
 
-    @ObservedObject private var event = Lazy<DataLoader<ESI.Event, AFError>, Account>()
+    @ObservedObject private var event = Lazy<DataLoader<(ESI.Event, NSAttributedString?), AFError>, Account>()
     
     var body: some View {
         let result = sharedState.account.flatMap { account in
-            self.event.get(account, initial: DataLoader(sharedState.esi.characters.characterID(Int(account.characterID)).calendar().eventID(eventID).get().map{$0.value}.receive(on: RunLoop.main)))
+            self.event.get(account, initial: DataLoader(sharedState.esi.characters.characterID(Int(account.characterID)).calendar().eventID(eventID)
+                .get()
+                .map{$0.value}
+                .map { event -> (ESI.Event, NSAttributedString?) in
+                    let text = event.text.data(using: .utf8).flatMap {
+                        try? NSMutableAttributedString(data: $0,
+                                                       options: [.documentType : NSAttributedString.DocumentType.html,
+                                                                 .characterEncoding: String.Encoding.utf8.rawValue,
+                                                                 .defaultAttributes: [:]],
+                                                       documentAttributes: nil)
+                        
+                    }
+                    text?.removeAttribute(.foregroundColor, range: NSRange(location: 0, length: text?.length ?? 0))
+                    text?.removeAttribute(.font, range: NSRange(location: 0, length: text?.length ?? 0))
+                    text?.removeAttribute(.paragraphStyle, range: NSRange(location: 0, length: text?.length ?? 0))
+                    text?.addAttributes([.font: UIFont.preferredFont(forTextStyle: .body), .foregroundColor: UIColor.label],
+                                        range: NSRange(location: 0, length: text?.length ?? 0))
+                    return (event, text)
+            }
+            .receive(on: RunLoop.main)))
         }
         let event = result?.result?.value
         let error = result?.result?.error
         return Group {
             if event != nil {
-                EventBodyContent(event: event!)
+                EventBodyContent(event: event!.0, text: event!.1)
             }
             else if error != nil {
                 Text(error!).padding()
@@ -37,18 +56,10 @@ struct EventBody: View {
 
 struct EventBodyContent: View {
     var event: ESI.Event
+    var text: NSAttributedString?
     
     var body: some View {
-        let text = try? NSMutableAttributedString(data: event.text.data(using: .utf8) ?? Data(),
-                                      options: [.documentType : NSAttributedString.DocumentType.html,
-                                                .characterEncoding: String.Encoding.utf8.rawValue,
-                                                .defaultAttributes: [:]],
-                                      documentAttributes: nil)
-        text?.removeAttribute(.foregroundColor, range: NSRange(location: 0, length: text?.length ?? 0))
-        text?.removeAttribute(.font, range: NSRange(location: 0, length: text?.length ?? 0))
-        text?.removeAttribute(.paragraphStyle, range: NSRange(location: 0, length: text?.length ?? 0))
-        text?.addAttribute(.font, value: UIFont.preferredFont(forTextStyle: .body), range: NSRange(location: 0, length: text?.length ?? 0))
-        
+
         let avatar: Avatar?
         
         switch event.ownerType {
@@ -63,7 +74,7 @@ struct EventBodyContent: View {
         }
         
         return GeometryReader { geometry in
-            text.map { body in
+            self.text.map { body in
                 ScrollView(.vertical) {
                     VStack(alignment: .leading) {
                         HStack(alignment: .top) {

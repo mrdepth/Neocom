@@ -38,7 +38,7 @@ struct DamagePatterns: View {
             DamagePatternsCustom(onSelect: completion)
             DamagePatternsPredefined(onSelect: completion)
         }.listStyle(GroupedListStyle())
-        .navigationBarTitle("Damage Patterns")
+        .navigationBarTitle(Text("Damage Patterns"))
         .navigationBarItems(trailing: EditButton())
             .sheet(isPresented: $isNpcPickerPresented) {self.npcPicker}
     }
@@ -51,7 +51,7 @@ struct DamagePatterns_Previews: PreviewProvider {
             DamagePatterns { _ in }
         }
         .environmentObject(gang)
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
     }
 }

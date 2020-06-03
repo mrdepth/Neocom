@@ -55,9 +55,8 @@ struct BarButtonItem_Previews: PreviewProvider {
         return NavigationView {
             VStack {
                 Text("Text")
-                
             }
-            .navigationBarTitle(Text("Title"), displayMode: .inline)
+            .navigationBarTitle(Text("Text"), displayMode: .inline)
             .navigationBarItems(leading: BarButtonItems.close {}, trailing: BarButtonItems.compose {})
             
         }//.environment(\.sizeCategory, .accessibilityExtraExtraExtraLarge)

@@ -153,49 +153,48 @@ extension ESI.Characters.CharacterID.Contracts.Success {
     }
 }
 
-
 extension ESI.ContractStatus {
     var title: String {
         switch self {
         case .outstanding:
-            return NSLocalizedString("Outstanding", comment: "")
+            return NSLocalizedString("Outstanding", comment: "ESI.ContractStatus")
         case .inProgress:
-            return NSLocalizedString("In Progress", comment: "")
+            return NSLocalizedString("In Progress", comment: "ESI.ContractStatus")
         case .cancelled:
-            return NSLocalizedString("Cancelled", comment: "")
+            return NSLocalizedString("Cancelled", comment: "ESI.ContractStatus")
         case .deleted:
-            return NSLocalizedString("Deleted", comment: "")
+            return NSLocalizedString("Deleted", comment: "ESI.ContractStatus")
         case .failed:
-            return NSLocalizedString("Failed", comment: "")
+            return NSLocalizedString("Failed", comment: "ESI.ContractStatus")
         case .finished, .finishedContractor, .finishedIssuer:
-            return NSLocalizedString("Finished", comment: "")
+            return NSLocalizedString("Finished", comment: "ESI.ContractStatus")
         case .rejected:
-            return NSLocalizedString("Rejected", comment: "")
+            return NSLocalizedString("Rejected", comment: "ESI.ContractStatus")
         case .reversed:
-            return NSLocalizedString("Reversed", comment: "")
+            return NSLocalizedString("Reversed", comment: "ESI.ContractStatus")
         }
     }
     
 }
 
-extension ESI.Characters.ValueType {
+extension ESI.Corporations.ValueType {
     var title: String {
         switch self {
         case .auction:
-            return NSLocalizedString("Auction", comment: "")
+            return NSLocalizedString("Auction", comment: "ESI.ContractType")
         case .courier:
-            return NSLocalizedString("Courier", comment: "")
+            return NSLocalizedString("Courier", comment: "ESI.ContractType")
         case .itemExchange:
-            return NSLocalizedString("Item Exchange", comment: "")
+            return NSLocalizedString("Item Exchange", comment: "ESI.ContractType")
         case .loan:
-            return NSLocalizedString("Loan", comment: "")
+            return NSLocalizedString("Loan", comment: "ESI.ContractType")
         case .unknown:
-            return NSLocalizedString("Unknown", comment: "")
+            return NSLocalizedString("Unknown", comment: "ESI.ContractType")
         }
     }
 }
 
-extension ESI.Characters.Availability {
+extension ESI.Corporations.Availability {
     var title: String {
         switch self {
         case .alliance:

@@ -67,7 +67,7 @@ struct ShipPickerGroupsContent: View {
                         HStack {
                             GroupCell(group: group)
                             Spacer()
-                            Button("Select") {
+                            Button(NSLocalizedString("Select", comment: "")) {
                                 self.completion(group)
                             }.foregroundColor(.blue)
                         }
@@ -117,9 +117,9 @@ struct ShipPickerTypes: View {
 
 struct ShipPickerGroups_Previews: PreviewProvider {
     static var previews: some View {
-        let category = try? AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEInvCategory.self).filter(/\SDEInvCategory.categoryID == SDECategoryID.ship.rawValue).first()
+        let category = try? Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvCategory.self).filter(/\SDEInvCategory.categoryID == SDECategoryID.ship.rawValue).first()
         return NavigationView {
             ShipPickerGroups(category: category!) { _ in}
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

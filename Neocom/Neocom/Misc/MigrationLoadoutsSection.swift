@@ -22,14 +22,14 @@ struct MigrationLoadoutsSection: View {
             Spacer()
             if !loadouts.records.isEmpty {
                 if selection.isSuperset(of: loadouts.records) {
-                    Button("DESELECT ALL") {
+                    Button(NSLocalizedString("DESELECT ALL", comment: "")) {
                         withAnimation {
                             self.selection.subtract(self.loadouts.records)
                         }
                     }
                 }
                 else {
-                    Button("SELECT ALL") {
+                    Button(NSLocalizedString("SELECT ALL", comment: "")) {
                         withAnimation {
                             self.selection.formUnion(self.loadouts.records)
                         }

@@ -14,8 +14,9 @@ struct About: View {
     
     var appVersion: some View {
         let info = Bundle.main.infoDictionary
+        
         let version = info?["CFBundleShortVersionString"] as? String ?? ""
-        let build = info?["CFBundleVersion"] as? String ?? ""
+        let build = info?[kCFBundleVersionKey as String] as? String ?? ""
         return HStack {
             Text("Application Version")
             Spacer()
@@ -31,12 +32,12 @@ struct About: View {
         }
     }
     
-    func urlCell(title: LocalizedStringKey, url: URL) -> some View {
+    func urlCell(title: Text, url: URL) -> some View {
         Button(action: {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }) {
             VStack(alignment: .leading) {
-                Text(title).foregroundColor(.primary)
+                title.foregroundColor(.primary)
                 Text(url.absoluteString)
             }
         }
@@ -92,17 +93,17 @@ struct About: View {
             }
             Section {
                 support
-                urlCell(title: "Homepage", url: Config.current.homepage)
-                urlCell(title: "Sources", url: Config.current.sources)
-                urlCell(title: "Privacy Policy", url: Config.current.privacy)
-                urlCell(title: "Terms of Use", url: Config.current.terms)
+                urlCell(title: Text("Homepage"), url: Config.current.homepage)
+                urlCell(title: Text("Sources"), url: Config.current.sources)
+                urlCell(title: Text("Privacy Policy"), url: Config.current.privacy)
+                urlCell(title: Text("Terms of Use"), url: Config.current.terms)
             }
             
             Section(header: Text("SPECIAL THANKS")) {
                 specialThanks
             }
         }.listStyle(GroupedListStyle())
-        .navigationBarTitle("About")
+        .navigationBarTitle(Text("About"))
     }
 }
 
@@ -111,7 +112,7 @@ struct About_Previews: PreviewProvider {
         NavigationView {
             About()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .navigationViewStyle(StackNavigationViewStyle())
     }
 }

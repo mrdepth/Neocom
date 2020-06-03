@@ -133,7 +133,7 @@ struct InGameActivityView: View {
                 }
             }
             .alert(item: self.$error) { error in
-                Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: Alert.Button.cancel(Text("Close")))
+                Alert(title: Text("Error"), message: Text(error.wrappedValue.localizedDescription), dismissButton: .cancel(Text("Close")))
             }
             .onReceive(savingPublisher ?? Empty().eraseToAnyPublisher()) { result in
                 self.savingPublisher = nil
@@ -150,7 +150,7 @@ struct InGameActivityView: View {
                     self.error = IdentifiableWrapper(error)
                 }
             }
-            .navigationBarTitle("Select Account")
+            .navigationBarTitle(Text("Select Account"))
             .navigationBarItems(trailing: BarButtonItems.close {
                 self.completion(false)
             })
@@ -163,7 +163,7 @@ struct InGameActivityView: View {
 struct InGameActivity_Previews: PreviewProvider {
     static var previews: some View {
         InGameActivityView(ships: [Ship(typeID: 645)]) {_ in}
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

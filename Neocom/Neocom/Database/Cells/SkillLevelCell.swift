@@ -24,7 +24,7 @@ struct SkillLevelCell: View {
             .default(Text("Add to Skill Plan")) {
                 let skillPlan = self.sharedState.account?.activeSkillPlan
                 skillPlan?.add(trainingQueue)
-                NotificationCenter.default.post(name: .didUpdateSkillPlan, object: skillPlan)
+                NotificationCenter.default.post(name: .didFinishJob, object: skillPlan)
             },
             .cancel()])
     }
@@ -71,8 +71,8 @@ struct SkillLevelCell_Previews: PreviewProvider {
         return List {
             SkillLevelCell(type: type, skill: Pilot.Skill(type: type)!, level: 1, pilot: nil)
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext.newBackgroundContext())
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext.newBackgroundContext())
             .environmentObject(SharedState.testState())
     }
 }

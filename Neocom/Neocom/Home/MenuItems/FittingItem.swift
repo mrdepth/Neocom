@@ -9,12 +9,13 @@
 import SwiftUI
 
 struct FittingItem: View {
+    @ObservedObject private var storage = Storage.sharedStorage
     
     var body: some View {
         NavigationLink(destination: Loadouts()) {
             Icon(Image("fitting"))
-            Text("Fitting")
-        }
+            Text("Fitting Editor")
+        }.id(storage.currentLanguagID)
     }
 }
 

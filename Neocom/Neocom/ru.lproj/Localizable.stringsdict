@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%d days</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@numberOfDays@</string>
+		<key>numberOfDays</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d дней</string>
+			<key>many</key>
+			<string>%d дней</string>
+			<key>one</key>
+			<string>один день</string>
+			<key>other</key>
+			<string>%d дней</string>
+			<key>zero</key>
+			<string>%d дней</string>
+		</dict>
+	</dict>
+	<key>%d months</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@numberOfMonths@</string>
+		<key>numberOfMonths</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d месяцев</string>
+			<key>many</key>
+			<string>%d месяцев</string>
+			<key>one</key>
+			<string>один месяц</string>
+			<key>other</key>
+			<string>%d месяцев</string>
+			<key>zero</key>
+			<string>%d месяцев</string>
+		</dict>
+	</dict>
+	<key>%d weeks</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@numberOfWeeks@</string>
+		<key>numberOfWeeks</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d недель</string>
+			<key>many</key>
+			<string>%d недель</string>
+			<key>one</key>
+			<string>одна неделя</string>
+			<key>other</key>
+			<string>%d недель</string>
+			<key>zero</key>
+			<string>%d недель</string>
+		</dict>
+	</dict>
+	<key>%d years</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@numberOfYears@</string>
+		<key>numberOfYears</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d лет</string>
+			<key>many</key>
+			<string>%d лет</string>
+			<key>one</key>
+			<string>один год</string>
+			<key>other</key>
+			<string>%d лет</string>
+			<key>zero</key>
+			<string>%d лет</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

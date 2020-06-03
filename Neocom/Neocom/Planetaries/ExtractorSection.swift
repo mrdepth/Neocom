@@ -141,7 +141,7 @@ struct ExtractorSection_Previews: PreviewProvider {
             List {
                 ExtractorSection(extractor: ecu!)
             }.listStyle(GroupedListStyle())
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(planet)
     }
 }

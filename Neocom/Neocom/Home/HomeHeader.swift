@@ -14,6 +14,13 @@ import Alamofire
 struct HomeHeader: View {
     @EnvironmentObject private var sharedState: SharedState
     @ObservedObject var characterInfo = Lazy<CharacterInfo, Account>()
+    @State private var lastUpdateDate = Date()
+    
+    private func reload(_ info: CharacterInfo) {
+        guard lastUpdateDate.timeIntervalSinceNow < -30 else {return}
+        self.lastUpdateDate = Date()
+        info.update(cachePolicy: .useProtocolCachePolicy)
+    }
     
     var body: some View {
         let characterInfo = sharedState.account.map{self.characterInfo.get($0, initial: CharacterInfo(esi: sharedState.esi, characterID: $0.characterID, characterImageSize: .size256, corporationImageSize: .size32, allianceImageSize: .size32))}
@@ -40,6 +47,14 @@ struct HomeHeader: View {
                 HomeLoginHeader()
             }
         }
+        .onReceive(Timer.publish(every: 60 * 30, on: .main, in: .default).autoconnect()) { _ in
+            guard let info = characterInfo else {return}
+            self.reload(info)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIScene.didActivateNotification)) { _ in
+            guard let info = characterInfo else {return}
+            self.reload(info)
+        }
     }
 }
 
@@ -48,7 +63,7 @@ struct HomeHeader_Previews: PreviewProvider {
     static var previews: some View {
         HomeHeader()
             .environmentObject(SharedState.testState())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
 
     }
 }

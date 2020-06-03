@@ -225,7 +225,7 @@ struct FittingModuleCell_Previews: PreviewProvider {
         return List {
             FittingModuleCell(ship: dominix, module: DGMModuleGroup([cannon]))
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(gang)
     }
 }

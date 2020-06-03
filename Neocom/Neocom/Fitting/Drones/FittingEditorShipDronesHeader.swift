@@ -29,7 +29,7 @@ struct FittingEditorShipDronesHeader_Previews: PreviewProvider {
         
         return FittingEditorShipDronesHeader(ship: gang.pilots[0].ship!)
             .environmentObject(gang)
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
             .background(Color(.systemBackground))
 
     }

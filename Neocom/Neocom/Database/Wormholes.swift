@@ -32,7 +32,7 @@ struct Wormholes: View {
                 WormholesContent(wormholes: searchResults ?? wormholes)
             }
         }.listStyle(GroupedListStyle())
-            .navigationBarTitle("Wormholes")
+            .navigationBarTitle(Text("Wormholes"))
     }
 }
 
@@ -93,7 +93,7 @@ struct Wormholes_Previews: PreviewProvider {
         NavigationView {
             Wormholes()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
     }
 }

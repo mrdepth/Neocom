@@ -19,14 +19,14 @@ struct BlueprintActivityMaterials: View {
             TypeInfoAttributeCell(title: Text(material.materialType?.typeName ?? ""),
                                   subtitle: Text("x\(material.quantity)"),
                                   image: material.materialType?.image, targetType: material.materialType)
-        }.listStyle(GroupedListStyle()).navigationBarTitle("Materials")
+        }.listStyle(GroupedListStyle()).navigationBarTitle(Text("Materials"))
     }
 }
 
 struct BlueprintActivityMaterials_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            BlueprintActivityMaterials(activity: try! AppDelegate.sharedDelegate.persistentContainer.viewContext.from(SDEIndActivity.self).first()!)
+            BlueprintActivityMaterials(activity: try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEIndActivity.self).first()!)
         }
     }
 }

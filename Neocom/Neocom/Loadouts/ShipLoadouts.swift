@@ -37,13 +37,24 @@ struct ShipLoadouts: View {
             .asResult()
             .eraseToAnyPublisher()
     }
-    
+
+    private func onSelect(_ loadout: Ship, _ openMode: OpenMode) {
+        self.openMode = openMode
+        projectLoading = DGMSkillLevels.load(sharedState.account, managedObjectContext: managedObjectContext)
+            .receive(on: RunLoop.main)
+            .tryMap { try FittingProject(loadout: loadout, skillLevels: $0, managedObjectContext: self.managedObjectContext) }
+            .asResult()
+            .eraseToAnyPublisher()
+    }
+
     private func onSelect(_ result: LoadoutsList.Result, _ openMode: OpenMode) {
         switch result {
         case let .type(type):
             onSelect(type, openMode)
         case let .loadout(objectID):
             onSelect(managedObjectContext.object(with: objectID) as! Loadout, openMode)
+        case let .ship(loadout):
+            onSelect(loadout, openMode)
         }
     }
     
@@ -64,7 +75,7 @@ struct ShipLoadouts: View {
         }
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
         .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
-        .navigationBarTitle("Loadouts")
+        .navigationBarTitle(Text("Loadouts"))
     }
 }
 
@@ -75,8 +86,8 @@ struct ShipLoadouts_Previews: PreviewProvider {
         return NavigationView {
             ShipLoadouts()
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.newBackgroundContext())
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
         .environmentObject(SharedState.testState())
     }
 }

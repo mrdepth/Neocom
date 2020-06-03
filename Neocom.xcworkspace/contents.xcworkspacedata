@@ -16,4 +16,10 @@
    <FileRef
       location = "group:ThirdParty/dgmpp/XCode/dgmpp.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:ThirdParty/ASReceipt/ASReceipt.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
 </Workspace>

@@ -14,19 +14,27 @@ import Combine
 struct ServerStatus: View {
     @EnvironmentObject private var sharedState: SharedState
     @ObservedObject private var status = Lazy<DataLoader<ESI.ServerStatus, AFError>, Account?>()
+    
+    private func getPublisher() -> AnyPublisher<ESI.ServerStatus, AFError> {
+        sharedState.esi.status.get().map{$0.value}.receive(on: RunLoop.main).eraseToAnyPublisher()
+    }
+    
     var body: some View {
-        let result = self.status.get(sharedState.account, initial: DataLoader(sharedState.esi.status.get().map{$0.value}.receive(on: RunLoop.main))).result
-        let status = result?.value
+        let result = self.status.get(sharedState.account, initial: DataLoader(getPublisher()))
+        
+        let status = result.result?.value
         return Group {
             if status != nil {
                 ServerStatusContent(status: status!)
             }
-            else if result?.error != nil {
+            else if result.result?.error != nil {
                 (Text("Tranquility - ") + Text("Offline").fontWeight(.semibold)).modifier(SecondaryLabelModifier())
             }
             else {
                 Text(" ").modifier(SecondaryLabelModifier())
             }
+        }.onReceive(Timer.publish(every: 10, on: .main, in: .default).autoconnect()) { _ in
+            result.update(self.getPublisher())
         }
     }
 }

@@ -34,13 +34,13 @@ struct LoadoutCell: View {
 
 struct LoadoutCell_Previews: PreviewProvider {
     static var previews: some View {
-        let loadout = Loadout(context: AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        let loadout = Loadout(context: Storage.sharedStorage.persistentContainer.viewContext)
         loadout.name = "Test Loadout"
         loadout.typeID = 645
         
         return List {
             LoadoutCell(typeID: 645, name: "Test Loadout")
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

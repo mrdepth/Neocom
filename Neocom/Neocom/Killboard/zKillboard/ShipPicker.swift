@@ -40,7 +40,7 @@ struct ShipPicker: View {
                 ShipPickerCategoriesContent(categories: categories, completion: self.completion)
             }
         }
-        .navigationBarTitle("Categories")
+        .navigationBarTitle(Text("Categories"))
         .sheet(item: $selectedType) { type in
             NavigationView {
                 TypeInfo(type: type).navigationBarItems(leading: BarButtonItems.close {self.selectedType = nil})
@@ -75,6 +75,6 @@ struct ShipPicker_Previews: PreviewProvider {
             ShipPicker { _ in
                 
             }
-        }.environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19D76" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E287" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CertCertificate" representedClassName="SDECertCertificate" syncable="YES" codeGenerationType="class">
         <attribute name="certificateID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="certificateName" optional="YES" attributeType="String"/>
@@ -269,6 +269,7 @@
         <attribute name="capacity" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="mass" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="metaLevel" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="originalTypeName" optional="YES" attributeType="String"/>
         <attribute name="portionSize" optional="YES" attributeType="Integer 32" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="published" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="radius" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -405,7 +406,7 @@
         </fetchIndex>
     </entity>
     <entity name="TxtDescription" representedClassName="SDETxtDescription" syncable="YES" codeGenerationType="class">
-        <attribute name="text" optional="YES" attributeType="Transformable" customClassName="NSAttributedString"/>
+        <attribute name="text" optional="YES" attributeType="Transformable" valueTransformerName="NeocomSecureUnarchiveFromDataTransformer" customClassName="NSAttributedString"/>
         <relationship name="certificate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CertCertificate" inverseName="certificateDescription" inverseEntity="CertCertificate"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InvType" inverseName="typeDescription" inverseEntity="InvType"/>
     </entity>
@@ -496,7 +497,7 @@
         <element name="InvGroup" positionX="0" positionY="45" width="128" height="165"/>
         <element name="InvMarketGroup" positionX="-18" positionY="36" width="128" height="135"/>
         <element name="InvMetaGroup" positionX="18" positionY="63" width="128" height="105"/>
-        <element name="InvType" positionX="-396" positionY="85" width="128" height="495"/>
+        <element name="InvType" positionX="-396" positionY="85" width="128" height="508"/>
         <element name="InvTypeRequiredSkill" positionX="-189" positionY="180" width="128" height="90"/>
         <element name="MapConstellation" positionX="81" positionY="225" width="128" height="135"/>
         <element name="MapPlanet" positionX="-189" positionY="180" width="128" height="105"/>
@@ -506,7 +507,7 @@
         <element name="NpcGroup" positionX="117" positionY="261" width="128" height="120"/>
         <element name="RamActivity" positionX="63" positionY="207" width="128" height="118"/>
         <element name="StaStation" positionX="99" positionY="243" width="128" height="120"/>
-        <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="90"/>
+        <element name="TxtDescription" positionX="-180" positionY="189" width="128" height="88"/>
         <element name="WhType" positionX="-189" positionY="180" width="128" height="135"/>
     </elements>
 </model>

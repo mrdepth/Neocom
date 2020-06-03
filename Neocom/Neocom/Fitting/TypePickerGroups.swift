@@ -87,7 +87,7 @@ struct TypePickerGroups: View {
 
 struct TypePickerGroups_Previews: PreviewProvider {
     static var previews: some View {
-        let context = AppDelegate.sharedDelegate.persistentContainer.viewContext
+        let context = Storage.sharedStorage.persistentContainer.viewContext
         let group = try! context.fetch(SDEDgmppItemGroup.rootGroup(categoryID: .hi)).first!
         return NavigationView {
             TypePickerGroups(parentGroup: group,

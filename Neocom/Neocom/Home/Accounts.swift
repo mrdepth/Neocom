@@ -14,6 +14,7 @@ struct Accounts: View {
     var completion: (Account) -> Void
     
     @Environment(\.managedObjectContext) private var managedObjectContext
+    @EnvironmentObject private var sharedState: SharedState
     
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Account.characterName, ascending: true), NSSortDescriptor(keyPath: \Account.uuid, ascending: true)])
     private var accounts: FetchedResults<Account>
@@ -35,7 +36,7 @@ struct Accounts: View {
 
     var body: some View {
         List {
-            Button("Log In with EVE Online") {
+            Button(NSLocalizedString("Log In with EVE Online", comment: "")) {
                 let url = OAuth2.authURL(clientID: Config.current.esi.clientID, callbackURL: Config.current.esi.callbackURL, scope: ESI.Scope.all, state: "esi")
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }.frame(maxWidth: .infinity)
@@ -47,6 +48,9 @@ struct Accounts: View {
                 }.onDelete { (indices) in
                     withAnimation {
                         indices.forEach { i in
+                            if self.sharedState.account == self.accounts[i] {
+                                self.sharedState.account = nil
+                            }
                             self.managedObjectContext.delete(self.accounts[i])
                         }
                         if self.managedObjectContext.hasChanges {
@@ -57,7 +61,7 @@ struct Accounts: View {
             }
         }
         .listStyle(GroupedListStyle())
-        .navigationBarTitle("Accounts")
+        .navigationBarTitle(Text("Accounts"))
         .navigationBarItems(trailing: EditButton())
     }
 }
@@ -68,7 +72,7 @@ struct Accounts_Previews: PreviewProvider {
         NavigationView {
             Accounts { _ in }
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

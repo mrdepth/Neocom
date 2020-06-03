@@ -17,24 +17,6 @@ struct CharacterSheet: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var sharedState: SharedState
     
-    private var title: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("Artem Valiant").font(.title)
-            HStack {
-                Icon(Image("corporation"))
-                Text("Necrorise Squadron")
-            }
-            HStack {
-                Icon(Image("alliance"))
-                Text("Red Alert")
-            }
-        }
-        .background(Color(.systemFill))
-        .padding()
-        .colorScheme(.dark)
-
-    }
-    
     private func dateOfBirth(from info: ESI.CharacterInfo) -> some View {
         VStack(alignment: .leading) {
             Text("Date of Birth")
@@ -88,7 +70,7 @@ struct CharacterSheet: View {
     private func skills(from skills: ESI.CharacterSkills?) -> some View {
         skills.map { skills in
             VStack(alignment: .leading) {
-                Text("\(skills.skills.count) ") + Text("Skills")
+                Text("\(skills.skills.count) Skills")
                 Text(UnitFormatter.localizedString(from: skills.totalSP, unit: .skillPoints, style: .long)).modifier(SecondaryLabelModifier())
             }
         }
@@ -212,7 +194,7 @@ struct CharacterSheet: View {
             else {
                 Text(RuntimeError.noAccount).padding()
             }
-        }.navigationBarTitle("Character Sheet")
+        }.navigationBarTitle(Text("Character Sheet"))
     }
 }
 
@@ -223,7 +205,7 @@ struct CharacterSheet_Previews: PreviewProvider {
             CharacterSheet()
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

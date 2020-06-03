@@ -59,7 +59,7 @@ struct FittingDroneActions: View {
                 Stepper("\(drone.count) Drones", value: $drone.count, in: 1...drone.squadronSize)
             }
         }.listStyle(GroupedListStyle())
-            .navigationBarTitle("Actions")
+            .navigationBarTitle(Text("Actions"))
             .navigationBarItems(leading: BarButtonItems.close(completion), trailing: BarButtonItems.trash {
                 self.completion()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
@@ -79,8 +79,8 @@ struct FittingDroneActions_Previews: PreviewProvider {
         return NavigationView {
             FittingDroneActions(drone: drone) {}
                 .environmentObject(gang)
-                .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
-                .environment(\.backgroundManagedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+                .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+                .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         }
     }
 }

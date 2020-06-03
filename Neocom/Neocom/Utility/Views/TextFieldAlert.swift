@@ -29,13 +29,13 @@ struct TextFieldAlert: View {
         case success(String)
     }
     
-    var title: LocalizedStringKey
-    var placeholder: LocalizedStringKey
+    var title: Text
+    var placeholder: String
     var completion: (Result) -> Void
     @State private var text: String
     @State private var keyboardFrame: CGRect = .null
     
-    init(title: LocalizedStringKey, placeholder: LocalizedStringKey, text: String, completion: @escaping (Result) -> Void ) {
+    init(title: Text, placeholder: String, text: String, completion: @escaping (Result) -> Void ) {
         self.title = title
         self.placeholder = placeholder
         self.completion = completion
@@ -58,7 +58,7 @@ struct TextFieldAlert: View {
         GeometryReader { geometry in
             VStack {
                 VStack(spacing: 0) {
-                    Text(self.title)
+                    self.title
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.center)
                         .padding()
@@ -91,13 +91,13 @@ struct TextFieldAlertTestView: View {
         Group {
             ZStack {
                 Color.white
-                Button("Button") {
+                Button(NSLocalizedString("Button", comment: "")) {
                     withAnimation {
                         self.isPresented = true
                     }
                 }
                 if isPresented {
-                    TextFieldAlert(title: "Hello, World", placeholder: "Edit", text: "") { result in
+                    TextFieldAlert(title: Text("Text"), placeholder: "Edit", text: "") { result in
                         withAnimation {
                             self.isPresented = false
                         }
@@ -105,8 +105,8 @@ struct TextFieldAlertTestView: View {
                 }
             }
             VStack {
-                TextFieldAlert(title: "Rename", placeholder: "Edit", text: "") { result in }
-                TextFieldAlert(title: "Rename", placeholder: "Edit", text: "") { result in }
+                TextFieldAlert(title: Text("Text"), placeholder: "Edit", text: "") { result in }
+                TextFieldAlert(title: Text("Text"), placeholder: "Edit", text: "") { result in }
             }
         }
     }

@@ -36,7 +36,7 @@ struct AssetsList: View {
     }
 
     private var fittingButton: some View {
-        Button("Fitting") {
+        Button(NSLocalizedString("Fitting", comment: "")) {
             self.projectLoading = DGMSkillLevels.load(self.sharedState.account, managedObjectContext: self.managedObjectContext)
                 .receive(on: RunLoop.main)
                 .tryMap { try FittingProject(asset: self.ship!, skillLevels: $0, managedObjectContext: self.managedObjectContext) }
@@ -107,7 +107,7 @@ struct AssetsList_Previews: PreviewProvider {
         let data = NSDataAsset(name: "dominixAsset")!.data
         let asset = try! JSONDecoder().decode(AssetsData.Asset.self, from: data)
         return AssetsList(asset)
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
             .environmentObject(SharedState.testState())
     }
 }

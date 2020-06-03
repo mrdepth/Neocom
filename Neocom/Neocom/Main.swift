@@ -19,7 +19,7 @@ struct FinishedViewWrapper: View {
                 FinishedView(isPresented: $isFinished)
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: .didUpdateSkillPlan)) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: .didFinishJob)) { _ in
             withAnimation {
                 self.isFinished = true
             }
@@ -47,10 +47,15 @@ struct Main: View {
     private let home = Home()
 
     var body: some View {
-//        Migration_Previews.previews
         let navigationView = NavigationView {
             if horizontalSizeClass == .regular {
+                #if targetEnvironment(macCatalyst) || targetEnvironment(simulator)
                 home
+                #else
+                AdsContainerView {
+                    home
+                }
+                #endif
                 restoredFitting.map{FittingEditor(project: $0)}
             }
             else {
@@ -65,8 +70,13 @@ struct Main: View {
                 navigationView.navigationViewStyle(DoubleColumnNavigationViewStyle())
             }
             else {
+                #if targetEnvironment(macCatalyst) || targetEnvironment(simulator)
                 navigationView.navigationViewStyle(StackNavigationViewStyle())
-//            .navigationViewStyle(StackNavigationViewStyle())
+                #else
+                AdsContainerView {
+                    navigationView.navigationViewStyle(StackNavigationViewStyle())
+                }
+                #endif
             }
             FinishedViewWrapper()
         }
@@ -77,9 +87,10 @@ struct Main: View {
 struct Main_Previews: PreviewProvider {
     static var previews: some View {
         return Main()
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
             .environmentObject(SharedState.testState())
 
     }
 }
 #endif
+

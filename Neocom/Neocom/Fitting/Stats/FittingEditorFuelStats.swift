@@ -54,7 +54,7 @@ struct FittingEditorFuelStats_Previews: PreviewProvider {
             FittingEditorFuelStats(ship: DGMStructure.testKeepstar())
         }.listStyle(GroupedListStyle())
             .environmentObject(PricesData(esi: ESI()))
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }
 

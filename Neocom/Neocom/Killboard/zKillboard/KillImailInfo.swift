@@ -106,7 +106,7 @@ struct KillImailInfo: View {
     @State private var projectLoading: AnyPublisher<Result<FittingProject, Error>, Never>?
 
     private var fittingButton: some View {
-        Button("Fitting") {
+        Button(NSLocalizedString("Fitting", comment: "")) {
             self.projectLoading = DGMSkillLevels.load(self.sharedState.account, managedObjectContext: self.managedObjectContext)
                 .receive(on: RunLoop.main)
                 .tryMap { try FittingProject(killmail: self.killmail, skillLevels: $0, managedObjectContext: self.managedObjectContext) }
@@ -148,7 +148,7 @@ struct KillImailInfo: View {
             self.projectLoading = nil
             self.selectedProject = result.value
         }
-        .navigationBarTitle("Killmail")
+        .navigationBarTitle(Text("Killmail"))
         .navigationBarItems(trailing: fittingButton)
     }
 }
@@ -220,7 +220,7 @@ struct KillImailInfo_Previews: PreviewProvider {
         return NavigationView {
             KillImailInfo(killmail: killmail, contacts: contacts)
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

@@ -25,6 +25,7 @@ struct LoadoutsSection: View {
         let encoder = LoadoutPlainTextEncoder(managedObjectContext: managedObjectContext)
         guard let data = try? encoder.encode(ship), let string = String(data: data, encoding: .utf8) else {return}
         UIPasteboard.general.string = string
+        NotificationCenter.default.post(name: .didFinishJob, object: nil)
     }
 
     private func delete(_ loadoutIDs: [NSManagedObjectID]) {
@@ -42,7 +43,7 @@ struct LoadoutsSection: View {
             title
             if editMode?.wrappedValue == .active {
                 Spacer()
-                Button("SELECT ALL") {
+                Button(NSLocalizedString("SELECT ALL", comment: "")) {
                     withAnimation {
                         self.selection.formUnion(section.loadouts.map{$0.objectID})
                     }
@@ -66,10 +67,10 @@ struct LoadoutsSection: View {
                     }.buttonStyle(PlainButtonStyle())//.id(loadout.objectID)
                         .contextMenu {
                             if UIApplication.shared.supportsMultipleScenes {
-                                Button("Open in New Window") {
+                                Button(NSLocalizedString("Open in New Window", comment: "")) {
                                     self.onSelect(loadout.objectID, .newWindow)
                                 }
-                                Button("Open in Current Window") {
+                                Button(NSLocalizedString("Open in Current Window", comment: "")) {
                                     self.onSelect(loadout.objectID, .currentWindow)
                                 }
                             }
@@ -96,8 +97,8 @@ struct LoadoutsSection: View {
 struct LoadoutsSection_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            LoadoutsSection(loadouts: LoadoutsLoader(.ship, managedObjectContext: AppDelegate.sharedDelegate.persistentContainer.viewContext), selection: .constant(Set())) { _, _ in}
+            LoadoutsSection(loadouts: LoadoutsLoader(.ship, managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext), selection: .constant(Set())) { _, _ in}
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
     }
 }

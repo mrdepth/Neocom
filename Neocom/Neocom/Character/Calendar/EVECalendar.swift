@@ -79,8 +79,8 @@ struct EVECalendarContent: View {
 #if DEBUG
 struct EVECalendar_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
+//        let account = AppDelegate.sharedDelegate.testingAccount
+//        let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
         
         let calendar = (0..<100).map { i in
             ESI.Calendar.Element(eventDate: Date(timeIntervalSinceNow: 3600 * TimeInterval(i) * 3),
@@ -97,7 +97,7 @@ struct EVECalendar_Previews: PreviewProvider {
                 .navigationBarTitle(Text("Wallet Journal"))
             
         }
-        .environment(\.managedObjectContext, AppDelegate.sharedDelegate.persistentContainer.viewContext)
+        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         .environmentObject(SharedState.testState())
     }
 }

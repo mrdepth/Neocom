@@ -1,0 +1,1528 @@
+/* No comment provided by engineer. */
+" (%@ players)" = " (%@ игроков)";
+
+/* No comment provided by engineer. */
+" %@+ m" = " %@+ м";
+
+/* No comment provided by engineer. */
+" accuracy: " = " меткость: ";
+
+/* E.g.: 100 ISK from [PlayerName] */
+" from " = " от ";
+
+/* No comment provided by engineer. */
+" lifetime: " = " время жизни: ";
+
+/* No comment provided by engineer. */
+" rate of fire: " = " темп стрельбы: ";
+
+/* E.g.: 100 ISK to [PlayerName] */
+" to " = " для ";
+
+/* No comment provided by engineer. */
+" velocity: " = " скорость: ";
+
+/* No comment provided by engineer. */
+"- Remove ads from every screen\n- Remove ads across all devices with the same Apple ID" = "- Удалить рекламу со всех экранов приложения\n- Удалить рекламу на всех устройствах с одним Apple ID";
+
+/* No comment provided by engineer. */
+"%@ / %@ (%@ SP/h)" = "%1$@ / %2$@ (%3$@ SP/ч)";
+
+/* No comment provided by engineer. */
+"%@ assets" = "%@ предметов";
+
+/* No comment provided by engineer. */
+"%@ better" = "%@ лучше";
+
+/* No comment provided by engineer. */
+"%@ better.\n" = "%@ лучше.\n";
+
+/* No comment provided by engineer. */
+"%@ damage done" = "%@ нанесено урона";
+
+/* No comment provided by engineer. */
+"%@ damage done (final blow)" = "%@ нанесено урона (последний выстрел)";
+
+/* No comment provided by engineer. */
+"%@ damage taken" = "%@ получено урона";
+
+/* price per period */
+"%@ per %@" = "%1$@ за %2$@";
+
+/* No comment provided by engineer. */
+"%@ Skills" = "%@ навыков";
+
+/* No comment provided by engineer. */
+"%@ skills (%@)" = "%1$@ навыков (%2$@)";
+
+/* No comment provided by engineer. */
+"%@ skills in queue (%@)" = "%1$@ навыков в очереди (%2$@)";
+
+/* No comment provided by engineer. */
+"%@ Skills, %@" = "%1$@ навыков, %2$@";
+
+/* No comment provided by engineer. */
+"%@ SP/h" = "%@ SP/ч";
+
+/* No comment provided by engineer. */
+"%@ to level %@" = "%1$@ до уровня %2$@";
+
+/* No comment provided by engineer. */
+"%@ units/day" = "%@ единиц/день";
+
+/* No comment provided by engineer. */
+"+%@ more" = "+%@ еще";
+
+/* Skill queue notifications */
+"1 Hour Left" = "Остался 1 час";
+
+/* Skill queue notifications */
+"4 Hours Left" = "Осталось 4 часа";
+
+/* Skill queue notifications */
+"24 Hours Left" = "Осталось 24 часа";
+
+/* No comment provided by engineer. */
+"About" = "О приложении";
+
+/* No comment provided by engineer. */
+"Account" = "Аккаунт";
+
+/* No comment provided by engineer. */
+"ACCOUNT" = "АККАУНТ";
+
+/* No comment provided by engineer. */
+"Accounts" = "Аккаунты";
+
+/* No comment provided by engineer. */
+"ACCOUNTS" = "АККАУНТЫ";
+
+/* No comment provided by engineer. */
+"Actions" = "Действия";
+
+/* No comment provided by engineer. */
+"Active" = "Активный";
+
+/* No comment provided by engineer. */
+"Add Cargo" = "Добавить груз";
+
+/* No comment provided by engineer. */
+"Add Module" = "Добавить модуль";
+
+/* No comment provided by engineer. */
+"Add New Pattern" = "Добавить шаблон";
+
+/* No comment provided by engineer. */
+"Add Pilot" = "Добавить пилота";
+
+/* No comment provided by engineer. */
+"Add Skills" = "Добавить навыки";
+
+/* No comment provided by engineer. */
+"Add to Skill Plan" = "Добавить в план обучения";
+
+/* No comment provided by engineer. */
+"Add your first\nEVE Oline Account" = "Добавьте ваш первый\nEVE Oline аккаунт";
+
+/* No comment provided by engineer. */
+"Affecting Skills" = "Влияющие навыки";
+
+/* No comment provided by engineer. */
+"Align time:" = "Выравнивание:";
+
+/* Skill Borwser. All skills. */
+"All" = "Все";
+
+/* No comment provided by engineer. */
+"All Skills" = "Все навыки";
+
+/* No comment provided by engineer. */
+"All Skills " = "Все навыки ";
+
+/* No comment provided by engineer. */
+"Alliance" = "Альянс";
+
+/* No comment provided by engineer. */
+"ALLIANCES" = "АЛЬЯНСЫ";
+
+/* No comment provided by engineer. */
+"Any" = "Любой";
+
+/* No comment provided by engineer. */
+"Application Version" = "Весрия приложения";
+
+/* Month Abbreviation */
+"APR" = "АПР";
+
+/* No comment provided by engineer. */
+"Are you sure?" = "Вы уверены?";
+
+/* No comment provided by engineer. */
+"Area Effects" = "Эффекты окружения";
+
+/* No comment provided by engineer. */
+"AREA EFFECTS" = "ЭФФЕКТЫ ОКРУЖЕНИЯ";
+
+/* No comment provided by engineer. */
+"Assets" = "Хранилище";
+
+/* No comment provided by engineer. */
+"Attributes" = "Аттрибуты";
+
+/* No comment provided by engineer. */
+"ATTRIBUTES" = "АТТРИБУТЫ";
+
+/* auPerSecond */
+"AU/s" = "а.е./с";
+
+/* ESI.ContractType */
+"Auction" = "Аукцион";
+
+/* Month Abbreviation */
+"AUG" = "АВГ";
+
+/* No comment provided by engineer. */
+"Auto-renewable subscription" = "Автовозобновляемая подписка";
+
+/* No comment provided by engineer. */
+"Availability" = "Доступность";
+
+/* No comment provided by engineer. */
+"Averaged Facility Performance:" = "Средняя производительность:";
+
+/* No comment provided by engineer. */
+"Balance" = "Баланс";
+
+/* No comment provided by engineer. */
+"Balance: " = "Баланс: ";
+
+/* No comment provided by engineer. */
+"Based on current training queue and skill plan." = "Рассчитано на основе текущей очереди обучения и тренировочного плана.";
+
+/* No comment provided by engineer. */
+"BIDS" = "СТАВКИ";
+
+/* No comment provided by engineer. */
+"BIO" = "БИОГРАФИЯ";
+
+/* No comment provided by engineer. */
+"Bloodline" = "Родословная";
+
+/* No comment provided by engineer. */
+"Blueprints" = "Чертежи";
+
+/* No comment provided by engineer. */
+"Bonus Remaps Available" = "Доп. сеанс перераспределения доступен";
+
+/* No comment provided by engineer. */
+"Booster Slot %@" = "Слот стимулятора %@";
+
+/* No comment provided by engineer. */
+"Boosters" = "Стимуляторы";
+
+/* No comment provided by engineer. */
+"BOOSTERS" = "СТИМУЛЯТОРЫ";
+
+/* No comment provided by engineer. */
+"Browse %@ Variations" = "Показать %@ вариантов";
+
+/* No comment provided by engineer. */
+"Browse All Skills" = "Посмотреть все навыки";
+
+/* No comment provided by engineer. */
+"BUSINESS" = "БИЗНЕС";
+
+/* No comment provided by engineer. */
+"Buy" = "Посмотреть все навыки";
+
+/* No comment provided by engineer. */
+"BUYER WILL GET" = "ПОКУПАТЕЛЬ ПОЛУЧИТ";
+
+/* No comment provided by engineer. */
+"BUYER WILL PAY" = "ПОКУПАТЕЛЬ ЗАПЛАТИТ";
+
+/* No comment provided by engineer. */
+"Buyers" = "Покупатели";
+
+/* No comment provided by engineer. */
+"By Category" = "По категориям";
+
+/* No comment provided by engineer. */
+"By Location" = "По местоположению";
+
+/* No comment provided by engineer. */
+"CACHE" = "КЭШ";
+
+/* No comment provided by engineer. */
+"Calendar" = "Календарь";
+
+/* Skill Borwser */
+"Can Train" = "Можно изучить";
+
+/* No comment provided by engineer. */
+"Cancel" = "Отмена";
+
+/* ESI.ContractStatus */
+"Cancelled" = "Отменен";
+
+/* Industry Job Status: cancelled [date] */
+"cancelled %@" = "отменено %@";
+
+/* No comment provided by engineer. */
+"CAPACITOR" = "КОНДЕНСАТОР";
+
+/* No comment provided by engineer. */
+"Cargo" = "Груз";
+
+/* No comment provided by engineer. */
+"Cargo:" = "Груз:";
+
+/* No comment provided by engineer. */
+"Categories" = "Категории";
+
+/* No comment provided by engineer. */
+"Certificates" = "Сертификаты";
+
+/* No comment provided by engineer. */
+"CHARACTER" = "ПЕРСОНАЖ";
+
+/* No comment provided by engineer. */
+"Character %d" = "Пользователь %d";
+
+/* No comment provided by engineer. */
+"Character Sheet" = "Личное дело";
+
+/* No comment provided by engineer. */
+"Characters" = "Персонажи";
+
+/* No comment provided by engineer. */
+"CHARACTERS" = "ПЕРСОНАЖИ";
+
+/* No comment provided by engineer. */
+"CHARGE" = "БОЕПРИПАСЫ";
+
+/* No comment provided by engineer. */
+"Charges" = "Боеприпасы";
+
+/* No comment provided by engineer. */
+"Charisma" = "Харизма";
+
+/* No comment provided by engineer. */
+"Chinese" = "Китайский";
+
+/* No comment provided by engineer. */
+"Clear" = "Очистить";
+
+/* No comment provided by engineer. */
+"Clear Cache" = "Очистить кэш";
+
+/* No comment provided by engineer. */
+"Clone jump availability: " = "Джамп-клонами можно воспользоватья: ";
+
+/* No comment provided by engineer. */
+"Close" = "Закрыть";
+
+/* No comment provided by engineer. */
+"COMPLETED" = "ЗАВЕРШЕНО";
+
+/* No comment provided by engineer. */
+"Compose Mail" = "Написать письмо";
+
+/* No comment provided by engineer. */
+"Continue" = "Продолжить";
+
+/* No comment provided by engineer. */
+"Contracts" = "Контракты";
+
+/* No comment provided by engineer. */
+"Copy" = "Копировать";
+
+/* No comment provided by engineer. */
+"Copy to Clipboard" = "Скопировать в буфер обмена";
+
+/* No comment provided by engineer. */
+"Corporation" = "Корпорация";
+
+/* No comment provided by engineer. */
+"CORPORATIONS" = "КОРПОРАЦИИ";
+
+/* No comment provided by engineer. */
+"Cost:" = "Цена:";
+
+/* ESI.ContractType */
+"Courier" = "Курьер";
+
+/* No comment provided by engineer. */
+"CURRENT" = "ТЕКУЩИЙ";
+
+/* No comment provided by engineer. */
+"Current Cycle:" = "Текущий цикл:";
+
+/* No comment provided by engineer. */
+"CURRENT: %@" = "ТЕКУЩИЙ: %@";
+
+/* No comment provided by engineer. */
+"CUSTOM" = "ПОЛЬЗОВАТЕЛЬСКИЙ";
+
+/* No comment provided by engineer. */
+"Cycle Time:" = "Время цикла:";
+
+/* days */
+"d" = "д";
+
+/* No comment provided by engineer. */
+"Damage Pattern" = "Шаблон урона";
+
+/* No comment provided by engineer. */
+"DAMAGE PATTERN" = "ШАБЛОН УРОНА";
+
+/* No comment provided by engineer. */
+"Damage Patterns" = "Шаблоны урона";
+
+/* No comment provided by engineer. */
+"Damage per Second" = "Урон в секунду";
+
+/* No comment provided by engineer. */
+"Data will be restored from iCloud." = "Данные будут восстановлены из iCloud.";
+
+/* No comment provided by engineer. */
+"Database" = "База данных";
+
+/* No comment provided by engineer. */
+"DATABASE" = "БАЗА ДАННЫХ";
+
+/* No comment provided by engineer. */
+"DATABASE LANGUAGE" = "ЯЗЫК БАЗЫ ДАННЫХ";
+
+/* No comment provided by engineer. */
+"Database Version" = "Версия базы данных";
+
+/* No comment provided by engineer. */
+"Date Accepted" = "Дата принятия";
+
+/* No comment provided by engineer. */
+"Date Completed" = "Дата выполнения";
+
+/* No comment provided by engineer. */
+"Date Expired" = "Дата окончания";
+
+/* No comment provided by engineer. */
+"Date Issued" = "Дата выпуска";
+
+/* No comment provided by engineer. */
+"Date of Birth" = "Дата рождения";
+
+/* Month Abbreviation */
+"DEC" = "ДЕК";
+
+/* No comment provided by engineer. */
+"Default" = "По умолчанию";
+
+/* No comment provided by engineer. */
+"Delete" = "Удалить";
+
+/* ESI.ContractStatus */
+"Deleted" = "Удалено";
+
+/* Industry Job Status: delivered [date] */
+"delivered %@" = "доставлено %@";
+
+/* No comment provided by engineer. */
+"Delta:" = "Дельта:";
+
+/* No comment provided by engineer. */
+"Depleted" = "Истощено";
+
+/* No comment provided by engineer. */
+"Description" = "Описание";
+
+/* No comment provided by engineer. */
+"Deselect All" = "Снять выбор";
+
+/* No comment provided by engineer. */
+"DESELECT ALL" = "СНЯТЬ ВЫБОР";
+
+/* No comment provided by engineer. */
+"DESTROYED" = "УНИЧТОЖЕНО";
+
+/* No comment provided by engineer. */
+"Discard Changes" = "Отменить изменения";
+
+/* No comment provided by engineer. */
+"Donate %@" = "Пожертвовать %@";
+
+/* No comment provided by engineer. */
+"Donation" = "Пожертвование";
+
+/* No comment provided by engineer. */
+"DONCHIAN CHANNEL" = "КАНАЛ ДОНЧИАНА";
+
+/* No comment provided by engineer. */
+"Drafts" = "Черновики";
+
+/* No comment provided by engineer. */
+"Drone" = "Дрон";
+
+/* No comment provided by engineer. */
+"DRONE" = "ДРОН";
+
+/* No comment provided by engineer. */
+"Drone range:" = "Радиус дронов:";
+
+/* No comment provided by engineer. */
+"Drones" = "Дроны";
+
+/* No comment provided by engineer. */
+"DROPPED" = "УЦЕЛЕЛО";
+
+/* No comment provided by engineer. */
+"Efficiency:" = "Эффективность:";
+
+/* No comment provided by engineer. */
+"EM" = "ЭМ";
+
+/* No comment provided by engineer. */
+"End Location" = "Пункт назначения";
+
+/* No comment provided by engineer. */
+"English" = "Английский";
+
+/* No comment provided by engineer. */
+"Error" = "Ошибка";
+
+/* No comment provided by engineer. */
+"Established" = "Подготовка";
+
+/* No comment provided by engineer. */
+"EVE Mail" = "Почта";
+
+/* No comment provided by engineer. */
+"Exit WH" = "Выход";
+
+/* No comment provided by engineer. */
+"Expired" = "Истекло";
+
+/* No comment provided by engineer. */
+"Expires %@" = "Истекает %@";
+
+/* No comment provided by engineer. */
+"Expires in %@" = "Истекает через %@";
+
+/* No comment provided by engineer. */
+"Explosive" = "Фугасный";
+
+/* No comment provided by engineer. */
+"Extrapolated Efficiency:" = "Оценка полной эффективности:";
+
+/* ESI.ContractStatus */
+"Failed" = "Неудачно";
+
+/* No comment provided by engineer. */
+"Falloff" = "Уменьшение";
+
+/* Month Abbreviation */
+"FEB" = "ФЕВ";
+
+/* No comment provided by engineer. */
+"Fighters" = "Истребители";
+
+/* ESI.ContractStatus */
+"Finished" = "Завершено";
+
+/* No comment provided by engineer. */
+"Finished: %@ ago" = "Завершено: %@ назад";
+
+/* No comment provided by engineer. */
+"FIREPOWER" = "ОГНЕВАЯ МОЩЬ";
+
+/* No comment provided by engineer. */
+"Fitting" = "Оснащение";
+
+/* No comment provided by engineer. */
+"FITTING" = "ОСНАСТКА";
+
+/* No comment provided by engineer. */
+"Fitting Editor" = "Редактор оснащения кораблей";
+
+/* No comment provided by engineer. */
+"Fleet" = "Флот";
+
+/* No comment provided by engineer. */
+"FLEET" = "ФЛОТ";
+
+/* No comment provided by engineer. */
+"Fleets" = "Флоты";
+
+/* No comment provided by engineer. */
+"French" = "Французский";
+
+/* No comment provided by engineer. */
+"From Date" = "Начиная с даты";
+
+/* No comment provided by engineer. */
+"From:" = "От:";
+
+/* No comment provided by engineer. */
+"FUEL" = "ТОПЛИВО";
+
+/* No comment provided by engineer. */
+"German" = "Немецкий";
+
+/* gigaJoule */
+"GJ" = "ГДж";
+
+/* gigaJoulePerSecond */
+"GJ/s" = "ГДж/с";
+
+/* hours */
+"h" = "ч";
+
+/* No comment provided by engineer. */
+"Hangar" = "Ангар";
+
+/* No comment provided by engineer. */
+"Heavy" = "Тяжелые";
+
+/* No comment provided by engineer. */
+"Homepage" = "Домашняя страница";
+
+/* hpPerSecond */
+"HP/s" = "HP/с";
+
+/* No comment provided by engineer. */
+"If you used Neocom before, you can import your data from iCloud." = "Если вы пользовались Neocom ранее, вы можете импортировать ваши данные из iCloud.";
+
+/* No comment provided by engineer. */
+"Implant" = "Имплант";
+
+/* No comment provided by engineer. */
+"Implant Slot %@" = "Слот импланта %@";
+
+/* No comment provided by engineer. */
+"Implants" = "Импланты";
+
+/* No comment provided by engineer. */
+"IMPLANTS" = "ИМПЛАНТЫ";
+
+/* No comment provided by engineer. */
+"Import from clipboard" = "Импортировать из буфера обмена";
+
+/* ESI.ContractStatus */
+"In Progress" = "В процессе";
+
+/* No comment provided by engineer. */
+"In-Game" = "Внутри-игровые";
+
+/* No comment provided by engineer. */
+"In-Game Loadouts" = "Внутриигровое оснащение";
+
+/* No comment provided by engineer. */
+"Inactive" = "Неактивный";
+
+/* Skill queue notifications */
+"Inactive Skill Queue" = "Очередь обучения неактивна";
+
+/* No comment provided by engineer. */
+"Incursions" = "Вторжения";
+
+/* No comment provided by engineer. */
+"Industry" = "Промышленность";
+
+/* No comment provided by engineer. */
+"Industry Jobs" = "Промышленные проекты";
+
+/* No comment provided by engineer. */
+"Infested Solar Systems" = "Затронутые звездные системы";
+
+/* No comment provided by engineer. */
+"Info" = "Информация";
+
+/* No comment provided by engineer. */
+"Input Ratio:" = "Соотношение входов:";
+
+/* No comment provided by engineer. */
+"Input: %@" = "Вход: %@";
+
+/* No comment provided by engineer. */
+"Intelligence" = "Интеллект";
+
+/* No comment provided by engineer. */
+"Issued: " = "Выпущен: ";
+
+/* No comment provided by engineer. */
+"Italian" = "Итальянский";
+
+/* No comment provided by engineer. */
+"Item" = "Пердмет";
+
+/* ESI.ContractType */
+"Item Exchange" = "Обмен";
+
+/* Month Abbreviation */
+"JAN" = "ЯНВ";
+
+/* No comment provided by engineer. */
+"Japanese" = "Японский";
+
+/* No comment provided by engineer. */
+"Jub Runs: " = "Запусков: ";
+
+/* Month Abbreviation */
+"JUL" = "ИЮЛ";
+
+/* No comment provided by engineer. */
+"Jump Clones" = "Джамп-клоны";
+
+/* Month Abbreviation */
+"JUN" = "ИЮН";
+
+/* kilogram */
+"kg" = "кг";
+
+/* No comment provided by engineer. */
+"Kill Reports" = "Боевой журнал";
+
+/* No comment provided by engineer. */
+"Killmail" = "Отчет о бое";
+
+/* No comment provided by engineer. */
+"Kills" = "Убийтва";
+
+/* No comment provided by engineer. */
+"Kinetic" = "Кинетический";
+
+/* No comment provided by engineer. */
+"Korean" = "Корейский";
+
+/* No comment provided by engineer. */
+"Language Pack" = "Языковой пакет";
+
+/* No comment provided by engineer. */
+"Large" = "Большие";
+
+/* No comment provided by engineer. */
+"Lasts:" = "Запас на:";
+
+/* No comment provided by engineer. */
+"Leads Into" = "Ведет в";
+
+/* No comment provided by engineer. */
+"Level" = "Уровень";
+
+/* No comment provided by engineer. */
+"LEVEL %@" = "УРОВЕНЬ %@";
+
+/* No comment provided by engineer. */
+"LEVEL %@ (%@)" = "УРОВЕНЬ %1$@ (%2$@)";
+
+/* No comment provided by engineer. */
+"Lifetime" = "Пожизненно";
+
+/* No comment provided by engineer. */
+"Lifetime Subscription" = "Пожизненная подписка";
+
+/* No comment provided by engineer. */
+"Light" = "Легкие";
+
+/* No comment provided by engineer. */
+"Loadouts" = "Оснащение";
+
+/* No comment provided by engineer. */
+"LOADOUTS" = "ОСНАЩЕНИЕ";
+
+/* ESI.ContractType */
+"Loan" = "Ссуда";
+
+/* No comment provided by engineer. */
+"Location" = "Местоположение";
+
+/* No comment provided by engineer. */
+"Log In with EVE Online" = "Войти с EVE Online";
+
+/* No comment provided by engineer. */
+"Logout" = "Выйти";
+
+/* No comment provided by engineer. */
+"Losses" = "Потери";
+
+/* No comment provided by engineer. */
+"Loyalty Points" = "Очки лояльности";
+
+/* meter
+   minutes */
+"m" = "м";
+
+/* meterPerSecond */
+"m/s" = "м/с";
+
+/* cubicMeter */
+"m³" = "м³";
+
+/* No comment provided by engineer. */
+"m³/s" = "м³/с";
+
+/* No comment provided by engineer. */
+"Mail" = "Почта";
+
+/* No comment provided by engineer. */
+"Make Active" = "Сделать активным";
+
+/* No comment provided by engineer. */
+"Make Donation" = "Сделать пожертвование";
+
+/* No comment provided by engineer. */
+"Manage Subscriptions" = "Управление подписками";
+
+/* No comment provided by engineer. */
+"MANUFACTURING" = "ПРОИЗВОСТВО";
+
+/* Month Abbreviation */
+"MAR" = "МАР";
+
+/* No comment provided by engineer. */
+"Market" = "Рынок";
+
+/* No comment provided by engineer. */
+"MARKET" = "РЫНОК";
+
+/* No comment provided by engineer. */
+"Market Orders" = "Рыночные ордера";
+
+/* No comment provided by engineer. */
+"Mass:" = "Масса:";
+
+/* No comment provided by engineer. */
+"Mastery" = "Разряд";
+
+/* No comment provided by engineer. */
+"Materials" = "Материалы";
+
+/* No comment provided by engineer. */
+"MATERIALS" = "МАТЕРИАЛЫ";
+
+/* No comment provided by engineer. */
+"Max" = "Макс.";
+
+/* No comment provided by engineer. */
+"Maximum Jump Mass" = "Максимальная масса для прыжка";
+
+/* No comment provided by engineer. */
+"Maximum Mass Regeneration" = "Максимальная регенерация массы";
+
+/* No comment provided by engineer. */
+"Maximum Stable Mass" = "Максимальная стабильная масса";
+
+/* No comment provided by engineer. */
+"Maximum Stable Time" = "Максимальное стабильное время ";
+
+/* Month Abbreviation */
+"MAY" = "МАЙ";
+
+/* megaBitsPerSecond */
+"Mbit/s" = "Мбит/с";
+
+/* No comment provided by engineer. */
+"MEDIAN" = "МЕДИАНА";
+
+/* No comment provided by engineer. */
+"Medium" = "Средние";
+
+/* No comment provided by engineer. */
+"Memory" = "Память";
+
+/* No comment provided by engineer. */
+"Migrate legacy data" = "Перенести старые данные";
+
+/* No comment provided by engineer. */
+"Migration" = "Миграция";
+
+/* No comment provided by engineer. */
+"Miners" = "Добывающее оборудование";
+
+/* No comment provided by engineer. */
+"MISC" = "РАЗНОЕ";
+
+/* No comment provided by engineer. */
+"Missile" = "Ракеты";
+
+/* millimeter */
+"mm" = "мм";
+
+/* No comment provided by engineer. */
+"Mobilizing" = "Мобилизация";
+
+/* No comment provided by engineer. */
+"MODULE" = "МОДУЛЬ";
+
+/* No comment provided by engineer. */
+"Modules" = "Модули";
+
+/* No comment provided by engineer. */
+"More Devices" = "Больше устройств";
+
+/* No comment provided by engineer. */
+"Multilanguage" = "Мультиязычность";
+
+/* megaWatts */
+"MW" = "МВт";
+
+/* Skill Borwser. My skills. */
+"My" = "Мои";
+
+/* No comment provided by engineer. */
+"Name" = "Имя";
+
+/* No comment provided by engineer. */
+"Neocom is ready to use." = "Neocom готов к использованию.";
+
+/* No comment provided by engineer. */
+"Neural Remap Available" = "Перераспределение доступно";
+
+/* No comment provided by engineer. */
+"New Loadout" = "Новое оснащение";
+
+/* No comment provided by engineer. */
+"New Skill Plan" = "Новый план обучения";
+
+/* No comment provided by engineer. */
+"No" = "Нет";
+
+/* No comment provided by engineer. */
+"No Accounts" = "Нет аккаунтов";
+
+/* No comment provided by engineer. */
+"No EVE Account. Please login first." = "Нет EVE аккаунта. Пожалуйста, авторизуйтесь сперва.";
+
+/* No comment provided by engineer. */
+"No Implants" = "Нет имплантов";
+
+/* No comment provided by engineer. */
+"No Loadouts" = "Нет оснащений";
+
+/* No comment provided by engineer. */
+"No Price" = "Нет цены";
+
+/* No comment provided by engineer. */
+"No Results" = "Нет результата";
+
+/* No comment provided by engineer. */
+"No skills in training" = "Нет изучаемых навыков";
+
+/* No comment provided by engineer. */
+"NO SKILLS IN TRAINING" = "НЕТ ИЗУЧАЕМЫХ НАВЫКОВ";
+
+/* No comment provided by engineer. */
+"None" = "Нет";
+
+/* Skill Borwser */
+"Not Known" = "Не известно";
+
+/* No comment provided by engineer. */
+"Notifications Enabled" = "Уведомления включены";
+
+/* Month Abbreviation */
+"NOV" = "НОЯ";
+
+/* No comment provided by engineer. */
+"Now" = "сейчас";
+
+/* No comment provided by engineer. */
+"Now available on iPhone, iPad and Mac." = "Теперь доступно на iPhone, iPad и Mac.";
+
+/* No comment provided by engineer. */
+"Now supports Light/Dark themes." = "Теперь поддерживаются светлая/темная темы.";
+
+/* Month Abbreviation */
+"OCT" = "ОКТ";
+
+/* No comment provided by engineer. */
+"Offline" = "Оффлайн";
+
+/* No comment provided by engineer. */
+"Ok" = "Ок";
+
+/* No comment provided by engineer. */
+"One-time purchase" = "Разовая покупка";
+
+/* No comment provided by engineer. */
+"Online" = "Онлайн";
+
+/* No comment provided by engineer. */
+"Open in Current Window" = "Открыть в текущем окне";
+
+/* No comment provided by engineer. */
+"Open in New Window" = "Открыть в новом окне";
+
+/* No comment provided by engineer. */
+"Open:" = "Открытор:";
+
+/* No comment provided by engineer. */
+"Optimal Range" = "Оптимальное расстояние";
+
+/* No comment provided by engineer. */
+"Optimal Remap" = "Оптимальные характеристики";
+
+/* No comment provided by engineer. */
+"OPTIMAL: %@" = "ОПТИМАЛ: %@";
+
+/* No comment provided by engineer. */
+"Other" = "Разное";
+
+/* No comment provided by engineer. */
+"Output: %@" = "Выход: %@";
+
+/* ESI.ContractStatus */
+"Outstanding" = "Просроченный";
+
+/* No comment provided by engineer. */
+"Overheated" = "Перегружен";
+
+/* No comment provided by engineer. */
+"Passive Recharge Rate" = "Пассивная регенерация";
+
+/* Industry Job Status: paused [date] */
+"paused %@)" = "приостановлено %@)";
+
+/* No comment provided by engineer. */
+"Per Item" = "За предмет";
+
+/* No comment provided by engineer. */
+"Perception" = "Восприятие";
+
+/* No comment provided by engineer. */
+"Personal" = "Персональный";
+
+/* No comment provided by engineer. */
+"Pilot/Corporation/Alliance" = "Пилот/Корпорация/Альянс";
+
+/* No comment provided by engineer. */
+"Pilots" = "Пилоты";
+
+/* No comment provided by engineer. */
+"Planetaries" = "Планетарное производство";
+
+/* No comment provided by engineer. */
+"Please, log in to iCloud Account" = "Пожалуйста, авторизуйтесь в iCloud";
+
+/* No comment provided by engineer. */
+"PREDEFINED" = "ПРЕДУСТАНОВЛЕННЫЕ";
+
+/* No comment provided by engineer. */
+"Price" = "Цена";
+
+/* No comment provided by engineer. */
+"PRICE" = "ЦЕНА";
+
+/* No comment provided by engineer. */
+"Price:" = "Цена:";
+
+/* No comment provided by engineer. */
+"Price: " = "Цена: ";
+
+/* No comment provided by engineer. */
+"Privacy Policy" = "Политика конфиденциальности";
+
+/* No comment provided by engineer. */
+"PRODUCT" = "ПРОДУКТ";
+
+/* No comment provided by engineer. */
+"Public" = "Публичный";
+
+/* No comment provided by engineer. */
+"PUBLISHED" = "ОПУБЛИКОВАНО";
+
+/* No comment provided by engineer. */
+"Qty:" = "Кол-во:";
+
+/* No comment provided by engineer. */
+"Qty: " = "Кол-во: ";
+
+/* No comment provided by engineer. */
+"Qty: %@" = "Кол-во: %@";
+
+/* No comment provided by engineer. */
+"Quantity" = "Количество";
+
+/* No comment provided by engineer. */
+"Quantity:" = "Количество:";
+
+/* No comment provided by engineer. */
+"Quantity: %@" = "Количество: %@";
+
+/* No comment provided by engineer. */
+"Range:" = "Расстояние:";
+
+/* No comment provided by engineer. */
+"Rate of Fire" = "Темп стрельбы";
+
+/* Industry Job Status: ready [date] */
+"ready %@)" = "готово %@)";
+
+/* No comment provided by engineer. */
+"RECHARGE RATES (HP/S, EHP/S)" = "РЕМОНТ (HP/S, EHP/S)";
+
+/* No comment provided by engineer. */
+"Recharge:" = "Перезарядка:";
+
+/* No comment provided by engineer. */
+"Redesigned" = "Новый дизайн";
+
+/* No comment provided by engineer. */
+"Regions" = "Регионы";
+
+/* No comment provided by engineer. */
+"REGIONS" = "РЕГИОНЫ";
+
+/* No comment provided by engineer. */
+"Reinforced" = "Пиковый";
+
+/* ESI.ContractStatus */
+"Rejected" = "Отклонен";
+
+/* No comment provided by engineer. */
+"Remember to cancel any auto-renewable subscriptions." = "Не забудьте отменить автовозобновляемые подписки.";
+
+/* No comment provided by engineer. */
+"Remove Ads" = "Убрать рекламу";
+
+/* No comment provided by engineer. */
+"Remove Ads Subscription" = "Подписка: убрать рекламу";
+
+/* No comment provided by engineer. */
+"Rename" = "Переименовать";
+
+/* No comment provided by engineer. */
+"Repair Rate" = "Темп ремонта";
+
+/* No comment provided by engineer. */
+"Reply" = "Ответить";
+
+/* No comment provided by engineer. */
+"Required Skills" = "Требуемые навыки";
+
+/* No comment provided by engineer. */
+"Requirements" = "Требования";
+
+/* No comment provided by engineer. */
+"RESISTANCES" = "СОПРОТИВЛЕНИЕ УРОНУ";
+
+/* No comment provided by engineer. */
+"RESOURCES" = "РЕСУРСЫ";
+
+/* No comment provided by engineer. */
+"Restore Completed" = "Восстановление завершено";
+
+/* No comment provided by engineer. */
+"Restore Purchases" = "Восстановить покупки";
+
+/* Industry Job Status: reverted [date] */
+"reverted %@)" = "возвращено %@)";
+
+/* No comment provided by engineer. */
+"Reward" = "Награда";
+
+/* No comment provided by engineer. */
+"Runs per Copy: " = "Запусков на копию: ";
+
+/* No comment provided by engineer. */
+"Russian" = "Русский";
+
+/* seconds */
+"s" = "с";
+
+/* No comment provided by engineer. */
+"Save" = "Сохранить";
+
+/* No comment provided by engineer. */
+"Save Draft" = "Сохранить черновик";
+
+/* No comment provided by engineer. */
+"Save In-Game" = "Сохранить в игре";
+
+/* No comment provided by engineer. */
+"Scan res.:" = "Разр. сканера:";
+
+/* No comment provided by engineer. */
+"Search" = "Поиск";
+
+/* No comment provided by engineer. */
+"Security Status" = "Статус безопасности";
+
+/* No comment provided by engineer. */
+"Select" = "Выбрать";
+
+/* No comment provided by engineer. */
+"Select Account" = "Выбрать аккаунт";
+
+/* No comment provided by engineer. */
+"Select All" = "Выбрать все";
+
+/* No comment provided by engineer. */
+"SELECT ALL" = "ВЫБРАТЬ ВСЕ";
+
+/* No comment provided by engineer. */
+"Select Ammo" = "Выбрать боеприпасы";
+
+/* No comment provided by engineer. */
+"Select at least one modifier" = "Выберите минимум один фильтр";
+
+/* No comment provided by engineer. */
+"Select NPC" = "Выбрать NPC";
+
+/* No comment provided by engineer. */
+"Select your preferred language for the EVE Online Database." = "Выберите язык базы данных EVE Online.";
+
+/* No comment provided by engineer. */
+"Selected %@ Accounts" = "Выбрано %@ аккаунтов";
+
+/* No comment provided by engineer. */
+"Selected %@ Accounts and %@ Loadouts" = "Выбрано %1$@ аккаунтов и %2$@ оснасток";
+
+/* No comment provided by engineer. */
+"Selected %@ Loadouts" = "Выбрано %@ оснасток";
+
+/* No comment provided by engineer. */
+"Sell" = "Продать";
+
+/* No comment provided by engineer. */
+"Sellers" = "Продавцы";
+
+/* No comment provided by engineer. */
+"Sensor str.:" = "Сила сенсора:";
+
+/* Month Abbreviation */
+"SEP" = "СЕН";
+
+/* No comment provided by engineer. */
+"Settings" = "Настройки";
+
+/* No comment provided by engineer. */
+"Share" = "Поделиться";
+
+/* No comment provided by engineer. */
+"Ship" = "Корабль";
+
+/* No comment provided by engineer. */
+"SHIP" = "КОРАБЛЬ";
+
+/* No comment provided by engineer. */
+"Ship Name" = "Имя корабля";
+
+/* No comment provided by engineer. */
+"Ships" = "Корабли";
+
+/* No comment provided by engineer. */
+"Shortage in %@" = "Закончится через %@";
+
+/* No comment provided by engineer. */
+"Signature:" = "Сигнатура:";
+
+/* No comment provided by engineer. */
+"Skill" = "Навык";
+
+/* No comment provided by engineer. */
+"Skill %d" = "Навык %d";
+
+/* No comment provided by engineer. */
+"Skill Info" = "Информация о навыке";
+
+/* No comment provided by engineer. */
+"SKILL PLAN" = "ПЛАН ОБУЧЕНИЯ";
+
+/* No comment provided by engineer. */
+"Skill Plan is empty" = "План обучения пуст";
+
+/* No comment provided by engineer. */
+"SKILL PLAN IS EMPTY" = "ПЛАН ОБУЧЕНИЯ ПУСТ";
+
+/* No comment provided by engineer. */
+"SKILL PLAN: " = "ПЛАН ОБУЧЕНИЯ: ";
+
+/* No comment provided by engineer. */
+"Skill Plans" = "Планы обучения";
+
+/* No comment provided by engineer. */
+"Skill Queue" = "Очередь обучения";
+
+/* No comment provided by engineer. */
+"Skill queue is empty" = "Очередь обучения пуста";
+
+/* No comment provided by engineer. */
+"SKILL QUEUE NOTIFICATIONS" = "ОПОВЕЩЕНИЯ ОЧЕРЕДИ ОБУЧЕНИЯ";
+
+/* No comment provided by engineer. */
+"SKILL QUEUE: %@ (%@ skills)" = "ОЧЕРЕДЬ ОБУЧЕНИЯ: %1$@ (%2$@ навыков)";
+
+/* Skill queue notifications */
+"Skill Training Complete" = "Изучение завершено";
+
+/* No comment provided by engineer. */
+"Skills" = "Навыки";
+
+/* No comment provided by engineer. */
+"SKILLS" = "НАВЫКИ";
+
+/* No comment provided by engineer. */
+"skills in queue" = "навыков в очереди";
+
+/* No comment provided by engineer. */
+"Small" = "Малые";
+
+/* No comment provided by engineer. */
+"SOLAR SYSTEMS" = "ЗВЕЗДНЫЕ СИСТЕМЫ";
+
+/* No comment provided by engineer. */
+"Solo" = "Соло";
+
+/* No comment provided by engineer. */
+"Some application features may be temporarily unavailable" = "Некоторые функции приложения могут быть временно недоступны";
+
+/* No comment provided by engineer. */
+"Sources" = "Исходный код";
+
+/* spPerSecond */
+"SP/s" = "SP/с";
+
+/* No comment provided by engineer. */
+"Spanish" = "Испанский";
+
+/* No comment provided by engineer. */
+"Special hold:" = "Отсек для руды:";
+
+/* No comment provided by engineer. */
+"SPECIAL THANKS" = "ОСОБАЯ БЛАГОДАРНОСТЬ";
+
+/* No comment provided by engineer. */
+"Speed:" = "Скорость:";
+
+/* No comment provided by engineer. */
+"Stable:" = "Стабильно:";
+
+/* No comment provided by engineer. */
+"Start edit your loadout on iPhone and continue on Mac." = "Начните редактировать вашу оснастку на iPhone и продолжите на Mac.";
+
+/* No comment provided by engineer. */
+"Start Location" = "Пункт отправления";
+
+/* No comment provided by engineer. */
+"Start Now" = "Начать";
+
+/* No comment provided by engineer. */
+"Stats" = "Характ.";
+
+/* No comment provided by engineer. */
+"Status" = "Статус";
+
+/* No comment provided by engineer. */
+"STRUCTURE" = "СТРУКТУРЫ";
+
+/* No comment provided by engineer. */
+"Structure Name" = "Имя структуры";
+
+/* No comment provided by engineer. */
+"Structures" = "Структуры";
+
+/* No comment provided by engineer. */
+"Subject" = "Тема";
+
+/* No comment provided by engineer. */
+"Subject: " = "Тема: ";
+
+/* No comment provided by engineer. */
+"SUBSCRIPTION PLANS" = "ПЛАНЫ ПОДПИСОК";
+
+/* No comment provided by engineer. */
+"Subscriptions" = "Подписки";
+
+/* No comment provided by engineer. */
+"Sum (units):" = "Всего (ед.):";
+
+/* No comment provided by engineer. */
+"Support" = "Поддержка";
+
+/* No comment provided by engineer. */
+"Sustained" = "Устойчивый";
+
+/* No comment provided by engineer. */
+"Switch" = "Переключить";
+
+/* No comment provided by engineer. */
+"Tactical Mode" = "Тактический режим";
+
+/* No comment provided by engineer. */
+"Tap to Login" = "Нажмите для входа";
+
+/* No comment provided by engineer. */
+"Targets:" = "Целей:";
+
+/* No comment provided by engineer. */
+"Terms of Use" = "Условия использования";
+
+/* teraflops */
+"Tf" = "Тф";
+
+/* No comment provided by engineer. */
+"Tha language of the game database assets (ships, modules, their names and descriptions)." = "Язык базы данных (корабли, модули, их названия и описание).";
+
+/* No comment provided by engineer. */
+"Thermal" = "Термический";
+
+/* No comment provided by engineer. */
+"Time" = "Время";
+
+/* No comment provided by engineer. */
+"Time to Depletion:" = "Время до истощения:";
+
+/* No comment provided by engineer. */
+"Tired of seeing those pesky ads? Why not upgrade to an Ad Free Subscription!" = "Надоело смотреть эти надоедливые рекламные объявления? Почему бы не приобрести платную подписку?";
+
+/* No comment provided by engineer. */
+"Title" = "Заголовок";
+
+/* No comment provided by engineer. */
+"To Date" = "До даты";
+
+/* No comment provided by engineer. */
+"To:" = "Кому:";
+
+/* No comment provided by engineer. */
+"Total" = "Всего";
+
+/* No comment provided by engineer. */
+"Total Unread: %@" = "Всего непрачитано: %@";
+
+/* No comment provided by engineer. */
+"Total:" = "Всего:";
+
+/* No comment provided by engineer. */
+"Train to Level" = "Изучить до уровня";
+
+/* No comment provided by engineer. */
+"Train to level %@" = "Изучить до уровня %@";
+
+/* No comment provided by engineer. */
+"Training Queue is inactive" = "Очередь обучения неактивна";
+
+/* No comment provided by engineer. */
+"Training Queue will finish in 1 hour." = "Очередь обучения завершится через 1 час";
+
+/* No comment provided by engineer. */
+"Training Queue will finish in 4 hours." = "Очередь обучения завершится через 4 часа";
+
+/* No comment provided by engineer. */
+"Training Queue will finish in 24 hours." = "Очередь обучения завершится через 24 часа";
+
+/* No comment provided by engineer. */
+"Training time: %@" = "Время обучения: %@";
+
+/* ESI.ContractType */
+"Unknown" = "Неизвестно";
+
+/* No comment provided by engineer. */
+"UNKNOWN" = "НЕИЗВЕСТНО";
+
+/* No comment provided by engineer. */
+"Unknown Class %d" = "Неизвестный Класс %d";
+
+/* No comment provided by engineer. */
+"Unknown Error" = "Неизвестная ошибка";
+
+/* No comment provided by engineer. */
+"Unknown Location" = "Неизвестное местоположение";
+
+/* No comment provided by engineer. */
+"UNKNOWN LOCATION" = "НЕЗИВЕСТНОЕ МЕСТОПОЛОЖЕНИЕ";
+
+/* No comment provided by engineer. */
+"Unknown ship" = "Неизвестный корабль";
+
+/* No comment provided by engineer. */
+"Unknown Type" = "Неизвестный тип";
+
+/* No comment provided by engineer. */
+"Unnamed" = "Безымянный";
+
+/* No comment provided by engineer. */
+"UNNAMED" = "БЕЗЫМЯННЫЙ";
+
+/* No comment provided by engineer. */
+"UNPUBLISHED" = "НЕОПУБЛИКОВАНО";
+
+/* No comment provided by engineer. */
+"Updated:" = "Обновлено:";
+
+/* No comment provided by engineer. */
+"Variations" = "Вариации";
+
+/* No comment provided by engineer. */
+"VARIATIONS" = "ВАРИАЦИИ";
+
+/* No comment provided by engineer. */
+"VICTIM" = "ЖЕРТВА";
+
+/* No comment provided by engineer. */
+"Volley" = "Залп";
+
+/* No comment provided by engineer. */
+"Volume" = "Объем";
+
+/* No comment provided by engineer. */
+"VOLUME" = "ОБЪЕМ";
+
+/* No comment provided by engineer. */
+"Wallet Journal" = "Журнал кошелька";
+
+/* No comment provided by engineer. */
+"Wallet Transactions" = "Транзакции";
+
+/* No comment provided by engineer. */
+"Warp Speed" = "Скорость варпа";
+
+/* No comment provided by engineer. */
+"Warp speed:" = "Скорость варпа:";
+
+/* No comment provided by engineer. */
+"Warzone Control:" = "Влияние пиратов";
+
+/* No comment provided by engineer. */
+"Waste %@%" = "Отходы %1$@%2$";
+
+/* No comment provided by engineer. */
+"Waste in %@ (%@%)" = "Отходы через %1$@ (%2$@%3$)";
+
+/* No comment provided by engineer. */
+"Wealth" = "Стоимость активов";
+
+/* No comment provided by engineer. */
+"Weapons" = "Орудия";
+
+/* No comment provided by engineer. */
+"Welcome" = "Добро пожаловть";
+
+/* No comment provided by engineer. */
+"Welcome to" = "Добро пожаловать в";
+
+/* No comment provided by engineer. */
+"Willpower" = "Сила воли";
+
+/* No comment provided by engineer. */
+"Withdrawing" = "Отступление";
+
+/* No comment provided by engineer. */
+"X-Large" = "Сверх-большие";
+
+/* No comment provided by engineer. */
+"Yes" = "Да";
+
+/* No comment provided by engineer. */
+"Yield (units/h):" = "Производство (ед./ч):";
+
+/* No comment provided by engineer. */
+"You can now use Neocom without any restrictions on all devices for unlimited time. But you can make a donation to support the development." = "Теперь вы можете использовать Neocom без ограничений на всех устройствах неограниченное время. Но вы все еще можете поддержать разработку сделав пожертвование.";
+
+/* No comment provided by engineer. */
+"Your previous purchases are being restored. Thank you!" = "Ваши покупки восстановлены. Спасибо!";
+
+/* No comment provided by engineer. */
+"zKillboard Reports" = "zKillboard";
+

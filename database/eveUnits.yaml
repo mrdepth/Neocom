@@ -1,0 +1,214 @@
+-   description: Meter
+    displayName: m
+    unitID: 1
+    unitName: Length
+-   description: Kilogram
+    displayName: kg
+    unitID: 2
+    unitName: Mass
+-   description: Second
+    displayName: sec
+    unitID: 3
+    unitName: Time
+-   description: Ampere
+    displayName: A
+    unitID: 4
+    unitName: Electric Current
+-   description: Kelvin
+    displayName: K
+    unitID: 5
+    unitName: Temperature
+-   description: Mole
+    displayName: mol
+    unitID: 6
+    unitName: Amount Of Substance
+-   description: Candela
+    displayName: cd
+    unitID: 7
+    unitName: Luminous Intensity
+-   description: Square meter
+    displayName: m2
+    unitID: 8
+    unitName: Area
+-   description: Cubic meter
+    displayName: m3
+    unitID: 9
+    unitName: Volume
+-   description: Meter per second
+    displayName: m/sec
+    unitID: 10
+    unitName: Speed
+-   description: Meter per second squared
+    displayName: m/sec
+    unitID: 11
+    unitName: Acceleration
+-   description: Reciprocal meter
+    displayName: m-1
+    unitID: 12
+    unitName: Wave Number
+-   description: Kilogram per cubic meter
+    displayName: kg/m3
+    unitID: 13
+    unitName: Mass Density
+-   description: Cubic meter per kilogram
+    displayName: m3/kg
+    unitID: 14
+    unitName: Specific Volume
+-   description: Ampere per square meter
+    displayName: A/m2
+    unitID: 15
+    unitName: Current Density
+-   description: Ampere per meter
+    displayName: A/m
+    unitID: 16
+    unitName: Magnetic Field Strength
+-   description: Mole per cubic meter
+    displayName: mol/m3
+    unitID: 17
+    unitName: Amount-Of-Substance Concentration
+-   description: Candela per square meter
+    displayName: cd/m2
+    unitID: 18
+    unitName: Luminance
+-   description: Kilogram per kilogram, which may be represented by the number 1
+    displayName: kg/kg = 1
+    unitID: 19
+    unitName: Mass Fraction
+-   displayName: s
+    unitID: 101
+    unitName: Milliseconds
+-   displayName: mm
+    unitID: 102
+    unitName: Millimeters
+-   unitID: 103
+    unitName: MegaPascals
+-   description: Indicates that the unit is a multiplier.
+    displayName: x
+    unitID: 104
+    unitName: Multiplier
+-   displayName: '%'
+    unitID: 105
+    unitName: Percentage
+-   displayName: tf
+    unitID: 106
+    unitName: Teraflops
+-   displayName: MW
+    unitID: 107
+    unitName: MegaWatts
+-   description: "Used for resistance.\r\n0.0 = 100% 1.0 = 0%\r\n"
+    displayName: '%'
+    unitID: 108
+    unitName: Inverse Absolute Percent
+-   description: "Used for multipliers displayed as %\r\n1.1 = +10%\r\n0.9 = -10%"
+    displayName: '%'
+    unitID: 109
+    unitName: Modifier Percent
+-   description: "Used to modify damage resistance. Damage resistance bonus.\r\n0.1
+        = 90%\r\n0.9 = 10%"
+    displayName: '%'
+    unitID: 111
+    unitName: Inversed Modifier Percent
+-   description: Rotation speed.
+    displayName: rad/sec
+    unitID: 112
+    unitName: Radians/Second
+-   displayName: HP
+    unitID: 113
+    unitName: Hitpoints
+-   description: Giga Joule
+    displayName: GJ
+    unitID: 114
+    unitName: capacitor units
+-   displayName: groupID
+    unitID: 115
+    unitName: groupID
+-   displayName: typeID
+    unitID: 116
+    unitName: typeID
+-   description: 1=small 2=medium 3=large 4=x-large
+    displayName: ''
+    unitID: 117
+    unitName: Sizeclass
+-   displayName: Ore units
+    unitID: 118
+    unitName: Ore units
+-   displayName: attributeID
+    unitID: 119
+    unitName: attributeID
+-   displayName: points
+    unitID: 120
+    unitName: attributePoints
+-   description: Used for real percentages, i.e. the number 5 is 5%
+    displayName: '%'
+    unitID: 121
+    unitName: realPercent
+-   unitID: 122
+    unitName: Fitting slots
+-   description: Shows seconds directly
+    displayName: sec
+    unitID: 123
+    unitName: trueTime
+-   description: Used for relative percentages displayed as %
+    displayName: '%'
+    unitID: 124
+    unitName: Modifier Relative Percent
+-   displayName: N
+    unitID: 125
+    unitName: Newton
+-   displayName: ly
+    unitID: 126
+    unitName: Light Year
+-   description: 0.0 = 0% 1.0 = 100%
+    displayName: '%'
+    unitID: 127
+    unitName: Absolute Percent
+-   description: Mega bits per second
+    displayName: Mbit/sec
+    unitID: 128
+    unitName: Drone bandwidth
+-   description: Hours
+    unitID: 129
+    unitName: Hours
+-   description: ISK
+    displayName: ISK
+    unitID: 133
+    unitName: Money
+-   description: Bandwidth for PI
+    displayName: m3/hour
+    unitID: 134
+    unitName: Logistical Capacity
+-   description: Used to denote distance, 1AU = The distance from the Earth to the
+        Sun.
+    displayName: AU
+    unitID: 135
+    unitName: Astronomical Unit
+-   description: Slot number prefix for various purposes
+    displayName: Slot
+    unitID: 136
+    unitName: Slot
+-   description: For displaying boolean flags 1=True 0=False
+    displayName: ''
+    unitID: 137
+    unitName: Boolean
+-   description: Units of something, for example fuel
+    displayName: units
+    unitID: 138
+    unitName: Units
+-   description: Forces a plus sign for positive values
+    displayName: +
+    unitID: 139
+    unitName: Bonus
+-   description: For anything which is divided by levels
+    displayName: Level
+    unitID: 140
+    unitName: Level
+-   description: For various counts to do with turret, launcher and rig hardpoints
+    displayName: hardpoints
+    unitID: 141
+    unitName: Hardpoints
+-   displayName: 1=Male 2=Unisex 3=Female
+    unitID: 142
+    unitName: Sex
+-   description: Date and time
+    unitID: 143
+    unitName: Datetime

@@ -237,8 +237,8 @@ extension SDEInvType {
 					value = "\(Int(int))"
 				}
 				if let unitID = trait.unitID {
-					let unit = try eveUnits.get()[unitID]!.object()
-					return "<color=white><b>\(value)\(unit.displayName!)</b></color> \(bonusText)"
+					let unit = try eveUnits.get()[unitID]?.object()
+					return "<color=white><b>\(value)\(unit?.displayName! ?? "")</b></color> \(bonusText)"
 				}
 				else {
 					return "<color=white><b>\(value)</b></color> \(bonusText)"

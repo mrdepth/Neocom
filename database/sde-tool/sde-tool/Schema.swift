@@ -57,10 +57,12 @@ struct TypeID: Codable {
 			var nameID: Int?
 			var importance: Int
 			var unitID: Int?
+            var isPositive: Bool?
 		}
 		var roleBonuses: [Bonus]?
 		var types: [Int: [Bonus]]?
 		var miscBonuses: [Bonus]?
+        var iconID: Int?
 	}
 	var description: LocalizedString?
 	var groupID: Int

@@ -523,7 +523,7 @@ extension SDEDgmppItemGroup {
         return request
     }
     
-    class func rootGroup(slot: DGMModule.Slot, subcategory: Int? = nil, race: SDEChrRace? = nil) -> NSFetchRequest<SDEDgmppItemGroup> {
+    class func rootGroup(slot: DGMModule.Slot, subcategory: Int? = nil, race: SDEChrRace? = nil, structure: Bool) -> NSFetchRequest<SDEDgmppItemGroup> {
         let categoryID: SDEDgmppItemCategoryID
         switch slot {
         case .hi:
@@ -533,7 +533,7 @@ extension SDEDgmppItemGroup {
         case .low:
             categoryID = .low
         case .rig:
-            categoryID = .rig
+            categoryID = structure ? .structureRig : .rig
         case .subsystem:
             categoryID = .subsystem
         case .mode:

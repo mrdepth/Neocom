@@ -46,7 +46,7 @@ class AssetsData: ObservableObject {
         }
     }
     
-    struct Asset: Codable {
+    struct Asset {
         var nested: [Asset]
         var underlyingAsset: ESI.Assets.Element
         var assetName: String?
@@ -64,7 +64,7 @@ class AssetsData: ObservableObject {
         var categories: [Category] = []
     }
     
-    private static func getNames(of assets: ESI.Assets, managedObjectContext: NSManagedObjectContext, character: ESI.Characters.CharacterID, cache: [Int64: String?]) -> AnyPublisher<[Int64: String?], Never> {
+    private static func getNames(of assets: ESI.Assets, managedObjectContext: NSManagedObjectContext, character: ESI.Characters.CharacterID, corporation: ESI.Corporations.CorporationID?, cache: [Int64: String?]) -> AnyPublisher<[Int64: String?], Never> {
         return Future<Set<Int64>, Never> { promise in
             managedObjectContext.perform {
                 let typeIDs = assets.map{Int32($0.typeID)}
@@ -79,7 +79,9 @@ class AssetsData: ObservableObject {
         }.flatMap { namedAssetIDs -> AnyPublisher<[Int64: String?], Never> in
             let names: AnyPublisher<[Int64: String?], Never>
             if !namedAssetIDs.isEmpty {
-                names = character.assets().names().post(itemIds: Array(namedAssetIDs))
+                
+                names = (corporation?.assets().names().post(itemIds: Array(namedAssetIDs)) ??
+                    character.assets().names().post(itemIds: Array(namedAssetIDs)))
                     .map{$0.value}
                     .replaceError(with: [])
                     .map { names in
@@ -197,16 +199,19 @@ class AssetsData: ObservableObject {
     var progress = Progress(totalUnitCount: 3)
     private var esi: ESI
     private var characterID: Int64
+    private var corporate: Bool
     private var managedObjectContext: NSManagedObjectContext
+    
 
 
-    init(esi: ESI, characterID: Int64, managedObjectContext: NSManagedObjectContext) {
+    init(esi: ESI, characterID: Int64, corporate: Bool, managedObjectContext: NSManagedObjectContext) {
         self.esi = esi
         self.characterID = characterID
+        self.corporate = corporate
         self.managedObjectContext = managedObjectContext
         update(cachePolicy: .useProtocolCachePolicy)
     }
-    
+
     func update(cachePolicy: URLRequest.CachePolicy) {
         isLoading = true
         subscriptions.removeAll()
@@ -228,8 +233,8 @@ class AssetsData: ObservableObject {
         var assetNames = [Int64: String?]()
         var locations = [Int64: EVELocation?]()
 
-        func process(assets: ESI.Assets) -> AnyPublisher<PartialResult, Never> {
-            let a = AssetsData.getNames(of: assets, managedObjectContext: managedObjectContext, character: character, cache: assetNames).map { i -> [Int64: String?] in
+        func process(assets: ESI.Assets, corporation: ESI.Corporations.CorporationID?) -> AnyPublisher<PartialResult, Never> {
+            let a = AssetsData.getNames(of: assets, managedObjectContext: managedObjectContext, character: character, corporation: corporation, cache: assetNames).map { i -> [Int64: String?] in
                 assetNames = i
                 return i
             }
@@ -246,28 +251,52 @@ class AssetsData: ObservableObject {
             }.eraseToAnyPublisher()
         }
         
-        func download(_ pages: Range<Int>) -> AnyPublisher<ESI.Assets, AFError> {
+        func download(_ pages: Range<Int>, _ corporation: ESI.Corporations.CorporationID?) -> AnyPublisher<ESI.Assets, AFError> {
             progress.performAsCurrent(withPendingUnitCount: 2, totalUnitCount: Int64(pages.count)) { p in
                 pages.publisher.setFailureType(to: AFError.self)
                     .flatMap { page in
                         p.performAsCurrent(withPendingUnitCount: 1, totalUnitCount: 100) { p in
-                            character.assets().get(page: page, cachePolicy: cachePolicy) { p.completedUnitCount = Int64($0.fractionCompleted * 100) }
-                                .map{$0.value}
+                            corporation?.assets()
+                                .get(page: page, cachePolicy: cachePolicy) { p.completedUnitCount = Int64($0.fractionCompleted * 100) }
+                                .map{$0.value.map{$0 as AssetProtocol}}
+                                .eraseToAnyPublisher() ??
+                                character.assets()
+                                    .get(page: page, cachePolicy: cachePolicy) { p.completedUnitCount = Int64($0.fractionCompleted * 100) }
+                                    .map{$0.value.map{$0 as AssetProtocol}}
+                                    .eraseToAnyPublisher()
                         }
                         
                 }
                 .eraseToAnyPublisher()
             }
         }
+        let loader: AnyPublisher<Result<AssetsData.PartialResult, AFError>, Never>
         
-        character.assets().get(cachePolicy: cachePolicy) { initialProgress.completedUnitCount = Int64($0.fractionCompleted * 100) }
-            .flatMap { result in
-                Just(result.value).setFailureType(to: AFError.self)
-                    .merge(with: download(getXPages(from: result).dropFirst()))
-        }.reduce([], +).flatMap {
-            process(assets: $0).setFailureType(to: AFError.self)
-        }.asResult()
-        .receive(on: RunLoop.main)
+        if corporate {
+            loader = character.get().map{esi.corporations.corporationID($0.value.corporationID)}
+                .flatMap { corporation in
+                    corporation.assets().get(cachePolicy: cachePolicy) { initialProgress.completedUnitCount = Int64($0.fractionCompleted * 100) }
+                        .flatMap { result in
+                            Just(result.value).setFailureType(to: AFError.self)
+                                .merge(with: download(getXPages(from: result).dropFirst(), corporation))
+                    }
+                    .reduce([], +)
+                    .flatMap {
+                        process(assets: $0, corporation: corporation).setFailureType(to: AFError.self)
+                    }
+            }.asResult().eraseToAnyPublisher()
+        }
+        else {
+            loader = character.assets().get(cachePolicy: cachePolicy) { initialProgress.completedUnitCount = Int64($0.fractionCompleted * 100) }
+                .flatMap { result in
+                    Just(result.value).setFailureType(to: AFError.self)
+                        .merge(with: download(getXPages(from: result).dropFirst(), nil))
+            }.reduce([], +).flatMap {
+                process(assets: $0, corporation: nil).setFailureType(to: AFError.self)
+            }.asResult().eraseToAnyPublisher()
+        }
+        
+        loader.receive(on: RunLoop.main)
         .sink { [weak self] result in
             self?.locations = result.map{$0.locations}
             self?.categories = result.map{$0.categories}

@@ -17,6 +17,8 @@ struct Assets: View {
         case byCategory
     }
     
+    var corporate: Bool = false
+    
     @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var sharedState: SharedState
@@ -66,8 +68,8 @@ struct Assets: View {
                 }
             }.listStyle(GroupedListStyle())
         }
-        
-        let assets = sharedState.account.map{self.assets.get($0, initial: AssetsData(esi: sharedState.esi, characterID: $0.characterID, managedObjectContext: backgroundManagedObjectContext))}
+
+        let assets = sharedState.account.map{self.assets.get($0, initial: AssetsData(esi: sharedState.esi, characterID: $0.characterID, corporate: corporate, managedObjectContext: backgroundManagedObjectContext))}
         
 
         return ZStack {

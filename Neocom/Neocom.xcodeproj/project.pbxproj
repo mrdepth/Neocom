@@ -69,6 +69,8 @@
 		162571F2242B9E140022C605 /* FittingModuleActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694B22C240697E600E81E49 /* FittingModuleActions.swift */; };
 		162571F3242B9E140022C605 /* FittingTypeVariations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B7FC3E2408E0470076BD7C /* FittingTypeVariations.swift */; };
 		162571F4242B9E140022C605 /* FittingCharges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B7FC432409073A0076BD7C /* FittingCharges.swift */; };
+		1625C56D24ADCA2E00014B41 /* CorpWalletJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1625C56C24ADCA2E00014B41 /* CorpWalletJournal.swift */; };
+		1625C56F24ADCCBD00014B41 /* CorpWalletJournalData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1625C56E24ADCCBD00014B41 /* CorpWalletJournalData.swift */; };
 		162C99AD246EDFEF000E78EF /* BundleResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162C99AC246EDFEF000E78EF /* BundleResource.swift */; };
 		1630ED7523CC65E0001DBAA7 /* TypeMasterySkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1630ED7423CC65E0001DBAA7 /* TypeMasterySkills.swift */; };
 		1630ED7923CC926E001DBAA7 /* CharacterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1630ED7823CC926E001DBAA7 /* CharacterSheet.swift */; };
@@ -487,6 +489,8 @@
 		161C6EFE23A1303700777009 /* EVELocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EVELocation.swift; sourceTree = "<group>"; };
 		161CE78D23E16E1B007619B8 /* SkillQueueSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillQueueSection.swift; sourceTree = "<group>"; };
 		161CE78F23E16E57007619B8 /* SkillPlanSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillPlanSection.swift; sourceTree = "<group>"; };
+		1625C56C24ADCA2E00014B41 /* CorpWalletJournal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorpWalletJournal.swift; sourceTree = "<group>"; };
+		1625C56E24ADCCBD00014B41 /* CorpWalletJournalData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorpWalletJournalData.swift; sourceTree = "<group>"; };
 		162C99AC246EDFEF000E78EF /* BundleResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleResource.swift; sourceTree = "<group>"; };
 		1630ED7423CC65E0001DBAA7 /* TypeMasterySkills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMasterySkills.swift; sourceTree = "<group>"; };
 		1630ED7823CC926E001DBAA7 /* CharacterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSheet.swift; sourceTree = "<group>"; };
@@ -904,6 +908,7 @@
 				169DA0FF23FEAF6600AC7B54 /* WealthData.swift */,
 				1686E2A324375DAC00FAD3BA /* ZKillboardLoader.swift */,
 				1687FC772464454600882EA2 /* CloudKitLoader.swift */,
+				1625C56E24ADCCBD00014B41 /* CorpWalletJournalData.swift */,
 			);
 			path = DataLoaders;
 			sourceTree = "<group>";
@@ -1240,6 +1245,7 @@
 			isa = PBXGroup;
 			children = (
 				1668A3C223F42677000A96D8 /* WalletJournal.swift */,
+				1625C56C24ADCA2E00014B41 /* CorpWalletJournal.swift */,
 				1668A3C423F426BA000A96D8 /* WalletJournalCell.swift */,
 			);
 			path = WalletJournal;
@@ -1969,6 +1975,7 @@
 				16701763244837E300363F93 /* PlainText.swift in Sources */,
 				169D2805241A0E3A002AB469 /* CalibrationResource.swift in Sources */,
 				160D0BA923F2E3C300690134 /* LoadingProgressView.swift in Sources */,
+				1625C56D24ADCA2E00014B41 /* CorpWalletJournal.swift in Sources */,
 				16B3C7F524113C7A00F21DE5 /* FittingImplantCell.swift in Sources */,
 				161C6EFF23A1303700777009 /* EVELocation.swift in Sources */,
 				168FF312242D3C73009FCE58 /* SkillsItem.swift in Sources */,
@@ -2228,6 +2235,7 @@
 				16859F4824320FB000824552 /* AssetsItem.swift in Sources */,
 				1688F8C6246D9E2B00D729A8 /* Storage.swift in Sources */,
 				16359213245ADF8000622C1C /* FittingEditorFleetBar.swift in Sources */,
+				1625C56F24ADCCBD00014B41 /* CorpWalletJournalData.swift in Sources */,
 				16D5DE7823B238D4004CDA4A /* CertificateRequirementsInfo.swift in Sources */,
 				1688841C242D11490099C769 /* CharacterSheetItem.swift in Sources */,
 				16359215245ADFA200622C1C /* FleetBarCell.swift in Sources */,
@@ -2475,7 +2483,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
@@ -2505,7 +2513,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;

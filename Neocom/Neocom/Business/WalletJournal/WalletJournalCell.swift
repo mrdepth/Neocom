@@ -18,7 +18,7 @@ struct WalletJournalCell: View {
     }
     
     private var title: some View {
-        Text(item.refType.title).font(.headline)
+        Text(item.referenceType.title).font(.headline)
     }
     
     private var amount: some View {
@@ -54,7 +54,7 @@ struct WalletJournalCell: View {
 struct WalletJournalCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            WalletJournalCell(item: ESI.WalletJournal.Element(amount: 1000,
+            WalletJournalCell(item: ESI.Characters.CharacterID.Wallet.Journal.Success(amount: 1000,
                                                               balance: 10000,
                                                               contextID: 1554561480,
                                                               contextIDType: .characterID,

@@ -40,7 +40,7 @@ struct FittingModuleBaseCell: View {
             subcategory = Int(self.ship is DGMStructure ? SDECategoryID.structureModule.rawValue : SDECategoryID.module.rawValue)
             race = nil
         }
-        return try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(slot: self.slot, subcategory: subcategory, race: race)).first
+        return try? self.managedObjectContext.fetch(SDEDgmppItemGroup.rootGroup(slot: self.slot, subcategory: subcategory, race: race, structure: self.ship is DGMStructure)).first
     }
     
     private func typePicker(_ group: SDEDgmppItemGroup, sockets: IndexSet) -> some View {
@@ -133,7 +133,8 @@ struct FittingModuleCell: View {
                 HStack(spacing: 0) {
                     Icon(Image("dps"), size: .small)
                     Text(" rate of fire: ") +
-                    Text(TimeIntervalFormatter.localizedString(from: cycleTime, precision: .seconds)).fontWeight(.semibold)
+                    Text(UnitFormatter.localizedString(from: cycleTime, unit: .seconds, style: .long)).fontWeight(.semibold)
+//                    Text(TimeIntervalFormatter.localizedString(from: cycleTime, precision: .seconds)).fontWeight(.semibold)
                 }.modifier(SecondaryLabelModifier())
             }
         }

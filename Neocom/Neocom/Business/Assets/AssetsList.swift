@@ -88,7 +88,7 @@ struct AssetsShipContent: View {
     var ship: AssetsData.Asset
     
     var body: some View {
-        let map = Dictionary(grouping: ship.nested, by: {ItemFlag(flag: $0.underlyingAsset.locationFlag) ?? .cargo})
+        let map = Dictionary(grouping: ship.nested, by: {ItemFlag(flag: $0.underlyingAsset.location) ?? .cargo})
         let assets = map.sorted {$0.key.rawValue < $1.key.rawValue}
         return ForEach(assets, id: \.key) { i in
             Section(header: i.key.tableSectionHeader) {
@@ -100,15 +100,15 @@ struct AssetsShipContent: View {
     }
 }
 
-#if DEBUG
-struct AssetsList_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        let data = NSDataAsset(name: "dominixAsset")!.data
-        let asset = try! JSONDecoder().decode(AssetsData.Asset.self, from: data)
-        return AssetsList(asset)
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environmentObject(SharedState.testState())
-    }
-}
-#endif
+//#if DEBUG
+//struct AssetsList_Previews: PreviewProvider {
+//    
+//    static var previews: some View {
+//        let data = NSDataAsset(name: "dominixAsset")!.data
+//        let asset = try! JSONDecoder().decode(AssetsData.Asset.self, from: data)
+//        return AssetsList(asset)
+//            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+//            .environmentObject(SharedState.testState())
+//    }
+//}
+//#endif

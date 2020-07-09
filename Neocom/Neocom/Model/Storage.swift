@@ -325,7 +325,9 @@ extension Loadout {
             LoadoutTransformer().reverseTransformedValue(data?.data) as? Ship
         }
         set {
-            data?.data = LoadoutTransformer().transformedValue(newValue) as? Data
+            let loadout = LoadoutTransformer().transformedValue(newValue) as? Data
+            guard data?.data != loadout else {return}
+            data?.data = loadout
         }
     }
 }

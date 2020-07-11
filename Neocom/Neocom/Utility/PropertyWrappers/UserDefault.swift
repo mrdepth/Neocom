@@ -19,6 +19,7 @@ enum UserDefaultsKey: String {
     case latestLaunchedVersion = "latestLaunchedVersion"
     case isLifetimeUpgrade = "isLifetimeUpgrade"
     case colorScheme = "colorScheme"
+    case adsConsent = "adsConsent"
 }
 
 

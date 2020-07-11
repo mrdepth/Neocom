@@ -18,7 +18,7 @@ struct TypeMarketOrders: View {
 
 	var type: SDEInvType
 
-	@ObservedObject var marketOrders = Lazy<TypeMarketData, Never>()
+	@ObservedObject var marketOrders = Lazy<TypeMarketData, Int32>()
 	@Environment(\.managedObjectContext) private var managedObjectContext
 	@Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
     @EnvironmentObject private var sharedState: SharedState
@@ -35,7 +35,7 @@ struct TypeMarketOrders: View {
 	}
 
     var body: some View {
-        let result = marketOrders.get(initial: TypeMarketData(type: type, esi: sharedState.esi, regionID: Int(marketRegionID.wrappedValue), managedObjectContext: backgroundManagedObjectContext))
+        let result = marketOrders.get(marketRegionID.wrappedValue, initial: TypeMarketData(type: type, esi: sharedState.esi, regionID: Int(marketRegionID.wrappedValue), managedObjectContext: backgroundManagedObjectContext))
 		let error = result.result?.error
 		let data = result.result?.value
 

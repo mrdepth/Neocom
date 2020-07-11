@@ -47,8 +47,8 @@ struct Settings: View {
                 }
                 if colorScheme.wrappedValue > 0 {
                     Picker(selection: $colorScheme.wrappedValue, label: Text("Appearance")) {
-                        Text("Light").tag(1)
-                        Text("Dark").tag(2)
+                        Text("Light Theme").tag(1)
+                        Text("Dark Theme").tag(2)
                     }.pickerStyle(SegmentedPickerStyle())
                 }
             }

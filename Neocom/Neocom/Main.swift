@@ -70,7 +70,7 @@ struct Main: View {
                 navigationView.navigationViewStyle(DoubleColumnNavigationViewStyle())
             }
             else {
-                #if targetEnvironment(macCatalyst)// || targetEnvironment(simulator)
+                #if targetEnvironment(macCatalyst) || targetEnvironment(simulator)
                 navigationView.navigationViewStyle(StackNavigationViewStyle())
                 #else
                 AdsContainerView {

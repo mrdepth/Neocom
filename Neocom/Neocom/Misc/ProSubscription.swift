@@ -138,7 +138,7 @@ struct ProSubscription: View, Equatable {
 
     var body: some View {
         let error = self.products?.error
-        let productIDs = Config.current.inApps.autoRenewableSubscriptions + Config.current.inApps.lifetimeSubscriptions
+        let productIDs = Config.current.inApps.autoRenewableSubscriptions// + Config.current.inApps.lifetimeSubscriptions
         let products = self.products?.value.map { products in
             productIDs.compactMap {
                 products[$0]
@@ -201,18 +201,19 @@ struct ProSubscription: View, Equatable {
             }
             else {
 //                Section(footer:
-                Text("You can now use Neocom without any restrictions on all devices for unlimited time. But you can make a donation to support the development.")
-                if products == nil {
-                    ActivityIndicatorView(style: .medium).frame(maxWidth: .infinity)
-                }
-                else {
-                    Button(action: {self.isDonationAlertPresented = true}) {
-                        Text("Make Donation").frame(maxWidth: .infinity)
-                    }
-                    .actionSheet(isPresented: $isDonationAlertPresented) {
-                        self.donationAlert
-                    }
-                }
+//                Text("You can now use Neocom without any restrictions on all devices for unlimited time. But you can make a donation to support the development.")
+                Text("You can now use Neocom without any restrictions on all devices for unlimited time.")
+//                if products == nil {
+//                    ActivityIndicatorView(style: .medium).frame(maxWidth: .infinity)
+//                }
+//                else {
+//                    Button(action: {self.isDonationAlertPresented = true}) {
+//                        Text("Make Donation").frame(maxWidth: .infinity)
+//                    }
+//                    .actionSheet(isPresented: $isDonationAlertPresented) {
+//                        self.donationAlert
+//                    }
+//                }
 //                }
             }
 

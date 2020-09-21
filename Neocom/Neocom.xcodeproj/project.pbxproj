@@ -342,6 +342,7 @@
 		16B8E3B723FBEDC10096B066 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8E3B623FBEDC10096B066 /* TextView.swift */; };
 		16B8F08823F670CB0093FEED /* ContractsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8F08723F670CB0093FEED /* ContractsData.swift */; };
 		16B968FF247153FE0039BC89 /* Alamofire+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B968FE247153FE0039BC89 /* Alamofire+Extensions.swift */; };
+		16BAF40224C82C7C00C61387 /* AuthorizationAppleIDButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BAF40124C82C7C00C61387 /* AuthorizationAppleIDButton.swift */; };
 		16BB504A247A71D8002CD90E /* ProSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BB5049247A71D8002CD90E /* ProSubscription.swift */; };
 		16BB504F247A7780002CD90E /* StoreKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BB504E247A7780002CD90E /* StoreKit+Extensions.swift */; };
 		16BB5051247A7D4E002CD90E /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BB5050247A7D4E002CD90E /* ProductCell.swift */; };
@@ -770,6 +771,7 @@
 		16B8E3B623FBEDC10096B066 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		16B8F08723F670CB0093FEED /* ContractsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractsData.swift; sourceTree = "<group>"; };
 		16B968FE247153FE0039BC89 /* Alamofire+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alamofire+Extensions.swift"; sourceTree = "<group>"; };
+		16BAF40124C82C7C00C61387 /* AuthorizationAppleIDButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationAppleIDButton.swift; sourceTree = "<group>"; };
 		16BB5049247A71D8002CD90E /* ProSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProSubscription.swift; sourceTree = "<group>"; };
 		16BB504E247A7780002CD90E /* StoreKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StoreKit+Extensions.swift"; sourceTree = "<group>"; };
 		16BB5050247A7D4E002CD90E /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
@@ -1226,6 +1228,7 @@
 				16B8E3B623FBEDC10096B066 /* TextView.swift */,
 				168960D0240FE217004E4630 /* TypeInfoButton.swift */,
 				16C39A5723BA0EEB00208F04 /* VibrancyView.swift */,
+				16BAF40124C82C7C00C61387 /* AuthorizationAppleIDButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1965,6 +1968,7 @@
 				168E4048242F536E00C03F00 /* LoyaltyOffersLoader.swift in Sources */,
 				12877E2C23B29FA1009FF71B /* NPCGroup.swift in Sources */,
 				16859F522432113E00824552 /* IndustryJobsItem.swift in Sources */,
+				16BAF40224C82C7C00C61387 /* AuthorizationAppleIDButton.swift in Sources */,
 				16CB5FAC2425009E00A91370 /* ShipLoadouts.swift in Sources */,
 				16CB5FA92424F6FE00A91370 /* FleetPilotCell.swift in Sources */,
 				169DA0FE23FE8EAE00AC7B54 /* Sector.swift in Sources */,
@@ -2469,7 +2473,7 @@
 				ASSET_PACK_MANIFEST_URL_PREFIX = "http://192.168.1.229/";
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 62;
+				CURRENT_PROJECT_VERSION = 67;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;
@@ -2499,7 +2503,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 62;
+				CURRENT_PROJECT_VERSION = 67;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;

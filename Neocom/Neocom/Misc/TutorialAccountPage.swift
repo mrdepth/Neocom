@@ -20,7 +20,11 @@ struct TutorialAccountPage: View {
     
     private func login() {
         let url = OAuth2.authURL(clientID: Config.current.esi.clientID, callbackURL: Config.current.esi.callbackURL, scope: ESI.Scope.all, state: "esi")
+        #if targetEnvironment(macCatalyst)
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        #else
+        UIApplication.shared.openSafari(with: url)
+        #endif
     }
     
     var body: some View {
@@ -45,6 +49,7 @@ struct TutorialAccountPage: View {
                     Button(action: login) {
                         Text("Log In with EVE Online")
                     }
+                    AuthorizationAppleIDButton(completion: completion)
                     Divider()
                 }
             }

@@ -38,7 +38,11 @@ struct Accounts: View {
         List {
             Button(NSLocalizedString("Log In with EVE Online", comment: "")) {
                 let url = OAuth2.authURL(clientID: Config.current.esi.clientID, callbackURL: Config.current.esi.callbackURL, scope: ESI.Scope.all, state: "esi")
+                #if targetEnvironment(macCatalyst)
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                #else
+                UIApplication.shared.openSafari(with: url)
+                #endif
             }.frame(maxWidth: .infinity)
             Section {
                 ForEach(accounts, id: \Account.objectID) { account in

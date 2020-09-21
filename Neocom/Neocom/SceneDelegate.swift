@@ -12,6 +12,7 @@ import CoreData
 import Expressible
 import EVEAPI
 import Combine
+import SafariServices
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -187,6 +188,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 let context = Storage.sharedStorage.persistentContainer.viewContext
                 switch result {
                 case let .success(token):
+                    let vc = self.window?.rootViewController?.topMostPresentedViewController
+                    if vc is SFSafariViewController {
+                        vc?.dismiss(animated: true, completion: nil)
+                    }
                     //                    let data = try? JSONEncoder().encode(token)
                     //                    let s = String(data: data!, encoding: .utf8)
                     //                    print(s)

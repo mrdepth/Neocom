@@ -166,6 +166,8 @@ extension AdvertisingProvider: STKConsentManagerDisplayDelegate {
     func consentManagerWillShowDialog(_ consentManager: STKConsentManager) {}
 }
 
+#endif
+
 extension UIApplication {
     /// Root view conntroller for advertising
     /// We get top presented controller from active scene window
@@ -186,4 +188,3 @@ extension UIApplication {
         return controller
     }
 }
-#endif

@@ -62,11 +62,11 @@ class Storage: ObservableObject {
     }
 
     var managedObjectModel: NSManagedObjectModel {
-        NSManagedObjectModel.mergedModel(from: nil)!
-//        let storageModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Storage", withExtension: "momd")!)!
-//        let sdeModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "SDE", withExtension: "momd")!)!
-//        let cacheModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Cache", withExtension: "momd")!)!
-//        return NSManagedObjectModel(byMerging: [storageModel, sdeModel, cacheModel])!
+//        NSManagedObjectModel.mergedModel(from: nil)!
+        let sdeModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "SDE", withExtension: "momd")!)!
+        let cloudModel = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Cloud", withExtension: "momd")!)!
+        let localMode = NSManagedObjectModel(contentsOf: Bundle.main.url(forResource: "Local", withExtension: "momd")!)!
+        return NSManagedObjectModel(byMerging: [sdeModel, cloudModel, localMode])!
     }
 
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
@@ -85,6 +85,7 @@ class Storage: ObservableObject {
         let storage = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("cloud.sqlite"))
         storage.configuration = "Cloud"
         storage.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.shimanski.neocom")
+        storage.shouldMigrateStoreAutomatically = true
         
         let cache = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("local.sqlite"))
         cache.configuration = "Local"
@@ -305,12 +306,6 @@ func - (lhs: Double, rhs: Damage) -> Damage {
                   thermal: lhs - rhs.thermal,
                   kinetic: lhs - rhs.kinetic,
                   explosive: lhs - rhs.explosive)
-}
-
-extension SkillPlan: Identifiable {
-    public var id: NSManagedObjectID {
-        return objectID
-    }
 }
 
 extension Contact {

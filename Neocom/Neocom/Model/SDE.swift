@@ -549,27 +549,8 @@ extension SDEDgmppItemGroup {
     }
 }
 
-extension SDEInvType: Identifiable {
-    public var id: NSManagedObjectID {
-        return objectID
-    }
-}
-extension SDEDgmppItemCategory: Identifiable {
-    public var id: NSManagedObjectID {
-        return objectID
-    }
-}
-extension SDEDgmppItemGroup: Identifiable {
-    public var id: NSManagedObjectID {
-        return objectID
-    }
-}
+extension DamagePattern {
 
-extension DamagePattern: Identifiable {
-    public var id: NSManagedObjectID {
-        return objectID
-    }
-    
     var damageVector: DGMDamageVector {
         get {
             DGMDamageVector(em: DGMHP(em), thermal: DGMHP(thermal), kinetic: DGMHP(kinetic), explosive: DGMHP(explosive)).normalized

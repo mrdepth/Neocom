@@ -146,10 +146,10 @@ struct IconID: Codable {
 }
 
 struct Ancestry: Codable {
-	var ancestryID: Int
-	var ancestryName: String
+//	var ancestryID: Int
+    var nameID: LocalizedString
 	var bloodlineID: Int
-	var description: String
+    var descriptionID: LocalizedString?
 	var charisma: Int
 	var intelligence: Int
 	var memory: Int
@@ -160,46 +160,50 @@ struct Ancestry: Codable {
 }
 
 struct Bloodline: Codable {
-	var bloodlineID: Int
-	var bloodlineName: String
+//	var bloodlineID: Int
+//	var bloodlineName: String
+    var descriptionID: LocalizedString?
+    var nameID: LocalizedString
 	var charisma: Int
 	var intelligence: Int
 	var memory: Int
 	var perception: Int
 	var willpower: Int
-	var description: String
-	var femaleDescription: String
-	var maleDescription: String
-	var shortDescription: String
-	var shortFemaleDescription: String
-	var shortMaleDescription: String
+//	var description: String
+//	var femaleDescription: String
+//	var maleDescription: String
+//	var shortDescription: String
+//	var shortFemaleDescription: String
+//	var shortMaleDescription: String
 
 	var corporationID: Int
 	var iconID: Int?
 	var shipTypeID: Int
 	var raceID: Int
+    var lastNames: [String]?
 }
 
 struct Faction: Codable {
-	var corporationID: Int
-	var description: String
-	var factionID: Int
-	var factionName: String
+	var corporationID: Int?
+    var descriptionID: LocalizedString?
+//	var factionID: Int
+    var nameID: LocalizedString
 	var iconID: Int?
 	var militiaCorporationID: Int?
-	var raceIDs: Int
+	var memberRaces: [Int]
 	var sizeFactor: Double
 	var solarSystemID: Int
-	var stationCount: Int
-	var stationSystemCount: Int
+//	var stationCount: Int
+//	var stationSystemCount: Int
+    var uniqueName: Bool
 }
 
 struct Race: Codable {
-	var description: String?
-	var raceID: Int
-	var raceName: String
-	var shortDescription: String?
+    var descriptionID: LocalizedString?
+//	var raceID: Int
+    var nameID: LocalizedString
 	var iconID: Int?
+    var skills: [Int: Int]?
 }
 
 struct Unit: Codable {
@@ -353,7 +357,7 @@ struct Station: Codable {
 	var security: Double
 	var solarSystemID: Int
 	var stationID: Int
-	var stationName: String
+//	var stationName: String
 	var stationTypeID: Int
 	var x: Double
 	var y: Double
@@ -653,10 +657,10 @@ enum Schema {
 	typealias Blueprints = [Int: Blueprint]
 	typealias Certificates = [Int: Certificate]
 	typealias IconIDs = [Int: IconID]
-	typealias Ancestries = [Ancestry]
-	typealias Bloodlines = [Bloodline]
-	typealias Factions = [Faction]
-	typealias Races = [Race]
+    typealias Ancestries = [Int: Ancestry]
+    typealias Bloodlines = [Int: Bloodline]
+    typealias Factions = [Int: Faction]
+    typealias Races = [Int: Race]
 	typealias Units = [Unit]
 	typealias Flags = [Flag]
 	typealias Items = [Item]

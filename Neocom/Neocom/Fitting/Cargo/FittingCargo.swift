@@ -51,7 +51,10 @@ struct FittingCargo: View {
         
         let sections = Dictionary(grouping: rows) {$0.type?.group?.category}
             .sorted{($0.key?.categoryName ?? "") < ($1.key?.categoryName ?? "")}
-            .map{(category, rows) in CargoSection(category: category, rows: rows.sorted{($0.type?.typeName ?? "", $0.cargo.hashValue) < ($1.type?.typeName ?? "", $1.cargo.hashValue)})}
+            .map{ (category, rows) -> CargoSection in
+                let rows = rows.sorted{($0.type?.typeName ?? "", $0.cargo.hashValue) < ($1.type?.typeName ?? "", $1.cargo.hashValue)}
+                return CargoSection(category: category, rows: rows)
+            }
         
         
         return VStack(spacing: 0) {

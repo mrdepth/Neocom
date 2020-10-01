@@ -18,7 +18,10 @@ class TypePickerManager {
         picker.content.completion = {
             completion($0)
         }
-        return picker.edgesIgnoringSafeArea(.all).frame(idealWidth: 375, idealHeight: 375 * 2).modifier(services)
+        return picker
+//            .edgesIgnoringSafeArea(.all)
+//            .frame(idealWidth: 375, idealHeight: 375 * 2)
+            .modifier(services)
 //
 //        NavigationView {
 //            TypePicker(parentGroup: parentGroup) {
@@ -34,8 +37,9 @@ class TypePickerManager {
     }
 }
 
-class TypePickerViewController: UINavigationController {
+class TypePickerViewController: UIViewController {
     var completion: (SDEInvType?) -> Void
+    private var rootViewController: UINavigationController?
     init(parentGroup: SDEDgmppItemGroup, services: ServicesViewModifier, completion: @escaping (SDEInvType?) -> Void) {
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
@@ -49,10 +53,28 @@ class TypePickerViewController: UINavigationController {
             self?.completion(nil)
         }).modifier(services)
         
+//        setViewControllers([UIHostingController(rootView: view)], animated: false)
+        
 //        let view = TypePickerWrapper(parentGroup: parentGroup) { [weak self] type in
 //            self?.completion(type)
 //        }.modifier(services)
-        viewControllers = [UIHostingController(rootView: view)]
+        rootViewController = UINavigationController(rootViewController: UIHostingController(rootView: view))
+        addChild(rootViewController!)
+//        viewControllers = [UIHostingController(rootView: view)]
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+//        let label = UILabel(frame: .zero)
+//        label.text = "wefwef"
+//        label.layer.zPosition = 100
+//        label.sizeToFit()
+//        view.addSubview(label)
+                view.addSubview(rootViewController!.view)
+        rootViewController?.view.frame = view.bounds
+    }
+    override func viewDidLayoutSubviews() {
+        rootViewController?.view.frame = view.bounds
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -60,15 +82,23 @@ class TypePickerViewController: UINavigationController {
     }
 }
 
-struct TypePicker: UIViewControllerRepresentable {
+struct TypePicker: UIViewRepresentable {
     var content: TypePickerViewController
-
-    func makeUIViewController(context: Context) -> TypePickerViewController {
-        return content
+    
+    func makeUIView(context: Context) -> UIView {
+        return content.view
     }
     
-    func updateUIViewController(_ uiViewController: TypePickerViewController, context: Context) {
+    func updateUIView(_ uiView: UIView, context: Context) {
+        
     }
+//
+//    func makeUIViewController(context: Context) -> TypePickerViewController {
+//        return content
+//    }
+//
+//    func updateUIViewController(_ uiViewController: TypePickerViewController, context: Context) {
+//    }
 }
 
 struct TypePickerWrapper: View {

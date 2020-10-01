@@ -344,41 +344,41 @@ extension SDEDgmEffect {
 }
 
 extension SDEChrRace {
-	convenience init(_ race: Race) throws {
+    convenience init(_ race: (key: Int, value: Race)) throws {
 		self.init(context: .current)
-		raceID = Int32(race.raceID)
-		raceName = race.raceName
-		if let iconID = race.iconID {
+        raceID = Int32(race.key)
+        raceName = race.value.nameID.localized
+        if let iconID = race.value.iconID {
 			try icon = .icon(iconID: iconID)
 		}
 	}
 }
 
 extension SDEChrAncestry {
-    convenience init(_ ancestry: Ancestry) throws {
+    convenience init(_ ancestry: (key: Int, value: Ancestry)) throws {
         self.init(context: .current)
-        ancestryID = Int32(ancestry.ancestryID)
-        ancestryName = ancestry.ancestryName
+        ancestryID = Int32(ancestry.key)
+        ancestryName = ancestry.value.nameID.localized
     }
 }
 
 extension SDEChrBloodline {
-    convenience init(_ bloodline: Bloodline) throws {
+    convenience init(_ bloodline: (key: Int, value: Bloodline)) throws {
         self.init(context: .current)
-        bloodlineID = Int32(bloodline.bloodlineID)
-        bloodlineName = bloodline.bloodlineName
+        bloodlineID = Int32(bloodline.key)
+        bloodlineName = bloodline.value.nameID.localized
     }
 }
 
 extension SDEChrFaction {
-	convenience init(_ faction: Faction) throws {
+	convenience init(_ faction: (key: Int, value: Faction)) throws {
 		self.init(context: .current)
-		factionID = Int32(faction.factionID)
-		factionName = faction.factionName
-		if let iconID = faction.iconID {
+		factionID = Int32(faction.key)
+        factionName = faction.value.nameID.localized
+        if let iconID = faction.value.iconID {
 			try icon = .icon(iconID: iconID)
 		}
-		race = try chrRaces.get()[faction.raceIDs]?.object()
+        race = try chrRaces.get()[faction.value.memberRaces[0]]?.object()
 	}
 }
 
@@ -474,7 +474,7 @@ extension SDEStaStation {
 	convenience init(_ station: Station) throws {
 		self.init(context: .current)
 		stationID = Int32(station.stationID)
-		stationName = station.stationName
+        stationName = try invNames.get()[station.stationID]!
 		security = Float(station.security)
 		try stationType = invTypes.get()[station.stationTypeID]!.object()
 		try solarSystem = mapSolarSystems.get()[station.solarSystemID]!.object()

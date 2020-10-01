@@ -69,9 +69,6 @@ struct LoadoutsList: View {
                         }.contentShape(Rectangle())
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .adaptivePopover(isPresented: $isTypePickerPresented, arrowEdge: .leading) {
-                        self.group.map{self.typePicker($0)}
-                    }
                     PasteboardLoadout(category: loadouts.category, managedObjectContext: managedObjectContext) { (ship, mode) in
                         self.onSelect(.ship(ship), mode)
                     }
@@ -93,6 +90,9 @@ struct LoadoutsList: View {
             }
         }
         .navigationBarItems(trailing: EditButton())
+        .adaptivePopover(isPresented: $isTypePickerPresented, arrowEdge: .leading) {
+            self.group.map{self.typePicker($0)}
+        }
 
     }
 }

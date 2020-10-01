@@ -12,6 +12,7 @@ struct Settings: View {
     @State private var isClearCacheActionSheetPresented = false
     @ObservedObject private var notificationsEnabled = UserDefault(wrappedValue: true, key: .notificationsEnabled)
     @ObservedObject private var skillQueueNotificationOptions = UserDefault(wrappedValue: NotificationsManager.SkillQueueNotificationOptions.default.rawValue, key: .notificationSettigs)
+    @ObservedObject private var colorScheme = UserDefault(wrappedValue: -1, key: .colorScheme)
     
     private func skillQueueNotificationCell(option: NotificationsManager.SkillQueueNotificationOptions, title: String) -> some View {
         Toggle(title, isOn: Binding(get: {
@@ -34,6 +35,22 @@ struct Settings: View {
         List {
             Section(footer: Text("Data will be restored from iCloud.")) {
                 MigrateLegacyDataButton()
+            }
+            
+            Section(header: Text("APPEARANCE")) {
+                Toggle(isOn: Binding(get: {
+                    self.colorScheme.wrappedValue <= 0
+                }, set: { (newValue) in
+                    self.colorScheme.wrappedValue = newValue ? -1 : 2
+                })) {
+                    Text("Automatic")
+                }
+                if colorScheme.wrappedValue > 0 {
+                    Picker(selection: $colorScheme.wrappedValue, label: Text("Appearance")) {
+                        Text("Light Theme").tag(1)
+                        Text("Dark Theme").tag(2)
+                    }.pickerStyle(SegmentedPickerStyle())
+                }
             }
             
             LanguagePack.packs[storage.sde.tag].map { pack in
@@ -78,7 +95,8 @@ struct Settings: View {
                 }
             }
             
-        }.listStyle(GroupedListStyle())
+        }
+        .listStyle(GroupedListStyle())
         .navigationBarTitle(Text("Settings"))
     }
 }

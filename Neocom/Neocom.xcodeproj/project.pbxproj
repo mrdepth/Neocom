@@ -69,6 +69,8 @@
 		162571F2242B9E140022C605 /* FittingModuleActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694B22C240697E600E81E49 /* FittingModuleActions.swift */; };
 		162571F3242B9E140022C605 /* FittingTypeVariations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B7FC3E2408E0470076BD7C /* FittingTypeVariations.swift */; };
 		162571F4242B9E140022C605 /* FittingCharges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B7FC432409073A0076BD7C /* FittingCharges.swift */; };
+		1625C56D24ADCA2E00014B41 /* CorpWalletJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1625C56C24ADCA2E00014B41 /* CorpWalletJournal.swift */; };
+		1625C56F24ADCCBD00014B41 /* CorpWalletJournalData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1625C56E24ADCCBD00014B41 /* CorpWalletJournalData.swift */; };
 		162C99AD246EDFEF000E78EF /* BundleResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162C99AC246EDFEF000E78EF /* BundleResource.swift */; };
 		1630ED7523CC65E0001DBAA7 /* TypeMasterySkills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1630ED7423CC65E0001DBAA7 /* TypeMasterySkills.swift */; };
 		1630ED7923CC926E001DBAA7 /* CharacterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1630ED7823CC926E001DBAA7 /* CharacterSheet.swift */; };
@@ -340,6 +342,7 @@
 		16B8E3B723FBEDC10096B066 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8E3B623FBEDC10096B066 /* TextView.swift */; };
 		16B8F08823F670CB0093FEED /* ContractsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8F08723F670CB0093FEED /* ContractsData.swift */; };
 		16B968FF247153FE0039BC89 /* Alamofire+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B968FE247153FE0039BC89 /* Alamofire+Extensions.swift */; };
+		16BAF40224C82C7C00C61387 /* AuthorizationAppleIDButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BAF40124C82C7C00C61387 /* AuthorizationAppleIDButton.swift */; };
 		16BB504A247A71D8002CD90E /* ProSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BB5049247A71D8002CD90E /* ProSubscription.swift */; };
 		16BB504F247A7780002CD90E /* StoreKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BB504E247A7780002CD90E /* StoreKit+Extensions.swift */; };
 		16BB5051247A7D4E002CD90E /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BB5050247A7D4E002CD90E /* ProductCell.swift */; };
@@ -487,6 +490,8 @@
 		161C6EFE23A1303700777009 /* EVELocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EVELocation.swift; sourceTree = "<group>"; };
 		161CE78D23E16E1B007619B8 /* SkillQueueSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillQueueSection.swift; sourceTree = "<group>"; };
 		161CE78F23E16E57007619B8 /* SkillPlanSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillPlanSection.swift; sourceTree = "<group>"; };
+		1625C56C24ADCA2E00014B41 /* CorpWalletJournal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorpWalletJournal.swift; sourceTree = "<group>"; };
+		1625C56E24ADCCBD00014B41 /* CorpWalletJournalData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorpWalletJournalData.swift; sourceTree = "<group>"; };
 		162C99AC246EDFEF000E78EF /* BundleResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleResource.swift; sourceTree = "<group>"; };
 		1630ED7423CC65E0001DBAA7 /* TypeMasterySkills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMasterySkills.swift; sourceTree = "<group>"; };
 		1630ED7823CC926E001DBAA7 /* CharacterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSheet.swift; sourceTree = "<group>"; };
@@ -766,6 +771,7 @@
 		16B8E3B623FBEDC10096B066 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		16B8F08723F670CB0093FEED /* ContractsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractsData.swift; sourceTree = "<group>"; };
 		16B968FE247153FE0039BC89 /* Alamofire+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alamofire+Extensions.swift"; sourceTree = "<group>"; };
+		16BAF40124C82C7C00C61387 /* AuthorizationAppleIDButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationAppleIDButton.swift; sourceTree = "<group>"; };
 		16BB5049247A71D8002CD90E /* ProSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProSubscription.swift; sourceTree = "<group>"; };
 		16BB504E247A7780002CD90E /* StoreKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StoreKit+Extensions.swift"; sourceTree = "<group>"; };
 		16BB5050247A7D4E002CD90E /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
@@ -820,6 +826,7 @@
 		16CE2A0623F6755E0043764B /* ContractInfoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractInfoData.swift; sourceTree = "<group>"; };
 		16D0093623B09DF0000694C0 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		16D0093A23B0AF39000694C0 /* TypeMarketGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMarketGroup.swift; sourceTree = "<group>"; };
+		16D168912521EC5D007A37EA /* StorageV2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StorageV2.xcdatamodel; sourceTree = "<group>"; };
 		16D16EB5241A685200EF9F76 /* FittingEditorMiningStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorMiningStats.swift; sourceTree = "<group>"; };
 		16D16EB7241A6A2600EF9F76 /* FittingEditorMiscStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorMiscStats.swift; sourceTree = "<group>"; };
 		16D5DE7523B23898004CDA4A /* CertificateMasteryInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateMasteryInfo.swift; sourceTree = "<group>"; };
@@ -904,6 +911,7 @@
 				169DA0FF23FEAF6600AC7B54 /* WealthData.swift */,
 				1686E2A324375DAC00FAD3BA /* ZKillboardLoader.swift */,
 				1687FC772464454600882EA2 /* CloudKitLoader.swift */,
+				1625C56E24ADCCBD00014B41 /* CorpWalletJournalData.swift */,
 			);
 			path = DataLoaders;
 			sourceTree = "<group>";
@@ -1221,6 +1229,7 @@
 				16B8E3B623FBEDC10096B066 /* TextView.swift */,
 				168960D0240FE217004E4630 /* TypeInfoButton.swift */,
 				16C39A5723BA0EEB00208F04 /* VibrancyView.swift */,
+				16BAF40124C82C7C00C61387 /* AuthorizationAppleIDButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1240,6 +1249,7 @@
 			isa = PBXGroup;
 			children = (
 				1668A3C223F42677000A96D8 /* WalletJournal.swift */,
+				1625C56C24ADCA2E00014B41 /* CorpWalletJournal.swift */,
 				1668A3C423F426BA000A96D8 /* WalletJournalCell.swift */,
 			);
 			path = WalletJournal;
@@ -1959,6 +1969,7 @@
 				168E4048242F536E00C03F00 /* LoyaltyOffersLoader.swift in Sources */,
 				12877E2C23B29FA1009FF71B /* NPCGroup.swift in Sources */,
 				16859F522432113E00824552 /* IndustryJobsItem.swift in Sources */,
+				16BAF40224C82C7C00C61387 /* AuthorizationAppleIDButton.swift in Sources */,
 				16CB5FAC2425009E00A91370 /* ShipLoadouts.swift in Sources */,
 				16CB5FA92424F6FE00A91370 /* FleetPilotCell.swift in Sources */,
 				169DA0FE23FE8EAE00AC7B54 /* Sector.swift in Sources */,
@@ -1969,6 +1980,7 @@
 				16701763244837E300363F93 /* PlainText.swift in Sources */,
 				169D2805241A0E3A002AB469 /* CalibrationResource.swift in Sources */,
 				160D0BA923F2E3C300690134 /* LoadingProgressView.swift in Sources */,
+				1625C56D24ADCA2E00014B41 /* CorpWalletJournal.swift in Sources */,
 				16B3C7F524113C7A00F21DE5 /* FittingImplantCell.swift in Sources */,
 				161C6EFF23A1303700777009 /* EVELocation.swift in Sources */,
 				168FF312242D3C73009FCE58 /* SkillsItem.swift in Sources */,
@@ -2228,6 +2240,7 @@
 				16859F4824320FB000824552 /* AssetsItem.swift in Sources */,
 				1688F8C6246D9E2B00D729A8 /* Storage.swift in Sources */,
 				16359213245ADF8000622C1C /* FittingEditorFleetBar.swift in Sources */,
+				1625C56F24ADCCBD00014B41 /* CorpWalletJournalData.swift in Sources */,
 				16D5DE7823B238D4004CDA4A /* CertificateRequirementsInfo.swift in Sources */,
 				1688841C242D11490099C769 /* CharacterSheetItem.swift in Sources */,
 				16359215245ADFA200622C1C /* FleetBarCell.swift in Sources */,
@@ -2461,7 +2474,7 @@
 				ASSET_PACK_MANIFEST_URL_PREFIX = "http://192.168.1.229/";
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 61;
+				CURRENT_PROJECT_VERSION = 69;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;
@@ -2470,12 +2483,12 @@
 					"${SRCROOT}/../ThirdParty/ASReceipt/Source/ThirdParty/OpenSSL/iOS",
 				);
 				INFOPLIST_FILE = Neocom/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
@@ -2491,7 +2504,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 61;
+				CURRENT_PROJECT_VERSION = 69;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;
@@ -2500,12 +2513,12 @@
 					"${SRCROOT}/../ThirdParty/ASReceipt/Source/ThirdParty/OpenSSL/iOS",
 				);
 				INFOPLIST_FILE = Neocom/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
@@ -2619,9 +2632,10 @@
 		12F06F322384676F0061313D /* Cloud.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				16D168912521EC5D007A37EA /* StorageV2.xcdatamodel */,
 				12F06F332384676F0061313D /* Storage.xcdatamodel */,
 			);
-			currentVersion = 12F06F332384676F0061313D /* Storage.xcdatamodel */;
+			currentVersion = 16D168912521EC5D007A37EA /* StorageV2.xcdatamodel */;
 			path = Cloud.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

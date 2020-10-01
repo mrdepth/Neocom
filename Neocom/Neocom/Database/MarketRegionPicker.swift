@@ -42,13 +42,13 @@ struct MarketRegionPicker: View {
         
 		return Future { promise in
             self.backgroundManagedObjectContext.perform {
-				let regions = try? self.managedObjectContext.from(SDEMapRegion.self)
+				let regions = try? self.backgroundManagedObjectContext.from(SDEMapRegion.self)
 					.filter((/\SDEMapRegion.regionName).caseInsensitive.contains(string))
 					.sort(by: \SDEMapRegion.regionName, ascending: true)
 					.fetch()
 					.map{Row(id: $0.objectID, regionID: $0.objectID, title: $0.regionName ?? "", subtitle: nil)}
 
-				let solarSystems = try? self.managedObjectContext
+				let solarSystems = try? self.backgroundManagedObjectContext
 					.from(SDEMapSolarSystem.self)
 					.filter(/\SDEMapSolarSystem.constellation?.region?.regionID < SDERegionID.whSpace.rawValue)
 					.filter((/\SDEMapSolarSystem.solarSystemName).caseInsensitive.contains(string))

@@ -65,6 +65,8 @@ final class AdvertisingProvider: NSObject, ObservableObject {
         return banner
     }()
     
+    @UserDefault(key: .adsConsent) private var adsConsent: Bool? = nil
+
     // MARK: Published properties
     @Published var isAdInitialised     = false
     @Published var isBannerReady       = false
@@ -90,8 +92,7 @@ final class AdvertisingProvider: NSObject, ObservableObject {
         #endif
         
         Appodeal.setAutocache(false, types: [.banner])
-        
-        let consent = STKConsentManager.shared().consentStatus != .nonPersonalized
+        let consent = adsConsent ?? (STKConsentManager.shared().consentStatus != .nonPersonalized)
         Appodeal.initialize(
             withApiKey: Config.current.appodealKey,
             types: [.banner],
@@ -104,11 +105,16 @@ final class AdvertisingProvider: NSObject, ObservableObject {
         
         self.isAdInitialised = true
     }
-    
+        
     private func synchroniseConsent(completion: SynchroniseConsentCompletion?) {
         STKConsentManager.shared().synchronize(withAppKey: Config.current.appodealKey) { error in
             error.map { print("Error while synchronising consent manager: \($0)") }
             guard STKConsentManager.shared().shouldShowConsentDialog == .true else {
+                completion?()
+                return
+            }
+            
+            guard self.adsConsent == nil else {
                 completion?()
                 return
             }
@@ -152,12 +158,15 @@ extension AdvertisingProvider: STKConsentManagerDisplayDelegate {
     }
     
     func consentManagerDidDismissDialog(_ consentManager: STKConsentManager) {
+        adsConsent = STKConsentManager.shared().consentStatus != .nonPersonalized
         synchroniseConsentCompletion?()
     }
     
     // No-op
     func consentManagerWillShowDialog(_ consentManager: STKConsentManager) {}
 }
+
+#endif
 
 extension UIApplication {
     /// Root view conntroller for advertising
@@ -179,4 +188,3 @@ extension UIApplication {
         return controller
     }
 }
-#endif

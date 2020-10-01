@@ -29,7 +29,7 @@ class WealthData: ObservableObject {
     @Published var assets: Result<Double, AFError>?
 
     init(esi: ESI, characterID: Int64, managedObjectContext: NSManagedObjectContext) {
-        assetsData = AssetsData(esi: esi, characterID: characterID, managedObjectContext: managedObjectContext)
+        assetsData = AssetsData(esi: esi, characterID: characterID, corporate: false, managedObjectContext: managedObjectContext)
         
         
         let character = esi.characters.characterID(Int(characterID))

@@ -202,6 +202,7 @@ struct ProSubscription: View, Equatable {
             else {
 //                Section(footer:
                 Text("You can now use Neocom without any restrictions on all devices for unlimited time. But you can make a donation to support the development.")
+//                Text("You can now use Neocom without any restrictions on all devices for unlimited time.")
                 if products == nil {
                     ActivityIndicatorView(style: .medium).frame(maxWidth: .infinity)
                 }
@@ -213,8 +214,8 @@ struct ProSubscription: View, Equatable {
                         self.donationAlert
                     }
                 }
-//                }
             }
+//            }
 
             Section(footer: subscriptionRenewalInfo) {
                 Button(action: restore) {

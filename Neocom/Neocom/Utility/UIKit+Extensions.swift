@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 extension UIApplication {
     func endEditing(_ force: Bool) {
@@ -51,5 +52,12 @@ extension UIAlertController {
     convenience init(title: String? = NSLocalizedString("Error", comment: ""), error: Error, handler: ((UIAlertAction) -> Void)? = nil) {
         self.init(title: title, message: error.localizedDescription, preferredStyle: .alert)
         self.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .default, handler: handler))
+    }
+}
+
+extension UIApplication {
+    func openSafari(with url: URL) {
+        let safari = SFSafariViewController(url: url)
+        rootViewController?.topMostPresentedViewController.present(safari, animated: true)
     }
 }

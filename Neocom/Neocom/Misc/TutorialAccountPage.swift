@@ -20,14 +20,18 @@ struct TutorialAccountPage: View {
     
     private func login() {
         let url = OAuth2.authURL(clientID: Config.current.esi.clientID, callbackURL: Config.current.esi.callbackURL, scope: ESI.Scope.all, state: "esi")
+        #if targetEnvironment(macCatalyst)
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        #else
+        UIApplication.shared.openSafari(with: url)
+        #endif
     }
     
     var body: some View {
         VStack(spacing: 30) {
             if sharedState.account == nil {
                 VStack(alignment: .leading, spacing: 15) {
-                    Text("Add your first\nEVE Oline Account").font(.title).fontWeight(.bold)
+                    Text("Add your first\nEVE Online Account").font(.title).fontWeight(.bold)
                     Text("If you used Neocom before, you can import your data from iCloud.").font(.title2)
                 }.frame(maxWidth: .infinity, alignment: .leading)
                 Spacer()
@@ -45,6 +49,7 @@ struct TutorialAccountPage: View {
                     Button(action: login) {
                         Text("Log In with EVE Online")
                     }
+                    AuthorizationAppleIDButton(completion: completion)
                     Divider()
                 }
             }

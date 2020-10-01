@@ -55,7 +55,9 @@ class UnitFormatter: Formatter {
         let value = value / scale.divider
         
         switch fabs(value) {
-        case ..<10:
+        case ..<0.01:
+            numberFormatter.maximumFractionDigits = 4
+        case 0.01..<10:
             numberFormatter.maximumFractionDigits = 2
         case 10..<100:
             numberFormatter.maximumFractionDigits = 1

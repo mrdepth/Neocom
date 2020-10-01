@@ -322,7 +322,7 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
     @discardableResult
     func add(asset: AssetsData.Asset, skillLevels: DGMSkillLevels) throws -> DGMShip {
         let items = asset.nested.map {
-            (typeID: DGMTypeID($0.underlyingAsset.typeID), quantity: Int64($0.underlyingAsset.quantity), flag: $0.underlyingAsset.locationFlag)
+            (typeID: DGMTypeID($0.underlyingAsset.typeID), quantity: Int64($0.underlyingAsset.quantity), flag: $0.underlyingAsset.location)
         }
         
         return try add(ship: DGMTypeID(asset.underlyingAsset.typeID), items: items, skillLevels: skillLevels)
@@ -356,7 +356,9 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
             return loadout
             }()
         if let loadout = loadout, !loadout.isDeleted && loadout.managedObjectContext != nil {
-            loadout.name = ship.name
+            if loadout.name != ship.name {
+                loadout.name = ship.name
+            }
             if loadout.data == nil {
                 loadout.data = LoadoutData(context: self.managedObjectContext)
             }
@@ -376,7 +378,11 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
                 if self.fleet == nil {
                     self.fleet = Fleet(context: self.managedObjectContext)
                 }
-                self.fleet?.configuration = self.gang.flatMap{try? JSONEncoder().encode($0.fleetConfiguration)}
+                let data = self.gang.flatMap{try? JSONEncoder().encode($0.fleetConfiguration)}
+                if self.fleet?.configuration != data {
+                    self.fleet?.configuration = data
+                }
+                
                 let fleetLoadouts = Set(self.fleet?.loadouts?.allObjects as? [Loadout] ?? [])
                 fleetLoadouts.subtracting(self.loadouts.values).forEach {
                     self.fleet?.removeFromLoadouts($0)
@@ -384,12 +390,16 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
                 Set(self.loadouts.values).subtracting(fleetLoadouts).forEach {
                     self.fleet?.addToLoadouts($0)
                 }
-                self.fleet?.name = pilots.compactMap{$0.ship}.compactMap{$0.type(from: self.managedObjectContext)?.typeName}.joined(separator: ", ")
+                let name = pilots.compactMap{$0.ship}.compactMap{$0.type(from: self.managedObjectContext)?.typeName}.joined(separator: ", ")
+                if self.fleet?.name != name {
+                    self.fleet?.name = name
+                }
                 
             }
             else {
                 if let fleet = self.fleet {
                     self.managedObjectContext.delete(fleet)
+                    self.fleet = nil
                 }
             }
             
@@ -403,7 +413,9 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
                     return loadout
                 }()
                 if let loadout = loadout {
-                    loadout.name = structure.name
+                    if loadout.name != structure.name {
+                        loadout.name = structure.name
+                    }
                     if loadout.data == nil {
                         loadout.data = LoadoutData(context: self.managedObjectContext)
                     }

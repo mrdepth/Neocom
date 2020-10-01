@@ -19,11 +19,18 @@ struct FittingCargoActions: View {
     @State private var selectedType: SDEInvType?
     @Environment(\.self) private var environment
     @EnvironmentObject private var sharedState: SharedState
+    @State private var isEditing = false
 
-    @State private var qty = 0
     var body: some View {
         let type = cargo.type(from: managedObjectContext)
         let perItem = Double(cargo.volume) / Double(cargo.quantity)
+        
+        let bind = Binding<String>(get: {
+            "\(self.cargo.quantity)"
+        }) { (newValue) in
+            self.cargo.quantity = NumberFormatter().number(from: newValue)?.intValue ?? 0
+        }
+        
         return List {
             Button(action: {self.selectedType = type}) {
                 HStack {
@@ -44,17 +51,29 @@ struct FittingCargoActions: View {
             HStack {
                 Text("Quantity")
                 Spacer()
-                TextField("Quantity", value: $cargo.quantity, formatter: NumberFormatter())
+//                TextField(<#T##title: StringProtocol##StringProtocol#>, text: <#T##Binding<String>#>, onEditingChanged: <#T##(Bool) -> Void#>, onCommit: <#T##() -> Void#>)
+                TextField(NSLocalizedString("Quantity", comment:""), text: bind, onEditingChanged: { isEditing in
+                    withAnimation {
+                        self.isEditing = isEditing
+                    }
+                })
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .keyboardType(.numberPad)
                     .frame(width: 100)
                     .multilineTextAlignment(.center)
                 Stepper("Quantity", value: $cargo.quantity).labelsHidden()
-                Button(NSLocalizedString("Max", comment: "")) {
-                    let free = self.ship.cargoCapacity - self.ship.usedCargoCapacity + self.cargo.volume
-                    let qty = (free / perItem).rounded(.down)
-                    self.cargo.quantity = Int(max(qty, 1))
-                }.buttonStyle(BorderlessButtonStyle())
+                if isEditing {
+                    Button(NSLocalizedString("Done", comment: "")) {
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    }.buttonStyle(BorderlessButtonStyle()).fixedSize()
+                }
+                else {
+                    Button(NSLocalizedString("Max", comment: "")) {
+                        let free = self.ship.cargoCapacity - self.ship.usedCargoCapacity + self.cargo.volume
+                        let qty = (free / perItem).rounded(.down)
+                        self.cargo.quantity = Int(max(qty, 1))
+                    }.buttonStyle(BorderlessButtonStyle()).fixedSize()
+                }
             }
         }
         .listStyle(GroupedListStyle())

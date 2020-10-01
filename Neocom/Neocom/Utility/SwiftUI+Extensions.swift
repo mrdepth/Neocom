@@ -31,6 +31,7 @@ struct ServicesViewModifier: ViewModifier {
 		content.environment(\.managedObjectContext, managedObjectContext)
 			.environment(\.backgroundManagedObjectContext, backgroundManagedObjectContext)
             .environmentObject(sharedState)
+            .colorSchemeSetting()
 	}
 }
 
@@ -179,3 +180,26 @@ struct AdaptivePopoverModifier2<Item: Identifiable, PopoverContent: View>: ViewM
     }
 }
 
+struct ColorSchemeModifier: ViewModifier {
+    @ObservedObject private var setting = UserDefault(wrappedValue: -1, key: .colorScheme)
+    @Environment(\.colorScheme) var colorScheme
+    
+    func body(content: Content) -> some View {
+        let colorScheme: ColorScheme?
+        switch setting.wrappedValue {
+        case 1:
+            colorScheme = .light
+        case 2:
+            colorScheme = .dark
+        default:
+            colorScheme = nil
+        }
+        return content.colorScheme(colorScheme ?? self.colorScheme)
+    }
+}
+
+extension View {
+    func colorSchemeSetting() -> some View {
+        self.modifier(ColorSchemeModifier())
+    }
+}

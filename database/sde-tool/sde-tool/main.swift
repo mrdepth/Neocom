@@ -164,22 +164,22 @@ do {
 	
 	chrRaces = operationQueue.detach {
 		let from = Date(); defer {print("chrRaces\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/chrRaces.json"), type: Schema.Races.self).map {($0.raceID, try .init(SDEChrRace($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/fsd/races.json"), type: Schema.Races.self).map {($0.key, try .init(SDEChrRace($0)))})
 	}
 	
 	chrFactions = operationQueue.detach {
 		let from = Date(); defer {print("chrFactions\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/chrFactions.json"), type: Schema.Factions.self).map {($0.factionID, try .init(SDEChrFaction($0)))})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/fsd/factions.json"), type: Schema.Factions.self).map {($0.key, try .init(SDEChrFaction($0)))})
 	}
 
     chrAncestries = operationQueue.detach {
         let from = Date(); defer {print("chrAncestries\t\(Date().timeIntervalSince(from))s")}
-        return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/chrAncestries.json"), type: Schema.Ancestries.self).map {($0.ancestryID, try .init(SDEChrAncestry($0)))})
+        return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/fsd/ancestries.json"), type: Schema.Ancestries.self).map {($0.key, try .init(SDEChrAncestry($0)))})
     }
 
     chrBloodlines = operationQueue.detach {
         let from = Date(); defer {print("chrBloodlines\t\(Date().timeIntervalSince(from))s")}
-        return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/chrBloodlines.json"), type: Schema.Bloodlines.self).map {($0.bloodlineID, try .init(SDEChrBloodline($0)))})
+        return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/fsd/bloodlines.json"), type: Schema.Bloodlines.self).map {($0.key, try .init(SDEChrBloodline($0)))})
     }
 
 	invMetaGroups = operationQueue.detach {

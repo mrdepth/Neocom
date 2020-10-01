@@ -29,10 +29,14 @@ extension ESI {
     typealias Attributes = ESI.Characters.CharacterID.Attributes.Success
     typealias Implants = [Int]
     typealias Clones = ESI.Characters.CharacterID.Clones.Success
-    typealias Assets = [ESI.Characters.CharacterID.Assets.Success]
+//    typealias Assets = [ESI.Characters.CharacterID.Assets.Success]
+    typealias Assets = [AssetProtocol]
+    typealias CorporationAssets = [ESI.Corporations.CorporationID.Assets.Success]
     typealias LocationFlag = ESI.Characters.CharacterID.Assets.LocationFlag
     typealias CorporationLocationFlag = ESI.Corporations.CorporationID.LocationFlag
-    typealias WalletJournal = [ESI.Characters.CharacterID.Wallet.Journal.Success]
+    typealias LocationType = ESI.Corporations.LocationType
+//    typealias WalletJournal = [ESI.Characters.CharacterID.Wallet.Journal.Success]
+    typealias WalletJournal = [WalletJournalProtocol]
     typealias WalletTransactions = [ESI.Characters.CharacterID.Wallet.Transactions.Success]
     typealias RecipientType = ESI.Characters.CharacterID.Mail.RecipientType
     typealias MarketOrders = [ESI.Characters.CharacterID.Orders.Success]
@@ -64,9 +68,63 @@ extension ESI {
     typealias MutableFitting = ESI.Characters.CharacterID.Fittings.Fitting
     typealias FittingItem = ESI.Characters.CharacterID.Fittings.Item
     typealias FittingItemFlag = ESI.Characters.CharacterID.Fittings.Flag
+    typealias Wallet = ESI.Corporations.CorporationID.Wallets.Success
     
     convenience init(token: OAuth2Token) {
         self.init(token: token, clientID: Config.current.esi.clientID, secretKey: Config.current.esi.secretKey)
+    }
+}
+
+protocol AssetProtocol {
+    var isBlueprintCopy: Bool? {get}
+    var isSingleton: Bool {get}
+    var itemID: Int64 {get}
+//    var locationFlag: ESI.CorporationLocationFlag {get}
+    var location: ESI.CorporationLocationFlag {get}
+    var locationID: Int64 {get}
+    var locationType: ESI.LocationType {get}
+    var quantity: Int {get}
+    var typeID: Int {get}
+}
+
+protocol WalletJournalProtocol {
+    var amount: Double? {get}
+    var balance: Double? {get}
+    var contextID: Int64? {get}
+    var contextIDType: ESI.Corporations.ContextIDType? {get}
+    var date: Date {get}
+    var localizedDescription: String {get}
+    var firstPartyID: Int? {get}
+    var id: Int64 {get}
+    var reason: String? {get}
+    var referenceType: ESI.Characters.CharacterID.Wallet.Journal.RefType {get}
+//    var refType: ESI.Characters.CharacterID.Wallet.Journal.RefType {get}
+    var secondPartyID: Int? {get}
+    var tax: Double? {get}
+    var taxReceiverID: Int? {get}
+}
+
+extension ESI.Corporations.CorporationID.Assets.Success: AssetProtocol {
+    var location: ESI.CorporationLocationFlag {
+        locationFlag
+    }
+}
+
+extension ESI.Characters.CharacterID.Assets.Success: AssetProtocol {
+    var location: ESI.CorporationLocationFlag {
+        ESI.CorporationLocationFlag(rawValue: locationFlag.rawValue) ?? .cargo
+    }
+}
+
+extension ESI.Corporations.CorporationID.Wallets.Division.Journal.Success: WalletJournalProtocol {
+    var referenceType: ESI.Characters.CharacterID.Wallet.Journal.RefType {
+        ESI.Characters.CharacterID.Wallet.Journal.RefType(rawValue: refType.rawValue) ?? .bounty
+    }
+}
+
+extension ESI.Characters.CharacterID.Wallet.Journal.Success: WalletJournalProtocol {
+    var referenceType: ESI.Characters.CharacterID.Wallet.Journal.RefType {
+        refType
     }
 }
 
@@ -76,6 +134,26 @@ protocol FittingFlag {
 }
 
 extension ESI.LocationFlag: FittingFlag {
+    var isDrone: Bool {
+        switch self {
+        case .droneBay, .fighterBay, .fighterTube0, .fighterTube1, .fighterTube2, .fighterTube3, .fighterTube4:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var isCargo: Bool {
+        switch self {
+        case .cargo:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+extension ESI.CorporationLocationFlag: FittingFlag {
     var isDrone: Bool {
         switch self {
         case .droneBay, .fighterBay, .fighterTube0, .fighterTube1, .fighterTube2, .fighterTube3, .fighterTube4:

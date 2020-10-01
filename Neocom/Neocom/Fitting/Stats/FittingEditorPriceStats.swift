@@ -59,10 +59,16 @@ struct FittingEditorPriceStats: View {
         let costs = prices.map {
             (ship($0), modules($0), drones($0), charges($0), implants($0), boosters($0), cargo($0))
         }
-        
-        let total = costs.map { (ship, modules, drones, charges, implants, boosters, cargo) in
-            ship + modules + drones + charges + implants + boosters + cargo
-        } ?? Double(0)
+        let total: Double
+        if let costs = costs {
+            total = costs.0 + costs.1 + costs.2 + costs.3 + costs.4 + costs.5 + costs.6
+        }
+        else {
+            total = 0
+        }
+//        let total = costs.map { (ship, modules, drones, charges, implants, boosters, cargo) -> Double in
+//            ship + modules + drones + charges + implants + boosters + cargo
+//        } ?? Double(0)
         
 //        let total: Double = 0
         let type = ship.type(from: managedObjectContext)

@@ -55,7 +55,7 @@ fileprivate class SearchController2<Content: View>: UIViewController, UISearchRe
     
     override func didMove(toParent parent: UIViewController?) {
         super.didMove(toParent: parent)
-        guard let parent = parent else {return}
+        guard let parent = parent, parent.navigationItem.searchController == nil else {return}
         if searchResultsController == nil {
             searchResultsController = SearchHostingController(rootView: content(subject.eraseToAnyPublisher()))
         }

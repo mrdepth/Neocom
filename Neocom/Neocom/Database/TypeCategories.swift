@@ -42,20 +42,6 @@ struct TypeCategories: View {
             }
         }
         .navigationBarTitle(Text("Categories"))
-
-        /*return TypesSearch(searchString: $searchString, searchResults: $searchResults) {
-            if self.searchResults != nil {
-                TypesContent(types: self.searchResults!) { type in
-                    NavigationLink(destination: TypeInfo(type: type)) {
-                        TypeCell(type: type)
-                    }
-                }
-            }
-            else {
-                TypeCategoriesContent(categories: categories)
-            }
-        }
-        .navigationBarTitle(Text("Categories"))*/
     }
 }
 

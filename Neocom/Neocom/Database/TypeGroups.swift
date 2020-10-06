@@ -32,19 +32,18 @@ struct TypeGroups: View {
         let groups = self.groups.get(initial: getGroups())
         let predicate = /\SDEInvType.group?.category == self.category && /\SDEInvType.published == true
         
-        return TypesSearch(predicate: predicate, searchString: $searchString, searchResults: $searchResults) {
-            if self.searchResults != nil {
-                TypesContent(types: self.searchResults!) { type in
-                    NavigationLink(destination: TypeInfo(type: type)) {
-                        TypeCell(type: type)
-                    }
+        return List {
+            TypeGroupsContent(groups: groups)
+        }
+        .listStyle(GroupedListStyle())
+        .search { publisher in
+            TypesSearchResults(publisher: publisher, predicate: predicate) { type in
+                NavigationLink(destination: TypeInfo(type: type)) {
+                    TypeCell(type: type)
                 }
             }
-            else {
-                TypeGroupsContent(groups: groups)
-            }
         }
-        .navigationBarTitle(category.categoryName ?? NSLocalizedString("Categories", comment: ""))
+        .navigationBarTitle(category.categoryName ?? NSLocalizedString("Groups", comment: ""))
     }
 }
 

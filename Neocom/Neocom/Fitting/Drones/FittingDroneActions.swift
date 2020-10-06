@@ -79,8 +79,7 @@ struct FittingDroneActions_Previews: PreviewProvider {
         return NavigationView {
             FittingDroneActions(drone: drone) {}
                 .environmentObject(gang)
-                .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-                .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+                .modifier(ServicesViewModifier.testModifier())
         }
     }
 }

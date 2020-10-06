@@ -68,8 +68,7 @@ struct TypeInfoHeader_Previews: PreviewProvider {
             .colorScheme(.dark)
                 //.background(Color.gray)
         }
-        .environmentObject(SharedState.testState())
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

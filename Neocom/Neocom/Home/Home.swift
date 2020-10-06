@@ -151,9 +151,7 @@ struct Home_Previews: PreviewProvider {
         NavigationView {
             Home()
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
 //        x§.environment(\.locale, Locale(identifier: "ru_RU"))
     }
 }

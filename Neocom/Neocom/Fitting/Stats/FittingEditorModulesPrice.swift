@@ -56,6 +56,6 @@ struct FittingEditorModulesPrice_Previews: PreviewProvider {
             FittingEditorModulesPrice(ship: gang.pilots.first!.ship!, prices: [:])
         }
         .environmentObject(gang)
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }

@@ -30,6 +30,6 @@ struct LoyaltyOfferRequirement: View {
 struct LoyaltyOfferRequirement_Previews: PreviewProvider {
     static var previews: some View {
         LoyaltyOfferRequirement(requirement: ESI.LoyaltyOfferRequirement(quantity: 10, typeID: 645))
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .modifier(ServicesViewModifier.testModifier())
     }
 }

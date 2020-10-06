@@ -123,8 +123,7 @@ struct LocationPicker_Previews: PreviewProvider {
                 
             }
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext.newBackgroundContext())
+        .modifier(ServicesViewModifier.testModifier())
 
     }
 }

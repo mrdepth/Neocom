@@ -222,11 +222,11 @@ struct NPCInfo_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             List {
-                NPCInfo(type: try! Storage.sharedStorage.persistentContainer.viewContext
+                NPCInfo(type: try! Storage.testStorage.persistentContainer.viewContext
                     .from(SDEInvType.self)
                     .filter((/\SDEInvType.group?.npcGroups).count > 0)
                     .first()!)
             }.listStyle(GroupedListStyle())
-        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        }.modifier(ServicesViewModifier.testModifier())
     }
 }

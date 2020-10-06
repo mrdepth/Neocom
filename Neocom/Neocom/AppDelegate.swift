@@ -16,7 +16,7 @@ import StoreKit
 import FacebookCore
 @_exported import UIKit
 
-@UIApplicationMain
+//@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     @UserDefault(key: .isLifetimeUpgrade) var isLifetimeUpgrade = false

@@ -25,7 +25,7 @@ struct Fleets: View {
         
         self.openMode = openMode
         projectLoading = Publishers.Sequence(sequence: urls)
-            .setFailureType(to: Error.self)
+//            .setFailureType(to: Error.self)
             .flatMap { url in
                 DGMSkillLevels.from(url: url, managedObjectContext: self.managedObjectContext)
                     .catch {_ in Empty()}
@@ -95,9 +95,7 @@ struct Fleets_Previews: PreviewProvider {
         return NavigationView {
             Fleets()
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

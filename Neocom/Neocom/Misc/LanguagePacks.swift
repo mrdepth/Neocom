@@ -29,7 +29,7 @@ struct LanguagePack {
 struct LanguagePacks: View {
     var onSelect: ((BundleResource) -> Void)? = nil
 
-    private let languagePacks = Storage.sharedStorage.supportedLanguages()
+    private let languagePacks = Storage.testStorage.supportedLanguages()
     
     var body: some View {
         List {

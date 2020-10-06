@@ -33,7 +33,7 @@ struct ContractBidCell: View {
 #if DEBUG
 struct ContractBidCell_Previews: PreviewProvider {
     static var previews: some View {
-        let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.sharedStorage.persistentContainer.viewContext)!, insertInto: nil)
+        let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.testStorage.persistentContainer.viewContext)!, insertInto: nil)
         contact.name = "Artem Valiant"
         contact.contactID = 1554561480
 
@@ -43,7 +43,7 @@ struct ContractBidCell_Previews: PreviewProvider {
         return List {
             ContractBidCell(bid: bid, contact: contact)
         }.listStyle(GroupedListStyle())
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

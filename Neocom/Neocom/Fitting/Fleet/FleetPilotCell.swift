@@ -60,8 +60,7 @@ struct FleetPilotCell_Previews: PreviewProvider {
             FleetPilotCell(ship: .constant(gang.pilots[0].ship!), pilot: gang.pilots[0])
             }.listStyle(GroupedListStyle())
             .environmentObject(gang)
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
 
     }
 }

@@ -33,8 +33,7 @@ struct WalletJournalItem_Previews: PreviewProvider {
                 WalletJournalItem()
             }.listStyle(GroupedListStyle())
         }
-        .environmentObject(SharedState.testState())
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

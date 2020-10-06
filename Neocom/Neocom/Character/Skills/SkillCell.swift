@@ -262,7 +262,7 @@ private struct FlashigRectangle: View {
 #if DEBUG
 struct SkillCell_Previews: PreviewProvider {
     static var previews: some View {
-        let type = try! Storage.sharedStorage.persistentContainer.viewContext
+        let type = try! Storage.testStorage.persistentContainer.viewContext
             .from(SDEInvType.self)
             .filter(/\SDEInvType.group?.category?.categoryID == SDECategoryID.skill.rawValue)
             .first()!
@@ -287,7 +287,7 @@ struct SkillCell_Previews: PreviewProvider {
                                                                                                    startDate: Date(timeIntervalSinceNow: 3600),
                                                                                                    trainingStartSP: skill.skillPoints(at: 2))))
 
-        let skillPlanSkill = SkillPlanSkill(context: Storage.sharedStorage.persistentContainer.viewContext)
+        let skillPlanSkill = SkillPlanSkill(context: Storage.testStorage.persistentContainer.viewContext)
         skillPlanSkill.typeID = type.typeID
         skillPlanSkill.level = 3
         return NavigationView {
@@ -299,7 +299,7 @@ struct SkillCell_Previews: PreviewProvider {
             SkillCell(type: type, pilot: pilot, skillPlanSkill: skillPlanSkill)
         }
         }.listStyle(GroupedListStyle())
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

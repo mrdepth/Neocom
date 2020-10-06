@@ -49,7 +49,6 @@ struct FleetCell_Previews: PreviewProvider {
                 FleetCell(fleet: Fleet.testFleet())
             }.listStyle(GroupedListStyle())
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }

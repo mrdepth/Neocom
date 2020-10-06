@@ -71,9 +71,7 @@ struct SkillLevelCell_Previews: PreviewProvider {
         return List {
             SkillLevelCell(type: type, skill: Pilot.Skill(type: type)!, level: 1, pilot: nil)
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext.newBackgroundContext())
-            .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

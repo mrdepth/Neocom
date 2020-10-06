@@ -61,8 +61,8 @@ struct LoyaltyPoints_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             LoyaltyPoints()
-        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environmentObject(SharedState.testState())
+        }.environment(\.managedObjectContext, Storage.testStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

@@ -35,12 +35,12 @@ struct ContactCell: View {
 #if DEBUG
 struct ContactCell_Previews: PreviewProvider {
     static var previews: some View {
-        let contact1 = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.sharedStorage.persistentContainer.viewContext)!, insertInto: nil)
+        let contact1 = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.testStorage.persistentContainer.viewContext)!, insertInto: nil)
         contact1.name = "Artem Valiant"
         contact1.contactID = 1554561480
         contact1.category = ESI.RecipientType.character.rawValue
 
-        let contact2 = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.sharedStorage.persistentContainer.viewContext)!, insertInto: nil)
+        let contact2 = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.testStorage.persistentContainer.viewContext)!, insertInto: nil)
         contact2.name = "Necrorise Squadron"
         contact2.contactID = 653533005
         contact2.category = ESI.RecipientType.corporation.rawValue
@@ -50,7 +50,7 @@ struct ContactCell_Previews: PreviewProvider {
             ContactCell(contact: contact1)
             ContactCell(contact: contact2)
         }.listStyle(GroupedListStyle())
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

@@ -32,7 +32,7 @@ struct TypeMarketOrderCell: View {
 struct TypeMarketOrderCell_Previews: PreviewProvider {
     static var previews: some View {
 		List {
-        TypeMarketOrderCell(order: try! TypeMarketData.Row(order: ESI.TypeMarketOrder(duration: 1, isBuyOrder: true, issued: Date(), locationID: 0, minVolume: 0, orderID: 0, price: 1000, range: .i1, systemID: 0, typeID: 645, volumeRemain: 0, volumeTotal: 0), location: EVELocation(Storage.sharedStorage.persistentContainer.viewContext.from(SDEStaStation.self).first()!)))
+        TypeMarketOrderCell(order: try! TypeMarketData.Row(order: ESI.TypeMarketOrder(duration: 1, isBuyOrder: true, issued: Date(), locationID: 0, minVolume: 0, orderID: 0, price: 1000, range: .i1, systemID: 0, typeID: 645, volumeRemain: 0, volumeTotal: 0), location: EVELocation(Storage.testStorage.persistentContainer.viewContext.from(SDEStaStation.self).first()!)))
 		}.listStyle(GroupedListStyle())
     }
 }

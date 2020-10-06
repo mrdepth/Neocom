@@ -33,8 +33,7 @@ struct IndustryJobsItem_Previews: PreviewProvider {
                 IndustryJobsItem()
             }.listStyle(GroupedListStyle())
         }
-        .environmentObject(SharedState.testState())
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

@@ -80,7 +80,7 @@ struct FittingDroneCell_Previews: PreviewProvider {
         return List {
             FittingDroneCell(drone: drone)
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
         .environmentObject(gang)
     }
 }

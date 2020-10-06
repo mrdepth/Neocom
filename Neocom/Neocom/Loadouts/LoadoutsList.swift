@@ -175,11 +175,9 @@ struct LoadoutsList_Previews: PreviewProvider {
     static var previews: some View {
         _ = Loadout.testLoadouts()
         return NavigationView {
-            LoadoutsList(loadouts: LoadoutsLoader(.ship, managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext), category: .ship) { _, _ in}
+            LoadoutsList(loadouts: LoadoutsLoader(.ship, managedObjectContext: Storage.testStorage.persistentContainer.viewContext), category: .ship) { _, _ in}
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

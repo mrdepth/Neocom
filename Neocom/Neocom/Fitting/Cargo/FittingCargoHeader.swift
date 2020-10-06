@@ -24,7 +24,7 @@ struct FittingCargoHeader_Previews: PreviewProvider {
         
         return FittingCargoHeader(ship: gang.pilots[0].ship!)
             .environmentObject(gang)
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .modifier(ServicesViewModifier.testModifier())
             .background(Color(.systemBackground))
 
     }

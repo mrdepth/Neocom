@@ -27,7 +27,7 @@ struct ChargeTypeCell: View {
 struct ChargeTypeCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            ChargeTypeCell(charge: (try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.dgmppItem?.damage != nil).first()?.dgmppItem?.damage)!)
+            ChargeTypeCell(charge: (try! Storage.testStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.dgmppItem?.damage != nil).first()?.dgmppItem?.damage)!)
         }.listStyle(GroupedListStyle())
     }
 }

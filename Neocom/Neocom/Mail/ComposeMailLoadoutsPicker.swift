@@ -37,7 +37,6 @@ struct ComposeMailLoadoutsPicker_Previews: PreviewProvider {
         return NavigationView {
             ComposeMailLoadoutsPicker {_ in }
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }

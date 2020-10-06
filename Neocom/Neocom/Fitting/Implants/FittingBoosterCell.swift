@@ -53,8 +53,7 @@ struct FittingBoosterCell_Previews: PreviewProvider {
         return List {
             FittingBoosterCell(booster: booster)
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
             .environmentObject(gang)
 
         

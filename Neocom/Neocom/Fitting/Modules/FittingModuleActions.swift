@@ -211,9 +211,7 @@ struct FittingModuleActions_Previews: PreviewProvider {
             FittingModuleActions(module: DGMModuleGroup([module!])) {}
         }
         .environmentObject(gang)
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

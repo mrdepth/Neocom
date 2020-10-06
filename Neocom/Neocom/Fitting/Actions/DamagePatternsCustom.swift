@@ -100,8 +100,8 @@ struct NewDamagePatternButton: View {
 
 struct DamagePatternsCustom_Previews: PreviewProvider {
     static var previews: some View {
-        if (try? Storage.sharedStorage.persistentContainer.viewContext.from(DamagePattern.self).count()) == 0 {
-            let pattern = DamagePattern(context: Storage.sharedStorage.persistentContainer.viewContext)
+        if (try? Storage.testStorage.persistentContainer.viewContext.from(DamagePattern.self).count()) == 0 {
+            let pattern = DamagePattern(context: Storage.testStorage.persistentContainer.viewContext)
             pattern.name = "Pattern1"
             pattern.em = 2
             pattern.thermal = 1
@@ -113,8 +113,7 @@ struct DamagePatternsCustom_Previews: PreviewProvider {
             }.listStyle(GroupedListStyle())
             .navigationBarItems(trailing: EditButton())
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
+        .modifier(ServicesViewModifier.testModifier())
 
     }
 }

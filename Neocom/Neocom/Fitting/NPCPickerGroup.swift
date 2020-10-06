@@ -93,7 +93,6 @@ struct NPCPickerGroup_Previews: PreviewProvider {
         NavigationView {
             NPCPickerGroup() { _ in }
         }
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }

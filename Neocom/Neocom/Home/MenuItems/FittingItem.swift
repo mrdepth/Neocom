@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct FittingItem: View {
-    @ObservedObject private var storage = Storage.sharedStorage
+    @EnvironmentObject private var storage: Storage
     
     var body: some View {
         NavigationLink(destination: Loadouts()) {

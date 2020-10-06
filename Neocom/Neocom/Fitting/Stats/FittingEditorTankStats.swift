@@ -62,7 +62,7 @@ struct FittingEditorTankStats_Previews: PreviewProvider {
             FittingEditorTankStats(ship: gang.pilots.first!.ship!)
         }.listStyle(GroupedListStyle())
             .environmentObject(gang)
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 

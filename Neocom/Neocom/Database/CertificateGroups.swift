@@ -38,6 +38,6 @@ struct CertificateGroups_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             CertificateGroups()
-        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        }.modifier(ServicesViewModifier.testModifier())
     }
 }

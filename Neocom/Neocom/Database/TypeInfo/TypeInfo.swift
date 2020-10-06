@@ -154,9 +154,7 @@ struct TypeInfo_Previews: PreviewProvider {
 //                .environment(\.account, account)
 //                .environment(\.esi, ESI(token: oAuth2Token))
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext.newBackgroundContext())
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

@@ -87,13 +87,13 @@ struct TypePickerGroups: View {
 
 struct TypePickerGroups_Previews: PreviewProvider {
     static var previews: some View {
-        let context = Storage.sharedStorage.persistentContainer.viewContext
+        let context = Storage.testStorage.persistentContainer.viewContext
         let group = try! context.fetch(SDEDgmppItemGroup.rootGroup(categoryID: .hi)).first!
         return NavigationView {
             TypePickerGroups(parentGroup: group,
                              searchHelper: TypePickerSearchHelper(),
                              completion: {_ in })
         }
-        .environment(\.managedObjectContext, context)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }

@@ -75,6 +75,6 @@ struct ShipPicker_Previews: PreviewProvider {
             ShipPicker { _ in
                 
             }
-        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        }.modifier(ServicesViewModifier.testModifier())
     }
 }

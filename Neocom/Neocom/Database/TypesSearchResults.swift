@@ -1,34 +1,24 @@
 //
-//  TypesSearch.swift
+//  TypesSearchResults.swift
 //  Neocom
 //
-//  Created by Artem Shimanski on 11/28/19.
-//  Copyright © 2019 Artem Shimanski. All rights reserved.
+//  Created by Artem Shimanski on 10/5/20.
+//  Copyright © 2020 Artem Shimanski. All rights reserved.
 //
 
 import SwiftUI
 import Combine
-import Expressible
 import CoreData
+import Expressible
 
-struct TypesSearch<Content: View>: View {
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @Environment(\.backgroundManagedObjectContext) var backgroundManagedObjectContext
+struct TypesSearchResults<Cell: View>: View {
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    @Environment(\.backgroundManagedObjectContext) private var backgroundManagedObjectContext
+    var publisher: AnyPublisher<String?, Never>
     var predicate: PredicateProtocol? = nil
-    @Binding var searchString: String
-    @Binding var searchResults: [FetchedResultsController<SDEInvType>.Section]?
-    var content: () -> Content
-    
-    @State private var isEditing = false
+    var cell: (SDEInvType) -> Cell
 
-    init(predicate: PredicateProtocol? = nil, searchString: Binding<String>, searchResults: Binding<[FetchedResultsController<SDEInvType>.Section]?>, @ViewBuilder content: @escaping () -> Content) {
-        self.predicate = predicate
-        _searchString = searchString
-        _searchResults = searchResults
-        self.content = content
-    }
-
-    func search(_ string: String) -> AnyPublisher<[FetchedResultsController<SDEInvType>.Section]?, Never> {
+    private func search(_ string: String) -> AnyPublisher<[FetchedResultsController<SDEInvType>.Section]?, Never> {
         Future<FetchedResultsController<NSDictionary>?, Never> { promise in
             self.backgroundManagedObjectContext.perform {
                 let string = string.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -63,20 +53,25 @@ struct TypesSearch<Content: View>: View {
         }.eraseToAnyPublisher()
     }
     
+    @State private var results: [FetchedResultsController<SDEInvType>.Section]?
+    
     var body: some View {
-        SearchList(text: $searchString, results: $searchResults, isEditing: $isEditing, search: search, content: content)
+        List {
+            results.map { results in
+                TypesContent(types: results, cell: cell)
+            }
+        }
         .listStyle(GroupedListStyle())
-        .overlay(searchResults?.isEmpty == true ? Text(RuntimeError.noResult) : nil)
+            .onReceive(publisher.compactMap{$0}.debounce(for: .seconds(0.25), scheduler: DispatchQueue.main).flatMap{self.search($0)}) { results in
+                self.results = results
+            }
     }
 }
 
-#if DEBUG
-struct TypesSearch_Previews: PreviewProvider {
+struct TypesSearchResults_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            TypeCategories()
+        TypesSearchResults(publisher: Empty().eraseToAnyPublisher()) { type in
+            TypeCell(type: type)
         }
-        .modifier(ServicesViewModifier.testModifier())
     }
 }
-#endif

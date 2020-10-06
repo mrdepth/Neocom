@@ -89,8 +89,7 @@ struct TutorialAccountPage_Previews: PreviewProvider {
         NavigationView {
             TutorialAccountPage {}
         }.navigationViewStyle(StackNavigationViewStyle())
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

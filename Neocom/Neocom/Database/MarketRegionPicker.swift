@@ -128,7 +128,6 @@ struct MarketRegionPicker: View {
 struct MarketRegionPicker_Previews: PreviewProvider {
     static var previews: some View {
 		MarketRegionPicker { _ in}
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext.newBackgroundContext())
+            .modifier(ServicesViewModifier.testModifier())
     }
 }

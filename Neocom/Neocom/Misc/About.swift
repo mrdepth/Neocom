@@ -112,7 +112,7 @@ struct About_Previews: PreviewProvider {
         NavigationView {
             About()
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
         .navigationViewStyle(StackNavigationViewStyle())
     }
 }

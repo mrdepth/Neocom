@@ -48,11 +48,11 @@ struct FittingCharges: View {
 
 struct FittingCharges_Previews: PreviewProvider {
     static var previews: some View {
-        let type = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 3154).first()!
+        let type = try! Storage.testStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 3154).first()!
         let charge = type.dgmppItem?.charge
         return NavigationView {
             FittingCharges(category: charge!) {_ in}
         }
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }

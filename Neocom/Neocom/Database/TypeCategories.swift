@@ -30,7 +30,20 @@ struct TypeCategories: View {
     var body: some View {
         let categories = self.categories.get(initial: getCategories())
         
-        return TypesSearch(searchString: $searchString, searchResults: $searchResults) {
+        return List {
+            TypeCategoriesContent(categories: categories)
+        }
+        .listStyle(GroupedListStyle())
+        .search { publisher in
+            TypesSearchResults(publisher: publisher) { type in
+                NavigationLink(destination: TypeInfo(type: type)) {
+                    TypeCell(type: type)
+                }
+            }
+        }
+        .navigationBarTitle(Text("Categories"))
+
+        /*return TypesSearch(searchString: $searchString, searchResults: $searchResults) {
             if self.searchResults != nil {
                 TypesContent(types: self.searchResults!) { type in
                     NavigationLink(destination: TypeInfo(type: type)) {
@@ -42,7 +55,7 @@ struct TypeCategories: View {
                 TypeCategoriesContent(categories: categories)
             }
         }
-        .navigationBarTitle(Text("Categories"))
+        .navigationBarTitle(Text("Categories"))*/
     }
 }
 
@@ -68,9 +81,7 @@ struct TypeCategories_Previews: PreviewProvider {
         NavigationView {
             TypeCategories()
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

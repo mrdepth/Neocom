@@ -297,13 +297,11 @@ struct FittingEditor_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         return NavigationView {
-            FittingEditor(project: FittingProject(gang: gang, managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext))
+            FittingEditor(project: FittingProject(gang: gang, managedObjectContext: Storage.testStorage.persistentContainer.viewContext))
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .environmentObject(gang)
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

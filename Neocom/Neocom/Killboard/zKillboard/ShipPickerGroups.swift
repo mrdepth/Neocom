@@ -117,9 +117,9 @@ struct ShipPickerTypes: View {
 
 struct ShipPickerGroups_Previews: PreviewProvider {
     static var previews: some View {
-        let category = try? Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvCategory.self).filter(/\SDEInvCategory.categoryID == SDECategoryID.ship.rawValue).first()
+        let category = try? Storage.testStorage.persistentContainer.viewContext.from(SDEInvCategory.self).filter(/\SDEInvCategory.categoryID == SDECategoryID.ship.rawValue).first()
         return NavigationView {
             ShipPickerGroups(category: category!) { _ in}
-        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        }.modifier(ServicesViewModifier.testModifier())
     }
 }

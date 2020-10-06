@@ -72,8 +72,7 @@ struct FittingCargoCell_Previews: PreviewProvider {
         return List {
             FittingCargoCell(ship: DGMShip.testDominix(), cargo: cargo)
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
             .environmentObject(PricesData(esi: ESI()))
         
     }

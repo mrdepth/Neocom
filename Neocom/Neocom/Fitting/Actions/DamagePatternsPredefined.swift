@@ -87,7 +87,7 @@ struct DamagePatternsPredefined_Previews: PreviewProvider {
             }.listStyle(GroupedListStyle())
                 .navigationBarItems(trailing: EditButton())
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
 
     }
 }

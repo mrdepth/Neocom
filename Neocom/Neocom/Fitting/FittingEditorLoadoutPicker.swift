@@ -57,10 +57,9 @@ struct FittingEditorLoadoutPicker_Previews: PreviewProvider {
         _ = Loadout.testLoadouts()
 
         return NavigationView {
-            FittingEditorLoadoutPicker(project: FittingProject(gang: DGMGang.testGang(), managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext)) {}
+            FittingEditorLoadoutPicker(project: FittingProject(gang: DGMGang.testGang(), managedObjectContext: Storage.testStorage.persistentContainer.viewContext)) {}
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
+        .modifier(ServicesViewModifier.testModifier())
 
     }
 }

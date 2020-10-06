@@ -122,8 +122,7 @@ struct FittingEditorPriceStats_Previews: PreviewProvider {
         }
         .environmentObject(gang)
         .environmentObject(PricesData(esi: ESI()))
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

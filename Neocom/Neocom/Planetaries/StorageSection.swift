@@ -113,7 +113,7 @@ struct StorageSection_Previews: PreviewProvider {
             List {
                 StorageSection(storage: storage!)
             }.listStyle(GroupedListStyle())
-        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        }.modifier(ServicesViewModifier.testModifier())
         .environmentObject(planet)
     }
 }

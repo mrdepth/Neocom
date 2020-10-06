@@ -29,6 +29,6 @@ struct FittingEditorShipModules_Previews: PreviewProvider {
         }
 //        .environmentObject(DGMStructure.testKeepstar() as DGMShip)
         .environmentObject(gang)
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }

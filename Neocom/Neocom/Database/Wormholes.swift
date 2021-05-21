@@ -27,12 +27,15 @@ struct Wormholes: View {
     
     var body: some View {
         let wormholes = self.wormholes.get(initial: getWormholes())
-        return WormholesSearch { searchResults in
-            List {
-                WormholesContent(wormholes: searchResults ?? wormholes)
-            }
-        }.listStyle(GroupedListStyle())
-            .navigationBarTitle(Text("Wormholes"))
+        
+        return List {
+            WormholesContent(wormholes: wormholes)
+        }
+        .listStyle(GroupedListStyle())
+        .search { publisher in
+            WormholesSearchResults(publisher: publisher)
+        }
+        .navigationBarTitle(Text("Wormholes"))
     }
 }
 
@@ -52,13 +55,11 @@ struct WormholesContent: View {
     }
 }
 
-struct WormholesSearch<Content: View>: View {
-    @Environment(\.managedObjectContext) private var managedObjectContext
-    var content: (FetchedResultsController<SDEWhType>?) -> Content
+struct WormholesSearchResults: View {
+    var publisher: AnyPublisher<String?, Never>
     
-    init(@ViewBuilder content: @escaping (FetchedResultsController<SDEWhType>?) -> Content) {
-        self.content = content
-    }
+    @Environment(\.managedObjectContext) private var managedObjectContext
+    @State private var results: FetchedResultsController<SDEWhType>?
     
     func search(_ string: String) -> AnyPublisher<FetchedResultsController<SDEWhType>?, Never> {
         Future<FetchedResultsController<SDEWhType>?, Never> { promise in
@@ -79,10 +80,17 @@ struct WormholesSearch<Content: View>: View {
             }
         }.receive(on: RunLoop.main).eraseToAnyPublisher()
     }
+    
         
     var body: some View {
-        SearchView(initialValue: nil, predicate: "", search: search, onUpdated: nil) { results in
-            self.content(results)
+        List {
+            results.map {
+                WormholesContent(wormholes: $0)
+            }
+        }
+        .listStyle(GroupedListStyle())
+        .onReceive(publisher.compactMap{$0}.debounce(for: .seconds(0.25), scheduler: DispatchQueue.main).flatMap{self.search($0)}) { results in
+            self.results = results
         }
     }
 }

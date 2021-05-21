@@ -21,33 +21,7 @@ struct NPCGroup: View {
         return FetchedResultsController(controller)
     }
 
-    private let groups = Lazy<FetchedResultsController<SDENpcGroup>, Never>()
-    
-    @State private var searchString: String = ""
-    @State private var searchResults: [FetchedResultsController<SDEInvType>.Section]? = nil
-
-    var body: some View {
-        let groups = self.groups.get(initial: getGroups())
-        let predicate = (/\SDEInvType.group?.npcGroups).count > 0
-        
-        return TypesSearch(predicate: predicate, searchString: $searchString, searchResults: $searchResults) {
-            if self.searchResults != nil {
-                TypesContent(types: self.searchResults!) { type in
-                    NavigationLink(destination: TypeInfo(type: type)) {
-                        TypeCell(type: type)
-                    }
-                }
-            }
-            else {
-                NPCGroupContent(groups: groups)
-            }
-        }
-        .navigationBarTitle(parent?.npcGroupName ?? NSLocalizedString("NPC", comment: ""))
-    }
-}
-
-struct NPCGroupContent: View {
-    var groups: FetchedResultsController<SDENpcGroup>
+    @StateObject private var groups = Lazy<FetchedResultsController<SDENpcGroup>, Never>()
     
     private func content(for group: SDENpcGroup) -> some View {
         HStack {
@@ -70,11 +44,23 @@ struct NPCGroupContent: View {
             }
         }
     }
-
+    
     var body: some View {
-        ForEach(groups.fetchedObjects, id: \.objectID) { group in
-            self.row(for: group)
+        let groups = self.groups.get(initial: getGroups())
+        let predicate = (/\SDEInvType.group?.npcGroups).count > 0
+        
+        return List {
+            ForEach(groups.fetchedObjects, id: \.objectID, content: row)
         }
+        .listStyle(GroupedListStyle())
+        .search { publisher in
+            TypesSearchResults(publisher: publisher, predicate: predicate) { type in
+                NavigationLink(destination: TypeInfo(type: type)) {
+                    TypeCell(type: type)
+                }
+            }
+        }
+        .navigationBarTitle(parent?.npcGroupName ?? NSLocalizedString("NPC", comment: ""))
     }
 }
 

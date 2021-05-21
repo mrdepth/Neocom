@@ -108,19 +108,20 @@ struct PasteboardLoadout: View {
     init(category: SDECategoryID, managedObjectContext: NSManagedObjectContext, onSelect: @escaping (Ship, OpenMode) -> Void) {
         self.managedObjectContext = managedObjectContext
         self.category = category
-        
+        _loadout = State(initialValue: nil)
+        _pasteboardChangeCount = State(initialValue: 0)
         pasteboard = UIPasteboard.general
-        _pasteboardChangeCount = State(initialValue: pasteboard.changeCount)
-        
-        if pasteboard.hasStrings {
-            let ship = UIPasteboard.general.string.flatMap{$0.data(using: .utf8)}.flatMap { data in
-                try? LoadoutPlainTextDecoder(managedObjectContext: managedObjectContext).decode(from: data)
-            }
-            _loadout = State(initialValue: ship)
-        }
-        else {
-            _loadout = State(initialValue: nil)
-        }
+//        _pasteboardChangeCount = State(initialValue: pasteboard.changeCount)
+//
+//        if pasteboard.hasStrings {
+//            let ship = UIPasteboard.general.string.flatMap{$0.data(using: .utf8)}.flatMap { data in
+//                try? LoadoutPlainTextDecoder(managedObjectContext: managedObjectContext).decode(from: data)
+//            }
+//            _loadout = State(initialValue: ship)
+//        }
+//        else {
+//            _loadout = State(initialValue: nil)
+//        }
         self.onSelect = onSelect
     }
     

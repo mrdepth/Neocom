@@ -18,22 +18,7 @@ class TypePickerManager {
         picker.content.completion = {
             completion($0)
         }
-        return picker
-//            .edgesIgnoringSafeArea(.all)
-//            .frame(idealWidth: 375, idealHeight: 375 * 2)
-            .modifier(services)
-//
-//        NavigationView {
-//            TypePicker(parentGroup: parentGroup) {
-//                completion($0)
-//            }
-//            .navigationBarItems(leading: BarButtonItems.close {
-//                completion(nil)
-//            })
-//        }
-//        .modifier(ServicesViewModifier(environment: environment, sharedState: sharedState))
-//        .environmentObject(typePickerState[parentGroup, default: TypePickerState()])
-//        .navigationViewStyle(StackNavigationViewStyle())
+        return picker.modifier(services)
     }
 }
 
@@ -44,33 +29,19 @@ class TypePickerViewController: UIViewController {
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
         
-//        TypePickerGroups(parentGroup: parentGroup, completion: completion)
-
         let view = TypePickerPage(parentGroup: parentGroup) { [weak self] type in
             self?.completion(type)
         }
         .navigationBarItems(leading: BarButtonItems.close { [weak self] in
             self?.completion(nil)
         }).modifier(services)
-        
-//        setViewControllers([UIHostingController(rootView: view)], animated: false)
-        
-//        let view = TypePickerWrapper(parentGroup: parentGroup) { [weak self] type in
-//            self?.completion(type)
-//        }.modifier(services)
         rootViewController = UINavigationController(rootViewController: UIHostingController(rootView: view))
         addChild(rootViewController!)
-//        viewControllers = [UIHostingController(rootView: view)]
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let label = UILabel(frame: .zero)
-//        label.text = "wefwef"
-//        label.layer.zPosition = 100
-//        label.sizeToFit()
-//        view.addSubview(label)
-                view.addSubview(rootViewController!.view)
+        view.addSubview(rootViewController!.view)
         rootViewController?.view.frame = view.bounds
     }
     override func viewDidLayoutSubviews() {

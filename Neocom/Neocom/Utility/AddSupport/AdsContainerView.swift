@@ -6,6 +6,7 @@
 //  Copyright © 2020 Artem Shimanski. All rights reserved.
 //
 
+#if canImport(Appodeal)
 #if !targetEnvironment(macCatalyst)
 import SwiftUI
 import Combine
@@ -62,4 +63,5 @@ struct AdsContainerView_Previews: PreviewProvider {
         }
     }
 }
+#endif
 #endif

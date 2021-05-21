@@ -22,16 +22,23 @@ struct TypeCategories: View {
         return FetchedResultsController(controller)
     }
     
-    private let categories = Lazy<FetchedResultsController<SDEInvCategory>, Never>()
+    @StateObject private var categories = Lazy<FetchedResultsController<SDEInvCategory>, Never>()
     
-    @State private var searchString: String = ""
-    @State private var searchResults: [FetchedResultsController<SDEInvType>.Section]? = nil
+    func section(_ section: FetchedResultsController<SDEInvCategory>.Section) -> some View {
+        Section(header: section.name == "0" ? Text("UNPUBLISHED") : Text("PUBLISHED")) {
+            ForEach(section.objects, id: \.objectID) { category in
+                NavigationLink(destination: TypeGroups(category: category)) {
+                    CategoryCell(category: category)
+                }
+            }
+        }
+    }
     
     var body: some View {
         let categories = self.categories.get(initial: getCategories())
         
         return List {
-            TypeCategoriesContent(categories: categories)
+            ForEach(categories.sections, id: \.name, content: section)
         }
         .listStyle(GroupedListStyle())
         .search { publisher in
@@ -42,37 +49,7 @@ struct TypeCategories: View {
             }
         }
         .navigationBarTitle(Text("Categories"))
-
-        /*return TypesSearch(searchString: $searchString, searchResults: $searchResults) {
-            if self.searchResults != nil {
-                TypesContent(types: self.searchResults!) { type in
-                    NavigationLink(destination: TypeInfo(type: type)) {
-                        TypeCell(type: type)
-                    }
-                }
-            }
-            else {
-                TypeCategoriesContent(categories: categories)
-            }
-        }
-        .navigationBarTitle(Text("Categories"))*/
     }
-}
-
-struct TypeCategoriesContent: View {
-	var categories: FetchedResultsController<SDEInvCategory>
-	
-	var body: some View {
-		ForEach(categories.sections, id: \.name) { section in
-			Section(header: section.name == "0" ? Text("UNPUBLISHED") : Text("PUBLISHED")) {
-				ForEach(section.objects, id: \.objectID) { category in
-                    NavigationLink(destination: TypeGroups(category: category)) {
-                        CategoryCell(category: category)
-                    }
-				}
-			}
-		}
-	}
 }
 
 #if DEBUG

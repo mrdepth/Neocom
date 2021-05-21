@@ -81,8 +81,11 @@ struct Fleets: View {
             }
         }
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
-        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+//        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .navigationBarTitle(Text("Fleets"))
+        .navigate(using: $selectedProject) { project in
+            FittingEditor(project: project)
+        }
 
         
     }

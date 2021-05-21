@@ -31,7 +31,6 @@ struct FittingEditorLoadoutPicker: View {
                 if let loadout = loadout.ship {
                     pilot.loadout = loadout
                 }
-                
                 if let ship = pilot.ship, !project.loadouts.values.contains(loadout) {
                     project.loadouts[ship] = loadout
                 }

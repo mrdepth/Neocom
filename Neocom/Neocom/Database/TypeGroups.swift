@@ -23,44 +23,34 @@ struct TypeGroups: View {
         return FetchedResultsController(controller)
     }
     
-    private let groups = Lazy<FetchedResultsController<SDEInvGroup>, Never>()
+    @StateObject private var groups = Lazy<FetchedResultsController<SDEInvGroup>, Never>()
     
-    @State private var searchString: String = ""
-    @State private var searchResults: [FetchedResultsController<SDEInvType>.Section]? = nil
+    func section(_ section: FetchedResultsController<SDEInvGroup>.Section) -> some View {
+        Section(header: section.name == "0" ? Text("UNPUBLISHED") : Text("PUBLISHED")) {
+            ForEach(section.objects, id: \.objectID) { group in
+                NavigationLink(destination: Types(.group(group))) {
+                    GroupCell(group: group)
+                }
+            }
+        }
+    }
 
     var body: some View {
         let groups = self.groups.get(initial: getGroups())
         let predicate = /\SDEInvType.group?.category == self.category && /\SDEInvType.published == true
         
-        return TypesSearch(predicate: predicate, searchString: $searchString, searchResults: $searchResults) {
-            if self.searchResults != nil {
-                TypesContent(types: self.searchResults!) { type in
-                    NavigationLink(destination: TypeInfo(type: type)) {
-                        TypeCell(type: type)
-                    }
-                }
-            }
-            else {
-                TypeGroupsContent(groups: groups)
-            }
+        return List {
+            ForEach(groups.sections, id: \.name, content: section)
         }
-        .navigationBarTitle(category.categoryName ?? NSLocalizedString("Categories", comment: ""))
-    }
-}
-
-struct TypeGroupsContent: View {
-    var groups: FetchedResultsController<SDEInvGroup>
-    
-    var body: some View {
-        ForEach(groups.sections, id: \.name) { section in
-            Section(header: section.name == "0" ? Text("UNPUBLISHED") : Text("PUBLISHED")) {
-                ForEach(section.objects, id: \.objectID) { group in
-                    NavigationLink(destination: Types(.group(group))) {
-                        GroupCell(group: group)
-                    }
+        .listStyle(GroupedListStyle())
+        .search { publisher in
+            TypesSearchResults(publisher: publisher, predicate: predicate) { type in
+                NavigationLink(destination: TypeInfo(type: type)) {
+                    TypeCell(type: type)
                 }
             }
         }
+        .navigationBarTitle(category.categoryName ?? NSLocalizedString("Groups", comment: ""))
     }
 }
 

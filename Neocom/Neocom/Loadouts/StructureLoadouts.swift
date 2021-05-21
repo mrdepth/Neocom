@@ -59,8 +59,11 @@ struct StructureLoadouts: View {
     var body: some View {
         let loadouts = self.loadouts.get(initial: LoadoutsLoader(.structure, managedObjectContext: backgroundManagedObjectContext))
         return LoadoutsList(loadouts: loadouts, category: .structure, onSelect: onSelect)
-        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+//        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .navigationBarTitle(Text("Loadouts"))
+            .navigate(using: $selectedProject) { project in
+                FittingEditor(project: project)
+            }
     }
 }
 

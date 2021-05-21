@@ -70,12 +70,17 @@ struct ShipLoadouts: View {
                     UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil, errorHandler: nil)
                 }
                 else {
-                    self.selectedProject = project
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.selectedProject = project
+                    }
                 }
         }
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
-        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+//        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .navigationBarTitle(Text("Loadouts"))
+            .navigate(using: $selectedProject) { project in
+                FittingEditor(project: project)
+            }
     }
 }
 
@@ -87,6 +92,7 @@ struct ShipLoadouts_Previews: PreviewProvider {
             ShipLoadouts()
         }
         .modifier(ServicesViewModifier.testModifier())
+        .environmentObject(Storage.testStorage)
     }
 }
 #endif

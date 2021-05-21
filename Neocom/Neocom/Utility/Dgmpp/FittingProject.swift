@@ -15,16 +15,16 @@ import Expressible
 import EVEAPI
 
 class FittingProject: UIDocument, ObservableObject, Identifiable {
-    static let managedObjectContextKey = CodingUserInfoKey(rawValue: "managedObjectContext")!
+//    static let managedObjectContextKey = CodingUserInfoKey(rawValue: "managedObjectContext")!
     
-    var gang: DGMGang?
-    var structure: DGMStructure?
+    private(set) var gang: DGMGang?
+    private(set) var structure: DGMStructure?
 
     private var gangSubscription: AnyCancellable?
     private var structureSubscription: AnyCancellable?
     
     @Published var loadouts: [DGMShip: Loadout] = [:]
-    var fleet: Fleet?
+    private(set) var fleet: Fleet?
     let managedObjectContext: NSManagedObjectContext
     
     enum CodingKeys: String, CodingKey {
@@ -40,6 +40,8 @@ class FittingProject: UIDocument, ObservableObject, Identifiable {
         var loadouts: [Int: URL]
         var fleet: URL?
     }
+    
+    //MARK: - UIDocument flow
     
     override func contents(forType typeName: String) throws -> Any {
         let metaInfo = MetaInfo(gang: gang,

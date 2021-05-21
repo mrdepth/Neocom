@@ -13,6 +13,7 @@ import SwiftUI
 struct NeocomApp: App {
     let storage: Storage
     let state: SharedState
+    @UIApplicationDelegateAdaptor var delegate: MyDelegate
     
     init() {
         self.storage = Storage()
@@ -21,5 +22,23 @@ struct NeocomApp: App {
     
     var body: some Scene {
         MainScene(storage: storage, sharedState: state)
+    }
+}
+
+class MyDelegate: NSObject, UIApplicationDelegate {
+    override init() {
+        super.init()
+    }
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        return true
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        
     }
 }

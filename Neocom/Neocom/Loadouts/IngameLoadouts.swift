@@ -84,10 +84,13 @@ struct IngameLoadouts: View {
             self.selectedProject = result.value
         }
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
-        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+//        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .onReceive(deleteSubscription) { ids in
             result?.delete(fittingIDs: Set(ids))
             self.deleteSubscription = Empty().eraseToAnyPublisher()
+        }
+        .navigate(using: $selectedProject) { project in
+            FittingEditor(project: project)
         }
 
     }

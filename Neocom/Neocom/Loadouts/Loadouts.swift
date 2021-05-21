@@ -18,6 +18,7 @@ struct Loadouts: View {
     
     @State private var page = Page.ships
     @EnvironmentObject private var sharedState: SharedState
+    @State private var isPushed: Bool?
     
     var picker: some View {
         Picker("Filter", selection: $page) {
@@ -59,6 +60,7 @@ struct Loadouts_Previews: PreviewProvider {
         NavigationView {
             Loadouts()
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .modifier(ServicesViewModifier.testModifier())
     }
 }

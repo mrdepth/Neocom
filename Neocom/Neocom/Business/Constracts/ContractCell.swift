@@ -37,7 +37,7 @@ struct ContractCell: View {
         return VStack(alignment: .leading) {
             HStack {
                 Text(contract.type.title).foregroundColor(.accentColor)
-                Text("[\(contract.availability.title))]").modifier(SecondaryLabelModifier())
+                Text("[\(contract.availability.title)]").modifier(SecondaryLabelModifier())
             }
             Group {
                 contract.title.map{Text($0)}

@@ -5,26 +5,26 @@ source 'https://github.com/appodeal/CocoaPods.git'
 source 'https://cdn.cocoapods.org/'
 
 def appodeal
-  pod 'APDAdColonyAdapter', '2.9.0.0-Beta'
-      pod 'APDAmazonAdsAdapter', '2.9.0.0-Beta'
-      pod 'APDAppLovinAdapter', '2.9.0.0-Beta'
-      pod 'APDBidMachineAdapter', '2.9.0.0-Beta'
-      pod 'APDFacebookAudienceAdapter', '2.9.0.0-Beta'
-      pod 'APDGoogleAdMobAdapter', '2.9.0.0-Beta'
-      pod 'APDIronSourceAdapter', '2.9.0.0-Beta'
-      pod 'APDMyTargetAdapter', '2.9.0.0-Beta'
-      pod 'APDOguryAdapter', '2.9.0.0-Beta'
-      pod 'APDSmaatoAdapter', '2.9.0.0-Beta'
-      pod 'APDStartAppAdapter', '2.9.0.0-Beta'
-      pod 'APDUnityAdapter', '2.9.0.0-Beta'
-      pod 'APDVungleAdapter', '2.9.0.0-Beta'
-      pod 'APDYandexAdapter', '2.9.0.0-Beta'
+  pod 'APDAdColonyAdapter', '2.10.1.1'
+      pod 'APDAmazonAdsAdapter', '2.10.1.1'
+      pod 'APDAppLovinAdapter', '2.10.1.2'
+      pod 'APDBidMachineAdapter', '2.10.1.1'
+      pod 'APDFacebookAudienceAdapter', '2.10.1.1'
+      pod 'APDGoogleAdMobAdapter', '2.10.1.1'
+      pod 'APDIronSourceAdapter', '2.10.1.1'
+      pod 'APDMyTargetAdapter', '2.10.1.1'
+      pod 'APDOguryAdapter', '2.10.1.1'
+      pod 'APDSmaatoAdapter', '2.10.1.1'
+      pod 'APDStartAppAdapter', '2.10.1.2'
+      pod 'APDUnityAdapter', '2.10.1.1'
+      pod 'APDVungleAdapter', '2.10.1.1'
+      pod 'APDYandexAdapter', '2.10.1.1'
 end
 
 target 'Neocom' do
     project './Neocom/Neocom.xcodeproj'
-#    pod 'StackConsentManager', '~> 1.0.1'
-#    appodeal
+    pod 'StackConsentManager', '~> 1.1.0'
+    appodeal
 end
 
 

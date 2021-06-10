@@ -20,7 +20,8 @@ extension NSArray {
 				try arr1.validate(keyPath: keyPath, with: arr2)
 			case let (obj1 as Double, obj2 as Double) where obj1.distance(to: obj2) < 0.00001:
 				break
-			case let (obj1 as NSObject, obj2 as NSObject) where obj1.isEqual(obj2):
+//			case let (obj1 as NSObject, obj2 as NSObject) where obj1.isEqual(obj2):
+            case let (obj1 as NSObject, obj2 as NSObject) where obj1.description == obj2.description:
 				break
 			default:
 				throw DumpError.schemaIsInvalid(keyPath)
@@ -42,7 +43,8 @@ extension NSDictionary {
 				break
 			case let (obj1 as NSNumber, obj2 as NSNumber) where abs(obj1.doubleValue) > 0 || obj1.doubleValue.distance(to: obj2.doubleValue) / obj1.doubleValue < 0.001:
 				break
-			case let (obj1 as NSObject, obj2 as NSObject) where obj1.isEqual(obj2):
+//			case let (obj1 as NSObject, obj2 as NSObject) where obj1.isEqual(obj2):
+            case let (obj1 as NSObject, obj2 as NSObject) where obj1.description == obj2.description:
 				break
             case (is NSNull, nil):
                 break

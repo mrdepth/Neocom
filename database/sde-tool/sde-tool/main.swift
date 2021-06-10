@@ -284,7 +284,7 @@ do {
 	
 	dgmAttributeCategories = operationQueue.detach {
 		let from = Date(); defer {print("dgmAttributeCategories\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/dgmAttributeCategories.json"), type: Schema.AttributeCategories.self).map {($0.categoryID, .init(SDEDgmAttributeCategory($0)))})
+        return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/fsd/dogmaAttributeCategories.json"), type: Schema.AttributeCategories.self).map {($0.key, .init(SDEDgmAttributeCategory($0.value, $0.key)))})
 	}
 
 	dgmAttributeTypes = operationQueue.detach {
@@ -344,7 +344,7 @@ do {
 	
 	invNames = operationQueue.detach {
 		let from = Date(); defer {print("invNames\t\(Date().timeIntervalSince(from))s")}
-		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/invNames.json"), type: Schema.Names.self).map {($0.itemID, $0.itemName)})
+		return try Dictionary(uniqueKeysWithValues: load(root.appendingPathComponent("/sde/bsd/invNames.json"), type: Schema.Names.self).map {($0.itemID, $0.itemName ?? "\($0.itemID)")})
 	}
 
 	universe = operationQueue.detach {
@@ -374,24 +374,37 @@ do {
 	
 	
 	mapUniverses = operationQueue.detach {
-		let from = Date(); defer {print("mapUniverses\t\(Date().timeIntervalSince(from))s")}
-//		let fileManager = FileManager.default
-		let universes = try load(root.appendingPathComponent("/sde/bsd/mapUniverse.json"), type: Schema.Universes.self)
+		/*let from = Date(); defer {print("mapUniverses\t\(Date().timeIntervalSince(from))s")}
+        let path = root.appendingPathComponent("/sde/fsd/universe")
+		let fileManager = FileManager.default
+        
+        let universes = try fileManager.contentsOfDirectory(atPath: path.path)
+            .filter { name in
+                var isDir: ObjCBool = false
+                fileManager.fileExists(atPath: path.appendingPathComponent(name).path, isDirectory: &isDir)
+                return isDir.boolValue
+            }
+            .map { name in
+            Universe(radius: 0, universeID: 0, universeName: name, x: 0, xMax: 0, xMin: 0, y: 0, yMax: 0, yMin: 0, z: 0, zMax: 0, zMin: 0)
+        }
+//		let universes = try load(root.appendingPathComponent("/sde/fsd/universe"), type: Schema.Universes.self)
+//
+//        root.appendPathComponent(<#T##pathComponent: String##String#>)*/
 		
 		return try universe.get().map {
 			let universe = SDEMapUniverse(context: .current)
 			switch $0.0 {
 			case "wormhole":
-				universe.name = universes.first {$0.universeID == 9000001}!.universeName
+                universe.name = $0.0.capitalized //universes.first {$0.universeID == 9000001}!.universeName
 				universe.universeID = 9000001
 			case "eve":
-				universe.name = universes.first {$0.universeID == 9}!.universeName
+				universe.name = $0.0.capitalized//universes.first {$0.universeID == 9}!.universeName
 				universe.universeID = 9
 			case "abyssal":
-				universe.name = "Abyssal"
+				universe.name = $0.0.capitalized//"Abyssal"
 				universe.universeID = 9100001
 			case "penalty":
-				universe.name = "Penalty"
+                universe.name = $0.0.capitalized//"Penalty"
 				universe.universeID = 9100002
 			default:
 				throw DumpError.invalidUniverse($0.0)

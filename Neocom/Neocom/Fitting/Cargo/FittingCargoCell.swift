@@ -64,7 +64,7 @@ struct CargoVolume: View {
     }
 }
 
-
+#if DEBUG
 struct FittingCargoCell_Previews: PreviewProvider {
     static var previews: some View {
         let cargo = try! DGMCargo(typeID: 3154)
@@ -77,3 +77,4 @@ struct FittingCargoCell_Previews: PreviewProvider {
         
     }
 }
+#endif

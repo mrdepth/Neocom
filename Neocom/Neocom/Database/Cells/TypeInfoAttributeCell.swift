@@ -138,6 +138,7 @@ struct TypeInfoAttributeCell: View {
     }
 }
 
+#if DEBUG
 struct TypeInfoAttributeCell_Previews: PreviewProvider {
     static var previews: some View {
         var attributes = (SDEInvType.dominix.attributes?.allObjects as? [SDEDgmTypeAttribute]) ?? []
@@ -149,3 +150,4 @@ struct TypeInfoAttributeCell_Previews: PreviewProvider {
         }
     }
 }
+#endif

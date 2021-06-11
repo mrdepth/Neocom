@@ -56,6 +56,7 @@ struct ContractCell: View {
     }
 }
 
+#if DEBUG
 struct ContractCell_Previews: PreviewProvider {
     static var previews: some View {
         let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.testStorage.persistentContainer.viewContext)!, insertInto: nil)
@@ -97,3 +98,4 @@ struct ContractCell_Previews: PreviewProvider {
         
     }
 }
+#endif

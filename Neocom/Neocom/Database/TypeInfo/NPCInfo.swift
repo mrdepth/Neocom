@@ -218,6 +218,7 @@ struct NPCInfo: View {
     }
 }
 
+#if DEBUG
 struct NPCInfo_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -230,3 +231,4 @@ struct NPCInfo_Previews: PreviewProvider {
         }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

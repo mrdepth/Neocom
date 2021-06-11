@@ -20,6 +20,7 @@ let testOAuth2Token = try! JSONDecoder().decode(OAuth2Token.self, from: "{\"scop
 let testOAuth2Token2 = try! JSONDecoder().decode(OAuth2Token.self, from: "{\"scopes\":[\"esi-calendar.respond_calendar_events.v1\",\"esi-calendar.read_calendar_events.v1\",\"esi-location.read_location.v1\",\"esi-location.read_ship_type.v1\",\"esi-mail.organize_mail.v1\",\"esi-mail.read_mail.v1\",\"esi-mail.send_mail.v1\",\"esi-skills.read_skills.v1\",\"esi-skills.read_skillqueue.v1\",\"esi-wallet.read_character_wallet.v1\",\"esi-search.search_structures.v1\",\"esi-clones.read_clones.v1\",\"esi-characters.read_contacts.v1\",\"esi-universe.read_structures.v1\",\"esi-bookmarks.read_character_bookmarks.v1\",\"esi-killmails.read_killmails.v1\",\"esi-corporations.read_corporation_membership.v1\",\"esi-assets.read_assets.v1\",\"esi-planets.manage_planets.v1\",\"esi-fleets.read_fleet.v1\",\"esi-fleets.write_fleet.v1\",\"esi-ui.open_window.v1\",\"esi-ui.write_waypoint.v1\",\"esi-characters.write_contacts.v1\",\"esi-fittings.read_fittings.v1\",\"esi-fittings.write_fittings.v1\",\"esi-markets.structure_markets.v1\",\"esi-corporations.read_structures.v1\",\"esi-characters.read_loyalty.v1\",\"esi-characters.read_opportunities.v1\",\"esi-characters.read_medals.v1\",\"esi-characters.read_standings.v1\",\"esi-characters.read_agents_research.v1\",\"esi-industry.read_character_jobs.v1\",\"esi-markets.read_character_orders.v1\",\"esi-characters.read_blueprints.v1\",\"esi-characters.read_corporation_roles.v1\",\"esi-location.read_online.v1\",\"esi-contracts.read_character_contracts.v1\",\"esi-clones.read_implants.v1\",\"esi-characters.read_fatigue.v1\",\"esi-killmails.read_corporation_killmails.v1\",\"esi-corporations.track_members.v1\",\"esi-wallet.read_corporation_wallets.v1\",\"esi-characters.read_notifications.v1\",\"esi-corporations.read_divisions.v1\",\"esi-corporations.read_contacts.v1\",\"esi-assets.read_corporation_assets.v1\",\"esi-corporations.read_titles.v1\",\"esi-corporations.read_blueprints.v1\",\"esi-bookmarks.read_corporation_bookmarks.v1\",\"esi-contracts.read_corporation_contracts.v1\",\"esi-corporations.read_standings.v1\",\"esi-corporations.read_starbases.v1\",\"esi-industry.read_corporation_jobs.v1\",\"esi-markets.read_corporation_orders.v1\",\"esi-corporations.read_container_logs.v1\",\"esi-industry.read_character_mining.v1\",\"esi-industry.read_corporation_mining.v1\",\"esi-planets.read_customs_offices.v1\",\"esi-corporations.read_facilities.v1\",\"esi-corporations.read_medals.v1\",\"esi-characters.read_titles.v1\",\"esi-alliances.read_contacts.v1\",\"esi-characters.read_fw_stats.v1\",\"esi-corporations.read_fw_stats.v1\",\"esi-characterstats.read.v1\"],\"characterID\":90553786,\"characterName\":\"Po\'kupatel Boloskarl\",\"refreshToken\":\"FmBz8VdLAn9HRG74UnOeOoQt6Q-BVl3YqH-7Pt6tEL7dSzPTYjHZxgQ8GA0zg0KNNvqk4mOZWkX9BqS9HvPFqp_nXem8FYNUqkj45ejkHHTgGzjKimLW7ha8UwrToHHCJGbV5YJcmdHbQvBRNtY-Cg7ECnesFxOBpuMCgKdpqfM9Llie4vyMg-eNTdNMXG5uFHvA_py-qm7lcaI4o-mz-fLHTCug_evJ9SCpOg3nETGMj6Qmp_1-nj5-YGMYfnWvQtQb_HF2K4icx-vezXUNjHS3Y2VPIRlJqGPUR-MHLl8odw5313ozZrrUFD68MkYXXYJOnOza97Xw4a7XMFgVlMwHwYI936qIDtlBCsQ7sY5SuQSMaAEC4IClkx8xHv6Sway4dFw-garj5dpKgzR3hQ\",\"tokenType\":\"Bearer\",\"expiresOn\":608318460.16410697,\"accessToken\":\"1|CfDJ8Hj9X4L\\/huFJpslTkv3swZMol+qO6KXHVWXDDS8ieIcy6ELFv\\/5Vu6eAYU0HZipsNn6zegVPUEvMTgG4PIx6WQf+fy88P1dVbmbcbalGnD3NXQ+lrgX1ca09rPhxCz0K7S8vIz3OlFYybxyJjvIZmoegn\\/2+PKRA4KjKzmpidusH\",\"realm\":\"esi\"}".data(using: .utf8)!)
 #endif
 
+#if DEBUG
 
 extension SDEInvType {
     class var dominix: SDEInvType {
@@ -30,7 +31,6 @@ extension SDEInvType {
         return try! Storage.testStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 24313).first()!
     }
 }
-
 extension DGMGang {
     static func testGang(_ pilots: Int = 1) -> DGMGang {
         let gang = try! DGMGang()
@@ -139,7 +139,7 @@ extension DGMStructure {
     }
 }
 
-
+#endif
 #if DEBUG
 
 extension Storage {

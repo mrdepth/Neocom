@@ -32,8 +32,10 @@ struct CertificateGroups: View {
 
             }.listStyle(GroupedListStyle())
         }.navigationBarTitle(NSLocalizedString("Certificates", comment: ""))
-    }}
+    }
+}
 
+#if DEBUG
 struct CertificateGroups_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -41,3 +43,4 @@ struct CertificateGroups_Previews: PreviewProvider {
         }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

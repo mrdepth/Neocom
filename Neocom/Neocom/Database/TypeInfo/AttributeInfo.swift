@@ -89,6 +89,7 @@ struct AttributeInfo: View {
     }
 }
 
+#if DEBUG
 struct AttributeInfo_Previews: PreviewProvider {
     static var previews: some View {
         List {
@@ -99,3 +100,4 @@ struct AttributeInfo_Previews: PreviewProvider {
         
     }
 }
+#endif

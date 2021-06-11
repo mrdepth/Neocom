@@ -132,6 +132,7 @@ struct ExtractorStatisticCell: View {
     }
 }
 
+#if DEBUG
 struct ExtractorSection_Previews: PreviewProvider {
     static var previews: some View {
         let planet = DGMPlanet.testPlanet()
@@ -145,3 +146,4 @@ struct ExtractorSection_Previews: PreviewProvider {
         .environmentObject(planet)
     }
 }
+#endif

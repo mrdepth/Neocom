@@ -88,6 +88,7 @@ struct NPCPickerGroupContent: View {
     }
 }
 
+#if DEBUG
 struct NPCPickerGroup_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -96,3 +97,4 @@ struct NPCPickerGroup_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

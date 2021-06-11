@@ -62,6 +62,7 @@ struct DamagePatternEditor: View {
     }
 }
 
+#if DEBUG
 struct DamagePatternEditor_Previews: PreviewProvider {
     static var previews: some View {
         let damagePattern = DamagePattern(entity: NSEntityDescription.entity(forEntityName: "DamagePattern", in: Storage.testStorage.persistentContainer.viewContext)!, insertInto: nil)
@@ -76,3 +77,4 @@ struct DamagePatternEditor_Previews: PreviewProvider {
         }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

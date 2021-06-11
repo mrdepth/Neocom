@@ -30,6 +30,7 @@ struct ComposeMailLoadoutsPicker: View {
     }
 }
 
+#if DEBUG
 struct ComposeMailLoadoutsPicker_Previews: PreviewProvider {
     static var previews: some View {
         _ = Loadout.testLoadouts()
@@ -40,3 +41,4 @@ struct ComposeMailLoadoutsPicker_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

@@ -44,6 +44,7 @@ struct DamagePatterns: View {
     }
 }
 
+#if DEBUG
 struct DamagePatterns_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -54,3 +55,4 @@ struct DamagePatterns_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

@@ -35,6 +35,7 @@ struct FittingEditorResourcesStats: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorResourcesStats_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -45,3 +46,4 @@ struct FittingEditorResourcesStats_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

@@ -43,6 +43,7 @@ struct FittingTypeVariations: View {
     }
 }
 
+#if DEBUG
 struct FittingTypeVariations_Previews: PreviewProvider {
     static var previews: some View {
         let type = try! Storage.testStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 3154).first()!
@@ -54,3 +55,4 @@ struct FittingTypeVariations_Previews: PreviewProvider {
 }
 
 
+#endif

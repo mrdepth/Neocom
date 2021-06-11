@@ -32,6 +32,7 @@ struct ImplantsRows: View {
     }
 }
 
+#if DEBUG
 struct ImplantsRows_Previews: PreviewProvider {
     static var previews: some View {
         let implant = try? Storage.testStorage.persistentContainer.viewContext
@@ -47,3 +48,4 @@ struct ImplantsRows_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

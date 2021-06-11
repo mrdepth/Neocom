@@ -53,6 +53,7 @@ struct AssetCell: View {
     }
 }
 
+#if DEBUG
 struct AssetCell_Previews: PreviewProvider {
     static var previews: some View {
         let asset = AssetsData.Asset(nested: [], underlyingAsset: ESI.Characters.CharacterID.Assets.Success(isBlueprintCopy: nil, isSingleton: false, itemID: -1, locationFlag: .hangar, locationID: 0, locationType: .solarSystem, quantity: 1, typeID: 645), assetName: "Spyder" ,typeName: "Dominix", groupName: "Gellente Battleships", categoryName: "Ships", categoryID: 0)
@@ -62,3 +63,4 @@ struct AssetCell_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

@@ -125,9 +125,11 @@ struct MarketRegionPicker: View {
     }
 }
 
+#if DEBUG
 struct MarketRegionPicker_Previews: PreviewProvider {
     static var previews: some View {
 		MarketRegionPicker { _ in}
             .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

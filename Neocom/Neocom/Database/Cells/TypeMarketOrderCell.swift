@@ -29,6 +29,7 @@ struct TypeMarketOrderCell: View {
     }
 }
 
+#if DEBUG
 struct TypeMarketOrderCell_Previews: PreviewProvider {
     static var previews: some View {
 		List {
@@ -36,3 +37,4 @@ struct TypeMarketOrderCell_Previews: PreviewProvider {
 		}.listStyle(GroupedListStyle())
     }
 }
+#endif

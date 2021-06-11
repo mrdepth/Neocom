@@ -71,6 +71,7 @@ struct FittingDroneActions: View {
     }
 }
 
+#if DEBUG
 struct FittingDroneActions_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -83,3 +84,4 @@ struct FittingDroneActions_Previews: PreviewProvider {
         }
     }
 }
+#endif

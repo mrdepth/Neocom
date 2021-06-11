@@ -48,6 +48,7 @@ struct OptimalAttributes: View {
     }
 }
 
+#if DEBUG
 struct OptimalAttributes_Previews: PreviewProvider {
     static var previews: some View {
         var pilot = Pilot.empty
@@ -65,3 +66,4 @@ struct OptimalAttributes_Previews: PreviewProvider {
         }
     }
 }
+#endif

@@ -18,6 +18,7 @@ struct FittingCargoHeader: View {
     }
 }
 
+#if DEBUG
 struct FittingCargoHeader_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -29,3 +30,4 @@ struct FittingCargoHeader_Previews: PreviewProvider {
 
     }
 }
+#endif

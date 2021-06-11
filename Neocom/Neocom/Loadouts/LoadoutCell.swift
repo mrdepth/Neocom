@@ -32,6 +32,7 @@ struct LoadoutCell: View {
     }
 }
 
+#if DEBUG
 struct LoadoutCell_Previews: PreviewProvider {
     static var previews: some View {
         let loadout = Loadout(context: Storage.testStorage.persistentContainer.viewContext)
@@ -44,3 +45,4 @@ struct LoadoutCell_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

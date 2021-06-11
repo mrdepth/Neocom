@@ -117,6 +117,7 @@ struct FittingEditorShipDrones: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorShipDrones_Previews: PreviewProvider {
     static var previews: some View {
         FittingEditorShipDrones(ship: DGMShip.testNyx())
@@ -124,3 +125,4 @@ struct FittingEditorShipDrones_Previews: PreviewProvider {
 
     }
 }
+#endif

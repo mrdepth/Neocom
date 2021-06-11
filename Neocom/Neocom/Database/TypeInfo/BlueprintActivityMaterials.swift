@@ -23,6 +23,7 @@ struct BlueprintActivityMaterials: View {
     }
 }
 
+#if DEBUG
 struct BlueprintActivityMaterials_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -30,3 +31,4 @@ struct BlueprintActivityMaterials_Previews: PreviewProvider {
         }
     }
 }
+#endif

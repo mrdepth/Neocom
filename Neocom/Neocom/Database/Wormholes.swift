@@ -95,7 +95,7 @@ struct WormholesSearchResults: View {
     }
 }
 
-
+#if DEBUG
 struct Wormholes_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -104,3 +104,4 @@ struct Wormholes_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

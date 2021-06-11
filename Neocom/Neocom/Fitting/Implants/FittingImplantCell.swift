@@ -45,6 +45,7 @@ struct FittingImplantCell: View {
     }
 }
 
+#if DEBUG
 struct FittingImplantCell_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -63,3 +64,4 @@ struct FittingImplantCell_Previews: PreviewProvider {
         
     }
 }
+#endif

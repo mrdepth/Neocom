@@ -79,6 +79,7 @@ struct PredefinedDamagePatternCell: View {
     }
 }
 
+#if DEBUG
 struct DamagePatternsPredefined_Previews: PreviewProvider {
     static var previews: some View {
         return NavigationView {
@@ -91,3 +92,4 @@ struct DamagePatternsPredefined_Previews: PreviewProvider {
 
     }
 }
+#endif

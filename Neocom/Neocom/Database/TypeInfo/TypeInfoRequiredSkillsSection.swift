@@ -33,6 +33,7 @@ struct TypeInfoRequiredSkillsSection: View {
     }
 }
 
+#if DEBUG
 struct TypeInfoRequiredSkillsSection_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -42,3 +43,4 @@ struct TypeInfoRequiredSkillsSection_Previews: PreviewProvider {
         }
     }
 }
+#endif

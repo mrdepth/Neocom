@@ -99,7 +99,7 @@ struct FittingEditorShipModulesSection: View {
     }
 }
 
-
+#if DEBUG
 struct FittingEditorShipModulesSection_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -111,3 +111,4 @@ struct FittingEditorShipModulesSection_Previews: PreviewProvider {
 //        .colorScheme(.dark)
     }
 }
+#endif

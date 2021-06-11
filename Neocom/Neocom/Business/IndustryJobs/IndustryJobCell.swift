@@ -89,6 +89,7 @@ struct IndustryJobCell: View {
     }
 }
 
+#if DEBUG
 struct IndustryJobCell_Previews: PreviewProvider {
     static var previews: some View {
         let solarSystem = try! Storage.testStorage.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
@@ -125,3 +126,4 @@ struct IndustryJobCell_Previews: PreviewProvider {
         }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

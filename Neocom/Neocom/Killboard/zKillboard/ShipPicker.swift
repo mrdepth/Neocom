@@ -68,7 +68,7 @@ struct ShipPickerCategoriesContent: View {
     }
 }
 
-
+#if DEBUG
 struct ShipPicker_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -78,3 +78,4 @@ struct ShipPicker_Previews: PreviewProvider {
         }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

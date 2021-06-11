@@ -115,6 +115,7 @@ struct ShipPickerTypes: View {
     }
 }
 
+#if DEBUG
 struct ShipPickerGroups_Previews: PreviewProvider {
     static var previews: some View {
         let category = try? Storage.testStorage.persistentContainer.viewContext.from(SDEInvCategory.self).filter(/\SDEInvCategory.categoryID == SDECategoryID.ship.rawValue).first()
@@ -123,3 +124,4 @@ struct ShipPickerGroups_Previews: PreviewProvider {
         }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

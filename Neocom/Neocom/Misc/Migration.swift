@@ -123,6 +123,7 @@ struct Migration: View {
     }
 }
 
+#if DEBUG
 struct Migration_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -132,3 +133,4 @@ struct Migration_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

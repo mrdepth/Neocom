@@ -60,6 +60,7 @@ extension Text {
 	}
 }
 
+#if DEBUG
 struct LocationLabel_Previews: PreviewProvider {
     static var previews: some View {
 		VStack {
@@ -68,3 +69,4 @@ struct LocationLabel_Previews: PreviewProvider {
 		}
     }
 }
+#endif

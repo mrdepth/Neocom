@@ -17,9 +17,10 @@ struct CalibrationResource: View {
     }
 }
 
-
+#if DEBUG
 struct CalibrationResource_Previews: PreviewProvider {
     static var previews: some View {
         CalibrationResource(ship: DGMGang.testGang().pilots[0].ship!)
     }
 }
+#endif

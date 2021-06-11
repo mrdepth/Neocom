@@ -59,6 +59,7 @@ struct MarketOrderCell: View {
     }
 }
 
+#if DEBUG
 struct MarketOrderCell_Previews: PreviewProvider {
     static var previews: some View {
         let solarSystem = try! Storage.testStorage.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
@@ -86,3 +87,4 @@ struct MarketOrderCell_Previews: PreviewProvider {
         }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

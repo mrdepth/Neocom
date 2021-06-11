@@ -214,6 +214,7 @@ struct FittingModuleCell: View {
     @State private var pick = "Some"
 }
 
+#if DEBUG
 struct FittingModuleCell_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -230,3 +231,4 @@ struct FittingModuleCell_Previews: PreviewProvider {
         .environmentObject(gang)
     }
 }
+#endif

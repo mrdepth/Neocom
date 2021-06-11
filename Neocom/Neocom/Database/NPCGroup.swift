@@ -64,6 +64,7 @@ struct NPCGroup: View {
     }
 }
 
+#if DEBUG
 struct NPCGroup_Previews: PreviewProvider {
     static var previews: some View {
 		NavigationView {
@@ -72,3 +73,4 @@ struct NPCGroup_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

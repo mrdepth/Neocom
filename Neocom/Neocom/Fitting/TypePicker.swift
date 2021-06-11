@@ -119,6 +119,7 @@ struct TypePickerPage: View, Equatable {
     }
 }
 
+#if DEBUG
 struct TypePicker_Previews: PreviewProvider {
     static var previews: some View {
         let context = Storage.testStorage.persistentContainer.viewContext
@@ -126,3 +127,4 @@ struct TypePicker_Previews: PreviewProvider {
         return TypePicker(content: TypePickerViewController(parentGroup: group, services: ServicesViewModifier.testModifier(), completion: {_ in})).edgesIgnoringSafeArea(.all)
     }
 }
+#endif

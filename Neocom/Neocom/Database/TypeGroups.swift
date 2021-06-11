@@ -54,6 +54,7 @@ struct TypeGroups: View {
     }
 }
 
+#if DEBUG
 struct TypeGroups_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -61,3 +62,4 @@ struct TypeGroups_Previews: PreviewProvider {
         }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

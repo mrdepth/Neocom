@@ -31,6 +31,7 @@ struct IncursionSolarSystems: View {
     }
 }
 
+#if DEBUG
 struct IncursionSolarSystems_Previews: PreviewProvider {
     static var previews: some View {
         let context = Storage.testStorage.persistentContainer.viewContext
@@ -50,3 +51,4 @@ struct IncursionSolarSystems_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

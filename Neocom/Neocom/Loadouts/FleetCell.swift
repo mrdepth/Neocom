@@ -42,6 +42,7 @@ struct FleetCell: View {
     }
 }
 
+#if DEBUG
 struct FleetCell_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -52,3 +53,4 @@ struct FleetCell_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

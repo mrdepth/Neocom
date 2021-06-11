@@ -52,6 +52,7 @@ struct ImplantTypeCell: View {
     }
 }
 
+#if DEBUG
 struct ImplantTypeCell_Previews: PreviewProvider {
     static var previews: some View {
         let implant = try? Storage.testStorage.persistentContainer.viewContext
@@ -64,3 +65,4 @@ struct ImplantTypeCell_Previews: PreviewProvider {
         }.listStyle(GroupedListStyle())
     }
 }
+#endif

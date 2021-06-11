@@ -26,6 +26,7 @@ struct CertificateInfoHeader: View {
     }
 }
 
+#if DEBUG
 struct CertificateInfoHeader_Previews: PreviewProvider {
     static var previews: some View {
         let certificate = try! Storage.testStorage.persistentContainer.viewContext
@@ -35,3 +36,4 @@ struct CertificateInfoHeader_Previews: PreviewProvider {
             .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

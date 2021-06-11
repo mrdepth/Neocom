@@ -52,6 +52,7 @@ struct FleetPilotCell: View {
     }
 }
 
+#if DEBUG
 struct FleetPilotCell_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -64,3 +65,4 @@ struct FleetPilotCell_Previews: PreviewProvider {
 
     }
 }
+#endif

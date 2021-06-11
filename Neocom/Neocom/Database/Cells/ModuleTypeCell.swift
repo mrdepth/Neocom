@@ -34,6 +34,7 @@ struct ModuleTypeCell: View {
     }
 }
 
+#if DEBUG
 struct ModuleTypeCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
@@ -42,3 +43,4 @@ struct ModuleTypeCell_Previews: PreviewProvider {
         }.listStyle(GroupedListStyle())
     }
 }
+#endif

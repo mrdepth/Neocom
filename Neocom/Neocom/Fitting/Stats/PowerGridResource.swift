@@ -17,8 +17,10 @@ struct PowerGridResource: View {
     }
 }
 
+#if DEBUG
 struct PowerGridResource_Previews: PreviewProvider {
     static var previews: some View {
         PowerGridResource(ship: DGMGang.testGang().pilots[0].ship!)
     }
 }
+#endif

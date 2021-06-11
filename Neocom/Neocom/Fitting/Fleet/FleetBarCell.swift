@@ -57,6 +57,7 @@ struct FleetBarCell: View {
     }
 }
 
+#if DEBUG
 struct FleetBarCell_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -70,3 +71,4 @@ struct FleetBarCell_Previews: PreviewProvider {
 
     }
 }
+#endif

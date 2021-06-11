@@ -29,9 +29,11 @@ struct FittingEditorShipModulesList: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorShipModulesList_Previews: PreviewProvider {
     static var previews: some View {
         FittingEditorShipModulesList(ship: DGMShip.testDominix())
             .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

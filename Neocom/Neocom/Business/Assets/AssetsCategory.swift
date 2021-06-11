@@ -51,9 +51,11 @@ fileprivate struct AssetsCategoryLocations: View {
     }
 }
 
+#if DEBUG
 struct AssetsCategory_Previews: PreviewProvider {
     static var previews: some View {
         AssetsCategory(category: AssetsData.Category(categoryName: "Ships", id: 0, types: []))
             .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

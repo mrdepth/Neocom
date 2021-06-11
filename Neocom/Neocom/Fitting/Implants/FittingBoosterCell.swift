@@ -44,6 +44,7 @@ struct FittingBoosterCell: View {
     }
 }
 
+#if DEBUG
 struct FittingBoosterCell_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -59,3 +60,4 @@ struct FittingBoosterCell_Previews: PreviewProvider {
         
     }
 }
+#endif

@@ -97,6 +97,7 @@ struct WormholeInfo: View {
     }
 }
 
+#if DEBUG
 struct WormholeInfo_Previews: PreviewProvider {
     static var previews: some View {
         let wh = try! Storage.testStorage.persistentContainer.viewContext.from(SDEWhType.self).first()!
@@ -107,3 +108,4 @@ struct WormholeInfo_Previews: PreviewProvider {
         }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

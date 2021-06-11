@@ -44,6 +44,7 @@ struct NPCPickerTypes: View {
     }
 }
 
+#if DEBUG
 struct NPCPickerTypes_Previews: PreviewProvider {
     static var previews: some View {
         let context = Storage.testStorage.persistentContainer.viewContext
@@ -52,3 +53,4 @@ struct NPCPickerTypes_Previews: PreviewProvider {
             .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

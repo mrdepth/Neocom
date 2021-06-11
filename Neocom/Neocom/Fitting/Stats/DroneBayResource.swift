@@ -24,9 +24,10 @@ struct DroneBayResource: View {
     }
 }
 
-
+#if DEBUG
 struct DroneBayResource_Previews: PreviewProvider {
     static var previews: some View {
         DroneBayResource(ship: DGMGang.testGang().pilots[0].ship!)
     }
 }
+#endif

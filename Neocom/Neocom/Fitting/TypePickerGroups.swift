@@ -85,6 +85,7 @@ struct TypePickerGroups: View {
     }
 }
 
+#if DEBUG
 struct TypePickerGroups_Previews: PreviewProvider {
     static var previews: some View {
         let context = Storage.testStorage.persistentContainer.viewContext
@@ -97,3 +98,4 @@ struct TypePickerGroups_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

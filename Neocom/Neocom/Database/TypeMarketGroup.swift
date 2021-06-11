@@ -65,6 +65,7 @@ struct TypeMarketGroup: View {
     }
 }
 
+#if DEBUG
 struct TypeMarketGroup_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -72,3 +73,4 @@ struct TypeMarketGroup_Previews: PreviewProvider {
         }
     }
 }
+#endif

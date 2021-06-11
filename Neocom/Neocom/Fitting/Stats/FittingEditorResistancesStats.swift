@@ -92,6 +92,7 @@ struct FittingEditorResistancesStats: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorResistancesStats_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -102,3 +103,4 @@ struct FittingEditorResistancesStats_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

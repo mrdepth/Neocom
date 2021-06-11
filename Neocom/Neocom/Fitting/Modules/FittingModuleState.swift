@@ -21,6 +21,7 @@ struct FittingModuleState: View {
     }
 }
 
+#if DEBUG
 struct FittingModuleState_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -36,3 +37,4 @@ struct FittingModuleState_Previews: PreviewProvider {
 
     }
 }
+#endif

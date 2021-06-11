@@ -46,6 +46,7 @@ struct SkillsPage: View {
     }
 }
 
+#if DEBUG
 struct SkillsPage_Previews: PreviewProvider {
     static var previews: some View {
         let controller = Storage.testStorage.persistentContainer.viewContext
@@ -62,3 +63,4 @@ struct SkillsPage_Previews: PreviewProvider {
         }
     }
 }
+#endif

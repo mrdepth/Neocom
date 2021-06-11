@@ -104,6 +104,7 @@ struct CommodityCell: View {
     }
 }
 
+#if DEBUG
 struct StorageSection_Previews: PreviewProvider {
     static var previews: some View {
         let planet = DGMPlanet.testPlanet()
@@ -117,3 +118,4 @@ struct StorageSection_Previews: PreviewProvider {
         .environmentObject(planet)
     }
 }
+#endif

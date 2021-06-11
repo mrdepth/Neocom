@@ -69,6 +69,7 @@ struct FittingEditorFirepowerStats: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorFirepowerStats_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -81,3 +82,4 @@ struct FittingEditorFirepowerStats_Previews: PreviewProvider {
 }
 
 
+#endif

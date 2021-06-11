@@ -27,9 +27,11 @@ struct LoyaltyOfferRequirement: View {
     }
 }
 
+#if DEBUG
 struct LoyaltyOfferRequirement_Previews: PreviewProvider {
     static var previews: some View {
         LoyaltyOfferRequirement(requirement: ESI.LoyaltyOfferRequirement(quantity: 10, typeID: 645))
             .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

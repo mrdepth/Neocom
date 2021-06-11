@@ -69,6 +69,7 @@ struct TypeInfoSkillCell: View {
     }
 }
 
+#if DEBUG
 struct TypeInfoSkillCell_Previews: PreviewProvider {
     static var previews: some View {
         let skill = try! Storage.testStorage.persistentContainer.viewContext.from(SDEInvType.self)
@@ -85,3 +86,4 @@ struct TypeInfoSkillCell_Previews: PreviewProvider {
     }
 }
 
+#endif

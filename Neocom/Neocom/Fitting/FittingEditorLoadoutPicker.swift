@@ -51,6 +51,7 @@ struct FittingEditorLoadoutPicker: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorLoadoutPicker_Previews: PreviewProvider {
     static var previews: some View {
         _ = Loadout.testLoadouts()
@@ -62,3 +63,4 @@ struct FittingEditorLoadoutPicker_Previews: PreviewProvider {
 
     }
 }
+#endif

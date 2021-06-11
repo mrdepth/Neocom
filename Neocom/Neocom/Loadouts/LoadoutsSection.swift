@@ -94,6 +94,7 @@ struct LoadoutsSection: View {
     }
 }
 
+#if DEBUG
 struct LoadoutsSection_Previews: PreviewProvider {
     static var previews: some View {
         List {
@@ -102,3 +103,4 @@ struct LoadoutsSection_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

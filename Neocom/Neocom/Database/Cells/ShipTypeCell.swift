@@ -37,6 +37,7 @@ struct ShipTypeCell: View {
     }
 }
 
+#if DEBUG
 struct ShipTypeCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
@@ -44,3 +45,4 @@ struct ShipTypeCell_Previews: PreviewProvider {
         }.listStyle(GroupedListStyle())
     }
 }
+#endif

@@ -190,6 +190,7 @@ struct FactorySatisticCell: View {
     }
 }
 
+#if DEBUG
 struct FactorySection_Previews: PreviewProvider {
     static var previews: some View {
         let planet = DGMPlanet.testPlanet()
@@ -203,3 +204,4 @@ struct FactorySection_Previews: PreviewProvider {
         .environmentObject(planet)
     }
 }
+#endif

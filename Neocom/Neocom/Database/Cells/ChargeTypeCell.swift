@@ -24,6 +24,7 @@ struct ChargeTypeCell: View {
     }
 }
 
+#if DEBUG
 struct ChargeTypeCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
@@ -31,3 +32,4 @@ struct ChargeTypeCell_Previews: PreviewProvider {
         }.listStyle(GroupedListStyle())
     }
 }
+#endif

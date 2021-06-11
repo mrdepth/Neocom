@@ -27,6 +27,7 @@ struct PlanetCell: View {
     }
 }
 
+#if DEBUG
 struct PlanetCell_Previews: PreviewProvider {
     static var previews: some View {
         let planet = try! ESI.jsonDecoder.decode(ESI.Planets.self, from: NSDataAsset(name: "planetsList")!.data)[0]
@@ -34,3 +35,4 @@ struct PlanetCell_Previews: PreviewProvider {
             .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

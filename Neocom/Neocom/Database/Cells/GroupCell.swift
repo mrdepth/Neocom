@@ -20,6 +20,7 @@ struct GroupCell: View {
     }
 }
 
+#if DEBUG
 struct GroupCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
@@ -27,3 +28,4 @@ struct GroupCell_Previews: PreviewProvider {
         }.listStyle(GroupedListStyle())
     }
 }
+#endif

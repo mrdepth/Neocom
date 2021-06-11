@@ -46,6 +46,7 @@ struct FittingCharges: View {
     }
 }
 
+#if DEBUG
 struct FittingCharges_Previews: PreviewProvider {
     static var previews: some View {
         let type = try! Storage.testStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 3154).first()!
@@ -56,3 +57,4 @@ struct FittingCharges_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

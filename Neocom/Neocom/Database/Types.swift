@@ -54,29 +54,38 @@ struct Types: View {
         Types.fetchResults(with: predicate, managedObjectContext: managedObjectContext)
     }
     
-    @StateObject private var types = Lazy<FetchedResultsController<SDEInvType>, Never>()
-    
-    private func cell(for type: SDEInvType) -> some View {
-        NavigationLink(destination: TypeInfo(type: type)) {
-            TypeCell(type: type)
-        }
-    }
+    private let types = Lazy<FetchedResultsController<SDEInvType>, Never>()
+    @State private var searchString: String = ""
+    @State private var searchResults: [FetchedResultsController<SDEInvType>.Section]? = nil
 
     var body: some View {
         let types = self.types.get(initial: getTypes())
         
         return List {
             TypesContent(types: types.sections) { type in
-                cell(for: type)
+                NavigationLink(destination: TypeInfo(type: type)) {
+                    TypeCell(type: type)
+                }
             }
         }
         .listStyle(GroupedListStyle())
         .search { publisher in
             TypesSearchResults(publisher: publisher, predicate: predicate) { type in
-                cell(for: type)
+                NavigationLink(destination: TypeInfo(type: type)) {
+                    TypeCell(type: type)
+                }
             }
         }
         .navigationBarTitle(title)
+//
+//        return TypesSearch(predicate: self.predicate, searchString: $searchString, searchResults: $searchResults) {
+//            TypesContent(types: self.searchResults ?? types.sections) { type in
+//                NavigationLink(destination: TypeInfo(type: type)) {
+//                    TypeCell(type: type)
+//                }
+//            }
+//        }
+//        .navigationBarTitle(title)
     }
 }
 
@@ -95,6 +104,7 @@ struct TypesContent<Cell: View>: View {
     }
 }
 
+#if DEBUG
 struct Types_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -102,3 +112,4 @@ struct Types_Previews: PreviewProvider {
         }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

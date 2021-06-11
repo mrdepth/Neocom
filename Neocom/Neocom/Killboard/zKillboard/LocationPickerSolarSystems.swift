@@ -46,6 +46,7 @@ struct SolarSystemCell: View {
     }
 }
 
+#if DEBUG
 struct LocationPickerSolarSystems_Previews: PreviewProvider {
     static var previews: some View {
         let region = try! Storage.testStorage.persistentContainer.viewContext.from(SDEMapRegion.self).first()!
@@ -55,3 +56,4 @@ struct LocationPickerSolarSystems_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

@@ -197,7 +197,7 @@ struct ContractInfoBids: View {
 }
 
 
-
+#if DEBUG
 struct ContractInfo_Previews: PreviewProvider {
     static var previews: some View {
         let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.testStorage.persistentContainer.viewContext)!, insertInto: nil)
@@ -249,3 +249,4 @@ struct ContractInfo_Previews: PreviewProvider {
         }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

@@ -98,6 +98,7 @@ struct NewDamagePatternButton: View {
     }
 }
 
+#if DEBUG
 struct DamagePatternsCustom_Previews: PreviewProvider {
     static var previews: some View {
         if (try? Storage.testStorage.persistentContainer.viewContext.from(DamagePattern.self).count()) == 0 {
@@ -117,3 +118,4 @@ struct DamagePatternsCustom_Previews: PreviewProvider {
 
     }
 }
+#endif

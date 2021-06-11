@@ -21,6 +21,7 @@ struct FittingEditorShipModules: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorShipModules_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -32,3 +33,4 @@ struct FittingEditorShipModules_Previews: PreviewProvider {
         .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

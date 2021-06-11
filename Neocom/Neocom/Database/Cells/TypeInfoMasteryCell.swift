@@ -24,6 +24,7 @@ struct TypeInfoMasteryCell: View {
     }
 }
 
+#if DEBUG
 struct TypeInfoMasteryCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
@@ -35,3 +36,4 @@ struct TypeInfoMasteryCell_Previews: PreviewProvider {
         }.listStyle(GroupedListStyle()).colorScheme(.light)
     }
 }
+#endif

@@ -59,6 +59,7 @@ struct BlueprintInfo: View {
     }
 }
 
+#if DEBUG
 struct BlueprintInfo_Previews: PreviewProvider {
     static var previews: some View {
         let blueprint = (SDEInvType.dominix.products?.anyObject() as? SDEIndProduct)?.activity?.blueprintType?.type
@@ -70,3 +71,4 @@ struct BlueprintInfo_Previews: PreviewProvider {
     }
 }
 
+#endif

@@ -116,6 +116,7 @@ struct LocationPicker: View {
     }
 }
 
+#if DEBUG
 struct LocationPicker_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -127,3 +128,4 @@ struct LocationPicker_Previews: PreviewProvider {
 
     }
 }
+#endif

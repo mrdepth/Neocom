@@ -27,9 +27,11 @@ struct TypeInfoButton: View {
     }
 }
 
+#if DEBUG
 struct TypeInfoButton_Previews: PreviewProvider {
     static var previews: some View {
         TypeInfoButton(type: SDEInvType.dominix)
             .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

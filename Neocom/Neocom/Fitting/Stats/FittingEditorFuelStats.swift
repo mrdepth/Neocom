@@ -48,6 +48,7 @@ struct FittingEditorFuelStats: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorFuelStats_Previews: PreviewProvider {
     static var previews: some View {
         return List {
@@ -59,3 +60,4 @@ struct FittingEditorFuelStats_Previews: PreviewProvider {
 }
 
 
+#endif

@@ -86,6 +86,7 @@ struct AreaEffects: View {
     }
 }
 
+#if DEBUG
 struct AreaEffects_Previews: PreviewProvider {
     static var previews: some View {
 		NavigationView {
@@ -96,3 +97,4 @@ struct AreaEffects_Previews: PreviewProvider {
 		}
     }
 }
+#endif

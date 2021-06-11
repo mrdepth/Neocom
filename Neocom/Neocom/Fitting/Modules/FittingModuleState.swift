@@ -21,6 +21,7 @@ struct FittingModuleState: View {
     }
 }
 
+#if DEBUG
 struct FittingModuleState_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -32,8 +33,8 @@ struct FittingModuleState_Previews: PreviewProvider {
             }.listStyle(GroupedListStyle())
         }
             .environmentObject(gang)
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
 
     }
 }
+#endif

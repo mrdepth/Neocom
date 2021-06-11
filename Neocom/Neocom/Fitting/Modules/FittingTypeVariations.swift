@@ -43,15 +43,16 @@ struct FittingTypeVariations: View {
     }
 }
 
+#if DEBUG
 struct FittingTypeVariations_Previews: PreviewProvider {
     static var previews: some View {
-        let type = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 3154).first()!
+        let type = try! Storage.testStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 3154).first()!
         return NavigationView {
             FittingTypeVariations(type: type) {_ in}
         }
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 
 
+#endif

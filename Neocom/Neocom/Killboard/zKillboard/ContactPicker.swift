@@ -41,8 +41,7 @@ struct ContactPicker: View {
 struct ContactPicker_Previews: PreviewProvider {
     static var previews: some View {
         ContactPicker() { _ in}
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environmentObject(SharedState.testState())
+            .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

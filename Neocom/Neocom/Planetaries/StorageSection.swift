@@ -104,6 +104,7 @@ struct CommodityCell: View {
     }
 }
 
+#if DEBUG
 struct StorageSection_Previews: PreviewProvider {
     static var previews: some View {
         let planet = DGMPlanet.testPlanet()
@@ -113,7 +114,8 @@ struct StorageSection_Previews: PreviewProvider {
             List {
                 StorageSection(storage: storage!)
             }.listStyle(GroupedListStyle())
-        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        }.modifier(ServicesViewModifier.testModifier())
         .environmentObject(planet)
     }
 }
+#endif

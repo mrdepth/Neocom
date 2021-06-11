@@ -52,9 +52,10 @@ struct ImplantTypeCell: View {
     }
 }
 
+#if DEBUG
 struct ImplantTypeCell_Previews: PreviewProvider {
     static var previews: some View {
-        let implant = try? Storage.sharedStorage.persistentContainer.viewContext
+        let implant = try? Storage.testStorage.persistentContainer.viewContext
             .from(SDEInvType.self)
             .filter((/\SDEInvType.attributes).subquery(/\SDEDgmTypeAttribute.attributeType?.attributeID == SDEAttributeID.intelligenceBonus.rawValue).count > 0)
             .first()
@@ -64,3 +65,4 @@ struct ImplantTypeCell_Previews: PreviewProvider {
         }.listStyle(GroupedListStyle())
     }
 }
+#endif

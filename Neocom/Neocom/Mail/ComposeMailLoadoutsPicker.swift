@@ -30,6 +30,7 @@ struct ComposeMailLoadoutsPicker: View {
     }
 }
 
+#if DEBUG
 struct ComposeMailLoadoutsPicker_Previews: PreviewProvider {
     static var previews: some View {
         _ = Loadout.testLoadouts()
@@ -37,7 +38,7 @@ struct ComposeMailLoadoutsPicker_Previews: PreviewProvider {
         return NavigationView {
             ComposeMailLoadoutsPicker {_ in }
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

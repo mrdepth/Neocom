@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct Settings: View {
+    @EnvironmentObject private var storage: Storage
+
     @State private var isClearCacheActionSheetPresented = false
     @ObservedObject private var notificationsEnabled = UserDefault(wrappedValue: true, key: .notificationsEnabled)
     @ObservedObject private var skillQueueNotificationOptions = UserDefault(wrappedValue: NotificationsManager.SkillQueueNotificationOptions.default.rawValue, key: .notificationSettigs)
@@ -29,7 +31,6 @@ struct Settings: View {
         }))
     }
     
-    @ObservedObject private var storage = Storage.sharedStorage
     
     var body: some View {
         List {

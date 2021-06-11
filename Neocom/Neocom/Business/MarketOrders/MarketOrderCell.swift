@@ -59,9 +59,10 @@ struct MarketOrderCell: View {
     }
 }
 
+#if DEBUG
 struct MarketOrderCell_Previews: PreviewProvider {
     static var previews: some View {
-        let solarSystem = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
+        let solarSystem = try! Storage.testStorage.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
         let location = EVELocation(solarSystem: solarSystem, id: Int64(solarSystem.solarSystemID))
 
         let order = ESI.MarketOrders.Element(duration: 3,
@@ -83,6 +84,7 @@ struct MarketOrderCell_Previews: PreviewProvider {
             List {
                 MarketOrderCell(order: order, locations: [location.id: location])
             }.listStyle(GroupedListStyle())
-        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

@@ -111,11 +111,10 @@ struct FittingCharacterLevelCell: View {
 struct FittingCharacterCell_Previews: PreviewProvider {
     static var previews: some View {
 		List {
-            FittingCharacterCell(AppDelegate.sharedDelegate.testingAccount!) { _, _ in }
+            FittingCharacterCell(Account.testingAccount!) { _, _ in }
 			FittingCharacterCell(1) { _, _ in }
 		}.listStyle(GroupedListStyle())
-		.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

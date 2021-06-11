@@ -117,10 +117,12 @@ struct FittingEditorShipDrones: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorShipDrones_Previews: PreviewProvider {
     static var previews: some View {
         FittingEditorShipDrones(ship: DGMShip.testNyx())
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .modifier(ServicesViewModifier.testModifier())
 
     }
 }
+#endif

@@ -17,9 +17,10 @@ struct LaunchersResource: View {
     }
 }
 
-
+#if DEBUG
 struct LaunchersResource_Previews: PreviewProvider {
     static var previews: some View {
         LaunchersResource(ship: DGMGang.testGang().pilots[0].ship!)
     }
 }
+#endif

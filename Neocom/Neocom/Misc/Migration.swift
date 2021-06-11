@@ -123,12 +123,14 @@ struct Migration: View {
     }
 }
 
+#if DEBUG
 struct Migration_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             Migration()
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

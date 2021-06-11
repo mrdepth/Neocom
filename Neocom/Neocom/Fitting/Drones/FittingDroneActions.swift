@@ -71,6 +71,7 @@ struct FittingDroneActions: View {
     }
 }
 
+#if DEBUG
 struct FittingDroneActions_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -79,8 +80,8 @@ struct FittingDroneActions_Previews: PreviewProvider {
         return NavigationView {
             FittingDroneActions(drone: drone) {}
                 .environmentObject(gang)
-                .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-                .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+                .modifier(ServicesViewModifier.testModifier())
         }
     }
 }
+#endif

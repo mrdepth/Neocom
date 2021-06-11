@@ -23,13 +23,11 @@ struct FittingCharacters: View {
 #if DEBUG
 struct FittingCharacters_Previews: PreviewProvider {
     static var previews: some View {
-		_ = AppDelegate.sharedDelegate.testingAccount!
 		return NavigationView {
             FittingCharacters { _, _ in
                 
             }
-		}.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
+		}.modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

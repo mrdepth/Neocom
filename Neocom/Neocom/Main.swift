@@ -87,8 +87,7 @@ struct Main: View {
 struct Main_Previews: PreviewProvider {
     static var previews: some View {
         return Main()
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environmentObject(SharedState.testState())
+            .modifier(ServicesViewModifier.testModifier())
 
     }
 }

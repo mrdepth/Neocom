@@ -68,13 +68,14 @@ struct ShipPickerCategoriesContent: View {
     }
 }
 
-
+#if DEBUG
 struct ShipPicker_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             ShipPicker { _ in
                 
             }
-        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

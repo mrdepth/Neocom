@@ -24,6 +24,7 @@ struct TypeInfoMasteryCell: View {
     }
 }
 
+#if DEBUG
 struct TypeInfoMasteryCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
@@ -31,7 +32,8 @@ struct TypeInfoMasteryCell_Previews: PreviewProvider {
                                                                   typeID: NSManagedObjectID(),
                                                                   title: "LEVEL II",
                                                                   subtitle: nil,
-                                                                  image: (try? Storage.sharedStorage.persistentContainer.viewContext.fetch(SDEEveIcon.named(.mastery(1))).first?.image?.image) ?? UIImage()))
+                                                                  image: (try? Storage.testStorage.persistentContainer.viewContext.fetch(SDEEveIcon.named(.mastery(1))).first?.image?.image) ?? UIImage()))
         }.listStyle(GroupedListStyle()).colorScheme(.light)
     }
 }
+#endif

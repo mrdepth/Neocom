@@ -61,14 +61,31 @@ struct Types: View {
     var body: some View {
         let types = self.types.get(initial: getTypes())
         
-        return TypesSearch(predicate: self.predicate, searchString: $searchString, searchResults: $searchResults) {
-            TypesContent(types: self.searchResults ?? types.sections) { type in
+        return List {
+            TypesContent(types: types.sections) { type in
+                NavigationLink(destination: TypeInfo(type: type)) {
+                    TypeCell(type: type)
+                }
+            }
+        }
+        .listStyle(GroupedListStyle())
+        .search { publisher in
+            TypesSearchResults(publisher: publisher, predicate: predicate) { type in
                 NavigationLink(destination: TypeInfo(type: type)) {
                     TypeCell(type: type)
                 }
             }
         }
         .navigationBarTitle(title)
+//
+//        return TypesSearch(predicate: self.predicate, searchString: $searchString, searchResults: $searchResults) {
+//            TypesContent(types: self.searchResults ?? types.sections) { type in
+//                NavigationLink(destination: TypeInfo(type: type)) {
+//                    TypeCell(type: type)
+//                }
+//            }
+//        }
+//        .navigationBarTitle(title)
     }
 }
 
@@ -87,10 +104,12 @@ struct TypesContent<Cell: View>: View {
     }
 }
 
+#if DEBUG
 struct Types_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            Types(.group((try? Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 645).first()?.group)!))
-        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            Types(.group((try? Storage.testStorage.persistentContainer.viewContext.from(SDEInvType.self).filter(/\SDEInvType.typeID == 645).first()?.group)!))
+        }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

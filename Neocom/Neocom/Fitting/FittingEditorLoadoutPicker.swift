@@ -31,7 +31,6 @@ struct FittingEditorLoadoutPicker: View {
                 if let loadout = loadout.ship {
                     pilot.loadout = loadout
                 }
-                
                 if let ship = pilot.ship, !project.loadouts.values.contains(loadout) {
                     project.loadouts[ship] = loadout
                 }
@@ -52,15 +51,16 @@ struct FittingEditorLoadoutPicker: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorLoadoutPicker_Previews: PreviewProvider {
     static var previews: some View {
         _ = Loadout.testLoadouts()
 
         return NavigationView {
-            FittingEditorLoadoutPicker(project: FittingProject(gang: DGMGang.testGang(), managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext)) {}
+            FittingEditorLoadoutPicker(project: FittingProject(gang: DGMGang.testGang(), managedObjectContext: Storage.testStorage.persistentContainer.viewContext)) {}
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
+        .modifier(ServicesViewModifier.testModifier())
 
     }
 }
+#endif

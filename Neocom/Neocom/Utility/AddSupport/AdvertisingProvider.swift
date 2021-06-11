@@ -6,6 +6,7 @@
 //  Copyright © 2020 Artem Shimanski. All rights reserved.
 //
 
+#if canImport(Appodeal)
 #if !targetEnvironment(macCatalyst)
 import Foundation
 import SwiftUI
@@ -166,6 +167,7 @@ extension AdvertisingProvider: STKConsentManagerDisplayDelegate {
     func consentManagerWillShowDialog(_ consentManager: STKConsentManager) {}
 }
 
+#endif
 #endif
 
 extension UIApplication {

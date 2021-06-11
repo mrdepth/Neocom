@@ -258,7 +258,7 @@ extension Pilot {
         return Publishers.Zip4(characterID.attributes().get(cachePolicy: cachePolicy),
                                characterID.implants().get(cachePolicy: cachePolicy),
                                characterID.skills().get(cachePolicy: cachePolicy),
-                               characterID.skillqueue().get(cachePolicy: cachePolicy)).flatMap { (attributes, implants, skills, skillQueue) in
+                               characterID.skillqueue().get(cachePolicy: cachePolicy)).flatMap { (attributes, implants, skills, skillQueue) -> Future<Pilot, AFError> in
                                 Future { promise in
                                     context.perform {
                                         promise(.success(Pilot(attributes: attributes.value,

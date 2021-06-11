@@ -37,7 +37,7 @@ struct ContractCell: View {
         return VStack(alignment: .leading) {
             HStack {
                 Text(contract.type.title).foregroundColor(.accentColor)
-                Text("[\(contract.availability.title))]").modifier(SecondaryLabelModifier())
+                Text("[\(contract.availability.title)]").modifier(SecondaryLabelModifier())
             }
             Group {
                 contract.title.map{Text($0)}
@@ -56,13 +56,14 @@ struct ContractCell: View {
     }
 }
 
+#if DEBUG
 struct ContractCell_Previews: PreviewProvider {
     static var previews: some View {
-        let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.sharedStorage.persistentContainer.viewContext)!, insertInto: nil)
+        let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.testStorage.persistentContainer.viewContext)!, insertInto: nil)
         contact.name = "Artem Valiant"
         contact.contactID = 1554561480
         
-        let solarSystem = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
+        let solarSystem = try! Storage.testStorage.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
         let location = EVELocation(solarSystem: solarSystem, id: Int64(solarSystem.solarSystemID))
 
         
@@ -97,3 +98,4 @@ struct ContractCell_Previews: PreviewProvider {
         
     }
 }
+#endif

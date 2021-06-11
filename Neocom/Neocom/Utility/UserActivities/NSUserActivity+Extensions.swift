@@ -29,7 +29,7 @@ extension NSUserActivity {
     
     func fitting(from managedObjectContext: NSManagedObjectContext) throws -> FittingProject {
         let project = FittingProject(fileURL: FittingProject.documentsDirectoryURL.appendingPathComponent(UUID().uuidString).appendingPathExtension(Config.current.loadoutPathExtension),
-                                     managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext)
+                                     managedObjectContext: AppDelegate.sharedDelegate.storage.persistentContainer.viewContext)
         project.restoreUserActivityState(self)
         guard project.gang != nil || project.structure != nil else {throw RuntimeError.invalidLoadoutFormat}
         return project

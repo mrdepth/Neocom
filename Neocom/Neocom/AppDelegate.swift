@@ -13,10 +13,10 @@ import Expressible
 import Combine
 import SwiftUI
 import StoreKit
-import FacebookCore
+//import FacebookCore
 @_exported import UIKit
 
-@UIApplicationMain
+@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     @UserDefault(key: .isLifetimeUpgrade) var isLifetimeUpgrade = false
@@ -36,9 +36,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.initializeAPN()
         }
         
-        FacebookCore.Settings.isAutoLogAppEventsEnabled = true
-        FacebookCore.Settings.isAdvertiserIDCollectionEnabled = true
-        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+//        FacebookCore.Settings.isAutoLogAppEventsEnabled = true
+//        FacebookCore.Settings.isAdvertiserIDCollectionEnabled = true
+//        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
 		return true
 	}
     
@@ -59,8 +59,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
 	// MARK: UISceneSession Lifecycle
-
-	func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+    
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
 		// Called when a new scene session is being created.
 		// Use this method to select a configuration to create the new scene with.
 		return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
@@ -74,12 +74,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         
-        ApplicationDelegate.shared.application(
-            app,
-            open: url,
-            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
-            annotation: options[UIApplication.OpenURLOptionsKey.annotation]
-        )
+//        ApplicationDelegate.shared.application(
+//            app,
+//            open: url,
+//            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+//            annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+//        )
         
         return true
     }
@@ -98,7 +98,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return account
         }
         else {
-            let account = Account(token: oAuth2Token, context: self.storage.persistentContainer.viewContext)
+            let account = Account(token: testOAuth2Token, context: self.storage.persistentContainer.viewContext)
             account.uuid = "1"
             try? self.storage.persistentContainer.viewContext.save()
             return account

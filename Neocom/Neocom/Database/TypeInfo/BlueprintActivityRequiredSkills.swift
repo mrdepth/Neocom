@@ -54,12 +54,12 @@ struct BlueprintActivityRequiredSkills: View {
 struct BlueprintActivityRequiredSkills_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            BlueprintActivityRequiredSkills(activity: try! Storage.sharedStorage.persistentContainer.viewContext
+            BlueprintActivityRequiredSkills(activity: try! Storage.testStorage.persistentContainer.viewContext
                 .from(SDEIndActivity.self)
                 .filter((/\SDEIndActivity.requiredSkills).count > 3)
                 .first()!)
         }
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

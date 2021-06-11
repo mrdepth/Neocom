@@ -137,8 +137,8 @@ struct SkillPlanSectionWrapper: View {
 #if DEBUG
 struct SkillQueue_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
-        let skillPlan = SkillPlan(context: Storage.sharedStorage.persistentContainer.viewContext)
+        let account = Account.testingAccount
+        let skillPlan = SkillPlan(context: Storage.testStorage.persistentContainer.viewContext)
         skillPlan.account = account
         skillPlan.name = "SkillPlan 1"
         skillPlan.isActive = true
@@ -146,9 +146,7 @@ struct SkillQueue_Previews: PreviewProvider {
         return NavigationView {
             SkillQueue()
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

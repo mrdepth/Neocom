@@ -17,7 +17,7 @@ struct ContentView: View {
     @State private var isFinished = false
     
     var body: some View {
-        let contact1 = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.sharedStorage.persistentContainer.viewContext)!, insertInto: nil)
+        let contact1 = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.testStorage.persistentContainer.viewContext)!, insertInto: nil)
         contact1.name = "Artem Valiant"
         contact1.contactID = 1554561480
         contact1.category = ESI.RecipientType.character.rawValue

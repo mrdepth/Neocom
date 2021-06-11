@@ -57,10 +57,10 @@ struct CertificateCell: View {
 }
 
 
-
+#if DEBUG
 struct CertificateCell_Previews: PreviewProvider {
     static var previews: some View {
-        let certificate = try! Storage.sharedStorage.persistentContainer.viewContext
+        let certificate = try! Storage.testStorage.persistentContainer.viewContext
             .from(SDECertCertificate.self)
             .first()!
         
@@ -70,7 +70,7 @@ struct CertificateCell_Previews: PreviewProvider {
                 CertificateCell(certificate: certificate, pilot: nil)
             }.listStyle(GroupedListStyle())
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext.newBackgroundContext())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

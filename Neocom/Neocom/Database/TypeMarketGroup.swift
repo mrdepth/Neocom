@@ -22,33 +22,7 @@ struct TypeMarketGroup: View {
         return FetchedResultsController(controller)
     }
 
-    private let marketGroups = Lazy<FetchedResultsController<SDEInvMarketGroup>, Never>()
-    
-    @State private var searchString: String = ""
-    @State private var searchResults: [FetchedResultsController<SDEInvType>.Section]? = nil
-
-    var body: some View {
-        let marketGroups = self.marketGroups.get(initial: getMarketGroups())
-        let predicate = /\SDEInvType.marketGroup != nil
-        
-        return TypesSearch(predicate: predicate, searchString: $searchString, searchResults: $searchResults) {
-            if self.searchResults != nil {
-                TypesContent(types: self.searchResults!) { type in
-                    NavigationLink(destination: TypeInfo(type: type)) {
-                        TypeCell(type: type)
-                    }
-                }
-            }
-            else {
-                TypeMarketGroupContent(marketGroups: marketGroups)
-            }
-        }
-        .navigationBarTitle(parent?.marketGroupName ?? NSLocalizedString("Market", comment: ""))
-    }
-}
-
-struct TypeMarketGroupContent: View {
-    var marketGroups: FetchedResultsController<SDEInvMarketGroup>
+    @StateObject private var marketGroups = Lazy<FetchedResultsController<SDEInvMarketGroup>, Never>()
     
     private func content(for marketGroup: SDEInvMarketGroup) -> some View {
         HStack {
@@ -73,16 +47,30 @@ struct TypeMarketGroupContent: View {
     }
 
     var body: some View {
-        ForEach(marketGroups.fetchedObjects, id: \.objectID) { marketGroup in
-            self.row(for: marketGroup)
+        let marketGroups = self.marketGroups.get(initial: getMarketGroups())
+        let predicate = /\SDEInvType.marketGroup != nil
+        
+        return List {
+            ForEach(marketGroups.fetchedObjects, id: \.objectID, content: row)
         }
+        .listStyle(GroupedListStyle())
+        .search { publisher in
+            TypesSearchResults(publisher: publisher, predicate: predicate) { type in
+                NavigationLink(destination: TypeInfo(type: type)) {
+                    TypeCell(type: type)
+                }
+            }
+        }
+        .navigationBarTitle(parent?.marketGroupName ?? NSLocalizedString("Market", comment: ""))
     }
 }
 
+#if DEBUG
 struct TypeMarketGroup_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            TypeMarketGroup().environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            TypeMarketGroup().modifier(ServicesViewModifier.testModifier())
         }
     }
 }
+#endif

@@ -28,8 +28,7 @@ struct LanguagePack {
 
 struct LanguagePacks: View {
     var onSelect: ((BundleResource) -> Void)? = nil
-
-    private let languagePacks = Storage.sharedStorage.supportedLanguages()
+    private let languagePacks = AppDelegate.sharedDelegate.storage.supportedLanguages() //Storage.testStorage.supportedLanguages()
     
     var body: some View {
         List {

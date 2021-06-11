@@ -48,14 +48,16 @@ struct FittingEditorFuelStats: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorFuelStats_Previews: PreviewProvider {
     static var previews: some View {
         return List {
             FittingEditorFuelStats(ship: DGMStructure.testKeepstar())
         }.listStyle(GroupedListStyle())
             .environmentObject(PricesData(esi: ESI()))
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 
 
+#endif

@@ -76,6 +76,7 @@ struct FittingEditorMiscStats: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorMiscStats_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -84,6 +85,7 @@ struct FittingEditorMiscStats_Previews: PreviewProvider {
         }.listStyle(GroupedListStyle())
 //            .environmentObject(DGMStructure.testKeepstar() as DGMShip)
             .environmentObject(gang)
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

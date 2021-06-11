@@ -53,10 +53,10 @@ struct CertificateInfo: View {
 }
 
 
-
+#if DEBUG
 struct CertificateInfo_Previews: PreviewProvider {
     static var previews: some View {
-        let certificate = try! Storage.sharedStorage.persistentContainer.viewContext
+        let certificate = try! Storage.testStorage.persistentContainer.viewContext
         .from(SDECertCertificate.self)
         .filter((/\SDECertCertificate.certificateName).contains("Armor"))
         .first()!
@@ -64,6 +64,7 @@ struct CertificateInfo_Previews: PreviewProvider {
         
         return NavigationView {
             CertificateInfo(certificate: certificate)
-        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

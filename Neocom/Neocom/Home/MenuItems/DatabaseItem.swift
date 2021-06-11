@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct DatabaseItem: View {
-    @ObservedObject private var storage = Storage.sharedStorage
+    @EnvironmentObject private var storage: Storage
 
     var body: some View {
         NavigationLink(destination: TypeCategories()) {

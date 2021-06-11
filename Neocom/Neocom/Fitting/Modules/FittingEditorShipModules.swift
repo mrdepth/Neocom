@@ -21,6 +21,7 @@ struct FittingEditorShipModules: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorShipModules_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -29,6 +30,7 @@ struct FittingEditorShipModules_Previews: PreviewProvider {
         }
 //        .environmentObject(DGMStructure.testKeepstar() as DGMShip)
         .environmentObject(gang)
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

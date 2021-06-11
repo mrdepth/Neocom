@@ -66,15 +66,16 @@ struct FittingEditorFleetBar: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorFleetBar_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
-        let project = FittingProject(gang: gang, managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext)
+        let project = FittingProject(gang: gang, managedObjectContext: Storage.testStorage.persistentContainer.viewContext)
         
         return FittingEditorFleetBar(ship: .constant(gang.pilots[0].ship!))
             .environmentObject(gang)
             .environmentObject(project)
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

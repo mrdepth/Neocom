@@ -27,10 +27,12 @@ struct PlanetCell: View {
     }
 }
 
+#if DEBUG
 struct PlanetCell_Previews: PreviewProvider {
     static var previews: some View {
         let planet = try! ESI.jsonDecoder.decode(ESI.Planets.self, from: NSDataAsset(name: "planetsList")!.data)[0]
         return PlanetCell(planet: planet)
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

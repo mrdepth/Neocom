@@ -13,7 +13,7 @@ import Combine
 struct LanguagePackCell: View {
     
     @ObservedObject var resource: BundleResource
-    @ObservedObject var storage = Storage.sharedStorage
+    @EnvironmentObject var storage: Storage
     @State private var error: IdentifiableWrapper<Error>?
     var onSelect: ((BundleResource) -> Void)? = nil
 

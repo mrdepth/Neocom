@@ -155,7 +155,7 @@ struct Ancestry: Codable {
 	var memory: Int
 	var perception: Int
 	var willpower: Int
-	var shortDescription: String
+	var shortDescription: String?
 	var iconID: Int?
 }
 
@@ -178,7 +178,7 @@ struct Bloodline: Codable {
 
 	var corporationID: Int
 	var iconID: Int?
-	var shipTypeID: Int
+//	var shipTypeID: Int
 	var raceID: Int
     var lastNames: [String]?
 }
@@ -186,6 +186,7 @@ struct Bloodline: Codable {
 struct Faction: Codable {
 	var corporationID: Int?
     var descriptionID: LocalizedString?
+    var shortDescriptionID: LocalizedString?
 //	var factionID: Int
     var nameID: LocalizedString
 	var iconID: Int?
@@ -204,6 +205,7 @@ struct Race: Codable {
     var nameID: LocalizedString
 	var iconID: Int?
     var skills: [Int: Int]?
+    var shipTypeID: Int?
 }
 
 struct Unit: Codable {
@@ -254,7 +256,18 @@ struct MetaGroup: Codable {
 
 struct Name: Codable {
 	var itemID: Int
-	var itemName: String
+	var itemName: String?
+    
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        itemID = try c.decode(Int.self, forKey: .itemID)
+        do {
+            itemName = try c.decodeIfPresent(String.self, forKey: .itemName)
+        }
+        catch {
+            itemName = try c.decodeIfPresent(Int.self, forKey: .itemName).map{"\($0)"}
+        }
+    }
 }
 
 struct TypeMaterial: Codable {
@@ -357,7 +370,7 @@ struct Station: Codable {
 	var security: Double
 	var solarSystemID: Int
 	var stationID: Int
-//	var stationName: String
+	var stationName: String
 	var stationTypeID: Int
 	var x: Double
 	var y: Double
@@ -532,15 +545,15 @@ struct SolarSystem: Codable {
 }
 
 struct AttributeCategory: Codable {
-	var categoryDescription: String?
-	var categoryID: Int
-	var categoryName: String?
+	var description: String?
+//	var categoryID: Int
+	var name: String?
 }
 
 struct AttributeType: Codable {
     var attributeID: Int
     var categoryID: Int?
-    var dataType: String?
+    var dataType: Int?
     var defaultValue: Double
     var description: String?
     var displayNameID: LocalizedString?
@@ -583,9 +596,9 @@ struct Effect: Codable {
 	var disallowAutoRepeat: Bool
 	var dischargeAttributeID: Int?
 	var displayNameID: LocalizedString?
-	var distribution: String?
+	var distribution: Int?
 	var durationAttributeID: Int?
-	var effectCategory: String
+	var effectCategory: Int
 	var effectID: Int
 	var effectName: String
 	var electronicChance: Bool
@@ -614,7 +627,7 @@ struct Effect: Codable {
         var `func`: String
         var modifiedAttributeID: Int?
         var modifyingAttributeID: Int?
-        var operation: String?
+        var operation: Int?
         var skillTypeID: Int?
         var groupID: Int?
         var domainID: Int?
@@ -680,7 +693,7 @@ enum Schema {
 	typealias AssemblyLineTypes = [AssemblyLineType]
 	typealias InstallationTypeContents = [InstallationTypeContent]
 	typealias Stations = [Station]
-	typealias AttributeCategories = [AttributeCategory]
+    typealias AttributeCategories = [Int: AttributeCategory]
     typealias AttributeTypes = [Int: AttributeType]
 //	typealias TypeAttributes = [TypeAttribute]
     typealias Effects = [Int: Effect]

@@ -79,6 +79,7 @@ struct PredefinedDamagePatternCell: View {
     }
 }
 
+#if DEBUG
 struct DamagePatternsPredefined_Previews: PreviewProvider {
     static var previews: some View {
         return NavigationView {
@@ -87,7 +88,8 @@ struct DamagePatternsPredefined_Previews: PreviewProvider {
             }.listStyle(GroupedListStyle())
                 .navigationBarItems(trailing: EditButton())
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
 
     }
 }
+#endif

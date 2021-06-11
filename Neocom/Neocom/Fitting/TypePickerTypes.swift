@@ -71,15 +71,16 @@ struct TypePickerTypesContent: View {
     }
 }
 
-
+#if DEBUG
 struct TypePickerTypes_Previews: PreviewProvider {
     static var previews: some View {
-        let context = Storage.sharedStorage.persistentContainer.viewContext
+        let context = Storage.testStorage.persistentContainer.viewContext
         let group = try? context.from(SDEDgmppItemGroup.self)
             .filter((/\SDEDgmppItemGroup.items).count > 0)
             .first()
         
         return TypePickerTypes(parentGroup: group!, searchHelper: TypePickerSearchHelper()) { _ in }
-            .environment(\.managedObjectContext, context)
+            .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

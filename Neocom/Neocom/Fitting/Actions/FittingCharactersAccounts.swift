@@ -27,11 +27,10 @@ struct FittingCharactersAccounts: View {
 #if DEBUG
 struct FittingCharactersAccounts_Previews: PreviewProvider {
     static var previews: some View {
-		_ = AppDelegate.sharedDelegate.testingAccount!
 		return List {
 			FittingCharactersAccounts {_, _ in}
 		}.listStyle(GroupedListStyle())
-		.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

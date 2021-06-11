@@ -99,7 +99,7 @@ struct FittingEditorShipModulesSection: View {
     }
 }
 
-
+#if DEBUG
 struct FittingEditorShipModulesSection_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -107,7 +107,8 @@ struct FittingEditorShipModulesSection_Previews: PreviewProvider {
                 FittingEditorShipModulesSection(ship: DGMShip.testDominix(), slot: .hi)
             }.listStyle(GroupedListStyle())
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
 //        .colorScheme(.dark)
     }
 }
+#endif

@@ -44,6 +44,7 @@ struct FittingBoosterCell: View {
     }
 }
 
+#if DEBUG
 struct FittingBoosterCell_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -53,10 +54,10 @@ struct FittingBoosterCell_Previews: PreviewProvider {
         return List {
             FittingBoosterCell(booster: booster)
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
             .environmentObject(gang)
 
         
     }
 }
+#endif

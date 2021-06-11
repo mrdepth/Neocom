@@ -28,9 +28,9 @@ enum LanguageID: String, CaseIterable {
 }
 
 class Storage: ObservableObject {
-    static var sharedStorage: Storage {
-        AppDelegate.sharedDelegate.storage
-    }
+//    static var sharedStorage: Storage {
+//        AppDelegate.sharedDelegate.storage
+//    }
     
     @Published var sde: BundleResource {
         didSet {
@@ -53,12 +53,19 @@ class Storage: ObservableObject {
         }
     }
     
+    private func initializeTransformers() {
+        ValueTransformer.setValueTransformer(ImageValueTransformer(), forName: NSValueTransformerName("ImageValueTransformer"))
+        ValueTransformer.setValueTransformer(LoadoutTransformer(), forName: NSValueTransformerName(rawValue: "LoadoutTransformer"))
+        ValueTransformer.setValueTransformer(NeocomSecureUnarchiveFromDataTransformer(), forName: NSValueTransformerName("NeocomSecureUnarchiveFromDataTransformer"))
+    }
+
     init() {
         let setting = UserDefault(wrappedValue: LanguageID.default.rawValue, key: .languageID)
         _languageSetting = setting
         let sde = BundleResource(tag: setting.wrappedValue)
         self.sde = sde
         currentLanguagID = sde.isAvailable() ? LanguageID(rawValue: sde.tag) ?? .default : .default
+        initializeTransformers()
     }
 
     var managedObjectModel: NSManagedObjectModel {

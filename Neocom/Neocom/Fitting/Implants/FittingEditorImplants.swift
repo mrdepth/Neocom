@@ -95,13 +95,14 @@ struct FittingEditorImplants: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorImplants_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         
         return FittingEditorImplants(ship: gang.pilots[0].ship!)
             .environmentObject(gang)
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

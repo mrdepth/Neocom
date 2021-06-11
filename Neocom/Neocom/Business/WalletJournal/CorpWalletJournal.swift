@@ -62,8 +62,7 @@ struct CorpWalletJournal_Previews: PreviewProvider {
         NavigationView {
             CorpWalletJournal()
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

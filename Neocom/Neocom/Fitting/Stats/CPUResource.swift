@@ -17,8 +17,10 @@ struct CPUResource: View {
     }
 }
 
+#if DEBUG
 struct CPUResource_Previews: PreviewProvider {
     static var previews: some View {
         CPUResource(ship: DGMGang.testGang().pilots[0].ship!)
     }
 }
+#endif

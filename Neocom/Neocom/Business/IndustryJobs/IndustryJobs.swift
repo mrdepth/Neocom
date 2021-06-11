@@ -59,7 +59,7 @@ struct IndustryJobsContent: View {
 #if DEBUG
 struct IndustryJobs_Previews: PreviewProvider {
     static var previews: some View {
-        let solarSystem = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
+        let solarSystem = try! Storage.testStorage.persistentContainer.viewContext.from(SDEMapSolarSystem.self).first()!
         let location = EVELocation(solarSystem: solarSystem, id: Int64(solarSystem.solarSystemID))
         
         
@@ -96,8 +96,7 @@ struct IndustryJobs_Previews: PreviewProvider {
                 .navigationBarTitle(Text("Industry Jobs"))
             
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

@@ -49,14 +49,13 @@ struct AccountCell: View {
 #if DEBUG
 struct AccountCell_Previews: PreviewProvider {
     static var previews: some View {
-        let context = Storage.sharedStorage.persistentContainer.viewContext
-        let account = AppDelegate.sharedDelegate.testingAccount
+        let context = Storage.testStorage.persistentContainer.viewContext
+        let account = Account.testingAccount
         let esi = account.map{ESI(token: $0.oAuth2Token!)} ?? ESI()
         return AccountCell(account: account!,
                            characterInfo: CharacterInfo(esi: esi, characterID: account!.characterID),
                            accountInfo: AccountInfo(esi: esi, characterID: account!.characterID, managedObjectContext: context))
-            .environmentObject(SharedState.testState())
-            .environment(\.managedObjectContext, context)
+            .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

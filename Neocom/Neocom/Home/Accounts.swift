@@ -76,8 +76,7 @@ struct Accounts_Previews: PreviewProvider {
         NavigationView {
             Accounts { _ in }
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

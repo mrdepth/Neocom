@@ -104,8 +104,7 @@ struct MarketOrders_Previews: PreviewProvider {
 //            }.listStyle(GroupedListStyle())
 //                .navigationBarTitle(Text("Market Orders"))
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

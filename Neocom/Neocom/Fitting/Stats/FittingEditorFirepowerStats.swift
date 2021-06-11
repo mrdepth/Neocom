@@ -69,6 +69,7 @@ struct FittingEditorFirepowerStats: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorFirepowerStats_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -76,8 +77,9 @@ struct FittingEditorFirepowerStats_Previews: PreviewProvider {
             FittingEditorFirepowerStats(ship: gang.pilots.first!.ship!)
         }.listStyle(GroupedListStyle())
             .environmentObject(gang)
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 
 
+#endif

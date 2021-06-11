@@ -42,7 +42,7 @@ struct MailDraftCell: View {
 #if DEBUG
 struct MailDraftCell_Previews: PreviewProvider {
     static var previews: some View {
-        let context = Storage.sharedStorage.persistentContainer.viewContext
+        let context = Storage.testStorage.persistentContainer.viewContext
         let draft = MailDraft(entity: NSEntityDescription.entity(forEntityName: "MailDraft", in: context)!, insertInto: nil)
         draft.date = Date()
         draft.subject = "Subject"
@@ -50,8 +50,7 @@ struct MailDraftCell_Previews: PreviewProvider {
         draft.to = [1554561480]
         
         return MailDraftCell(draft: draft)
-            .environment(\.managedObjectContext, context)
-            .environmentObject(SharedState.testState())
+            .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

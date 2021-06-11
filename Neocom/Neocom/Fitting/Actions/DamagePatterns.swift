@@ -44,6 +44,7 @@ struct DamagePatterns: View {
     }
 }
 
+#if DEBUG
 struct DamagePatterns_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -51,7 +52,7 @@ struct DamagePatterns_Previews: PreviewProvider {
             DamagePatterns { _ in }
         }
         .environmentObject(gang)
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

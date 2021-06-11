@@ -20,10 +20,12 @@ struct CategoryCell: View {
     }
 }
 
+#if DEBUG
 struct CategoryCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            CategoryCell(category: (try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvCategory.self).first())!)
+            CategoryCell(category: (try! Storage.testStorage.persistentContainer.viewContext.from(SDEInvCategory.self).first())!)
         }.listStyle(GroupedListStyle())
     }
 }
+#endif

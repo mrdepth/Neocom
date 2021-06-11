@@ -277,8 +277,7 @@ fileprivate struct ComposeMailContent: View {
 struct ComposeMail_Previews: PreviewProvider {
     static var previews: some View {
         ComposeMail {}
-            .environmentObject(SharedState.testState())
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .modifier(ServicesViewModifier.testModifier())
         
     }
 }

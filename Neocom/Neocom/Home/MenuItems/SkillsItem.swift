@@ -82,9 +82,7 @@ struct SkillsItem_Previews: PreviewProvider {
                 SkillsItem()
             }.listStyle(GroupedListStyle())
         }
-        .environmentObject(SharedState.testState())
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
+        .modifier(ServicesViewModifier.testModifier())
         
     }
 }

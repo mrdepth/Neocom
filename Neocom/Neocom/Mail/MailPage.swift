@@ -81,8 +81,7 @@ struct MailPage_Previews: PreviewProvider {
         return NavigationView {
             MailPage(label: label)
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
 
     }
 }

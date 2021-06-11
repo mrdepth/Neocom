@@ -310,10 +310,10 @@ extension SDEEveUnit {
 }
 
 extension SDEDgmAttributeCategory {
-	convenience init(_ attributeCategory: AttributeCategory) {
+    convenience init(_ attributeCategory: AttributeCategory, _ categoryID: Int) {
 		self.init(context: .current)
-		categoryID = Int32(attributeCategory.categoryID)
-		categoryName = attributeCategory.categoryName
+        self.categoryID = Int32(categoryID)
+		categoryName = attributeCategory.name
 	}
 }
 

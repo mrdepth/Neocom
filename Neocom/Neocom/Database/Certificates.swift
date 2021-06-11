@@ -49,14 +49,12 @@ struct Certificates: View {
 struct Certificates_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            Certificates(group: try! Storage.sharedStorage.persistentContainer.viewContext
+            Certificates(group: try! Storage.testStorage.persistentContainer.viewContext
                 .from(SDEInvGroup.self)
                 .filter((/\SDEInvGroup.certificates).count > 0)
                 .first()!
             )}
-        .environmentObject(SharedState.testState())
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext.newBackgroundContext())
+            .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

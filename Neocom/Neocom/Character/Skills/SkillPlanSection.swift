@@ -120,24 +120,24 @@ struct SkillPlanSection: View {
 #if DEBUG
 struct SkillPlanSection_Previews: PreviewProvider {
     static var previews: some View {
-        let account = AppDelegate.sharedDelegate.testingAccount
+        let account = Account.testingAccount
 
-        let type = try! Storage.sharedStorage.persistentContainer.viewContext
+        let type = try! Storage.testStorage.persistentContainer.viewContext
             .from(SDEInvType.self)
             .filter(/\SDEInvType.group?.category?.categoryID == SDECategoryID.skill.rawValue)
             .first()!
 
-        let skillPlan = SkillPlan(context: Storage.sharedStorage.persistentContainer.viewContext)
+        let skillPlan = SkillPlan(context: Storage.testStorage.persistentContainer.viewContext)
         skillPlan.account = account
         (0..<4).forEach { i in
-            let skill = SkillPlanSkill(context: Storage.sharedStorage.persistentContainer.viewContext)
+            let skill = SkillPlanSkill(context: Storage.testStorage.persistentContainer.viewContext)
             skill.typeID = type.typeID
             skill.level = Int16(i)
             skill.skillPlan = skillPlan
             skill.position = Int32(i)
         }
         
-        let skillPlan2 = SkillPlan(context: Storage.sharedStorage.persistentContainer.viewContext)
+        let skillPlan2 = SkillPlan(context: Storage.testStorage.persistentContainer.viewContext)
         skillPlan2.account = account
         return NavigationView {
             List {
@@ -145,9 +145,7 @@ struct SkillPlanSection_Previews: PreviewProvider {
                 SkillPlanSection(skillPlan: skillPlan2, pilot: .empty)
             }.listStyle(GroupedListStyle())
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
 
 
     }

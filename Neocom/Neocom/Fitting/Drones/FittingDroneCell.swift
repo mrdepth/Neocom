@@ -69,6 +69,7 @@ struct FittingDroneCell: View {
     }
 }
 
+#if DEBUG
 struct FittingDroneCell_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -80,7 +81,8 @@ struct FittingDroneCell_Previews: PreviewProvider {
         return List {
             FittingDroneCell(drone: drone)
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
         .environmentObject(gang)
     }
 }
+#endif

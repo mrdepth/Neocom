@@ -34,6 +34,7 @@ struct TypeMasteryLevel: View {
     }
 }
 
+#if DEBUG
 struct TypeMasteryLevel_Previews: PreviewProvider {
     static var previews: some View {
         let type = SDEInvType.dominix
@@ -43,3 +44,4 @@ struct TypeMasteryLevel_Previews: PreviewProvider {
         }
     }
 }
+#endif

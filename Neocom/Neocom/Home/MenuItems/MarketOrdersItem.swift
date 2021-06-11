@@ -33,8 +33,7 @@ struct MarketOrdersItem_Previews: PreviewProvider {
                 MarketOrdersItem()
             }.listStyle(GroupedListStyle())
         }
-        .environmentObject(SharedState.testState())
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

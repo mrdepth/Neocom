@@ -159,10 +159,8 @@ struct FittingEditorShipActions_Previews: PreviewProvider {
             FittingEditorShipActions(ship: gang.pilots.first!.ship!) {}
         }
         .environmentObject(gang)
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
-        .environmentObject(SharedState.testState())
-        .environmentObject(FittingProject(gang: gang, managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext))
+        .modifier(ServicesViewModifier.testModifier())
+        .environmentObject(FittingProject(gang: gang, managedObjectContext: Storage.testStorage.persistentContainer.viewContext))
 
     }
 }

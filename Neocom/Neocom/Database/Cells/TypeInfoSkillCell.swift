@@ -69,9 +69,10 @@ struct TypeInfoSkillCell: View {
     }
 }
 
+#if DEBUG
 struct TypeInfoSkillCell_Previews: PreviewProvider {
     static var previews: some View {
-        let skill = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self)
+        let skill = try! Storage.testStorage.persistentContainer.viewContext.from(SDEInvType.self)
             .filter(/\SDEInvType.group?.category?.categoryID == SDECategoryID.skill.rawValue)
             .fetch()
             .max{$0.typeName!.count < $1.typeName!.count}
@@ -80,8 +81,9 @@ struct TypeInfoSkillCell_Previews: PreviewProvider {
                 TypeInfoSkillCell(skillType: skill!, level: 5, pilot: nil)
                 TypeInfoSkillCell(skillType: skill!, level: 5, pilot: .empty)
             }.listStyle(GroupedListStyle())
-                .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .modifier(ServicesViewModifier.testModifier())
         }
     }
 }
 
+#endif

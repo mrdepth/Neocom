@@ -66,6 +66,8 @@ struct FittingImplantSlot: View {
     }
 }
 
+#if DEBUG
+
 struct FittingImplantSlot_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -75,3 +77,4 @@ struct FittingImplantSlot_Previews: PreviewProvider {
         .environmentObject(gang)
     }
 }
+#endif

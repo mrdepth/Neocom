@@ -26,11 +26,14 @@ struct CertificateInfoHeader: View {
     }
 }
 
+#if DEBUG
 struct CertificateInfoHeader_Previews: PreviewProvider {
     static var previews: some View {
-        let certificate = try! Storage.sharedStorage.persistentContainer.viewContext
+        let certificate = try! Storage.testStorage.persistentContainer.viewContext
         .from(SDECertCertificate.self)
         .first()!
-        return CertificateInfoHeader(certificate: certificate, masteryLevel: nil).environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext).padding()
+        return CertificateInfoHeader(certificate: certificate, masteryLevel: nil).padding()
+            .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

@@ -97,13 +97,15 @@ struct WormholeInfo: View {
     }
 }
 
+#if DEBUG
 struct WormholeInfo_Previews: PreviewProvider {
     static var previews: some View {
-        let wh = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEWhType.self).first()!
+        let wh = try! Storage.testStorage.persistentContainer.viewContext.from(SDEWhType.self).first()!
         return NavigationView {
             List {
                 WormholeInfo(type: wh.type!)
             }.listStyle(GroupedListStyle())
-        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        }.modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

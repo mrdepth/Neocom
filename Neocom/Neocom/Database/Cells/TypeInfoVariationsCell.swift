@@ -23,6 +23,7 @@ struct TypeInfoVariationsCell: View {
     }
 }
 
+#if DEBUG
 struct TypeInfoVariationsCell_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -32,3 +33,4 @@ struct TypeInfoVariationsCell_Previews: PreviewProvider {
         }
     }
 }
+#endif

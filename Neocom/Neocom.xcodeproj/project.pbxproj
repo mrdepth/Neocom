@@ -26,8 +26,6 @@
 		12CBA91D2399596B001C1C82 /* MasteryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CBA91C2399596B001C1C82 /* MasteryData.swift */; };
 		12DE901F241B780D0010C60D /* FittingEditorShipActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE901E241B780D0010C60D /* FittingEditorShipActions.swift */; };
 		12DE9021241B7A000010C60D /* AreaEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DE9020241B7A000010C60D /* AreaEffects.swift */; };
-		12F06F13238464920061313D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F12238464920061313D /* AppDelegate.swift */; };
-		12F06F15238464920061313D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F14238464920061313D /* SceneDelegate.swift */; };
 		12F06F17238464920061313D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F16238464920061313D /* ContentView.swift */; };
 		12F06F19238464950061313D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12F06F18238464950061313D /* Assets.xcassets */; };
 		12F06F1C238464950061313D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12F06F1B238464950061313D /* Preview Assets.xcassets */; };
@@ -285,7 +283,7 @@
 		169A9196238CF9D5004E3DAA /* Expressible.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 169A9194238CF9D5004E3DAA /* Expressible.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		169A91A3238D1D38004E3DAA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A91A2238D1D38004E3DAA /* Config.swift */; };
 		169A91A5238D1D81004E3DAA /* ESI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A91A4238D1D81004E3DAA /* ESI+Extensions.swift */; };
-		169A931024864A9300DA1897 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 169A930F24864A9300DA1897 /* FacebookCore */; };
+		169A931024864A9300DA1897 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 169A930F24864A9300DA1897 /* SwiftPackageProductDependency */; };
 		169BFF9423B64D2300FDF759 /* BlueprintActivityMaterials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169BFF9323B64D2300FDF759 /* BlueprintActivityMaterials.swift */; };
 		169D27FD241A0C63002AB469 /* FittingEditorStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169D27FC241A0C63002AB469 /* FittingEditorStats.swift */; };
 		169D27FF241A0CA8002AB469 /* FittingEditorResourcesStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169D27FE241A0CA8002AB469 /* FittingEditorResourcesStats.swift */; };
@@ -335,6 +333,8 @@
 		16B6A84123F2AC5D00E0EB8B /* AssetsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B6A84023F2AC5D00E0EB8B /* AssetsCategory.swift */; };
 		16B6A84523F2D24E00E0EB8B /* Dgmpp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B6A84423F2D24E00E0EB8B /* Dgmpp.framework */; };
 		16B6A84623F2D24E00E0EB8B /* Dgmpp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 16B6A84423F2D24E00E0EB8B /* Dgmpp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		16B6E3272656893D00A5258D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F12238464920061313D /* AppDelegate.swift */; };
+		16B6E3282656893D00A5258D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F06F14238464920061313D /* SceneDelegate.swift */; };
 		16B7FC46240910C20076BD7C /* LineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B7FC45240910C20076BD7C /* LineChart.swift */; };
 		16B8458223F529E700A0B1F6 /* Contact+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8458123F529E700A0B1F6 /* Contact+Extensions.swift */; };
 		16B8E3B123FBDB440096B066 /* ContactsSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B8E3B023FBDB440096B066 /* ContactsSearchResults.swift */; };
@@ -386,6 +386,8 @@
 		16D0093B23B0AF39000694C0 /* TypeMarketGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D0093A23B0AF39000694C0 /* TypeMarketGroup.swift */; };
 		16D16EB6241A685200EF9F76 /* FittingEditorMiningStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D16EB5241A685200EF9F76 /* FittingEditorMiningStats.swift */; };
 		16D16EB8241A6A2600EF9F76 /* FittingEditorMiscStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D16EB7241A6A2600EF9F76 /* FittingEditorMiscStats.swift */; };
+		16D45153252B4BC900D3D938 /* SearchController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D45152252B4BC900D3D938 /* SearchController2.swift */; };
+		16D45156252B580F00D3D938 /* TypesSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D45155252B580F00D3D938 /* TypesSearchResults.swift */; };
 		16D5DE7623B23898004CDA4A /* CertificateMasteryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D5DE7523B23898004CDA4A /* CertificateMasteryInfo.swift */; };
 		16D5DE7823B238D4004CDA4A /* CertificateRequirementsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D5DE7723B238D4004CDA4A /* CertificateRequirementsInfo.swift */; };
 		16D667CC238D66FB00A74C98 /* FetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */; };
@@ -395,6 +397,7 @@
 		16DFF82F238D360B004C1185 /* TypeCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DFF82E238D360B004C1185 /* TypeCategories.swift */; };
 		16DFF831238D3A4F004C1185 /* SearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DFF830238D3A4F004C1185 /* SearchField.swift */; };
 		16DFF833238D4C02004C1185 /* UIKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */; };
+		16E1ABFE2530490D001AD3D4 /* FittingProject1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E1ABFD2530490D001AD3D4 /* FittingProject1.swift */; };
 		16E2AD9D23B20FCE00B90204 /* CertificateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E2AD9C23B20FCE00B90204 /* CertificateInfo.swift */; };
 		16E2AD9F23B214EF00B90204 /* CertificateInfoHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E2AD9E23B214EF00B90204 /* CertificateInfoHeader.swift */; };
 		16E3DBF3238BF944005F5AAE /* Avatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E3DBF2238BF944005F5AAE /* Avatar.swift */; };
@@ -492,6 +495,7 @@
 		161CE78F23E16E57007619B8 /* SkillPlanSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillPlanSection.swift; sourceTree = "<group>"; };
 		1625C56C24ADCA2E00014B41 /* CorpWalletJournal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorpWalletJournal.swift; sourceTree = "<group>"; };
 		1625C56E24ADCCBD00014B41 /* CorpWalletJournalData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorpWalletJournalData.swift; sourceTree = "<group>"; };
+		162BB5C925260DC20008C73F /* NeocomApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeocomApp.swift; sourceTree = "<group>"; };
 		162C99AC246EDFEF000E78EF /* BundleResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleResource.swift; sourceTree = "<group>"; };
 		1630ED7423CC65E0001DBAA7 /* TypeMasterySkills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMasterySkills.swift; sourceTree = "<group>"; };
 		1630ED7823CC926E001DBAA7 /* CharacterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSheet.swift; sourceTree = "<group>"; };
@@ -711,6 +715,7 @@
 		169A9198238CFBEC004E3DAA /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		169A91A2238D1D38004E3DAA /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		169A91A4238D1D81004E3DAA /* ESI+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ESI+Extensions.swift"; sourceTree = "<group>"; };
+		169B13B825276C7F00ABB30B /* MainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScene.swift; sourceTree = "<group>"; };
 		169BFF9323B64D2300FDF759 /* BlueprintActivityMaterials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueprintActivityMaterials.swift; sourceTree = "<group>"; };
 		169D27FC241A0C63002AB469 /* FittingEditorStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorStats.swift; sourceTree = "<group>"; };
 		169D27FE241A0CA8002AB469 /* FittingEditorResourcesStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorResourcesStats.swift; sourceTree = "<group>"; };
@@ -781,8 +786,6 @@
 		16BC888D24167D5F00C6149A /* FittingBoosterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingBoosterCell.swift; sourceTree = "<group>"; };
 		16BCB1B523D88437004712DB /* SkillCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillCell.swift; sourceTree = "<group>"; };
 		16BD2E7E247E629E008CA73B /* AdsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsContainerView.swift; sourceTree = "<group>"; };
-		16BD2EAB247E9227008CA73B /* iOSDependencies.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iOSDependencies.h; sourceTree = "<group>"; };
-		16BD2EAC247E9227008CA73B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		16BD2EB7247EA7E0008CA73B /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		16BD2EB9247EAB71008CA73B /* AdvertisingProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvertisingProvider.swift; sourceTree = "<group>"; };
 		16BEB1F7247011E400684C2E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -829,6 +832,8 @@
 		16D168912521EC5D007A37EA /* StorageV2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StorageV2.xcdatamodel; sourceTree = "<group>"; };
 		16D16EB5241A685200EF9F76 /* FittingEditorMiningStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorMiningStats.swift; sourceTree = "<group>"; };
 		16D16EB7241A6A2600EF9F76 /* FittingEditorMiscStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingEditorMiscStats.swift; sourceTree = "<group>"; };
+		16D45152252B4BC900D3D938 /* SearchController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController2.swift; sourceTree = "<group>"; };
+		16D45155252B580F00D3D938 /* TypesSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypesSearchResults.swift; sourceTree = "<group>"; };
 		16D5DE7523B23898004CDA4A /* CertificateMasteryInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateMasteryInfo.swift; sourceTree = "<group>"; };
 		16D5DE7723B238D4004CDA4A /* CertificateRequirementsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateRequirementsInfo.swift; sourceTree = "<group>"; };
 		16D667CB238D66FB00A74C98 /* FetchedResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResultsController.swift; sourceTree = "<group>"; };
@@ -839,6 +844,7 @@
 		16DFF82E238D360B004C1185 /* TypeCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeCategories.swift; sourceTree = "<group>"; };
 		16DFF830238D3A4F004C1185 /* SearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchField.swift; sourceTree = "<group>"; };
 		16DFF832238D4C02004C1185 /* UIKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Extensions.swift"; sourceTree = "<group>"; };
+		16E1ABFD2530490D001AD3D4 /* FittingProject1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FittingProject1.swift; sourceTree = "<group>"; };
 		16E2AD9C23B20FCE00B90204 /* CertificateInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateInfo.swift; sourceTree = "<group>"; };
 		16E2AD9E23B214EF00B90204 /* CertificateInfoHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateInfoHeader.swift; sourceTree = "<group>"; };
 		16E3DBF2238BF944005F5AAE /* Avatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Avatar.swift; sourceTree = "<group>"; };
@@ -858,7 +864,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				168744D82465754D00F356EB /* libz.tbd in Frameworks */,
-				169A931024864A9300DA1897 /* FacebookCore in Frameworks */,
+				169A931024864A9300DA1897 /* BuildFile in Frameworks */,
 				169672DB2387ECCD00EB860B /* EVEAPI.framework in Frameworks */,
 				16B6A84523F2D24E00E0EB8B /* Dgmpp.framework in Frameworks */,
 				16B66A8F247BF46300F5AE84 /* StoreKit.framework in Frameworks */,
@@ -956,7 +962,6 @@
 			isa = PBXGroup;
 			children = (
 				12F06F11238464920061313D /* Neocom */,
-				16BD2EAA247E9227008CA73B /* iOSDependencies */,
 				169942552483D60300F6446F /* NeocomTests */,
 				12F06F10238464920061313D /* Products */,
 				12F06F35238467A10061313D /* Frameworks */,
@@ -991,9 +996,11 @@
 				16859E562435DEDF0037C01B /* Killboard */,
 				160767B62443037200D1BB82 /* Misc */,
 				12F06F12238464920061313D /* AppDelegate.swift */,
+				162BB5C925260DC20008C73F /* NeocomApp.swift */,
 				12F06F14238464920061313D /* SceneDelegate.swift */,
 				12F06F16238464920061313D /* ContentView.swift */,
 				12F06F6A23846D670061313D /* Main.swift */,
+				169B13B825276C7F00ABB30B /* MainScene.swift */,
 				169A91A2238D1D38004E3DAA /* Config.swift */,
 				1683B75124279E870005B241 /* MainMenu.xcassets */,
 				12F06F18238464950061313D /* Assets.xcassets */,
@@ -1230,6 +1237,7 @@
 				168960D0240FE217004E4630 /* TypeInfoButton.swift */,
 				16C39A5723BA0EEB00208F04 /* VibrancyView.swift */,
 				16BAF40124C82C7C00C61387 /* AuthorizationAppleIDButton.swift */,
+				16D45152252B4BC900D3D938 /* SearchController2.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1596,6 +1604,7 @@
 				168960D5240FE6F8004E4630 /* DGMDroneGroup.swift */,
 				1681D9D024275DF300912AE6 /* ImplantSetDescription.swift */,
 				169F57D02428C14E00FFDAE1 /* FittingProject.swift */,
+				16E1ABFD2530490D001AD3D4 /* FittingProject1.swift */,
 			);
 			path = Dgmpp;
 			sourceTree = "<group>";
@@ -1607,15 +1616,6 @@
 				16BD2EB9247EAB71008CA73B /* AdvertisingProvider.swift */,
 			);
 			path = AddSupport;
-			sourceTree = "<group>";
-		};
-		16BD2EAA247E9227008CA73B /* iOSDependencies */ = {
-			isa = PBXGroup;
-			children = (
-				16BD2EAB247E9227008CA73B /* iOSDependencies.h */,
-				16BD2EAC247E9227008CA73B /* Info.plist */,
-			);
-			path = iOSDependencies;
 			sourceTree = "<group>";
 		};
 		16C66CFB23F5529A009AEB72 /* MarketOrders */ = {
@@ -1699,6 +1699,7 @@
 				1273F8D223A2C69B00DB755B /* TypeMarketOrders.swift */,
 				169891A0238E50AC00FBA0B3 /* Types.swift */,
 				1696F682238FA7F5009F03F3 /* TypesSearch.swift */,
+				16D45155252B580F00D3D938 /* TypesSearchResults.swift */,
 				168F69402430D8A000D80A24 /* Wormholes.swift */,
 				168F69442430DCCD00D80A24 /* WormholeCell.swift */,
 				1687997824310E0300D78BBE /* IncursionCell.swift */,
@@ -1730,8 +1731,8 @@
 				12F06F0C238464920061313D /* Frameworks */,
 				12F06F0D238464920061313D /* Resources */,
 				169672DD2387ECCE00EB860B /* Embed Frameworks */,
-				6CF7330EC976DA0C7C455938 /* [CP] Embed Pods Frameworks */,
-				D64C8A5540BB4BF52EAF9EA6 /* [CP] Copy Pods Resources */,
+				655EE9B68DF65D93D25980C1 /* [CP] Embed Pods Frameworks */,
+				21F95308B366D394C39175A3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1739,7 +1740,7 @@
 			);
 			name = Neocom;
 			packageProductDependencies = (
-				169A930F24864A9300DA1897 /* FacebookCore */,
+				169A930F24864A9300DA1897 /* SwiftPackageProductDependency */,
 			);
 			productName = Neocom;
 			productReference = 12F06F0F238464920061313D /* Neocom.app */;
@@ -1810,7 +1811,7 @@
 			);
 			mainGroup = 12F06F06238464920061313D;
 			packageReferences = (
-				169A930E24864A9300DA1897 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+				169A930E24864A9300DA1897 /* RemoteSwiftPackageReference */,
 			);
 			productRefGroup = 12F06F10238464920061313D /* Products */;
 			projectDirPath = "";
@@ -1858,7 +1859,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6CF7330EC976DA0C7C455938 /* [CP] Embed Pods Frameworks */ = {
+		21F95308B366D394C39175A3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Neocom/Pods-Neocom-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Neocom/Pods-Neocom-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Neocom/Pods-Neocom-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		655EE9B68DF65D93D25980C1 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1895,23 +1913,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D64C8A5540BB4BF52EAF9EA6 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Neocom/Pods-Neocom-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Neocom/Pods-Neocom-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Neocom/Pods-Neocom-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2015,6 +2016,7 @@
 				16865CC9243E080200EDDF15 /* ActivityView.swift in Sources */,
 				167CB4B123994B24008980EE /* TypeInfoMasteryCell.swift in Sources */,
 				169891A1238E50AC00FBA0B3 /* Types.swift in Sources */,
+				16E1ABFE2530490D001AD3D4 /* FittingProject1.swift in Sources */,
 				16C66CFD23F552AA009AEB72 /* MarketOrders.swift in Sources */,
 				1271C657241E166D00665B59 /* FittingCharacterCell.swift in Sources */,
 				169A91A5238D1D81004E3DAA /* ESI+Extensions.swift in Sources */,
@@ -2104,7 +2106,6 @@
 				168744DC2465B06B00F356EB /* SettingsItem.swift in Sources */,
 				168E404A242F659800C03F00 /* LoyaltyOfferRequirement.swift in Sources */,
 				1691854A2423730B00393116 /* DamageVectorView.swift in Sources */,
-				12F06F13238464920061313D /* AppDelegate.swift in Sources */,
 				1685E709242E657400F85F14 /* CalendarItem.swift in Sources */,
 				16709B1923F6A62C00BB6E90 /* MailPage.swift in Sources */,
 				169D2803241A0E0F002AB469 /* CPUResource.swift in Sources */,
@@ -2124,6 +2125,7 @@
 				12DE901F241B780D0010C60D /* FittingEditorShipActions.swift in Sources */,
 				16BBE17323E02C41001E251D /* SkillQueue.swift in Sources */,
 				169F57D12428C14E00FFDAE1 /* FittingProject.swift in Sources */,
+				16D45153252B4BC900D3D938 /* SearchController2.swift in Sources */,
 				16C39A5623BA0BF000208F04 /* BlurView.swift in Sources */,
 				1693A85623FD15D10033A793 /* TextAttachmentView.swift in Sources */,
 				1687FC762464445800882EA2 /* Migration.swift in Sources */,
@@ -2173,6 +2175,7 @@
 				1655DE7B23969BA900973258 /* TypeInfoAttributeCell.swift in Sources */,
 				169891A3238E53D600FBA0B3 /* TypeCell.swift in Sources */,
 				16E684C6247BF9AF00BE1225 /* SubscriptionInfo.swift in Sources */,
+				16B6E3272656893D00A5258D /* AppDelegate.swift in Sources */,
 				16BCB1B623D88437004712DB /* SkillCell.swift in Sources */,
 				168CC1462438C94300B0A1AC /* KillImailInfo.swift in Sources */,
 				16CE2A0723F6755E0043764B /* ContractInfoData.swift in Sources */,
@@ -2182,6 +2185,7 @@
 				16C39A5423BA0B7200208F04 /* FinishedView.swift in Sources */,
 				16674BE9238BB80900E6E547 /* AccountCellContent.swift in Sources */,
 				164E6A2A243F5CC100215A98 /* FleetCell.swift in Sources */,
+				16B6E3282656893D00A5258D /* SceneDelegate.swift in Sources */,
 				16324731239159A200227480 /* AccountInfo.swift in Sources */,
 				16DFF831238D3A4F004C1185 /* SearchField.swift in Sources */,
 				169185572424071400393116 /* NPCPickerGroup.swift in Sources */,
@@ -2225,7 +2229,6 @@
 				16898DF62449DED900E7CD7B /* FittingCargoActions.swift in Sources */,
 				16859F572432186400824552 /* ExtractorSection.swift in Sources */,
 				16C66CFF23F5530D009AEB72 /* MarketOrderCell.swift in Sources */,
-				12F06F15238464920061313D /* SceneDelegate.swift in Sources */,
 				1687FC782464454600882EA2 /* CloudKitLoader.swift in Sources */,
 				16859F4C2432105600824552 /* ContractsItem.swift in Sources */,
 				1686D74F23953C9A00E88D3D /* Pilot.swift in Sources */,
@@ -2258,6 +2261,7 @@
 				168960D8240FEF30004E4630 /* FittingDroneCell.swift in Sources */,
 				168F2FF7243B2F35006CE01A /* RecentKillsItem.swift in Sources */,
 				1610ACEF2441D5E000D9B089 /* FittingItem.swift in Sources */,
+				16D45156252B580F00D3D938 /* TypesSearchResults.swift in Sources */,
 				1686D75323955C2400E88D3D /* TypeInfo.swift in Sources */,
 				16674BF0238BC6F300E6E547 /* UnitFormatter.swift in Sources */,
 				168ADD52246ECE7C00D6AAC4 /* DownloadIndicatorButton.swift in Sources */,
@@ -2474,7 +2478,7 @@
 				ASSET_PACK_MANIFEST_URL_PREFIX = "http://192.168.1.229/";
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 69;
+				CURRENT_PROJECT_VERSION = 70;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;
@@ -2483,12 +2487,12 @@
 					"${SRCROOT}/../ThirdParty/ASReceipt/Source/ThirdParty/OpenSSL/iOS",
 				);
 				INFOPLIST_FILE = Neocom/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
@@ -2504,7 +2508,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 69;
+				CURRENT_PROJECT_VERSION = 70;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;
@@ -2513,12 +2517,12 @@
 					"${SRCROOT}/../ThirdParty/ASReceipt/Source/ThirdParty/OpenSSL/iOS",
 				);
 				INFOPLIST_FILE = Neocom/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.neocom;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
@@ -2533,7 +2537,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = NeocomTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2542,7 +2545,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.NeocomTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Neocom.app/Neocom";
 			};
 			name = Debug;
@@ -2553,7 +2555,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = NeocomTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2562,7 +2563,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.shimanski.NeocomTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Neocom.app/Neocom";
 			};
 			name = Release;
@@ -2600,20 +2600,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		169A930E24864A9300DA1897 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+		169A930E24864A9300DA1897 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
+				minimumVersion = 9.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		169A930F24864A9300DA1897 /* FacebookCore */ = {
+		169A930F24864A9300DA1897 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 169A930E24864A9300DA1897 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			package = 169A930E24864A9300DA1897 /* RemoteSwiftPackageReference */;
 			productName = FacebookCore;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -94,11 +94,13 @@ struct LoadoutsSection: View {
     }
 }
 
+#if DEBUG
 struct LoadoutsSection_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            LoadoutsSection(loadouts: LoadoutsLoader(.ship, managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext), selection: .constant(Set())) { _, _ in}
+            LoadoutsSection(loadouts: LoadoutsLoader(.ship, managedObjectContext: Storage.testStorage.persistentContainer.viewContext), selection: .constant(Set())) { _, _ in}
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

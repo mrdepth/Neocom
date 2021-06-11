@@ -32,9 +32,10 @@ struct ImplantsRows: View {
     }
 }
 
+#if DEBUG
 struct ImplantsRows_Previews: PreviewProvider {
     static var previews: some View {
-        let implant = try? Storage.sharedStorage.persistentContainer.viewContext
+        let implant = try? Storage.testStorage.persistentContainer.viewContext
             .from(SDEInvType.self)
             .filter((/\SDEInvType.attributes).subquery(/\SDEDgmTypeAttribute.attributeType?.attributeID == SDEAttributeID.intelligenceBonus.rawValue).count > 0)
             .first()
@@ -44,6 +45,7 @@ struct ImplantsRows_Previews: PreviewProvider {
                 ImplantsRows(implants: [Int(implant!.typeID)])
             }
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

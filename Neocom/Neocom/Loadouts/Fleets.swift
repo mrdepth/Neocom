@@ -25,7 +25,7 @@ struct Fleets: View {
         
         self.openMode = openMode
         projectLoading = Publishers.Sequence(sequence: urls)
-            .setFailureType(to: Error.self)
+//            .setFailureType(to: Error.self)
             .flatMap { url in
                 DGMSkillLevels.from(url: url, managedObjectContext: self.managedObjectContext)
                     .catch {_ in Empty()}
@@ -81,8 +81,11 @@ struct Fleets: View {
             }
         }
         .overlay(self.projectLoading != nil ? ActivityIndicator() : nil)
-        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
+//        .overlay(selectedProject.map{NavigationLink(destination: FittingEditor(project: $0), tag: $0, selection: $selectedProject, label: {EmptyView()})})
         .navigationBarTitle(Text("Fleets"))
+        .navigate(using: $selectedProject) { project in
+            FittingEditor(project: project)
+        }
 
         
     }
@@ -95,9 +98,7 @@ struct Fleets_Previews: PreviewProvider {
         return NavigationView {
             Fleets()
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

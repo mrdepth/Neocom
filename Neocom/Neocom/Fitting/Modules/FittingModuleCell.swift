@@ -214,6 +214,7 @@ struct FittingModuleCell: View {
     @State private var pick = "Some"
 }
 
+#if DEBUG
 struct FittingModuleCell_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -226,7 +227,8 @@ struct FittingModuleCell_Previews: PreviewProvider {
         return List {
             FittingModuleCell(ship: dominix, module: DGMModuleGroup([cannon]))
         }.listStyle(GroupedListStyle())
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
         .environmentObject(gang)
     }
 }
+#endif

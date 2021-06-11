@@ -23,14 +23,16 @@ struct FittingEditorShipDronesHeader: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorShipDronesHeader_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         
         return FittingEditorShipDronesHeader(ship: gang.pilots[0].ship!)
             .environmentObject(gang)
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .modifier(ServicesViewModifier.testModifier())
             .background(Color(.systemBackground))
 
     }
 }
+#endif

@@ -73,8 +73,7 @@ struct ContractsContent: View {
 struct Contracts_Previews: PreviewProvider {
     static var previews: some View {
         Contracts()
-            .environmentObject(SharedState.testState())
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

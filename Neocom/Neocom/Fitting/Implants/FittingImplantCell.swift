@@ -45,6 +45,7 @@ struct FittingImplantCell: View {
     }
 }
 
+#if DEBUG
 struct FittingImplantCell_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -57,10 +58,10 @@ struct FittingImplantCell_Previews: PreviewProvider {
             }.listStyle(GroupedListStyle())
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
         .environmentObject(gang)
 
         
     }
 }
+#endif

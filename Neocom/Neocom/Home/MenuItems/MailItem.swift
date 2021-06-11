@@ -36,8 +36,7 @@ struct MailItem_Previews: PreviewProvider {
                 MailItem()
             }.listStyle(GroupedListStyle())
         }
-        .environmentObject(SharedState.testState())
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

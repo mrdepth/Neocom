@@ -17,8 +17,10 @@ struct DroneBandwidthResource: View {
     }
 }
 
+#if DEBUG
 struct DroneBandwidthResource_Previews: PreviewProvider {
     static var previews: some View {
         DroneBandwidthResource(ship: DGMGang.testGang().pilots[0].ship!)
     }
 }
+#endif

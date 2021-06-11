@@ -18,6 +18,7 @@ struct Loadouts: View {
     
     @State private var page = Page.ships
     @EnvironmentObject private var sharedState: SharedState
+    @State private var isPushed: Bool?
     
     var picker: some View {
         Picker("Filter", selection: $page) {
@@ -59,9 +60,8 @@ struct Loadouts_Previews: PreviewProvider {
         NavigationView {
             Loadouts()
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
-        .environmentObject(SharedState.testState())
+        .navigationViewStyle(StackNavigationViewStyle())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

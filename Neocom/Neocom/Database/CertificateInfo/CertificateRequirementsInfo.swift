@@ -27,15 +27,16 @@ struct CertificateRequirementsInfo: View {
     }
 }
 
+#if DEBUG
 struct CertificateRequirementsInfo_Previews: PreviewProvider {
     static var previews: some View {
-        let certificate = try! Storage.sharedStorage.persistentContainer.viewContext
+        let certificate = try! Storage.testStorage.persistentContainer.viewContext
             .from(SDECertCertificate.self)
             .filter((/\SDECertCertificate.certificateName).contains("Armor"))
             .first()!
 
         func types() -> FetchedResultsController<SDEInvType> {
-            let controller = Storage.sharedStorage.persistentContainer.viewContext.from(SDEInvType.self)
+            let controller = Storage.testStorage.persistentContainer.viewContext.from(SDEInvType.self)
                 .filter(/\SDEInvType.published == true && (/\SDEInvType.certificates).contains(certificate))
                 .sort(by: \SDEInvType.group?.groupName, ascending: true)
                 .fetchedResultsController(sectionName: (/\SDEInvType.group?.groupName), cacheName: nil)
@@ -44,7 +45,8 @@ struct CertificateRequirementsInfo_Previews: PreviewProvider {
         
         return List {
             CertificateRequirementsInfo(types: types())
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
         }.listStyle(GroupedListStyle())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

@@ -78,10 +78,8 @@ struct Colony_Previews: PreviewProvider {
                 ColonyContent(planet: planet)
             }.listStyle(GroupedListStyle())
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
         .environmentObject(planet)
-        .environmentObject(SharedState.testState())
     }
 }
 #endif

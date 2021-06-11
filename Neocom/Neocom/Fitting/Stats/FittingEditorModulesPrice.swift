@@ -49,6 +49,7 @@ struct FittingEditorModulesPrice: View {
     }
 }
 
+#if DEBUG
 struct FittingEditorModulesPrice_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
@@ -56,6 +57,7 @@ struct FittingEditorModulesPrice_Previews: PreviewProvider {
             FittingEditorModulesPrice(ship: gang.pilots.first!.ship!, prices: [:])
         }
         .environmentObject(gang)
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

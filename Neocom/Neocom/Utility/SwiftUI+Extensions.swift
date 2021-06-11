@@ -152,10 +152,10 @@ struct AdaptivePopoverModifier<PopoverContent: View>: ViewModifier {
     func body(content: Content) -> some View {
         Group {
             if horizontalSizeClass == .regular {
-                content.popover(isPresented: $isPresented, attachmentAnchor: attachmentAnchor, arrowEdge: arrowEdge, content: {self.content().environment(\.horizontalSizeClass, .regular)})
+                content.popover(isPresented: $isPresented, attachmentAnchor: attachmentAnchor, arrowEdge: arrowEdge, content: {self.content().environment(\.horizontalSizeClass, .regular).frame(minWidth: 320, minHeight: 480)})
             }
             else {
-                content.sheet(isPresented: $isPresented, content: self.content)
+                content.sheet(isPresented: $isPresented, content: {self.content().edgesIgnoringSafeArea(.bottom)})
             }
         }
     }
@@ -171,7 +171,7 @@ struct AdaptivePopoverModifier2<Item: Identifiable, PopoverContent: View>: ViewM
     func body(content: Content) -> some View {
         Group {
             if horizontalSizeClass == .regular {
-                content.popover(item: $item, attachmentAnchor: attachmentAnchor, arrowEdge: arrowEdge, content: self.content)
+                content.popover(item: $item, attachmentAnchor: attachmentAnchor, arrowEdge: arrowEdge, content: {self.content($0).frame(minWidth: 320, minHeight: 480)})
             }
             else {
                 content.sheet(item: $item, content: self.content)
@@ -201,5 +201,23 @@ struct ColorSchemeModifier: ViewModifier {
 extension View {
     func colorSchemeSetting() -> some View {
         self.modifier(ColorSchemeModifier())
+    }
+}
+
+extension View {
+    func navigate<Value, Destination: View>(using binding: Binding<Value?>, @ViewBuilder destination: (Value) -> Destination) -> some View {
+        let isActive = Binding<Bool>{
+            binding.wrappedValue != nil
+        } set: { isActive in
+            if !isActive {
+                binding.wrappedValue = nil
+            }
+        }
+        
+        let link = NavigationLink(destination: binding.wrappedValue.map{destination($0)},
+                                  isActive: isActive,
+                                  label: { EmptyView() })
+        
+        return self.background(link)
     }
 }

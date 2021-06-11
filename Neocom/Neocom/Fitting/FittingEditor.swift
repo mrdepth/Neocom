@@ -29,6 +29,29 @@ fileprivate class FittingAutosaver: ObservableObject {
     }
 }
 
+//struct FittingEditor2<P>: View where P : Publisher, P.Output == FittingProject, P.Failure == Never {
+//    
+//    private let publisher: P
+//    @State private var project: FittingProject?
+//    
+//    init(_ publisher: P) {
+//        self.publisher = publisher
+//    }
+//    
+//    var body: some View {
+//        Group {
+//            if project == nil {
+//                ActivityIndicator().onReceive(publisher) {
+//                    self.project = $0
+//                }
+//            }
+//            else {
+//                FittingEditor(project: project!)
+//            }
+//        }
+//    }
+//}
+
 struct FittingEditor: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
     @EnvironmentObject private var sharedState: SharedState
@@ -297,13 +320,11 @@ struct FittingEditor_Previews: PreviewProvider {
     static var previews: some View {
         let gang = DGMGang.testGang()
         return NavigationView {
-            FittingEditor(project: FittingProject(gang: gang, managedObjectContext: Storage.sharedStorage.persistentContainer.viewContext))
+            FittingEditor(project: FittingProject(gang: gang, managedObjectContext: Storage.testStorage.persistentContainer.viewContext))
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .environmentObject(gang)
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

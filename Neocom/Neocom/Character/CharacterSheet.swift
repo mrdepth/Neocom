@@ -205,8 +205,7 @@ struct CharacterSheet_Previews: PreviewProvider {
             CharacterSheet()
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

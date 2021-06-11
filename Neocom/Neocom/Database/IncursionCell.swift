@@ -49,7 +49,7 @@ struct IncursionCell: View {
 #if DEBUG
 struct IncursionCell_Previews: PreviewProvider {
     static var previews: some View {
-        let context = Storage.sharedStorage.persistentContainer.viewContext
+        let context = Storage.testStorage.persistentContainer.viewContext
         let constellation = try! context.from(SDEMapConstellation.self).first()!
         let faction = try! context.from(SDEChrFaction.self).first()!
         let solarSystem = try! context.from(SDEMapSolarSystem.self).first()!
@@ -65,8 +65,7 @@ struct IncursionCell_Previews: PreviewProvider {
                                                    type: "Type"))
         }
         .listStyle(GroupedListStyle())
-        .environment(\.managedObjectContext, context)
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

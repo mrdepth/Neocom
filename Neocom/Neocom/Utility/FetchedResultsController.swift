@@ -65,7 +65,9 @@ class FetchedResultsController<ResultType: NSFetchRequestResult>: NSObject, NSFe
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         _sections = controller.sections?.map { return Section(name: $0.name, objects: ($0.objects as? [ResultType]) ?? []) } ?? []
-        subject?.send(sections)
+        DispatchQueue.main.async {
+            self.subject?.send(self.sections)
+        }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {

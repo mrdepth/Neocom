@@ -29,9 +29,11 @@ struct WormholeCell: View {
     }
 }
 
+#if DEBUG
 struct WormholeCell_Previews: PreviewProvider {
     static var previews: some View {
-        let wh = try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEWhType.self).first()!
+        let wh = try! Storage.testStorage.persistentContainer.viewContext.from(SDEWhType.self).first()!
         return WormholeCell(wormhole: wh)
     }
 }
+#endif

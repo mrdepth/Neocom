@@ -139,7 +139,7 @@ struct MailBodyContent: View {
 #if DEBUG
 struct MailBody_Previews: PreviewProvider {
     static var previews: some View {
-        let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.sharedStorage.persistentContainer.viewContext)!, insertInto: nil)
+        let contact = Contact(entity: NSEntityDescription.entity(forEntityName: "Contact", in: Storage.testStorage.persistentContainer.viewContext)!, insertInto: nil)
         contact.name = "Artem Valiant"
         contact.contactID = 1554561480
 
@@ -156,7 +156,7 @@ struct MailBody_Previews: PreviewProvider {
             NavigationView {
                 MailBodyContent(mailBody: body, contacts: [contact.contactID: contact])
             }
-            .environmentObject(SharedState.testState())
+            .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

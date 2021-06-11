@@ -91,9 +91,7 @@ struct FittingCargo_Previews: PreviewProvider {
         
         return FittingCargo(ship: gang.pilots[0].ship!)
             .environmentObject(gang)
-            .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-            .environmentObject(SharedState.testState())
+            .modifier(ServicesViewModifier.testModifier())
     }
 }
 #endif

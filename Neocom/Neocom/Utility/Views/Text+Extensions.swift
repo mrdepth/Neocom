@@ -60,11 +60,13 @@ extension Text {
 	}
 }
 
+#if DEBUG
 struct LocationLabel_Previews: PreviewProvider {
     static var previews: some View {
 		VStack {
-        try! Text(EVELocation(Storage.sharedStorage.persistentContainer.viewContext.from(SDEStaStation.self).first()!))
+        try! Text(EVELocation(Storage.testStorage.persistentContainer.viewContext.from(SDEStaStation.self).first()!))
 			Text(AFError.explicitlyCancelled)
 		}
     }
 }
+#endif

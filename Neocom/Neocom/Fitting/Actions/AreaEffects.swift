@@ -86,13 +86,15 @@ struct AreaEffects: View {
     }
 }
 
+#if DEBUG
 struct AreaEffects_Previews: PreviewProvider {
     static var previews: some View {
 		NavigationView {
 			AreaEffects() { _ in
 				
 			}
-				.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+            .modifier(ServicesViewModifier.testModifier())
 		}
     }
 }
+#endif

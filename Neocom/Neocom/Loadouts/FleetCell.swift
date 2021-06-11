@@ -42,6 +42,7 @@ struct FleetCell: View {
     }
 }
 
+#if DEBUG
 struct FleetCell_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
@@ -49,7 +50,7 @@ struct FleetCell_Previews: PreviewProvider {
                 FleetCell(fleet: Fleet.testFleet())
             }.listStyle(GroupedListStyle())
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
+        .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

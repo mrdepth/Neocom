@@ -24,8 +24,10 @@ struct DronesCountResource: View {
     }
 }
 
+#if DEBUG
 struct DronesCountResource_Previews: PreviewProvider {
     static var previews: some View {
         DronesCountResource(ship: DGMGang.testGang().pilots[0].ship!)
     }
 }
+#endif

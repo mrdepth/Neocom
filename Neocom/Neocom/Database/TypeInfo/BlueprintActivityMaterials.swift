@@ -23,10 +23,12 @@ struct BlueprintActivityMaterials: View {
     }
 }
 
+#if DEBUG
 struct BlueprintActivityMaterials_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            BlueprintActivityMaterials(activity: try! Storage.sharedStorage.persistentContainer.viewContext.from(SDEIndActivity.self).first()!)
+            BlueprintActivityMaterials(activity: try! Storage.testStorage.persistentContainer.viewContext.from(SDEIndActivity.self).first()!)
         }
     }
 }
+#endif

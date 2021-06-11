@@ -89,13 +89,15 @@ struct AttributeInfo: View {
     }
 }
 
+#if DEBUG
 struct AttributeInfo_Previews: PreviewProvider {
     static var previews: some View {
         List {
             ForEach((SDEInvType.dominix.attributes?.allObjects as? [SDEDgmTypeAttribute])!, id: \.objectID) {
                 AttributeInfo(attribute: $0)
             }
-        }.environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
+        }.modifier(ServicesViewModifier.testModifier())
         
     }
 }
+#endif

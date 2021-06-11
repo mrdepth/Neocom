@@ -44,12 +44,13 @@ struct NPCPickerTypes: View {
     }
 }
 
+#if DEBUG
 struct NPCPickerTypes_Previews: PreviewProvider {
     static var previews: some View {
-        let context = Storage.sharedStorage.persistentContainer.viewContext
+        let context = Storage.testStorage.persistentContainer.viewContext
         let group = try? context.from(SDENpcGroup.self).filter((/\SDENpcGroup.group) != nil).first()
         return NPCPickerTypes(parent: group!) { _ in }
-            .environment(\.managedObjectContext, context)
-            .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
+            .modifier(ServicesViewModifier.testModifier())
     }
 }
+#endif

@@ -104,9 +104,7 @@ struct FittingEditorStructureActions_Previews: PreviewProvider {
         return NavigationView {
             FittingEditorStructureActions(structure: DGMStructure.testKeepstar()) {}
         }
-        .environment(\.managedObjectContext, Storage.sharedStorage.persistentContainer.viewContext)
-        .environment(\.backgroundManagedObjectContext, Storage.sharedStorage.persistentContainer.newBackgroundContext())
-        .environmentObject(SharedState.testState())
+        .modifier(ServicesViewModifier.testModifier())
 
     }
 }

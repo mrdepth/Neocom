@@ -283,7 +283,7 @@
 		169A9196238CF9D5004E3DAA /* Expressible.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 169A9194238CF9D5004E3DAA /* Expressible.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		169A91A3238D1D38004E3DAA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A91A2238D1D38004E3DAA /* Config.swift */; };
 		169A91A5238D1D81004E3DAA /* ESI+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169A91A4238D1D81004E3DAA /* ESI+Extensions.swift */; };
-		169A931024864A9300DA1897 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 169A930F24864A9300DA1897 /* SwiftPackageProductDependency */; };
+		169A931024864A9300DA1897 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 169A930F24864A9300DA1897 /* FacebookCore */; };
 		169BFF9423B64D2300FDF759 /* BlueprintActivityMaterials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169BFF9323B64D2300FDF759 /* BlueprintActivityMaterials.swift */; };
 		169D27FD241A0C63002AB469 /* FittingEditorStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169D27FC241A0C63002AB469 /* FittingEditorStats.swift */; };
 		169D27FF241A0CA8002AB469 /* FittingEditorResourcesStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169D27FE241A0CA8002AB469 /* FittingEditorResourcesStats.swift */; };
@@ -864,7 +864,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				168744D82465754D00F356EB /* libz.tbd in Frameworks */,
-				169A931024864A9300DA1897 /* BuildFile in Frameworks */,
+				169A931024864A9300DA1897 /* FacebookCore in Frameworks */,
 				169672DB2387ECCD00EB860B /* EVEAPI.framework in Frameworks */,
 				16B6A84523F2D24E00E0EB8B /* Dgmpp.framework in Frameworks */,
 				16B66A8F247BF46300F5AE84 /* StoreKit.framework in Frameworks */,
@@ -1740,7 +1740,7 @@
 			);
 			name = Neocom;
 			packageProductDependencies = (
-				169A930F24864A9300DA1897 /* SwiftPackageProductDependency */,
+				169A930F24864A9300DA1897 /* FacebookCore */,
 			);
 			productName = Neocom;
 			productReference = 12F06F0F238464920061313D /* Neocom.app */;
@@ -1811,7 +1811,7 @@
 			);
 			mainGroup = 12F06F06238464920061313D;
 			packageReferences = (
-				169A930E24864A9300DA1897 /* RemoteSwiftPackageReference */,
+				169A930E24864A9300DA1897 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 			);
 			productRefGroup = 12F06F10238464920061313D /* Products */;
 			projectDirPath = "";
@@ -2478,7 +2478,7 @@
 				ASSET_PACK_MANIFEST_URL_PREFIX = "http://192.168.1.229/";
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 70;
+				CURRENT_PROJECT_VERSION = 71;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;
@@ -2508,7 +2508,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Neocom/Neocom.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 70;
+				CURRENT_PROJECT_VERSION = 71;
 				DEVELOPMENT_ASSET_PATHS = "\"Neocom/Preview Content\"";
 				DEVELOPMENT_TEAM = YB4RLQ4M9A;
 				ENABLE_PREVIEWS = YES;
@@ -2600,7 +2600,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		169A930E24864A9300DA1897 /* RemoteSwiftPackageReference */ = {
+		169A930E24864A9300DA1897 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
 			requirement = {
@@ -2611,9 +2611,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		169A930F24864A9300DA1897 /* SwiftPackageProductDependency */ = {
+		169A930F24864A9300DA1897 /* FacebookCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 169A930E24864A9300DA1897 /* RemoteSwiftPackageReference */;
+			package = 169A930E24864A9300DA1897 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
 			productName = FacebookCore;
 		};
 /* End XCSwiftPackageProductDependency section */

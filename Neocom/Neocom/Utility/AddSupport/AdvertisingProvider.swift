@@ -13,6 +13,7 @@ import SwiftUI
 import Combine
 import Appodeal
 import StackConsentManager
+import AppTrackingTransparency
 
 
 /// Advertising interface that provides published state
@@ -87,27 +88,32 @@ final class AdvertisingProvider: NSObject, ObservableObject {
     // MARK: Private methods
     private func initializeAppodeaSDK() {
         /// Test Mode
-        #if DEBUG
-        Appodeal.setTestingEnabled(true)
-        Appodeal.setLogLevel(.error)
-        #endif
-        
-        Appodeal.setAutocache(false, types: [.banner])
-        let consent = adsConsent ?? (STKConsentManager.shared().consentStatus != .nonPersonalized)
-        Appodeal.initialize(
-            withApiKey: Config.current.appodealKey,
-            types: [.banner],
-            hasConsent: consent
-        )
-        
-        // Trigger banner cache
-        // It can be done after any moment after Appodeal initialisation
-        bannerView.loadAd()
-        
-        self.isAdInitialised = true
+        ATTrackingManager.requestTrackingAuthorization() { status in
+            DispatchQueue.main.async {
+                #if DEBUG
+                Appodeal.setTestingEnabled(true)
+                Appodeal.setLogLevel(.error)
+                #endif
+                
+                Appodeal.setAutocache(false, types: [.banner])
+                let consent = (self.adsConsent ?? (STKConsentManager.shared().consentStatus != .nonPersonalized)) && status == .authorized
+                Appodeal.initialize(
+                    withApiKey: Config.current.appodealKey,
+                    types: [.banner],
+                    hasConsent: consent
+                )
+                
+                // Trigger banner cache
+                // It can be done after any moment after Appodeal initialisation
+                self.bannerView.loadAd()
+                
+                self.isAdInitialised = true
+            }
+        }
     }
         
     private func synchroniseConsent(completion: SynchroniseConsentCompletion?) {
+        STKConsentManager.shared().disableAppTrackingTransparencyRequest()
         STKConsentManager.shared().synchronize(withAppKey: Config.current.appodealKey) { error in
             error.map { print("Error while synchronising consent manager: \($0)") }
             guard STKConsentManager.shared().shouldShowConsentDialog == .true else {
